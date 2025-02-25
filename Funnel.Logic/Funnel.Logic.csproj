@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Funnel.Data\Funnel.Data.csproj" />
+    <ProjectReference Include="..\Funnel.Models\Funnel.Models.csproj" />
+  </ItemGroup>
+
+</Project>

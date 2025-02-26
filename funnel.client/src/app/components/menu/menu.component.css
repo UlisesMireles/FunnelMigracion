@@ -1,0 +1,41 @@
+.navbar {
+    background-color: #06143dd7; /* Color de fondo del navbar */
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+    margin-top:-25px;
+
+}
+
+/* Centra el contenido dentro de la barra de navegación */
+.navbar nav {
+    display: flex;
+    justify-content: space-between; /* Espacia los elementos dentro de la navbar */
+    width: 100%; /* Asegura que el navbar ocupe todo el ancho */
+    align-items: center; /* Centra verticalmente los elementos */
+}
+
+/* Centra la imagen dentro del navbar */
+.navbar img {
+    margin-right: 20px;
+    justify-content: center; /* Centra los elementos horizontalmente */
+    align-items: center; /* Centra los elementos verticalmente */
+}
+
+/* Estilo del botón de inicio de sesión, alineado a la derecha */
+.iniciarSesion {
+    background-color: white; /* Color de fondo del botón */
+    color: #06143dd7;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-left: auto; /* Empuja el botón a la derecha */
+}
+.imagenencabezado{
+    background-image: url('/assets/img/SFS blanco.png');
+}
+

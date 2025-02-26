@@ -1,3 +1,6 @@
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
 <div class="navbar">
     <nav class="text-center m-auto">
       <img width="100" src="assets/img/SFS blanco.png" alt="logo SFS" class="m-auto">
@@ -17,35 +20,41 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body custom-modal-body-1" style="padding-left: 2rem; padding-right: 2rem; max-height: 470px;">
-                <div class="login-section">
-                    <h5 style="font-size: 1.6rem; text-align: center; line-height: 1.3; font-weight: 600; color: #1a73e8;">Acceso al Sistema</h5>
+            <div class="modal-body custom-modal-body-1" style="padding: 2rem; max-height: 470px; display: flex; gap: 2rem;">
+                
+                <!-- Sección de inicio de sesión -->
+                <div class="login-section" style="width: 50%;">
+                    <h5 class="text-center" style="font-size: 1.6rem; font-weight: 600; color: #1a73e8;">Acceso al Sistema</h5>
                     <br />
                     <div class="input-group mb-4">
                         <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1"><i class="fa fa-user"></i></span>
+                            <span class="input-group-text"><i class="fa fa-user"></i></span>
                         </div>
                         <input type="text" class="form-control" placeholder="usuario" [(ngModel)]="username" />
                     </div>
                     <div class="input-group mb-4 pass">
                         <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1"><i class="fa fa-lock"></i></span>
+                            <span class="input-group-text"><i class="fa fa-lock"></i></span>
                         </div>
                         <input type="password" class="form-control" placeholder="contraseña" [(ngModel)]="password" />
                     </div>
                     <div class="input-group btn-l">
                         <button class="btn btn-login btn-lg btn-block form-control" (click)="login()">Iniciar Sesión</button>
                     </div>
-                    <div align="center">
-                        <p *ngIf="errorMessage" style="color: #a94442;">{{ errorMessage }}</p>
+                    <div class="text-center" *ngIf="errorMessage">
+                        <p style="color: #a94442;">{{ errorMessage }}</p>
                     </div>
-                    <div class="col-12 m-auto text-center" align="justify" style="padding: 2%;">
-                        <a href="#" (click)="openResetModal()" style="font-family: Raleway; font-size: 17px; color: #2f8ce6; cursor: pointer;">¿Olvidaste tu contraseña?</a>
+                    <div class="text-center" style="padding: 2%;">
+                        <a href="#" (click)="openResetModal()" style="font-size: 17px; color: #2f8ce6; cursor: pointer;">¿Olvidaste tu contraseña?</a>
                     </div>
                 </div>
-                <hr class="divisor" />
-                <div class="text-section">
-                    <h2 style="font-size: 2rem; line-height: 1.3; font-weight: 700; color: #1a73e8; margin-top: 38px;">Fortalece cada fase para aumentar ingresos.</h2>
+                
+                <!-- Línea divisoria -->
+                <div class="divisor"></div>
+                
+                <!-- Sección de información -->
+                <div class="text-section" style="width: 50%;">
+                    <h2 class="mt-3" style="font-size: 2rem; font-weight: 700; color: #1a73e8;">Fortalece cada fase para aumentar ingresos.</h2>
                     <br />
                     <p style="text-align: justify; font-size: 1rem; line-height: 1.6; color: #444;">¿No tienes una cuenta?</p>
                     <div class="input-group btn-l">
@@ -56,6 +65,7 @@
         </div>
     </div>
 </div>
+
 
 <div *ngIf="isResetModalOpen" class="modal-overlay" (click)="closeLoginModal()"></div>
 

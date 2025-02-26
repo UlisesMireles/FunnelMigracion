@@ -13,12 +13,13 @@
         font-weight: bold;
         color: #fff;
     }
+
 .imagenFondo {
     background-repeat: no-repeat;
-   
- /*   background-image: url('../img/PMA GRISES.png');*/
+    background-image: url('/assets/img/PMAGRISES.png');
     background-size: cover;
-    flex: 1 0 auto;
+    background-position: center;
+    height: 100vh;
 }
 
 .buttons button {
@@ -167,16 +168,6 @@ div:where(.swal2-container) .swal2-html-container {
     padding: 0 !important;
 }
 
-
-footer {
-    background: #103D70;
-    color: #ffffff;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    border-top: 2px solid #ffffff;
-}
-
 .logo-veriq {
     background-color: #AFABAB;
     text-align: center;
@@ -185,52 +176,6 @@ footer {
     background-position: 50% 50%;
     background-size: 170px 87px;
     border-radius: 6px 6px 0px 0px;
-}
-
-form[role=login] {
-    color: #5d5d5d;
-    background: #ffffff;
-    padding-top: 16px;
-    padding-right: 26px;
-    padding-left: 16px;
-    padding-bottom: 5px;
-    margin-right: auto;
-    margin-left: auto;
-    border-radius: 0px 0px 6px 6px;
-}
-input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].btn-block {
-    width: 100% !important;
-}
-
-
-@media screen and (max-width: 1920px) {
-    .log {
-        padding: 11% 0% !important;
-        padding-top: 5%;
-    }
-
-    .logincard {
-        height: 88vh;
-    }
-
-    .container-all {
-        height: 89vh !important;
-    }
-}
-
-@media screen and (max-width: 1366px) {
-    .log {
-        padding: 3% 0% !important;
-        padding-top: 5%;
-    }
-
-    .logincard {
-        height: 80.8vh;
-    }
-
-    .container-all {
-        height: 87vh !important;
-    }
 }
 
 .well[_ngcontent-pkd-c8] {
@@ -264,12 +209,6 @@ body {
     justify-content: center;
 }
 
-.login-div {
-    width: 100%;
-    max-width: 500px;
-    padding-top: 0px;
-}
-
 .custom-width {
     width: 250px !important;
 }
@@ -296,7 +235,7 @@ body {
     width: 110%;
     padding: 10px;
     padding-left: 0;
-    max-width: 600px;
+    max-width: 700px;
     margin: auto;
 }
 
@@ -304,10 +243,6 @@ body {
     .register-form .form-control.register-input {
         width: 100%;
     }
-}
-
-#RadTabStrip1 .rtsLink {
-    font-size: 14px;
 }
 
 .btn-rg {

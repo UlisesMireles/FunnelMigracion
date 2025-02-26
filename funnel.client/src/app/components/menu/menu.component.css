@@ -1,4 +1,4 @@
-
+/* Estilos base */
 .navbar {
     background-color: #081b54;
     padding: 10px;
@@ -11,8 +11,8 @@
     top: 0; 
     left: 0;
     z-index: 1000; 
-
 }
+
 .navbar nav {
     display: flex;
     justify-content: space-between;
@@ -21,6 +21,8 @@
 }
 
 .navbar img {
+    max-width: 100%;
+    height: auto;
     margin-right: 20px;
     justify-content: center; 
     align-items: center; 
@@ -36,7 +38,8 @@
     font-weight: bold;
     margin-left: auto;
 }
-.imagenencabezado{
+
+.imagenencabezado {
     background-image: url('/assets/img/SFS blanco.png');
 }
 
@@ -62,7 +65,6 @@
     z-index: 11;
     padding: 20px;
 }
-
 
 .divisor {
     height: 36vh;
@@ -92,6 +94,7 @@
     justify-content: space-between;
     align-items: center;
 }
+
 .modal-header .close {
     position: absolute;
     right: 0.5rem;
@@ -105,12 +108,21 @@
 .mb-3 {
     margin-bottom: 1.5rem !important;
 }
+
 .input-group {
-    height: 9%
+    height: auto;
+    margin-bottom: 1rem;
 }
+
 .btn-l {
     margin: auto;
+    margin-bottom: 20px;
 }
+
+.text-center {
+    margin-bottom: 20px;
+}
+
 .btn-reg {
     background-color: transparent;
     border-color: #5cb85c !important;
@@ -123,6 +135,7 @@
     margin-top: 28px;
     margin-bottom: 10px;
 }
+
 .text-section {
     width: 45%;
 }
@@ -137,10 +150,10 @@
     padding-left: 6rem;
     padding-right: 6rem;
 }
+
 #resetModal .modal-content {
     min-height: 400px;
 }
-
 
 .btn-login {
     color: #fff !important;
@@ -149,16 +162,98 @@
     width: 90px !important;
 }
 
-    .btn-login:hover, .btn-login:active, .btn-login:focus {
-        background-color: #449d44 !important;
-        border-color: #449d44 !important;
+.btn-login:hover, .btn-login:active, .btn-login:focus {
+    background-color: #449d44 !important;
+    border-color: #449d44 !important;
+}
+
+.input-group-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 100%;
+}
+
+/* Estilos para pantallas más pequeñas */
+@media (max-width: 768px) {
+    .navbar {
+        height: 60px;
+        padding: 5px;
     }
 
-    .input-group-text {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-width: 40px;
-        height: 100%;
+    .navbar img {
+        margin-right: 10px;
     }
-    
+
+    .iniciarSesion {
+        padding: 8px 16px;
+    }
+
+    .custom-modal-1 {
+        width: 90%;
+        max-width: 600px;
+    }
+
+    .custom-modal {
+        width: 90%;
+        max-width: 350px;
+    }
+
+    .divisor {
+        height: 20vh;
+        margin-right: 1rem;
+        margin-left: 1rem;
+    }
+
+    #resetModal .modal-body {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        height: 50px;
+        padding: 5px;
+    }
+
+    .navbar img {
+        margin-right: 5px;
+    }
+
+    .iniciarSesion {
+        padding: 5px 10px;
+        font-size: 14px;
+    }
+
+    .custom-modal-1 {
+        width: 95%;
+        max-width: 500px;
+    }
+
+    .custom-modal {
+        width: 95%;
+        max-width: 300px;
+    }
+
+    .divisor {
+        height: 15vh;
+        margin-right: 0.5rem;
+        margin-left: 0.5rem;
+    }
+
+    #resetModal .modal-body {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .btn-login, .btn-reg {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    .input-group {
+        margin-bottom: 0.5rem;
+    }
+}

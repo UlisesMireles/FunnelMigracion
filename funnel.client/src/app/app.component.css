@@ -1,6 +1,6 @@
 ﻿:host {
     max-width: 1280px;
-    padding: 2rem;
+    padding: 0;
     text-align: center;
 }
 
@@ -11,4 +11,10 @@ th, td {
 
 table {
     margin: 0 auto;
+}
+.container-fluid {
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
 }

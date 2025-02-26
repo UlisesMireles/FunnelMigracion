@@ -87,10 +87,20 @@
                                                                     de Sales Funnel System.
                                                                 </label>
                                                             </div>
-                                                            <div class="recaptcha-container">
-                                                                <div style="margin-left: 10px;" class="g-recaptcha" data-sitekey="6LdlBicqAAAAABMCqyAjZOTSKrbdshNyKxwRiGL9" data-action="LOGIN"></div>
-                                                            </div>
+                                                            <form [formGroup]="aFormGroup">
+                                                                <ngx-recaptcha2 
+                                                                  #captchaElem
+                                                                  [siteKey]="siteKey"
+                                                                  (reset)="handleReset()"
+                                                                  (expire)="handleExpire()"
+                                                                  (load)="handleLoad()"
+                                                                  (success)="handleSuccess($event)"
+                                                                  [useGlobalDomain]="false"
+                                                                  formControlName="recaptcha">
+                                                                </ngx-recaptcha2>
+                                                              </form>                                                               
                                                         </div>
+                                                        <br />
                                                         <div class="input-group btn-rg">
                                                             <button type="submit" class="btn btn-login btn-lg btn-block form-control" style="font-family: Raleway; height: 35px; font-size: 14px; font-weight: 500; width: 75%;">Registrar</button>
                                                         </div>

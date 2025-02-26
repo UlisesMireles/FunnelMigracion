@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'app-doble-autenticacion',
   standalone: false,
   templateUrl: './doble-autenticacion.component.html',
-  styleUrl: './doble-autenticacion.component.css'
+  styleUrls: ['./doble-autenticacion.component.css']
 })
 export class DobleAutenticacionComponent {
 

@@ -13,34 +13,26 @@ export class MenuComponent {
     resetUsername: string = '';
     errorMessage: string = '';
     resetErrorMessage: string = '';
-  
+    isLoginModalOpen: boolean = false;
+    isResetModalOpen: boolean = false;
+
     openLoginModal() {
-      const loginModal = document.getElementById('loginModal');
-      if (loginModal) {
-        loginModal.style.display = 'block';
-      }
+      this.isLoginModalOpen = true;
+      this.isResetModalOpen = false;
     }
   
     closeLoginModal() {
-      const loginModal = document.getElementById('loginModal');
-      if (loginModal) {
-        loginModal.style.display = 'none';
-      }
+      this.isLoginModalOpen = false;
     }
   
+
     openResetModal() {
-      const resetModal = document.getElementById('resetModal');
-      if (resetModal) {
-        resetModal.style.display = 'block';
-      }
-      this.closeLoginModal();
+      this.isResetModalOpen = true;
+      this.isLoginModalOpen = false;
     }
   
     closeResetModal() {
-      const resetModal = document.getElementById('resetModal');
-      if (resetModal) {
-        resetModal.style.display = 'none';
-      }
+      this.isResetModalOpen = false;
     }
   
     login() {

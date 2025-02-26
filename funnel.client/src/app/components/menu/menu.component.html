@@ -1,17 +1,19 @@
 <div class="navbar">
     <nav class="text-center m-auto">
-        <img width="100" src="/assets/img/SFS_blanco.png" alt="logo SFS">
-        <button class="iniciarSesion" (click)="openLoginModal()">Iniciar Sesión</button>
+      <img width="100" src="assets/img/SFS blanco.png" alt="logo SFS" class="m-auto">
+      <button class="iniciarSesion" (click)="openLoginModal()">Iniciar Sesión</button>
     </nav>
 </div>
 
+<div *ngIf="isLoginModalOpen" class="modal-overlay" (click)="closeLoginModal()"></div>
+  
 <!-- Modal Login -->
-<div class="modal fade custom-modal-1" id="loginModal" data-backdrop="static" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+<div *ngIf="isLoginModalOpen" class="custom-modal-1">
     <div class="modal-dialog custom-modal-dialog-1 modal-dialog-centered modal-lg">
         <div class="modal-content" style="max-height: 423px;">
             <div class="modal-header justify-content-center">
-                <img width="100" src="assets/img/SFS_login.png" alt="logo SFS">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeLoginModal()">
+                <img width="100" src="assets/img/SFS login.png" alt="logo SFS">
+                <button type="button" class="close" (click)="closeLoginModal()">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -55,12 +57,14 @@
     </div>
 </div>
 
+<div *ngIf="isResetModalOpen" class="modal-overlay" (click)="closeLoginModal()"></div>
+
 <!-- Modal ResetPassword -->
-<div class="modal fade" id="resetModal" data-backdrop="static" tabindex="-1" aria-labelledby="ResetModalLabel" aria-hidden="true">
+<div *ngIf="isResetModalOpen" class="custom-modal">
     <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content">
             <div class="modal-header justify-content-center">
-                <img width="100" src="assets/img/SFS_login.png" alt="logo SFS">
+                <img width="100" src="assets/img/SFS login.png" alt="logo SFS">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeResetModal()">
                     <span aria-hidden="true">&times;</span>
                 </button>

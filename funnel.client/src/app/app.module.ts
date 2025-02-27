@@ -10,6 +10,7 @@ import { DobleAutenticacionComponent } from './components/doble-autenticacion/do
 import { CambiarContrasenaComponent } from './components/cambiar-contrasena/cambiar-contrasena.component';
 import { OlvidasteContrasenaComponent } from './components/olvidaste-contrasena/olvidaste-contrasena.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { ProspectosComponent } from './components/catalogos/prospectos/prospectos.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { FooterComponent } from './components/footer/footer.component';
     DobleAutenticacionComponent,
     CambiarContrasenaComponent,
     OlvidasteContrasenaComponent,
-    FooterComponent
+    FooterComponent,
+    ProspectosComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,

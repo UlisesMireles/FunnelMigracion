@@ -11,6 +11,8 @@ namespace Funnel.Server.Extensions
         {
             services.AddScoped<ILoginData, LoginData>();
             services.AddScoped<ILoginService, LoginService>();
+            services.AddScoped<IProspectoData, ProspectoData>();
+            services.AddScoped<IProspectosService, ProspectoService>();
             return services;
         }
     }

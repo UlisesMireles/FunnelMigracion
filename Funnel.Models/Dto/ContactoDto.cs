@@ -13,5 +13,6 @@
         public string? Prospecto { get; set; }
         public int? IdProspecto { get; set; }
         public int? IdEmpresa { get; set; }
+        public string? Bandera { get; set; }
     }
 }

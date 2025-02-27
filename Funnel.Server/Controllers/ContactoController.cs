@@ -19,5 +19,11 @@ namespace Funnel.Server.Controllers
             var result = await _contactoService.ConsultarContacto(idEmpresa);
             return Ok(result);
         }
+        [HttpPost("[action]/")]
+        public async Task<ActionResult> GuardarContacto(ContactoDto request)
+        {
+            var result = await _contactoService.GuardarContacto(request);
+            return Ok(result);
+        }
     }
 }

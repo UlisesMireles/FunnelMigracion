@@ -13,7 +13,7 @@ import { baseOut } from '../../../interfaces/utils/utils/baseOut';
   styleUrl: './contactos.component.css'
 })
 export class ContactosComponent {
-  constructor(private ContactosService: ContactosService, private messageService: MessageService, private cdr: ChangeDetectorRef) { }
+  constructor(private contactosService: ContactosService, private messageService: MessageService, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.getContactos();
@@ -51,7 +51,7 @@ export class ContactosComponent {
   ];
 
   getContactos(idEmpresa: number = 1) {
-    this.ContactosService.getContactos(idEmpresa).subscribe({
+    this.contactosService.getContactos(idEmpresa).subscribe({
       next: (result: SEL_Contacto[]) => {
         this.contactos = result;
         this.selectedEstatus = 'Activo';

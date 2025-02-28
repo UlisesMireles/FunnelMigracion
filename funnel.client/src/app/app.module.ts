@@ -15,7 +15,6 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { providePrimeNG } from 'primeng/config';
 
 import { ProspectosComponent } from './components/catalogos/prospectos/prospectos.component';
-import { ContactosComponent } from './components/catalogos/contactos/contactos.component';
 
 import Aura from '@primeng/themes/aura';
 import { MessageService } from 'primeng/api';
@@ -40,6 +39,7 @@ export function getBaseUrl() {
   return 'https://localhost:49834/'
 }
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ContactosComponent } from './components/catalogos/contactos/contactos.component';
 
 
 
@@ -81,7 +81,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CheckboxModule,
     InputNumberModule,
     TextareaModule,
-    PasswordModule,
+    PasswordModule
 
   ],
   providers: [
@@ -96,7 +96,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
       }
     }),
     MessageService
-    
   ],
   bootstrap: [AppComponent]
 })

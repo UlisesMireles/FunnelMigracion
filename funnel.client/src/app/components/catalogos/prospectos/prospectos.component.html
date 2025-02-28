@@ -23,15 +23,16 @@
             </ng-template>
   
             <ng-template #header>
-              <tr class="custom-header">
-                <th></th>
-                <th pSortableColumn="nombreSector">Sector </th>
-                <th pSortableColumn="descripcionSector">Descripción Sector</th>
-                <th pSortableColumn="fechaCreacion">Fecha Creación </th>
-                <th pSortableColumn="usuarioCreador">Usuario Creador </th>
-                <th pSortableColumn="fechaModificacion">Fecha Modificación</th>
-                <th pSortableColumn="usuarioModifico">Usuario Modificó</th>
-                <th pSortableColumn="desEstatusActivo">Estatus </th>
+              <tr class="custom-header"  style="width: 100% !important;">
+                <th style="width: 1% !important;"></th>
+                <th pSortableColumn="nombreSector"  style="width: 20% !important;">Prospecto </th>
+                <th pSortableColumn="descripcionSector"  style="width: 20% !important;">Ubicacion Física </th>
+                <th pSortableColumn="fechaCreacion" style="width: 10% !important;">En proceso </th>
+                <th pSortableColumn="usuarioCreador" style="width: 10% !important;">Ganadas</th>
+                <th pSortableColumn="fechaModificacion" style="width: 10% !important;">Perdidas</th>
+                <th pSortableColumn="usuarioModifico" style="width: 10% !important;">Canceladas</th>
+                <th pSortableColumn="usuarioModifico" style="width: 10% !important;">Eliminadas</th>
+                <th pSortableColumn="desEstatusActivo" style="width: 10% !important;">Estatus </th>
               </tr>
               <tr class="custom-header2">
                 <th></th>
@@ -43,23 +44,21 @@
                   <input pInputText type="text" [(ngModel)]="filtroUbicacionProspecto"
                     (ngModelChange)="updateFilter($event, 'ubicacionFisica')">
                 </th>
-                <!--<th>
-                  <input pInputText type="text" [(ngModel)]="filtroFechaCreacion"
-                    (ngModelChange)="updateFilter($event, 'fechaCreacion')">
+                <th>
+                 
                 </th>
                 <th>
-                  <input pInputText type="text" [(ngModel)]="filtroUsuarioCreador"
-                    (ngModelChange)="updateFilter($event, 'usuarioCreador')">
+                 
                 </th>
                 <th>
-                  <input pInputText type="text" [(ngModel)]="filtroFechaModificacion"
-                    (ngModelChange)="updateFilter($event, 'fechaModificacion')">
+                
                 </th>
                 <th>
-                  <input pInputText type="text" [(ngModel)]="filtroUsuarioModifico"
-                    (ngModelChange)="updateFilter($event, 'usuarioModifico')">
-                </th>-->
-  
+                  
+                </th>
+                <th>
+                  
+                </th>
                 <th>
                     <p-dropdown [options]="EstatusDropdown" [(ngModel)]="selectedEstatus" [appendTo]="'body'"
                     (onChange)="FiltrarPorEstatus()" optionLabel="label" optionValue="value">
@@ -93,7 +92,7 @@
             <ng-template #footer>
               <tr class="custom-footer ">
                 <td></td>
-                <td colspan="7">Total: {{ getVisibleTotal('nombre',dt) }}</td>
+                <td colspan="8">Total: {{ getVisibleTotal('nombre',dt) }}</td>
   
               </tr>
             </ng-template>

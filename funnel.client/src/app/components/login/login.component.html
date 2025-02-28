@@ -1,1 +1,222 @@
-<p>login works!</p>
+<body>
+  <main>
+    <div class="navbar">
+      <nav class="text-center m-auto">
+        <img width="80" [src]="baseUrl + '/assets/img/SFS blanco.png'" alt="logo SFS" class="m-auto">
+        <button *ngIf="showIniciarSesion" class="iniciarSesion float-end" (click)="openLoginModal()">Iniciar Sesión</button>
+      </nav>
+    </div>
+    <div class="container-fluid container-all imagenFondo" style="padding: 0px; overflow-x: hidden; height: 89vh;">
+      <div class="d-flex" style="width: 100%; height: 100%;">
+        <div class="container mt-4">
+          <section class="funnel-descripcion">
+            <div class="text-content">
+              <h2 style="font-size: 2rem; line-height: 1; font-weight: 400; color: #1a73e8;">
+                Aumenta tus ventas con un proceso eficiente.
+              </h2>
+              <p style="text-align: justify; font-size: 1.125rem; line-height: 1.6; color: #444; margin-bottom: 20px;">
+                Rompe las barreras que te impiden conseguir más clientes y aumenta tus ventas. Nuestro sistema te proporciona las herramientas necesarias para que identifiques oportunidades clave y maximices el crecimiento de tus ingresos.
+              </p>
+              <p style="text-align: justify; font-size: 1.125rem; line-height: 1.6; color: #444; margin-bottom: 20px;">
+                Sigue nuestra metodología propia, diseñada para guiarte paso a paso hacia tu éxito asegurado en el crecimiento de tus ventas.
+              </p>
+              <div class="cta-buttons">
+              </div>
+              <div>
+                <div class="funnel-stage stage1" data-tooltip="Se realiza una llamada o visita inicial para analizar las necesidades del cliente.">Calificación de prospectos</div>
+                <div class="funnel-stage stage2" data-tooltip="Se confirma la solución o producto que mejor se ajusta al cliente, identificando a la persona que toma las decisiones y posibles aliados.">Investigación de necesidades</div>
+                <div class="funnel-stage stage3" data-tooltip="Se cuantifican los criterios de compra y se definen los objetivos de venta, con un conocimiento profundo del presupuesto y la competencia.">Elaboración de Propuestas</div>
+                <div class="funnel-stage stage4" data-tooltip="Se entregan las propuestas, asegurando que las necesidades del cliente han sido entendidas y todas las objeciones han sido resueltas.">Presentación de propuestas</div>
+                <div class="funnel-stage stage5" data-tooltip="La propuesta se encuentra entre las finalistas, y la negociación se lleva a cabo con la persona que toma la decisión.">Negociación</div>
+              </div>
+              <p class="mt-4" style="font-size: 0.875rem; text-align: center; line-height: 1.57; font-weight: 600; color: #333333bd; margin-top: 10px; margin-bottom: 7px; text-transform: uppercase;">
+                Obtén tu sistema gratis.
+              </p>
+              <p style="font-size: 0.875rem; text-align: center; line-height: 1.57; font-weight: 600; color: #333333bd; margin-top: 10px; margin-bottom: 7px; text-transform: uppercase;">
+                Impulsa tus ventas con un proceso sólido.
+              </p>
+            </div>
+            <div class="funnel-container">
+              <div class="container logincard d-flex justify-content-center mt-4" style="width: 100%; max-height: 664px;">
+                <div class="row justify-content-center">
+                  <div class="login-div">
+                    <section class="login-form resultados">
+                      <div class="logo-veriq">
+                        <h3 style="color: #fff; font-weight: bold; padding-top: 15px;">Regístrate</h3>
+                      </div>
+                      <div class="text-center border border-light">
+                        <div class="demo-container no-bg">
+                          <form class="form-signin register-form" name="formRegistrar" id="formRegistrar">
+                            <div class="row">
+                              <div class="col-md-6 mb-2" style="text-align: left;">
+                                <label for="txtNombre" class="control-label">Nombre*</label>
+                                <input type="text" id="txtNombre" class="form-control register-input" />
+                              </div>
+                              <div class="col-md-6 mb-2" style="text-align: left;">
+                                <label for="txtApellidos" class="control-label">Apellido*</label>
+                                <input type="text" id="txtApellidos" class="form-control register-input" />
+                              </div>
+                              <div class="col-md-6 mb-2" style="text-align: left;">
+                                <label for="txtCorreo" class="control-label">Correo*</label>
+                                <input type="email" id="txtCorreo" class="form-control register-input" />
+                              </div>
+                              <div class="col-md-6 mb-2" style="text-align: left;">
+                                <label for="txtTelefono" class="control-label">Teléfono*</label>
+                                <input type="text" id="txtTelefono" class="form-control register-input" />
+                              </div>
+                              <div class="col-md-6 mb-2" style="text-align: left;">
+                                <label for="txtEmpresa" class="control-label">Empresa*</label>
+                                <input type="text" id="txtEmpresa" class="form-control register-input" />
+                              </div>
+                              <div class="col-md-6 mb-2" style="text-align: left;">
+                                <label for="txtSitio" class="control-label">URL del sitio web*</label>
+                                <input type="text" id="txtSitio" class="form-control register-input" />
+                              </div>
+                              <div class="col-md-6 mb-2" style="text-align: left;">
+                                <label for="cmbxNumEmpleado" class="control-label">Número de empleados*</label>
+                                <select id="cmbxNumEmpleado" class="form-control register-input" style="display: block; width: 202%;">
+                                  <option value="">Selecciona una opción</option>
+                                  <option value="1-10">1-10</option>
+                                  <option value="11-50">11-50</option>
+                                  <option value="51-100">51-100</option>
+                                  <option value="101-500">101-500</option>
+                                  <option value="500+">500+</option>
+                                </select>
+                              </div>
+                              <div class="privacy-terms-container mb-2">
+                                <input type="checkbox" id="chkPrivacyTerms">
+                                <label for="chkPrivacyTerms">
+                                  Declaro que he leído y acepto la
+                                  <span class="link">Política de privacidad</span>
+                                  y los
+                                  <span class="link">Términos y Condiciones</span>
+                                  de Sales Funnel System.
+                                </label>
+                              </div>
+                              <form [formGroup]="aFormGroup">
+                                <ngx-recaptcha2 #captchaElem
+                                                [siteKey]="siteKey"
+                                                (reset)="handleReset()"
+                                                (expire)="handleExpire()"
+                                                (load)="handleLoad()"
+                                                (success)="handleSuccess($event)"
+                                                [useGlobalDomain]="false"
+                                                formControlName="recaptcha">
+                                </ngx-recaptcha2>
+                              </form>
+                            </div>
+                            <br />
+                            <div class="input-group btn-rg">
+                              <button type="submit" class="btn btn-login btn-lg " style="font-family: Raleway; height: 30px; font-size: 12px; font-weight: 500; width: 75%; margin-left: 150px;">Registrar</button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="isLoginModalOpen" class="modal-overlay" (click)="closeLoginModal()"></div>
+
+    <!-- Modal Login -->
+    <div *ngIf="isLoginModalOpen" class="custom-modal-1" style="overflow-y: auto">
+      <div class="modal-dialog custom-modal-dialog-1 modal-dialog-centered modal-lg">
+        <div class="modal-content" style="max-height: 423px;">
+          <div class="modal-header justify-content-center">
+            <img width="100" [src]="baseUrl + '/assets/img/SFS login.png'" alt="logo SFS">
+
+            <i class="bi bi-x-lg float-end close" (click)="closeLoginModal()"></i>
+
+          </div>
+          <div class="row modal-body custom-modal-body-1" style="padding: 25px 0; max-height: 470px; display: flex; ">
+
+            <!-- Sección de inicio de sesión -->
+            <div class="login-section col-lg-6 col-md-12 col-12 col-sm-12" style="padding-right: 25px !important;">
+              <h5 class="text-center" style="font-size: 1.6rem; font-weight: 600; color: #1a73e8;">Acceso al Sistema</h5>
+              <br />
+              <form [formGroup]="loginForm" class="text-center border border-light formLogin">
+                <div class="input-group mb-4">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+                  </div>
+                  <input type="text" class="form-control" placeholder="usuario" formControlName="usuario" />
+                </div>
+                <div class="input-group mb-4 pass">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                  </div>
+                  <input type="password" class="form-control" placeholder="contraseña" formControlName="password" />
+                </div>
+                <div class="input-group btn-l">
+                  <button class="btn btn-login btn-lg btn-block form-control" (click)="login()">Iniciar Sesión</button>
+                </div>
+                <div class="text-center" *ngIf="errorMessage">
+                  <p style="color: #a94442;">{{ errorMessage }}</p>
+                </div>
+                <div class="text-center" style="padding: 2%;">
+                  <a href="#" (click)="openResetModal()" style="font-size: 17px; color: #2f8ce6; cursor: pointer;">¿Olvidaste tu contraseña?</a>
+                </div>
+              </form>
+            </div>
+
+            <!-- Línea divisoria -->
+            <!--<div class="divisor"></div>-->
+            <!-- Sección de información -->
+            <div class="col-lg-6 col-md-12 col-12 col-sm-12" style="border-left: 1px solid #878080fa;padding-left: 25px !important;">
+              <h2 class="mt-3" style="font-size: 2rem; font-weight: 700; color: #1a73e8;">Fortalece cada fase para aumentar ingresos.</h2>
+              <br />
+              <p style="text-align: justify; font-size: 1rem; line-height: 1.6; color: #444;">¿No tienes una cuenta?</p>
+              <div class="input-group btn-l">
+                <button class="btn btn-reg btn-lg btn-block form-control" (click)="closeLoginModal()">Regístrate ahora</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div *ngIf="isResetModalOpen" class="modal-overlay" (click)="closeLoginModal()"></div>
+
+    <!-- Modal ResetPassword -->
+    <div *ngIf="isResetModalOpen" class="custom-modal">
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+          <div class="modal-header justify-content-center">
+            <img width="100" [src]="baseUrl + '/assets/img/SFS login.png'" alt="logo SFS">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeResetModal()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <br />
+            <h5 style="font-size: 1.6rem; text-align: center; line-height: 1.3; font-weight: 600; color: #1a73e8;">Recuperar Contraseña</h5>
+            <div class="input-group mb-4" style="margin-top: 18px;">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-fill  "></i></span>
+              </div>
+              <input type="text" class="form-control" placeholder="usuario" [(ngModel)]="resetUsername" />
+            </div>
+            <div class="input-group mb-3" style="margin-bottom: 10px;">
+              <button class="btn btn-login btn-lg btn-block form-control" (click)="resetPassword()">Enviar</button>
+            </div>
+            <div class="input-group mb-4" style="margin-bottom: 10px;">
+              <button class="btn btn-light btn-lg btn-block form-control" (click)="openLoginModal()">Regresar</button>
+            </div>
+            <div style="text-align: center">
+              <p *ngIf="resetErrorMessage" style="color: #a94442;">{{ resetErrorMessage }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</body>
+

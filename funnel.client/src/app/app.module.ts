@@ -11,8 +11,13 @@ import { CambiarContrasenaComponent } from './components/cambiar-contrasena/camb
 import { OlvidasteContrasenaComponent } from './components/olvidaste-contrasena/olvidaste-contrasena.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { NgxCaptchaModule } from 'ngx-captcha';
-import { ReactiveFormsModule } from '@angular/forms'; 
-
+import { ReactiveFormsModule } from '@angular/forms';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { providePrimeNG } from 'primeng/config';
+import { MessageService } from 'primeng/api';
+export function getBaseUrl() {
+  return 'https://localhost:49834/'
+}
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,7 +36,17 @@ import { ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule
 
   ],
-  providers: [],
+  providers: [
+    { provide: 'BASE_URL', useFactory: getBaseUrl, deps: [] },
+    provideAnimationsAsync(),
+    providePrimeNG({
+      theme: {
+        options: {
+          darkModeSelector: false || 'none'
+        }
+      }
+    }),
+    MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

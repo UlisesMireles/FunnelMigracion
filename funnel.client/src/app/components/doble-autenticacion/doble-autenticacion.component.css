@@ -1,3 +1,33 @@
+/* Estilos base */
+.navbar {
+  background-color: #103D66;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 65px;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+  .navbar nav {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+  }
+
+  .navbar img {
+    max-width: 100%;
+    height: auto;
+    margin-right: 20px;
+    justify-content: center;
+    align-items: center;
+  }
+
 body {
     font-family: Arial, sans-serif;
     background-image: url('/assets/img/PMAGRISES.png');
@@ -14,7 +44,7 @@ body {
 }
 
 .imagenFondo {
-    background-image: url('/assets/img/PMAGRISES.png');
+   
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -56,7 +86,6 @@ p {
 }
 
 .codigo-input {
-    width: 80%;
     padding: 10px;
     font-size: 18px;
     text-align: center;
@@ -76,7 +105,6 @@ p {
 }
 
 .acciones {
-    display: flex;
     justify-content: space-between; 
     align-items: center;
     width: 100%;
@@ -100,7 +128,6 @@ p {
     font-size: 16px;
     border-radius: 5px;
     cursor: pointer;
-    width: auto; 
     text-align: center;
 }
 

@@ -1,6 +1,7 @@
 ﻿using Funnel.Data.Interfaces;
 using Funnel.Logic.Interfaces;
 using Funnel.Logic.Utils;
+using Funnel.Models.Base;
 using Funnel.Models.Dto;
 
 namespace Funnel.Logic
@@ -19,5 +20,16 @@ namespace Funnel.Logic
             var respuesta = await _loginData.Autenticar(user, contrasena);
             return respuesta;
         }
+        public async Task<DobleAutenticacionDto> VerificarCodigoDobleAutenticacion(CodigoDosPasosDto usuario)
+        {
+            return await _loginData.VerificarCodigoDobleAutenticacion(usuario);
+        }
+
+        public async Task<BaseOut> ObtenerVersion()
+        {
+            return await _loginData.ObtenerVersion();
+        }
+
+        
     }
 }

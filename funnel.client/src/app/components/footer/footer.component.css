@@ -6,9 +6,10 @@
   background-color: #103D66;  
   color: white;     
   text-align: center; 
-  padding: 1rem 0;   
+  padding: 4px 0;   
   z-index: 1000;      
-  font-family: sans-serif;  
+  font-family: sans-serif;
+  height: 40px;
 }
 
 #footer h6 {

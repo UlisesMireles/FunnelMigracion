@@ -7,6 +7,7 @@ import { OlvidasteContrasenaComponent } from './components/olvidaste-contrasena/
 import { AuthGuard } from './shared/guards/auth.guard';
 import { ProspectosComponent } from './components/catalogos/prospectos/prospectos.component';
 import { ContactosComponent } from './components/catalogos/contactos/contactos.component';
+import { TipoServiciosComponent } from './components/catalogos/tipo-servicios/tipo-servicios.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent, title: 'Login' },
@@ -16,7 +17,8 @@ const routes: Routes = [
   { path: 'recuperar-contrasena', component: OlvidasteContrasenaComponent, title: 'Recuperar contraseña'},
   { path: 'prospectos', component: ProspectosComponent, title: 'Prospectos', canActivate: [AuthGuard] },
   { path: 'contactos', component: ContactosComponent, title: 'Contactos', canActivate: [AuthGuard] },
-
+  { path: 'tipos-servicios', component: TipoServiciosComponent, title: 'Tipos Servicios ', canActivate: [AuthGuard] },
+  
 ];
 
 @NgModule({

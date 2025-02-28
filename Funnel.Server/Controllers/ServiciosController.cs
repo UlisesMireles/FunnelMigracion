@@ -18,10 +18,10 @@ namespace Funnel.Server.Controllers
             _serviciosService = serviciosService;
         }
 
-        [HttpGet("[action]/{idTipoProyecto}")]
-        public async Task<ActionResult<List<ServiciosDTO>>> ConsultarServicios(int idTipoProyecto)
+        [HttpGet("[action]/{idEmpresa}")]
+        public async Task<ActionResult<List<ServiciosDTO>>> ConsultarServicios(int IdEmpresa)
         {
-            var respuesta = await _serviciosService.ConsultarServicios(idTipoProyecto);
+            var respuesta = await _serviciosService.ConsultarServicios(IdEmpresa);
             return Ok(respuesta);
         }
     }

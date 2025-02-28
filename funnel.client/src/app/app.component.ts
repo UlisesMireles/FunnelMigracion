@@ -23,6 +23,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     Globals.usuario = localStorage.getItem('username') as string;
     Globals.idUsuario = parseInt(localStorage.getItem('currentUser') as string);
+    Globals.idEmpresa = parseInt(localStorage.getItem('idEmpresa') as string);
     Globals.tipoUsuario = localStorage.getItem('tipoUsuario') as string;
 
     this.router.events.subscribe(() => {

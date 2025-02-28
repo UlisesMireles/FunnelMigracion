@@ -13,7 +13,8 @@ namespace Funnel.Models.Dto
         public string? Abreviatura { get; set; }
         public DateTime? FechaRegistro { get; set; } 
         public DateTime? FechaModificacion { get; set; } 
-        public int? Estatus { get; set; } 
+        public int? Estatus { get; set; }
+        public string? DesEstatus { get; set; }
         public int? IdEmpresa { get; set; } 
     }
 }

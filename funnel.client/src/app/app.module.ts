@@ -40,6 +40,7 @@ export function getBaseUrl() {
 }
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ContactosComponent } from './components/catalogos/contactos/contactos.component';
+import { TipoServiciosComponent } from './components/catalogos/tipo-servicios/tipo-servicios.component';
 
 
 
@@ -54,7 +55,8 @@ import { ContactosComponent } from './components/catalogos/contactos/contactos.c
     OlvidasteContrasenaComponent,
     FooterComponent,
     ProspectosComponent,
-    ContactosComponent
+    ContactosComponent,
+    TipoServiciosComponent
   ],
   imports: [
     BrowserModule,

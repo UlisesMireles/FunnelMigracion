@@ -12,6 +12,6 @@ namespace Funnel.Logic.Interfaces
 {
     public interface IServiciosService
     {
-        Task<List<ServiciosDTO>> ConsultarServicios(int IdTipoProyecto);
+        Task<List<ServiciosDTO>> ConsultarServicios(int IdEmpresa);
     }
 }

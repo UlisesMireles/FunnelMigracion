@@ -5,6 +5,7 @@ import { MessageService } from 'primeng/api';
 import { SEL_Contacto } from '../../../interfaces/contactos';
 import { ContactosService } from '../../../services/contactos.service';
 import { baseOut } from '../../../interfaces/utils/utils/baseOut';
+import { Globals } from '../../../services/globals';
 
 @Component({
   selector: 'app-contactos',
@@ -21,7 +22,7 @@ export class ContactosComponent {
   @ViewChild('dt') dt!: Table;
 
   contactos: SEL_Contacto[] = [];
-  cotactosOriginal: SEL_Contacto[] = [];
+  contactosOriginal: SEL_Contacto[] = [];
   contactoSeleccionado!: SEL_Contacto;
 
   selectedEstatus: string = 'Activo';
@@ -51,12 +52,13 @@ export class ContactosComponent {
   ];
 
   getContactos(idEmpresa: number = 1) {
-    this.contactosService.getContactos(idEmpresa).subscribe({
+    this.contactosService.getContactos(Globals.idEmpresa).subscribe({
       next: (result: SEL_Contacto[]) => {
-        this.contactos = result;
+        this.contactosOriginal = result;
         this.selectedEstatus = 'Activo';
         this.cdr.detectChanges(); 
         this.loading = false;
+        this.FiltrarPorEstatus();
       },
       error: (error) => {
         this.messageService.add({
@@ -164,8 +166,8 @@ export class ContactosComponent {
 
   FiltrarPorEstatus() {
     this.contactos = this.selectedEstatus === null
-      ? [...this.cotactosOriginal]
-      : [...this.cotactosOriginal.filter((x) => x.desEstatus === this.selectedEstatus)];
+      ? [...this.contactosOriginal]
+      : [...this.contactosOriginal.filter((x) => x.desEstatus === this.selectedEstatus)];
     if (this.dt) {
       this.dt.first = 0;
     }

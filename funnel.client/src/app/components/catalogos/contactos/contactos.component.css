@@ -14,7 +14,7 @@
   }
   
   ::ng-deep .p-datatable-header {
-    background-color: #DAD7CF !important;
+    border:0 !important;
     padding: 0 !important;
     height: 35px;
   }
@@ -158,10 +158,10 @@
     padding-left: 2px;
   }
   
-  ::ng-deep div.inDivDatatableHeader>p-button>button.p-button {
-    width: 25px;
-    height: 25px;
-  }
+  div.inDivDatatableHeader > p-button > button.p-button {
+    width: 36px;
+    height: 35px;
+}
   
   ::ng-deep .hide-filter-icon p-button {
     display: none;

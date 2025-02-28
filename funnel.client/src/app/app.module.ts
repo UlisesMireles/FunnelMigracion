@@ -10,26 +10,25 @@ import { CambiarContrasenaComponent } from './components/cambiar-contrasena/camb
 import { OlvidasteContrasenaComponent } from './components/olvidaste-contrasena/olvidaste-contrasena.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { NgxCaptchaModule } from 'ngx-captcha';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule} from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
 
 import { ProspectosComponent } from './components/catalogos/prospectos/prospectos.component';
 import { ContactosComponent } from './components/catalogos/contactos/contactos.component';
 
+import Aura from '@primeng/themes/aura';
 import { MessageService } from 'primeng/api';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button'; 
-import { FormsModule } from '@angular/forms'; 
 import { DropdownModule } from 'primeng/dropdown';
 import { ToastModule } from 'primeng/toast';
 import { InputTextModule } from 'primeng/inputtext';
-import { TagModule } from 'primeng/tag';
+import { TagModule, Tag } from 'primeng/tag';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { InputIcon } from 'primeng/inputicon';
 import { IconField } from 'primeng/iconfield';
-import { Tag } from 'primeng/tag';
 import { DialogModule } from 'primeng/dialog';
 import { SelectModule } from 'primeng/select';
 import { DatePickerModule } from 'primeng/datepicker';
@@ -86,6 +85,7 @@ export function getBaseUrl() {
     provideAnimationsAsync(),
     providePrimeNG({
       theme: {
+        preset: Aura,
         options: {
           darkModeSelector: false || 'none'
         }

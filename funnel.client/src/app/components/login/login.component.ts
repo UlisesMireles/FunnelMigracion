@@ -80,7 +80,7 @@ export class LoginComponent implements OnInit {
             this.router.navigate(['/two-factor']);
           } else {
             this.closeLoginModal();
-            this.router.navigate(['/two-factor']);
+            this.router.navigate(['/contactos']);
           }
         } else {
           this.showErrors = true;

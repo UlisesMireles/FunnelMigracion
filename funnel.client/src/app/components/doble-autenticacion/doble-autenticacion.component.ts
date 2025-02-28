@@ -108,7 +108,7 @@ export class DobleAutenticacionComponent {
     this.authenticationService.DobleAutenticacion(TwoFactor).subscribe({
       next: (data) => {
         if (data.tipoMensaje == 1) {
-          this.router.navigate(['/cambiar-contrasena']);
+          this.router.navigate(['/prospectos']);
         } else {
           this.messageService.add({
             severity: 'error',

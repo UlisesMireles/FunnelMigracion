@@ -8,7 +8,7 @@ import { baseOut } from '../interfaces/utils/utils/baseOut';
 @Injectable({
   providedIn: 'root'
 })
-export class ProspectoServiceService {
+export class ProspectoService {
 
   baseUrl:string = environment.baseURL;
 

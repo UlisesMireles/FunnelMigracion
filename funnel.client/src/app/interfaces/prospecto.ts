@@ -1,4 +1,4 @@
-export interface SEL_Prospecto {
+export interface SEL_Prospectos {
     bandera: string;
     idProspecto: number;
     nombre: string;

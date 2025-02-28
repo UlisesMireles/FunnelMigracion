@@ -26,6 +26,7 @@
     "bootstrap-icons": "^1.11.3",
     "jest-editor-support": "*",
     "ngx-captcha": "^13.0.0",
+    "primeicons": "^7.0.0",
     "primeng": "^19.0.9",
     "run-script-os": "*",
     "rxjs": "~7.8.0",

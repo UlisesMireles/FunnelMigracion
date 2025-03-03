@@ -1,5 +1,6 @@
 ﻿using Funnel.Logic;
 using Funnel.Logic.Interfaces;
+using Funnel.Models.Base;
 using Funnel.Models.Dto;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -23,6 +24,17 @@ namespace Funnel.Server.Controllers
         {
             var respuesta = await _serviciosService.ConsultarServicios(IdEmpresa);
             return Ok(respuesta);
+        }
+
+        [HttpPost("[action]")]
+        public async Task<ActionResult<BaseOut>> CrearServicio([FromBody] ServiciosDTO servicio)
+        {
+            var resultado = await _serviciosService.CrearServicio(servicio);
+
+            if (resultado.Result) 
+                return Ok(resultado);
+
+            return BadRequest(resultado); 
         }
     }
 }

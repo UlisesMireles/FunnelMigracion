@@ -12,5 +12,6 @@ namespace Funnel.Data.Interfaces
     public interface IServiciosData
     {
         Task<List<ServiciosDTO>> ConsultarServicios(int IdEmpresa);
+        Task<BaseOut> CrearServicio(ServiciosDTO servicio);
     }
 }

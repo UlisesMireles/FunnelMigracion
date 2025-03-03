@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Funnel.Data.Interfaces;
+using Funnel.Models.Base;
 
 namespace Funnel.Logic
 {
@@ -22,6 +23,11 @@ namespace Funnel.Logic
         public async Task<List<ServiciosDTO>> ConsultarServicios(int IdTipoProyecto)
         {
             return await _serviciosData.ConsultarServicios(IdTipoProyecto);
+        }
+
+        public async Task<BaseOut> CrearServicio(ServiciosDTO servicio)
+        {
+            return await _serviciosData.CrearServicio(servicio);
         }
     }
 }

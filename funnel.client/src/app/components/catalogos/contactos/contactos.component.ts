@@ -51,7 +51,7 @@ export class ContactosComponent {
     { label: '50', value: 50 }
   ];
 
-  getContactos(idEmpresa: number = 1) {
+  getContactos(idEmpresa: number = Globals.idEmpresa) {
     this.contactosService.getContactos(Globals.idEmpresa).subscribe({
       next: (result: SEL_Contacto[]) => {
         this.contactosOriginal = result;
@@ -128,8 +128,8 @@ export class ContactosComponent {
     const registrosVisibles = dt.filteredValue
       ? dt.filteredValue
       : this.contactos;
-    if (campo === 'nombreSector') {
-      return registrosVisibles.length; // Retorna el número de registros visibles
+    if (campo === 'nombreCompleto') {
+      return registrosVisibles.length; 
     }
     return registrosVisibles.reduce(
       (acc: number, empresa: SEL_Contacto) =>

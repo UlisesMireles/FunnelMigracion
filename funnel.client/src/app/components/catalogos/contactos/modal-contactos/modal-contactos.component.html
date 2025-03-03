@@ -57,6 +57,25 @@
       </div>
     </div>
 
+    <div class="row inptSpace">
+      <div class="col-sm-4 lbl">
+        <label for="prospecto">Prospecto:</label>
+      </div>
+      <div class="col-sm-8 inptSpace">
+        <p-dropdown 
+          class = "inptSize1"
+          [options]="prospectos" 
+          [(ngModel)]="selectedProspecto" 
+          optionLabel="nombre" 
+          optionValue="id"
+          appendTo="body"
+          placeholder="Seleccione un prospecto">
+        </p-dropdown>
+        &nbsp;
+        <span *ngIf="esCampoInvalido(contacto.idProspecto)" class="text-danger">*</span>
+      </div>
+    </div>
+
     <div class="row inptSpace" *ngIf="!insertar">
       <div class="col-sm-4 lbl">
         <label for="Estatus"> Estatus: </label>

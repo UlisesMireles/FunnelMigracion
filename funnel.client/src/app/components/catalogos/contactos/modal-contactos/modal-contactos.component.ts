@@ -7,6 +7,7 @@ import { SEL_Contacto } from '../../../../interfaces/contactos';
 
 import { ContactosService } from '../../../../services/contactos.service';
 import { requestContacto } from '../../../../interfaces/contactos';
+import { Globals } from '../../../../services/globals';
 
 
 @Component({
@@ -27,12 +28,18 @@ export class ModalContactosComponent {
   contactoActivo: boolean = false;
   selectedLicencia: number | undefined;
 
+  prospectos: any[] = [];  
+  selectedProspecto: number | undefined; 
+
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() closeModal: EventEmitter<void> = new EventEmitter();
   @Output() result: EventEmitter<baseOut> = new EventEmitter();
 
   onDialogShow() {
     this.contactoActivo = this.contacto?.estatus === 1 ? true : false;
+    this.cargarProspectos();
+
+    this.selectedProspecto = this.contacto?.idProspecto;
   }
 
   close() {
@@ -42,12 +49,9 @@ export class ModalContactosComponent {
   }
 
   actualizaContacto() {
+    console.log(this.request);
     if (!this.request) {
       this.request = {} as requestContacto;
-    }
-    if (this.camposInvalidosEditar()) {
-      this.mostrarToastError();
-      return;
     }
     this.request.bandera = 'UPDATE';
     this.request.idContactoProspecto = this.contacto.idContactoProspecto;
@@ -55,10 +59,10 @@ export class ModalContactosComponent {
     this.request.apellidos= this.contacto.apellidos;
     this.request.telefono = this.contacto.telefono;
     this.request.correoElectronico = this.contacto.correoElectronico;
-    this.request.idProspecto = this.contacto.idProspecto;
+    this.request.idProspecto = this.selectedProspecto ?? 0;
     this.request.estatus = this.contactoActivo ? 1 : 0;
-    this.request.idEmpresa = 1;
-
+    this.request.idEmpresa = Globals.idEmpresa;
+    console.log(this.request);
     this.contactosService.postContacto(this.request).subscribe(
       {
         next: (result: baseOut) => {
@@ -91,9 +95,9 @@ export class ModalContactosComponent {
     this.request.apellidos= this.contacto.apellidos;
     this.request.telefono = this.contacto.telefono;
     this.request.correoElectronico = this.contacto.correoElectronico;
-    this.request.idProspecto = 1;
+    this.request.idProspecto = this.selectedProspecto ?? 0;
     this.request.estatus = this.contactoActivo ? 1 : 0;
-    this.request.idEmpresa = 1;
+    this.request.idEmpresa = Globals.idEmpresa;
 
     this.contactosService.postContacto(this.request).subscribe(
       {
@@ -113,30 +117,53 @@ export class ModalContactosComponent {
     );
   }
 
+  cargarProspectos() {
+    this.contactosService.getProspectos(Globals.idEmpresa).subscribe({
+      next: (result: any) => {
+        this.prospectos = result;
+      },
+      error: (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Se ha producido un error.',
+          detail: error.errorMessage,
+        });
+      },
+    });
+  }
+
   validarContacto(): boolean {
-    if (this.contactos.some(contacto => contacto.nombre?.toUpperCase() === this.contacto.nombre?.toUpperCase())) {
+    const nombreCompletoNuevo = `${this.contacto.nombre?.toUpperCase()} ${this.contacto.apellidos?.toUpperCase()}`;
+
+    if (this.contactos.some(contacto => contacto.nombreCompleto?.toUpperCase() === nombreCompletoNuevo)) {
       return false;
     }
     return true;
   }
+
   esCampoInvalido(valor: any): boolean {
     return valor === null || valor === undefined || valor === '' || valor <= 0;
   }
   camposInvalidosInsertar(): boolean {
     return (
-      this.esCampoInvalido(this.contacto.nombre) ||
+      this.esCampoInvalido(this.contacto.nombre) || 
+      this.esCampoInvalido(this.contacto.apellidos) || 
       !this.validarContacto()
     );
   }
 
   camposInvalidosEditar(): boolean {
+    console.log(this.contacto);
     return (
-      this.esCampoInvalido(this.contacto.nombre)
+      this.esCampoInvalido(this.contacto.nombre) || 
+      this.esCampoInvalido(this.contacto.apellidos) || 
+      !this.validarContacto()
     );
   }
 
   mostrarToastError() {
     let mensaje='Es Necesario llenar los campos indicados.';
+    console.log(this.validarContacto());
     this.messageService.clear();
     if (!this.validarContacto() && this.insertar) {
       mensaje = 'El Contacto ya existe.';

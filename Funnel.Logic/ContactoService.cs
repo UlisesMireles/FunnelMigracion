@@ -17,6 +17,12 @@ namespace Funnel.Logic
         {
             _contactoData = contactoData;
         }
+
+        public async Task<List<ComboProspectosDto>> ComboProspectos(int IdEmpresa)
+        {
+            return await _contactoData.ComboProspectos(IdEmpresa);
+        }
+
         public async Task<List<ContactoDto>> ConsultarContacto(int IdEmpresa)
         {
             return await _contactoData.ConsultarContacto(IdEmpresa);

@@ -80,7 +80,7 @@ export class ContactosComponent {
       telefono: '',
       correoElectronico: '',
       prospecto: '',
-      idEmpresa: 1,
+      idEmpresa: 0,
       idProspecto: 0,
       estatus: 0,
       desEstatus: '',

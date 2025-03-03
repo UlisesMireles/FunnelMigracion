@@ -7,7 +7,7 @@ import { SEL_Contacto } from '../../../../interfaces/contactos';
 
 import { ContactosService } from '../../../../services/contactos.service';
 import { requestContacto } from '../../../../interfaces/contactos';
-import { Globals } from '../../../../services/globals';
+import { LoginService } from '../../../../services/login.service';
 
 
 @Component({
@@ -17,7 +17,7 @@ import { Globals } from '../../../../services/globals';
 })
 export class ModalContactosComponent {
 
-  constructor(private contactosService : ContactosService, private messageService: MessageService) { }
+  constructor(private contactosService : ContactosService, private messageService: MessageService, private readonly loginService: LoginService) { }
   @Input() contacto!: SEL_Contacto;
   @Input() contactos: SEL_Contacto[]=[];
   @Input() title: string = 'Modal';
@@ -61,7 +61,7 @@ export class ModalContactosComponent {
     this.request.correoElectronico = this.contacto.correoElectronico;
     this.request.idProspecto = this.selectedProspecto ?? 0;
     this.request.estatus = this.contactoActivo ? 1 : 0;
-    this.request.idEmpresa = Globals.idEmpresa;
+    this.request.idEmpresa = this.loginService.obtenerIdEmpresa();
     console.log(this.request);
     this.contactosService.postContacto(this.request).subscribe(
       {
@@ -97,7 +97,7 @@ export class ModalContactosComponent {
     this.request.correoElectronico = this.contacto.correoElectronico;
     this.request.idProspecto = this.selectedProspecto ?? 0;
     this.request.estatus = this.contactoActivo ? 1 : 0;
-    this.request.idEmpresa = Globals.idEmpresa;
+    this.request.idEmpresa = this.loginService.obtenerIdEmpresa();
 
     this.contactosService.postContacto(this.request).subscribe(
       {
@@ -118,7 +118,7 @@ export class ModalContactosComponent {
   }
 
   cargarProspectos() {
-    this.contactosService.getProspectos(Globals.idEmpresa).subscribe({
+    this.contactosService.getProspectos(this.loginService.obtenerIdEmpresa()).subscribe({
       next: (result: any) => {
         this.prospectos = result;
       },
@@ -148,6 +148,8 @@ export class ModalContactosComponent {
     return (
       this.esCampoInvalido(this.contacto.nombre) || 
       this.esCampoInvalido(this.contacto.apellidos) || 
+      this.esCampoInvalido(this.contacto.telefono) ||
+      this.esCampoInvalido(this.contacto.correoElectronico) ||
       !this.validarContacto()
     );
   }
@@ -157,6 +159,8 @@ export class ModalContactosComponent {
     return (
       this.esCampoInvalido(this.contacto.nombre) || 
       this.esCampoInvalido(this.contacto.apellidos) || 
+      this.esCampoInvalido(this.contacto.telefono) ||
+      this.esCampoInvalido(this.contacto.correoElectronico) ||
       !this.validarContacto()
     );
   }

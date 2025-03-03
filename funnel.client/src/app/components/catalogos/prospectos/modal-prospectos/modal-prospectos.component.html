@@ -1,0 +1,87 @@
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [closable]="true"
+  [style]="{ width: '35rem', heigth: '25rem' }"
+  (onHide)="close()"
+  (onShow)="onDialogShow()"
+  class="bodyDialog"
+>
+  <ng-template pTemplate="header">
+    <label *ngIf="!insertar" class="margen">{{ title + prospecto.nombre }}</label>
+    <label *ngIf="insertar" class="margen">Nuevo Prospecto</label>
+  </ng-template>
+
+  <ng-template pTemplate="content">
+
+
+    <div class="row inptSpace">
+      <div class="col-sm-4 lbl">
+        <label for="nombreProspecto">Prospecto: </label>
+      </div>
+      <div class="col-sm-8 inptSpace">
+        <input
+          pInputText
+          class="inptSize"
+          id="nombre"
+          [(ngModel)]="prospecto.nombre"
+        />&nbsp;
+        <span *ngIf="esCampoInvalido(prospecto.nombre)" class="text-danger">*</span>
+      </div>
+    </div>
+
+    <div class="row inptSpace">
+      <div class="col-sm-4 lbl">
+        <label for="ubicacion">Ubicación Física: </label>
+      </div>
+      <div class="col-sm-8 inptSpace">
+        <textarea rows="2" cols="22" pTextarea [(ngModel)]="prospecto.ubicacionFisica"></textarea>
+        <span *ngIf="esCampoInvalido(prospecto.ubicacionFisica)" class="text-danger">*</span>
+      </div>
+    </div>
+    <div class="row inptSpace">
+      <div class="col-sm-4 lbl">
+        <label for="ubicacion">Sector: </label>
+      </div>
+      <div class="col-sm-8 inptSpace">
+        <textarea rows="2" cols="22" pTextarea [(ngModel)]="prospecto.nombreSector"></textarea>
+        <span *ngIf="esCampoInvalido(prospecto.nombreSector)" class="text-danger">*</span>
+      </div>
+    </div>
+    
+    <div class="row inptSpace" *ngIf="!insertar">
+        <div class="col-sm-4 lbl">
+          <label for="Estatus"> Estatus: </label>
+        </div>
+        <div class="col-sm-8 inptSpace">
+          <p-checkbox [(ngModel)]="prospectoActivo" [binary]="true" />
+        </div>
+      </div>
+
+
+
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button
+      *ngIf="!insertar"
+      pButton
+      label="Actualizar"
+      (click)="actualizarProspecto()"
+      severity="secondary"
+    ></button>
+    <button
+      *ngIf="insertar"
+      pButton
+      label="Agregar"
+      (click)="guardarProspecto()"
+      severity="secondary"
+    ></button>
+    <button
+      pButton
+      label="Cancelar"
+      (click)="close()"
+      severity="secondary"
+    ></button>
+  </ng-template>
+</p-dialog>

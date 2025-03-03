@@ -1,17 +1,20 @@
 <div class="container-fluid">
-    <div class="row">
-      <div class="col-12" style="text-align: left; font-weight: bold;">
-        <h3>Administración General de Prospectos</h3>
-      </div>
-  
-      <div class="col-12">
-        <div class="row contenedorTabla">
-          <div *ngIf="loading">Cargando...</div>
+  <div class="row">
+    <div class="col-12" style="text-align: left; font-weight: bold;">
+      <h3>Administración General de Prospectos</h3>
+    </div>
+
+    <div class="col-12">
+      <div class="row contenedorTabla" style="justify-content: center; display: flex; width: 100% ;" >
+        <div *ngIf="loading">Cargando...</div>
+        
+        <div class="table-responsive">
           <p-table *ngIf="!loading" #dt [stripedRows]="true" [value]="prospectos" [paginator]="true"
             [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" (onPage)="pageChange($event)" [first]="first"
-            [showCurrentPageReport]="true" paginatorPosition="both" [columnResizeMode]="'fit'" [columnResizeMode]="'fit'"
-            [resizableColumns]="true" [scrollable]="true"
+            [showCurrentPageReport]="true" paginatorPosition="both"
+            [columnResizeMode]="'fit'" [resizableColumns]="true" [scrollable]="true"
             currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros">
+            
             <ng-template class="divAccionesTabla" #caption>
               <div class="row">
                 <div class="col inDivDatatableHeader" style="text-align:right; margin-right:5px">
@@ -21,66 +24,53 @@
                 </div>
               </div>
             </ng-template>
-  
+
             <ng-template #header>
-              <tr class="custom-header"  style="width: 100% !important;">
-                <th style="width: 1% !important;"></th>
-                <th pSortableColumn="nombreSector"  style="width: 20% !important;">Prospecto </th>
-                <th pSortableColumn="descripcionSector"  style="width: 20% !important;">Ubicacion Física </th>
-                <th pSortableColumn="fechaCreacion" style="width: 10% !important;">En proceso </th>
-                <th pSortableColumn="usuarioCreador" style="width: 10% !important;">Ganadas</th>
-                <th pSortableColumn="fechaModificacion" style="width: 10% !important;">Perdidas</th>
-                <th pSortableColumn="usuarioModifico" style="width: 10% !important;">Canceladas</th>
-                <th pSortableColumn="usuarioModifico" style="width: 10% !important;">Eliminadas</th>
-                <th pSortableColumn="desEstatusActivo" style="width: 10% !important;">Estatus </th>
+              <tr class="custom-header">
+                <th></th>
+                <th pSortableColumn="nombre">Nombre</th>
+                <th pSortableColumn="sector">Sector de la industria</th>
+                <th pSortableColumn="ubicacionFisica">Ubicación Física</th>
+                <th pSortableColumn="todas">Todas</th>
+                <th pSortableColumn="proceso">En proceso</th>
+                <th pSortableColumn="ganadas">Ganadas</th>
+                <th pSortableColumn="perdidas">Perdidas</th>
+                <th pSortableColumn="canceladas">Canceladas</th>
+                <th pSortableColumn="eliminadas">Eliminadas</th>
+                <th pSortableColumn="desEstatusActivo">Estatus</th>
               </tr>
               <tr class="custom-header2">
                 <th></th>
+                <th><input pInputText type="text" [(ngModel)]="filtroProspecto" (ngModelChange)="updateFilter($event, 'nombre')"></th>
+                <th><input pInputText type="text" [(ngModel)]="filtroUbicacionProspecto" (ngModelChange)="updateFilter($event, 'ubicacionFisica')"></th>
+                <th><input pInputText type="text" [(ngModel)]="filtroSector" (ngModelChange)="updateFilter($event, 'sector')"></th>
+                <th><input pInputText type="text" [(ngModel)]="filtroTodas" (ngModelChange)="updateFilter($event, 'todas')"></th>
+                <th><input pInputText type="text" [(ngModel)]="filtroProceso" (ngModelChange)="updateFilter($event, 'proceso')"></th>
+                <th><input pInputText type="text" [(ngModel)]="filtroGanadas" (ngModelChange)="updateFilter($event, 'ganadas')"></th>
+                <th><input pInputText type="text" [(ngModel)]="filtroPerdidas" (ngModelChange)="updateFilter($event, 'perdidas')"></th>
+                <th><input pInputText type="text" [(ngModel)]="filtroCanceladas" (ngModelChange)="updateFilter($event, 'canceladas')"></th>
+                <th><input pInputText type="text" [(ngModel)]="filtroEliminadas" (ngModelChange)="updateFilter($event, 'eliminadas')"></th>
                 <th>
-                  <input pInputText type="text" [(ngModel)]="filtroProspecto"
-                    (ngModelChange)="updateFilter($event, 'nombre')">
-                </th>
-                <th>
-                  <input pInputText type="text" [(ngModel)]="filtroUbicacionProspecto"
-                    (ngModelChange)="updateFilter($event, 'ubicacionFisica')">
-                </th>
-                <th>
-                 
-                </th>
-                <th>
-                 
-                </th>
-                <th>
-                
-                </th>
-                <th>
-                  
-                </th>
-                <th>
-                  
-                </th>
-                <th>
-                    <p-dropdown [options]="EstatusDropdown" [(ngModel)]="selectedEstatus" [appendTo]="'body'"
-                    (onChange)="FiltrarPorEstatus()" optionLabel="label" optionValue="value">
-       1             </p-dropdown>
-        
+                  <p-dropdown [options]="EstatusDropdown" [(ngModel)]="selectedEstatus" [appendTo]="'body'"
+                  (onChange)="FiltrarPorEstatus()" optionLabel="label" optionValue="value">
+                  </p-dropdown>
                 </th>
               </tr>
             </ng-template>
-  
+
             <ng-template pTemplate="emptymessage">
               <tr>
-                  <td colspan="8" class="text-center">No se encontraron registros</td>
+                <td colspan="11" class="text-center">No se encontraron registros</td>
               </tr>
-          </ng-template>
-  
+            </ng-template>
+
             <ng-template #body let-prospecto>
               <tr class="custom-header3 custom-row filas">
-                <td>
-                  <p-button type="button" icon="bi bi-pencil" (click)="actualiza(prospecto)" text />
-                </td>
+                <td><p-button type="button" icon="bi bi-pencil" (click)="actualiza(prospecto)" text /></td>
                 <td style="font-weight: bold;">{{ prospecto.nombre }}</td>
+                <td>{{ prospecto.nombreSector }}</td>
                 <td class="fixed-width-column">{{ prospecto.ubicacionFisica }}</td>
+                <td class="fixed-width-column">{{ prospecto.totalOportunidades }}</td>
                 <td>{{ prospecto.proceso }}</td>
                 <td>{{ prospecto.ganadas }}</td>
                 <td>{{ prospecto.perdidas }}</td>
@@ -89,21 +79,23 @@
                 <td>{{ prospecto.desEstatus }}</td>
               </tr>
             </ng-template>
+
             <ng-template #footer>
-              <tr class="custom-footer ">
+              <tr class="custom-footer">
                 <td></td>
-                <td colspan="8">Total: {{ getVisibleTotal('nombre',dt) }}</td>
-  
+                <td colspan="10">Total: {{ getVisibleTotal('nombre',dt) }}</td>
               </tr>
             </ng-template>
+
           </p-table>
         </div>
-  
-        <p-toast position="center"></p-toast>
       </div>
+
+      <p-toast position="center"></p-toast>
     </div>
   </div>
-  <!--<app-modal-sectores [(visible)]="modalVisible" [title]="'Editar Datos de '" (closeModal)="onModalClose()"
-    (result)="manejarResultado($event)" [insertar]="insertar" [sector]="sectorSeleccionado" [sectores]="sectores">
-  </app-modal-sectores>-->
-  
+</div>
+
+<app-modal-prospectos [(visible)]="modalVisible" [title]="'Editar Datos de '" (closeModal)="onModalClose()"
+  (result)="manejarResultado($event)" [insertar]="insertar" [prospecto]="prospectoSeleccionado" [prospectos]="prospectos">
+</app-modal-prospectos>

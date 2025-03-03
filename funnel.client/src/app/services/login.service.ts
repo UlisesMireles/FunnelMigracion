@@ -48,7 +48,7 @@ export class LoginService {
           localStorage.setItem('correo', user.correo);
           localStorage.setItem('lastActivity', Date.now().toString());
           this.currentUserSubject.next(user);
-          sessionStorage.setItem('sesion', window.btoa(JSON.stringify(datos)));
+          sessionStorage.setItem('sesion', window.btoa(JSON.stringify(user)));
           this.startSessionTimer();
         }
         return user;
@@ -124,6 +124,21 @@ export class LoginService {
     } else {
       return {} as LoginUser;
     }
+  }
+  obtenerUsuarioSesion(): LoginUser | null {
+    const sesion = this.desencriptaSesion();
+    if (sesion) {
+        return sesion;
+    }
+    return null;
+  }
+
+  obtenerIdEmpresa(): number {
+    const sesion = this.desencriptaSesion();
+    if (sesion?.idEmpresa) {
+        return sesion?.idEmpresa;
+    }
+    return 0;
   }
 
   recuperarContrasena(user: string) {

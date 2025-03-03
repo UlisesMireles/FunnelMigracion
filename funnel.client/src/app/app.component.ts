@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Globals } from './services/globals';
 
 interface WeatherForecast {
   date: string;
@@ -21,10 +20,6 @@ export class AppComponent implements OnInit {
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit() {
-    Globals.usuario = localStorage.getItem('username') as string;
-    Globals.idUsuario = parseInt(localStorage.getItem('currentUser') as string);
-    Globals.idEmpresa = parseInt(localStorage.getItem('idEmpresa') as string);
-    Globals.tipoUsuario = localStorage.getItem('tipoUsuario') as string;
 
     this.router.events.subscribe(() => {
       if (this.router.url === '/' || this.router.url === '/recuperar-contrasena' || this.router.url === '/login' || this.router.url === '/two-factor') {

@@ -18,9 +18,9 @@ namespace Funnel.Data
             _connectionString = configuration.GetConnectionString("FunelDatabase");
         }
 
-        public async Task<List<ServiciosDTO>> ConsultarServicios(int IdEmpresa)
+        public async Task<List<ServicioDTO>> ConsultarServicios(int IdEmpresa)
         {
-            List<ServiciosDTO> result = new List<ServiciosDTO>();
+            List<ServicioDTO> result = new List<ServicioDTO>();
 
             IList<ParameterSQl> list = new List<ParameterSQl>
             {
@@ -32,7 +32,7 @@ namespace Funnel.Data
             {
                 while (reader.Read())
                 {
-                    var dto = new ServiciosDTO
+                    var dto = new ServicioDTO
                     {
                         IdTipoProyecto = ComprobarNulos.CheckIntNull(reader["IdTipoProyecto"]),
                         Descripcion = ComprobarNulos.CheckStringNull(reader["Descripcion"]),
@@ -47,7 +47,7 @@ namespace Funnel.Data
             return result;
         }
 
-        public async Task<BaseOut> CrearServicio(ServiciosDTO request)
+        public async Task<BaseOut> CrearServicio(ServicioDTO request)
         {
             BaseOut result = new BaseOut();
             try

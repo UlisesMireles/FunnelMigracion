@@ -20,14 +20,14 @@ namespace Funnel.Server.Controllers
         }
 
         [HttpGet("[action]/{idEmpresa}")]
-        public async Task<ActionResult<List<ServiciosDTO>>> ConsultarServicios(int IdEmpresa)
+        public async Task<ActionResult<List<ServicioDTO>>> ConsultarServicios(int IdEmpresa)
         {
             var respuesta = await _serviciosService.ConsultarServicios(IdEmpresa);
             return Ok(respuesta);
         }
 
         [HttpPost("[action]")]
-        public async Task<ActionResult<BaseOut>> CrearServicio([FromBody] ServiciosDTO servicio)
+        public async Task<ActionResult<BaseOut>> CrearServicio([FromBody] ServicioDTO servicio)
         {
             var resultado = await _serviciosService.CrearServicio(servicio);
 

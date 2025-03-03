@@ -20,12 +20,12 @@ namespace Funnel.Logic
             _serviciosData = serviciosData;
         }
 
-        public async Task<List<ServiciosDTO>> ConsultarServicios(int IdTipoProyecto)
+        public async Task<List<ServicioDTO>> ConsultarServicios(int IdTipoProyecto)
         {
             return await _serviciosData.ConsultarServicios(IdTipoProyecto);
         }
 
-        public async Task<BaseOut> CrearServicio(ServiciosDTO servicio)
+        public async Task<BaseOut> CrearServicio(ServicioDTO servicio)
         {
             return await _serviciosData.CrearServicio(servicio);
         }

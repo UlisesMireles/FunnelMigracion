@@ -12,7 +12,7 @@ namespace Funnel.Logic.Interfaces
 {
     public interface IServiciosService
     {
-        Task<List<ServiciosDTO>> ConsultarServicios(int IdEmpresa);
-        Task<BaseOut> CrearServicio(ServiciosDTO servicio);
+        Task<List<ServicioDTO>> ConsultarServicios(int IdEmpresa);
+        Task<BaseOut> CrearServicio(ServicioDTO servicio);
     }
 }

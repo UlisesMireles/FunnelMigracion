@@ -1,1 +1,75 @@
-<p>modal-contactos works!</p>
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [closable]="true"
+  [style]="{ width: '35rem', height: '25rem' }"
+  (onHide)="close()"
+  (onShow)="onDialogShow()"
+  class="bodyDialog"
+>
+  <ng-template pTemplate="header">
+    <label *ngIf="!insertar" class="margen">{{ title + ' ' + contacto.nombre }}</label>
+    <label *ngIf="insertar" class="margen">Nuevo Contacto</label>
+  </ng-template>
+
+  <ng-template pTemplate="content">
+    <div class="row inptSpace">
+      <div class="col-sm-4 lbl">
+        <label for="nombre">Nombre: </label>
+      </div>
+      <div class="col-sm-8 inptSpace">
+        <input pInputText class="inptSize" [(ngModel)]="contacto.nombre" />
+        &nbsp;
+        <span *ngIf="esCampoInvalido(contacto.nombre)" class="text-danger">*</span>
+      </div>
+    </div>
+
+    <div class="row inptSpace">
+      <div class="col-sm-4 lbl">
+        <label for="apellidos">Apellidos: </label>
+      </div>
+      <div class="col-sm-8 inptSpace">
+        <input pInputText class="inptSize" [(ngModel)]="contacto.apellidos" />
+        &nbsp;
+        <span *ngIf="esCampoInvalido(contacto.apellidos)" class="text-danger">*</span>
+      </div>
+    </div>
+
+    <div class="row inptSpace">
+      <div class="col-sm-4 lbl">
+        <label for="telefono">Teléfono: </label>
+      </div>
+      <div class="col-sm-8 inptSpace">
+        <input pInputText class="inptSize" [(ngModel)]="contacto.telefono" />
+        &nbsp;
+        <span *ngIf="esCampoInvalido(contacto.telefono)" class="text-danger">*</span>
+      </div>
+    </div>
+
+    <div class="row inptSpace">
+      <div class="col-sm-4 lbl">
+        <label for="correoElectronico">Correo Electrónico: </label>
+      </div>
+      <div class="col-sm-8 inptSpace">
+        <input pInputText class="inptSize" [(ngModel)]="contacto.correoElectronico" />
+        &nbsp;
+        <span *ngIf="esCampoInvalido(contacto.correoElectronico)" class="text-danger">*</span>
+      </div>
+    </div>
+
+    <div class="row inptSpace" *ngIf="!insertar">
+      <div class="col-sm-4 lbl">
+        <label for="Estatus"> Estatus: </label>
+      </div>
+      <div class="col-sm-8 inptSpace">
+        <p-checkbox [(ngModel)]="contactoActivo" [binary]="true"></p-checkbox>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button *ngIf="!insertar" pButton label="Actualizar" (click)="actualizaContacto()" severity="secondary"></button>
+    <button *ngIf="insertar" pButton label="Agregar" (click)="guardarContanto()" severity="secondary"></button>
+    <button pButton label="Cancelar" (click)="close()" severity="secondary"></button>
+  </ng-template>
+</p-dialog>

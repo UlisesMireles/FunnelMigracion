@@ -5,7 +5,7 @@ import { MessageService } from 'primeng/api';
 import { SEL_Contacto } from '../../../interfaces/contactos';
 import { ContactosService } from '../../../services/contactos.service';
 import { baseOut } from '../../../interfaces/utils/utils/baseOut';
-import { Globals } from '../../../services/globals';
+import { LoginService } from '../../../services/login.service';
 
 @Component({
   selector: 'app-contactos',
@@ -14,7 +14,9 @@ import { Globals } from '../../../services/globals';
   styleUrl: './contactos.component.css'
 })
 export class ContactosComponent {
-  constructor(private contactosService: ContactosService, private messageService: MessageService, private cdr: ChangeDetectorRef) { }
+  constructor(private contactosService: ContactosService, private messageService: MessageService, private cdr: ChangeDetectorRef,
+    private readonly loginService: LoginService
+  ) { }
 
   ngOnInit(): void {
     this.getContactos();
@@ -51,8 +53,8 @@ export class ContactosComponent {
     { label: '50', value: 50 }
   ];
 
-  getContactos(idEmpresa: number = 1) {
-    this.contactosService.getContactos(Globals.idEmpresa).subscribe({
+  getContactos() {
+    this.contactosService.getContactos(this.loginService.obtenerIdEmpresa()).subscribe({
       next: (result: SEL_Contacto[]) => {
         this.contactosOriginal = result;
         this.selectedEstatus = 'Activo';

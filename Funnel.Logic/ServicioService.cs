@@ -11,11 +11,11 @@ using Funnel.Models.Base;
 
 namespace Funnel.Logic
 {
-    public class ServiciosService : IServiciosService  // Se corrigió el nombre de la clase
+    public class ServiciosService : IServiciosService  
     {
-        private readonly IServiciosData _serviciosData;  // Se corrigió el nombre de la variable
+        private readonly IServiciosData _serviciosData;  
 
-        public ServiciosService(IServiciosData serviciosData)  // Se corrigió el constructor
+        public ServiciosService(IServiciosData serviciosData)  
         {
             _serviciosData = serviciosData;
         }
@@ -25,9 +25,9 @@ namespace Funnel.Logic
             return await _serviciosData.ConsultarServicios(IdTipoProyecto);
         }
 
-        public async Task<BaseOut> CrearServicio(ServicioDTO servicio)
+        public async Task<BaseOut> GuardarServicio(ServicioDTO servicio)
         {
-            return await _serviciosData.CrearServicio(servicio);
+            return await _serviciosData.GuardarServicio(servicio);
         }
     }
 }

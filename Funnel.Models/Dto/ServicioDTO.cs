@@ -8,6 +8,7 @@ namespace Funnel.Models.Dto
 {
     public class ServicioDTO
     {
+        public string? Bandera { get; set; }
         public int IdTipoProyecto { get; set; } 
         public string? Descripcion { get; set; } 
         public string? Abreviatura { get; set; }

@@ -1,4 +1,5 @@
-﻿using Funnel.Logic;
+﻿using Funnel.Data;
+using Funnel.Logic;
 using Funnel.Logic.Interfaces;
 using Funnel.Models.Base;
 using Funnel.Models.Dto;
@@ -29,12 +30,13 @@ namespace Funnel.Server.Controllers
         [HttpPost("[action]")]
         public async Task<ActionResult<BaseOut>> CrearServicio([FromBody] ServicioDTO servicio)
         {
-            var resultado = await _serviciosService.CrearServicio(servicio);
+            var resultado = await _serviciosService.GuardarServicio(servicio);
 
             if (resultado.Result) 
                 return Ok(resultado);
 
             return BadRequest(resultado); 
         }
+
     }
 }

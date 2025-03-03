@@ -1,9 +1,9 @@
 import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { TipoServicio } from '../../../interfaces/tipoServicio';
 import { TipoServicioService } from '../../../services/tipo-servicio.service';
-import { Globals } from '../../../services/globals';
 import { Table } from 'primeng/table';
 import { LazyLoadEvent, MessageService } from 'primeng/api';
+import { LoginService } from '../../../services/login.service';
 
 @Component({
   selector: 'app-tipo-servicios',
@@ -12,7 +12,7 @@ import { LazyLoadEvent, MessageService } from 'primeng/api';
   styleUrl: './tipo-servicios.component.css'
 })
 export class TipoServiciosComponent {
-  constructor(private servicioService: TipoServicioService, private messageService: MessageService, private cdr: ChangeDetectorRef) { }
+  constructor(private servicioService: TipoServicioService, private messageService: MessageService, private cdr: ChangeDetectorRef, private loginService:LoginService) { }
 
   ngOnInit(): void {
     this.getContactos();
@@ -50,7 +50,7 @@ export class TipoServiciosComponent {
   ];
 
   getContactos(idEmpresa: number = 1) {
-    this.servicioService.getTipoServicios(Globals.idEmpresa).subscribe({
+    this.servicioService.getTipoServicios(this.loginService.obtenerIdEmpresa()).subscribe({
       next: (result: TipoServicio[]) => {
         this.tiposServiciosOriginal = result;
         this.selectedEstatus = 'Activo';

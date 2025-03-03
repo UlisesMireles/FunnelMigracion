@@ -6,7 +6,6 @@ import { MessageService } from 'primeng/api';
 import { environment } from '../../../environments/environment';
 import { DobleAutenticacion, LoginUser } from '../../interfaces/usuario';
 import { LoginService } from '../../services/login.service';
-import { Globals } from '../../services/globals';
 
 @Component({
   selector: 'app-doble-autenticacion',
@@ -43,7 +42,7 @@ export class DobleAutenticacionComponent {
       this.baseUrl +
       '/assets/img/PMAGRISES.png' +
       ')';
-    this.usuario = Globals.usuario = localStorage.getItem('username') as string;
+    this.usuario = localStorage.getItem('username') as string;
     this.codigo = null;
     this.disabled = true;
     this.datosUsuario = this.authService.desencriptaSesion();

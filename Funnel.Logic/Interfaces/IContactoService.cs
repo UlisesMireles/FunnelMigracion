@@ -10,7 +10,8 @@ namespace Funnel.Logic.Interfaces
 {
     public interface IContactoService
     {
-        Task<List<ContactoDto>> ConsultarContacto(int IdEmpresa);
-        Task<BaseOut> GuardarContacto(ContactoDto request);
+        public Task<List<ContactoDto>> ConsultarContacto(int IdEmpresa);
+        public Task<BaseOut> GuardarContacto(ContactoDto request);
+        public Task<List<ComboProspectosDto>> ComboProspectos(int IdEmpresa);
     }
 }

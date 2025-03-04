@@ -5,6 +5,7 @@ import { BaseOut } from '../../../../interfaces/utils/baseOut';
 import { Prospectos } from '../../../../interfaces/prospecto';
 import { ProspectoService } from '../../../../services/prospecto.service';
 import { baseOut } from '../../../../interfaces/utils/utils/baseOut';
+import { LoginService } from '../../../../services/login.service';
 @Component({
   selector: 'app-modal-prospectos',
   standalone: false,
@@ -12,7 +13,7 @@ import { baseOut } from '../../../../interfaces/utils/utils/baseOut';
   styleUrl: './modal-prospectos.component.css'
 })
 export class ModalProspectosComponent {
-  constructor (private prospectoService: ProspectoService, private messageService: MessageService) { }
+  constructor (private prospectoService: ProspectoService, private messageService: MessageService, private readonly loginService: LoginService) { }
   @Input() prospecto!: Prospectos;
   @Input() prospectos: Prospectos[] = [];
   @Input() title: string = 'Modal';
@@ -21,13 +22,40 @@ export class ModalProspectosComponent {
   request!: RequestProspecto;
 
   prospectoActivo: boolean = false;
+  sectores: any[] = [];
+  
   
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter();
   @Output() result: EventEmitter<baseOut> = new EventEmitter();
 
+  /*ngOnInit():void {
+    this.cargarSectores();
+    if(this.insertar){
+      this.prospecto = {} as Prospectos;
+    }
+    if(this.prospecto){
+      this.prospecto.idSector = this.prospecto.idSector == null ? 0 : this.prospecto.idSector;
+    }
+  }*/
   onDialogShow(){
     this.prospectoActivo = this.prospecto?.desEstatus == 'Activo';
+    this.cargarSectores();
+  }
+
+  cargarSectores() {
+    this.prospectoService.getSectores(this.loginService.obtenerIdEmpresa()).subscribe({
+      next: (result: any) => {
+        this.sectores = result.map((sector: any) => ({ label: sector.nombreSector, value: sector.idSector }));
+      },
+      error: (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Se ha producido un error.',
+          detail: error.errorMessage,
+        });
+      }
+    });
   }
   
   close() {
@@ -37,20 +65,21 @@ export class ModalProspectosComponent {
   }
 
   actualizarProspecto() {
-    if (!this.prospecto) {
+    if (!this.request) {
       this.request = {} as RequestProspecto;
     }
     if (this.camposInvalidosEditar()) {
       this.mostrarToastError();
       return;
     }
-    this.request.bandera='UPD-PROSPECTO';
+    this.request.bandera='UPDATE';
     this.request.idProspecto = this.prospecto.idProspecto;
     this.request.nombre = this.prospecto.nombre;
     this.request.ubicacionFisica = this.prospecto.ubicacionFisica;
-    
+    this.request.idSector = this.prospecto.idSector;
+    this.request.idEmpresa = this.loginService.obtenerIdEmpresa();
     this.request.estatus = this.prospectoActivo ? 1 : 0;
-    this.prospectoService.postINSUPProspecto(this.request).subscribe(
+    this.prospectoService.postInsertProspecto(this.request).subscribe(
       {
         next: (result: baseOut) => {
           this.result.emit(result);
@@ -69,21 +98,25 @@ export class ModalProspectosComponent {
   }
 
   guardarProspecto() {
-    if (!this.request){
+    if (!this.request) {
       this.request = {} as RequestProspecto;
     }
-    if(this.camposInvalidosInsertar()){
+    console.log(this.request);
+    /*if(this.camposInvalidosInsertar()){
       this.mostrarToastError();
       return;
-    }
-    this.request.bandera='INS-PROSPECTO';
+    }*/
+    console.log(this.request);
+    this.request.bandera='INSERTAR';
     this.request.idProspecto = this.prospecto.idProspecto;
     this.request.nombre = this.prospecto.nombre;
     this.request.ubicacionFisica = this.prospecto.ubicacionFisica;
-    this.request.idEmpresa = 1; 
     this.request.idSector = this.prospecto.idSector;
-    this.request.estatus = this.prospectoActivo ? 1 : 0;
-    this.prospectoService.postINSUPProspecto(this.request).subscribe(
+   
+    this.request.idEmpresa = this.loginService.obtenerIdEmpresa();
+    this.request.estatus = this.prospectoActivo ? 1 : 0; 
+    console.log(this.request);  
+    this.prospectoService.postInsertProspecto(this.request).subscribe(
       {
         next: (result: baseOut) => {
           this.result.emit(result);
@@ -116,6 +149,8 @@ export class ModalProspectosComponent {
     return(
       this.esCampoInvalido(this.prospecto.nombre) ||
       this.esCampoInvalido(this.prospecto.ubicacionFisica)||
+      this.esCampoInvalido(this.prospecto.idSector) ||
+      this.esCampoInvalido(this.prospecto.nombreSector) ||
       !this.validarProspecto()
     );
   }
@@ -123,7 +158,8 @@ export class ModalProspectosComponent {
   camposInvalidosEditar(): boolean {
     return(
       this.esCampoInvalido(this.prospecto.nombre) ||
-      this.esCampoInvalido(this.prospecto.ubicacionFisica)
+      this.esCampoInvalido(this.prospecto.ubicacionFisica)||
+      this.esCampoInvalido(this.prospecto.idSector)
     );
 }
 

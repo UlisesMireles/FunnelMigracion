@@ -2,7 +2,7 @@
   [(visible)]="visible"
   [modal]="true"
   [closable]="true"
-  [style]="{ width: '35rem', heigth: '25rem' }"
+  [style]="{ width: '35rem', height: 'auto' }"
   (onHide)="close()"
   (onShow)="onDialogShow()"
   class="bodyDialog"
@@ -13,8 +13,6 @@
   </ng-template>
 
   <ng-template pTemplate="content">
-
-
     <div class="row inptSpace">
       <div class="col-sm-4 lbl">
         <label for="nombreProspecto">Prospecto: </label>
@@ -35,31 +33,37 @@
         <label for="ubicacion">Ubicación Física: </label>
       </div>
       <div class="col-sm-8 inptSpace">
-        <textarea rows="2" cols="22" pTextarea [(ngModel)]="prospecto.ubicacionFisica"></textarea>
+        <textarea rows="1" cols="22" pTextarea [(ngModel)]="prospecto.ubicacionFisica"></textarea>
         <span *ngIf="esCampoInvalido(prospecto.ubicacionFisica)" class="text-danger">*</span>
       </div>
     </div>
+
     <div class="row inptSpace">
       <div class="col-sm-4 lbl">
-        <label for="ubicacion">Sector: </label>
+        <label for="sector">Sector: </label>
       </div>
       <div class="col-sm-8 inptSpace">
-        <textarea rows="2" cols="22" pTextarea [(ngModel)]="prospecto.nombreSector"></textarea>
-        <span *ngIf="esCampoInvalido(prospecto.nombreSector)" class="text-danger">*</span>
+        <p-dropdown
+          [options]="sectores"
+          [(ngModel)]="prospecto.idSector"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Seleccione un sector"
+          appendTo="body"
+          class="custom-dropdown"
+        ></p-dropdown>
+        <span *ngIf="esCampoInvalido(prospecto.idSector)" class="text-danger">*</span>
       </div>
     </div>
-    
+
     <div class="row inptSpace" *ngIf="!insertar">
-        <div class="col-sm-4 lbl">
-          <label for="Estatus"> Estatus: </label>
-        </div>
-        <div class="col-sm-8 inptSpace">
-          <p-checkbox [(ngModel)]="prospectoActivo" [binary]="true" />
-        </div>
+      <div class="col-sm-4 lbl">
+        <label for="Estatus"> Estatus: </label>
       </div>
-
-
-
+      <div class="col-sm-8 inptSpace">
+        <p-checkbox [(ngModel)]="prospectoActivo" [binary]="true" />
+      </div>
+    </div>
   </ng-template>
 
   <ng-template pTemplate="footer">

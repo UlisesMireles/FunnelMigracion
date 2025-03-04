@@ -13,13 +13,19 @@ export class ProspectoService {
   baseUrl:string = environment.baseURL;
 
   constructor(private http: HttpClient) { }
-  getProspectos(): Observable<any>{
-    return this.http.get(this.baseUrl + 'api/Prospectos/ConsultarProspectos');
+  getProspectos(idEmpresa: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}api/Prospectos/ConsultarProspectos`, {
+      params: { idEmpresa: idEmpresa.toString() }
+    });
   }
-  getProspectos_cmb(): Observable<any>{
-    return this.http.get(this.baseUrl + 'api/Prospectos/ComboProspectos');
+  getSectores(idEmpresa: number): Observable<any>{
+    return this.http.get(`${this.baseUrl}api/Prospectos/ComboSectores`, {
+      params: { idEmpresa: idEmpresa.toString() }
+    });
   }
-  postINSUPProspecto(data: RequestProspecto): Observable <baseOut>{
+
+  postInsertProspecto(data: RequestProspecto): Observable <baseOut>{
+    console.log(data);
     return this.http.post<baseOut>(this.baseUrl+'api/Prospectos/GuardarProspecto', data);
   }
 }

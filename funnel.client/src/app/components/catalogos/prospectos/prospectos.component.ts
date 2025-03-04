@@ -5,9 +5,9 @@ import { Table } from 'primeng/table';
 import { MessageService } from 'primeng/api';
 
 import{ ProspectoService } from '../../../services/prospecto.service';
-
 import { baseOut } from '../../../interfaces/utils/utils/baseOut';
 import { Prospectos } from '../../../interfaces/prospecto';
+import { LoginService } from '../../../services/login.service';
 @Component({
   selector: 'app-prospectos',
   standalone: false,
@@ -15,7 +15,7 @@ import { Prospectos } from '../../../interfaces/prospecto';
   styleUrl: './prospectos.component.css'
 })
 export class ProspectosComponent {
-  constructor( private messageService: MessageService, private cdr: ChangeDetectorRef, private prospectoService: ProspectoService) { }
+  constructor( private messageService: MessageService, private cdr: ChangeDetectorRef, private prospectoService: ProspectoService, private loginService: LoginService) { }
 
 ngOnInit(): void {
 this.getProspectos();
@@ -53,7 +53,7 @@ rowsOptions = [
   { label: '50', value: 50 }
 ];
 getProspectos() {
-  this.prospectoService.getProspectos().subscribe({
+  this.prospectoService.getProspectos(this.loginService.obtenerIdEmpresa()).subscribe({
     next: (result: Prospectos[]) => {
       this.prospectosOriginal = result;
       this.selectedEstatus = 'Activo';
@@ -82,11 +82,11 @@ FiltrarPorEstatus() {
 // eventosBotones
 inserta() {
   this.prospectoSeleccionado = {
-    bandera: '',
+    //bandera: '',
     idProspecto: 0,
     nombre: '',
     ubicacionFisica: '',
-    esatus: 0,
+    estatus: 0,
     desEstatus: '',
     nombreSector: '',
     idSector: 0,

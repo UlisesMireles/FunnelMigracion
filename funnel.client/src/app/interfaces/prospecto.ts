@@ -1,9 +1,9 @@
 export interface Prospectos {
-    bandera: string;
+    //bandera: string;
     idProspecto: number;
     nombre: string;
     ubicacionFisica: string;
-    esatus: number;
+    estatus: number;
     desEstatus: string;
     nombreSector: string;
     idSector: number;
@@ -22,16 +22,12 @@ export interface ProspectosCmb{
   }
   export interface RequestProspecto{
     bandera:string,
-    idProspecto: number,
+    idProspecto?: number,
     nombre:string,
     ubicacionFisica:string,
-    proceso:number,
-    ganadas: number;
-    perdidas: number;
-    canceladas: number;
-    eliminadas: number;
-    estatus: number,
+    estatus:number, 
     idSector: number,
-    idEmpresa: number
+   
+    idEmpresa?: number
   }
   

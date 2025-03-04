@@ -7,85 +7,73 @@
   (onShow)="onDialogShow()"
   class="bodyDialog"
 >
-  <ng-template pTemplate="header">
-    <label *ngIf="!insertar" class="margen">{{ title + prospecto.nombre }}</label>
-    <label *ngIf="insertar" class="margen">Nuevo Prospecto</label>
-  </ng-template>
-
-  <ng-template pTemplate="content">
-    <div class="row inptSpace">
-      <div class="col-sm-4 lbl">
-        <label for="nombreProspecto">Prospecto: </label>
-      </div>
-      <div class="col-sm-8 inptSpace">
-        <input
-          pInputText
-          class="inptSize"
-          id="nombre"
-          [(ngModel)]="prospecto.nombre"
-        />&nbsp;
-        <span *ngIf="esCampoInvalido(prospecto.nombre)" class="text-danger">*</span>
-      </div>
+<ng-template pTemplate="header">
+  <label class="margen">
+    {{ insertar ? 'Nuevo Prospecto' : title + ' ' + prospectoForm.get('nombre')?.value }}
+  </label>
+  <label *ngIf="insertar" class="margen">Nuevo Prospecto</label>
+</ng-template>
+<ng-template pTemplate="content">
+<form [formGroup]="prospectoForm">
+  <!-- Nombre -->
+  <div class="row inptSpace">
+    <div class="col-sm-4 lbl">
+      <label for="nombre">Nombre: </label>
     </div>
-
-    <div class="row inptSpace">
-      <div class="col-sm-4 lbl">
-        <label for="ubicacion">Ubicación Física: </label>
-      </div>
-      <div class="col-sm-8 inptSpace">
-        <textarea rows="1" cols="22" pTextarea [(ngModel)]="prospecto.ubicacionFisica"></textarea>
-        <span *ngIf="esCampoInvalido(prospecto.ubicacionFisica)" class="text-danger">*</span>
-      </div>
+    <div class="col-sm-8 inptSpace">
+      <input pInputText class="inptSize" formControlName="nombre" />
+      <span *ngIf="prospectoForm.get('nombre')?.invalid && prospectoForm.get('nombre')?.touched" class="text-danger"><br>
+        <ng-container *ngIf="prospectoForm.get('nombre')?.errors?.['required']">El nombre es obligatorio.</ng-container>
+        <ng-container *ngIf="prospectoForm.get('nombre')?.errors?.['maxLength']">El nombre no puede ser mayor a 50 caracteres.</ng-container>
+        <ng-container *ngIf="prospectoForm.get('nombre')?.errors?.['pattern']">El nombre solo puede contener letras y espacios.</ng-container></span>
     </div>
+  </div>
 
-    <div class="row inptSpace">
-      <div class="col-sm-4 lbl">
+  <div class="row inptSpace">
+    <div class="col-sm-4 lbl">
+      <label for="ubicacionFisica">Ubicación Física: </label>
+    </div>
+    <div class="col-sm-8 inptSpace">
+      <input pInputText class="inptSize" formControlName="ubicacionFisica" />
+      <span *ngIf="prospectoForm.get('ubicacionFisica')?.invalid && prospectoForm.get('ubicacionFisica')?.touched" class="text-danger"><br>
+        <ng-container *ngIf="prospectoForm.get('ubicacionFisica')?.errors?.['required']">La ubicación física es obligatoria.</ng-container>
+        <ng-container *ngIf="prospectoForm.get('ubicacionFisica')?.errors?.['maxLength']">La ubicación física no puede ser mayor a 50 caracteres.</ng-container>
+        <ng-container *ngIf="prospectoForm.get('ubicacionFisica')?.errors?.['pattern']">La ubicación física solo puede contener letras y espacios.</ng-container></span>
+      
+    </div>
+      </div>
+      <div class="row inptSpace">
+        <div class="col-sm-4 lbl">
         <label for="sector">Sector: </label>
+        </div>
+        <div class="col-sm-8 inptSpace">
+          <p-dropdown
+            class="inptSize1"
+            [options]="sectores"
+            formControlName="idSector"
+            optionLabel="nombreSector"
+            optionValue="idSector"
+            appendTo="body"
+            placeholder="Seleccione un sector">
+          </p-dropdown>
+          <span *ngIf="prospectoForm.get('idSector')?.invalid && prospectoForm.get('idSector')?.touched" class="text-danger"><br>
+            <ng-container *ngIf="prospectoForm.get('idSector')?.errors?.['required']">Debe seleccionar un sector.</ng-container>
+          </span>
+        </div>
       </div>
-      <div class="col-sm-8 inptSpace">
-        <p-dropdown
-          [options]="sectores"
-          [(ngModel)]="prospecto.idSector"
-          optionLabel="label"
-          optionValue="value"
-          placeholder="Seleccione un sector"
-          appendTo="body"
-          class="custom-dropdown"
-        ></p-dropdown>
-        <span *ngIf="esCampoInvalido(prospecto.idSector)" class="text-danger">*</span>
+      <div class="row inptSpace" *ngIf="!insertar">
+        <div class="col-sm-4 lbl">
+          <label for="estatus">Estatus: </label>
+        </div>
+        <div class="col-sm-8 inptSpace">
+          <p-checkbox formControlName="estatus" [binary]="true"></p-checkbox>
+        </div>
       </div>
-    </div>
-
-    <div class="row inptSpace" *ngIf="!insertar">
-      <div class="col-sm-4 lbl">
-        <label for="Estatus"> Estatus: </label>
-      </div>
-      <div class="col-sm-8 inptSpace">
-        <p-checkbox [(ngModel)]="prospectoActivo" [binary]="true" />
-      </div>
-    </div>
-  </ng-template>
-
-  <ng-template pTemplate="footer">
-    <button
-      *ngIf="!insertar"
-      pButton
-      label="Actualizar"
-      (click)="actualizarProspecto()"
-      severity="secondary"
-    ></button>
-    <button
-      *ngIf="insertar"
-      pButton
-      label="Agregar"
-      (click)="guardarProspecto()"
-      severity="secondary"
-    ></button>
-    <button
-      pButton
-      label="Cancelar"
-      (click)="close()"
-      severity="secondary"
-    ></button>
-  </ng-template>
+</form>
+</ng-template>
+<ng-template pTemplate="footer">
+  <button *ngIf="!insertar" pButton label="Actualizar" (click)="guardarProspecto()" severity="secondary"></button>
+  <button *ngIf="insertar" pButton label="Agregar" (click)="guardarProspecto()" severity="secondary"></button>
+  <button pButton label="Cancelar" (click)="close()" severity="secondary"></button>
+</ng-template>
 </p-dialog>

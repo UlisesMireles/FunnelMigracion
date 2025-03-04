@@ -28,7 +28,7 @@ namespace Funnel.Server.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<ActionResult<BaseOut>> CrearServicio([FromBody] ServicioDTO servicio)
+        public async Task<ActionResult<BaseOut>> GuardarServicio([FromBody] ServicioDTO servicio)
         {
             var resultado = await _serviciosService.GuardarServicio(servicio);
 

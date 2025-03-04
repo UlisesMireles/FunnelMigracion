@@ -3,7 +3,16 @@ export interface TipoServicio {
     descripcion: string;
     abreviatura: string;
     estatus: number;
-    desEstatus: string;
+    desEstatusActivo?: string; 
     fechaModificacion: string;
+    idEmpresa: number;
+}
+
+export interface RequestTipoServicio {
+    bandera: string;
+    idTipoServicio: number;
+    descripcion: string;
+    abreviatura: string;
+    estatus: number;
     idEmpresa: number;
 }

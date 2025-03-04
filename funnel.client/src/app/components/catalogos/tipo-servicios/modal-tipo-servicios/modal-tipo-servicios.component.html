@@ -1,0 +1,70 @@
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [closable]="true"
+  [style]="{ width: '35rem', height: '25rem' }"
+  (onHide)="close()"
+  (onShow)="onDialogShow()"
+  class="bodyDialog"
+>
+
+  <ng-template pTemplate="header">
+    <label *ngIf="!insertar" class="margen">{{ title + tipoServicio.descripcion }}</label>
+    <label *ngIf="insertar" class="margen">Nuevo Servicio</label>
+  </ng-template>
+
+  <ng-template pTemplate="content">
+
+
+    <div class="row inptSpace">
+      <div class="col-sm-4 lbl">
+        <label for="nombreEmpresa">Nombre del Servicio:</label>
+      </div>
+      <div class="col-sm-8 inptSpace">
+        <input
+          pInputText
+          class="inptSize"
+          id="nombreLicencia"
+          [(ngModel)]="tipoServicio.descripcion"
+        />&nbsp;
+        <span *ngIf="esCampoInvalido(tipoServicio.descripcion)" class="text-danger">*</span>
+      </div>
+    </div>
+
+    <div class="row inptSpace">
+      <div class="col-sm-4 lbl">
+        <label for="alias">Abreviatura:</label>
+      </div>
+      <div class="col-sm-8 inptSpace">
+        <textarea rows="5" cols="24" pTextarea [(ngModel)]="tipoServicio.abreviatura"></textarea>
+        <span *ngIf="esCampoInvalido(tipoServicio.abreviatura)" class="text-danger">*</span>
+      </div>
+    </div>
+
+
+
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button
+      *ngIf="!insertar"
+      pButton
+      label="Actualizar"
+      (click)="actualizaServicio()"
+      severity="secondary"
+    ></button>
+    <button
+      *ngIf="insertar"
+      pButton
+      label="Agregar"
+      (click)="guardarServicio()"
+      severity="secondary"
+    ></button>
+    <button
+      pButton
+      label="Cancelar"
+      (click)="close()"
+      severity="secondary"
+    ></button>
+  </ng-template>
+</p-dialog>

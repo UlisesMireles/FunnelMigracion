@@ -1,5 +1,5 @@
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { NgModule  } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,6 +13,9 @@ import { NgxCaptchaModule } from 'ngx-captcha';
 import { ReactiveFormsModule, FormsModule} from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
+
+
+
 
 import { ProspectosComponent } from './components/catalogos/prospectos/prospectos.component';
 
@@ -99,6 +102,7 @@ import { TipoServiciosComponent } from './components/catalogos/tipo-servicios/ti
     }),
     MessageService
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+
 })
 export class AppModule { }

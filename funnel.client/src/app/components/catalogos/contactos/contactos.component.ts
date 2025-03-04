@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { LazyLoadEvent } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { MessageService } from 'primeng/api';
-import { SEL_Contacto } from '../../../interfaces/contactos';
+import { Contacto } from '../../../interfaces/contactos';
 import { ContactosService } from '../../../services/contactos.service';
 import { baseOut } from '../../../interfaces/utils/utils/baseOut';
 import { LoginService } from '../../../services/login.service';
@@ -23,9 +23,9 @@ export class ContactosComponent {
   }
   @ViewChild('dt') dt!: Table;
 
-  contactos: SEL_Contacto[] = [];
-  contactosOriginal: SEL_Contacto[] = [];
-  contactoSeleccionado!: SEL_Contacto;
+  contactos: Contacto[] = [];
+  contactosOriginal: Contacto[] = [];
+  contactoSeleccionado!: Contacto;
 
   selectedEstatus: string = 'Activo';
   loading: boolean = true;
@@ -55,7 +55,7 @@ export class ContactosComponent {
 
   getContactos() {
     this.contactosService.getContactos(this.loginService.obtenerIdEmpresa()).subscribe({
-      next: (result: SEL_Contacto[]) => {
+      next: (result: Contacto[]) => {
         this.contactosOriginal = result;
         this.selectedEstatus = 'Activo';
         this.cdr.detectChanges(); 
@@ -90,7 +90,7 @@ export class ContactosComponent {
     this.modalVisible = true;
   }
   
-  actualiza(licencia: SEL_Contacto) {
+  actualiza(licencia: Contacto) {
     this.contactoSeleccionado = licencia;
     this.insertar = false;
     this.modalVisible = true;
@@ -134,8 +134,8 @@ export class ContactosComponent {
       return registrosVisibles.length; 
     }
     return registrosVisibles.reduce(
-      (acc: number, empresa: SEL_Contacto) =>
-        acc + Number(empresa[campo as keyof SEL_Contacto] || 0),
+      (acc: number, empresa: Contacto) =>
+        acc + Number(empresa[campo as keyof Contacto] || 0),
       0
     );
   }

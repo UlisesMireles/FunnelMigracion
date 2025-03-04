@@ -3,10 +3,10 @@ import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/
 import { MessageService } from 'primeng/api';
 
 import { baseOut } from '../../../../interfaces/utils/utils/baseOut';
-import { SEL_Contacto } from '../../../../interfaces/contactos';
+import { Contacto } from '../../../../interfaces/contactos';
 
 import { ContactosService } from '../../../../services/contactos.service';
-import { requestContacto } from '../../../../interfaces/contactos';
+import { RequestPContacto } from '../../../../interfaces/contactos';
 import { LoginService } from '../../../../services/login.service';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -20,12 +20,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class ModalContactosComponent {
 
   constructor(private contactosService : ContactosService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder) { }
-  @Input() contacto!: SEL_Contacto;
-  @Input() contactos: SEL_Contacto[]=[];
+  @Input() contacto!: Contacto;
+  @Input() contactos: Contacto[]=[];
   @Input() title: string = 'Modal';
   @Input() visible: boolean = false;
   @Input() insertar: boolean = false;
-  request!: requestContacto;
+  request!: RequestPContacto;
 
   contactoForm!: FormGroup;
   prospectos: any[] = [];  

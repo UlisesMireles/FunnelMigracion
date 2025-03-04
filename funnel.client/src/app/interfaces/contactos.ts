@@ -1,4 +1,4 @@
-export interface SEL_Contacto {
+export interface Contacto {
     idContactoProspecto: number;
     nombreCompleto: string;
     nombre: string;
@@ -12,7 +12,7 @@ export interface SEL_Contacto {
     idEmpresa: number;
 }
 
-export interface requestContacto {
+export interface RequestPContacto {
     bandera: string;
     idContactoProspecto?: number;
     nombre: string;

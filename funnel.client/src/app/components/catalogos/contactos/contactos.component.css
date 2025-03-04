@@ -153,6 +153,12 @@
     padding-right: 4px;
   }
   
+  ::ng-deep .inptSize1{
+    height: 42px;
+    width: 212px;
+    padding-right: 4px;
+  }
+  
   .inputModal {
     width: 80% !important;
     padding-left: 2px;

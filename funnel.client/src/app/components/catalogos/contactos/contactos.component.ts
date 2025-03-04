@@ -80,7 +80,7 @@ export class ContactosComponent {
       telefono: '',
       correoElectronico: '',
       prospecto: '',
-      idEmpresa: 1,
+      idEmpresa: 0,
       idProspecto: 0,
       estatus: 0,
       desEstatus: '',
@@ -130,8 +130,8 @@ export class ContactosComponent {
     const registrosVisibles = dt.filteredValue
       ? dt.filteredValue
       : this.contactos;
-    if (campo === 'nombreSector') {
-      return registrosVisibles.length; // Retorna el número de registros visibles
+    if (campo === 'nombreCompleto') {
+      return registrosVisibles.length; 
     }
     return registrosVisibles.reduce(
       (acc: number, empresa: SEL_Contacto) =>

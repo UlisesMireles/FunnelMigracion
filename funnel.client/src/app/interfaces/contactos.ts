@@ -19,6 +19,7 @@ export interface requestContacto {
     apellidos: string;
     telefono: string;
     correoElectronico: string;
+    estatus: number;
     idProspecto: number;
     idEmpresa: number;
 }

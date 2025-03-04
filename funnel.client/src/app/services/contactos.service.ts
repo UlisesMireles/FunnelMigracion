@@ -22,4 +22,10 @@ export class ContactosService {
   postContacto(data: requestContacto): Observable <baseOut>{
     return this.http.post<baseOut>(this.baseUrl+'api/Contacto/GuardarContacto', data);
   }
+
+  getProspectos(idEmpresa: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}api/Contacto/ComboProspectos`, {
+      params: { idEmpresa: idEmpresa.toString() }
+    });
+  }
 }

@@ -41,7 +41,9 @@ export function getBaseUrl() {
 }
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ContactosComponent } from './components/catalogos/contactos/contactos.component';
+import { ModalContactosComponent } from './components/catalogos/contactos/modal-contactos/modal-contactos.component';
 import { TipoServiciosComponent } from './components/catalogos/tipo-servicios/tipo-servicios.component';
+
 
 
 
@@ -58,7 +60,8 @@ import { TipoServiciosComponent } from './components/catalogos/tipo-servicios/ti
     ProspectosComponent,
     ModalProspectosComponent,
     ContactosComponent,
-    TipoServiciosComponent
+    ModalContactosComponent,
+    TipoServiciosComponent,
   ],
   imports: [
     BrowserModule,

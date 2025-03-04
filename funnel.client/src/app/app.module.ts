@@ -59,8 +59,7 @@ import { TipoServiciosComponent } from './components/catalogos/tipo-servicios/ti
     ProspectosComponent,
     ContactosComponent,
     ModalContactosComponent,
-    TipoServiciosComponent
-
+    TipoServiciosComponent,
   ],
   imports: [
     BrowserModule,

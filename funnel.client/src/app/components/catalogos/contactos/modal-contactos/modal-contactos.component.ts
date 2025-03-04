@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 
 import { MessageService } from 'primeng/api';
 
@@ -9,6 +9,8 @@ import { ContactosService } from '../../../../services/contactos.service';
 import { requestContacto } from '../../../../interfaces/contactos';
 import { LoginService } from '../../../../services/login.service';
 
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 
 @Component({
   selector: 'app-modal-contactos',
@@ -17,7 +19,7 @@ import { LoginService } from '../../../../services/login.service';
 })
 export class ModalContactosComponent {
 
-  constructor(private contactosService : ContactosService, private messageService: MessageService, private readonly loginService: LoginService) { }
+  constructor(private contactosService : ContactosService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder) { }
   @Input() contacto!: SEL_Contacto;
   @Input() contactos: SEL_Contacto[]=[];
   @Input() title: string = 'Modal';
@@ -25,21 +27,87 @@ export class ModalContactosComponent {
   @Input() insertar: boolean = false;
   request!: requestContacto;
 
-  contactoActivo: boolean = false;
-  selectedLicencia: number | undefined;
-
+  contactoForm!: FormGroup;
   prospectos: any[] = [];  
-  selectedProspecto: number | undefined; 
 
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() closeModal: EventEmitter<void> = new EventEmitter();
   @Output() result: EventEmitter<baseOut> = new EventEmitter();
 
-  onDialogShow() {
-    this.contactoActivo = this.contacto?.estatus === 1 ? true : false;
-    this.cargarProspectos();
+  ngOnInit() {
+    this.inicializarFormulario();
+  }
 
-    this.selectedProspecto = this.contacto?.idProspecto;
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['contacto'] && this.contacto) {
+      this.inicializarFormulario();
+    }
+  }
+
+  inicializarFormulario() {
+    if (this.insertar) {
+      this.contactoForm = this.fb.group({
+        idContactoProspecto: [0],
+        nombre: ['', [
+            Validators.required,
+            Validators.maxLength(50),
+            Validators.pattern('^[a-zA-ZÀ-ÿ\\s]+$')
+          ]
+        ],
+        apellidos: ['', [
+            Validators.required,
+            Validators.maxLength(50),
+            Validators.pattern('^[a-zA-ZÀ-ÿ\\s]+$')
+          ]
+        ],
+        telefono: ['', [
+            Validators.required,
+            Validators.minLength(8),
+            Validators.maxLength(15),
+            Validators.pattern('^[0-9]+$')
+          ]
+        ],
+        correoElectronico: ['', [Validators.required, Validators.email]],
+        idProspecto: [null, Validators.required],
+        estatus: [true],
+        idEmpresa: [this.loginService.obtenerIdEmpresa()],
+        bandera: ['INSERT']
+      });
+      return;
+    } else {
+      this.contactoForm = this.fb.group({
+        idContactoProspecto: [this.contacto?.idContactoProspecto],
+        nombre: [this.contacto?.nombre, [
+            Validators.required,
+            Validators.maxLength(50),
+            Validators.pattern('^[a-zA-ZÀ-ÿ\\s]+$')
+          ]
+        ],
+        apellidos: [this.contacto?.apellidos, [
+            Validators.required,
+            Validators.maxLength(50),
+            Validators.pattern('^[a-zA-ZÀ-ÿ\\s]+$')
+          ]
+        ],
+        telefono: [this.contacto?.telefono || '', [
+            Validators.required,
+            Validators.minLength(8),
+            Validators.maxLength(15),
+            Validators.pattern('^[0-9]+$')
+          ]
+        ],
+        correoElectronico: [this.contacto?.correoElectronico || '', [Validators.required, Validators.email]],
+        idProspecto: [this.contacto?.idProspecto, Validators.required],
+        estatus: [this.contacto?.estatus === 1],
+        idEmpresa: [this.loginService.obtenerIdEmpresa()],
+        bandera: ['UPDATE']
+      });
+    }
+  }
+
+  onDialogShow() {
+    this.cargarProspectos();
+    this.inicializarFormulario(); 
   }
 
   close() {
@@ -48,73 +116,30 @@ export class ModalContactosComponent {
     this.closeModal.emit();
   }
 
-  actualizaContacto() {
-    console.log(this.request);
-    if (!this.request) {
-      this.request = {} as requestContacto;
-    }
-    this.request.bandera = 'UPDATE';
-    this.request.idContactoProspecto = this.contacto.idContactoProspecto;
-    this.request.nombre = this.contacto.nombre;
-    this.request.apellidos= this.contacto.apellidos;
-    this.request.telefono = this.contacto.telefono;
-    this.request.correoElectronico = this.contacto.correoElectronico;
-    this.request.idProspecto = this.selectedProspecto ?? 0;
-    this.request.estatus = this.contactoActivo ? 1 : 0;
-    this.request.idEmpresa = this.loginService.obtenerIdEmpresa();
-    console.log(this.request);
-    this.contactosService.postContacto(this.request).subscribe(
-      {
-        next: (result: baseOut) => {
-          this.result.emit(result);
-          this.visible = false;
-          this.visibleChange.emit(this.visible);
-          this.closeModal.emit();
-        },
-        error: (error: baseOut)=> {
-          this.result.emit(error);
-          this.visible = false;
-          this.visibleChange.emit(this.visible);
-          this.closeModal.emit();
-        }
-      }
-    );
-  }
-
-  guardarContanto(){
-    if (!this.request) {
-      this.request = {} as requestContacto;
-    }
-    if (this.camposInvalidosInsertar()) {
+  guardarContacto(){
+    if (this.contactoForm.invalid) {
       this.mostrarToastError();
       return;
     }
-    this.request.bandera = 'INSERT';
-    this.request.idContactoProspecto = this.contacto.idContactoProspecto;
-    this.request.nombre = this.contacto.nombre;
-    this.request.apellidos= this.contacto.apellidos;
-    this.request.telefono = this.contacto.telefono;
-    this.request.correoElectronico = this.contacto.correoElectronico;
-    this.request.idProspecto = this.selectedProspecto ?? 0;
-    this.request.estatus = this.contactoActivo ? 1 : 0;
-    this.request.idEmpresa = this.loginService.obtenerIdEmpresa();
+    this.contactoForm.controls['estatus'].setValue(this.contactoForm.value.estatus ? 1 : 0);
+    this.contactoForm.controls['idEmpresa'].setValue(this.loginService.obtenerIdEmpresa());
+    this.contactoForm.controls['bandera'].setValue(this.insertar ? 'INSERT' : 'UPDATE');
 
-    this.contactosService.postContacto(this.request).subscribe(
-      {
-        next: (result: baseOut) => {
-          this.result.emit(result);
-          this.visible = false;
-          this.visibleChange.emit(this.visible);
-          this.closeModal.emit();
-        },
-        error: (error: baseOut)=> {
-          this.result.emit(error);
-          this.visible = false;
-          this.visibleChange.emit(this.visible);
-          this.closeModal.emit();
-        }
-      }
-    );
+    console.log(this.contactoForm.value);
+    this.contactosService.postContacto(this.contactoForm.value).subscribe({
+      next: (result: baseOut) => {
+        console.log(result);
+        this.result.emit(result);
+        this.close();
+      },
+      error: (error: baseOut) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Se ha producido un error.',
+          detail: error.errorMessage,
+        });
+      },
+    });
   }
 
   cargarProspectos() {
@@ -131,51 +156,12 @@ export class ModalContactosComponent {
       },
     });
   }
-
-  validarContacto(): boolean {
-    const nombreCompletoNuevo = `${this.contacto.nombre?.toUpperCase()} ${this.contacto.apellidos?.toUpperCase()}`;
-
-    if (this.contactos.some(contacto => contacto.nombreCompleto?.toUpperCase() === nombreCompletoNuevo)) {
-      return false;
-    }
-    return true;
-  }
-
-  esCampoInvalido(valor: any): boolean {
-    return valor === null || valor === undefined || valor === '' || valor <= 0;
-  }
-  camposInvalidosInsertar(): boolean {
-    return (
-      this.esCampoInvalido(this.contacto.nombre) || 
-      this.esCampoInvalido(this.contacto.apellidos) || 
-      this.esCampoInvalido(this.contacto.telefono) ||
-      this.esCampoInvalido(this.contacto.correoElectronico) ||
-      !this.validarContacto()
-    );
-  }
-
-  camposInvalidosEditar(): boolean {
-    console.log(this.contacto);
-    return (
-      this.esCampoInvalido(this.contacto.nombre) || 
-      this.esCampoInvalido(this.contacto.apellidos) || 
-      this.esCampoInvalido(this.contacto.telefono) ||
-      this.esCampoInvalido(this.contacto.correoElectronico) ||
-      !this.validarContacto()
-    );
-  }
-
   mostrarToastError() {
-    let mensaje='Es Necesario llenar los campos indicados.';
-    console.log(this.validarContacto());
-    this.messageService.clear();
-    if (!this.validarContacto() && this.insertar) {
-      mensaje = 'El Contacto ya existe.';
-    }
+    console.log(this.contactoForm);
     this.messageService.add({
       severity: 'error',
       summary: 'Error',
-      detail: mensaje,
+      detail: 'Es necesario llenar los campos indicados.',
     });
   }
 }

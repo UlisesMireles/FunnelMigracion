@@ -33,13 +33,7 @@ namespace Funnel.Logic
             BaseOut result = new BaseOut();
             //Validar que no exista registro con mismo nombre 
             var listaProspectos = await _contactoData.ConsultarContacto((int)request.IdEmpresa);
-            if (request.Bandera == "INSERT" && listaProspectos.FirstOrDefault(v => v.Nombre == request.Nombre) != null)
-            {
-                result.ErrorMessage = "Error al guardar: Ya existe un registro con ese nombre.";
-                result.Result = false;
-                return result;
-            }
-            if (request.Bandera == "UPDATE" && listaProspectos.FirstOrDefault(v => v.Nombre == request.Nombre && v.IdProspecto != request.IdProspecto) != null)
+            if (request.Bandera == "INSERT" && listaProspectos.FirstOrDefault(v => v.NombreCompleto == request.NombreCompleto) != null)
             {
                 result.ErrorMessage = "Error al guardar: Ya existe un registro con ese nombre.";
                 result.Result = false;

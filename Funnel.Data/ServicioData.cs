@@ -1,8 +1,8 @@
 ﻿using Funnel.Data.Interfaces;
 using Funnel.Data.Utils;
+using Funnel.Models.Base;
 using Funnel.Models.Dto;
 using Microsoft.Extensions.Configuration;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
@@ -18,23 +18,21 @@ namespace Funnel.Data
             _connectionString = configuration.GetConnectionString("FunelDatabase");
         }
 
-        public async Task<List<ServiciosDTO>> ConsultarServicios(int IdEmpresa)
+        public async Task<List<ServicioDTO>> ConsultarServicios(int IdEmpresa)
         {
-            List<ServiciosDTO> result = new List<ServiciosDTO>();
+            List<ServicioDTO> result = new List<ServicioDTO>();
 
-            // Reemplazamos IdEmpresa por IdTipoServicio y eliminamos el parámetro Bandera.
             IList<ParameterSQl> list = new List<ParameterSQl>
             {
                 DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, "SELECT"),
                 DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, IdEmpresa)
             };
 
-            // Ejecutamos el procedimiento con el parámetro actualizado.
             using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoTiposOportunidades", CommandType.StoredProcedure, list, _connectionString))
             {
                 while (reader.Read())
                 {
-                    var dto = new ServiciosDTO
+                    var dto = new ServicioDTO
                     {
                         IdTipoProyecto = ComprobarNulos.CheckIntNull(reader["IdTipoProyecto"]),
                         Descripcion = ComprobarNulos.CheckStringNull(reader["Descripcion"]),
@@ -48,5 +46,71 @@ namespace Funnel.Data
             }
             return result;
         }
+
+        public async Task<BaseOut> GuardarServicio(ServicioDTO request)
+        {
+            BaseOut result = new BaseOut();
+            try
+            {
+                IList<ParameterSQl> list = new List<ParameterSQl>
+        {
+            DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Bandera ?? (object)DBNull.Value),
+            DataBase.CreateParameterSql("@pDescripcion", SqlDbType.VarChar, 255, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Descripcion ?? (object)DBNull.Value),
+            DataBase.CreateParameterSql("@pAbreviatura", SqlDbType.VarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Abreviatura ?? (object)DBNull.Value),
+            DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdEmpresa ?? (object)DBNull.Value),
+            DataBase.CreateParameterSql("@pIdTipoProyecto", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, request.IdTipoProyecto ),
+            DataBase.CreateParameterSql("@pEstatus", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Estatus ),
+        };
+
+
+                using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoTiposOportunidades", CommandType.StoredProcedure, list, _connectionString))
+                {
+                    while (reader.Read()) {
+                        
+                    }
+                }
+
+                switch (request.Bandera)
+                {
+                    case "INSERT":
+                        result.ErrorMessage = "Servicio insertado correctamente.";
+                        result.Id = 1;
+                        result.Result = true;
+                        break;
+                    case "UPDATE":
+                        result.ErrorMessage = "Servicio actualizado correctamente.";
+                        result.Id = 1;
+                        result.Result = true;
+                        break;
+                    default:
+                        result.ErrorMessage = "Operación no válida.";
+                        result.Id = 0;
+                        result.Result = false;
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                
+                switch (request.Bandera)
+                {
+                    case "INSERT":
+                        result.ErrorMessage = "Error al insertar servicio: " + ex.Message;
+                        break;
+                    case "UPDATE":
+                        result.ErrorMessage = "Error al actualizar servicio: " + ex.Message;
+                        break;
+                    default:
+                        result.ErrorMessage = "Error desconocido: " + ex.Message;
+                        break;
+                }
+                result.Id = 0;
+                result.Result = false;
+            }
+            return result;
+        }
+
+
     }
 }

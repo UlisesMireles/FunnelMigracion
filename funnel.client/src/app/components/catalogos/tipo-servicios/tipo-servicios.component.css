@@ -182,8 +182,8 @@
     background: #E1DAC7 !important;
   }
   
-  :host ::ng-deep .custom-header2 input,
-  :host ::ng-deep .custom-header2 .p-select {
+  ::ng-deep .custom-header2 input,
+  ::ng-deep .custom-header2 .p-select {
     height: 30px !important;
     min-height: 30px !important;
     line-height: 30px !important;
@@ -194,7 +194,7 @@
     margin:3px
   }
   
-  ::ng-deep .custom-header2 .p-select li{
+  ::ng-deep.custom-header2 .p-select li{
     padding:0px;
   }
   
@@ -206,3 +206,5 @@
     overflow-wrap: anywhere;
     line-height: 1.4;
   }
+
+

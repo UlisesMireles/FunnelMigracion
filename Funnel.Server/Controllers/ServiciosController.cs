@@ -1,5 +1,7 @@
-﻿using Funnel.Logic;
+﻿using Funnel.Data;
+using Funnel.Logic;
 using Funnel.Logic.Interfaces;
+using Funnel.Models.Base;
 using Funnel.Models.Dto;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -19,10 +21,21 @@ namespace Funnel.Server.Controllers
         }
 
         [HttpGet("[action]/{idEmpresa}")]
-        public async Task<ActionResult<List<ServiciosDTO>>> ConsultarServicios(int IdEmpresa)
+        public async Task<ActionResult<List<ServicioDTO>>> ConsultarServicios(int IdEmpresa)
         {
             var respuesta = await _serviciosService.ConsultarServicios(IdEmpresa);
             return Ok(respuesta);
         }
+
+        [HttpPost("[action]")]
+        public async Task<ActionResult<BaseOut>> GuardarServicio(ServicioDTO servicio)
+
+        {
+            var resultado = await _serviciosService.GuardarServicio(servicio);
+
+                return Ok(resultado);
+
+        }
+
     }
 }

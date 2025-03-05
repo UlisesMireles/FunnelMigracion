@@ -7,21 +7,36 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Funnel.Data.Interfaces;
+using Funnel.Models.Base;
+using Azure.Core;
 
 namespace Funnel.Logic
 {
-    public class ServiciosService : IServiciosService  // Se corrigió el nombre de la clase
+    public class ServiciosService : IServiciosService  
     {
-        private readonly IServiciosData _serviciosData;  // Se corrigió el nombre de la variable
+        private readonly IServiciosData _serviciosData;  
 
-        public ServiciosService(IServiciosData serviciosData)  // Se corrigió el constructor
+        public ServiciosService(IServiciosData serviciosData)  
         {
             _serviciosData = serviciosData;
         }
 
-        public async Task<List<ServiciosDTO>> ConsultarServicios(int IdTipoProyecto)
+        public async Task<List<ServicioDTO>> ConsultarServicios(int IdTipoProyecto)
         {
             return await _serviciosData.ConsultarServicios(IdTipoProyecto);
+        }
+
+        public async Task<BaseOut> GuardarServicio(ServicioDTO request)
+        {
+            BaseOut result = new BaseOut();
+            var listaServicios = await _serviciosData.ConsultarServicios((int)request.IdEmpresa);
+            if (request.Bandera == "INSERT" && listaServicios.FirstOrDefault(v => v.Descripcion == request.Descripcion) != null)
+            {
+                result.ErrorMessage = "Error al guardar: Ya existe un registro con ese nombre.";
+                result.Result = false;
+                return result;
+            }
+            return await _serviciosData.GuardarServicio(request);
         }
     }
 }

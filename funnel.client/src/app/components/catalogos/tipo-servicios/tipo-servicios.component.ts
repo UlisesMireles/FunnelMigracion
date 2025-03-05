@@ -3,7 +3,11 @@ import { TipoServicio } from '../../../interfaces/tipoServicio';
 import { TipoServicioService } from '../../../services/tipo-servicio.service';
 import { Table } from 'primeng/table';
 import { LazyLoadEvent, MessageService } from 'primeng/api';
+
+import { baseOut } from '../../../interfaces/utils/utils/baseOut';
+
 import { LoginService } from '../../../services/login.service';
+
 
 @Component({
   selector: 'app-tipo-servicios',
@@ -53,10 +57,10 @@ export class TipoServiciosComponent {
     this.servicioService.getTipoServicios(this.loginService.obtenerIdEmpresa()).subscribe({
       next: (result: TipoServicio[]) => {
         this.tiposServiciosOriginal = result;
-        this.selectedEstatus = 'Activo';
+        this.selectedEstatus = 'Activo';  
         this.cdr.detectChanges();
         this.loading = false;
-        this.FiltrarPorEstatus();
+        this.FiltrarPorEstatus();   
       },
       error: (error) => {
         this.messageService.add({
@@ -68,6 +72,8 @@ export class TipoServiciosComponent {
       },
     });
   }
+
+  
 
   pageChange(event: LazyLoadEvent) {
     if (event.first !== undefined) {
@@ -81,8 +87,8 @@ export class TipoServiciosComponent {
     const registrosVisibles = dt.filteredValue
       ? dt.filteredValue
       : this.tiposServicios;
-    if (campo === 'nombreSector') {
-      return registrosVisibles.length; // Retorna el número de registros visibles
+    if (campo === 'descripcion') {
+      return registrosVisibles.length; 
     }
     return registrosVisibles.reduce(
       (acc: number, _tipoServicio: TipoServicio) =>
@@ -96,7 +102,7 @@ export class TipoServiciosComponent {
   FiltrarPorEstatus() {
     this.tiposServicios = this.selectedEstatus === null
       ? [...this.tiposServiciosOriginal]
-      : [...this.tiposServiciosOriginal.filter((x) => x.desEstatus === this.selectedEstatus)];
+      : [...this.tiposServiciosOriginal.filter((x) => x.desEstatus.toString() === this.selectedEstatus)];
     if (this.dt) {
       this.dt.first = 0;
     }
@@ -107,4 +113,48 @@ export class TipoServiciosComponent {
     this.getContactos();
     this.dt.reset();
   }
+
+
+  onModalClose() {
+    this.modalVisible = false;
+  }
+
+  manejarResultado(result: baseOut) {
+    if (result.result) {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'La operación se realizó con éxito.',
+        detail: result.errorMessage,
+      });
+      this.getContactos();
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Se ha producido un error.',
+        detail: result.errorMessage,
+      });
+    }
+  }
+
+  inserta() {
+    console.log(this.tiposServiciosSeleccionado);
+    this.tiposServiciosSeleccionado = {
+      idTipoProyecto: 0,
+      descripcion: '',
+      estatus: 0,
+      abreviatura: '',
+      idEmpresa: 0,
+      fechaModificacion: '',
+      desEstatus: '',
+    };
+    this.insertar = true;
+    this.modalVisible = true;
+  }
+ 
+  actualiza(licencia: TipoServicio) {
+    this.tiposServiciosSeleccionado = licencia;
+    this.insertar = false;
+    this.modalVisible = true;
+  }
+
 }

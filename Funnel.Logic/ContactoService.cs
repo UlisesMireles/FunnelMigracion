@@ -17,6 +17,12 @@ namespace Funnel.Logic
         {
             _contactoData = contactoData;
         }
+
+        public async Task<List<ComboProspectosDto>> ComboProspectos(int IdEmpresa)
+        {
+            return await _contactoData.ComboProspectos(IdEmpresa);
+        }
+
         public async Task<List<ContactoDto>> ConsultarContacto(int IdEmpresa)
         {
             return await _contactoData.ConsultarContacto(IdEmpresa);
@@ -27,18 +33,18 @@ namespace Funnel.Logic
             BaseOut result = new BaseOut();
             //Validar que no exista registro con mismo nombre 
             var listaProspectos = await _contactoData.ConsultarContacto((int)request.IdEmpresa);
-            if (request.Bandera == "INSERT" && listaProspectos.FirstOrDefault(v => v.Nombre == request.Nombre) != null)
+
+            var coincidencias = listaProspectos
+                .Where(v => v.Nombre == request.Nombre && v.Apellidos == request.Apellidos)
+                .ToList();
+
+            if (request.Bandera == "INSERT" && coincidencias.Count >= 2)
             {
-                result.ErrorMessage = "Error al guardar: Ya existe un registro con ese nombre.";
+                result.ErrorMessage = "Error al guardar: Ya existen dos registros con ese nombre y apellido.";
                 result.Result = false;
                 return result;
             }
-            if (request.Bandera == "UPDATE" && listaProspectos.FirstOrDefault(v => v.Nombre == request.Nombre && v.IdProspecto != request.IdProspecto) != null)
-            {
-                result.ErrorMessage = "Error al guardar: Ya existe un registro con ese nombre.";
-                result.Result = false;
-                return result;
-            }
+
             return await _contactoData.GuardarContacto(request);
         }
     }

@@ -16,4 +16,5 @@ export interface DobleAutenticacion {
 export interface LoginUser {
   usuario: string;
   password: string;
+  idEmpresa: number;
 }

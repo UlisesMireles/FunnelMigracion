@@ -25,5 +25,11 @@ namespace Funnel.Server.Controllers
             var result = await _contactoService.GuardarContacto(request);
             return Ok(result);
         }
+        [HttpGet("[action]/")]
+        public async Task<ActionResult> ComboProspectos(int idEmpresa)
+        {
+            var result = await _contactoService.ComboProspectos(idEmpresa);
+            return Ok(result);
+        }
     }
 }

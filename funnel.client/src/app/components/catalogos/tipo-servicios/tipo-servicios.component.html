@@ -18,7 +18,7 @@
                 <div class="col inDivDatatableHeader" style="text-align:right; margin-right:5px">
                   <p-button label="" icon="bi bi-arrow-clockwise" (click)="reset()" severity="secondary"
                     [ngStyle]="{'margin-right': '5px'}" />
-                  <p-button label="" icon="bi bi-plus" severity="secondary"  />
+                  <p-button label="" icon="bi bi-plus" severity="secondary" (click)="inserta()" />
                 </div> 
               </div>
             </ng-template>
@@ -34,7 +34,7 @@
                 <th></th>
                 <th>
                   <input pInputText type="text" [(ngModel)]="filtroNombre"
-                    (ngModelChange)="updateFilter($event, 'nombreCompleto')">
+                    (ngModelChange)="updateFilter($event, 'descripcion')">
                 </th>
                 <th></th>
                 <th>
@@ -54,7 +54,7 @@
             <ng-template #body let-tiposServicios>
               <tr class="custom-header3 custom-row filas">
                 <td>
-                  <p-button type="button" icon="bi bi-pencil" text />
+                  <p-button type="button" icon="bi bi-pencil" text (click)="actualiza(tiposServicios)"/>
                 </td>
                 <td style="font-weight: bold;">{{ tiposServicios.descripcion }}</td>
                 <td>{{ tiposServicios.abreviatura }}</td>
@@ -74,4 +74,11 @@
       </div>
     </div>
   </div>
+
+  <app-modal-tipo-servicios [(visible)]="modalVisible" [title]="'Editar datos de '" 
+  (closeModal)="onModalClose()" (result)="manejarResultado($event)" 
+  [insertar]="insertar" [tipoServicio]="tiposServiciosSeleccionado" 
+  [tiposServicios]="tiposServicios">
+</app-modal-tipo-servicios>
+
   

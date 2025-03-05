@@ -54,26 +54,22 @@ namespace Funnel.Data
             {
                 IList<ParameterSQl> list = new List<ParameterSQl>
         {
-            // Parámetro para determinar la operación: INSERT o UPDATE
-            DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Bandera ?? "INSERT"),
-            
-            // Parámetros relacionados con los detalles del servicio
-            DataBase.CreateParameterSql("@IdTipoProyecto", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdTipoProyecto),
-            DataBase.CreateParameterSql("@Descripcion", SqlDbType.VarChar, 255, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Descripcion ?? (object)DBNull.Value),
-            DataBase.CreateParameterSql("@Abreviatura", SqlDbType.VarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Abreviatura ?? (object)DBNull.Value),
-            DataBase.CreateParameterSql("@FechaRegistro", SqlDbType.DateTime, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.FechaRegistro ?? (object)DBNull.Value),
-            DataBase.CreateParameterSql("@FechaModificacion", SqlDbType.DateTime, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.FechaModificacion ?? (object)DBNull.Value),
-            DataBase.CreateParameterSql("@Estatus", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Estatus ?? (object)DBNull.Value),
-            DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdEmpresa ?? (object)DBNull.Value)
+            DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Bandera ?? (object)DBNull.Value),
+            DataBase.CreateParameterSql("@pDescripcion", SqlDbType.VarChar, 255, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Descripcion ?? (object)DBNull.Value),
+            DataBase.CreateParameterSql("@pAbreviatura", SqlDbType.VarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Abreviatura ?? (object)DBNull.Value),
+            DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdEmpresa ?? (object)DBNull.Value),
+            DataBase.CreateParameterSql("@pIdTipoProyecto", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, request.IdTipoProyecto ),
+            DataBase.CreateParameterSql("@pEstatus", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Estatus ),
         };
 
-                // Ejecutamos el stored procedure para insertar o actualizar
-                using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoServicios", CommandType.StoredProcedure, list, _connectionString))
+
+                using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoTiposOportunidades", CommandType.StoredProcedure, list, _connectionString))
                 {
-                    while (reader.Read()) { }
+                    while (reader.Read()) {
+                        
+                    }
                 }
 
-                
                 switch (request.Bandera)
                 {
                     case "INSERT":
@@ -92,6 +88,7 @@ namespace Funnel.Data
                         result.Result = false;
                         break;
                 }
+
             }
             catch (Exception ex)
             {

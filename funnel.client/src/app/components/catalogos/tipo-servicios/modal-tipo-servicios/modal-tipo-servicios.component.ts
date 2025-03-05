@@ -15,12 +15,13 @@ import { RequestTipoServicio } from '../../../../interfaces/tipoServicio';
   standalone: false,
   templateUrl: './modal-tipo-servicios.component.html',
   styleUrl: './modal-tipo-servicios.component.css',
-  providers: [TipoServicioService] 
+  //providers: [TipoServicioService] 
 })
 export class ModalTipoServiciosComponent {
 constructor(private TipoServicioService: TipoServicioService, private messageService: MessageService, private loginService: LoginService) { }
   @Input() tipoServicio!: TipoServicio;
   @Input() tipoServicios: TipoServicio[]=[];
+  @Input() tiposServicios: any[] = [];
   @Input() title: string = 'Modal';
   @Input() visible: boolean = false;
   @Input() insertar: boolean = false;
@@ -34,7 +35,7 @@ constructor(private TipoServicioService: TipoServicioService, private messageSer
   @Output() result: EventEmitter<baseOut> = new EventEmitter();
 
   onDialogShow() {
-    this.tiposervicioActivo = this.tipoServicio?.desEstatusActivo === 'Activo';
+    this.tiposervicioActivo = this.tipoServicio?.desEstatus === 'Activo';
   }
    close() {
       this.visible = false;
@@ -45,20 +46,25 @@ constructor(private TipoServicioService: TipoServicioService, private messageSer
         if (!this.request) {
           this.request = {} as RequestTipoServicio;
         }
+
         if (this.camposInvalidosEditar()) {
           this.mostrarToastError();
           return;
         }
-        this.request.bandera = 'UPD-TIPOSERVICIO';
+        
+        this.request.bandera = 'UPDATE';
         this.request.idTipoServicio = this.tipoServicio.idTipoServicio;
         this.request.descripcion = this.tipoServicio.descripcion;
         this.request.abreviatura= this.tipoServicio.abreviatura;
         this.request.estatus = this.tiposervicioActivo ? 1 : 0;
-        this.request.idEmpresa = parseInt(localStorage.getItem('currentUser') || '0', 10);
+        this.request.idEmpresa = 1;
+        
 
         this.TipoServicioService.postGuardarServicio(this.request).subscribe(
           {
+            
             next: (result: baseOut) => {
+              console.log(this.request),
               this.result.emit(result);
               this.visible = false;
               this.visibleChange.emit(this.visible);
@@ -81,12 +87,12 @@ constructor(private TipoServicioService: TipoServicioService, private messageSer
           this.mostrarToastError();
           return;
         }
-        this.request.bandera = 'UPD-TIPOSERVICIO';
+        this.request.bandera = 'INSERT';
         this.request.idTipoServicio = this.tipoServicio.idTipoServicio;
         this.request.descripcion = this.tipoServicio.descripcion;
         this.request.abreviatura= this.tipoServicio.abreviatura;
         this.request.estatus = this.tiposervicioActivo ? 1 : 0;
-        this.request.idEmpresa = parseInt(localStorage.getItem('currentUser') || '0', 10);
+        this.request.idEmpresa = 1;
   
         this.TipoServicioService.postGuardarServicio(this.request).subscribe(
           {

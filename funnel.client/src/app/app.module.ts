@@ -16,7 +16,7 @@ import { providePrimeNG } from 'primeng/config';
 
 
 
-
+import { ModalTipoServiciosComponent } from './components/catalogos/tipo-servicios/modal-tipo-servicios/modal-tipo-servicios.component';
 import { ProspectosComponent } from './components/catalogos/prospectos/prospectos.component';
 
 import Aura from '@primeng/themes/aura';
@@ -58,6 +58,7 @@ import { TipoServiciosComponent } from './components/catalogos/tipo-servicios/ti
     OlvidasteContrasenaComponent,
     FooterComponent,
     ProspectosComponent,
+    ModalTipoServiciosComponent,
     ContactosComponent,
     TipoServiciosComponent
   ],

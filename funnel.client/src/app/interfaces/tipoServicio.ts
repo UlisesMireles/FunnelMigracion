@@ -1,5 +1,5 @@
 export interface TipoServicio {
-    idTipoServicio?: number;
+    idTipoProyecto?: number;
     descripcion: string;
     abreviatura: string;
     estatus: number;
@@ -10,7 +10,7 @@ export interface TipoServicio {
 
 export interface RequestTipoServicio {
     bandera: string;
-    idTipoServicio?: number;
+    idTipoProyecto?: number;
     descripcion: string;
     abreviatura: string;
     estatus: number;

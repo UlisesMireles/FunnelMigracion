@@ -15,10 +15,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   selector: 'app-modal-tipo-servicios',
   standalone: false,
   templateUrl: './modal-tipo-servicios.component.html',
-  //styleUrl: './modal-tipo-servicios.component.css',
+  
    
 })
 export class ModalTipoServiciosComponent {
+
+
 constructor(private TipoServicioService: TipoServicioService, private messageService: MessageService, private loginService: LoginService, private fb: FormBuilder) { }
   @Input() tipoServicio!: TipoServicio;
   @Input() tipoServicios: TipoServicio[]=[];
@@ -41,16 +43,15 @@ constructor(private TipoServicioService: TipoServicioService, private messageSer
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['tipoServicio'] && this.tipoServicio) {
-      // Solo inicializa si tipoServicio tiene datos
       this.inicializarFormulario();
     }
   }
   
   inicializarFormulario() {
     if (this.insertar) {
-      // Formulario para crear un nuevo servicio
+
       this.servicioForm = this.fb.group({
-        idServicio: [0],
+        idTipoProyecto: [0],
         descripcion: ['', [Validators.required]],
         abreviatura: ['', [Validators.required]],
         estatus: [true],
@@ -58,10 +59,10 @@ constructor(private TipoServicioService: TipoServicioService, private messageSer
         bandera: ['INSERT']
       });
     } else {
-      // Formulario para editar un servicio
+
       if (this.tipoServicio) {
         this.servicioForm = this.fb.group({
-          idServicio: [this.tipoServicio.idTipoServicio],
+          idTipoProyecto: [this.tipoServicio.idTipoProyecto],
           descripcion: [this.tipoServicio.descripcion, [Validators.required]],
           abreviatura: [this.tipoServicio.abreviatura, [Validators.required]],
           estatus: [this.tipoServicio.estatus === 1],  
@@ -84,43 +85,34 @@ constructor(private TipoServicioService: TipoServicioService, private messageSer
 
     
 
-      guardarServicio(){
-        if (this.servicioForm.invalid) {
-          this.mostrarToastError();
-          return;
-        }
-
-        if (this.servicioExiste(this.servicioForm.value.descripcion)) {
-          this.messageService.add({
-            severity: 'warn',
-            summary: 'Servicio duplicado',
-            detail: 'Este servicio ya fue registrado.',
-          });
-          return;
-        }
-
-        this.servicioForm.controls['estatus'].setValue(this.servicioForm.value.estatus ? 1 : 0);
-        this.servicioForm.controls['idEmpresa'].setValue(this.loginService.obtenerIdEmpresa());
-        this.servicioForm.controls['bandera'].setValue(this.insertar ? 'INSERT' : 'UPDATE');
-
-        console.log(this.servicioForm.value);
-  
-        this.TipoServicioService.postGuardarServicio(this.servicioForm.value).subscribe({
-          next: (result: baseOut) => {
-            console.log(result);
-            this.result.emit(result);
-            this.close();
-          },
-          error: (error: baseOut) => {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Se ha producido un error.',
-              detail: error.errorMessage,
-            });
-          },
-        });
-
+    guardarServicio() {
+      if (this.servicioForm.invalid) {
+        this.mostrarToastError();
+        return;
       }
+     
+    
+      this.servicioForm.controls['estatus'].setValue(this.servicioForm.value.estatus ? 1 : 0);
+      this.servicioForm.controls['idEmpresa'].setValue(this.loginService.obtenerIdEmpresa());
+      this.servicioForm.controls['bandera'].setValue(this.insertar ? 'INSERT' : 'UPDATE');
+     
+      console.log(this.servicioForm.value);
+     
+      this.TipoServicioService.postGuardarServicio(this.servicioForm.value).subscribe({
+        next: (result: baseOut) => {
+          console.log(result);
+          this.result.emit(result);
+          this.close();
+        },
+        error: (error: baseOut) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Se ha producido un error.',
+            detail: error.errorMessage,
+          });
+        },
+      });
+    }
 
       
       mostrarToastError() {
@@ -132,9 +124,5 @@ constructor(private TipoServicioService: TipoServicioService, private messageSer
         });
       }
 
-      servicioExiste(descripcion: string): boolean {
-        return this.tipoServicios.some(servicio => 
-          servicio.descripcion.trim().toLowerCase() === descripcion.trim().toLowerCase()
-        );
-}
+
 }

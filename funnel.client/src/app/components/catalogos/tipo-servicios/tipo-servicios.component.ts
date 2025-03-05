@@ -139,7 +139,7 @@ export class TipoServiciosComponent {
   inserta() {
     console.log(this.tiposServiciosSeleccionado);
     this.tiposServiciosSeleccionado = {
-      idTipoServicio: 0,
+      idTipoProyecto: 0,
       descripcion: '',
       estatus: 0,
       abreviatura: '',

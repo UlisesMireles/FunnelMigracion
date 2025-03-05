@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges  } from '@angular/core';
 
 /*Primeng*/
 import { MessageService } from 'primeng/api';
@@ -9,16 +9,17 @@ import { TipoServicioService } from '../../../../services/tipo-servicio.service'
 import { LoginService } from '../../../../services/login.service';
 import { RequestTipoServicio } from '../../../../interfaces/tipoServicio';
 
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-modal-tipo-servicios',
   standalone: false,
   templateUrl: './modal-tipo-servicios.component.html',
-  styleUrl: './modal-tipo-servicios.component.css',
-  //providers: [TipoServicioService] 
+  //styleUrl: './modal-tipo-servicios.component.css',
+   
 })
 export class ModalTipoServiciosComponent {
-constructor(private TipoServicioService: TipoServicioService, private messageService: MessageService, private loginService: LoginService) { }
+constructor(private TipoServicioService: TipoServicioService, private messageService: MessageService, private loginService: LoginService, private fb: FormBuilder) { }
   @Input() tipoServicio!: TipoServicio;
   @Input() tipoServicios: TipoServicio[]=[];
   @Input() tiposServicios: any[] = [];
@@ -27,132 +28,113 @@ constructor(private TipoServicioService: TipoServicioService, private messageSer
   @Input() insertar: boolean = false;
   request!: RequestTipoServicio;
 
-  tiposervicioActivo: boolean = false;
+  servicioForm!: FormGroup;
   tiposservicio: any[] = [];
 
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() closeModal: EventEmitter<void> = new EventEmitter();
   @Output() result: EventEmitter<baseOut> = new EventEmitter();
 
+  ngOnInit() {
+    this.inicializarFormulario();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['tipoServicio'] && this.tipoServicio) {
+      // Solo inicializa si tipoServicio tiene datos
+      this.inicializarFormulario();
+    }
+  }
+  
+  inicializarFormulario() {
+    if (this.insertar) {
+      // Formulario para crear un nuevo servicio
+      this.servicioForm = this.fb.group({
+        idServicio: [0],
+        descripcion: ['', [Validators.required]],
+        abreviatura: ['', [Validators.required]],
+        estatus: [true],
+        idEmpresa: [this.loginService.obtenerIdEmpresa()],
+        bandera: ['INSERT']
+      });
+    } else {
+      // Formulario para editar un servicio
+      if (this.tipoServicio) {
+        this.servicioForm = this.fb.group({
+          idServicio: [this.tipoServicio.idTipoServicio],
+          descripcion: [this.tipoServicio.descripcion, [Validators.required]],
+          abreviatura: [this.tipoServicio.abreviatura, [Validators.required]],
+          estatus: [this.tipoServicio.estatus === 1],  
+          idEmpresa: [this.loginService.obtenerIdEmpresa()],
+          bandera: ['UPDATE']
+        });
+      }
+    }
+  }
+  
+  
   onDialogShow() {
-    this.tiposervicioActivo = this.tipoServicio?.desEstatus === 'Activo';
+    this.inicializarFormulario(); 
   }
    close() {
       this.visible = false;
       this.visibleChange.emit(this.visible);
       this.closeModal.emit();
     }
-    actualizaServicio() {
-        if (!this.request) {
-          this.request = {} as RequestTipoServicio;
-        }
 
-        if (this.camposInvalidosEditar()) {
-          this.mostrarToastError();
-          return;
-        }
-        
-        this.request.bandera = 'UPDATE';
-        this.request.idTipoServicio = this.tipoServicio.idTipoServicio;
-        this.request.descripcion = this.tipoServicio.descripcion;
-        this.request.abreviatura= this.tipoServicio.abreviatura;
-        this.request.estatus = this.tiposervicioActivo ? 1 : 0;
-        this.request.idEmpresa = 1;
-        
+    
 
-        this.TipoServicioService.postGuardarServicio(this.request).subscribe(
-          {
-            
-            next: (result: baseOut) => {
-              console.log(this.request),
-              this.result.emit(result);
-              this.visible = false;
-              this.visibleChange.emit(this.visible);
-              this.closeModal.emit();
-            },
-            error: (error: baseOut)=> {
-              this.result.emit(error);
-              this.visible = false;
-              this.visibleChange.emit(this.visible);
-              this.closeModal.emit();
-            }
-          }
-        );
-      }
       guardarServicio(){
-        if (!this.request) {
-          this.request = {} as RequestTipoServicio;
-        }
-        if (this.camposInvalidosInsertar()) {
+        if (this.servicioForm.invalid) {
           this.mostrarToastError();
           return;
         }
-        this.request.bandera = 'INSERT';
-        this.request.idTipoServicio = this.tipoServicio.idTipoServicio;
-        this.request.descripcion = this.tipoServicio.descripcion;
-        this.request.abreviatura= this.tipoServicio.abreviatura;
-        this.request.estatus = this.tiposervicioActivo ? 1 : 0;
-        this.request.idEmpresa = 1;
+
+        if (this.servicioExiste(this.servicioForm.value.descripcion)) {
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Servicio duplicado',
+            detail: 'Este servicio ya fue registrado.',
+          });
+          return;
+        }
+
+        this.servicioForm.controls['estatus'].setValue(this.servicioForm.value.estatus ? 1 : 0);
+        this.servicioForm.controls['idEmpresa'].setValue(this.loginService.obtenerIdEmpresa());
+        this.servicioForm.controls['bandera'].setValue(this.insertar ? 'INSERT' : 'UPDATE');
+
+        console.log(this.servicioForm.value);
   
-        this.TipoServicioService.postGuardarServicio(this.request).subscribe(
-          {
-            next: (result: baseOut) => {
-              this.result.emit(result);
-              this.visible = false;
-              this.visibleChange.emit(this.visible);
-              this.closeModal.emit();
-            },
-            error: (error: baseOut)=> {
-              this.result.emit(error);
-              this.visible = false;
-              this.visibleChange.emit(this.visible);
-              this.closeModal.emit();
-            }
-          }
-        );
+        this.TipoServicioService.postGuardarServicio(this.servicioForm.value).subscribe({
+          next: (result: baseOut) => {
+            console.log(result);
+            this.result.emit(result);
+            this.close();
+          },
+          error: (error: baseOut) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Se ha producido un error.',
+              detail: error.errorMessage,
+            });
+          },
+        });
 
       }
-      validarServicio(): boolean {
-        if (this.tipoServicios.some((tipoServicio: TipoServicio) =>
-          tipoServicio.descripcion?.toUpperCase() === this.tipoServicio.descripcion?.toUpperCase()
-        )) {          
-          return false;
-        }
-        return true;
-      }
-      esCampoInvalido(valor: any): boolean {
-        return valor === null || valor === undefined || valor === '' || valor <= 0;
-      }
-      camposInvalidosInsertar(): boolean {
-        return (
-          this.esCampoInvalido(this.tipoServicio.descripcion) ||
-          this.esCampoInvalido(this.tipoServicio.abreviatura)||
-          !this.validarServicio()
-        );
-      }
-      camposInvalidosEditar(): boolean {
-        return (
-          this.esCampoInvalido(this.tipoServicio.descripcion) ||
-          this.esCampoInvalido(this.tipoServicio.abreviatura)
-        );
-      }
 
-      /**
-       * Método para mostrar un toast de error cuando hay campos vacíos.
-       */
+      
       mostrarToastError() {
-        let mensaje='Es Necesario llenar los campos indicados.';
-        this.messageService.clear();
-        if (!this.validarServicio() && this.insertar) {
-          mensaje = 'El Servicio ya existe.';
-        }
+        console.log(this.servicioForm);
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: mensaje,
+          detail: 'Es necesario llenar los campos indicados.',
         });
       }
+
+      servicioExiste(descripcion: string): boolean {
+        return this.tipoServicios.some(servicio => 
+          servicio.descripcion.trim().toLowerCase() === descripcion.trim().toLowerCase()
+        );
 }
-
-
-
+}

@@ -6,8 +6,10 @@ import { DobleAutenticacionComponent } from './components/doble-autenticacion/do
 import { OlvidasteContrasenaComponent } from './components/olvidaste-contrasena/olvidaste-contrasena.component';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { ProspectosComponent } from './components/catalogos/prospectos/prospectos.component';
+import { ModalProspectosComponent } from './components/catalogos/prospectos/modal-prospectos/modal-prospectos.component';
 import { ContactosComponent } from './components/catalogos/contactos/contactos.component';
 import { TipoServiciosComponent } from './components/catalogos/tipo-servicios/tipo-servicios.component';
+
 
 const routes: Routes = [
   { path: '', component: LoginComponent, title: 'Login' },
@@ -18,6 +20,7 @@ const routes: Routes = [
   { path: 'prospectos', component: ProspectosComponent, title: 'Prospectos', canActivate: [AuthGuard] },
   { path: 'contactos', component: ContactosComponent, title: 'Contactos', canActivate: [AuthGuard] },
   { path: 'tipos-servicios', component: TipoServiciosComponent, title: 'Tipos Servicios ', canActivate: [AuthGuard] },
+  {path: 'modal-prospectos', component: ModalProspectosComponent, title: 'Modal Prospectos', canActivate: [AuthGuard] },
   
 ];
 

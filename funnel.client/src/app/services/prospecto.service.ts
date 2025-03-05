@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import{ Observable } from 'rxjs';
 
-import { requestProspecto } from '../interfaces/prospecto';
+import { RequestProspecto } from '../interfaces/prospecto';
 import { baseOut } from '../interfaces/utils/utils/baseOut';
 @Injectable({
   providedIn: 'root'
@@ -13,13 +13,19 @@ export class ProspectoService {
   baseUrl:string = environment.baseURL;
 
   constructor(private http: HttpClient) { }
-  getProspectos(): Observable<any>{
-    return this.http.get(this.baseUrl + 'api/Prospectos/ConsultarProspectos');
+  getProspectos(idEmpresa: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}api/Prospectos/ConsultarProspectos`, {
+      params: { idEmpresa: idEmpresa.toString() }
+    });
   }
-  getSProspectos_cmb(): Observable<any>{
-    return this.http.get(this.baseUrl + 'api/Prospectos/ComboProspectos');
+  getSectores(idEmpresa: number): Observable<any>{
+    return this.http.get(`${this.baseUrl}api/Prospectos/ComboSectores`, {
+      params: { idEmpresa: idEmpresa.toString() }
+    });
   }
-  postProspecto(data: requestProspecto): Observable <baseOut>{
+
+  postInsertProspecto(data: RequestProspecto): Observable <baseOut>{
+    console.log(data);
     return this.http.post<baseOut>(this.baseUrl+'api/Prospectos/GuardarProspecto', data);
   }
 }

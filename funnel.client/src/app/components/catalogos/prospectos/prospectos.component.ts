@@ -5,9 +5,9 @@ import { Table } from 'primeng/table';
 import { MessageService } from 'primeng/api';
 
 import{ ProspectoService } from '../../../services/prospecto.service';
-
 import { baseOut } from '../../../interfaces/utils/utils/baseOut';
-import { SEL_Prospectos } from '../../../interfaces/prospecto';
+import { Prospectos } from '../../../interfaces/prospecto';
+import { LoginService } from '../../../services/login.service';
 @Component({
   selector: 'app-prospectos',
   standalone: false,
@@ -15,7 +15,7 @@ import { SEL_Prospectos } from '../../../interfaces/prospecto';
   styleUrl: './prospectos.component.css'
 })
 export class ProspectosComponent {
-  constructor( private messageService: MessageService, private cdr: ChangeDetectorRef, private prospectoService: ProspectoService) { }
+  constructor( private messageService: MessageService, private cdr: ChangeDetectorRef, private prospectoService: ProspectoService, private loginService: LoginService) { }
 
 ngOnInit(): void {
 this.getProspectos();
@@ -23,12 +23,18 @@ this.getProspectos();
   @ViewChild('dt')
   dt!: Table ;
 
-prospectos: SEL_Prospectos[] = [];
-prospectosOriginal: SEL_Prospectos[] = [];
-prospectoSeleccionado!: SEL_Prospectos;
+prospectos: Prospectos[] = [];
+prospectosOriginal: Prospectos[] = [];
+prospectoSeleccionado!: Prospectos;
 filtroProspecto='';
 filtroUbicacionProspecto='';
-
+filtroSector='';
+filtroTodas=''; 
+filtroProceso='';
+filtroGanadas='';
+filtroPerdidas='';
+filtroCanceladas='';
+filtroEliminadas='';
 first: number = 0;
 rows: number = 10;
 loading: boolean = true;
@@ -47,8 +53,8 @@ rowsOptions = [
   { label: '50', value: 50 }
 ];
 getProspectos() {
-  this.prospectoService.getProspectos().subscribe({
-    next: (result: SEL_Prospectos[]) => {
+  this.prospectoService.getProspectos(this.loginService.obtenerIdEmpresa()).subscribe({
+    next: (result: Prospectos[]) => {
       this.prospectosOriginal = result;
       this.selectedEstatus = 'Activo';
       this.cdr.detectChanges();
@@ -76,11 +82,11 @@ FiltrarPorEstatus() {
 // eventosBotones
 inserta() {
   this.prospectoSeleccionado = {
-    bandera: '',
+    //bandera: '',
     idProspecto: 0,
     nombre: '',
     ubicacionFisica: '',
-    esatus: 0,
+    estatus: 0,
     desEstatus: '',
     nombreSector: '',
     idSector: 0,
@@ -90,11 +96,12 @@ inserta() {
     perdidas: 0,
     canceladas: 0,
     eliminadas: 0,
-    idEmpresa: 0,};
+    idEmpresa: 0,
+    };
   this.insertar = true;
   this.modalVisible = true;
 }
-actualiza(licencia: SEL_Prospectos) {
+actualiza(licencia: Prospectos) {
   this.prospectoSeleccionado = licencia;
   this.insertar = false;
   this.modalVisible = true;
@@ -145,8 +152,8 @@ getVisibleTotal(campo: string, dt: any): number {
     return registrosVisibles.length; // Retorna el número de registros visibles
   }
   return registrosVisibles.reduce(
-    (acc: number, empresa: SEL_Prospectos) =>
-      acc + Number(empresa[campo as keyof SEL_Prospectos] || 0),
+    (acc: number, empresa: Prospectos) =>
+      acc + Number(empresa[campo as keyof Prospectos] || 0),
     0
   );
 }

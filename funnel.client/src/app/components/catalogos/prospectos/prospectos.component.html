@@ -29,7 +29,7 @@
               <tr class="custom-header">
                 <th></th>
                 <th pSortableColumn="nombre">Nombre</th>
-                <th pSortableColumn="sector">Sector de la industria</th>
+                <th pSortableColumn="nombreSector">Sector de la industria</th>
                 <th pSortableColumn="ubicacionFisica">Ubicación Física</th>
                 <th pSortableColumn="todas">Todas</th>
                 <th pSortableColumn="proceso">En proceso</th>
@@ -42,9 +42,9 @@
               <tr class="custom-header2">
                 <th></th>
                 <th><input pInputText type="text" [(ngModel)]="filtroProspecto" (ngModelChange)="updateFilter($event, 'nombre')"></th>
+                <th><input pInputText type="text" [(ngModel)]="filtroSector" (ngModelChange)="updateFilter($event, 'nombreSector')"></th>
                 <th><input pInputText type="text" [(ngModel)]="filtroUbicacionProspecto" (ngModelChange)="updateFilter($event, 'ubicacionFisica')"></th>
-                <th><input pInputText type="text" [(ngModel)]="filtroSector" (ngModelChange)="updateFilter($event, 'sector')"></th>
-                <th><input pInputText type="text" [(ngModel)]="filtroTodas" (ngModelChange)="updateFilter($event, 'todas')"></th>
+                <th><input pInputText type="text" [(ngModel)]="filtroTodas" (ngModelChange)="updateFilter($event, 'totalOportunidades')"></th>
                 <th><input pInputText type="text" [(ngModel)]="filtroProceso" (ngModelChange)="updateFilter($event, 'proceso')"></th>
                 <th><input pInputText type="text" [(ngModel)]="filtroGanadas" (ngModelChange)="updateFilter($event, 'ganadas')"></th>
                 <th><input pInputText type="text" [(ngModel)]="filtroPerdidas" (ngModelChange)="updateFilter($event, 'perdidas')"></th>

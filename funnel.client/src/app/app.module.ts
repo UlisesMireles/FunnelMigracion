@@ -18,6 +18,7 @@ import { providePrimeNG } from 'primeng/config';
 
 import { ModalTipoServiciosComponent } from './components/catalogos/tipo-servicios/modal-tipo-servicios/modal-tipo-servicios.component';
 import { ProspectosComponent } from './components/catalogos/prospectos/prospectos.component';
+import { ModalProspectosComponent } from './components/catalogos/prospectos/modal-prospectos/modal-prospectos.component';
 
 import Aura from '@primeng/themes/aura';
 import { MessageService } from 'primeng/api';
@@ -38,6 +39,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { TextareaModule } from 'primeng/textarea';
 import { PasswordModule } from 'primeng/password';
+
 export function getBaseUrl() {
   return 'https://localhost:49834/'
 }
@@ -61,6 +63,7 @@ import { TipoServiciosComponent } from './components/catalogos/tipo-servicios/ti
     FooterComponent,
     ProspectosComponent,
     ModalTipoServiciosComponent,
+    ModalProspectosComponent,
     ContactosComponent,
     ModalContactosComponent,
     TipoServiciosComponent,
@@ -90,7 +93,8 @@ import { TipoServiciosComponent } from './components/catalogos/tipo-servicios/ti
     CheckboxModule,
     InputNumberModule,
     TextareaModule,
-    PasswordModule
+    PasswordModule,
+    DialogModule,
 
   ],
   providers: [

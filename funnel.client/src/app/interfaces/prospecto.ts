@@ -1,9 +1,9 @@
-export interface SEL_Prospectos {
-    bandera: string;
+export interface Prospectos {
+    //bandera: string;
     idProspecto: number;
     nombre: string;
     ubicacionFisica: string;
-    esatus: number;
+    estatus: number;
     desEstatus: string;
     nombreSector: string;
     idSector: number;
@@ -15,16 +15,19 @@ export interface SEL_Prospectos {
     eliminadas: number;
     idEmpresa: number;
 }
-export interface SEL_Prospectos_CMB{
+export interface ProspectosCmb{
     idProspecto: number,
     nombre: string,
     ubicacionFisica: string
   }
-  export interface requestProspecto{
+  export interface RequestProspecto{
     bandera:string,
-    idProspecto: number,
+    idProspecto?: number,
     nombre:string,
     ubicacionFisica:string,
-    estatus: number,
+    estatus:number, 
+    idSector: number,
+   
+    idEmpresa?: number
   }
   

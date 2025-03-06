@@ -134,7 +134,6 @@ ngOnInit(): void {
   }
 
   inserta() {
-    console.log(this.tiposEntregaSeleccionado);
     this.tiposEntregaSeleccionado = {
       idTipoEntrega: 0,
       descripcion: '',

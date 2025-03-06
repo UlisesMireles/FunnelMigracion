@@ -40,7 +40,14 @@
           </span>
         </div>
       </div>
-
+      <div class="row inptSpace" *ngIf="!insertar">
+        <div class="col-sm-4 lbl">
+          <label for="estatus">Estatus: </label>
+        </div>
+        <div class="col-sm-8 inptSpace">
+          <p-checkbox formControlName="estatus" [binary]="true"></p-checkbox>
+        </div>
+      </div>
       
       
   </form>

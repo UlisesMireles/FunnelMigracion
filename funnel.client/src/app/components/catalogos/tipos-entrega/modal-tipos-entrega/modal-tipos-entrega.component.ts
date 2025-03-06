@@ -72,7 +72,7 @@ inicializarFormulario() {
        this.closeModal.emit();
      }
      guardarTipoEntrega() {
-      if (this.tipoEntregaForm.valid) {
+      if (!this.tipoEntregaForm.valid) {
         this.mostrarToastError();
         return;
       }

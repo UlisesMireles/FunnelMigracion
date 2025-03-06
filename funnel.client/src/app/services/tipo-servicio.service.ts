@@ -13,7 +13,7 @@ export class TipoServicioService {
   
     constructor(private readonly http: HttpClient) { }
     getTipoServicios(idEmpresa: number): Observable<any> {
-      return this.http.get(`${this.baseUrl}api/Servicios/ConsultarServicios/` + idEmpresa.toString());
+      return this.http.get(`${this.baseUrl}api/Servicios/ConsultarServicios` + idEmpresa.toString());
     }
 
     postGuardarServicio(request: RequestTipoServicio): Observable<any> {

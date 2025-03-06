@@ -10,8 +10,7 @@ import { ModalProspectosComponent } from './components/catalogos/prospectos/moda
 import { ContactosComponent } from './components/catalogos/contactos/contactos.component';
 import { TipoServiciosComponent } from './components/catalogos/tipo-servicios/tipo-servicios.component';
 import { ModalTipoServiciosComponent } from './components/catalogos/tipo-servicios/modal-tipo-servicios/modal-tipo-servicios.component';
-
-
+import { TiposEntregaComponent } from './components/catalogos/tipos-entrega/tipos-entrega.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent, title: 'Login' },
@@ -24,6 +23,7 @@ const routes: Routes = [
   { path: 'tipos-servicios', component: TipoServiciosComponent, title: 'Tipos Servicios ', canActivate: [AuthGuard] },
   { path: 'tipos-servicios-modal', component: ModalTipoServiciosComponent, title: 'Tipos Servicios ', canActivate: [AuthGuard] },
   {path: 'modal-prospectos', component: ModalProspectosComponent, title: 'Modal Prospectos', canActivate: [AuthGuard] },
+  {path:'tipos-entrega', component: TiposEntregaComponent, title: 'Tipos Entrega', canActivate: [AuthGuard] },
   
 ];
 

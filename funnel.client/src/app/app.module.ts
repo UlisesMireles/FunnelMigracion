@@ -17,6 +17,7 @@ import { ModalTipoServiciosComponent } from './components/catalogos/tipo-servici
 import { ProspectosComponent } from './components/catalogos/prospectos/prospectos.component';
 import { ModalProspectosComponent } from './components/catalogos/prospectos/modal-prospectos/modal-prospectos.component';
 import { TiposEntregaComponent } from './components/catalogos/tipos-entrega/tipos-entrega.component';
+import { ModalTiposEntregaComponent } from './components/catalogos/tipos-entrega/modal-tipos-entrega/modal-tipos-entrega.component';
 import Aura from '@primeng/themes/aura';
 import { MessageService } from 'primeng/api';
 import { TableModule } from 'primeng/table';
@@ -64,7 +65,8 @@ import { TipoServiciosComponent } from './components/catalogos/tipo-servicios/ti
     ContactosComponent,
     ModalContactosComponent,
     TipoServiciosComponent,
-    TiposEntregaComponent
+    TiposEntregaComponent,
+    ModalTiposEntregaComponent
   ],
   imports: [
     BrowserModule,

@@ -13,6 +13,7 @@ import { NgxCaptchaModule } from 'ngx-captcha';
 import { ReactiveFormsModule, FormsModule} from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
+import { TooltipModule } from 'primeng/tooltip';
 
 
 
@@ -48,6 +49,7 @@ import { ContactosComponent } from './components/catalogos/contactos/contactos.c
 import { ModalContactosComponent } from './components/catalogos/contactos/modal-contactos/modal-contactos.component';
 import { TipoServiciosComponent } from './components/catalogos/tipo-servicios/tipo-servicios.component';
 
+import { OportunidadesComponent} from './components/catalogos/oportunidades/oportunidades.component';
 
 
 
@@ -67,6 +69,7 @@ import { TipoServiciosComponent } from './components/catalogos/tipo-servicios/ti
     ContactosComponent,
     ModalContactosComponent,
     TipoServiciosComponent,
+    OportunidadesComponent,
   ],
   imports: [
     BrowserModule,
@@ -95,6 +98,7 @@ import { TipoServiciosComponent } from './components/catalogos/tipo-servicios/ti
     TextareaModule,
     PasswordModule,
     DialogModule,
+    TooltipModule, 
 
   ],
   providers: [

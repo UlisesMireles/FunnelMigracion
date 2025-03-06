@@ -1,0 +1,117 @@
+<div class="container-fluid">
+    <div class="row">
+      <div class="col-12" style="text-align: left; font-weight: bold;">
+        <h3>Administración General de Oportunidades en Proceso</h3>
+      </div>
+  
+      <div class="col-12">
+        <div class="row contenedorTabla">
+          <div *ngIf="loading">Cargando...</div>
+          <p-table *ngIf="!loading" #dt [stripedRows]="true" [value]="oportunidades" [paginator]="true"
+            [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" (onPage)="pageChange($event)" [first]="first"
+            [showCurrentPageReport]="true" paginatorPosition="both" [columnResizeMode]="'fit'"
+            [resizableColumns]="true" [scrollable]="true"
+            currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros">
+            
+            <ng-template class="divAccionesTabla" #caption>
+              <div class="row">
+                <div class="col inDivDatatableHeader" style="text-align:right; margin-right:5px">
+                  <p-button label="" icon="bi bi-arrow-clockwise" (click)="reset()" severity="secondary"
+                    [ngStyle]="{'margin-right': '5px'}" />
+                  <p-button label="" icon="bi bi-plus" severity="secondary" />
+                </div> 
+              </div>
+            </ng-template>
+  
+            <ng-template #header>
+              <tr class="custom-header">
+                <th></th>
+                <th pSortableColumn="nombre">Nombre</th>
+                <th pSortableColumn="nombreSector">Sector</th>
+                <th pSortableColumn="nombreOportunidad">Oportunidad</th>
+                <th pSortableColumn="abreviatura">Abreviatura</th>
+                <th pSortableColumn="stage">Etapa</th>
+                <th pSortableColumn="iniciales">Iniciales</th>
+                <th pSortableColumn="nombreContacto">Contacto</th>
+                <th pSortableColumn="entrega">Entrega</th>
+                <th pSortableColumn="monto">Monto</th>
+                <th pSortableColumn="probabilidadOriginal">Probabilidad Original</th>
+                <th pSortableColumn="probabilidad">Probabilidad</th>
+                <th pSortableColumn="montoNormalizado">Monto Normalizado</th>
+                <th pSortableColumn="fechaRegistro">Fecha de Registro</th>
+                <th pSortableColumn="diasFunnel">Días en Funnel</th>
+                <th pSortableColumn="fechaEstimadaCierreOriginal">Fecha Estimada de Cierre</th>
+                <th pSortableColumn="fechaModificacion">Fecha de Modificación</th>
+              </tr>
+              <tr class="custom-header2">
+                <th></th>
+                <th><input pInputText type="text" [(ngModel)]="filtroNombre" (ngModelChange)="updateFilter($event, 'nombre')"></th>
+                <th><input pInputText type="text" [(ngModel)]="filtroNombreSector" (ngModelChange)="updateFilter($event, 'nombreSector')"></th>
+                <th><input pInputText type="text" [(ngModel)]="filtroNombreOportunidad" (ngModelChange)="updateFilter($event, 'nombreOportunidad')"></th>
+                <th><input pInputText type="text" [(ngModel)]="filtroAbreviatura" (ngModelChange)="updateFilter($event, 'abreviatura')"></th>
+                <th><input pInputText type="text" [(ngModel)]="filtroTooltipStage" (ngModelChange)="updateFilter($event, 'tooltipStage')"></th>
+                <th><input pInputText type="text" [(ngModel)]="filtroNombreEjecutivo" (ngModelChange)="updateFilter($event, 'nombreEjecutivo')"></th>
+                <th><input pInputText type="text" [(ngModel)]="filtroNombreContacto" (ngModelChange)="updateFilter($event, 'nombreContacto')"></th>
+                <th><input pInputText type="text" [(ngModel)]="filtroEntregaDescripcion" (ngModelChange)="updateFilter($event, 'entregaDescripcion')"></th>
+                <th><input pInputText type="text" [(ngModel)]="filtroMonto" (ngModelChange)="updateFilter($event, 'monto')"></th>
+                <th><input pInputText type="text" [(ngModel)]="filtroProbabilidadOriginal" (ngModelChange)="updateFilter($event, 'probabilidadOriginal')"></th>
+                <th><input pInputText type="text" [(ngModel)]="filtroProbabilidad" (ngModelChange)="updateFilter($event, 'probabilidad')"></th>
+                <th><input pInputText type="text" [(ngModel)]="filtroMontoNormalizado" (ngModelChange)="updateFilter($event, 'montoNormalizado')"></th>
+                <th><input pInputText type="text" [(ngModel)]="filtroFechaRegistro" (ngModelChange)="updateFilter($event, 'fechaRegistro')"></th>
+                <th><input pInputText type="text" [(ngModel)]="filtroDiasFunnel" (ngModelChange)="updateFilter($event, 'diasFunnel')"></th>
+                <th><input pInputText type="text" [(ngModel)]="filtroFechaEstimadaCierreOriginal" (ngModelChange)="updateFilter($event, 'fechaEstimadaCierreOriginal')"></th>
+                <th><input pInputText type="text" [(ngModel)]="filtroFechaModificacion" (ngModelChange)="updateFilter($event, 'fechaModificacion')"></th>
+              </tr>
+            </ng-template>
+  
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="19" class="text-center">No se encontraron registros</td>
+              </tr>
+            </ng-template>
+  
+            <ng-template #body let-oportunidad>
+              <tr class="custom-header3 custom-row filas">
+                <td>
+                  <p-button type="button" icon="bi bi-pencil"  text />
+                </td>
+                <td>{{ oportunidad.nombre }}</td>
+                <td>{{ oportunidad.nombreSector }}</td>
+                <td>{{ oportunidad.nombreOportunidad }}</td>
+                <td pTooltip="{{ oportunidad.descripcion || 'Sin descripción' }}" tooltipPosition="top">
+                  {{ oportunidad.abreviatura || 'N/A' }}
+                </td> 
+                <td pTooltip="{{ oportunidad.tooltipStage || 'Sin descripción' }}" tooltipPosition="top">
+                  {{ oportunidad.stage || 'N/A' }}
+                </td> 
+                <td pTooltip="{{ oportunidad.nombreEjecutivo || 'Sin descripción' }}" tooltipPosition="top">
+                  {{ oportunidad.iniciales || 'N/A' }}
+                </td> 
+                <td>{{ oportunidad.nombreContacto || 'N/A' }}</td>
+                <td pTooltip="{{ oportunidad.entregaDescripcion || 'Sin descripción' }}" tooltipPosition="top">
+                  {{ oportunidad.entrega || 'N/A' }}
+                </td>  
+                <td>{{ oportunidad.monto || '0' }}</td>
+                <td>{{ oportunidad.probabilidadOriginal || 'N/A' }}</td>
+                <td>{{ oportunidad.probabilidad || 'N/A' }}</td>
+                <td>{{ oportunidad.montoNormalizado || '0' }}</td>
+                <td>{{ oportunidad.fechaRegistro || 'N/A' }}</td>
+                <td>{{ oportunidad.diasFunnel || '0' }}</td>
+                <td>{{ oportunidad.fechaEstimadaCierreOriginal || 'N/A' }}</td>
+                <td>{{ oportunidad.fechaModificacion || 'N/A' }}</td>   
+              </tr>
+            </ng-template>
+  
+            <ng-template #footer>
+              <tr class="custom-footer ">
+                <td></td>
+                <td colspan="19">Total: {{ getVisibleTotal('nombre',dt) }}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+        <p-toast position="center"></p-toast>
+      </div>
+    </div>
+  </div>
+  

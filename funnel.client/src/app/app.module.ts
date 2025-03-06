@@ -13,13 +13,11 @@ import { NgxCaptchaModule } from 'ngx-captcha';
 import { ReactiveFormsModule, FormsModule} from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
-
-
-
 import { ModalTipoServiciosComponent } from './components/catalogos/tipo-servicios/modal-tipo-servicios/modal-tipo-servicios.component';
 import { ProspectosComponent } from './components/catalogos/prospectos/prospectos.component';
 import { ModalProspectosComponent } from './components/catalogos/prospectos/modal-prospectos/modal-prospectos.component';
-
+import { TiposEntregaComponent } from './components/catalogos/tipos-entrega/tipos-entrega.component';
+import { ModalTiposEntregaComponent } from './components/catalogos/tipos-entrega/modal-tipos-entrega/modal-tipos-entrega.component';
 import Aura from '@primeng/themes/aura';
 import { MessageService } from 'primeng/api';
 import { TableModule } from 'primeng/table';
@@ -67,6 +65,8 @@ import { TipoServiciosComponent } from './components/catalogos/tipo-servicios/ti
     ContactosComponent,
     ModalContactosComponent,
     TipoServiciosComponent,
+    TiposEntregaComponent,
+    ModalTiposEntregaComponent
   ],
   imports: [
     BrowserModule,

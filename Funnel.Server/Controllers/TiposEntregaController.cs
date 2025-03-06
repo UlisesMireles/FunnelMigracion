@@ -22,11 +22,10 @@ namespace Funnel.Server.Controllers
         }
 
         [HttpGet("[action]/")]
-        public async Task<ActionResult<List<TipoEntregaDto>>> ConsultarTiposEntrega()
+        public async Task<ActionResult<List<TipoEntregaDto>>> ConsultarTiposEntrega(int idEmpresa)
         {
-            int idEmpresa = 1;
-            var respuesta = await _tiposEntregaService.ConsultarTiposEntrega(idEmpresa);
-            return Ok(respuesta);
+            var result = await _tiposEntregaService.ConsultarTiposEntrega(idEmpresa);
+            return Ok(result);
         }
 
         [HttpPost("[action]/")]

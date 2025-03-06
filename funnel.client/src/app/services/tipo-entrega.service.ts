@@ -12,8 +12,10 @@ export class TipoEntregaService {
   
     constructor(private readonly http: HttpClient) { }
     getTiposEntrega(idEmpresa: number): Observable<any> {
-      return this.http.get(`${this.baseUrl}api/TiposEntrega/ConsultarTiposEntrega/` + idEmpresa.toString());
-    }
+        return this.http.get(`${this.baseUrl}api/TiposEntrega/ConsultarTiposEntrega`, {
+          params: { idEmpresa: idEmpresa.toString() }
+        });
+      }
 
     postGuardarTipoEntrega(request: RequestTipoEntrega): Observable<any> {
       return this.http.post(`${this.baseUrl}api/TiposEntrega/GuardarTipoEntrega`, request);

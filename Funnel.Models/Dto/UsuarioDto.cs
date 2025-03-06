@@ -4,6 +4,7 @@ namespace Funnel.Models.Dto
 {
     public class UsuarioDto : BaseOut
     {
+        public string? Bandera { get; set; }
         public int IdUsuario { get; set; }
         public string? Usuario { get; set; }
         public string? Password { get; set; }
@@ -13,5 +14,20 @@ namespace Funnel.Models.Dto
         public string? Alias { get; set; }
         public int IdEmpresa { get; set; }
         public int IdRol { get; set; }
+        public int? IdTipoUsuario { get; set; }
+        public string? ApellidoPaterno { get; set; }
+        public string? ApellidoMaterno { get; set; }
+        public DateTime? FechaRegistro { get; set; }
+        public DateTime? FechaModificacion { get; set; }
+        public int? Estatus { get; set; }
+        public string? DesEstatus { get; set; }
+        public string? ArchivoImagen { get; set; }
+        public int? UsuarioCreador { get; set; }
+        public string? CodigoAutenticacion { get; set; }
+        public DateTime? FechaInicio { get; set; }
+        public DateTime? FechaFin { get; set; }
+        public string? Iniciales { get; set; }
+        public string? CorreoElectronico { get; set; }
+        public int? NumOportunidades { get; set; }
     }
 }

@@ -5,7 +5,7 @@
       </div>
   
       <div class="col-12">
-        <div class="row contenedorTabla">
+        <div class="row contenedorTabla" style="justify-content: center; display: flex; width: 100% ;" >
           <div *ngIf="loading">Cargando...</div>
           <p-table *ngIf="!loading" #dt [stripedRows]="true" [value]="oportunidades" [paginator]="true"
             [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" (onPage)="pageChange($event)" [first]="first"
@@ -35,13 +35,13 @@
                 <th pSortableColumn="nombreContacto">Contacto</th>
                 <th pSortableColumn="entrega">Entrega</th>
                 <th pSortableColumn="monto">Monto</th>
-                <th pSortableColumn="probabilidadOriginal">Probabilidad Original</th>
-                <th pSortableColumn="probabilidad">Probabilidad</th>
-                <th pSortableColumn="montoNormalizado">Monto Normalizado</th>
-                <th pSortableColumn="fechaRegistro">Fecha de Registro</th>
-                <th pSortableColumn="diasFunnel">Días en Funnel</th>
-                <th pSortableColumn="fechaEstimadaCierreOriginal">Fecha Estimada de Cierre</th>
-                <th pSortableColumn="fechaModificacion">Fecha de Modificación</th>
+                <th pSortableColumn="probabilidadOriginal">% Original</th>
+                <th pSortableColumn="probabilidad">% Actual</th>
+                <th pSortableColumn="montoNormalizado">Venta Esperada</th>
+                <th pSortableColumn="fechaRegistro">Fecha Alta</th>
+                <th pSortableColumn="diasFunnel">Días Funnel</th>
+                <th pSortableColumn="fechaEstimadaCierreOriginal">Cierre Est</th>
+                <th pSortableColumn="fechaModificacion">Dias s/Act</th>
               </tr>
               <tr class="custom-header2">
                 <th></th>

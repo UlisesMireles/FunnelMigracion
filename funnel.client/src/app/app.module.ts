@@ -50,9 +50,8 @@ import { ModalContactosComponent } from './components/catalogos/contactos/modal-
 import { TipoServiciosComponent } from './components/catalogos/tipo-servicios/tipo-servicios.component';
 
 import { OportunidadesComponent} from './components/catalogos/oportunidades/oportunidades.component';
-
-
-
+import { CommonModule, DatePipe} from '@angular/common';
+import { TipoCurrencyPipe } from './pipes/tipoCurrency.pipe';
 
 @NgModule({
   declarations: [
@@ -99,7 +98,9 @@ import { OportunidadesComponent} from './components/catalogos/oportunidades/opor
     PasswordModule,
     DialogModule,
     TooltipModule, 
-
+    DatePipe,
+    CommonModule,
+    TipoCurrencyPipe
   ],
   providers: [
     { provide: 'BASE_URL', useFactory: getBaseUrl, deps: [] },

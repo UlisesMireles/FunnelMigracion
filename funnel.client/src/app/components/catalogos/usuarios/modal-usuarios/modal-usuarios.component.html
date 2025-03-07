@@ -7,14 +7,15 @@
   (onShow)="onDialogShow()"
   class="bodyDialog"
 >
-  <ng-template pTemplate="header">
-    <label class="margen">
-      {{ insertar ? 'Nuevo Usuario' : title + ' ' + usuarioForm.get('nombre')?.value }}
-    </label>
-  </ng-template>
+<ng-template pTemplate="header">
+  <label class="margen">
+    {{ insertar ? 'Nuevo Usuario' : title + ' ' + usuarioForm.get('nombre')?.value }}
+  </label>
+</ng-template>
 
-  <ng-template pTemplate="content">
-    <form [formGroup]="usuarioForm">
+<ng-template pTemplate="content">
+  <form *ngIf="usuarioForm" [formGroup]="usuarioForm">
+
       <div class="row inptSpace">
         <div class="col-sm-4 lbl">
           <label for="nombre">Nombre:</label>
@@ -96,14 +97,34 @@
   
       <div class="row inptSpace">
         <div class="col-sm-4 lbl">
-          <label for="correoElectronico">Correo Electrónico:</label>
+          <label for="correo">Correo Electrónico:</label>
         </div>
         <div class="col-sm-8 inptSpace">
-          <input pInputText class="inptSize" formControlName="correoElectronico" />
-          <span *ngIf="usuarioForm.get('correoElectronico')?.invalid && usuarioForm.get('correoElectronico')?.touched" class="text-danger">
+          <input pInputText class="inptSize" formControlName="correo" />
+          <span *ngIf="usuarioForm.get('correo')?.invalid && usuarioForm.get('correo')?.touched" class="text-danger">
             <br />
-            <ng-container *ngIf="usuarioForm.get('correoElectronico')?.errors?.['required']">El correo es obligatorio.</ng-container>
-            <ng-container *ngIf="usuarioForm.get('correoElectronico')?.errors?.['email']">Formato de correo inválido.</ng-container>
+            <ng-container *ngIf="usuarioForm.get('correo')?.errors?.['required']">El correo es obligatorio.</ng-container>
+            <ng-container *ngIf="usuarioForm.get('correo')?.errors?.['email']">Formato de correo inválido.</ng-container>
+          </span>
+        </div>
+      </div>
+  
+      <div class="row inptSpace">
+        <div class="col-sm-4 lbl">
+          <label for="tiposUsuario">Tipo de Usuario: </label>
+        </div>
+        <div class="col-sm-8 inptSpace">
+          <p-dropdown
+            class="inptSize1"
+            [options]="tiposUsuario"
+            formControlName="idTipoUsuario"
+            optionLabel="descripcion"
+            optionValue="idTipoUsuario"
+            appendTo="body"
+            placeholder="Seleccione un tipo de usuario">
+          </p-dropdown>
+          <span *ngIf="usuarioForm.get('idTipoUsuario')?.invalid && usuarioForm.get('idTipoUsuario')?.touched" class="text-danger"><br>
+            <ng-container *ngIf="usuarioForm.get('idTipoUsuario')?.errors?.['required']">Debe seleccionar un tipo de usuario.</ng-container>
           </span>
         </div>
       </div>
@@ -126,4 +147,3 @@
     <button pButton label="Cancelar" (click)="close()" severity="secondary"></button>
   </ng-template>
 </p-dialog>
-

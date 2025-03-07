@@ -145,8 +145,7 @@ export class UsuariosComponent {
           console.log(this.usuarioSeleccionado);
           this.usuarioSeleccionado = {
             result: true,
-            errorMessage: 'No hay error',
-            id: 0,  
+            errorMessage: 'No hay error',  
             idUsuario: 0, 
             usuario: '',
             password: '',
@@ -167,7 +166,8 @@ export class UsuariosComponent {
             codigoAutenticacion: '',
             fechaInicio: '',
             fechaFin: '',
-            iniciales: ''
+            iniciales: '',
+            id: 0
           };
           this.insertar = true;
           this.modalVisible = true;

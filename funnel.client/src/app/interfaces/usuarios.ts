@@ -2,7 +2,7 @@ export interface Usuario {
     result: boolean;
     errorMessage: string;
 
-    idUsuario?: number;
+    idUsuario: number;
     usuario: string;
     password: string;
     tipoUsuario: string;
@@ -23,12 +23,12 @@ export interface Usuario {
     fechaInicio: string;
     fechaFin: string;
     iniciales: string;
-    id: number;
+    id?: number;
   }
   
   export interface RequestUsuario {
     bandera: string; 
-    idUsuario?: number;
+    idUsuario: number;
     usuario: string;
     password: string;
     tipoUsuario: string;
@@ -44,4 +44,5 @@ export interface Usuario {
     fechaInicio: string;
     fechaFin: string;
     iniciales: string;
+    id?: number;
   }

@@ -8,10 +8,9 @@ export interface Usuario {
     tipoUsuario: string;
     nombre: string;
     correo: string;
-    alias: string;
     idEmpresa: number;
-    idRol: number;
     idTipoUsuario: number;
+    descripcion: string;
     apellidoPaterno: string;
     apellidoMaterno: string;
     fechaRegistro: string;
@@ -24,8 +23,6 @@ export interface Usuario {
     fechaInicio: string;
     fechaFin: string;
     iniciales: string;
-    correoElectronico: string;
-    numOportunidades: number;
     id: number;
   }
   
@@ -37,9 +34,7 @@ export interface Usuario {
     tipoUsuario: string;
     nombre: string;
     correo: string;
-    alias: string;
     idEmpresa: number;
-    idRol: number;
     idTipoUsuario: number;
     apellidoPaterno: string;
     apellidoMaterno: string;
@@ -49,6 +44,4 @@ export interface Usuario {
     fechaInicio: string;
     fechaFin: string;
     iniciales: string;
-    correoElectronico: string;
-    numOportunidades: number;
   }

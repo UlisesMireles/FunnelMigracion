@@ -23,7 +23,7 @@ export class UsuariosComponent {
 
   usuarios: Usuario[] = [];
   usuariosOriginal: Usuario[] = [];
-  usuariosSeleccionado!: Usuario;
+  usuarioSeleccionado!: Usuario;
 
   selectedEstatus: string = 'Activo';
   loading: boolean = true;
@@ -35,6 +35,7 @@ export class UsuariosComponent {
   filtroApellidoPaterno = '';
   filtroApellidoMaterno = '';
   filtroUsuario = '';
+  filtroDescripcion = '';
 
 
   
@@ -141,8 +142,8 @@ export class UsuariosComponent {
       }
 
       inserta() {
-          console.log(this.usuariosSeleccionado);
-          this.usuariosSeleccionado = {
+          console.log(this.usuarioSeleccionado);
+          this.usuarioSeleccionado = {
             result: true,
             errorMessage: 'No hay error',
             id: 0,  
@@ -152,10 +153,9 @@ export class UsuariosComponent {
             tipoUsuario: '',
             nombre: '',
             correo: '',
-            alias: '',
             idEmpresa: 0,
-            idRol: 0,
             idTipoUsuario: 0,
+            descripcion: '',
             apellidoPaterno: '',
             apellidoMaterno: '',
             fechaRegistro: '',  
@@ -167,16 +167,14 @@ export class UsuariosComponent {
             codigoAutenticacion: '',
             fechaInicio: '',
             fechaFin: '',
-            iniciales: '',
-            correoElectronico: '',
-            numOportunidades: 0
+            iniciales: ''
           };
           this.insertar = true;
           this.modalVisible = true;
         }
        
         actualiza(licencia: Usuario) {
-          this.usuariosSeleccionado = licencia;
+          this.usuarioSeleccionado = licencia;
           this.insertar = false;
           this.modalVisible = true;
         }

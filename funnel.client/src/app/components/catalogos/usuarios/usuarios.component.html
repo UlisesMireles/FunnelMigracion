@@ -18,7 +18,7 @@
                 <div class="col inDivDatatableHeader" style="text-align:right; margin-right:5px">
                   <p-button label="" icon="bi bi-arrow-clockwise" (click)="reset()" severity="secondary"
                     [ngStyle]="{'margin-right': '5px'}" />
-                  <p-button label="" icon="bi bi-plus" severity="secondary"  />
+                  <p-button label="" icon="bi bi-plus" severity="secondary"  (click)="inserta()"/>
                 </div> 
               </div>
             </ng-template>
@@ -31,8 +31,9 @@
                 <th pSortableColumn="apellidoMaterno">Apellido Materno</th>
                 <th pSortableColumn="usuario">Usuario</th>
                 <th pSortableColumn="iniciales">Iniciales</th>
-                <th pSortableColumn="correoElectronico">Correo Electrónico</th>
-                <th pSortableColumn="estatus">Estatus</th>
+                <th pSortableColumn="correo">Correo Electrónico</th>
+                <th pSortableColumn="tipoUsuario">Tipo de usuario</th>
+                <th pSortableColumn="desEstatus">Estatus</th> 
               </tr>
               <tr class="custom-header2">
                 <th></th>
@@ -51,25 +52,31 @@
                 <th></th>
                 <th></th>
                 <th>
+                  <input pInputText type="text" [(ngModel)]="filtroDescripcion" (ngModelChange)="updateFilter($event, 'tipoUsuario')">
+                </th>
+                <th>
                   <p-select [options]="EstatusDropdown" [(ngModel)]="selectedEstatus" [appendTo]="'body'"
                     (onChange)="FiltrarPorEstatus()" optionLabel="label" optionValue="value">
                   </p-select>
                 </th>
               </tr>
+              
             </ng-template>
+            
   
             <ng-template #body let-usuario>
               <tr class="custom-header3 custom-row filas">
                 <td>
-                  <p-button type="button" icon="bi bi-pencil" />
+                  <p-button type="button" icon="bi bi-pencil" text (click)="actualiza(usuario)"/>
                 </td>
                 <td style="font-weight: bold;">{{ usuario.nombre }}</td>
                 <td>{{ usuario.apellidoPaterno }}</td>
                 <td>{{ usuario.apellidoMaterno }}</td>
                 <td>{{ usuario.usuario }}</td>
                 <td>{{ usuario.iniciales }}</td>
-                <td>{{ usuario.correoElectronico }}</td>
-                <td>{{ usuario.estatus }}</td>
+                <td>{{ usuario.correo }}</td>
+                <td>{{ usuario.tipoUsuario }}</td>
+                <td>{{ usuario.desEstatus }}</td>
               </tr>
             </ng-template>
   
@@ -86,5 +93,10 @@
     </div>
   </div>
   
+
+  <app-modal-usuarios [(visible)]="modalVisible" [title]="'Editar datos de '" 
+  (closeModal)="onModalClose()" (result)="manejarResultado($event)" 
+  [insertar]="insertar" [usuarios]="usuarioSeleccionado" >
+</app-modal-usuarios>
 
   

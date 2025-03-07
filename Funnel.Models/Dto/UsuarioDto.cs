@@ -27,7 +27,7 @@ namespace Funnel.Models.Dto
         public DateTime? FechaInicio { get; set; }
         public DateTime? FechaFin { get; set; }
         public string? Iniciales { get; set; }
-        public string? CorreoElectronico { get; set; }
-        public int? NumOportunidades { get; set; }
+
+
     }
 }

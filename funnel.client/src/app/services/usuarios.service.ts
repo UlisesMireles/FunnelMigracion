@@ -15,8 +15,11 @@ export class UsuariosService {
     getUsuarios(IdEmpresa: number): Observable<any> {
       return this.http.get(`${this.baseUrl}api/Usuarios/ConsultarUsuarios/${IdEmpresa}`);
     }
-    
-  
+    getTiposUsuarios(idEmpresa: number): Observable<any>{
+      return this.http.get(`${this.baseUrl}api/Usuarios/ComboTiposUsuarios`, {
+        params: { idEmpresa: idEmpresa.toString() }
+      });
+    }
 
       postGuardarUsuario(request: RequestUsuario): Observable<any> {
         return this.http.post(`${this.baseUrl}api/Usuarios/GuardarUsuario`, request);

@@ -22,7 +22,10 @@ namespace Funnel.Logic
         {
             _usuarioData = usuarioData;
         }
-
+        public async Task<List<ComboTiposUsuariosDto>> ComboTiposUsuarios()
+        {
+            return await _usuarioData.ComboTiposUsuarios();
+        }
         public async Task<List<UsuarioDto>> ConsultarUsuarios(int IdUsuario)
         {
             return await _usuarioData.ConsultarUsuarios(IdUsuario);

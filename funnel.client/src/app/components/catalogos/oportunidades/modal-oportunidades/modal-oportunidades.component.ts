@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 
 import { MessageService } from 'primeng/api';
 
@@ -19,7 +19,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class ModalOportunidadesComponent {
 
-  constructor(private oportunidadService : OportunidadesService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder) { }
+  constructor(private oportunidadService : OportunidadesService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder, private cdr: ChangeDetectorRef) { }
     @Input() oportunidad!: Oportunidad;
     @Input() oportunidades: Oportunidad[]=[];
     @Input() title: string = 'Modal';
@@ -53,8 +53,16 @@ export class ModalOportunidadesComponent {
       if (this.insertar) {
         this.oportunidadForm = this.fb.group({
           idOportunidad: [0],
-          idProspecto: [null, Validators.required], 
-          
+          idProspecto: ['', Validators.required],
+          descripcion: ['', Validators.required],
+          monto: ['', Validators.required],
+          idServicio: ['', Validators.required],
+          idEtapa: ['', Validators.required],
+          idEntrega: ['', Validators.required],
+          fecha: ['', Validators.required],
+          idEjecutivo: ['', Validators.required],
+          idContactoProspecto: ['', Validators.required],
+          comentario: [''],
           idEmpresa: [this.loginService.obtenerIdEmpresa()],
           bandera: ['INSERT']
         });
@@ -63,6 +71,15 @@ export class ModalOportunidadesComponent {
         this.oportunidadForm = this.fb.group({
           idOportunidad: [this.oportunidad.idOportunidad],
           idProspecto: [this.oportunidad.idProspecto, Validators.required],
+          descripcion: [this.oportunidad.descripcion, Validators.required],
+          monto: [this.oportunidad.monto, Validators.required],
+          idServicio: [this.oportunidad.idTipoProyecto, Validators.required],
+          idEtapa: [this.oportunidad.idStage, Validators.required],
+          idEntrega: [this.oportunidad.idTipoEntrega, Validators.required],
+          fecha: [this.oportunidad.fechaEstimadaCierre, Validators.required],
+          idEjecutivo: [this.oportunidad.idEjecutivo, Validators.required],
+          idContactoProspecto: [this.oportunidad.idContactoProspecto, Validators.required],
+          comentario: [this.oportunidad.comentario],
           idEmpresa: [this.loginService.obtenerIdEmpresa()],
           bandera: ['UPDATE']
         });
@@ -70,15 +87,20 @@ export class ModalOportunidadesComponent {
     }
 
     onDialogShow() {
+      this.cargarDatos();
+      this.cdr.detectChanges();
+      this.inicializarFormulario(); 
+    }
+
+    cargarDatos() {
       this.cargarProspectos();
       this.cargarServicios();
       this.cargarEtapas();
       this.cargarEjecutivos();
       this.cargarContactos();
       this.cargarEntregas();
-
-      this.inicializarFormulario(); 
     }
+
   
     close() {
       this.visible = false;
@@ -88,101 +110,47 @@ export class ModalOportunidadesComponent {
 
     cargarProspectos() {
       this.oportunidadService.getProspectos(this.loginService.obtenerIdEmpresa()).subscribe({
-        next: (result: any) => {
-          this.prospectos = result;
-        },
-        error: (error) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Se ha producido un error.',
-            detail: error.errorMessage,
-          });
-        },
+        next: (result) => (this.prospectos = result),
+        error: (error) => this.mostrarToastError(error.errorMessage)
       });
     }
-
+  
     cargarServicios() {
       this.oportunidadService.getServicios(this.loginService.obtenerIdEmpresa()).subscribe({
-        next: (result: any) => {
-          this.servicios = result;
-        },
-        error: (error) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Se ha producido un error.',
-            detail: error.errorMessage,
-          });
-        },
+        next: (result) => (this.servicios = result),
+        error: (error) => this.mostrarToastError(error.errorMessage)
       });
     }
-
+  
     cargarEtapas() {
       this.oportunidadService.getEtapas(this.loginService.obtenerIdEmpresa()).subscribe({
-        next: (result: any) => {
-          this.etapas = result;
-        },
-        error: (error) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Se ha producido un error.',
-            detail: error.errorMessage,
-          });
-        },
+        next: (result) => (this.etapas = result),
+        error: (error) => this.mostrarToastError(error.errorMessage)
       });
     }
-
-    cargarEjecutivos() {  
+  
+    cargarEjecutivos() {
       this.oportunidadService.getEjecutivos(this.loginService.obtenerIdEmpresa()).subscribe({
-        next: (result: any) => {
-          this.ejecutivos = result;
-        },
-        error: (error) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Se ha producido un error.',
-            detail: error.errorMessage,
-          }); 
-        }
+        next: (result) => (this.ejecutivos = result),
+        error: (error) => this.mostrarToastError(error.errorMessage)
       });
     }
-
+  
     cargarContactos() {
       this.oportunidadService.getContactos(this.loginService.obtenerIdEmpresa(), 2).subscribe({
-        next: (result: any) => {
-          this.contactos = result;
-        },
-        error: (error) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Se ha producido un error.',
-            detail: error.errorMessage,
-          });
-        },
+        next: (result) => (this.contactos = result),
+        error: (error) => this.mostrarToastError(error.errorMessage)
       });
     }
-
+  
     cargarEntregas() {
       this.oportunidadService.getEntregas(this.loginService.obtenerIdEmpresa()).subscribe({
-        next: (result: any) => {
-          this.entregas = result;
-        },
-        error: (error) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Se ha producido un error.',
-            detail: error.errorMessage,
-          });
-        }
+        next: (result) => (this.entregas = result),
+        error: (error) => this.mostrarToastError(error.errorMessage)
       });
     }
-
-    mostrarToastError() {
-      console.log(this.oportunidadForm);
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Es necesario llenar los campos indicados.',
-      });
+  
+    mostrarToastError(mensaje: string) {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: mensaje });
     }
-
 }

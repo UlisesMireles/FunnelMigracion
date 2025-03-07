@@ -27,6 +27,12 @@ namespace Funnel.Server.Controllers
             var respuesta = await _usuariosService.ConsultarUsuarios(IdEmpresa);
             return Ok(respuesta);
         }
+        [HttpGet("[action]/")]
+        public async Task<ActionResult<List<ComboTiposUsuariosDto>>> ComboTiposUsuarios()
+        {
+            var respuesta = await _usuariosService.ComboTiposUsuarios();
+            return Ok(respuesta);
+        }
 
         [HttpPost("[action]")]
         public async Task<ActionResult<BaseOut>> GuardarUsuario(UsuarioDto request)

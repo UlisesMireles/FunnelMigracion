@@ -14,5 +14,6 @@ namespace Funnel.Data.Interfaces
         Task<List<UsuarioDto>> ConsultarUsuarios(int IdEmpresa);
 
         Task<BaseOut> GuardarUsuarios(UsuarioDto usuarios);
+        public Task<List<ComboTiposUsuariosDto>> ComboTiposUsuarios();
     }
 }

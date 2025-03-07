@@ -17,6 +17,25 @@ namespace Funnel.Data
         {
             _connectionString = configuration.GetConnectionString("FunelDatabase");
         }
+        public async Task<List<ComboTiposUsuariosDto>> ComboTiposUsuarios()
+        {
+            List<ComboTiposUsuariosDto> result = new List<ComboTiposUsuariosDto>();
+            IList<ParameterSQl> list = new List<ParameterSQl>
+            {
+                DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "SEL-TIPOUSUARIO"),
+            };
+            using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoUsuarios", CommandType.StoredProcedure, list, _connectionString))
+            {
+                while (reader.Read())
+                {
+                    var dto = new ComboTiposUsuariosDto();
+                    dto.IdTipoUsuario = ComprobarNulos.CheckIntNull(reader["IdTipoUsuario"]);
+                    dto.Descripcion = ComprobarNulos.CheckStringNull(reader["Descripcion"]);
+                    result.Add(dto);
+                }
+            }
+            return result;
+        }
 
         public async Task<List<UsuarioDto>> ConsultarUsuarios(int IdEmpresa)
         {

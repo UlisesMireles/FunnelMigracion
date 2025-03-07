@@ -22,7 +22,7 @@ namespace Funnel.Server.Controllers
         }
 
         [HttpGet("[action]/{IdEmpresa}")]
-        public async Task<ActionResult<List<UsuarioDto>>> ConsultarServicios(int IdEmpresa)
+        public async Task<ActionResult<List<UsuarioDto>>> ConsultarUsuarios(int IdEmpresa)
         {
             var respuesta = await _usuariosService.ConsultarUsuarios(IdEmpresa);
             return Ok(respuesta);

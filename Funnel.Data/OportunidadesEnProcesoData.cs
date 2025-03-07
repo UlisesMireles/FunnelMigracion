@@ -161,6 +161,15 @@ namespace Funnel.Data
                 {
                     var dto = new OportunidadesEnProcesoDto
                     {
+                        IdOportunidad = reader["IdOportunidad"] != DBNull.Value ? Convert.ToInt32(reader["IdOportunidad"]) : 0,
+                        IdProspecto = reader["IdProspecto"] != DBNull.Value ? Convert.ToInt32(reader["IdProspecto"]) : 0,
+                        IdContactoProspecto = reader["IdContactoProspecto"] != DBNull.Value ? Convert.ToInt32(reader["IdContactoProspecto"]) : 0,
+                        IdTipoProyecto = reader["IdTipoProyecto"] != DBNull.Value ? Convert.ToInt32(reader["IdTipoProyecto"]) : 0,
+                        IdStage = reader["IdStage"] != DBNull.Value ? Convert.ToInt32(reader["IdStage"]) : 0,
+                        IdTipoEntrega = reader["IdTipoEntrega"] != DBNull.Value ? Convert.ToInt32(reader["IdTipoEntrega"]) : 0,
+                      
+                        IdEjecutivo = reader["IdEjecutivo"] != DBNull.Value ? Convert.ToInt32(reader["IdEjecutivo"]) : 0,
+                     
                         Nombre = reader["Nombre"] != DBNull.Value ? reader["Nombre"].ToString() : string.Empty,
                         NombreSector = reader["NombreSector"] != DBNull.Value ? reader["NombreSector"].ToString() : string.Empty,
                         NombreOportunidad = reader["NombreOportunidad"] != DBNull.Value ? reader["NombreOportunidad"].ToString() : string.Empty,
@@ -180,7 +189,12 @@ namespace Funnel.Data
                         FechaRegistro = (DateTime)(reader["FechaRegistro"] != DBNull.Value ? Convert.ToDateTime(reader["FechaRegistro"]) : (DateTime?)null),
                         DiasFunnel = reader["DiasFunnel"] != DBNull.Value ? Convert.ToInt32(reader["DiasFunnel"]) : 0,
                         FechaEstimadaCierreOriginal = (DateTime)(reader["FechaEstimadaCierreOriginal"] != DBNull.Value ? Convert.ToDateTime(reader["FechaRegistro"]) : (DateTime?)null),
+
                         FechaModificacion = reader["FechaModificacion"] != DBNull.Value ? Convert.ToInt32(reader["FechaModificacion"]) : 0,
+                        Comentario = reader["Comentario"] != DBNull.Value ? reader["Comentario"].ToString() : string.Empty,
+
+                        TotalComentarios = reader["TotalComentarios"] != DBNull.Value ? Convert.ToInt32(reader["TotalComentarios"]) : 0,
+                        
                     };
 
                     result.Add(dto);

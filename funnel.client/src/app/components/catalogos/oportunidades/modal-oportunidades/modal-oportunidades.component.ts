@@ -66,6 +66,12 @@ export class ModalOportunidadesComponent {
           idEmpresa: [this.loginService.obtenerIdEmpresa()],
           bandera: ['INSERT']
         });
+
+        this.oportunidadForm.get('idEjecutivo')?.valueChanges.subscribe((idEjecutivo) => {
+          if (idEjecutivo) {
+            this.cargarContactos(idEjecutivo);
+          }
+        });
         return;
       } else {
         this.oportunidadForm = this.fb.group({
@@ -76,12 +82,17 @@ export class ModalOportunidadesComponent {
           idServicio: [this.oportunidad.idTipoProyecto, Validators.required],
           idEtapa: [this.oportunidad.idStage, Validators.required],
           idEntrega: [this.oportunidad.idTipoEntrega, Validators.required],
-          fecha: [this.oportunidad.fechaEstimadaCierre, Validators.required],
+          fecha: [this.oportunidad.fechaEstimadaCierreOriginal, Validators.required],
           idEjecutivo: [this.oportunidad.idEjecutivo, Validators.required],
           idContactoProspecto: [this.oportunidad.idContactoProspecto, Validators.required],
           comentario: [this.oportunidad.comentario],
           idEmpresa: [this.loginService.obtenerIdEmpresa()],
           bandera: ['UPDATE']
+        });
+        this.oportunidadForm.get('idEjecutivo')?.valueChanges.subscribe((idEjecutivo) => {
+          if (idEjecutivo) {
+            this.cargarContactos(idEjecutivo);
+          }
         });
       }
     }
@@ -97,7 +108,6 @@ export class ModalOportunidadesComponent {
       this.cargarServicios();
       this.cargarEtapas();
       this.cargarEjecutivos();
-      this.cargarContactos();
       this.cargarEntregas();
     }
 
@@ -136,8 +146,8 @@ export class ModalOportunidadesComponent {
       });
     }
   
-    cargarContactos() {
-      this.oportunidadService.getContactos(this.loginService.obtenerIdEmpresa(), 2).subscribe({
+    cargarContactos(idEjecutivo: number) {
+      this.oportunidadService.getContactos(this.loginService.obtenerIdEmpresa(), idEjecutivo).subscribe({
         next: (result) => (this.contactos = result),
         error: (error) => this.mostrarToastError(error.errorMessage)
       });

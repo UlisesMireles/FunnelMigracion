@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, SimpleChanges, ChangeDetectorRef } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges, ChangeDetectorRef} from '@angular/core';
 
 import { MessageService } from 'primeng/api';
 
@@ -42,13 +42,6 @@ export class ModalOportunidadesComponent {
     ngOnInit() {
       this.inicializarFormulario();
     }
-  
-    ngOnChanges(changes: SimpleChanges) {
-      if (changes['oportunidad'] && this.oportunidad) {
-        this.inicializarFormulario();
-      }
-    }
-
     inicializarFormulario() {
       if (this.insertar) {
         this.oportunidadForm = this.fb.group({
@@ -56,15 +49,15 @@ export class ModalOportunidadesComponent {
           idProspecto: ['', Validators.required],
           descripcion: ['', Validators.required],
           monto: ['', Validators.required],
-          idServicio: ['', Validators.required],
-          idEtapa: ['', Validators.required],
-          idEntrega: ['', Validators.required],
-          fecha: ['', Validators.required],
+          idTipoProyecto: ['', Validators.required],
+          idStage: ['', Validators.required],
+          idTipoEntrega: ['', Validators.required],
+          fechaEstimadaCierreOriginal: ['', Validators.required],
           idEjecutivo: ['', Validators.required],
           idContactoProspecto: ['', Validators.required],
           comentario: [''],
           idEmpresa: [this.loginService.obtenerIdEmpresa()],
-          bandera: ['INSERT']
+          bandera: ['INS-OPORTUNIDAD']
         });
 
         this.oportunidadForm.get('idEjecutivo')?.valueChanges.subscribe((idEjecutivo) => {
@@ -75,20 +68,23 @@ export class ModalOportunidadesComponent {
         return;
       } else {
         this.oportunidadForm = this.fb.group({
+          bandera: ['UPD-OPORTUNIDAD'],
           idOportunidad: [this.oportunidad.idOportunidad],
           idProspecto: [this.oportunidad.idProspecto, Validators.required],
-          descripcion: [this.oportunidad.descripcion, Validators.required],
+          descripcion: [this.oportunidad.nombreOportunidad, Validators.required],
           monto: [this.oportunidad.monto, Validators.required],
-          idServicio: [this.oportunidad.idTipoProyecto, Validators.required],
-          idEtapa: [this.oportunidad.idStage, Validators.required],
-          idEntrega: [this.oportunidad.idTipoEntrega, Validators.required],
-          fecha: [this.oportunidad.fechaEstimadaCierreOriginal, Validators.required],
+          idTipoProyecto: [this.oportunidad.idTipoProyecto, Validators.required],
+          idStage: [this.oportunidad.idStage, Validators.required],
+          idTipoEntrega: [this.oportunidad.idTipoEntrega, Validators.required],
+          fechaEstimadaCierreOriginal: [this.oportunidad.fechaEstimadaCierreOriginal ? new Date(this.oportunidad.fechaEstimadaCierreOriginal) : '', Validators.required],
           idEjecutivo: [this.oportunidad.idEjecutivo, Validators.required],
           idContactoProspecto: [this.oportunidad.idContactoProspecto, Validators.required],
-          comentario: [this.oportunidad.comentario],
+          comentario: [''],
           idEmpresa: [this.loginService.obtenerIdEmpresa()],
-          bandera: ['UPDATE']
         });
+        if (this.oportunidad.idEjecutivo) {
+          this.cargarContactos(this.oportunidad.idEjecutivo);
+        }
         this.oportunidadForm.get('idEjecutivo')?.valueChanges.subscribe((idEjecutivo) => {
           if (idEjecutivo) {
             this.cargarContactos(idEjecutivo);
@@ -101,8 +97,16 @@ export class ModalOportunidadesComponent {
       this.cargarDatos();
       this.cdr.detectChanges();
       this.inicializarFormulario(); 
+      
     }
 
+    ngOnChanges(changes: SimpleChanges) {
+      if (changes['oportunidad'] && changes['oportunidad'].currentValue) {
+        this.inicializarFormulario();
+        this.cdr.detectChanges();
+      }
+    }
+    
     cargarDatos() {
       this.cargarProspectos();
       this.cargarServicios();
@@ -163,4 +167,22 @@ export class ModalOportunidadesComponent {
     mostrarToastError(mensaje: string) {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: mensaje });
     }
-}
+
+    guardarOportunidad(){
+        this.oportunidadService.postOportunidad(this.oportunidadForm.value).subscribe({
+          next: (result: baseOut) => {
+            console.log(result);
+            this.result.emit(result);
+            this.close();
+          },
+          error: (error: baseOut) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Se ha producido un error.',
+              detail: error.errorMessage,
+            });
+          },
+        });
+      }
+    }
+    

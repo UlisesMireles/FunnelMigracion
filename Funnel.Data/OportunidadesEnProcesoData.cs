@@ -167,7 +167,8 @@ namespace Funnel.Data
                         IdTipoProyecto = reader["IdTipoProyecto"] != DBNull.Value ? Convert.ToInt32(reader["IdTipoProyecto"]) : 0,
                         IdStage = reader["IdStage"] != DBNull.Value ? Convert.ToInt32(reader["IdStage"]) : 0,
                         IdTipoEntrega = reader["IdTipoEntrega"] != DBNull.Value ? Convert.ToInt32(reader["IdTipoEntrega"]) : 0,
-                      
+                        IdEstatusOportunidad = reader["IdEstatusOportunidad"] != DBNull.Value ? Convert.ToInt32(reader["IdEstatusOportunidad"]) : 0,
+
                         IdEjecutivo = reader["IdEjecutivo"] != DBNull.Value ? Convert.ToInt32(reader["IdEjecutivo"]) : 0,
                      
                         Nombre = reader["Nombre"] != DBNull.Value ? reader["Nombre"].ToString() : string.Empty,
@@ -188,12 +189,14 @@ namespace Funnel.Data
                         MontoNormalizado = reader["MontoNormalizado"] != DBNull.Value ? Convert.ToDecimal(reader["MontoNormalizado"]) : 0,
                         FechaRegistro = (DateTime)(reader["FechaRegistro"] != DBNull.Value ? Convert.ToDateTime(reader["FechaRegistro"]) : (DateTime?)null),
                         DiasFunnel = reader["DiasFunnel"] != DBNull.Value ? Convert.ToInt32(reader["DiasFunnel"]) : 0,
-                        FechaEstimadaCierreOriginal = (DateTime)(reader["FechaEstimadaCierreOriginal"] != DBNull.Value ? Convert.ToDateTime(reader["FechaRegistro"]) : (DateTime?)null),
+                        FechaEstimadaCierreOriginal = (DateTime)(reader["FechaEstimadaCierreOriginal"] != DBNull.Value ? Convert.ToDateTime(reader["FechaEstimadaCierreOriginal"]) : (DateTime?)null),
 
                         FechaModificacion = reader["FechaModificacion"] != DBNull.Value ? Convert.ToInt32(reader["FechaModificacion"]) : 0,
                         Comentario = reader["Comentario"] != DBNull.Value ? reader["Comentario"].ToString() : string.Empty,
 
                         TotalComentarios = reader["TotalComentarios"] != DBNull.Value ? Convert.ToInt32(reader["TotalComentarios"]) : 0,
+
+                        
                         
                     };
 
@@ -209,10 +212,29 @@ namespace Funnel.Data
             {
                 IList<ParameterSQl> list = new List<ParameterSQl>
                 {
-                    
+                    DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Bandera ?? "INS-OPORTUNIDAD"),
+                    DataBase.CreateParameterSql("@pIdOportunidad", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdOportunidad),
+                    DataBase.CreateParameterSql("@pIdProspecto", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdProspecto),
+                    DataBase.CreateParameterSql("@pNombreOportunidad", SqlDbType.VarChar, 100, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Descripcion),
+                    DataBase.CreateParameterSql("@pMonto", SqlDbType.Decimal, 18, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Monto),
+                    DataBase.CreateParameterSql("@pFechaEstimadaCierre", SqlDbType.VarChar, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, request.FechaEstimadaCierreOriginal),
+                    DataBase.CreateParameterSql("@pIdEjecutivo", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdEjecutivo),
+                    DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdEmpresa),
+                    DataBase.CreateParameterSql("@pIdTipoEntrega", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdTipoEntrega),
+                    DataBase.CreateParameterSql("@pStage", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdStage),
+                    DataBase.CreateParameterSql("@pIdContacto", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdContactoProspecto),
+                    DataBase.CreateParameterSql("@pComentario", SqlDbType.VarChar, -1, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Comentario),
+                    DataBase.CreateParameterSql("@pIdTipoOportunidad", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdTipoProyecto),
+                    DataBase.CreateParameterSql("@pIdEstatusOportunidad", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdTipoProyecto),
+
+                    DataBase.CreateParameterSql("@pProbabilidad", SqlDbType.Decimal, 18, ParameterDirection.Input, false, null, DataRowVersion.Default, 70),
+                    DataBase.CreateParameterSql("@pIdUsuario", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, 1),
+
+
+
                 };
 
-                using (IDataReader reader = await DataBase.GetReaderSql("", CommandType.StoredProcedure, list, _connectionString))
+                using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoOportunidades", CommandType.StoredProcedure, list, _connectionString))
                 {
                     while (reader.Read())
                     {
@@ -220,12 +242,26 @@ namespace Funnel.Data
                     }
 
                 }
-                
+                switch (request.Bandera)
+                {
+                    case "INS-OPORTUNIDAD":
+                        result.ErrorMessage = "Oportunidad insertada correctamente.";
+                        result.Id = 1;
+                        result.Result = true;
+                        break;
+                    case "UPD-OPORTUNIDAD":
+                        result.ErrorMessage = "Oportunidad actualizada correctamente.";
+                        result.Id = 1;
+                        result.Result = true;
+                        break;
+                }
+
             }
             catch (Exception ex)
             {
-
-                
+                result.ErrorMessage = ex.Message;
+                result.Id = 0;
+                result.Result = false;
             }
             return result;
         }

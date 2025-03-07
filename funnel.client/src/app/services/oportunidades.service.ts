@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import{ Observable } from 'rxjs';
+import { RequestOportunidad } from '../interfaces/oportunidades';
+import { baseOut } from '../interfaces/utils/utils/baseOut';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +17,10 @@ export class OportunidadesService {
       return this.http.get(`${this.baseUrl}api/Oportunidades/ConsultarOportunidadesEnProceso`, {
         params: { idEmpresa: idEmpresa.toString(), idUsuario: idUsuario.toString(), idEstatus: idEstatus.toString() }
       });
+    }
+    
+    postOportunidad(data: RequestOportunidad): Observable <baseOut>{
+      return this.http.post<baseOut>(this.baseUrl+'api/Oportunidades/GuardarOportunidad', data);
     }
 
     getProspectos(idEmpresa: number): Observable<any> {

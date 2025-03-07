@@ -53,5 +53,7 @@
         public int? IdContactoProspecto { get; set; }
         public string? PrimerNombreContacto { get; set; }
         public string? NombreContactoCompleto { get; set; }
+        public int? IdTipoOportunidad { get; set; }
+        public string? Bandera { get; set; }
     }
 }

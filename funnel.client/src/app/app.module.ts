@@ -40,6 +40,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { TextareaModule } from 'primeng/textarea';
 import { PasswordModule } from 'primeng/password';
+import { CalendarModule } from 'primeng/calendar';
 
 export function getBaseUrl() {
   return 'https://localhost:49834/'
@@ -102,7 +103,8 @@ import { ModalOportunidadesComponent } from './components/catalogos/oportunidade
     TooltipModule, 
     DatePipe,
     CommonModule,
-    TipoCurrencyPipe
+    TipoCurrencyPipe,
+    CalendarModule
   ],
   providers: [
     { provide: 'BASE_URL', useFactory: getBaseUrl, deps: [] },

@@ -9,16 +9,14 @@
 >
   <ng-template pTemplate="header">
     <label class="margen">
-      {{ insertar ? 'Nueva Oportunidad' : title + ' '  }}
+      {{ insertar ? 'Nueva Oportunidad' : title + ' ' + oportunidadForm.get('descripcion')?.value }}
     </label>
-    
-    <label *ngIf="insertar" class="margen">Nueva Oportunidad</label>
   </ng-template>
 
   <ng-template pTemplate="content">
     <form [formGroup]="oportunidadForm">
 
-        <div class="row inptSpace">
+        <div class="row inptSpace" *ngIf="insertar">
             <div class="col-sm-4 lbl">
               <label for="prospecto">Prospecto:</label>
             </div>
@@ -50,9 +48,11 @@
             <label for="monto">Monto: </label>
           </div>
           <div class="col-sm-8 inptSpace">
-            <input pInputText class="inptSize" formControlName="monto" />
+            <input pInputText class="inptSize" 
+            formControlName="monto" />
           </div>
         </div>
+        
 
         <div class="row inptSpace">
           <div class="col-sm-4 lbl">
@@ -62,7 +62,7 @@
             <p-dropdown 
               class="inptSize1"
               [options]="servicios"
-              formControlName="idServicio"
+              formControlName="idTipoProyecto"
               optionLabel="descripcion"
               optionValue="idTipoProyecto"
               appendTo="body"
@@ -82,7 +82,7 @@
           <p-dropdown 
             class="inptSize1"
             [options]="etapas"
-            formControlName="idEtapa"
+            formControlName="idStage"
             optionLabel="concepto"
             optionValue="id"
             appendTo="body"
@@ -102,7 +102,7 @@
         <p-dropdown 
           class="inptSize1"
           [options]="entregas"
-          formControlName="idEntrega"
+          formControlName="idTipoEntrega"
           optionLabel="descripcion"
           optionValue="idTipoEntrega"
           appendTo="body"
@@ -116,10 +116,18 @@
 
     <div class="row inptSpace">
       <div class="col-sm-4 lbl">
-        <label for="fecha">Fecha: </label>
+        <label for="fecha">Fecha Estimada de cierre: </label>
       </div>
       <div class="col-sm-8 inptSpace">
-        <input pInputText class="inptSize" formControlName="fecha" />
+        <p-calendar 
+          class="inptSize" 
+          formControlName="fechaEstimadaCierreOriginal" 
+          dateFormat="dd/mm/yy"
+          appendTo="body" #calendar 
+          [showIcon]="true"
+          [showButtonBar]="true"
+          [dataType]="'date'">
+        </p-calendar>
       </div>
     </div>
 
@@ -163,7 +171,7 @@
     </div>
     <div class="row inptSpace">
       <div class="col-sm-4 lbl">
-        <label for="monto">Comentario: </label>
+        <label for="comentario">Comentario: </label>
       </div>
       <div class="col-sm-8 inptSpace">
         <input pInputText class="inptSize" formControlName="comentario" />
@@ -175,8 +183,8 @@
   </ng-template>
 
   <ng-template pTemplate="footer">
-    <button *ngIf="!insertar" pButton label="Actualizar" severity="secondary"></button>
-    <button *ngIf="insertar" pButton label="Agregar" severity="secondary"></button>
+    <button *ngIf="!insertar" pButton label="Actualizar" (click)="guardarOportunidad()" severity="secondary"></button>
+    <button *ngIf="insertar" pButton label="Agregar"  (click)="guardarOportunidad()" severity="secondary"></button>
     <button pButton label="Cancelar" (click)="close()" severity="secondary"></button>
   </ng-template>
 </p-dialog>

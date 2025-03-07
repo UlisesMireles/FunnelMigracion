@@ -53,5 +53,18 @@ export interface Oportunidad {
 }
 
 export interface RequestOportunidad {
-
+    bandera: string;
+    idOportunidad?: number;
+    idEstatus?: number;
+    idEstatusOportunidad?: number;
+    idEjecutivo?: number;
+    idContactoProspecto?: number;
+    idStage?: number;
+    idEmpresa?: number;
+    idTipoProyecto?: number;
+    idTipoEntrega?: number;
+    descripcion?: string;
+    monto?: number;
+    fechaEstimadaCierre?: Date;
+    comentario?: string;
 }

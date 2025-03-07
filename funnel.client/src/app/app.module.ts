@@ -52,6 +52,7 @@ import { TipoServiciosComponent } from './components/catalogos/tipo-servicios/ti
 import { OportunidadesComponent} from './components/catalogos/oportunidades/oportunidades.component';
 import { CommonModule, DatePipe} from '@angular/common';
 import { TipoCurrencyPipe } from './pipes/tipoCurrency.pipe';
+import { ModalOportunidadesComponent } from './components/catalogos/oportunidades/modal-oportunidades/modal-oportunidades.component';
 
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ import { TipoCurrencyPipe } from './pipes/tipoCurrency.pipe';
     ModalContactosComponent,
     TipoServiciosComponent,
     OportunidadesComponent,
+    ModalOportunidadesComponent,
   ],
   imports: [
     BrowserModule,

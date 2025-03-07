@@ -18,7 +18,7 @@
                 <div class="col inDivDatatableHeader" style="text-align:right; margin-right:5px">
                   <p-button label="" icon="bi bi-arrow-clockwise" (click)="reset()" severity="secondary"
                     [ngStyle]="{'margin-right': '5px'}" />
-                  <p-button label="" icon="bi bi-plus" severity="secondary" />
+                  <p-button label="" icon="bi bi-plus" severity="secondary" (click)="inserta()" />
                 </div> 
               </div>
             </ng-template>
@@ -73,7 +73,7 @@
             <ng-template #body let-oportunidad>
               <tr class="custom-header3 custom-row filas">
                 <td>
-                  <p-button type="button" icon="bi bi-pencil"  text />
+                  <p-button type="button" icon="bi bi-pencil" text (click)="actualiza(oportunidad)"/>
                 </td>
                 <td>{{ oportunidad.nombre }}</td>
                 <td>{{ oportunidad.nombreSector }}</td>
@@ -117,4 +117,9 @@
       </div>
     </div>
   </div>
+
+<app-modal-oportunidades [(visible)]="modalVisible" [title]="'Editar Datos de '" (closeModal)="onModalClose()"
+  (result)="manejarResultado($event)" [insertar]="insertar" [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">
+</app-modal-oportunidades>
+
   

@@ -84,6 +84,20 @@ export class OportunidadesComponent {
       });
     }
 
+    inserta() {
+      this.oportunidadSeleccionada = {
+        
+      };
+      this.insertar = true;
+      this.modalVisible = true;
+    }
+    
+    actualiza(licencia: Contacto) {
+      this.oportunidadSeleccionada = licencia;
+      this.insertar = false;
+      this.modalVisible = true;
+    }
+
     pageChange(event: LazyLoadEvent) {
       if (event.first !== undefined) {
         this.first = event.first;

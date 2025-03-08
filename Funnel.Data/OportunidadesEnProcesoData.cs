@@ -87,7 +87,7 @@ namespace Funnel.Data
             List<ComboEtapasDto> result = new List<ComboEtapasDto>();
             IList<ParameterSQl> list = new List<ParameterSQl>
             {
-                DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "STAGE"),
+                DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "INDICADORES-STAGE"),
                 DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, IdEmpresa)
             };
             using (IDataReader reader = await DataBase.GetReaderSql("F_Catalogos", CommandType.StoredProcedure, list, _connectionString))
@@ -98,6 +98,8 @@ namespace Funnel.Data
                     dto.Id = ComprobarNulos.CheckIntNull(reader["Id"]);
                     dto.Stage = ComprobarNulos.CheckStringNull(reader["Stage"]);
                     dto.Concepto = ComprobarNulos.CheckStringNull(reader["Concepto"]);
+                    dto.Descripcion = ComprobarNulos.CheckStringNull(reader["Descripcion"]);
+                    dto.Probabilidad = ComprobarNulos.CheckStringNull(reader["Probabilidad"]);
                     result.Add(dto);
                 }
             }
@@ -210,6 +212,8 @@ namespace Funnel.Data
             BaseOut result = new BaseOut();
             try
             {
+                decimal probabilidadDecimal = 0; 
+
                 IList<ParameterSQl> list = new List<ParameterSQl>
                 {
                     DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Bandera ?? "INS-OPORTUNIDAD"),
@@ -229,8 +233,6 @@ namespace Funnel.Data
 
                     DataBase.CreateParameterSql("@pProbabilidad", SqlDbType.Decimal, 18, ParameterDirection.Input, false, null, DataRowVersion.Default, 70),
                     DataBase.CreateParameterSql("@pIdUsuario", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, 1),
-
-
 
                 };
 

@@ -57,6 +57,7 @@ export class ModalOportunidadesComponent {
           idContactoProspecto: ['', Validators.required],
           comentario: [''],
           idEmpresa: [this.loginService.obtenerIdEmpresa()],
+          probabilidad: [0],
           bandera: ['INS-OPORTUNIDAD']
         });
 
@@ -64,6 +65,9 @@ export class ModalOportunidadesComponent {
           if (idEjecutivo) {
             this.cargarContactos(idEjecutivo);
           }
+        });
+        this.oportunidadForm.get('idStage')?.valueChanges.subscribe(() => {
+          this.obtenerProbabilidadPorEtapa();
         });
         return;
       } else {
@@ -81,6 +85,7 @@ export class ModalOportunidadesComponent {
           idContactoProspecto: [this.oportunidad.idContactoProspecto, Validators.required],
           comentario: [''],
           idEmpresa: [this.loginService.obtenerIdEmpresa()],
+          probabilidad: [this.oportunidad.probabilidad]
         });
         if (this.oportunidad.idEjecutivo) {
           this.cargarContactos(this.oportunidad.idEjecutivo);
@@ -142,7 +147,7 @@ export class ModalOportunidadesComponent {
         error: (error) => this.mostrarToastError(error.errorMessage)
       });
     }
-  
+
     cargarEjecutivos() {
       this.oportunidadService.getEjecutivos(this.loginService.obtenerIdEmpresa()).subscribe({
         next: (result) => (this.ejecutivos = result),
@@ -169,7 +174,8 @@ export class ModalOportunidadesComponent {
     }
 
     guardarOportunidad(){
-        this.oportunidadService.postOportunidad(this.oportunidadForm.value).subscribe({
+      console.log(this.oportunidadForm.value);
+      this.oportunidadService.postOportunidad(this.oportunidadForm.value).subscribe({
           next: (result: baseOut) => {
             console.log(result);
             this.result.emit(result);
@@ -184,5 +190,14 @@ export class ModalOportunidadesComponent {
           },
         });
       }
+
+      obtenerProbabilidadPorEtapa() {
+        const etapaSeleccionada = this.etapas.find(etapa => etapa.id === this.oportunidadForm.get('idStage')?.value);
+
+        if (etapaSeleccionada) {
+          this.oportunidadForm.get('probabilidad')?.setValue(etapaSeleccionada.probabilidad);
+        }
+      }
+      
     }
     

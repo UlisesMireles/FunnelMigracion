@@ -36,6 +36,7 @@ export class UsuariosComponent {
   filtroApellidoMaterno = '';
   filtroUsuario = '';
   filtroDescripcion = '';
+  filtroIniciales = '';
 
 
   
@@ -59,7 +60,6 @@ export class UsuariosComponent {
       
         next: (result: Usuario[]) => {
 
-          console.log("Datos recibidos en Angular:", result);
           if (!result || result.length === 0) {
             console.warn("No hay usuarios en la respuesta.");}
 

@@ -34,7 +34,7 @@ export class ModalUsuariosComponent {
     @Output() result: EventEmitter<baseOut> = new EventEmitter();
 
   ngOnInit() {
-    this.inicializarFormulario();
+    this.inicializarFormulario
   }
 
   ngOnChanges(changes: SimpleChanges) {

@@ -49,8 +49,12 @@
                 <th>
                   <input pInputText type="text" [(ngModel)]="filtroUsuario" (ngModelChange)="updateFilter($event, 'usuario')">
                 </th>
-                <th></th>
-                <th></th>
+                <th>
+                  <input pInputText type="text" [(ngModel)]="filtroIniciales" (ngModelChange)="updateFilter($event, 'iniciales')">
+                </th>
+                <th>
+                  <input pInputText type="text" [(ngModel)]="filtroCorreo" (ngModelChange)="updateFilter($event, 'correo')">
+                </th>
                 <th>
                   <input pInputText type="text" [(ngModel)]="filtroDescripcion" (ngModelChange)="updateFilter($event, 'tipoUsuario')">
                 </th>
@@ -94,9 +98,8 @@
   </div>
   
 
-  <app-modal-usuarios [(visible)]="modalVisible" [title]="'Editar datos de '" 
-  (closeModal)="onModalClose()" (result)="manejarResultado($event)" 
-  [insertar]="insertar" [usuarios]="usuarioSeleccionado" >
+  <app-modal-usuarios [(visible)]="modalVisible" [title]="'Editar datos de '" (closeModal)="onModalClose()" 
+  (result)="manejarResultado($event)" [insertar]="insertar" [usuario]="usuarioSeleccionado" [usuarios]="usuarios">
 </app-modal-usuarios>
 
   

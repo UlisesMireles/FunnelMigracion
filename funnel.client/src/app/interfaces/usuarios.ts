@@ -1,6 +1,6 @@
 export interface Usuario {
-    result: boolean;
-    errorMessage: string;
+    result?: boolean;
+    errorMessage?: string;
 
     idUsuario: number;
     usuario: string;

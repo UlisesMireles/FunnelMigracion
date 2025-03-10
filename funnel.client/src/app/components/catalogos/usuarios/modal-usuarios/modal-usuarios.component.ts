@@ -34,7 +34,8 @@ export class ModalUsuariosComponent {
     @Output() result: EventEmitter<baseOut> = new EventEmitter();
 
   ngOnInit() {
-    this.inicializarFormulario
+    this.inicializarFormulario ();
+    console.log(this.loginService.obtenerIdEmpresa());
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -44,6 +45,7 @@ export class ModalUsuariosComponent {
   }
 
   inicializarFormulario() {
+    console.log(this.insertar);
     if (this.insertar) {
       this.usuarioForm = this.fb.group({
         idUsuario: [0],

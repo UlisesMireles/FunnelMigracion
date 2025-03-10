@@ -90,6 +90,8 @@ namespace Funnel.Data
             DataBase.CreateParameterSql("@IdTipoUsuario", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdTipoUsuario),
             DataBase.CreateParameterSql("@IdUsuario", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdUsuario),
             DataBase.CreateParameterSql("@Estatus", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Estatus),
+            DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdEmpresa ?? (object)DBNull.Value),
+
         };
 
 
@@ -104,19 +106,14 @@ namespace Funnel.Data
                 switch (request.Bandera)
                 {
                     case "INSERT":
-                        result.ErrorMessage = "Servicio insertado correctamente.";
+                        result.ErrorMessage = "Usuario insertado correctamente.";
                         result.Id = 1;
                         result.Result = true;
                         break;
                     case "UPDATE":
-                        result.ErrorMessage = "Servicio actualizado correctamente.";
+                        result.ErrorMessage = "Usuario actualizado correctamente.";
                         result.Id = 1;
                         result.Result = true;
-                        break;
-                    default:
-                        result.ErrorMessage = "Operación no válida.";
-                        result.Id = 0;
-                        result.Result = false;
                         break;
                 }
 
@@ -127,13 +124,10 @@ namespace Funnel.Data
                 switch (request.Bandera)
                 {
                     case "INSERT":
-                        result.ErrorMessage = "Error al insertar servicio: " + ex.Message;
+                        result.ErrorMessage = "Error al insertar usuario: " + ex.Message;
                         break;
                     case "UPDATE":
-                        result.ErrorMessage = "Error al actualizar servicio: " + ex.Message;
-                        break;
-                    default:
-                        result.ErrorMessage = "Error desconocido: " + ex.Message;
+                        result.ErrorMessage = "Error al actualizar usuario: " + ex.Message;
                         break;
                 }
                 result.Id = 0;

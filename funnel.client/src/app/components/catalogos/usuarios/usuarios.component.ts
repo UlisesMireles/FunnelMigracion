@@ -17,6 +17,7 @@ export class UsuariosComponent {
 
   ngOnInit(): void {
     this.getUsuarios();
+    console.log(this.loginService.obtenerIdEmpresa());
   }
   @ViewChild('dt') dt!: Table;
 
@@ -40,7 +41,7 @@ export class UsuariosComponent {
 
 
   
-  insertar: boolean = false;
+  insertar: boolean = true;
   modalVisible: boolean = false;
 
 
@@ -142,10 +143,10 @@ export class UsuariosComponent {
       }
 
       inserta() {
-          console.log(this.usuarioSeleccionado);
+          
           this.usuarioSeleccionado = {
             result: true,
-            errorMessage: 'No hay error',  
+            errorMessage: ' ',  
             idUsuario: 0, 
             usuario: '',
             password: '',
@@ -171,6 +172,7 @@ export class UsuariosComponent {
           };
           this.insertar = true;
           this.modalVisible = true;
+          
         }
        
         actualiza(licencia: Usuario) {

@@ -163,43 +163,44 @@ namespace Funnel.Data
                 {
                     var dto = new OportunidadesEnProcesoDto
                     {
-                        IdOportunidad = reader["IdOportunidad"] != DBNull.Value ? Convert.ToInt32(reader["IdOportunidad"]) : 0,
-                        IdProspecto = reader["IdProspecto"] != DBNull.Value ? Convert.ToInt32(reader["IdProspecto"]) : 0,
-                        IdContactoProspecto = reader["IdContactoProspecto"] != DBNull.Value ? Convert.ToInt32(reader["IdContactoProspecto"]) : 0,
-                        IdTipoProyecto = reader["IdTipoProyecto"] != DBNull.Value ? Convert.ToInt32(reader["IdTipoProyecto"]) : 0,
-                        IdStage = reader["IdStage"] != DBNull.Value ? Convert.ToInt32(reader["IdStage"]) : 0,
-                        IdTipoEntrega = reader["IdTipoEntrega"] != DBNull.Value ? Convert.ToInt32(reader["IdTipoEntrega"]) : 0,
-                        IdEstatusOportunidad = reader["IdEstatusOportunidad"] != DBNull.Value ? Convert.ToInt32(reader["IdEstatusOportunidad"]) : 0,
+                        IdOportunidad = ComprobarNulos.CheckIntNull(reader["IdOportunidad"]),
+                        IdProspecto = ComprobarNulos.CheckIntNull(reader["IdProspecto"]),
+                        IdContactoProspecto = ComprobarNulos.CheckIntNull(reader["IdContactoProspecto"]),
+                        IdTipoProyecto = ComprobarNulos.CheckIntNull(reader["IdTipoProyecto"]),
+                        IdStage = ComprobarNulos.CheckIntNull(reader["IdStage"]),
+                        IdTipoEntrega = ComprobarNulos.CheckIntNull(reader["IdTipoEntrega"]),
+                        IdEstatusOportunidad = ComprobarNulos.CheckIntNull(reader["IdEstatusOportunidad"]),
+                        IdEjecutivo = ComprobarNulos.CheckIntNull(reader["IdEjecutivo"]),
 
-                        IdEjecutivo = reader["IdEjecutivo"] != DBNull.Value ? Convert.ToInt32(reader["IdEjecutivo"]) : 0,
-                     
-                        Nombre = reader["Nombre"] != DBNull.Value ? reader["Nombre"].ToString() : string.Empty,
-                        NombreSector = reader["NombreSector"] != DBNull.Value ? reader["NombreSector"].ToString() : string.Empty,
-                        NombreOportunidad = reader["NombreOportunidad"] != DBNull.Value ? reader["NombreOportunidad"].ToString() : string.Empty,
-                        Abreviatura =  reader["Abreviatura"] != DBNull.Value ? reader["Abreviatura"].ToString() : string.Empty,
-                        Descripcion = reader["Descripcion"] != DBNull.Value ? reader["Descripcion"].ToString() : string.Empty,
-                        Stage = reader["Stage"] != DBNull.Value ? reader["Stage"].ToString() : string.Empty,
-                        TooltipStage = reader["TooltipStage"] != DBNull.Value ? reader["TooltipStage"].ToString() : "Sin Asignar",
-                        Iniciales = reader["Iniciales"] != DBNull.Value ? reader["Iniciales"].ToString() : string.Empty,
-                        NombreEjecutivo = reader["NombreEjecutivo"] != DBNull.Value ? reader["NombreEjecutivo"].ToString() : "Sin Asignar",
-                        NombreContacto = reader["NombreContacto"] != DBNull.Value ? reader["NombreContacto"].ToString() : string.Empty,
-                        Entrega = reader["Entrega"] != DBNull.Value ? reader["Entrega"].ToString() : string.Empty,
-                        EntregaDescripcion = reader["EntregaDescripcion"] != DBNull.Value ? reader["EntregaDescripcion"].ToString() : string.Empty,
-                        Monto = reader["Monto"] != DBNull.Value ? Convert.ToDecimal(reader["Monto"]) : 0,
-                        ProbabilidadOriginal = reader["ProbabilidadOriginal"] != DBNull.Value ? reader["ProbabilidadOriginal"].ToString() : "0 %",
-                        Probabilidad = reader["Probabilidad"] != DBNull.Value ? reader["Probabilidad"].ToString() : "0 %",
-                        MontoNormalizado = reader["MontoNormalizado"] != DBNull.Value ? Convert.ToDecimal(reader["MontoNormalizado"]) : 0,
-                        FechaRegistro = (DateTime)(reader["FechaRegistro"] != DBNull.Value ? Convert.ToDateTime(reader["FechaRegistro"]) : (DateTime?)null),
-                        DiasFunnel = reader["DiasFunnel"] != DBNull.Value ? Convert.ToInt32(reader["DiasFunnel"]) : 0,
-                        FechaEstimadaCierreOriginal = (DateTime)(reader["FechaEstimadaCierreOriginal"] != DBNull.Value ? Convert.ToDateTime(reader["FechaEstimadaCierreOriginal"]) : (DateTime?)null),
+                        Nombre = ComprobarNulos.CheckStringNull(reader["Nombre"]),
+                        NombreSector = ComprobarNulos.CheckStringNull(reader["NombreSector"]),
+                        NombreOportunidad = ComprobarNulos.CheckStringNull(reader["NombreOportunidad"]),
+                        Abreviatura = ComprobarNulos.CheckStringNull(reader["Abreviatura"]),
+                        Descripcion = ComprobarNulos.CheckStringNull(reader["Descripcion"]),
+                        Stage = ComprobarNulos.CheckStringNull(reader["Stage"]),
+                        TooltipStage = ComprobarNulos.CheckStringNull(reader["TooltipStage"]),
+                        Iniciales = ComprobarNulos.CheckStringNull(reader["Iniciales"]),
+                        NombreEjecutivo = ComprobarNulos.CheckStringNull(reader["NombreEjecutivo"]),
+                        NombreContacto = ComprobarNulos.CheckStringNull(reader["NombreContacto"]),
+                        Entrega = ComprobarNulos.CheckStringNull(reader["Entrega"]),
+                        EntregaDescripcion = ComprobarNulos.CheckStringNull(reader["EntregaDescripcion"]),
 
-                        FechaModificacion = reader["FechaModificacion"] != DBNull.Value ? Convert.ToInt32(reader["FechaModificacion"]) : 0,
-                        Comentario = reader["Comentario"] != DBNull.Value ? reader["Comentario"].ToString() : string.Empty,
+                        Monto = ComprobarNulos.CheckDecimalNull(reader["Monto"]),
+                        ProbabilidadOriginal = ComprobarNulos.CheckStringNull(reader["ProbabilidadOriginal"]),
+                        Probabilidad = ComprobarNulos.CheckStringNull(reader["Probabilidad"]),
+                        MontoNormalizado = ComprobarNulos.CheckDecimalNull(reader["MontoNormalizado"]),
 
-                        TotalComentarios = reader["TotalComentarios"] != DBNull.Value ? Convert.ToInt32(reader["TotalComentarios"]) : 0,
+                        FechaRegistro = ComprobarNulos.CheckDateTimeNull(reader["FechaRegistro"]),
+                        DiasFunnel = ComprobarNulos.CheckIntNull(reader["DiasFunnel"]),
+                        FechaEstimadaCierreOriginal = ComprobarNulos.CheckDateTimeNull(reader["FechaEstimadaCierreOriginal"]),
 
-                        
-                        
+                        FechaModificacion = ComprobarNulos.CheckIntNull(reader["FechaModificacion"]),
+                        Comentario = ComprobarNulos.CheckStringNull(reader["Comentario"]),
+                        TotalComentarios = ComprobarNulos.CheckIntNull(reader["TotalComentarios"]),
+
+
+
+
                     };
 
                     result.Add(dto);

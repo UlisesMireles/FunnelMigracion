@@ -67,7 +67,6 @@ export class OportunidadesComponent {
     getOportunidades() {
       this.oportunidadService.getOportunidades(this.idUsuario, this.loginService.obtenerIdEmpresa(), this.idEstatus).subscribe({
         next: (result: Oportunidad[]) => {
-          console.log(result);
           this.oportunidades = [...result];
           this.oportunidadesOriginal = result;
           this.cdr.detectChanges(); 

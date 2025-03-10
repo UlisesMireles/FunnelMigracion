@@ -29,7 +29,7 @@
         public DateTime? FechaRegistroDate { get; set; }
         public string? AbreviaturaEstatus { get; set; }
         public string? DescripcionEstatus { get; set; }
-        public decimal? decProbabilidad { get; set; }
+        public decimal? DecProbabilidad { get; set; }
         public int? IdEjecutivo { get; set; }
         public string? FechaEstimadaCierreUpd { get; set; }
         public DateTime? FechaEstimadaCierre { get; set; }

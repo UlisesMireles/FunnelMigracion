@@ -39,9 +39,6 @@ export class ModalOportunidadesComponent {
     @Output() closeModal: EventEmitter<void> = new EventEmitter();
     @Output() result: EventEmitter<baseOut> = new EventEmitter();
   
-    ngOnInit() {
-      this.inicializarFormulario();
-    }
     inicializarFormulario() {
       if (this.insertar) {
         this.oportunidadForm = this.fb.group({
@@ -180,10 +177,8 @@ export class ModalOportunidadesComponent {
     }
 
     guardarOportunidad(){
-      console.log(this.oportunidadForm.value);
       this.oportunidadService.postOportunidad(this.oportunidadForm.value).subscribe({
           next: (result: baseOut) => {
-            console.log(result);
             this.result.emit(result);
             this.close();
           },

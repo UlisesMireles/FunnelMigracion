@@ -57,7 +57,7 @@ export class ModalOportunidadesComponent {
           idContactoProspecto: ['', Validators.required],
           comentario: [''],
           idEmpresa: [this.loginService.obtenerIdEmpresa()],
-          probabilidad: [0],
+          probabilidad: ['0'],
           bandera: ['INS-OPORTUNIDAD']
         });
 
@@ -95,6 +95,10 @@ export class ModalOportunidadesComponent {
             this.cargarContactos(idEjecutivo);
           }
         });
+        this.oportunidadForm.get('idStage')?.valueChanges.subscribe(() => {
+          this.obtenerProbabilidadPorEtapa();
+        });
+        this.limpiarProbabilidad();
       }
     }
 
@@ -174,7 +178,6 @@ export class ModalOportunidadesComponent {
     }
 
     guardarOportunidad(){
-      console.log(this.oportunidadForm.value);
       this.oportunidadService.postOportunidad(this.oportunidadForm.value).subscribe({
           next: (result: baseOut) => {
             console.log(result);
@@ -193,11 +196,26 @@ export class ModalOportunidadesComponent {
 
       obtenerProbabilidadPorEtapa() {
         const etapaSeleccionada = this.etapas.find(etapa => etapa.id === this.oportunidadForm.get('idStage')?.value);
-
+    
         if (etapaSeleccionada) {
-          this.oportunidadForm.get('probabilidad')?.setValue(etapaSeleccionada.probabilidad);
+            let probabilidad = etapaSeleccionada.probabilidad;
+  
+            if (typeof probabilidad === 'string' && probabilidad.includes('%')) {
+                probabilidad = parseFloat(probabilidad.replace('%', '').trim());
+            }
+    
+            this.oportunidadForm.get('probabilidad')?.setValue(probabilidad);
         }
       }
-      
+      limpiarProbabilidad() {
+        let probabilidad = this.oportunidadForm.get('probabilidad')?.value;
+    
+        if (typeof probabilidad === 'string' && probabilidad.includes('%')) {
+            probabilidad = probabilidad.replace('%', '').trim();
+            this.oportunidadForm.get('probabilidad')?.setValue(probabilidad);
+        }
     }
+}
+      
+    
     

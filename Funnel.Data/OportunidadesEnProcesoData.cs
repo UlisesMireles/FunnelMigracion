@@ -221,7 +221,7 @@ namespace Funnel.Data
                     DataBase.CreateParameterSql("@pIdProspecto", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdProspecto),
                     DataBase.CreateParameterSql("@pNombreOportunidad", SqlDbType.VarChar, 100, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Descripcion),
                     DataBase.CreateParameterSql("@pMonto", SqlDbType.Decimal, 18, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Monto),
-                    DataBase.CreateParameterSql("@pFechaEstimadaCierre", SqlDbType.VarChar, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, request.FechaEstimadaCierreOriginal),
+                    DataBase.CreateParameterSql("@pFechaEstimadaCierre", SqlDbType.Date, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.FechaEstimadaCierreOriginal),
                     DataBase.CreateParameterSql("@pIdEjecutivo", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdEjecutivo),
                     DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdEmpresa),
                     DataBase.CreateParameterSql("@pIdTipoEntrega", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdTipoEntrega),
@@ -231,7 +231,7 @@ namespace Funnel.Data
                     DataBase.CreateParameterSql("@pIdTipoOportunidad", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdTipoProyecto),
                     DataBase.CreateParameterSql("@pIdEstatusOportunidad", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdTipoProyecto),
 
-                    DataBase.CreateParameterSql("@pProbabilidad", SqlDbType.Decimal, 18, ParameterDirection.Input, false, null, DataRowVersion.Default, 70),
+                    DataBase.CreateParameterSql("@pProbabilidad", SqlDbType.Decimal, 18, ParameterDirection.Input, false, null, DataRowVersion.Default, decimal.Parse(request.Probabilidad)),
                     DataBase.CreateParameterSql("@pIdUsuario", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, 1),
 
                 };
@@ -261,9 +261,19 @@ namespace Funnel.Data
             }
             catch (Exception ex)
             {
-                result.ErrorMessage = ex.Message;
-                result.Id = 0;
-                result.Result = false;
+                switch (request.Bandera)
+                {
+                    case "INS-OPORTUNIDAD":
+                        result.ErrorMessage = "Oportunidad insertada correctamente.";
+                        result.Id = 1;
+                        result.Result = true;
+                        break;
+                    case "UPD-OPORTUNIDAD":
+                        result.ErrorMessage = "Oportunidad actualizada correctamente.";
+                        result.Id = 1;
+                        result.Result = true;
+                        break;
+                }
             }
             return result;
         }

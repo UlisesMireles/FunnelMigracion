@@ -41,6 +41,10 @@
           </div>
           <div class="col-sm-8 inptSpace">
             <input pInputText class="inptSize" formControlName="descripcion" />
+            <span *ngIf="oportunidadForm.get('descripcion')?.invalid && oportunidadForm.get('descripcion')?.touched" class="text-danger"><br>
+              <ng-container *ngIf="oportunidadForm.get('descripcion')?.errors?.['required']">Debe agregar una descripcion.</ng-container>
+              <ng-container *ngIf="oportunidadForm.get('descripcion')?.errors?.['maxLength']">La descripcion no puede ser mayor a 50 caracteres.</ng-container>
+            </span>
           </div>
         </div>
         <div class="row inptSpace">
@@ -50,6 +54,11 @@
           <div class="col-sm-8 inptSpace">
             <input pInputText class="inptSize" 
             formControlName="monto" />
+            <span *ngIf="oportunidadForm.get('monto')?.invalid && oportunidadForm.get('monto')?.touched" class="text-danger"><br>
+              <ng-container *ngIf="oportunidadForm.get('monto')?.errors?.['required']">Debe agregar un monto.</ng-container>
+              <ng-container *ngIf="oportunidadForm.get('monto')?.errors?.['min']">El monto debe ser mayor a 0.</ng-container>
+              <ng-container *ngIf="oportunidadForm.get('monto')?.errors?.['pattern']">El monto solo puede contener números.</ng-container>
+            </span>
           </div>
         </div>
         
@@ -68,8 +77,8 @@
               appendTo="body"
               placeholder="Seleccione un servicio">
             </p-dropdown>
-            <span *ngIf="oportunidadForm.get('idServicio')?.invalid && oportunidadForm.get('idServicio')?.touched" class="text-danger"><br>
-              <ng-container *ngIf="oportunidadForm.get('idServicio')?.errors?.['required']">Debe seleccionar un servicio.</ng-container>
+            <span *ngIf="oportunidadForm.get('idTipoProyecto')?.invalid && oportunidadForm.get('idTipoProyecto')?.touched" class="text-danger"><br>
+              <ng-container *ngIf="oportunidadForm.get('idTipoProyecto')?.errors?.['required']">Debe seleccionar un servicio.</ng-container>
             </span>
           </div>
       </div>
@@ -88,8 +97,8 @@
             appendTo="body"
             placeholder="Seleccione una etapa">
           </p-dropdown>
-          <span *ngIf="oportunidadForm.get('idEtapa')?.invalid && oportunidadForm.get('idEtapa')?.touched" class="text-danger"><br>
-            <ng-container *ngIf="oportunidadForm.get('idEtapa')?.errors?.['required']">Debe seleccionar una etapa.</ng-container>
+          <span *ngIf="oportunidadForm.get('idStage')?.invalid && oportunidadForm.get('idStage')?.touched" class="text-danger"><br>
+            <ng-container *ngIf="oportunidadForm.get('idStage')?.errors?.['required']">Debe seleccionar una etapa.</ng-container>
           </span>
         </div>
     </div>
@@ -108,8 +117,8 @@
           appendTo="body"
           placeholder="Seleccione una entrega">
         </p-dropdown>
-        <span *ngIf="oportunidadForm.get('idEntrega')?.invalid && oportunidadForm.get('idEntrega')?.touched" class="text-danger"><br>
-          <ng-container *ngIf="oportunidadForm.get('idEntrega')?.errors?.['required']">Debe seleccionar una entrega.</ng-container>
+        <span *ngIf="oportunidadForm.get('idTipoEntrega')?.invalid && oportunidadForm.get('idTipoEntrega')?.touched" class="text-danger"><br>
+          <ng-container *ngIf="oportunidadForm.get('idTipoEntrega')?.errors?.['required']">Debe seleccionar una entrega.</ng-container>
         </span>
       </div>
     </div>
@@ -128,6 +137,9 @@
           [showButtonBar]="true"
           [dataType]="'date'">
         </p-calendar>
+        <span *ngIf="oportunidadForm.get('fechaEstimadaCierreOriginal')?.invalid && oportunidadForm.get('fechaEstimadaCierreOriginal')?.touched" class="text-danger"><br>
+          <ng-container *ngIf="oportunidadForm.get('fechaEstimadaCierreOriginal')?.errors?.['required']">Debe seleccionar una fecha estimada.</ng-container>
+        </span>
       </div>
     </div>
 

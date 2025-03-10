@@ -58,7 +58,8 @@ export class ModalOportunidadesComponent {
           comentario: [''],
           idEmpresa: [this.loginService.obtenerIdEmpresa()],
           probabilidad: ['0'],
-          bandera: ['INS-OPORTUNIDAD']
+          bandera: ['INS-OPORTUNIDAD'],
+          idEstatusOportunidad: [1]
         });
 
         this.oportunidadForm.get('idEjecutivo')?.valueChanges.subscribe((idEjecutivo) => {
@@ -85,7 +86,8 @@ export class ModalOportunidadesComponent {
           idContactoProspecto: [this.oportunidad.idContactoProspecto, Validators.required],
           comentario: [''],
           idEmpresa: [this.loginService.obtenerIdEmpresa()],
-          probabilidad: [this.oportunidad.probabilidad]
+          probabilidad: [this.oportunidad.probabilidad],
+          idEstatusOportunidad: [this.oportunidad.idEstatusOportunidad]
         });
         if (this.oportunidad.idEjecutivo) {
           this.cargarContactos(this.oportunidad.idEjecutivo);
@@ -178,6 +180,7 @@ export class ModalOportunidadesComponent {
     }
 
     guardarOportunidad(){
+      console.log(this.oportunidadForm.value);
       this.oportunidadService.postOportunidad(this.oportunidadForm.value).subscribe({
           next: (result: baseOut) => {
             console.log(result);

@@ -229,8 +229,7 @@ namespace Funnel.Data
                     DataBase.CreateParameterSql("@pIdContacto", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdContactoProspecto),
                     DataBase.CreateParameterSql("@pComentario", SqlDbType.VarChar, -1, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Comentario),
                     DataBase.CreateParameterSql("@pIdTipoOportunidad", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdTipoProyecto),
-                    DataBase.CreateParameterSql("@pIdEstatusOportunidad", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdTipoProyecto),
-
+                    DataBase.CreateParameterSql("@pIdEstatusOportunidad", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdEstatusOportunidad),
                     DataBase.CreateParameterSql("@pProbabilidad", SqlDbType.Decimal, 18, ParameterDirection.Input, false, null, DataRowVersion.Default, decimal.Parse(request.Probabilidad)),
                     DataBase.CreateParameterSql("@pIdUsuario", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, 1),
 

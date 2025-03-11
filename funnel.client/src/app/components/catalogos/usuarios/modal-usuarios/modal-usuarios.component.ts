@@ -224,18 +224,14 @@ export class ModalUsuariosComponent {
     const idEmpresa = this.loginService.obtenerIdEmpresa();
   
     if (nombre && apellidoPaterno && idEmpresa) {
-      // Generar las iniciales iniciales
       let iniciales = this.obtenerIniciales(nombre, apellidoPaterno, apellidoMaterno);
   
-      // Validar si las iniciales ya existen
       const existenIniciales = await this.validarInicialesExistente(iniciales, idEmpresa);
   
-      // Si las iniciales ya existen, generar nuevas iniciales
       if (existenIniciales) {
         iniciales = this.generarInicialesAlternativas(nombre, apellidoPaterno, apellidoMaterno, iniciales);
       }
   
-      // Asignar las iniciales al formulario
       this.usuarioForm.get('iniciales')?.setValue(iniciales, { emitEvent: false });
     }
   }
@@ -259,10 +255,8 @@ export class ModalUsuariosComponent {
   private generarInicialesAlternativas(nombre: string, apellidoPaterno: string, apellidoMaterno: string, iniciales: string): string {
     const nombres = nombre.split(' ');
   
-    // Tomar la segunda letra del primer nombre
     const segundaLetraNombre = nombres[0].substring(1, 2).toUpperCase();
   
-    // Insertar la segunda letra en las iniciales
     iniciales = iniciales.slice(0, 1) + segundaLetraNombre + iniciales.slice(1);
   
     return iniciales;
@@ -272,8 +266,8 @@ export class ModalUsuariosComponent {
     try {
       return Boolean(await this.UsuariosService.validarInicialesExistente(iniciales, idEmpresa).toPromise());
     } catch (error) {
-      console.error('Error al validar iniciales:', error);
-      return false; // En caso de error, asume que las iniciales no existen
+      console.error('Error al validar iniciales', error);
+      return false; 
     }
   }
 }

@@ -24,6 +24,7 @@ export class DobleAutenticacionComponent {
   disabled: boolean = true;
   timeLeft: number = 120;
   interval: any;
+  timeExpired: boolean = false;
   datosUsuario: LoginUser = {} as LoginUser;
   constructor(
     private fb: FormBuilder,
@@ -94,6 +95,7 @@ export class DobleAutenticacionComponent {
         this.timeLeft--;
       } else {
         clearInterval(this.interval);
+        this.timeExpired = true;
       }
     }, 1000);
   }

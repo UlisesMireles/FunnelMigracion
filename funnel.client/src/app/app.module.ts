@@ -13,13 +13,15 @@ import { NgxCaptchaModule } from 'ngx-captcha';
 import { ReactiveFormsModule, FormsModule} from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
+import { TooltipModule } from 'primeng/tooltip';
 
 
 
 import { ModalTipoServiciosComponent } from './components/catalogos/tipo-servicios/modal-tipo-servicios/modal-tipo-servicios.component';
 import { ProspectosComponent } from './components/catalogos/prospectos/prospectos.component';
 import { ModalProspectosComponent } from './components/catalogos/prospectos/modal-prospectos/modal-prospectos.component';
-
+import { TiposEntregaComponent } from './components/catalogos/tipos-entrega/tipos-entrega.component';
+import { ModalTiposEntregaComponent } from './components/catalogos/tipos-entrega/modal-tipos-entrega/modal-tipos-entrega.component';
 import Aura from '@primeng/themes/aura';
 import { MessageService } from 'primeng/api';
 import { TableModule } from 'primeng/table';
@@ -44,6 +46,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
+import { CalendarModule } from 'primeng/calendar';
 
 export function getBaseUrl() {
   return 'https://localhost:49834/'
@@ -54,9 +57,10 @@ import { ModalContactosComponent } from './components/catalogos/contactos/modal-
 import { TipoServiciosComponent } from './components/catalogos/tipo-servicios/tipo-servicios.component';
 import { MenuSidenavComponent } from './components/menu-sidenav/menu-sidenav.component';
 
-
-
-
+import { OportunidadesComponent} from './components/catalogos/oportunidades/oportunidades.component';
+import { CommonModule, DatePipe} from '@angular/common';
+import { TipoCurrencyPipe } from './pipes/tipoCurrency.pipe';
+import { ModalOportunidadesComponent } from './components/catalogos/oportunidades/modal-oportunidades/modal-oportunidades.component';
 
 @NgModule({
   declarations: [
@@ -74,6 +78,10 @@ import { MenuSidenavComponent } from './components/menu-sidenav/menu-sidenav.com
     ModalContactosComponent,
     TipoServiciosComponent,
     MenuSidenavComponent,
+    OportunidadesComponent,
+    ModalOportunidadesComponent,
+    TiposEntregaComponent,
+    ModalTiposEntregaComponent
   ],
   imports: [
     BrowserModule,
@@ -107,6 +115,11 @@ import { MenuSidenavComponent } from './components/menu-sidenav/menu-sidenav.com
     MatIconModule,
     ConfirmDialogModule,
 
+    TooltipModule, 
+    DatePipe,
+    CommonModule,
+    TipoCurrencyPipe,
+    CalendarModule
   ],
   providers: [
     { provide: 'BASE_URL', useFactory: getBaseUrl, deps: [] },

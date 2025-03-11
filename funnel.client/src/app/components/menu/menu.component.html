@@ -1,18 +1,16 @@
 <mat-sidenav-container class="containerSideNav">
   <mat-sidenav id="sidenav" #sidenav
-    [ngClass]="this.sideNavService.getToggleValue ? 'sideNavOpenAdmin' : 'sideNavClosedAdmin'"
+    [ngClass]="this.sideNavService.getToggleValue ? 'sideNavOpen' : 'sideNavClosed'"
     [opened]="this.sideNavService.getToggleValue" mode="side">
     <div class="contentSidenav">
-      <!-- sidenav admin -->
       <app-menu-sidenav class="menuAdmin"></app-menu-sidenav>
     </div>
 
   </mat-sidenav>
   <mat-sidenav-content
-    [ngClass]="!this.sideNavService.getToggleValue ? 'sideContentOpenAdmin' : 'sideContentClosedAdmin'">
+    [ngClass]="!this.sideNavService.getToggleValue ? 'sideContentOpen' : 'sideContentClosed'">
     <mat-icon matSuffix (click)="toggleSideNav()" class="cursorPointer iconClass">
       {{!this.sideNavService.getToggleValue ? 'chevron_right' : 'chevron_left'}} </mat-icon>
-    <!-- contenido -->
     <div class="tituloAdmin">
       <router-outlet></router-outlet>
     </div>

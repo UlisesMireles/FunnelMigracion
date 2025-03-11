@@ -3,6 +3,7 @@ import { SideNavService } from  '../../services/sidenav.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationService } from 'primeng/api';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LoginService } from '../../services/login.service';
 
 @Component({
   selector: 'app-menu-sidenav',
@@ -19,7 +20,9 @@ export class MenuSidenavComponent {
       { nombre: 'SALIR', path: '/', icono: 'bi-box-arrow-right', tooltip: 'Cerrar sesión' }
     ];
 
-  constructor(private readonly router: Router, public sideNavService: SideNavService, private dialog: MatDialog, private confirmationService: ConfirmationService) {
+  constructor(private readonly router: Router, public sideNavService: SideNavService, private dialog: MatDialog, private confirmationService: ConfirmationService,
+    private readonly authService: LoginService
+  ) {
     
   }
     
@@ -28,7 +31,8 @@ export class MenuSidenavComponent {
   }
 
   logout() {
-    
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 
   getFooterTooltip(): string {

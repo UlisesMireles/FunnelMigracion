@@ -95,3 +95,36 @@
       display: none;
     }
   }
+  .sideNavOpen {
+    width: 312px;
+  }
+  
+  .sideNavClosed {
+    visibility: visible !important;
+    transform: none !important;
+    width: 75px;
+    display: block !important;
+  }
+  
+  .sideContentOpen {
+    margin-left: 75px;
+  }
+  
+  .sideContentClosed {
+    margin-left: auto;
+  }
+  
+  .cursorPointer {
+    cursor: pointer;
+  }
+  
+  html body #container {
+    height: 100%;
+    margin: 0;
+    position: relative;
+    padding: 0;
+  
+    #contenidoRouting {
+        height: 100%;
+    }
+  }

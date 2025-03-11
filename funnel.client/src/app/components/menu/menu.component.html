@@ -1,78 +1,22 @@
+<mat-sidenav-container class="containerSideNav">
+  <mat-sidenav id="sidenav" #sidenav
+    [ngClass]="this.sideNavService.getToggleValue ? 'sideNavOpenA' : 'sideNavClosed'"
+    [opened]="this.sideNavService.getToggleValue" mode="side">
+    <div class="contentSidenav">
+      <!-- sidenav admin -->
+      <app-menu-sidenav class="menuAdmin"></app-menu-sidenav>
+    </div>
 
   </mat-sidenav>
   <mat-sidenav-content
     [ngClass]="!this.sideNavService.getToggleValue ? 'sideContentOpen' : 'sideContentClosed'">
     <mat-icon matSuffix (click)="toggleSideNav()" class="cursorPointer iconClass">
       {{!this.sideNavService.getToggleValue ? 'chevron_right' : 'chevron_left'}} </mat-icon>
+    <!-- contenido -->
     <div class="tituloAdmin">
       <router-outlet></router-outlet>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
-            aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarContent">
-      <div class="menu-center">
-        <ul class="navbar-nav mx-auto menu-items">
-          <li class="menuI nav-item dropdown">
-            <a class="nav-link dropdown-toggle" [routerLink]="['/oportunidades']" id="catalogosDropdown" role="button"
-               data-bs-toggle="dropdown" aria-expanded="false">
-              OPORTUNIDADES
-            </a>
-          </li>
-          <li class="menuI nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="catalogosDropdown" role="button"
-               data-bs-toggle="dropdown" aria-expanded="false">
-              ADMINISTRACIÓN
-            </a>
-            <ul class="dropdown-menu subm" aria-labelledby="catalogosDropdown">
-              <li class="submenu">
-                <a class="subm dropdown-item" [attr.data-bs-toggle]="isMobile ? 'collapse' : null"
-                   [attr.data-bs-target]="isMobile ? '.navbar-collapse' : null" [routerLink]="['/prospectos']">PROSPECTOS</a>
-              </li>
-              <li class="submenu">
-                <a class="subm dropdown-item" [attr.data-bs-toggle]="isMobile ? 'collapse' : null"
-                   [attr.data-bs-target]="isMobile ? '.navbar-collapse' : null" [routerLink]="['/contactos']">CONTACTOS</a>
-              </li>
-            </ul>
-          </li>
-          <li class="menuI nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="catalogosDropdown" role="button"
-               data-bs-toggle="dropdown" aria-expanded="false">
-              CATÁLOGOS
-            </a>
-            <ul class="dropdown-menu subm" aria-labelledby="catalogosDropdown">
-              <li class="submenu">
-                <a class="subm dropdown-item" [attr.data-bs-toggle]="isMobile ? 'collapse' : null"
-                   [attr.data-bs-target]="isMobile ? '.navbar-collapse' : null" [routerLink]="['/tipos-servicios']">TIPOS SERVICIOS</a>
-                
-              </li>
-              <li class="submenu">
-                <a class="subm dropdown-item" [attr.data-bs-toggle]="isMobile ? 'collapse' : null"
-                   [attr.data-bs-target]="isMobile ? '.navbar-collapse' : null" [routerLink]="['/tipos-entrega']">TIPOS ENTREGA</a>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-
-      <div class="menu-end d-flex align-items-center" (document:click)="onDocumentClick($event)">
-        <span class="user-name" (click)="toggleUserPanel($event)" style="cursor: pointer;">
-          <i class="bi bi-person-circle"></i> {{nombreUsuario}}
-        </span>
-
-        <div class="user-panel" [class.show]="isUserPanelVisible">
-          <div class="user-header">
-            <img src="{{rutaImgen}}" alt="Usuario" class="user-image" />
-            <h5>{{nombre}}</h5>
-          </div>
-          <div class="user-actions">
-            <button type="button" [routerLink]="['/cambiar-contrasena']" class="btn btn-cancel btnmenuuser">
-              Contraseña
-            </button>
-            <button (click)="logout()" type="button" class="btn btn-cancel btnmenuuser">
-              Cerrar Sesión
-            </button>
-          </div>
-        </div>
-      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"
+rejectButtonStyleClass="p-button-text"></p-confirmDialog>

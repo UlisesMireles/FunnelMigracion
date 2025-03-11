@@ -14,6 +14,7 @@ import { LoginService } from '../../services/login.service';
 export class MenuSidenavComponent {
 
   ListaMenu = [
+      { nombre: 'OPORTUNIDADES', path: '/oportunidades', icono: 'bi-briefcase', tooltip: 'Ir a oportunidades' },
       { nombre: 'PROSPECTOS', path: '/prospectos', icono: 'bi-person-plus', tooltip: 'Ir a prospectos' },
       { nombre: 'CONTACTOS', path: '/contactos', icono: 'bi-person-lines-fill', tooltip: 'Ir a contactos' },
       { nombre: 'TIPOS SERVICIOS', path: '/tipos-servicios', icono: 'bi-basket', tooltip: 'Ir a tipos de servicios' },

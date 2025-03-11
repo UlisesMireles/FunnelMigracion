@@ -52,7 +52,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ContactosComponent } from './components/catalogos/contactos/contactos.component';
 import { ModalContactosComponent } from './components/catalogos/contactos/modal-contactos/modal-contactos.component';
 import { TipoServiciosComponent } from './components/catalogos/tipo-servicios/tipo-servicios.component';
-import { MenuSidenavComponent } from './components/menu/menu-sidenav/menu-sidenav.component';
+import { MenuSidenavComponent } from './components/menu-sidenav/menu-sidenav.component';
 
 
 

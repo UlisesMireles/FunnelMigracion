@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { SideNavService } from  '../../../services/sidenav.service';
+import { SideNavService } from  '../../services/sidenav.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationService } from 'primeng/api';
 import { ActivatedRoute, Router } from '@angular/router';

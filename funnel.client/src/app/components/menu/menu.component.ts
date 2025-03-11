@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { LoginService } from '../../services/login.service';
 import { DomSanitizer, } from '@angular/platform-browser';
 import { BreakpointObserver } from '@angular/cdk/layout';
+import { SideNavService } from  '../../services/sidenav.service';
 
 @Component({
   selector: 'app-menu',
@@ -20,7 +21,7 @@ export class MenuComponent {
   rol: string = '';
   tipoUsuario: string = '';
   isMobile: boolean = false;
-  constructor(private readonly router: Router, private readonly breakpointObserver: BreakpointObserver, private readonly authService: LoginService) {
+  constructor(private readonly router: Router, private readonly breakpointObserver: BreakpointObserver, private readonly authService: LoginService, public sideNavService: SideNavService) {
 
   }
 
@@ -55,5 +56,10 @@ export class MenuComponent {
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: Event): void {
     this.isUserPanelVisible = false;
+  }
+
+  toggleSideNav(): void {
+    this.sideNavService.toggle();
+    this.sideNavService.toggleIconState();
   }
 }

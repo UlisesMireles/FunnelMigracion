@@ -35,7 +35,8 @@ export class ModalUsuariosComponent {
 
   ngOnInit() {
     this.inicializarFormulario ();
-    console.log(this.loginService.obtenerIdEmpresa());
+    this.escucharCambiosEnCampos();
+
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -148,6 +149,7 @@ export class ModalUsuariosComponent {
   onDialogShow() {
     this.cargarTipoUsuario();
     this.inicializarFormulario(); 
+    this.escucharCambiosEnCampos();
   }
 
   cargarTipoUsuario() {
@@ -207,6 +209,39 @@ export class ModalUsuariosComponent {
       summary: 'Error',
       detail: 'Es necesario llenar los campos indicados.',
     });
+  }
+
+  private escucharCambiosEnCampos() {
+    this.usuarioForm.get('nombre')?.valueChanges.subscribe(() => this.actualizarIniciales());
+    this.usuarioForm.get('apellidoPaterno')?.valueChanges.subscribe(() => this.actualizarIniciales());
+    this.usuarioForm.get('apellidoMaterno')?.valueChanges.subscribe(() => this.actualizarIniciales());
+  }
+  
+  private actualizarIniciales() {
+    const nombre = this.usuarioForm.get('nombre')?.value;
+    const apellidoPaterno = this.usuarioForm.get('apellidoPaterno')?.value;
+    const apellidoMaterno = this.usuarioForm.get('apellidoMaterno')?.value;
+  
+    if (nombre && apellidoPaterno) {
+      const iniciales = this.obtenerIniciales(nombre, apellidoPaterno, apellidoMaterno);
+      this.usuarioForm.get('iniciales')?.setValue(iniciales, { emitEvent: false });
+    }
+  }
+  
+  private obtenerIniciales(nombre: string, apellidoPaterno: string, apellidoMaterno: string): string {
+    let iniciales = '';
+    const inicialAp1 = apellidoPaterno.substring(0, 1).toUpperCase();
+    const inicialAp2 = apellidoMaterno ? apellidoMaterno.substring(0, 1).toUpperCase() : 'X';
+  
+    const nombres = nombre.split(' ');
+    if (nombres.length === 1) {
+      const inicialNomb = nombre.substring(0, 1).toUpperCase();
+      iniciales = inicialNomb + inicialAp1 + inicialAp2;
+    } else {
+      iniciales = nombres[0].substring(0, 1).toUpperCase() + nombres[1].substring(0, 1).toUpperCase() + inicialAp1 + inicialAp2;
+    }
+  
+    return iniciales;
   }
 
   

@@ -5,6 +5,7 @@ using Funnel.Models.Base;
 using Funnel.Models.Dto;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Data;
 using System.Threading.Tasks;
 
 
@@ -42,5 +43,6 @@ namespace Funnel.Server.Controllers
             return Ok(resultado);
 
         }
+
     }
 }

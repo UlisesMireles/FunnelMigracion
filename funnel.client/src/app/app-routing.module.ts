@@ -11,7 +11,11 @@ import { ContactosComponent } from './components/catalogos/contactos/contactos.c
 import { TipoServiciosComponent } from './components/catalogos/tipo-servicios/tipo-servicios.component';
 import { ModalTipoServiciosComponent } from './components/catalogos/tipo-servicios/modal-tipo-servicios/modal-tipo-servicios.component';
 import { UsuariosComponent } from './components/catalogos/usuarios/usuarios.component';
+import { OportunidadesComponent } from './components/catalogos/oportunidades/oportunidades.component';
 
+
+import { TiposEntregaComponent } from './components/catalogos/tipos-entrega/tipos-entrega.component';
+import { ModalTiposEntregaComponent } from './components/catalogos/tipos-entrega/modal-tipos-entrega/modal-tipos-entrega.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent, title: 'Login' },
@@ -22,9 +26,13 @@ const routes: Routes = [
   { path: 'prospectos', component: ProspectosComponent, title: 'Prospectos', canActivate: [AuthGuard] },
   { path: 'contactos', component: ContactosComponent, title: 'Contactos', canActivate: [AuthGuard] },
   { path: 'tipos-servicios', component: TipoServiciosComponent, title: 'Tipos Servicios ', canActivate: [AuthGuard] },
+  { path: 'oportunidades', component: OportunidadesComponent, title: 'Oportunidades', canActivate: [AuthGuard] },
   { path: 'tipos-servicios-modal', component: ModalTipoServiciosComponent, title: 'Tipos Servicios ', canActivate: [AuthGuard] },
   {path: 'modal-prospectos', component: ModalProspectosComponent, title: 'Modal Prospectos', canActivate: [AuthGuard] },
   {path: 'usuarios', component: UsuariosComponent, title: 'Usuarios', canActivate: [AuthGuard] },
+  {path:'tipos-entrega', component: TiposEntregaComponent, title: 'Tipos Entrega', canActivate: [AuthGuard] },
+  {path:'tipos-entrega-modal', component: ModalTiposEntregaComponent, title: 'Tipos Entrega', canActivate: [AuthGuard] },
+  
 ];
 
 

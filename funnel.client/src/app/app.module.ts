@@ -14,6 +14,8 @@ import { ReactiveFormsModule, FormsModule} from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
 import { UsuariosComponent } from './components/catalogos/usuarios/usuarios.component';
+import { TooltipModule } from 'primeng/tooltip';
+
 
 
 import { ModalTipoServiciosComponent } from './components/catalogos/tipo-servicios/modal-tipo-servicios/modal-tipo-servicios.component';
@@ -21,6 +23,8 @@ import { ProspectosComponent } from './components/catalogos/prospectos/prospecto
 import { ModalProspectosComponent } from './components/catalogos/prospectos/modal-prospectos/modal-prospectos.component';
 import { ModalUsuariosComponent } from './components/catalogos/usuarios/modal-usuarios/modal-usuarios.component';
 
+import { TiposEntregaComponent } from './components/catalogos/tipos-entrega/tipos-entrega.component';
+import { ModalTiposEntregaComponent } from './components/catalogos/tipos-entrega/modal-tipos-entrega/modal-tipos-entrega.component';
 import Aura from '@primeng/themes/aura';
 import { MessageService } from 'primeng/api';
 import { TableModule } from 'primeng/table';
@@ -40,6 +44,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { TextareaModule } from 'primeng/textarea';
 import { PasswordModule } from 'primeng/password';
+import { CalendarModule } from 'primeng/calendar';
 
 export function getBaseUrl() {
   return 'https://localhost:49834/'
@@ -49,9 +54,10 @@ import { ContactosComponent } from './components/catalogos/contactos/contactos.c
 import { ModalContactosComponent } from './components/catalogos/contactos/modal-contactos/modal-contactos.component';
 import { TipoServiciosComponent } from './components/catalogos/tipo-servicios/tipo-servicios.component';
 
-
-
-
+import { OportunidadesComponent} from './components/catalogos/oportunidades/oportunidades.component';
+import { CommonModule, DatePipe} from '@angular/common';
+import { TipoCurrencyPipe } from './pipes/tipoCurrency.pipe';
+import { ModalOportunidadesComponent } from './components/catalogos/oportunidades/modal-oportunidades/modal-oportunidades.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +75,11 @@ import { TipoServiciosComponent } from './components/catalogos/tipo-servicios/ti
     ModalContactosComponent,
     TipoServiciosComponent,
     UsuariosComponent,
-    ModalUsuariosComponent
+    ModalUsuariosComponent,
+    OportunidadesComponent,
+    ModalOportunidadesComponent,
+    TiposEntregaComponent,
+    ModalTiposEntregaComponent
   ],
   imports: [
     BrowserModule,
@@ -98,7 +108,11 @@ import { TipoServiciosComponent } from './components/catalogos/tipo-servicios/ti
     TextareaModule,
     PasswordModule,
     DialogModule,
-
+    TooltipModule, 
+    DatePipe,
+    CommonModule,
+    TipoCurrencyPipe,
+    CalendarModule
   ],
   providers: [
     { provide: 'BASE_URL', useFactory: getBaseUrl, deps: [] },

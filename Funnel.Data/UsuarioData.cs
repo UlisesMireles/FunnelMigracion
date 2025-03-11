@@ -140,14 +140,14 @@ namespace Funnel.Data
         {
             List<string> iniciales = new List<string>();
 
-            // Parámetros para el stored procedure F_Catalogos
+            
             IList<ParameterSQl> list = new List<ParameterSQl>
     {
         DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, "SEL-INICIALES"),
         DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, idEmpresa)
     };
 
-            // Ejecutar el stored procedure F_Catalogos
+            
             using (IDataReader reader = await DataBase.GetReaderSql("F_Catalogos", CommandType.StoredProcedure, list, _connectionString))
             {
                 while (reader.Read())

@@ -16,6 +16,7 @@ namespace Funnel.Logic.Interfaces
         Task<List<UsuarioDto>> ConsultarUsuarios(int IdEmpresa);
         Task<BaseOut> GuardarUsuarios(UsuarioDto request);
         public Task<List<ComboTiposUsuariosDto>> ComboTiposUsuarios();
+        Task<bool> ValidarInicialesExistente(string iniciales, int idEmpresa);
 
     }
 }

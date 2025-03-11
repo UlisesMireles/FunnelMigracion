@@ -37,6 +37,10 @@ namespace Funnel.Logic
             return await _usuarioData.GuardarUsuarios(request);
         }
 
-        
+        public async Task<bool> ValidarInicialesExistente(string iniciales, int idEmpresa)
+        {
+            return await _usuarioData.ValidarInicialesExistente(iniciales, idEmpresa);
+        }
+
     }
 }

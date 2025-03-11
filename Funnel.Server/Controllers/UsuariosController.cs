@@ -44,5 +44,13 @@ namespace Funnel.Server.Controllers
 
         }
 
+        [HttpGet("validar-iniciales")]
+        public async Task<ActionResult<bool>> ValidarInicialesExistente(string iniciales, int idEmpresa)
+        {
+            var existenIniciales = await _usuariosService.ValidarInicialesExistente(iniciales, idEmpresa);
+            return Ok(existenIniciales);
+        }
+
+
     }
 }

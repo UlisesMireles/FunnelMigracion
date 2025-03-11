@@ -135,5 +135,44 @@ namespace Funnel.Data
             }
             return result;
         }
+
+        public async Task<List<string>> ObtenerInicialesPorEmpresa(int idEmpresa)
+        {
+            List<string> iniciales = new List<string>();
+
+            // Parámetros para el stored procedure F_Catalogos
+            IList<ParameterSQl> list = new List<ParameterSQl>
+    {
+        DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, "SEL-INICIALES"),
+        DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, idEmpresa)
+    };
+
+            // Ejecutar el stored procedure F_Catalogos
+            using (IDataReader reader = await DataBase.GetReaderSql("F_Catalogos", CommandType.StoredProcedure, list, _connectionString))
+            {
+                while (reader.Read())
+                {
+                    string inicial = ComprobarNulos.CheckStringNull(reader["Iniciales"]);
+                    if (!string.IsNullOrEmpty(inicial))
+                    {
+                        iniciales.Add(inicial);
+                    }
+                }
+            }
+
+            return iniciales;
+        }
+
+        public async Task<bool> ValidarInicialesExistente(string iniciales, int idEmpresa)
+        {
+            // Obtener las iniciales de la empresa
+            var listaIniciales = await ObtenerInicialesPorEmpresa(idEmpresa);
+
+            // Verificar si las iniciales ya existen
+            bool existenIniciales = listaIniciales.Contains(iniciales);
+
+            return existenIniciales;
+        }
+
     }
 }

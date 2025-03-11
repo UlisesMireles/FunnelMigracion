@@ -165,10 +165,10 @@ namespace Funnel.Data
 
         public async Task<bool> ValidarInicialesExistente(string iniciales, int idEmpresa)
         {
-            // Obtener las iniciales de la empresa
+
             var listaIniciales = await ObtenerInicialesPorEmpresa(idEmpresa);
 
-            // Verificar si las iniciales ya existen
+
             bool existenIniciales = listaIniciales.Contains(iniciales);
 
             return existenIniciales;

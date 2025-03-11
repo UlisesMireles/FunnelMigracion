@@ -31,6 +31,9 @@
   .inDivDatatableHeader {
     padding-left: 50px;
     padding-top: 5px;
+    text-align: left ! important;
+    margin-left: 1025px ! important;
+    margin-top: 37px ! important;
   
   }
   
@@ -41,6 +44,7 @@
     border: 0.1px solid #872B07;
     text-align: center;
     font-size: 15px;
+    padding: 6px 10px;
   }
   
   .custom-header2 th {
@@ -64,12 +68,18 @@
   }
   
   ::ng-deep .p-datatable-thead>tr>th {
-    padding: 0px !important;
+    padding: 4px !important;
+    height: auto !important; 
+    line-height: 1;
+    font-size: 14px; 
   }
   
   ::ng-deep .p-datatable-tbody>tr>td {
-  
-    padding: 1px !important;
+    padding: 2px !important;
+    height: auto !important; 
+    line-height: 0.5;
+    text-overflow: ellipsis; 
+    word-wrap: break-word; 
   }
   
   ::ng-deep .custom-width input {

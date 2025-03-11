@@ -39,6 +39,11 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { TextareaModule } from 'primeng/textarea';
 import { PasswordModule } from 'primeng/password';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatIconModule } from '@angular/material/icon';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
 
 export function getBaseUrl() {
   return 'https://localhost:49834/'
@@ -47,6 +52,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ContactosComponent } from './components/catalogos/contactos/contactos.component';
 import { ModalContactosComponent } from './components/catalogos/contactos/modal-contactos/modal-contactos.component';
 import { TipoServiciosComponent } from './components/catalogos/tipo-servicios/tipo-servicios.component';
+import { MenuSidenavComponent } from './components/menu/menu-sidenav/menu-sidenav.component';
 
 
 
@@ -67,6 +73,7 @@ import { TipoServiciosComponent } from './components/catalogos/tipo-servicios/ti
     ContactosComponent,
     ModalContactosComponent,
     TipoServiciosComponent,
+    MenuSidenavComponent,
   ],
   imports: [
     BrowserModule,
@@ -95,6 +102,10 @@ import { TipoServiciosComponent } from './components/catalogos/tipo-servicios/ti
     TextareaModule,
     PasswordModule,
     DialogModule,
+    MatTooltipModule,
+    MatSidenavModule,
+    MatIconModule,
+    ConfirmDialogModule,
 
   ],
   providers: [
@@ -108,9 +119,11 @@ import { TipoServiciosComponent } from './components/catalogos/tipo-servicios/ti
         }
       }
     }),
-    MessageService
+    MessageService,
+    ConfirmationService,
   ],
   bootstrap: [AppComponent],
+
 
 })
 export class AppModule { }

@@ -1,0 +1,105 @@
+<div class="container-fluid">
+    <div class="row">
+      <div class="col-12" style="text-align: left; font-weight: bold;">
+        <h3>Catálogo de Usuarios</h3>
+      </div>
+  
+      <div class="col-12">
+        <div class="row contenedorTabla">
+          <div *ngIf="loading">Cargando...</div>
+          <p-table *ngIf="!loading" #dt [stripedRows]="true" [value]="usuarios" [paginator]="true"
+            [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" (onPage)="pageChange($event)" [first]="first"
+            [showCurrentPageReport]="true" paginatorPosition="both" [columnResizeMode]="'fit'"
+            [resizableColumns]="true" [scrollable]="true"
+            currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros">
+            
+            <ng-template class="divAccionesTabla" #caption>
+              <div class="row">
+                <div class="col inDivDatatableHeader" style="text-align:right; margin-right:5px">
+                  <p-button label="" icon="bi bi-arrow-clockwise" (click)="reset()" severity="secondary"
+                    [ngStyle]="{'margin-right': '5px'}" />
+                  <p-button label="" icon="bi bi-plus" severity="secondary"  (click)="inserta()"/>
+                </div> 
+              </div>
+            </ng-template>
+  
+            <ng-template #header>
+              <tr class="custom-header">
+                <th></th>
+                <th pSortableColumn="nombre">Nombre</th>
+                <th pSortableColumn="apellidoPaterno">Apellido Paterno</th>
+                <th pSortableColumn="apellidoMaterno">Apellido Materno</th>
+                <th pSortableColumn="usuario">Usuario</th>
+                <th pSortableColumn="iniciales">Iniciales</th>
+                <th pSortableColumn="correo">Correo Electrónico</th>
+                <th pSortableColumn="tipoUsuario">Tipo de usuario</th>
+                <th pSortableColumn="desEstatus">Estatus</th> 
+              </tr>
+              <tr class="custom-header2">
+                <th></th>
+                <th>
+                  <input pInputText type="text" [(ngModel)]="filtroNombre" (ngModelChange)="updateFilter($event, 'nombre')">
+                </th>
+                <th>
+                  <input pInputText type="text" [(ngModel)]="filtroApellidoPaterno" (ngModelChange)="updateFilter($event, 'apellidoPaterno')">
+                </th>
+                <th>
+                  <input pInputText type="text" [(ngModel)]="filtroApellidoMaterno" (ngModelChange)="updateFilter($event, 'apellidoMaterno')">
+                </th>
+                <th>
+                  <input pInputText type="text" [(ngModel)]="filtroUsuario" (ngModelChange)="updateFilter($event, 'usuario')">
+                </th>
+                <th>
+                  <input pInputText type="text" [(ngModel)]="filtroIniciales" (ngModelChange)="updateFilter($event, 'iniciales')">
+                </th>
+                <th>
+                  <input pInputText type="text" [(ngModel)]="filtroCorreo" (ngModelChange)="updateFilter($event, 'correo')">
+                </th>
+                <th>
+                  <input pInputText type="text" [(ngModel)]="filtroDescripcion" (ngModelChange)="updateFilter($event, 'tipoUsuario')">
+                </th>
+                <th>
+                  <p-select [options]="EstatusDropdown" [(ngModel)]="selectedEstatus" [appendTo]="'body'"
+                    (onChange)="FiltrarPorEstatus()" optionLabel="label" optionValue="value">
+                  </p-select>
+                </th>
+              </tr>
+              
+            </ng-template>
+            
+  
+            <ng-template #body let-usuario>
+              <tr class="custom-header3 custom-row filas">
+                <td>
+                  <p-button type="button" icon="bi bi-pencil" text (click)="actualiza(usuario)"/>
+                </td>
+                <td style="font-weight: bold;">{{ usuario.nombre }}</td>
+                <td>{{ usuario.apellidoPaterno }}</td>
+                <td>{{ usuario.apellidoMaterno }}</td>
+                <td>{{ usuario.usuario }}</td>
+                <td>{{ usuario.iniciales }}</td>
+                <td>{{ usuario.correo }}</td>
+                <td>{{ usuario.tipoUsuario }}</td>
+                <td>{{ usuario.desEstatus }}</td>
+              </tr>
+            </ng-template>
+  
+            <ng-template #footer>
+              <tr class="custom-footer">
+                <td></td>
+                <td colspan="7">Total: {{ getVisibleTotal('nombre',dt) }}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+        <p-toast position="center"></p-toast>
+      </div>
+    </div>
+  </div>
+  
+
+  <app-modal-usuarios [(visible)]="modalVisible" [title]="'Editar datos de '" (closeModal)="onModalClose()" 
+  (result)="manejarResultado($event)" [insertar]="insertar" [usuario]="usuarioSeleccionado" [usuarios]="usuarios">
+</app-modal-usuarios>
+
+  

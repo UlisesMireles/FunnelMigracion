@@ -13,6 +13,7 @@ import { NgxCaptchaModule } from 'ngx-captcha';
 import { ReactiveFormsModule, FormsModule} from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
+import { UsuariosComponent } from './components/catalogos/usuarios/usuarios.component';
 import { TooltipModule } from 'primeng/tooltip';
 
 
@@ -20,6 +21,8 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ModalTipoServiciosComponent } from './components/catalogos/tipo-servicios/modal-tipo-servicios/modal-tipo-servicios.component';
 import { ProspectosComponent } from './components/catalogos/prospectos/prospectos.component';
 import { ModalProspectosComponent } from './components/catalogos/prospectos/modal-prospectos/modal-prospectos.component';
+import { ModalUsuariosComponent } from './components/catalogos/usuarios/modal-usuarios/modal-usuarios.component';
+
 import { TiposEntregaComponent } from './components/catalogos/tipos-entrega/tipos-entrega.component';
 import { ModalTiposEntregaComponent } from './components/catalogos/tipos-entrega/modal-tipos-entrega/modal-tipos-entrega.component';
 import Aura from '@primeng/themes/aura';
@@ -71,6 +74,8 @@ import { ModalOportunidadesComponent } from './components/catalogos/oportunidade
     ContactosComponent,
     ModalContactosComponent,
     TipoServiciosComponent,
+    UsuariosComponent,
+    ModalUsuariosComponent,
     OportunidadesComponent,
     ModalOportunidadesComponent,
     TiposEntregaComponent,

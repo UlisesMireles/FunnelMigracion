@@ -1,0 +1,27 @@
+<div class="row">
+    <mat-form-field appearance="outline">
+      <input class="inputSearch" matInput placeholder="Buscar" [(ngModel)]="searchValue" (input)="onChangeValue()">
+    </mat-form-field>
+  </div>
+  <div class="row" class="listCheck pb-1">
+    <div *ngFor="let filtro of data.todosColumnas,let index = index">
+      <div *ngIf="!filtro.isIgnore">
+        <input class="check form-check-input cursorPointer" type="checkbox" [(ngModel)]="filtro.isCheck"
+          aria-label="check" id="flexCheckChecked{{index}}">
+        <label class="form-check-label ps-3 cursorPointer" for="flexCheckChecked{{index}}">
+          {{filtro.valor}}
+        </label>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row justify-content-center pt-1">
+    <div class="col-5">
+      <button pButton class="p-button-danger p-button-sm ms-1 me-1 w-100" label="Quitar columnas" (click)="limpiarFiltroParent()">
+      </button>
+    </div>
+    <div class="col-5">
+      <button pButton class="p-button-primary p-button-sm ms-1 me-1 w-100" label="Agregar" (click)="aplicarFiltroParent()">
+      </button>
+    </div>
+  </div>

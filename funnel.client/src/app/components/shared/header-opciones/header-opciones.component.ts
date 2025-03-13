@@ -10,9 +10,9 @@ import { pick } from "lodash-es";
   styleUrl: './header-opciones.component.css'
 })
 export class HeaderOpcionesComponent implements OnInit {
-  @Input() lsAddColumnas: any[];
-  @Input() columnsToDisplay: string[];
-  @Input() columnsToDisplayResp: string;
+  @Input() lsAddColumnas: any[]=[];
+  @Input() columnsToDisplay: string[]=[];
+  @Input() columnsToDisplayResp: string='';
   @Input() dataReporteDescarga: any;
   @Output() outColumnsToDisplayEmitter: EventEmitter<string[]> = new EventEmitter<string[]>();
   isDescargando = false;

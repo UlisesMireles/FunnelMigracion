@@ -4,6 +4,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationService } from 'primeng/api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoginService } from '../../services/login.service';
+import { FormsModule } from '@angular/forms';
+import { ɵnormalizeQueryParams } from '@angular/common';
 
 @Component({
   selector: 'app-menu-sidenav',

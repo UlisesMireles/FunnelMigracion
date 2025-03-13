@@ -23,10 +23,15 @@
   font-size: 40px;
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
   border-radius: 0% 20% 20% 0%;
+  position: absolute;
+  top: 60px;  
+  left: 10px;
+  z-index: 1000;
 }
 
 .sideNavOpen {
   width: 312px;
+  background-color: white;
 }
 
 .sideNavClosed {
@@ -38,10 +43,12 @@
 
 .sideContentOpen {
   margin-left: 75px;
+  transition: margin-left 0.3s ease;
 }
 
 .sideContentClosed {
-  margin-left: auto;
+  margin-left: 312px;
+  transition: margin-left 0.3s ease;
 }
 
 .cursorPointer {

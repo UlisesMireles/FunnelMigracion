@@ -1,0 +1,53 @@
+.listCheck {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: block;
+    width: 100%;
+    right: auto;
+    border: #007bff solid 1px;
+  }
+  
+  .listCheck .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.1px;
+  }
+  
+  .check {
+    transform: scale(1.2);
+    margin-right: 10px;
+    transition: all 0.2s ease;
+  }
+  
+  .check:hover {
+    transform: scale(1.3);
+  }
+  
+  .form-check {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+  }
+  
+  .form-check-label {
+    font-size: 14px;
+    color: #333;
+  }
+  
+  button.p-button-primary {
+    background: #2573c7;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    width: 100%;
+    cursor: pointer;
+  }
+  
+  button.p-button-primary:hover {
+    background: #0056b3;
+  }
+  

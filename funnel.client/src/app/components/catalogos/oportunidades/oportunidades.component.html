@@ -92,7 +92,18 @@
                 <td>
                   <p-button type="button" icon="bi bi-pencil" text (click)="actualiza(rowData)"/>
                 </td>
-                <td *ngFor="let def of columns" [innerHTML]="rowData[def.key] ">
+                <td *ngFor="let def of lsColumnasAMostrar">
+                  <ng-container [ngSwitch]="def.tipoFormato">
+                    <span *ngSwitchCase="'text'">{{ rowData[def.key] }}</span>
+            
+                    <span *ngSwitchCase="'currency'">
+                      {{ rowData[def.key] | currency:'MX ':'symbol' }}
+                    </span>
+            
+                    <span *ngSwitchCase="'number'">{{ rowData[def.key] | number:'1.0-2' }}</span>
+            
+                    <span *ngSwitchCase="'date'">{{ rowData[def.key] | date:'dd/MM/yyyy' }}</span>
+                  </ng-container>
                 </td>
             </tr>
           </ng-template>
@@ -100,7 +111,7 @@
               <tr class="custom-footer">
                   <td></td>
                   <td *ngFor="let def of columns">
-                  {{getTotalCostPrimeNg(dt, def)}}</td>
+                  {{getTotalCostPrimeNg(dt, def) | currency:'MX ':'symbol' }}</td>
               </tr>
           </ng-template>
 

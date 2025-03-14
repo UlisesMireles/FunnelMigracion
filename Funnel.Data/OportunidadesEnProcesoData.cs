@@ -197,9 +197,11 @@ namespace Funnel.Data
                         FechaModificacion = ComprobarNulos.CheckIntNull(reader["FechaModificacion"]),
                         Comentario = ComprobarNulos.CheckStringNull(reader["Comentario"]),
                         TotalComentarios = ComprobarNulos.CheckIntNull(reader["TotalComentarios"]),
-
-
-
+                        DiasEtapa1 = ComprobarNulos.CheckIntNull(reader["DiasEtapa1"]),
+                        DiasEtapa2 = ComprobarNulos.CheckIntNull(reader["DiasEtapa2"]),
+                        DiasEtapa3 = ComprobarNulos.CheckIntNull(reader["DiasEtapa3"]),
+                        DiasEtapa4 = ComprobarNulos.CheckIntNull(reader["DiasEtapa4"]),
+                        DiasEtapa5 = ComprobarNulos.CheckIntNull(reader["DiasEtapa5"]),
 
                     };
 

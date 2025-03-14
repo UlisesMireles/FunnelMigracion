@@ -13,9 +13,8 @@ import { OportunidadPerdida } from '../../../interfaces/oportunidades-perdidas';
 
 @Component({
   selector: 'app-oportunidades-perdidas',
-  standalone: false,
   templateUrl: './oportunidades-perdidas.component.html',
-  styleUrl: './oportunidades-perdidas.component.css'
+  styleUrls: ['./oportunidades-perdidas.component.css']
 })
 export class OportunidadesPerdidasComponent {
   @ViewChild('dt') dt!: Table;

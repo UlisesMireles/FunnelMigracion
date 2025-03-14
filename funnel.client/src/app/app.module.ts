@@ -14,6 +14,7 @@ import { ReactiveFormsModule, FormsModule} from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
 import { UsuariosComponent } from './components/catalogos/usuarios/usuarios.component';
+
 import { TooltipModule } from 'primeng/tooltip';
 
 
@@ -55,6 +56,7 @@ import { ModalContactosComponent } from './components/catalogos/contactos/modal-
 import { TipoServiciosComponent } from './components/catalogos/tipo-servicios/tipo-servicios.component';
 
 import { OportunidadesComponent} from './components/catalogos/oportunidades/oportunidades.component';
+import { OportunidadesPerdidasComponent} from './components/catalogos/oportunidades-perdidas/oportunidades-perdidas.component';
 import { CommonModule, DatePipe} from '@angular/common';
 import { TipoCurrencyPipe } from './pipes/tipoCurrency.pipe';
 import { ModalOportunidadesComponent } from './components/catalogos/oportunidades/modal-oportunidades/modal-oportunidades.component';
@@ -77,6 +79,7 @@ import { ModalOportunidadesComponent } from './components/catalogos/oportunidade
     UsuariosComponent,
     ModalUsuariosComponent,
     OportunidadesComponent,
+    OportunidadesPerdidasComponent,
     ModalOportunidadesComponent,
     TiposEntregaComponent,
     ModalTiposEntregaComponent

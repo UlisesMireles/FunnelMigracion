@@ -148,6 +148,27 @@ namespace Funnel.Data
             return result;
         }
 
+        public async Task<List<ComboEstatusOportunidad>> ComboTipoOportunidad(int IdEmpresa)
+        {
+            List<ComboEstatusOportunidad> result = new List<ComboEstatusOportunidad>();
+            IList<ParameterSQl> list = new List<ParameterSQl>
+            {
+                DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "ESTATUSOPORTUNIDAD"),
+                DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, IdEmpresa)
+            };
+            using (IDataReader reader = await DataBase.GetReaderSql("F_Catalogos", CommandType.StoredProcedure, list, _connectionString))
+            {
+                while (reader.Read())
+                {
+                    var dto = new ComboEstatusOportunidad();
+                    dto.IdEstatus = ComprobarNulos.CheckIntNull(reader["IdEstatus"]);
+                    dto.Descripcion = ComprobarNulos.CheckStringNull(reader["Descripcion"]);
+                    result.Add(dto);
+                }
+            }
+            return result;
+        }
+
         public async Task<List<OportunidadesEnProcesoDto>> ConsultarOportunidadesEnProceso(int IdUsuario, int IdEmpresa, int IdEstatus)
         {
             List<OportunidadesEnProcesoDto> result = new List<OportunidadesEnProcesoDto>();
@@ -197,9 +218,11 @@ namespace Funnel.Data
                         FechaModificacion = ComprobarNulos.CheckIntNull(reader["FechaModificacion"]),
                         Comentario = ComprobarNulos.CheckStringNull(reader["Comentario"]),
                         TotalComentarios = ComprobarNulos.CheckIntNull(reader["TotalComentarios"]),
-
-
-
+                        DiasEtapa1 = ComprobarNulos.CheckIntNull(reader["DiasEtapa1"]),
+                        DiasEtapa2 = ComprobarNulos.CheckIntNull(reader["DiasEtapa2"]),
+                        DiasEtapa3 = ComprobarNulos.CheckIntNull(reader["DiasEtapa3"]),
+                        DiasEtapa4 = ComprobarNulos.CheckIntNull(reader["DiasEtapa4"]),
+                        DiasEtapa5 = ComprobarNulos.CheckIntNull(reader["DiasEtapa5"]),
 
                     };
 
@@ -217,7 +240,7 @@ namespace Funnel.Data
 
                 IList<ParameterSQl> list = new List<ParameterSQl>
                 {
-                    DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Bandera ?? "INS-OPORTUNIDAD"),
+                    DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Bandera),
                     DataBase.CreateParameterSql("@pIdOportunidad", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdOportunidad),
                     DataBase.CreateParameterSql("@pIdProspecto", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdProspecto),
                     DataBase.CreateParameterSql("@pNombreOportunidad", SqlDbType.VarChar, 100, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Descripcion),

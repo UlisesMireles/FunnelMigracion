@@ -46,6 +46,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { TextareaModule } from 'primeng/textarea';
 import { PasswordModule } from 'primeng/password';
 import { CalendarModule } from 'primeng/calendar';
+import { PrimeNG } from "primeng/config";
+import { PrimeNgConfiguracionService } from './services/primeNgConfiguracion.service';
 
 export function getBaseUrl() {
   return 'https://localhost:49834/'
@@ -56,13 +58,22 @@ import { ModalContactosComponent } from './components/catalogos/contactos/modal-
 import { TipoServiciosComponent } from './components/catalogos/tipo-servicios/tipo-servicios.component';
 
 import { OportunidadesComponent} from './components/catalogos/oportunidades/oportunidades.component';
-import { CommonModule, DatePipe} from '@angular/common';
+import { CommonModule, DatePipe, registerLocaleData } from '@angular/common';
 import { TipoCurrencyPipe } from './pipes/tipoCurrency.pipe';
 import { ModalOportunidadesComponent } from './components/catalogos/oportunidades/modal-oportunidades/modal-oportunidades.component';
 import { AgregarQuitarColumnasComponent } from './components/shared/agregar-quitar-columnas/agregar-quitar-columnas.component';
 import { ColumnasDisponiblesComponent } from './components/shared/columnas-disponibles/columnas-disponibles.component';
 import { ColumnFilterComponent } from './components/shared/column-filter/column-filter.component';
 import { HeaderOpcionesComponent } from './components/shared/header-opciones/header-opciones.component';
+
+import { APP_INITIALIZER, LOCALE_ID } from '@angular/core';
+import localeEs from '@angular/common/locales/es-MX';
+
+export function configurationProviderFactory(provider: PrimeNgConfiguracionService) {
+  return () => provider.load();
+}
+
+registerLocaleData(localeEs, 'es-MX');
 
 @NgModule({
   declarations: [
@@ -127,7 +138,13 @@ import { HeaderOpcionesComponent } from './components/shared/header-opciones/hea
     DropdownModule,
   ],
   providers: [
-    { provide: 'BASE_URL', useFactory: getBaseUrl, deps: [] },
+    { provide: LOCALE_ID, useValue: 'es-MX' },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: configurationProviderFactory,
+      deps: [PrimeNgConfiguracionService],
+      multi: true,
+    },
     provideAnimationsAsync(),
     providePrimeNG({
       theme: {
@@ -137,7 +154,7 @@ import { HeaderOpcionesComponent } from './components/shared/header-opciones/hea
         }
       }
     }),
-    MessageService
+    MessageService,
   ],
   bootstrap: [AppComponent],
 

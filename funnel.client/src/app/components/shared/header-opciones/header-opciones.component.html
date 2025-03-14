@@ -1,0 +1,18 @@
+<div class="row m-0 p-1 d-flex justify-content-end">
+    <div class="col-auto p-1" *ngIf="lsAddColumnas !== undefined || columnsToDisplayResp !== undefined">
+      <i class="bi bi-columns btnPrimarioTabla cursorPointer" matTooltip="Agregar-quitar columnas"
+        (click)="agregarQuitarColumna($event)"></i>
+    </div>
+    <div class="col-auto p-1" *ngIf="dataReporteDescarga !== undefined">
+      <i *ngIf="!isDescargando" class="bi bi-download btnPrimarioTabla cursorPointer" matTooltip="Descarga en excel"
+        (click)="descargarReporte()"></i>
+      <ng-container *ngIf="isDescargando" [ngTemplateOutlet]="cargandoSM">
+      </ng-container>
+    </div>
+  </div>
+  <ng-template #cargandoSM>
+    <div class="d-flex justify-content-center p-1 btnPrimarioTabla">
+      <div class="spinner-border spinner-border-sm" role="status">
+      </div>
+    </div>
+  </ng-template>

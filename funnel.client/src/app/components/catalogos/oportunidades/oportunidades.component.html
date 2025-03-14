@@ -1,115 +1,128 @@
 <div class="container-fluid">
     <div class="row">
       <div class="col-12" style="text-align: left; font-weight: bold;">
-        <h3>Administración General de Oportunidades en Proceso</h3>
+        <h3></h3>
       </div>
-  
+      
       <div class="col-12">
         <div class="row contenedorTabla" style="justify-content: center; display: flex; width: 100% ;" >
           <div *ngIf="loading">Cargando...</div>
-          <p-table *ngIf="!loading" #dt [stripedRows]="true" [value]="oportunidades" [paginator]="true"
-            [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" (onPage)="pageChange($event)" [first]="first"
-            [showCurrentPageReport]="true" paginatorPosition="both" [columnResizeMode]="'fit'"
-            [resizableColumns]="true" [scrollable]="true"
-            currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros">
+          <p-table *ngIf="!loading" #dt [stripedRows]="true" [value]="oportunidades" dataKey="id" [rows]="20"
+            [showCurrentPageReport]="true" [rowsPerPageOptions]="[20, 30, 50]" [paginator]="true" paginatorPosition="both"
+            currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros"
+            [columns]="lsColumnasAMostrar"
+            [resizableColumns]="true"
+            [globalFilterFields]="['nombre','nombreSector','nombreOportunidad','abreviatura','stage','iniciales','nombreContacto','entrega','monto','probabilidadOriginal','probabilidad','montoNormalizado','fechaRegistro','diasFunnel','fechaEstimadaCierreOriginal','fechaModificacion']"
+            [tableStyle]="{'min-width': anchoTabla+ '%'}">
             
             <ng-template class="divAccionesTabla" #caption>
+              <div class="col-12" style="text-align: left; font-weight: bold;">
+                <h3>Administración General de Oportunidades en Proceso</h3>
+              </div>
               <div class="row">
                 <div class="col inDivDatatableHeader" style="text-align:right; margin-right:5px">
-                  <p-button label="" icon="bi bi-arrow-clockwise" (click)="reset()" severity="secondary"
+                  <p-button label="" icon="bi bi-arrow-clockwise" (click)="clear(dt)" severity="secondary"
                     [ngStyle]="{'margin-right': '5px'}" />
-                  <p-button label="" icon="bi bi-plus" severity="secondary" (click)="inserta()" />
+                  <p-button label="" icon="bi bi-download" severity="secondary" (click)="exportExcel(dt)"  [ngStyle]="{'margin-right': '5px'}"/>
+                  <p-button label="" icon="bi-pencil" (click)="agregarColumna($event)"  severity="secondary"  [ngStyle]="{'margin-right': '5px'}"/>
+                  <p-button label="" icon="bi bi-plus" severity="secondary" (click)="inserta()"  [ngStyle]="{'margin-right': '5px'}"/>
                 </div> 
               </div>
             </ng-template>
-  
-            <ng-template #header>
+
+            <ng-template pTemplate="header" let-columns>
               <tr class="custom-header">
-                <th></th>
-                <th pSortableColumn="nombre">Nombre</th>
-                <th pSortableColumn="nombreSector">Sector</th>
-                <th pSortableColumn="nombreOportunidad">Oportunidad</th>
-                <th pSortableColumn="abreviatura">Abreviatura</th>
-                <th pSortableColumn="stage">Etapa</th>
-                <th pSortableColumn="iniciales">Iniciales</th>
-                <th pSortableColumn="nombreContacto">Contacto</th>
-                <th pSortableColumn="entrega">Entrega</th>
-                <th pSortableColumn="monto">Monto</th>
-                <th pSortableColumn="probabilidadOriginal">% Original</th>
-                <th pSortableColumn="probabilidad">% Actual</th>
-                <th pSortableColumn="montoNormalizado">Venta Esperada</th>
-                <th pSortableColumn="fechaRegistro">Fecha Alta</th>
-                <th pSortableColumn="diasFunnel">Días Funnel</th>
-                <th pSortableColumn="fechaEstimadaCierreOriginal">Cierre Est</th>
-                <th pSortableColumn="fechaModificacion">Dias s/Act</th>
+                  <th></th>
+                  <th *ngFor="let def of lsColumnasAMostrar" pSortableColumn="{{def.key}}">
+                    {{def.valor}}<p-sortIcon field="{{def.key}}"></p-sortIcon>
+                  </th>
               </tr>
-              <tr class="custom-header2">
-                <th></th>
-                <th><input pInputText type="text" [(ngModel)]="filtroNombre" (ngModelChange)="updateFilter($event, 'nombre')"></th>
-                <th><input pInputText type="text" [(ngModel)]="filtroNombreSector" (ngModelChange)="updateFilter($event, 'nombreSector')"></th>
-                <th><input pInputText type="text" [(ngModel)]="filtroNombreOportunidad" (ngModelChange)="updateFilter($event, 'nombreOportunidad')"></th>
-                <th><input pInputText type="text" [(ngModel)]="filtroAbreviatura" (ngModelChange)="updateFilter($event, 'abreviatura')"></th>
-                <th><input pInputText type="text" [(ngModel)]="filtroTooltipStage" (ngModelChange)="updateFilter($event, 'tooltipStage')"></th>
-                <th><input pInputText type="text" [(ngModel)]="filtroNombreEjecutivo" (ngModelChange)="updateFilter($event, 'nombreEjecutivo')"></th>
-                <th><input pInputText type="text" [(ngModel)]="filtroNombreContacto" (ngModelChange)="updateFilter($event, 'nombreContacto')"></th>
-                <th><input pInputText type="text" [(ngModel)]="filtroEntregaDescripcion" (ngModelChange)="updateFilter($event, 'entregaDescripcion')"></th>
-                <th><input pInputText type="text" [(ngModel)]="filtroMonto" (ngModelChange)="updateFilter($event, 'monto')"></th>
-                <th><input pInputText type="text" [(ngModel)]="filtroProbabilidadOriginal" (ngModelChange)="updateFilter($event, 'probabilidadOriginal')"></th>
-                <th><input pInputText type="text" [(ngModel)]="filtroProbabilidad" (ngModelChange)="updateFilter($event, 'probabilidad')"></th>
-                <th><input pInputText type="text" [(ngModel)]="filtroMontoNormalizado" (ngModelChange)="updateFilter($event, 'montoNormalizado')"></th>
-                <th><input pInputText type="text" [(ngModel)]="filtroFechaRegistro" (ngModelChange)="updateFilter($event, 'fechaRegistro')"></th>
-                <th><input pInputText type="text" [(ngModel)]="filtroDiasFunnel" (ngModelChange)="updateFilter($event, 'diasFunnel')"></th>
-                <th><input pInputText type="text" [(ngModel)]="filtroFechaEstimadaCierreOriginal" (ngModelChange)="updateFilter($event, 'fechaEstimadaCierreOriginal')"></th>
-                <th><input pInputText type="text" [(ngModel)]="filtroFechaModificacion" (ngModelChange)="updateFilter($event, 'fechaModificacion')"></th>
-              </tr>
-            </ng-template>
-  
-            <ng-template pTemplate="emptymessage">
               <tr>
-                <td colspan="19" class="text-center">No se encontraron registros</td>
+                  <th></th>
+                  <th *ngFor="let def of lsColumnasAMostrar" style="min-width: 30%;">
+                      <ng-container *ngIf="def.groupColumn">
+                          <p-columnFilter field="{{def.key}}" matchMode="in" [showMenu]="false">
+                              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                  <p-multiSelect [ngModel]="value"
+                                      [options]="obtenerArregloFiltros(oportunidades, def.key)" placeholder=""
+                                      (onChange)="filter($event.value)">
+                                      <ng-template let-option pTemplate="item">
+                                          <div class="p-multiselect-representative-option">
+                                              <span class="ml-1">{{option}}</span>
+                                          </div>
+                                      </ng-template>
+                                  </p-multiSelect>
+                              </ng-template>
+                          </p-columnFilter>
+                      </ng-container>
+                      <ng-container *ngIf="!def.groupColumn">
+                          <div [ngSwitch]="def.tipoFormato">
+                              <div *ngSwitchCase="'text'">
+                                  <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false">
+                                      <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                          <input type="text" pInputText [ngModel]="value"
+                                              (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
+                                      </ng-template>
+                                  </p-columnFilter>
+                              </div>
+                              <div *ngSwitchCase="'currency'">
+                                  <p-columnFilter type="numeric" field="{{def.key}}" [showButtons]="false"
+                                      [maxFractionDigits]="7"></p-columnFilter>
+                              </div>
+                              <div *ngSwitchCase="'date'">
+                                  <p-columnFilter type="{{def.tipoFormato}}" [field]="def.key" [showButtons]="false">
+                                      <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                          <p-calendar #calendar [ngModel]="value" (onSelect)="filter(calendar.value)"
+                                              [showButtonBar]="true"></p-calendar>
+                                      </ng-template>
+                                  </p-columnFilter>
+                              </div>
+                              <div *ngSwitchDefault>
+                                  <p-columnFilter
+                                      *ngIf="def.tipoFormato !== 'text' && def.tipoFormato !== 'currency' && def.tipoFormato !== 'date'"
+                                      type="{{def.tipoFormato}}" field="{{def.key}}" [showButtons]="false">
+                                  </p-columnFilter>
+                              </div>
+                          </div>
+                      </ng-container>
+
+                  </th>
               </tr>
-            </ng-template>
-  
-            <ng-template #body let-oportunidad>
-              <tr class="custom-header3 custom-row filas">
+          </ng-template>
+
+          <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr>
                 <td>
-                  <p-button type="button" icon="bi bi-pencil" text (click)="actualiza(oportunidad)"/>
+                  <p-button type="button" icon="bi bi-pencil" text (click)="actualiza(rowData)"/>
                 </td>
-                <td>{{ oportunidad.nombre }}</td>
-                <td>{{ oportunidad.nombreSector }}</td>
-                <td>{{ oportunidad.nombreOportunidad }}</td>
-                <td pTooltip="{{ oportunidad.descripcion || 'Sin descripción' }}" tooltipPosition="top">
-                  {{ oportunidad.abreviatura || 'N/A' }}
-                </td> 
-                <td pTooltip="{{ oportunidad.tooltipStage || 'Sin descripción' }}" tooltipPosition="top">
-                  {{ oportunidad.stage || 'N/A' }}
-                </td> 
-                <td pTooltip="{{ oportunidad.nombreEjecutivo || 'Sin descripción' }}" tooltipPosition="top">
-                  {{ oportunidad.iniciales || 'N/A' }}
-                </td> 
-                <td>{{ oportunidad.nombreContacto || 'N/A' }}</td>
-                <td pTooltip="{{ oportunidad.entregaDescripcion || 'Sin descripción' }}" tooltipPosition="top">
-                  {{ oportunidad.entrega || 'N/A' }}
-                </td>  
-                <td>{{ oportunidad.monto | currency }}</td>
-                <td>{{ oportunidad.probabilidadOriginal || 'N/A' }}</td>
-                <td>{{ oportunidad.probabilidad || 'N/A' }}</td>
-                <td>{{ oportunidad.montoNormalizado | currency }}</td>
-                <td>{{ oportunidad.fechaRegistro | date }}</td>
-                <td>{{ oportunidad.diasFunnel || '0' }}</td>
-                <td>{{ oportunidad.fechaEstimadaCierreOriginal | date }}</td>
-                <td>{{ oportunidad.fechaModificacion || 'N/A' }}</td>   
-              </tr>
-            </ng-template>
-  
-            <ng-template #footer>
+                <td *ngFor="let def of lsColumnasAMostrar">
+                  <ng-container [ngSwitch]="def.tipoFormato">
+                    <span *ngSwitchCase="'text'">{{ rowData[def.key] }}</span>
+            
+                    <span *ngSwitchCase="'currency'">
+                      {{ rowData[def.key] | currency:'MX ':'symbol' }}
+                    </span>
+            
+                    <span *ngSwitchCase="'number'">{{ rowData[def.key] | number:'1.0-2' }}</span>
+            
+                    <span *ngSwitchCase="'date'">{{ rowData[def.key] | date:'dd/MM/yyyy' }}</span>
+                  </ng-container>
+                </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="footer" let-columns #footer>
               <tr class="custom-footer">
-                <td></td>
-                <td colspan="8">Total Registros: {{ getVisibleTotal('nombre', dt) }}</td>
-                <td colspan="3">{{ getVisibleTotal('monto', dt) | currency }}</td>
-                <td colspan="5">{{ getVisibleTotal('montoNormalizado', dt) | currency }}</td>
+                  <td></td>
+                  <td *ngFor="let def of columns">
+                  {{getTotalCostPrimeNg(dt, def) | currency:'MX ':'symbol' }}</td>
               </tr>
-            </ng-template>
+          </ng-template>
+
+          <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="5">No preguntas encontradas.</td>
+            </tr>
+          </ng-template>
             
           </p-table>
         </div>

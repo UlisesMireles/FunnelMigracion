@@ -58,6 +58,7 @@ import { TipoServiciosComponent } from './components/catalogos/tipo-servicios/ti
 
 import { OportunidadesComponent} from './components/catalogos/oportunidades/oportunidades.component';
 import { OportunidadesPerdidasComponent} from './components/catalogos/oportunidades-perdidas/oportunidades-perdidas.component';
+import { ModalOportunidadesPerdidasComponent } from './components/catalogos/oportunidades-perdidas/modal-oportunidades-perdidas/modal-oportunidades-perdidas.component';
 import { CommonModule, DatePipe} from '@angular/common';
 import { TipoCurrencyPipe } from './pipes/tipoCurrency.pipe';
 import { ModalOportunidadesComponent } from './components/catalogos/oportunidades/modal-oportunidades/modal-oportunidades.component';
@@ -86,6 +87,7 @@ import { HeaderOpcionesComponent } from './components/shared/header-opciones/hea
     OportunidadesComponent,
     OportunidadesPerdidasComponent,
     ModalOportunidadesComponent,
+    ModalOportunidadesPerdidasComponent,
     TiposEntregaComponent,
     ModalTiposEntregaComponent,
     AgregarQuitarColumnasComponent,

@@ -7,12 +7,13 @@ import { LoginService } from '../../../services/login.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ColumnasDisponiblesComponent } from '../../shared/columnas-disponibles/columnas-disponibles.component';
 import { sumBy, map as mapping, omit, sortBy, groupBy, keys as getKeys } from "lodash-es";
-import { OportunidadesPerdidasService } from '../../../services/oportunidades-perdidas.service';
-import { OportunidadPerdida } from '../../../interfaces/oportunidades-perdidas';
+import { OportunidadesService } from '../../../services/oportunidades.service';
+import { Oportunidad } from '../../../interfaces/oportunidades';
 
 
 @Component({
   selector: 'app-oportunidades-perdidas',
+  standalone:false,
   templateUrl: './oportunidades-perdidas.component.html',
   styleUrls: ['./oportunidades-perdidas.component.css']
 })
@@ -21,14 +22,14 @@ export class OportunidadesPerdidasComponent {
 
   disableOportunidades = true;
   isDescargando = false;
-  anchoTabla = 100;//porciento
+  anchoTabla = 100;
 
-  oportunidadesperdidas: OportunidadPerdida[] = [];
-  oportunidadesperdidasOriginal: OportunidadPerdida[] = [];
-  oportunidadperdidaSeleccionada!: OportunidadPerdida;
+  oportunidades: Oportunidad[] = [];
+  oportunidadesOriginal: Oportunidad[] = [];
+  oportunidadSeleccionada!: Oportunidad;
 
   idUsuario: number = 1;
-  idEstatus: number = 1;
+  idEstatus: number = 3;
 
   insertar: boolean = false;
   modalVisible: boolean = false;
@@ -40,17 +41,21 @@ export class OportunidadesPerdidasComponent {
   ];
 
   lsTodasColumnas: any[] = [
-    { key: 'idoportunidad', isCheck: true, valor: 'ID', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
-    { key: 'prospecto', isCheck: true, valor: 'Prospecto', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'oportunidad', isCheck: true, valor: 'Oportunidad', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'tipo', isCheck: true, valor: 'Tipo', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'ejecutivo', isCheck: true, valor: 'Ejecutivo', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'nombre', isCheck: true, valor: 'Nombre', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'nombreSector', isCheck: false, valor: 'Sector', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'nombreOportunidad', isCheck: true, valor: 'Oportunidad', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'abreviatura', isCheck: true, valor: 'Abreviatura', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'stage', isCheck: false, valor: 'Etapa', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'nombreEjecutivo', isCheck: true, valor: 'Ejecutivo', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'nombreContacto', isCheck: false, valor: 'Contacto', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'monto', isCheck: true, valor: 'Monto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
-    { key: 'fechainicio', isCheck: true, valor: 'Fecha de Inicio', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
-    { key: 'cierrestimado', isCheck: true, valor: 'Cierre Estimado', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
-    { key: 'fechadecierre', isCheck: true, valor: 'Fecha de Cierre', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
-    { key: 'diasfunnel', isCheck: true, valor: 'Días en Funnel', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
-    { key: 'ultimocomentario', isCheck: true, valor: 'Último Comentario', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' }
+    { key: 'probabilidad', isCheck: false, valor: 'Prob', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'montoNormalizado', isCheck: false, valor: 'Monto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
+    { key: 'fechaRegistro', isCheck: true, valor: 'Fecha Registro', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
+    { key: 'diasFunnel', isCheck: true, valor: 'Días en Funnel', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
+    { key: 'fechaEstimadaCierreOriginal', isCheck: true, valor: 'Fecha Cierre', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
+    {key: 'comentario', isCheck: true, valor: 'Último comentario', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
+
   ];
 
   columnsAMostrarResp: string = JSON.stringify(this.lsColumnasAMostrar);
@@ -62,20 +67,21 @@ export class OportunidadesPerdidasComponent {
 
     ngOnInit(): void {
       this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
-      this.getOportunidadesPerdidas();
+      this.getOportunidades();
 
       document.documentElement.style.fontSize = 12 + 'px';
     }
 
-    getOportunidadesPerdidas() {
-      this.oportunidadService.getOportunidadesPerdidas(this.idUsuario, this.loginService.obtenerIdEmpresa(), this.idEstatus).subscribe({
-        next: (result: OportunidadPerdida[]) => {
-          this.oportunidadesperdidas = [...result];
-          this.oportunidadesperdidasOriginal = result;
+
+    getOportunidades() {
+      this.oportunidadService.getOportunidades(this.idUsuario, this.loginService.obtenerIdEmpresa(), this.idEstatus).subscribe({
+        next: (result: Oportunidad[]) => {
+          this.oportunidades = [...result];
+          this.oportunidadesOriginal = result;
           this.cdr.detectChanges(); 
           this.loading = false;
         },
-        error: (error: any) => {
+        error: (error) => {
           this.messageService.add({
             severity: 'error',
             summary: 'Se ha producido un error.',
@@ -85,9 +91,8 @@ export class OportunidadesPerdidasComponent {
         },
       });
     }
-
-    actualiza(licencia: OportunidadPerdida) {
-      this.oportunidadperdidaSeleccionada = licencia;
+    actualiza(licencia: Oportunidad) {
+      this.oportunidadSeleccionada = licencia;
       this.insertar = false;
       this.modalVisible = true;
     }
@@ -95,17 +100,17 @@ export class OportunidadesPerdidasComponent {
     getVisibleTotal(campo: string, dt: any): number {
       const registrosVisibles = dt.filteredValue
         ? dt.filteredValue
-        : this.oportunidadesperdidas;
+        : this.oportunidades;
       if (campo === 'nombre') {
         return registrosVisibles.length; 
       }
       return registrosVisibles.reduce(
-        (acc: number, empresa: OportunidadPerdida) =>
-          acc + Number(empresa[campo as keyof OportunidadPerdida] || 0),
+        (acc: number, empresa: Oportunidad) =>
+          acc + Number(empresa[campo as keyof Oportunidad] || 0),
         0
       );
     }
-
+    
     onModalClose() {
       this.modalVisible = false;
     }
@@ -117,7 +122,7 @@ export class OportunidadesPerdidasComponent {
           summary: 'La operación se realizó con éxito.',
           detail: result.errorMessage,
         });
-        this.getOportunidadesPerdidas();
+        this.getOportunidades();
       } else {
         this.messageService.add({
           severity: 'error',
@@ -129,7 +134,7 @@ export class OportunidadesPerdidasComponent {
 
     clear(table: Table) {
       table.clear();
-      this.getOportunidadesPerdidas();
+      this.getOportunidades();
       this.lsColumnasAMostrar = JSON.parse(this.columnsAMostrarResp);
       this.lsTodasColumnas = JSON.parse(this.columnsTodasResp);
       this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
@@ -155,8 +160,7 @@ export class OportunidadesPerdidasComponent {
       };
       const dialogRef = this.dialog.open(ColumnasDisponiblesComponent, dialogConfig);
   
-      dialogRef.afterClosed().subscribe((r: any[]) => {
-
+      dialogRef.afterClosed().subscribe(r => {
         if (r) {
           this.lsColumnasAMostrar = JSON.parse(this.columnsAMostrarResp);
           const selectedColumns = r.filter((f: any) => f.isCheck);
@@ -170,7 +174,7 @@ export class OportunidadesPerdidasComponent {
         }
       });
     }
-
+  
     exportExcel(table: Table) {
       let colsIgnorar: any[] = [];
     
@@ -189,11 +193,11 @@ export class OportunidadesPerdidasComponent {
       import('xlsx').then(xlsx => {
         const hojadeCalculo: import('xlsx').WorkSheet = xlsx.utils.json_to_sheet(dataExport);
         const libro: import('xlsx').WorkBook = xlsx.utils.book_new();
-        xlsx.utils.book_append_sheet(libro, hojadeCalculo, "Oportunidades Perdidas");
-        xlsx.writeFile(libro, "Oportunidades Perdidas.xlsx");
+        xlsx.utils.book_append_sheet(libro, hojadeCalculo, "Oportunidades Canceladas");
+        xlsx.writeFile(libro, "Oportunidades Canceladas.xlsx");
       });
     }
-
+  
     getTotalCostPrimeNg(table: Table, def: any) {
       if (def.key == 'nombreCompleto') {
         return 'Total';
@@ -207,12 +211,11 @@ export class OportunidadesPerdidasComponent {
         return sumBy(this.dt.filteredValue, def.key)
       }
   
-      return sumBy(this.oportunidadesperdidas, def.key)
+      return sumBy(this.oportunidades, def.key)
     }
   
     obtenerArregloFiltros(data: any[], columna: string): any[] {
       const lsGroupBy = groupBy(data, columna);
       return sortBy(getKeys(lsGroupBy));
     }
-
 }

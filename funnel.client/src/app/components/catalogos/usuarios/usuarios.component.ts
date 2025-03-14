@@ -5,6 +5,9 @@ import { Table } from 'primeng/table';
 import { LazyLoadEvent, MessageService } from 'primeng/api';
 import { baseOut } from '../../../interfaces/utils/utils/baseOut';
 import { LoginService } from '../../../services/login.service';
+import { ColumnasDisponiblesComponent } from '../../shared/columnas-disponibles/columnas-disponibles.component';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { sumBy, map as mapping, omit, sortBy, groupBy, keys as getKeys } from 'lodash-es';
 
 @Component({
   selector: 'app-usuarios',
@@ -13,14 +16,11 @@ import { LoginService } from '../../../services/login.service';
   styleUrl: './usuarios.component.css'
 })
 export class UsuariosComponent {
-  constructor(private UsuariosService: UsuariosService, private messageService: MessageService, private cdr: ChangeDetectorRef, private loginService:LoginService) { }
-
-  ngOnInit(): void {
-    this.getUsuarios();
-    console.log(this.loginService.obtenerIdEmpresa());
-  }
   @ViewChild('dt') dt!: Table;
 
+  disableUsuarios: boolean = true;
+  isDescargando = false;
+  anchoTabla = 100;
 
   usuarios: Usuario[] = [];
   usuariosOriginal: Usuario[] = [];
@@ -28,33 +28,41 @@ export class UsuariosComponent {
 
   selectedEstatus: string = 'Activo';
   loading: boolean = true;
-  first: number = 0;
-  rows: number = 10;
-
-  filtroNombre = '';
-  filtroCorreo = '';
-  filtroApellidoPaterno = '';
-  filtroApellidoMaterno = '';
-  filtroUsuario = '';
-  filtroDescripcion = '';
-  filtroIniciales = '';
-
 
   
+
   insertar: boolean = true;
   modalVisible: boolean = false;
 
+  
 
   EstatusDropdown = [
     { label: 'Todo', value: null },
     { label: 'Activo', value: 'Activo' },
     { label: 'Inactivo', value: 'Inactivo' },
   ];
-  rowsOptions = [
-    { label: '10', value: 10 },
-    { label: '20', value: 20 },
-    { label: '50', value: 50 }
+
+  lsColumnasAMostrar: any[] = [];
+  lsTodasColumnas: any[] = [
+    {key:'nombre', isCheck: true, valor: 'Nombre', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
+    {key:'apellidoPaterno', isCheck: true, valor: 'ApellidoPaterno', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
+    {key:'apellidoMaterno', isCheck: true, valor: 'ApellidoMaterno', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
+    {key:'usuario', isCheck: true, valor: 'Usuario', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
+    {key: 'iniciales', isCheck: true, valor: 'Iniciales', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
+    {key:'correo', isCheck: true, valor: 'Correo Electrónico', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
+    {key:'tipoUsuario', isCheck: true, valor: 'Tipo Usuario', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
+    {key:'desEstatus', isCheck: true, valor: 'Estatus', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'estatus'},
   ];
+  columnsAMostrarResp = JSON.stringify(this.lsColumnasAMostrar);
+  columnsTodasResp = JSON.stringify(this.lsTodasColumnas);
+
+  constructor(private UsuariosService: UsuariosService, private messageService: MessageService, private cdr: ChangeDetectorRef, private loginService:LoginService, public dialog: MatDialog) { }
+
+  ngOnInit(): void {
+    this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
+    this.getUsuarios();
+    document.documentElement.style.fontSize = 12 + 'px';
+  }
 
   getUsuarios(idEmpresa: number = 1) {
       this.UsuariosService.getUsuarios(this.loginService.obtenerIdEmpresa()).subscribe({
@@ -81,14 +89,6 @@ export class UsuariosComponent {
       });
     }
 
-    pageChange(event: LazyLoadEvent) {
-        if (event.first !== undefined) {
-          this.first = event.first;
-        }
-        if (event.rows !== undefined) {
-          this.rows = event.rows;
-        }
-      }
       getVisibleTotal(campo: string, dt: any): number {
         const registrosVisibles = dt.filteredValue
           ? dt.filteredValue
@@ -102,10 +102,6 @@ export class UsuariosComponent {
           0
         );
       }
-
-      updateFilter(event: any, field: string) {
-        this.dt.filter(event, field, 'contains');
-      }
       FiltrarPorEstatus() {
         this.usuarios = this.selectedEstatus === null
           ? [...this.usuariosOriginal]
@@ -115,12 +111,6 @@ export class UsuariosComponent {
         }
       }
       
-      reset() {
-        this.first = 0;
-        this.getUsuarios();
-        this.dt.reset();
-      }
-
       onModalClose() {
         this.modalVisible = false;
       }
@@ -180,5 +170,94 @@ export class UsuariosComponent {
           this.insertar = false;
           this.modalVisible = true;
         }
+
+clear(table: Table) {
+      table.clear();
+      this.getUsuarios();
+      this.lsColumnasAMostrar = JSON.parse(this.columnsAMostrarResp);
+      this.lsTodasColumnas = JSON.parse(this.columnsTodasResp);
+      this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
+      this.anchoTabla = 100;
+    }
+  
+    agregarColumna(event: any) {
+      const targetAttr = event.target.getBoundingClientRect();
+      const dialogConfig = new MatDialogConfig();
+  
+      dialogConfig.autoFocus = false;
+      dialogConfig.backdropClass = 'popUpBackDropClass';
+      dialogConfig.panelClass = 'popUpPanelAddColumnClass';
+      dialogConfig.width = '350px';
+  
+      dialogConfig.data = {
+        todosColumnas: this.lsTodasColumnas
+      };
+  
+      dialogConfig.position = {
+        top: targetAttr.y + targetAttr.height + 10 + "px",
+        left: targetAttr.x - targetAttr.width - 240 + "px"
+      };
+      const dialogRef = this.dialog.open(ColumnasDisponiblesComponent, dialogConfig);
+  
+      dialogRef.afterClosed().subscribe(r => {
+        if (r) {
+          this.lsColumnasAMostrar = JSON.parse(this.columnsAMostrarResp);
+          const selectedColumns = r.filter((f: any) => f.isCheck);
+  
+          selectedColumns.forEach((element: any) => {
+            this.lsColumnasAMostrar.push(element)
+          });
+          if (this.lsColumnasAMostrar.length > 5) {
+            this.anchoTabla = 100
+          }
+        }
+      });
+    }
+  
+    exportExcel(table: Table) {
+      let colsIgnorar: any[] = [];
+    
+      let dataExport = (table.filteredValue || table.value || []);
+
+      let lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
+      let columnasAMostrarKeys = lsColumnasAMostrar.map(col => col.key);
+    
+      dataExport = dataExport.map(row => {
+        return columnasAMostrarKeys.reduce((acc, key) => {
+          acc[key] = row[key];
+          return acc;
+        }, {});
+      });
+    
+      import('xlsx').then(xlsx => {
+        const hojadeCalculo: import('xlsx').WorkSheet = xlsx.utils.json_to_sheet(dataExport);
+        const libro: import('xlsx').WorkBook = xlsx.utils.book_new();
+        xlsx.utils.book_append_sheet(libro, hojadeCalculo, "Usuarios");
+        xlsx.writeFile(libro, "Usuarios.xlsx");
+      });
+    }
+  
+    getTotalCostPrimeNg(table: Table, def: any) {
+          if (def.key == 'nombre') {
+            return '';
+          }
+      
+          if (!def.isTotal) {
+            return
+          }
+      
+          if (table.filteredValue !== null && table.filteredValue !== undefined) {
+            return sumBy(this.dt.filteredValue, def.key)
+          }
+      
+          return sumBy(this.usuarios, def.key)
+        }
+  
+    obtenerArregloFiltros(data: any[], columna: string): any[] {
+      const lsGroupBy = groupBy(data, columna);
+      return sortBy(getKeys(lsGroupBy));
+    }
+  
+
 
 }

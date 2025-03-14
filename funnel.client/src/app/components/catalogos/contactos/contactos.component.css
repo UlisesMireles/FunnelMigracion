@@ -19,6 +19,11 @@
   height: 35px;
 }
 
+div.inDivDatatableHeader > p-button > button.p-button {
+  width: 36px;
+  height: 35px;
+}
+
 /*
 ::ng-deep .Iconos .pi {
   color: red;
@@ -30,10 +35,7 @@
 
 .inDivDatatableHeader {
   padding-left: 50px;
-    padding-top: 5px;
-    text-align: left ! important;
-    margin-left: 1025px ! important;
-    margin-top: 37px ! important;
+  padding-top: 5px;
 
 }
 
@@ -44,7 +46,6 @@
   border: 0.1px solid #872B07;
   text-align: center;
   font-size: 15px;
-  padding: 6px 10px;
 }
 
 .custom-header2 th {
@@ -68,18 +69,12 @@
 }
 
 ::ng-deep .p-datatable-thead>tr>th {
-  padding: 4px !important;
-  height: auto !important; 
-  line-height: 1; 
-  font-size: 14px; 
+  padding: 0px !important;
 }
 
 ::ng-deep .p-datatable-tbody>tr>td {
-  padding: 2px !important;
-  height: auto !important; 
-  line-height: 0.5;
-  text-overflow: ellipsis; 
-  word-wrap: break-word; 
+
+  padding: 1px !important;
 }
 
 ::ng-deep .custom-width input {
@@ -101,6 +96,7 @@
 ::ng-deep .p-datatable {
   table-layout: fixed;
   width: 100%;
+  
 }
 
 ::ng-deep .p-datatable-thead>tr>th,
@@ -109,7 +105,7 @@
   word-wrap: break-word;
   overflow: visible;
   text-overflow: clip;
-  padding: 8px;
+  padding: 4px !important;
 }
 
 ::ng-deep .p-datatable-wrapper {
@@ -133,6 +129,7 @@
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   height: 50px;
+  
 }
 
 ::ng-deep .p-dialog .p-dialog-header .p-icon {
@@ -160,23 +157,18 @@
 
 ::ng-deep .inptSize {
   height: 35px;
+  width: 250px;
   padding-right: 4px;
 }
-
 ::ng-deep .inptSize1{
   height: 42px;
-  width: 212px;
+  width: 250px;
   padding-right: 4px;
 }
 
 .inputModal {
   width: 80% !important;
   padding-left: 2px;
-}
-
-div.inDivDatatableHeader > p-button > button.p-button {
-  width: 36px;
-  height: 35px;
 }
 
 ::ng-deep .hide-filter-icon p-button {
@@ -189,6 +181,7 @@ div.inDivDatatableHeader > p-button > button.p-button {
 
 ::ng-deep .filas td {
   height: 20px;
+  font-size: 12px !important;
 }
 
 ::ng-deep .custom-footer td {
@@ -203,13 +196,31 @@ div.inDivDatatableHeader > p-button > button.p-button {
   height: 30px !important;
   min-height: 30px !important;
   line-height: 30px !important;
-  font-size: 14px;
+  font-size: 12px;
   display: flex;
   align-items: center;
-  width: auto;
+  width: 100% !important;
   margin:3px
 }
 
 ::ng-deep .custom-header2 .p-select li{
   padding:0px;
+}
+
+.fixed-width-column {
+  width: 150px !important;
+  max-width: 150px;
+  white-space: normal !important;
+  word-break: break-word !important;
+  overflow-wrap: anywhere;
+  line-height: 1.4;
+}
+.contenedorTabla{
+  overflow-x: auto;
+  width: 100%;
+}
+.table-responsive{
+  overflow-x: auto;
+  width: 100%;
+  max-width: 100%;
 }

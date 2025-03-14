@@ -25,7 +25,7 @@
                     [ngStyle]="{'margin-right': '5px'}" />
                   <p-button label="" icon="bi bi-download" severity="secondary" (click)="exportExcel(dt)"  [ngStyle]="{'margin-right': '5px'}"/>
                   <p-button label="" icon="bi-pencil" (click)="agregarColumna($event)"  severity="secondary"  [ngStyle]="{'margin-right': '5px'}"/>
-                  <p-button label="" icon="bi bi-plus" severity="secondary" (click)="inserta()"  [ngStyle]="{'margin-right': '5px'}"/>
+                 
                 </div> 
               </div>
             </ng-template>
@@ -131,6 +131,6 @@
     </div>
   </div>
 
-<app-modal-oportunidades [(visible)]="modalVisible" [title]="'Editar Datos de '" (closeModal)="onModalClose()"
-  (result)="manejarResultado($event)" [insertar]="insertar" [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">
-</app-modal-oportunidades>
+<app-modal-oportunidades-ganadas [(visible)]="modalVisible" [title]="'Editar Datos de '" (closeModal)="onModalClose()"
+  (result)="manejarResultado($event)" [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">
+</app-modal-oportunidades-ganadas>

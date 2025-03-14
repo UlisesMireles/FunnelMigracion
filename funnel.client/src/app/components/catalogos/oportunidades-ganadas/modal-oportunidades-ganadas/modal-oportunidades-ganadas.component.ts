@@ -35,7 +35,7 @@ export class ModalOportunidadesGanadasComponent {
     inicializarFormulario() {
         this.oportunidadForm = this.fb.group({
           bandera: ['UPD-OPORTUNIDAD'],
-          idOportunidad: [this.oportunidad.idOportunidad],
+          descripcion: [this.oportunidad.nombreOportunidad],
           idEstatusOportunidad: [this.oportunidad.idEstatusOportunidad]
         });
         this.limpiarProbabilidad();

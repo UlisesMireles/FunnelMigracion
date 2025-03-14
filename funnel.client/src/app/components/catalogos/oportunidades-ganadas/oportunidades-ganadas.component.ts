@@ -48,15 +48,12 @@ export class OportunidadesGanadasComponent {
     { key: 'stage', isCheck: false, valor: 'Etapa', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreEjecutivo', isCheck: true, valor: 'Ejecutivo', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreContacto', isCheck: false, valor: 'Contacto', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'entrega', isCheck: false, valor: 'Entrega', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'monto', isCheck: true, valor: 'Monto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
-    { key: 'probabilidadOriginal', isCheck: false, valor: 'Prob Original', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'probabilidad', isCheck: false, valor: 'Prob', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'montoNormalizado', isCheck: false, valor: 'Monto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
     { key: 'fechaRegistro', isCheck: true, valor: 'Fecha Registro', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
     { key: 'diasFunnel', isCheck: true, valor: 'Días en Funnel', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
-    { key: 'fechaEstimadaCierreOriginal', isCheck: true, valor: 'Fecha Estimada de Cierre', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
-    { key: 'fechaModificacion', isCheck: false, valor: 'Fecha de Modificación', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
+    { key: 'fechaEstimadaCierreOriginal', isCheck: true, valor: 'Fecha Cierre', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
     { key: 'diasEtapa1', isCheck: true, valor: 'Dias Etapa 1', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'number' },
     { key: 'diasEtapa2', isCheck: true, valor: 'Dias Etapa 2', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'number' },
     { key: 'diasEtapa3', isCheck: true, valor: 'Dias Etapa 3', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'number' },
@@ -200,8 +197,8 @@ export class OportunidadesGanadasComponent {
       import('xlsx').then(xlsx => {
         const hojadeCalculo: import('xlsx').WorkSheet = xlsx.utils.json_to_sheet(dataExport);
         const libro: import('xlsx').WorkBook = xlsx.utils.book_new();
-        xlsx.utils.book_append_sheet(libro, hojadeCalculo, "Oportunidades en proceso");
-        xlsx.writeFile(libro, "Oportunidades en proceso.xlsx");
+        xlsx.utils.book_append_sheet(libro, hojadeCalculo, "Oportunidades Ganadas");
+        xlsx.writeFile(libro, "Oportunidades ganadas.xlsx");
       });
     }
   

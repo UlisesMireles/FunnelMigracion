@@ -2,7 +2,7 @@
   [(visible)]="visible"
   [modal]="true"
   [closable]="true"
-  [style]="{ width: '35rem', height: '25rem' }"
+  [style]="{ width: '40rem', height: '25rem' }"
   (onHide)="close()"
   (onShow)="onDialogShow()"
   class="bodyDialog"
@@ -16,7 +16,7 @@
   <ng-template pTemplate="content">
     <form [formGroup]="oportunidadForm">
 
-        <div class="row inptSpace" *ngIf="insertar">
+        <div class="row inptSpace">
             <div class="col-sm-4 lbl">
               <label for="Estatus Oportunidad">Estatus Oportunidad:</label>
             </div>

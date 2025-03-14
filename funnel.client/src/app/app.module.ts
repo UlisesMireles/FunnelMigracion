@@ -63,7 +63,8 @@ import { AgregarQuitarColumnasComponent } from './components/shared/agregar-quit
 import { ColumnasDisponiblesComponent } from './components/shared/columnas-disponibles/columnas-disponibles.component';
 import { ColumnFilterComponent } from './components/shared/column-filter/column-filter.component';
 import { HeaderOpcionesComponent } from './components/shared/header-opciones/header-opciones.component';
-
+import { OportunidadesGanadasComponent } from './components/catalogos/oportunidades-ganadas/oportunidades-ganadas.component';
+import { ModalOportunidadesGanadasComponent } from './components/catalogos/oportunidades-ganadas/modal-oportunidades-ganadas/modal-oportunidades-ganadas.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -88,7 +89,9 @@ import { HeaderOpcionesComponent } from './components/shared/header-opciones/hea
     AgregarQuitarColumnasComponent,
     ColumnasDisponiblesComponent,
     ColumnFilterComponent,
-    HeaderOpcionesComponent
+    HeaderOpcionesComponent,
+    OportunidadesGanadasComponent,
+    ModalOportunidadesGanadasComponent
   ],
   imports: [
     BrowserModule,

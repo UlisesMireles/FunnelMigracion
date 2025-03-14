@@ -11,13 +11,12 @@ import { ColumnasDisponiblesComponent } from '../../shared/columnas-disponibles/
 import { sumBy, map as mapping, omit, sortBy, groupBy, keys as getKeys } from "lodash-es";
 
 @Component({
-  selector: 'app-oportunidades-ganadas',
+  selector: 'app-oportunidades-eliminadas',
   standalone: false,
-  templateUrl: './oportunidades-ganadas.component.html',
-  styleUrl: './oportunidades-ganadas.component.css'
+  templateUrl: './oportunidades-eliminadas.component.html',
+  styleUrl: './oportunidades-eliminadas.component.css'
 })
-export class OportunidadesGanadasComponent {
-
+export class OportunidadesEliminadasComponent {
   @ViewChild('dt') dt!: Table;
 
   disableOportunidades = true;
@@ -29,7 +28,7 @@ export class OportunidadesGanadasComponent {
   oportunidadSeleccionada!: Oportunidad;
 
   idUsuario: number = 1;
-  idEstatus: number = 2;
+  idEstatus: number = 5;
 
   insertar: boolean = false;
   modalVisible: boolean = false;
@@ -48,19 +47,12 @@ export class OportunidadesGanadasComponent {
     { key: 'abreviatura', isCheck: true, valor: 'Abreviatura', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'stage', isCheck: false, valor: 'Etapa', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreEjecutivo', isCheck: true, valor: 'Ejecutivo', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'nombreContacto', isCheck: false, valor: 'Contacto', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'monto', isCheck: true, valor: 'Monto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
     { key: 'probabilidad', isCheck: false, valor: 'Probabilidad', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'montoNormalizado', isCheck: false, valor: 'Monto Normalizado', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
     { key: 'fechaRegistro', isCheck: true, valor: 'Fecha Registro', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
     { key: 'diasFunnel', isCheck: true, valor: 'Días en Funnel', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
     { key: 'fechaEstimadaCierreOriginal', isCheck: true, valor: 'Fecha Cierre', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
-    { key: 'diasEtapa1', isCheck: true, valor: 'Dias Etapa 1', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
-    { key: 'diasEtapa2', isCheck: true, valor: 'Dias Etapa 2', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
-    { key: 'diasEtapa3', isCheck: true, valor: 'Dias Etapa 3', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
-    { key: 'diasEtapa4', isCheck: true, valor: 'Dias Etapa 4', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
-    { key: 'diasEtapa5', isCheck: true, valor: 'Dias Etapa 5', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
-
+    { key: 'comentario', isCheck: true, valor: 'Comentario', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
   ];
 
   columnsAMostrarResp: string = JSON.stringify(this.lsColumnasAMostrar);
@@ -198,8 +190,8 @@ export class OportunidadesGanadasComponent {
       import('xlsx').then(xlsx => {
         const hojadeCalculo: import('xlsx').WorkSheet = xlsx.utils.json_to_sheet(dataExport);
         const libro: import('xlsx').WorkBook = xlsx.utils.book_new();
-        xlsx.utils.book_append_sheet(libro, hojadeCalculo, "Oportunidades Eliminadas");
-        xlsx.writeFile(libro, "Oportunidades eliminadas.xlsx");
+        xlsx.utils.book_append_sheet(libro, hojadeCalculo, "Oportunidades Ganadas");
+        xlsx.writeFile(libro, "Oportunidades ganadas.xlsx");
       });
     }
   

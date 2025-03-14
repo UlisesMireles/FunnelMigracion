@@ -96,6 +96,7 @@ div.inDivDatatableHeader > p-button > button.p-button {
 ::ng-deep .p-datatable {
   table-layout: fixed;
   width: 100%;
+  
 }
 
 ::ng-deep .p-datatable-thead>tr>th,
@@ -128,6 +129,7 @@ div.inDivDatatableHeader > p-button > button.p-button {
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   height: 50px;
+  
 }
 
 ::ng-deep .p-dialog .p-dialog-header .p-icon {
@@ -155,6 +157,12 @@ div.inDivDatatableHeader > p-button > button.p-button {
 
 ::ng-deep .inptSize {
   height: 35px;
+  width: 250px;
+  padding-right: 4px;
+}
+::ng-deep .inptSize1{
+  height: 42px;
+  width: 250px;
   padding-right: 4px;
 }
 

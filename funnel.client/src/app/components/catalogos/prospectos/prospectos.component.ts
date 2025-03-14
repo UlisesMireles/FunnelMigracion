@@ -220,20 +220,20 @@ clear(table: Table) {
     }
   
     getTotalCostPrimeNg(table: Table, def: any) {
-      if (def.key == 'nombre') {
-        return 'Total';
-      }
-  
-      if (!def.isTotal) {
-        return
-      }
-  
-      if (table.filteredValue !== null && table.filteredValue !== undefined) {
-        return sumBy(this.dt.filteredValue, def.key)
-      }
-  
-      return sumBy(this.prospectos, def.key)
-    }
+          if (def.key == 'nombre') {
+            return '';
+          }
+      
+          if (!def.isTotal) {
+            return
+          }
+      
+          if (table.filteredValue !== null && table.filteredValue !== undefined) {
+            return sumBy(this.dt.filteredValue, def.key)
+          }
+      
+          return sumBy(this.prospectos, def.key)
+        }
   
     obtenerArregloFiltros(data: any[], columna: string): any[] {
       const lsGroupBy = groupBy(data, columna);

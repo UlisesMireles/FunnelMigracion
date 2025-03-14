@@ -16,23 +16,21 @@ import { sumBy, map as mapping, omit, sortBy, groupBy, keys as getKeys } from "l
   templateUrl: './contactos.component.html',
   styleUrl: './contactos.component.css'
 })
-export class ContactosComponent implements OnInit {
+export class ContactosComponent {
 
   @ViewChild('dt') dt!: Table;
 
+
+  disableContactos = true;
+  isDescargando = false;
+  anchoTabla = 100;
   contactos: Contacto[] = [];
   contactosOriginal: Contacto[] = [];
   contactoSeleccionado!: Contacto;
 
   selectedEstatus: string = 'Activo';
   loading: boolean = true;
-  first: number = 0;
-  rows: number = 10;
-
-  filtroNombre = '';
-  filtroTelefono = '';
-  filtroCorreo = '';
-  filtroProspecto = '';
+  
 
   insertar: boolean = false;
   modalVisible: boolean = false;
@@ -43,26 +41,13 @@ export class ContactosComponent implements OnInit {
     { label: 'Inactivo', value: 'Inactivo' },
   ];
 
-  rowsOptions = [
-    { label: '10', value: 10 },
-    { label: '20', value: 20 },
-    { label: '50', value: 50 }
-  ];
-
-  lsColumnasAMostrar: any[] = [
-    { key: 'nombreCompleto', isCheck: false, valor: 'Nombre Completo', isIgnore: true, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'telefono', isCheck: false, valor: 'Teléfono', isIgnore: true, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'correoElectronico', isCheck: false, valor: 'Correo Electrónico', isIgnore: true, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'prospecto', isCheck: false, valor: 'Prospecto', isIgnore: true, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'desEstatus', isCheck: false, valor: 'Estatus', isIgnore: true, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-  ];
-
+  lsColumnasAMostrar: any[] = [];
   lsTodasColumnas: any[] = [
-    { key: 'nombreCompleto', isCheck: false, valor: 'Nombre Completo', isIgnore: true, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'telefono', isCheck: false, valor: 'Teléfono', isIgnore: true, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'correoElectronico', isCheck: false, valor: 'Correo Electrónico', isIgnore: true, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'prospecto', isCheck: false, valor: 'Prospecto', isIgnore: true, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'desEstatus', isCheck: false, valor: 'Estatus', isIgnore: true, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'nombreCompleto', isCheck: true, valor: 'Nombre', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'telefono', isCheck: true, valor: 'Teléfono', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'correoElectronico', isCheck: true, valor: 'Correo Electrónico', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'prospecto', isCheck: true, valor: 'Prospecto', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'desEstatus', isCheck: true, valor: 'Estatus', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'estatus' },
   ];
 
   columnsAMostrarResp: string = JSON.stringify(this.lsColumnasAMostrar);
@@ -77,7 +62,9 @@ export class ContactosComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
     this.getContactos();
+    document.documentElement.style.fontSize = 12 + 'px';
   }
 
   getContactos() {
@@ -124,39 +111,7 @@ export class ContactosComponent implements OnInit {
     this.modalVisible = true;
   }
 
-  pageChange(event: LazyLoadEvent) {
-    if (event.first !== undefined) {
-      this.first = event.first;
-    }
-    if (event.rows !== undefined) {
-      this.rows = event.rows;
-    }
-  }
-
-  onInput(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (this.dt) {
-      this.dt.filterGlobal(input.value, 'contains');
-    }
-  }
-
-  prev() {
-    this.first = this.first - this.rows;
-  }
-
-  reset() {
-    this.first = 0;
-    this.getContactos();
-    this.dt.reset();
-  }
-
-  next() {
-    this.first = this.first + this.rows;
-  }
-
-  updateFilter(event: any, field: string) {
-    this.dt.filter(event, field, 'contains');
-  }
+  
 
   getVisibleTotal(campo: string, dt: any): number {
     const registrosVisibles = dt.filteredValue
@@ -170,12 +125,6 @@ export class ContactosComponent implements OnInit {
         acc + Number(empresa[campo as keyof Contacto] || 0),
       0
     );
-  }
-
-  isLastPage(): boolean {
-    return this.contactos
-      ? this.first + this.rows >= this.contactos.length
-      : true;
   }
 
   onModalClose() {
@@ -215,6 +164,8 @@ export class ContactosComponent implements OnInit {
     this.getContactos();
     this.lsColumnasAMostrar = JSON.parse(this.columnsAMostrarResp);
     this.lsTodasColumnas = JSON.parse(this.columnsTodasResp);
+    this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
+    this.anchoTabla = 100;
   }
 
   agregarColumna(event: any) {
@@ -244,53 +195,55 @@ export class ContactosComponent implements OnInit {
         selectedColumns.forEach((element: any) => {
           this.lsColumnasAMostrar.push(element)
         });
+        if (this.lsColumnasAMostrar.length > 5) {
+          this.anchoTabla = 100
+        }
       }
     });
   }
 
   exportExcel(table: Table) {
     let colsIgnorar: any[] = [];
-    
-    // Asegúrate de que dataExport nunca sea undefined
+  
     let dataExport = (table.filteredValue || table.value || []);
+
+    let lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
+    let columnasAMostrarKeys = lsColumnasAMostrar.map(col => col.key);
   
-    this.lsTodasColumnas.forEach(element => {
-      if (!this.lsColumnasAMostrar.find(f => f.key === element.key)) {
-        colsIgnorar.push(element);
-      }
-    });
-  
-    colsIgnorar.forEach(element => {
-      dataExport = mapping(dataExport, i => omit(i, element.key));
+    dataExport = dataExport.map(row => {
+      return columnasAMostrarKeys.reduce((acc, key) => {
+        acc[key] = row[key];
+        return acc;
+      }, {});
     });
   
     import('xlsx').then(xlsx => {
       const hojadeCalculo: import('xlsx').WorkSheet = xlsx.utils.json_to_sheet(dataExport);
       const libro: import('xlsx').WorkBook = xlsx.utils.book_new();
-      xlsx.utils.book_append_sheet(libro, hojadeCalculo, "contactos");
-      xlsx.writeFile(libro, "contactos.xlsx");
+      xlsx.utils.book_append_sheet(libro, hojadeCalculo, "Contactos");
+      xlsx.writeFile(libro, "Contactos.xlsx");
     });
   }
 
   getTotalCostPrimeNg(table: Table, def: any) {
-    if (def.key == 'nombreCompleto') {
-      return 'Total';
-    }
-
-    if (!def.isTotal) {
-      return
-    }
-
-    if (table.filteredValue !== null && table.filteredValue !== undefined) {
-      return sumBy(this.dt.filteredValue, def.key)
-    }
-
-    return sumBy(this.contactos, def.key)
-  }
+        if (def.key == 'nombre') {
+          return '';
+        }
+    
+        if (!def.isTotal) {
+          return
+        }
+    
+        if (table.filteredValue !== null && table.filteredValue !== undefined) {
+          return sumBy(this.dt.filteredValue, def.key)
+        }
+    
+        return sumBy(this.contactos, def.key)
+      }
 
   obtenerArregloFiltros(data: any[], columna: string): any[] {
     const lsGroupBy = groupBy(data, columna);
     return sortBy(getKeys(lsGroupBy));
   }
-  //#endregion
+
 }

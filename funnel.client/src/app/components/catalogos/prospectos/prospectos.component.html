@@ -109,9 +109,10 @@
                   <ng-container [ngSwitch]="def.tipoFormato">
                     <span *ngSwitchCase="'text'">{{ rowData[def.key] }}</span>
             
-                    <span *ngSwitchCase="'currency'">
-                      {{ rowData[def.key] | currency:'MX ':'symbol' }}
-                    </span>
+                    <div *ngSwitchCase="'currency'">
+                      <p-columnFilter type="numeric" field="{{def.key}}" [showButtons]="false"
+                          [maxFractionDigits]="7"></p-columnFilter>
+                  </div>
             
                     <span *ngSwitchCase="'number'">{{ rowData[def.key] | number:'1.0-2' }}</span>
             
@@ -123,11 +124,12 @@
             </ng-template>
             <ng-template pTemplate="footer" let-columns #footer>
               <tr class="custom-footer">
-                <td></td>
-                <td *ngFor="let def of columns">
-                {{getTotalCostPrimeNg(dt, def) | currency:'MX ':'symbol' }}</td>
+                  <td></td>
+                  <td *ngFor="let def of columns">
+                  {{getTotalCostPrimeNg(dt, def) | currency:'MX ':'symbol' }}</td>
               </tr>
-            </ng-template>
+          </ng-template>
+
             <ng-template pTemplate="emptymessage">
               <tr>
                 <td colspan="5" class="text-center">No se encontraron registros</td>

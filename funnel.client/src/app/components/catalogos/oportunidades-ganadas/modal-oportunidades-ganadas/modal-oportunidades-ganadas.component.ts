@@ -10,6 +10,7 @@ import { RequestOportunidad } from '../../../../interfaces/oportunidades';
 import { LoginService } from '../../../../services/login.service';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { identity } from 'rxjs';
 
 @Component({
   selector: 'app-modal-oportunidades-ganadas',
@@ -35,8 +36,10 @@ export class ModalOportunidadesGanadasComponent {
     inicializarFormulario() {
         this.oportunidadForm = this.fb.group({
           bandera: ['UPD-OPORTUNIDAD'],
+          idOportunidad: [this.oportunidad.idOportunidad],
           descripcion: [this.oportunidad.nombreOportunidad],
-          idEstatusOportunidad: [this.oportunidad.idEstatusOportunidad]
+          idEstatusOportunidad: [this.oportunidad.idEstatusOportunidad],
+          probabilidad: [this.oportunidad.probabilidad]
         });
         this.limpiarProbabilidad();
     }
@@ -45,7 +48,6 @@ export class ModalOportunidadesGanadasComponent {
       this.cargarEstatus();
       this.cdr.detectChanges();
       this.inicializarFormulario(); 
-      
     }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -62,7 +64,7 @@ export class ModalOportunidadesGanadasComponent {
     }
 
     cargarEstatus() {
-      this.oportunidadService.getEtapas(this.loginService.obtenerIdEmpresa()).subscribe({
+      this.oportunidadService.getEstatus(this.loginService.obtenerIdEmpresa()).subscribe({
         next: (result) => (this.estatus = result),
         error: (error) => this.mostrarToastError(error.errorMessage)
       });

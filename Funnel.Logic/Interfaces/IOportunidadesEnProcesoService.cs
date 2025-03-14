@@ -13,5 +13,6 @@ namespace Funnel.Logic.Interfaces
         public Task<List<ComboEntregasDto>> ComboEntregas(int IdEmpresa);
         public Task<List<ComboEjecutivosDto>> ComboEjecutivos(int IdEmpresa);
         public Task<List<ContactoDto>> ComboContactos(int IdEmpresa, int IdProspecto);
+        public Task<List<ComboEstatusOportunidad>> ComboTipoOportunidad(int IdEmpresa);
     }
 }

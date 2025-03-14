@@ -62,6 +62,13 @@ namespace Funnel.Server.Controllers
             var result = await _oportunidadesService.ComboContactos(idEmpresa, idProspecto);
             return Ok(result);
         }
-        
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult<List<OportunidadesEnProcesoDto>>> ObtenerOportunidadesPerdidas(int idUsuario, int idEstatus, int idEmpresa)
+        {
+            var result = await _oportunidadesService.ConsultarOportunidadesPerdidas(idUsuario, idEstatus, idEmpresa);
+            return Ok(result);
+        }
+
     }
 }

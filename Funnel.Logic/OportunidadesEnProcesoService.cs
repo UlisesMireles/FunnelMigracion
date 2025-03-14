@@ -53,5 +53,11 @@ namespace Funnel.Logic
         {
             return await _oportunidadesData.GuardarOportunidad(request);
         }
+
+        public async Task<List<OportunidadesEnProcesoDto>> ConsultarOportunidadesPerdidas(int idUsuario, int idEstatus, int idEmpresa)
+        {
+            return await _oportunidadesData.ConsultarOportunidadesPerdidas(idUsuario, idEstatus, idEmpresa);
+        }
+
     }
 }

@@ -55,5 +55,12 @@
         public string? NombreContactoCompleto { get; set; }
         public int? IdTipoOportunidad { get; set; }
         public string? Bandera { get; set; }
+        public string? Prospecto { get; set; }
+        public string? Oportunidad { get; set; }
+        public string? Tipo { get; set; }
+        public string? Ejecutivo { get; set; }
+        public DateTime FechaInicio { get; set; }
+        public DateTime FechaCierre { get; set; }
+        public string? UltimoComentario { get; set; }
     }
 }

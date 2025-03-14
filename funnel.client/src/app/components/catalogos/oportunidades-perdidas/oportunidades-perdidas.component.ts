@@ -190,8 +190,8 @@ export class OportunidadesPerdidasComponent {
       import('xlsx').then(xlsx => {
         const hojadeCalculo: import('xlsx').WorkSheet = xlsx.utils.json_to_sheet(dataExport);
         const libro: import('xlsx').WorkBook = xlsx.utils.book_new();
-        xlsx.utils.book_append_sheet(libro, hojadeCalculo, "Oportunidades en proceso");
-        xlsx.writeFile(libro, "Oportunidades en proceso.xlsx");
+        xlsx.utils.book_append_sheet(libro, hojadeCalculo, "Oportunidades Perdidas");
+        xlsx.writeFile(libro, "Oportunidades Perdidas.xlsx");
       });
     }
 

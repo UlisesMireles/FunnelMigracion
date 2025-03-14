@@ -17,7 +17,7 @@ import { UsuariosComponent } from './components/catalogos/usuarios/usuarios.comp
 import { TooltipModule } from 'primeng/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input'; 
-
+import { Dropdown } from 'primeng/dropdown';
 
 import { ModalTipoServiciosComponent } from './components/catalogos/tipo-servicios/modal-tipo-servicios/modal-tipo-servicios.component';
 import { ProspectosComponent } from './components/catalogos/prospectos/prospectos.component';
@@ -124,6 +124,7 @@ import { HeaderOpcionesComponent } from './components/shared/header-opciones/hea
     CalendarModule,
     MatFormFieldModule,
     MatInputModule,
+    DropdownModule,
   ],
   providers: [
     { provide: 'BASE_URL', useFactory: getBaseUrl, deps: [] },

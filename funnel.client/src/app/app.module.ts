@@ -23,6 +23,8 @@ import { ModalTipoServiciosComponent } from './components/catalogos/tipo-servici
 import { ProspectosComponent } from './components/catalogos/prospectos/prospectos.component';
 import { ModalProspectosComponent } from './components/catalogos/prospectos/modal-prospectos/modal-prospectos.component';
 import { ModalUsuariosComponent } from './components/catalogos/usuarios/modal-usuarios/modal-usuarios.component';
+import { OportunidadesEliminadasComponent } from './components/catalogos/oportunidades-eliminadas/oportunidades-eliminadas.component';
+import { ModalOportunidadesEliminadasComponent } from './components/catalogos/oportunidades-eliminadas/modal-oportunidades-eliminadas/modal-oportunidades-eliminadas.component';
 
 import { TiposEntregaComponent } from './components/catalogos/tipos-entrega/tipos-entrega.component';
 import { ModalTiposEntregaComponent } from './components/catalogos/tipos-entrega/modal-tipos-entrega/modal-tipos-entrega.component';
@@ -103,7 +105,9 @@ registerLocaleData(localeEs, 'es-MX');
     ColumnFilterComponent,
     HeaderOpcionesComponent,
     OportunidadesGanadasComponent,
-    ModalOportunidadesGanadasComponent
+    ModalOportunidadesGanadasComponent,
+    OportunidadesEliminadasComponent,
+    ModalOportunidadesEliminadasComponent,
   ],
   imports: [
     BrowserModule,

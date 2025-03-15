@@ -41,6 +41,7 @@ export class OportunidadesGanadasComponent {
   ];
 
   lsTodasColumnas: any[] = [
+    { key: 'idOportunidad', isCheck: true, valor: 'Id', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombre', isCheck: true, valor: 'Nombre', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreSector', isCheck: false, valor: 'Sector', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreOportunidad', isCheck: true, valor: 'Oportunidad', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
@@ -54,11 +55,11 @@ export class OportunidadesGanadasComponent {
     { key: 'fechaRegistro', isCheck: true, valor: 'Fecha Registro', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
     { key: 'diasFunnel', isCheck: true, valor: 'Días en Funnel', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
     { key: 'fechaEstimadaCierreOriginal', isCheck: true, valor: 'Fecha Cierre', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
-    { key: 'diasEtapa1', isCheck: true, valor: 'Dias Etapa 1', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
-    { key: 'diasEtapa2', isCheck: true, valor: 'Dias Etapa 2', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
-    { key: 'diasEtapa3', isCheck: true, valor: 'Dias Etapa 3', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
-    { key: 'diasEtapa4', isCheck: true, valor: 'Dias Etapa 4', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
-    { key: 'diasEtapa5', isCheck: true, valor: 'Dias Etapa 5', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
+    { key: 'diasEtapa1', isCheck: true, valor: 'Dias Etapa 1', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'number' },
+    { key: 'diasEtapa2', isCheck: true, valor: 'Dias Etapa 2', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'number' },
+    { key: 'diasEtapa3', isCheck: true, valor: 'Dias Etapa 3', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'number' },
+    { key: 'diasEtapa4', isCheck: true, valor: 'Dias Etapa 4', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'number' },
+    { key: 'diasEtapa5', isCheck: true, valor: 'Dias Etapa 5', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'number' },
 
   ];
 
@@ -100,21 +101,6 @@ export class OportunidadesGanadasComponent {
       this.insertar = false;
       this.modalVisible = true;
     }
-
-    getVisibleTotal(campo: string, dt: any): number {
-      const registrosVisibles = dt.filteredValue
-        ? dt.filteredValue
-        : this.oportunidades;
-      if (campo === 'nombre') {
-        return registrosVisibles.length; 
-      }
-      return registrosVisibles.reduce(
-        (acc: number, empresa: Oportunidad) =>
-          acc + Number(empresa[campo as keyof Oportunidad] || 0),
-        0
-      );
-    }
-    
     onModalClose() {
       this.modalVisible = false;
     }
@@ -197,8 +183,8 @@ export class OportunidadesGanadasComponent {
       import('xlsx').then(xlsx => {
         const hojadeCalculo: import('xlsx').WorkSheet = xlsx.utils.json_to_sheet(dataExport);
         const libro: import('xlsx').WorkBook = xlsx.utils.book_new();
-        xlsx.utils.book_append_sheet(libro, hojadeCalculo, "Oportunidades Ganadas");
-        xlsx.writeFile(libro, "Oportunidades ganadas.xlsx");
+        xlsx.utils.book_append_sheet(libro, hojadeCalculo, "Oportunidades Eliminadas");
+        xlsx.writeFile(libro, "Oportunidades eliminadas.xlsx");
       });
     }
   
@@ -208,16 +194,45 @@ export class OportunidadesGanadasComponent {
       }
   
       if (!def.isTotal) {
-        return
+        return;
       }
-  
-      if (table.filteredValue !== null && table.filteredValue !== undefined) {
-        return sumBy(this.dt.filteredValue, def.key)
+
+      const registrosVisibles = table.filteredValue ? table.filteredValue : this.oportunidades;
+    
+      if (def.key === 'nombre' || def.key === 'idOportunidad') {
+        return registrosVisibles.length;
       }
-  
-      return sumBy(this.oportunidades, def.key)
+    
+      if (def.tipoFormato === 'currency') {
+        return registrosVisibles.reduce(
+          (acc: number, empresa: Oportunidad) =>
+            acc + (Number(empresa[def.key as keyof Oportunidad]) || 0),
+          0
+        );
+      }
+
+      return (
+        registrosVisibles.reduce(
+          (acc: number, empresa: Oportunidad) =>
+            acc + (Number(empresa[def.key as keyof Oportunidad]) || 0),
+          0
+        ) / registrosVisibles.length
+      );
     }
-  
+
+    getVisibleTotal(campo: string, dt: any): number {
+      const registrosVisibles = dt.filteredValue ? dt.filteredValue : this.oportunidades;
+    
+      if (campo === 'nombre') {
+        return registrosVisibles.length;
+      }
+    
+      return registrosVisibles.reduce(
+        (acc: number, empresa: Oportunidad) =>
+          acc + (Number(empresa[campo as keyof Oportunidad] || 0)),
+        0
+      );
+    }
     obtenerArregloFiltros(data: any[], columna: string): any[] {
       const lsGroupBy = groupBy(data, columna);
       return sortBy(getKeys(lsGroupBy));

@@ -17,7 +17,7 @@
             
             <ng-template class="divAccionesTabla" #caption>
               <div class="col-12" style="text-align: left; font-weight: bold;">
-                <h3>Administración General de Oportunidades Ganadas</h3>
+                <h3>Administración General de Oportunidades Eliminadas</h3>
               </div>
               <div class="row">
                 <div class="col inDivDatatableHeader" style="text-align:right; margin-right:5px">
@@ -80,7 +80,7 @@
                               <div *ngSwitchDefault>
                                   <p-columnFilter
                                       *ngIf="def.tipoFormato !== 'text' && def.tipoFormato !== 'currency' && def.tipoFormato !== 'date'"
-                                      type="{{def.tipoFormato}}" field="{{def.key}}" [showButtons]="false" [showMenu]="false" [showMenu]="false">
+                                      type="{{def.tipoFormato}}" field="{{def.key}}" [showButtons]="false" [showMenu]="false">
                                   </p-columnFilter>
                               </div>
                           </div>
@@ -140,6 +140,7 @@
     </div>
   </div>
 
-<app-modal-oportunidades-ganadas [(visible)]="modalVisible" [title]="'Editar Datos de '" (closeModal)="onModalClose()"
-  (result)="manejarResultado($event)" [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">
-</app-modal-oportunidades-ganadas>
+  
+<app-modal-oportunidades-eliminadas [(visible)]="modalVisible" [title]="'Editar Datos de '" (closeModal)="onModalClose()"
+(result)="manejarResultado($event)" [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">
+</app-modal-oportunidades-eliminadas>

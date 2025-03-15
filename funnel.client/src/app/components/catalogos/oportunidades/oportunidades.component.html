@@ -111,11 +111,20 @@
             </tr>
           </ng-template>
           <ng-template pTemplate="footer" let-columns #footer>
-              <tr class="custom-footer">
-                  <td></td>
-                  <td *ngFor="let def of columns">
-                  {{getTotalCostPrimeNg(dt, def) | currency:'MX ':'symbol' }}</td>
-              </tr>
+            <tr class="custom-footer">
+              <td></td>
+              <td *ngFor="let def of lsColumnasAMostrar">
+                <ng-container *ngIf="def.key === 'nombre'">
+                  total de registros: {{ getTotalCostPrimeNg(dt, def) }}
+                </ng-container>
+                <ng-container *ngIf="def.tipoFormato === 'currency'">
+                  {{ getTotalCostPrimeNg(dt, def) | currency:'MX ': 'symbol' }}
+                </ng-container>
+                <ng-container *ngIf="def.tipoFormato !== 'currency' && def.key !== 'nombre' && def.key !== 'idOportunidad'">
+                  {{ getTotalCostPrimeNg(dt, def) | number: '1.0-2' }}
+                </ng-container>
+              </td>
+            </tr>
           </ng-template>
 
           <ng-template pTemplate="emptymessage">

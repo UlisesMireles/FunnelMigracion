@@ -40,7 +40,7 @@ export class OportunidadesEliminadasComponent {
   ];
 
   lsTodasColumnas: any[] = [
-    { key: 'idOportunidad', isCheck: true, valor: 'Id', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'idOportunidad', isCheck: true, valor: 'Id', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombre', isCheck: true, valor: 'Nombre', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreSector', isCheck: false, valor: 'Sector', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreOportunidad', isCheck: true, valor: 'Oportunidad', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
@@ -92,20 +92,6 @@ export class OportunidadesEliminadasComponent {
       this.oportunidadSeleccionada = licencia;
       this.insertar = false;
       this.modalVisible = true;
-    }
-
-    getVisibleTotal(campo: string, dt: any): number {
-      const registrosVisibles = dt.filteredValue
-        ? dt.filteredValue
-        : this.oportunidades;
-      if (campo === 'nombre') {
-        return registrosVisibles.length; 
-      }
-      return registrosVisibles.reduce(
-        (acc: number, empresa: Oportunidad) =>
-          acc + Number(empresa[campo as keyof Oportunidad] || 0),
-        0
-      );
     }
     
     onModalClose() {
@@ -201,14 +187,44 @@ export class OportunidadesEliminadasComponent {
       }
   
       if (!def.isTotal) {
-        return
+        return;
       }
-  
-      if (table.filteredValue !== null && table.filteredValue !== undefined) {
-        return sumBy(this.dt.filteredValue, def.key)
+
+      const registrosVisibles = table.filteredValue ? table.filteredValue : this.oportunidades;
+    
+      if (def.key === 'nombre' || def.key === 'idOportunidad') {
+        return registrosVisibles.length;
       }
-  
-      return sumBy(this.oportunidades, def.key)
+    
+      if (def.tipoFormato === 'currency') {
+        return registrosVisibles.reduce(
+          (acc: number, empresa: Oportunidad) =>
+            acc + (Number(empresa[def.key as keyof Oportunidad]) || 0),
+          0
+        );
+      }
+
+      return (
+        registrosVisibles.reduce(
+          (acc: number, empresa: Oportunidad) =>
+            acc + (Number(empresa[def.key as keyof Oportunidad]) || 0),
+          0
+        ) / registrosVisibles.length
+      );
+    }
+
+    getVisibleTotal(campo: string, dt: any): number {
+      const registrosVisibles = dt.filteredValue ? dt.filteredValue : this.oportunidades;
+    
+      if (campo === 'nombre') {
+        return registrosVisibles.length;
+      }
+    
+      return registrosVisibles.reduce(
+        (acc: number, empresa: Oportunidad) =>
+          acc + (Number(empresa[campo as keyof Oportunidad] || 0)),
+        0
+      );
     }
   
     obtenerArregloFiltros(data: any[], columna: string): any[] {

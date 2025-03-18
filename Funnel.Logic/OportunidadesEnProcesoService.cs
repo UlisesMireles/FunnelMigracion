@@ -49,6 +49,11 @@ namespace Funnel.Logic
             return await _oportunidadesData.ComboTipoOportunidad(IdEmpresa);
         }
 
+        public async Task<List<OportunidadesEnProcesoDto>> ConsultarHistoricoOportunidades(int IdEmpresa, int IdOportunidad)
+        {
+            return await _oportunidadesData.ConsultarHistoricoOportunidades(IdEmpresa, IdOportunidad);
+        }
+
         public async Task<List<OportunidadesEnProcesoDto>> ConsultarOportunidadesEnProceso(int IdUsuario, int IdEmpresa, int IdEstatus)
         {
             return await _oportunidadesData.ConsultarOportunidadesEnProceso(IdUsuario, IdEmpresa, IdEstatus);

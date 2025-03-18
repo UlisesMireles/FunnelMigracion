@@ -4,6 +4,7 @@ using Funnel.Data.Interfaces;
 using Funnel.Data.Utils;
 using System.Data;
 using Funnel.Models.Dto;
+using System.Net.NetworkInformation;
 
 namespace Funnel.Data
 {
@@ -163,6 +164,34 @@ namespace Funnel.Data
                     var dto = new ComboEstatusOportunidad();
                     dto.IdEstatus = ComprobarNulos.CheckIntNull(reader["IdEstatus"]);
                     dto.Descripcion = ComprobarNulos.CheckStringNull(reader["Descripcion"]);
+                    result.Add(dto);
+                }
+            }
+            return result;
+        }
+
+        public async Task<List<OportunidadesEnProcesoDto>> ConsultarHistoricoOportunidades(int IdEmpresa, int IdOportunidad)
+        {
+            List<OportunidadesEnProcesoDto> result = new List<OportunidadesEnProcesoDto>();
+            IList<ParameterSQl> list = new List<ParameterSQl>
+            {
+                DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "SEL-HISTORICO"),
+                DataBase.CreateParameterSql("@pIdOportunidad", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, IdOportunidad),
+                DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, IdEmpresa)
+            };
+            using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoOportunidades", CommandType.StoredProcedure, list, _connectionString))
+            {
+                while (reader.Read())
+                {
+                    var dto = new OportunidadesEnProcesoDto
+                    {
+                        NombreOportunidad = ComprobarNulos.CheckStringNull(reader["NombreOportunidad"]),
+                        Iniciales = ComprobarNulos.CheckStringNull(reader["Iniciales"]),
+                        NombreEjecutivo = ComprobarNulos.CheckStringNull(reader["NombreCompleto"]),
+                        FechaRegistro = ComprobarNulos.CheckDateTimeNull(reader["FechaRegistro"]),
+                        Comentario = ComprobarNulos.CheckStringNull(reader["Comentario"]),
+                    };
+
                     result.Add(dto);
                 }
             }

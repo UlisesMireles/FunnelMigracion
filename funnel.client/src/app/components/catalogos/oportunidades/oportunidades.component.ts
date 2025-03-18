@@ -32,7 +32,9 @@ export class OportunidadesComponent {
   idEstatus: number = 1;
 
   insertar: boolean = false;
+  seguimientoOportunidad: boolean = false;
   modalVisible: boolean = false;
+  modalSeguimientoVisible: boolean = false; 
 
   loading: boolean = true;
 
@@ -99,6 +101,12 @@ export class OportunidadesComponent {
       };
       this.insertar = true;
       this.modalVisible = true;
+    }
+
+    seguimiento(licencia: Oportunidad) {
+      this.oportunidadSeleccionada = licencia;
+      this.seguimientoOportunidad = true;
+      this.modalSeguimientoVisible = true;
     }
     
     actualiza(licencia: Oportunidad) {

@@ -1,0 +1,84 @@
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [closable]="true"
+  [style]="{ width: '60rem', height: '45rem' }"
+  (onHide)="close()"
+  (onShow)="onDialogShow()"
+  class="bodyDialog"
+>
+  <ng-template pTemplate="header">
+    <label class="margen">
+      {{ title + ' ' + oportunidadForm.get('descripcion')?.value }}
+    </label>
+  </ng-template>
+
+  <ng-template pTemplate="content">
+    <div class="row">
+      <div class="col-sm-4">
+        <label class="margen text-left nombre-destacado">
+          {{ oportunidadForm.get('nombre')?.value }}
+        </label>
+      </div>
+      <div class="col-sm-4">
+        <label class="margen text-left">
+          {{ 'Probabilidad ' + oportunidadForm.get('probabilidad')?.value + '%' }}
+        </label>
+        <br />
+        <label class="margen text-left">
+          {{ oportunidadForm.get('tooltipStage')?.value }}
+        </label>
+      </div>
+      <div class="col-sm-4">
+        <label class="margen text-left">
+          {{ oportunidadForm.get('monto')?.value | currency:'MXN':'symbol':'1.2-2' }}
+        </label>
+        <br />
+        <label class="margen text-left">
+          {{ oportunidadForm.get('montoNormalizado')?.value | currency:'MXN':'symbol':'1.2-2' }}
+        </label>
+      </div>
+    </div>
+    <br />
+    <form [formGroup]="oportunidadForm">
+      <div class="row">
+        <div class="col-sm-4">
+          <label for="Comentario" class="margen text-left">Seguimiento:</label>
+        </div>
+        <div class="col-sm-8 inptSpace">
+          <textarea pInputText class="inptSize seguimiento-textarea" formControlName="comentario"></textarea>
+        </div>
+      </div>
+    </form>
+
+    <div class="row mt-3">
+      <div class="col-sm-12" *ngIf="oportunidades.length > 0; else noComments">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Usuario</th>
+              <th>Fecha</th>
+              <th>Comentario</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of oportunidades">
+              <td>{{ item.nombreEjecutivo }}</td>
+              <td>{{ item.fechaRegistro | date:'dd/MM/yyyy' }}</td>
+              <td>{{ item.comentario }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </ng-template>    
+
+  <ng-template #noComments>
+    <p class="text-center">Sin comentarios</p>
+  </ng-template>
+  
+  <ng-template pTemplate="footer">
+    <button pButton label="Guardar"  (click)="guardarOportunidad()" severity="secondary"></button>
+    <button pButton label="Cancelar" (click)="close()" severity="secondary"></button>
+  </ng-template>
+</p-dialog>

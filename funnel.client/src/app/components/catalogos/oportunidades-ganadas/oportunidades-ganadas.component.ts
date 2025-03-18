@@ -11,12 +11,12 @@ import { ColumnasDisponiblesComponent } from '../../shared/columnas-disponibles/
 import { sumBy, map as mapping, omit, sortBy, groupBy, keys as getKeys } from "lodash-es";
 
 @Component({
-  selector: 'app-oportunidades',
+  selector: 'app-oportunidades-ganadas',
   standalone: false,
-  templateUrl: './oportunidades.component.html',
-  styleUrl: './oportunidades.component.css'
+  templateUrl: './oportunidades-ganadas.component.html',
+  styleUrl: './oportunidades-ganadas.component.css'
 })
-export class OportunidadesComponent {
+export class OportunidadesGanadasComponent {
 
   @ViewChild('dt') dt!: Table;
 
@@ -29,7 +29,7 @@ export class OportunidadesComponent {
   oportunidadSeleccionada!: Oportunidad;
 
   idUsuario: number = 1;
-  idEstatus: number = 1;
+  idEstatus: number = 2;
 
   insertar: boolean = false;
   modalVisible: boolean = false;
@@ -41,22 +41,26 @@ export class OportunidadesComponent {
   ];
 
   lsTodasColumnas: any[] = [
-    { key: 'nombre', isCheck: true, valor: 'Nombre', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
-    { key: 'nombreSector', isCheck: true, valor: 'Sector', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'idOportunidad', isCheck: true, valor: 'Id', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
+    { key: 'nombre', isCheck: true, valor: 'Nombre', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'nombreSector', isCheck: false, valor: 'Sector', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreOportunidad', isCheck: true, valor: 'Oportunidad', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'abreviatura', isCheck: true, valor: 'Abreviatura', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'stage', isCheck: true, valor: 'Etapa', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'stage', isCheck: false, valor: 'Etapa', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreEjecutivo', isCheck: true, valor: 'Ejecutivo', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'nombreContacto', isCheck: true, valor: 'Contacto', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'entrega', isCheck: true, valor: 'Entrega', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'nombreContacto', isCheck: false, valor: 'Contacto', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'monto', isCheck: true, valor: 'Monto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
-    { key: 'probabilidadOriginal', isCheck: false, valor: 'Prob Original', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'probabilidad', isCheck: true, valor: 'Prob', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'montoNormalizado', isCheck: true, valor: 'Monto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
+    { key: 'probabilidad', isCheck: false, valor: 'Probabilidad', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'montoNormalizado', isCheck: false, valor: 'Monto Normalizado', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
     { key: 'fechaRegistro', isCheck: true, valor: 'Fecha Registro', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
-    { key: 'diasFunnel', isCheck: false, valor: 'Días en Funnel', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
-    { key: 'fechaEstimadaCierreOriginal', isCheck: false, valor: 'Fecha Estimada de Cierre', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
-    { key: 'fechaModificacion', isCheck: false, valor: 'Fecha de Modificación', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' }
+    { key: 'diasFunnel', isCheck: true, valor: 'Días en Funnel', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
+    { key: 'fechaEstimadaCierreOriginal', isCheck: true, valor: 'Fecha Cierre', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
+    { key: 'diasEtapa1', isCheck: true, valor: 'Dias Etapa 1', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'number' },
+    { key: 'diasEtapa2', isCheck: true, valor: 'Dias Etapa 2', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'number' },
+    { key: 'diasEtapa3', isCheck: true, valor: 'Dias Etapa 3', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'number' },
+    { key: 'diasEtapa4', isCheck: true, valor: 'Dias Etapa 4', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'number' },
+    { key: 'diasEtapa5', isCheck: true, valor: 'Dias Etapa 5', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'number' },
+
   ];
 
   columnsAMostrarResp: string = JSON.stringify(this.lsColumnasAMostrar);
@@ -92,21 +96,11 @@ export class OportunidadesComponent {
         },
       });
     }
-
-    inserta() {
-      this.oportunidadSeleccionada = {
-        
-      };
-      this.insertar = true;
-      this.modalVisible = true;
-    }
-    
     actualiza(licencia: Oportunidad) {
       this.oportunidadSeleccionada = licencia;
       this.insertar = false;
       this.modalVisible = true;
     }
-    
     onModalClose() {
       this.modalVisible = false;
     }
@@ -189,8 +183,8 @@ export class OportunidadesComponent {
       import('xlsx').then(xlsx => {
         const hojadeCalculo: import('xlsx').WorkSheet = xlsx.utils.json_to_sheet(dataExport);
         const libro: import('xlsx').WorkBook = xlsx.utils.book_new();
-        xlsx.utils.book_append_sheet(libro, hojadeCalculo, "Oportunidades en proceso");
-        xlsx.writeFile(libro, "Oportunidades en proceso.xlsx");
+        xlsx.utils.book_append_sheet(libro, hojadeCalculo, "Oportunidades Eliminadas");
+        xlsx.writeFile(libro, "Oportunidades eliminadas.xlsx");
       });
     }
   
@@ -239,10 +233,8 @@ export class OportunidadesComponent {
         0
       );
     }
-  
     obtenerArregloFiltros(data: any[], columna: string): any[] {
       const lsGroupBy = groupBy(data, columna);
       return sortBy(getKeys(lsGroupBy));
     }
-  
 }

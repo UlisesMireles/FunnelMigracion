@@ -62,8 +62,6 @@ namespace Funnel.Server.Controllers
             var result = await _oportunidadesService.ComboContactos(idEmpresa, idProspecto);
             return Ok(result);
         }
-
         
-
     }
 }

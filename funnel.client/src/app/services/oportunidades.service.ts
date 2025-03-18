@@ -62,4 +62,12 @@ export class OportunidadesService {
 
 
 
+
+
+    getEstatus(idEmpresa: number): Observable<any> {
+      return this.http.get(`${this.baseUrl}api/Oportunidades/ComboTipoOportunidad`, {
+        params: { idEmpresa: idEmpresa.toString() }
+      });
+    }
+
 }

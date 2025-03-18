@@ -43,7 +43,7 @@ export class ContactosComponent {
 
   lsColumnasAMostrar: any[] = [];
   lsTodasColumnas: any[] = [
-    { key: 'nombreCompleto', isCheck: true, valor: 'Nombre', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'nombreCompleto', isCheck: true, valor: 'Nombre', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
     { key: 'telefono', isCheck: true, valor: 'Teléfono', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'correoElectronico', isCheck: true, valor: 'Correo Electrónico', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'prospecto', isCheck: true, valor: 'Prospecto', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
@@ -109,22 +109,6 @@ export class ContactosComponent {
     this.contactoSeleccionado = licencia;
     this.insertar = false;
     this.modalVisible = true;
-  }
-
-  
-
-  getVisibleTotal(campo: string, dt: any): number {
-    const registrosVisibles = dt.filteredValue
-      ? dt.filteredValue
-      : this.contactos;
-    if (campo === 'nombreCompleto') {
-      return registrosVisibles.length;
-    }
-    return registrosVisibles.reduce(
-      (acc: number, empresa: Contacto) =>
-        acc + Number(empresa[campo as keyof Contacto] || 0),
-      0
-    );
   }
 
   onModalClose() {
@@ -226,20 +210,38 @@ export class ContactosComponent {
   }
 
   getTotalCostPrimeNg(table: Table, def: any) {
-        if (def.key == 'nombre') {
-          return '';
-        }
-    
-        if (!def.isTotal) {
-          return
-        }
-    
-        if (table.filteredValue !== null && table.filteredValue !== undefined) {
-          return sumBy(this.dt.filteredValue, def.key)
-        }
-    
-        return sumBy(this.contactos, def.key)
-      }
+    if (!def.isTotal) {
+      return;
+    }
+
+    const registrosVisibles = table.filteredValue ? table.filteredValue : this.contactos;
+  
+    if (def.key === 'nombreCompleto') {
+      return registrosVisibles.length;
+    }
+
+    return (
+      registrosVisibles.reduce(
+        (acc: number, empresa: Contacto) =>
+          acc + (Number(empresa[def.key as keyof Contacto]) || 0),
+        0
+      ) / registrosVisibles.length
+    );
+  }
+
+  getVisibleTotal(campo: string, dt: any): number {
+    const registrosVisibles = dt.filteredValue ? dt.filteredValue : this.contactos;
+  
+    if (campo === 'nombreCompleto') {
+      return registrosVisibles.length;
+    }
+  
+    return registrosVisibles.reduce(
+      (acc: number, empresa: Contacto) =>
+        acc + (Number(empresa[campo as keyof Contacto] || 0)),
+      0
+    );
+  }
 
   obtenerArregloFiltros(data: any[], columna: string): any[] {
     const lsGroupBy = groupBy(data, columna);

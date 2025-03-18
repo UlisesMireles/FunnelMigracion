@@ -17,7 +17,7 @@
             
             <ng-template class="divAccionesTabla" #caption>
               <div class="col-12" style="text-align: left; font-weight: bold;">
-                <h3>Administración General de Oportunidades en Proceso</h3>
+                <h3>Administración General de Oportunidades Eliminadas</h3>
               </div>
               <div class="row">
                 <div class="col inDivDatatableHeader" style="text-align:right; margin-right:5px">
@@ -25,7 +25,7 @@
                     [ngStyle]="{'margin-right': '5px'}" />
                   <p-button label="" icon="bi bi-download" severity="secondary" (click)="exportExcel(dt)"  [ngStyle]="{'margin-right': '5px'}"/>
                   <p-button label="" icon="bi-pencil" (click)="agregarColumna($event)"  severity="secondary"  [ngStyle]="{'margin-right': '5px'}"/>
-                  <p-button label="" icon="bi bi-plus" severity="secondary" (click)="inserta()"  [ngStyle]="{'margin-right': '5px'}"/>
+                 
                 </div> 
               </div>
             </ng-template>
@@ -114,7 +114,7 @@
             <tr class="custom-footer">
               <td></td>
               <td *ngFor="let def of lsColumnasAMostrar">
-                <ng-container *ngIf="def.key === 'nombre'">
+                <ng-container *ngIf="def.key === 'idOportunidad'">
                   total de registros: {{ getTotalCostPrimeNg(dt, def) }}
                 </ng-container>
                 <ng-container *ngIf="def.tipoFormato === 'currency'">
@@ -140,8 +140,7 @@
     </div>
   </div>
 
-<app-modal-oportunidades [(visible)]="modalVisible" [title]="'Editar Datos de '" (closeModal)="onModalClose()"
-  (result)="manejarResultado($event)" [insertar]="insertar" [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">
-</app-modal-oportunidades>
-
   
+<app-modal-oportunidades-eliminadas [(visible)]="modalVisible" [title]="'Editar Datos de '" (closeModal)="onModalClose()"
+(result)="manejarResultado($event)" [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">
+</app-modal-oportunidades-eliminadas>

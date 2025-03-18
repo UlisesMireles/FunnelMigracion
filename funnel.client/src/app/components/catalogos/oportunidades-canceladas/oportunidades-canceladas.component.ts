@@ -160,20 +160,16 @@ export class OportunidadesCanceladasComponent {  @ViewChild('dt') dt!: Table;
     }
   
     exportExcel(table: Table) {
-      let colsIgnorar: any[] = [];
-    
-      let dataExport = (table.filteredValue || table.value || []);
-
-      let lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
+      let lsColumnasAMostrar = this.lsColumnasAMostrar.filter(col => col.isCheck);
       let columnasAMostrarKeys = lsColumnasAMostrar.map(col => col.key);
     
-      dataExport = dataExport.map(row => {
+      let dataExport = (table.filteredValue || table.value || []).map(row => {
         return columnasAMostrarKeys.reduce((acc, key) => {
           acc[key] = row[key];
           return acc;
-        }, {});
+        }, {} as { [key: string]: any });
       });
-    
+      
       import('xlsx').then(xlsx => {
         const hojadeCalculo: import('xlsx').WorkSheet = xlsx.utils.json_to_sheet(dataExport);
         const libro: import('xlsx').WorkBook = xlsx.utils.book_new();

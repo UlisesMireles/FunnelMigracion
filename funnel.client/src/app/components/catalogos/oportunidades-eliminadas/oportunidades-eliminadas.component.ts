@@ -159,18 +159,14 @@ export class OportunidadesEliminadasComponent {
     }
   
     exportExcel(table: Table) {
-      let colsIgnorar: any[] = [];
-    
-      let dataExport = (table.filteredValue || table.value || []);
-
-      let lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
+      let lsColumnasAMostrar = this.lsColumnasAMostrar.filter(col => col.isCheck);
       let columnasAMostrarKeys = lsColumnasAMostrar.map(col => col.key);
     
-      dataExport = dataExport.map(row => {
+      let dataExport = (table.filteredValue || table.value || []).map(row => {
         return columnasAMostrarKeys.reduce((acc, key) => {
           acc[key] = row[key];
           return acc;
-        }, {});
+        }, {} as { [key: string]: any });
       });
     
       import('xlsx').then(xlsx => {

@@ -11,8 +11,8 @@
             [showCurrentPageReport]="true" [rowsPerPageOptions]="[20, 30, 50]" [paginator]="true" paginatorPosition="both"
             currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros"
             [columns]="lsColumnasAMostrar"
-            [resizableColumns]="true"
-            [globalFilterFields]="['nombre','nombreSector','nombreOportunidad','abreviatura','stage','iniciales','nombreContacto','entrega','monto','probabilidadOriginal','probabilidad','montoNormalizado','fechaRegistro','diasFunnel','fechaEstimadaCierreOriginal','fechaModificacion']"
+            [autoLayout]="true"
+            [globalFilterFields]="['idOportunidad','nombre','nombreSector','nombreOportunidad','abreviatura','stage','iniciales','nombreContacto','entrega','monto','probabilidadOriginal','probabilidad','montoNormalizado','fechaRegistro','diasFunnel','fechaEstimadaCierreOriginal','fechaModificacion']"
             [tableStyle]="{'min-width': anchoTabla+ '%'}">
             
             <ng-template class="divAccionesTabla" #caption>
@@ -60,7 +60,7 @@
                               <div *ngSwitchCase="'text'">
                                   <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false">
                                       <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                                          <input type="text" pInputText [ngModel]="value"
+                                          <input type="text" pInputText [ngModel]="value" [ngStyle]="{'width': def.key == 'idOportunidad' ? '90%' : 'auto'}"
                                               (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
                                       </ng-template>
                                   </p-columnFilter>

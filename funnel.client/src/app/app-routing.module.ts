@@ -12,8 +12,10 @@ import { TipoServiciosComponent } from './components/catalogos/tipo-servicios/ti
 import { ModalTipoServiciosComponent } from './components/catalogos/tipo-servicios/modal-tipo-servicios/modal-tipo-servicios.component';
 import { UsuariosComponent } from './components/catalogos/usuarios/usuarios.component';
 import { OportunidadesComponent } from './components/catalogos/oportunidades/oportunidades.component';
-import { OportunidadesCanceladasComponent } from './components/catalogos/oportunidades-canceladas/oportunidades-canceladas.component';
-import { ModalOportunidadesCanceladasComponent } from './components/catalogos/oportunidades-canceladas/modal-oportunidades-canceladas/modal-oportunidades-canceladas.component';
+
+import { OportunidadesGanadasComponent } from './components/catalogos/oportunidades-ganadas/oportunidades-ganadas.component';
+import { OportunidadesEliminadasComponent } from './components/catalogos/oportunidades-eliminadas/oportunidades-eliminadas.component';
+
 
 import { TiposEntregaComponent } from './components/catalogos/tipos-entrega/tipos-entrega.component';
 import { ModalTiposEntregaComponent } from './components/catalogos/tipos-entrega/modal-tipos-entrega/modal-tipos-entrega.component';
@@ -33,8 +35,15 @@ const routes: Routes = [
   {path: 'usuarios', component: UsuariosComponent, title: 'Usuarios', canActivate: [AuthGuard] },
   {path:'tipos-entrega', component: TiposEntregaComponent, title: 'Tipos Entrega', canActivate: [AuthGuard] },
   {path:'tipos-entrega-modal', component: ModalTiposEntregaComponent, title: 'Tipos Entrega', canActivate: [AuthGuard] },
-  {path:'oportunidades-canceladas', component: OportunidadesCanceladasComponent, title: 'Oportunidades Canceladas', canActivate: [AuthGuard] },
-  {path:'oportunidades-canceladas-modal', component: ModalOportunidadesCanceladasComponent, title: 'Oportunidades Canceladas', canActivate: [AuthGuard] },
+  
+  { path: 'modal-prospectos', component: ModalProspectosComponent, title: 'Modal Prospectos', canActivate: [AuthGuard] },
+  { path: 'usuarios', component: UsuariosComponent, title: 'Usuarios', canActivate: [AuthGuard] },
+  { path:'tipos-entrega', component: TiposEntregaComponent, title: 'Tipos Entrega', canActivate: [AuthGuard] },
+  { path:'tipos-entrega-modal', component: ModalTiposEntregaComponent, title: 'Tipos Entrega', canActivate: [AuthGuard] },
+  { path:'oportunidades-ganadas', component: OportunidadesGanadasComponent, title: 'Oportunidades Ganadas', canActivate: [AuthGuard] },
+  { path:'oportunidades-eliminadas', component: OportunidadesEliminadasComponent, title: 'Oportunidades Eliminadas', canActivate: [AuthGuard] },
+
+
   
 ];
 

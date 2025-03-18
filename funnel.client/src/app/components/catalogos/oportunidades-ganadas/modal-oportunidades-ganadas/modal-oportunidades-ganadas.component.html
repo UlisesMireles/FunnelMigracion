@@ -1,0 +1,43 @@
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [closable]="true"
+  [style]="{ width: '40rem', height: '30rem' }"
+  (onHide)="close()"
+  (onShow)="onDialogShow()"
+  class="bodyDialog"
+>
+  <ng-template pTemplate="header">
+    <label class="margen">
+      {{ title + ' ' + oportunidadForm.get('descripcion')?.value }}
+    </label>
+  </ng-template>
+
+  <ng-template pTemplate="content">
+    <form [formGroup]="oportunidadForm">
+
+        <div class="row inptSpace">
+            <div class="col-sm-4 lbl">
+              <label for="Estatus Oportunidad">Estatus Oportunidad:</label>
+            </div>
+            <div class="col-sm-8 inptSpace">
+              <p-dropdown 
+                class="inptSize1"
+                [options]="estatus"
+                formControlName="idEstatusOportunidad"
+                optionLabel="descripcion"
+                optionValue="idEstatus"
+                
+                placeholder="Seleccione un estatus">
+              </p-dropdown>
+            </div>
+        </div>
+
+    </form>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button pButton label="Actualizar" (click)="guardarOportunidad()" severity="secondary"></button>
+    <button pButton label="Cancelar" (click)="close()" severity="secondary"></button>
+  </ng-template>
+</p-dialog>

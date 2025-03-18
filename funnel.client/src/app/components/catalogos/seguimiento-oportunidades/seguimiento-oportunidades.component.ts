@@ -36,6 +36,8 @@ export class SeguimientoOportunidadesComponent {
   isDescargando = false;
   anchoTabla = 100;
 
+  historialOportunidad: Oportunidad[] = [];
+
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() closeModal: EventEmitter<void> = new EventEmitter();
   @Output() result: EventEmitter<baseOut> = new EventEmitter();
@@ -86,6 +88,8 @@ export class SeguimientoOportunidadesComponent {
       this.oportunidadService.postHistorial(this.oportunidadForm.value).subscribe({
           next: (result: baseOut) => {
             this.result.emit(result);
+            this.getHistorial(this.oportunidadForm.value.idOportunidad);
+            
           },
           error: (error: baseOut) => {
             this.messageService.add({
@@ -97,22 +101,22 @@ export class SeguimientoOportunidadesComponent {
         });
       }
       
-    getHistorial(idOportunidad: number) {
-      this.oportunidadService.getHistorial(idOportunidad, this.loginService.obtenerIdEmpresa() ).subscribe({
-        next: (result: Oportunidad[]) => {
-          this.oportunidades = [...result];
-          this.oportunidadesOriginal = result;
-          this.loading = false;
-        },
-        error: (error) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Se ha producido un error.',
-            detail: error.errorMessage,
-          });
-          this.loading = false;
-        },
-      });
-    }
+      getHistorial(idOportunidad: number) {
+        this.oportunidadService.getHistorial(idOportunidad, this.loginService.obtenerIdEmpresa()).subscribe({
+          next: (result: Oportunidad[]) => {
+            this.historialOportunidad = [...result]; 
+            this.loading = false;
+          },
+          error: (error) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Se ha producido un error.',
+              detail: error.errorMessage,
+            });
+            this.loading = false;
+          },
+        });
+      }
+      
   }
 

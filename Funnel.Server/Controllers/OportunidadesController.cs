@@ -74,6 +74,12 @@ namespace Funnel.Server.Controllers
             var result = await _oportunidadesService.ConsultarHistoricoOportunidades(idEmpresa, idOportunidad);
             return Ok(result);
         }
+        [HttpPost("[action]/")]
+        public async Task<ActionResult> GuardarHistorico(OportunidadesEnProcesoDto request)
+        {
+            var result = await _oportunidadesService.GuardarHistorico(request);
+            return Ok(result);
+        }
 
     }
 }

@@ -10,6 +10,7 @@ import { RequestOportunidad } from '../../../interfaces/oportunidades';
 import { LoginService } from '../../../services/login.service';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { get } from 'lodash-es';
 
 @Component({
   selector: 'app-seguimiento-oportunidades',
@@ -42,35 +43,26 @@ export class SeguimientoOportunidadesComponent {
   inicializarFormulario() {
       this.oportunidadForm = this.fb.group({
         idOportunidad: [this.oportunidad.idOportunidad],
-        idProspecto: [this.oportunidad.idProspecto, Validators.required],
-        nombre: [this.oportunidad.nombre, [Validators.required, Validators.minLength(5)]],
-        nombreOportunidad: [this.oportunidad.nombreOportunidad, [Validators.required, Validators.minLength(5)]],
-        descripcion: [this.oportunidad.nombreOportunidad, [Validators.required, Validators.minLength(5)]],
-        monto: [this.oportunidad.monto, [Validators.required, Validators.pattern(/^[0-9]+(\.[0-9]{1,2})?$/), Validators.min(1)]],
-        idEjecutivo: [this.oportunidad.idEjecutivo, Validators.required],
-        comentario: [''],
+        nombre: [this.oportunidad.nombre],
+        nombreOportunidad: [this.oportunidad.nombreOportunidad],
+        descripcion: [this.oportunidad.nombreOportunidad],
+        monto: [this.oportunidad.monto],
+        idEjecutivo: [this.oportunidad.idEjecutivo],
+        comentario: ['', Validators.required],
         idEmpresa: [this.loginService.obtenerIdEmpresa()],
         probabilidad: [this.oportunidad.probabilidad],
         idEstatusOportunidad: [this.oportunidad.idEstatusOportunidad],
         tooltipStage: [this.oportunidad.tooltipStage],
         montoNormalizado: [this.oportunidad.montoNormalizado],
-        bandera: ['UPD-OPORTUNIDAD'],
+        idUsuario: [2], 
+        stage: [this.oportunidad.stage],
+        bandera: ['INS-HISTORICO'],
       });
       if (this.oportunidad.idOportunidad) {
         this.getHistorial(this.oportunidad.idOportunidad);
       }
-      this.limpiarProbabilidad();
     }
-    
-    limpiarProbabilidad() {
-      let probabilidad = this.oportunidadForm.get('probabilidad')?.value;
   
-      if (typeof probabilidad === 'string' && probabilidad.includes('%')) {
-          probabilidad = probabilidad.replace('%', '').trim();
-          this.oportunidadForm.get('probabilidad')?.setValue(probabilidad);
-      }
-    }
-
     onDialogShow() {
       this.cdr.detectChanges();
       this.inicializarFormulario(); 
@@ -91,10 +83,9 @@ export class SeguimientoOportunidadesComponent {
     }
 
     guardarOportunidad(){
-      this.oportunidadService.postOportunidad(this.oportunidadForm.value).subscribe({
+      this.oportunidadService.postHistorial(this.oportunidadForm.value).subscribe({
           next: (result: baseOut) => {
             this.result.emit(result);
-            this.close();
           },
           error: (error: baseOut) => {
             this.messageService.add({
@@ -105,14 +96,12 @@ export class SeguimientoOportunidadesComponent {
           },
         });
       }
-
       
     getHistorial(idOportunidad: number) {
       this.oportunidadService.getHistorial(idOportunidad, this.loginService.obtenerIdEmpresa() ).subscribe({
         next: (result: Oportunidad[]) => {
           this.oportunidades = [...result];
           this.oportunidadesOriginal = result;
-          this.cdr.detectChanges(); 
           this.loading = false;
         },
         error: (error) => {

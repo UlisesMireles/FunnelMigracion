@@ -59,6 +59,11 @@ namespace Funnel.Logic
             return await _oportunidadesData.ConsultarOportunidadesEnProceso(IdUsuario, IdEmpresa, IdEstatus);
         }
 
+        public async Task<BaseOut> GuardarHistorico(OportunidadesEnProcesoDto request)
+        {
+            return await _oportunidadesData.GuardarHistorico(request);
+        }
+
         public async Task<BaseOut> GuardarOportunidad(OportunidadesEnProcesoDto request)
         {
             return await _oportunidadesData.GuardarOportunidad(request);

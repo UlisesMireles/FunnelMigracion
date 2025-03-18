@@ -70,4 +70,8 @@ export class OportunidadesService {
         params: { idOportunidad: idOportunidad.toString(), idEmpresa: idEmpresa.toString() }
       });
     }
+
+    postHistorial(data: any): Observable <baseOut>{
+      return this.http.post<baseOut>(this.baseUrl+'api/Oportunidades/GuardarHistorico', data);
+    }
 }

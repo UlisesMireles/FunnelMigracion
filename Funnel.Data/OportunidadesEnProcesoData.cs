@@ -260,6 +260,58 @@ namespace Funnel.Data
             }
             return result;
         }
+
+        public async Task<BaseOut> GuardarHistorico(OportunidadesEnProcesoDto request)
+        {
+            BaseOut result = new BaseOut();
+            try
+            {
+                decimal probabilidadDecimal = 0;
+
+                IList<ParameterSQl> list = new List<ParameterSQl>
+                {
+                    DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Bandera),
+                    DataBase.CreateParameterSql("@pIdOportunidad", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdOportunidad),
+                    DataBase.CreateParameterSql("@pComentario", SqlDbType.VarChar, -1, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Comentario),
+                    DataBase.CreateParameterSql("@pIdUsuario", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdUsuario),
+                    DataBase.CreateParameterSql("@pStage", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Stage),
+
+
+                };
+
+                using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoOportunidades", CommandType.StoredProcedure, list, _connectionString))
+                {
+                    while (reader.Read())
+                    {
+
+                    }
+
+                }
+                switch (request.Bandera)
+                {
+                    case "INS-HISTORICO":
+                        result.ErrorMessage = "Oportunidad insertada correctamente.";
+                        result.Id = 1;
+                        result.Result = true;
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                switch (request.Bandera)
+                {
+                    case "INS-HISTORICO":
+                        result.ErrorMessage = "Oportunidad insertada correctamente.";
+                        result.Id = 1;
+                        result.Result = true;
+                        break;
+                    
+                }
+            }
+            return result;
+        }
+
         public async Task<BaseOut> GuardarOportunidad(OportunidadesEnProcesoDto request)
         {
             BaseOut result = new BaseOut();

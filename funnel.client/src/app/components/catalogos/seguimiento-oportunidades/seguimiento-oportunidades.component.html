@@ -47,6 +47,9 @@
         </div>
         <div class="col-sm-8 inptSpace">
           <textarea pInputText class="inptSize seguimiento-textarea" formControlName="comentario"></textarea>
+          <small *ngIf="oportunidadForm.get('comentario')?.hasError('minWords') && oportunidadForm.get('comentario')?.touched" class="text-danger">
+            El comentario debe contener al menos 10 palabras.
+          </small>
         </div>
       </div>
     </form>
@@ -78,7 +81,7 @@
   </ng-template>
   
   <ng-template pTemplate="footer">
-    <button pButton label="Guardar"  (click)="guardarOportunidad()" severity="secondary"></button>
+    <button pButton label="Guardar"  (click)="guardarHistorial()" severity="secondary"></button>
     <button pButton label="Cancelar" (click)="close()" severity="secondary"></button>
   </ng-template>
 </p-dialog>

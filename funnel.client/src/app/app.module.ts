@@ -61,9 +61,10 @@ import { ModalContactosComponent } from './components/catalogos/contactos/modal-
 import { TipoServiciosComponent } from './components/catalogos/tipo-servicios/tipo-servicios.component';
 
 import { OportunidadesComponent} from './components/catalogos/oportunidades/oportunidades.component';
+import { OportunidadesPerdidasComponent} from './components/catalogos/oportunidades-perdidas/oportunidades-perdidas.component';
+import { ModalOportunidadesPerdidasComponent } from './components/catalogos/oportunidades-perdidas/modal-oportunidades-perdidas/modal-oportunidades-perdidas.component';
 
 
-import { CommonModule, DatePipe} from '@angular/common';
 import { CommonModule, DatePipe, registerLocaleData } from '@angular/common';
 import { TipoCurrencyPipe } from './pipes/tipoCurrency.pipe';
 import { ModalOportunidadesComponent } from './components/catalogos/oportunidades/modal-oportunidades/modal-oportunidades.component';
@@ -101,7 +102,8 @@ registerLocaleData(localeEs, 'es-MX');
     UsuariosComponent,
     ModalUsuariosComponent,
     OportunidadesComponent,
-    
+    OportunidadesPerdidasComponent,
+    ModalOportunidadesPerdidasComponent,
     ModalOportunidadesComponent,
     TiposEntregaComponent,
     ModalTiposEntregaComponent,

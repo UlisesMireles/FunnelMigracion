@@ -50,7 +50,7 @@ export class SeguimientoOportunidadesComponent {
         descripcion: [this.oportunidad.nombreOportunidad],
         monto: [this.oportunidad.monto],
         idEjecutivo: [this.oportunidad.idEjecutivo],
-        comentario: ['', [Validators.required, this.minWordsValidator(10)]],
+        comentario: ['', [Validators.required, Validators.minLength(20)]],
         idEmpresa: [this.loginService.obtenerIdEmpresa()],
         probabilidad: [this.oportunidad.probabilidad],
         idEstatusOportunidad: [this.oportunidad.idEstatusOportunidad],
@@ -64,7 +64,7 @@ export class SeguimientoOportunidadesComponent {
         this.getHistorial(this.oportunidad.idOportunidad);
       }
     }
-  
+    
     onDialogShow() {
       this.cdr.detectChanges();
       this.inicializarFormulario(); 
@@ -85,6 +85,10 @@ export class SeguimientoOportunidadesComponent {
     }
 
     guardarHistorial(){
+      if (this.oportunidadForm.invalid) {
+        this.oportunidadForm.markAllAsTouched(); 
+        return; 
+      }
       this.oportunidadService.postHistorial(this.oportunidadForm.value).subscribe({
           next: (result: baseOut) => {
             this.result.emit(result);
@@ -117,14 +121,6 @@ export class SeguimientoOportunidadesComponent {
         });
       }
       
-      minWordsValidator(minWords: number) {
-        return (control: any) => {
-          if (!control.value || control.value.trim().split(/\s+/).length < minWords) {
-            return { minWords: true };
-          }
-          return null;
-        };
-      }
       
   }
 

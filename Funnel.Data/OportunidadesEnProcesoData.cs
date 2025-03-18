@@ -287,27 +287,10 @@ namespace Funnel.Data
                     }
 
                 }
-                switch (request.Bandera)
-                {
-                    case "INS-HISTORICO":
-                        result.ErrorMessage = "Oportunidad insertada correctamente.";
-                        result.Id = 1;
-                        result.Result = true;
-                        break;
-                }
-
             }
             catch (Exception ex)
             {
-                switch (request.Bandera)
-                {
-                    case "INS-HISTORICO":
-                        result.ErrorMessage = "Oportunidad insertada correctamente.";
-                        result.Id = 1;
-                        result.Result = true;
-                        break;
-                    
-                }
+                result.ErrorMessage = "Error al guardar el historico.";
             }
             return result;
         }

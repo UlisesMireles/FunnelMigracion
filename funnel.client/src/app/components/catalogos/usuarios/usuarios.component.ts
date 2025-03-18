@@ -44,7 +44,7 @@ export class UsuariosComponent {
 
   lsColumnasAMostrar: any[] = [];
   lsTodasColumnas: any[] = [
-    {key:'nombre', isCheck: true, valor: 'Nombre', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
+    {key:'nombre', isCheck: true, valor: 'Nombre', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text'},
     {key:'apellidoPaterno', isCheck: true, valor: 'ApellidoPaterno', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
     {key:'apellidoMaterno', isCheck: true, valor: 'ApellidoMaterno', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
     {key:'usuario', isCheck: true, valor: 'Usuario', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},

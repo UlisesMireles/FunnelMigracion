@@ -39,7 +39,7 @@ export class TiposEntregaComponent {
 
   lsColumnasAMostrar: any[] = [];
   lsTodasColumnas: any[] = [
-    {key:'descripcion', isCheck: true, valor: 'Descripción', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
+    {key:'descripcion', isCheck: true, valor: 'Descripción', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text'},
     {key: 'abreviatura', isCheck: true, valor: 'Abreviatura', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
     {key: 'desEstatus', isCheck: true, valor: 'Estatus', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'estatus'},
   ];
@@ -199,7 +199,7 @@ clear(table: Table) {
   
       const registrosVisibles = table.filteredValue ? table.filteredValue : this.tiposEntrega;
     
-      if (def.key === 'nombreCompleto') {
+      if (def.key === 'descripcion') {
         return registrosVisibles.length;
       }
   

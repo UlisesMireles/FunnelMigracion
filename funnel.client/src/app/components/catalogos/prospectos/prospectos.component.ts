@@ -42,7 +42,7 @@ EstatusDropdown = [
 
   lsColumnasAMostrar: any[] = [];
   lsTodasColumnas: any[] = [
-    {key:'nombre', isCheck: true, valor: 'Nombre', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
+    {key:'nombre', isCheck: true, valor: 'Nombre', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text'},
     {key: 'nombreSector', isCheck: true, valor: 'Sector de la industria', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
     {key: 'ubicacionFisica', isCheck: true, valor: 'Ubicación Física', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
     {key: 'totalOportunidades', isCheck: true, valor: 'Todas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
@@ -230,7 +230,7 @@ clear(table: Table) {
         getVisibleTotal(campo: string, dt: any): number {
           const registrosVisibles = dt.filteredValue ? dt.filteredValue : this.prospectos;
         
-          if (campo === 'nombreCompleto') {
+          if (campo === 'nombre') {
             return registrosVisibles.length;
           }
         

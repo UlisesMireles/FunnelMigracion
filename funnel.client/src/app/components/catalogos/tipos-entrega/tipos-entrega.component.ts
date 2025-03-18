@@ -74,20 +74,6 @@ ngOnInit(): void {
     });
   }
 
-  
-  getVisibleTotal(campo: string, dt: any): number {
-    const registrosVisibles = dt.filteredValue
-      ? dt.filteredValue
-      : this.tiposEntrega;
-    if (campo === 'descripcion') {
-      return registrosVisibles.length; 
-    }
-    return registrosVisibles.reduce(
-      (acc: number, _tipoEntrega: TipoEntrega) =>
-        acc + Number(_tipoEntrega[campo as keyof TipoEntrega] || 0),
-      0
-    );
-  }
   FiltrarPorEstatus() {
     this.tiposEntrega = this.selectedEstatus === null
       ? [...this.tiposEntregaOriginal]
@@ -207,20 +193,38 @@ clear(table: Table) {
     }
   
     getTotalCostPrimeNg(table: Table, def: any) {
-          if (def.key == 'nombre') {
-            return '';
-          }
-      
-          if (!def.isTotal) {
-            return
-          }
-      
-          if (table.filteredValue !== null && table.filteredValue !== undefined) {
-            return sumBy(this.dt.filteredValue, def.key)
-          }
-      
-          return sumBy(this.tiposEntrega, def.key)
-        }
+      if (!def.isTotal) {
+        return;
+      }
+  
+      const registrosVisibles = table.filteredValue ? table.filteredValue : this.tiposEntrega;
+    
+      if (def.key === 'nombreCompleto') {
+        return registrosVisibles.length;
+      }
+  
+      return (
+        registrosVisibles.reduce(
+          (acc: number, empresa: TipoEntrega) =>
+            acc + (Number(empresa[def.key as keyof TipoEntrega]) || 0),
+          0
+        ) / registrosVisibles.length
+      );
+    }
+  
+    getVisibleTotal(campo: string, dt: any): number {
+      const registrosVisibles = dt.filteredValue ? dt.filteredValue : this.tiposEntrega;
+    
+      if (campo === 'descripcion') {
+        return registrosVisibles.length;
+      }
+    
+      return registrosVisibles.reduce(
+        (acc: number, empresa: TipoEntrega) =>
+          acc + (Number(empresa[campo as keyof TipoEntrega] || 0)),
+        0
+      );
+    }
   
     obtenerArregloFiltros(data: any[], columna: string): any[] {
       const lsGroupBy = groupBy(data, columna);

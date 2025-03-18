@@ -127,6 +127,12 @@
                   <td></td>
                   <td *ngFor="let def of columns">
                   {{getTotalCostPrimeNg(dt, def) | currency:'MX ':'symbol' }}</td>
+                <td></td>
+                <td *ngFor="let def of lsColumnasAMostrar">
+                  <ng-container *ngIf="def.key === 'descripcion'">
+                    total de registros: {{ getTotalCostPrimeNg(dt, def) }}
+                  </ng-container>
+                </td>
               </tr>
           </ng-template>
 

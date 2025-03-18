@@ -82,19 +82,7 @@ export class TipoServiciosComponent {
   }
 
   
-  getVisibleTotal(campo: string, dt: any): number {
-    const registrosVisibles = dt.filteredValue
-      ? dt.filteredValue
-      : this.tiposServicios;
-    if (campo === 'descripcion') {
-      return registrosVisibles.length; 
-    }
-    return registrosVisibles.reduce(
-      (acc: number, _tipoServicio: TipoServicio) =>
-        acc + Number(_tipoServicio[campo as keyof TipoServicio] || 0),
-      0
-    );
-  }
+ 
   FiltrarPorEstatus() {
     this.tiposServicios = this.selectedEstatus === null
       ? [...this.tiposServiciosOriginal]
@@ -208,25 +196,43 @@ export class TipoServiciosComponent {
           const hojadeCalculo: import('xlsx').WorkSheet = xlsx.utils.json_to_sheet(dataExport);
           const libro: import('xlsx').WorkBook = xlsx.utils.book_new();
           xlsx.utils.book_append_sheet(libro, hojadeCalculo, "Tipos Servicio");
-          xlsx.writeFile(libro, "Tipos.xlsx");
+          xlsx.writeFile(libro, "Tipos Servicio.xlsx");
         });
       }
     
       getTotalCostPrimeNg(table: Table, def: any) {
-            if (def.key == 'nombre') {
-              return '';
-            }
-        
-            if (!def.isTotal) {
-              return
-            }
-        
-            if (table.filteredValue !== null && table.filteredValue !== undefined) {
-              return sumBy(this.dt.filteredValue, def.key)
-            }
-        
-            return sumBy(this.tiposServicios, def.key)
-          }
+        if (!def.isTotal) {
+          return;
+        }
+    
+        const registrosVisibles = table.filteredValue ? table.filteredValue : this.tiposServicios;
+      
+        if (def.key === 'nombreCompleto') {
+          return registrosVisibles.length;
+        }
+    
+        return (
+          registrosVisibles.reduce(
+            (acc: number, empresa: TipoServicio) =>
+              acc + (Number(empresa[def.key as keyof TipoServicio]) || 0),
+            0
+          ) / registrosVisibles.length
+        );
+      }
+    
+      getVisibleTotal(campo: string, dt: any): number {
+        const registrosVisibles = dt.filteredValue ? dt.filteredValue : this.tiposServicios;
+      
+        if (campo === 'descripcion') {
+          return registrosVisibles.length;
+        }
+      
+        return registrosVisibles.reduce(
+          (acc: number, empresa: TipoServicio) =>
+            acc + (Number(empresa[campo as keyof TipoServicio] || 0)),
+          0
+        );
+      }
     
       obtenerArregloFiltros(data: any[], columna: string): any[] {
         const lsGroupBy = groupBy(data, columna);

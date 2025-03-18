@@ -88,20 +88,6 @@ export class UsuariosComponent {
         },
       });
     }
-
-      getVisibleTotal(campo: string, dt: any): number {
-        const registrosVisibles = dt.filteredValue
-          ? dt.filteredValue
-          : this.usuarios;
-        if (campo === 'nombre') {
-          return registrosVisibles.length; 
-        }
-        return registrosVisibles.reduce(
-          (acc: number, _usuario: Usuario) =>
-            acc + Number(_usuario[campo as keyof Usuario] || 0),
-          0
-        );
-      }
       FiltrarPorEstatus() {
         this.usuarios = this.selectedEstatus === null
           ? [...this.usuariosOriginal]
@@ -238,20 +224,38 @@ clear(table: Table) {
     }
   
     getTotalCostPrimeNg(table: Table, def: any) {
-          if (def.key == 'nombre') {
-            return '';
-          }
-      
-          if (!def.isTotal) {
-            return
-          }
-      
-          if (table.filteredValue !== null && table.filteredValue !== undefined) {
-            return sumBy(this.dt.filteredValue, def.key)
-          }
-      
-          return sumBy(this.usuarios, def.key)
-        }
+      if (!def.isTotal) {
+        return;
+      }
+  
+      const registrosVisibles = table.filteredValue ? table.filteredValue : this.usuarios;
+    
+      if (def.key === 'nombre') {
+        return registrosVisibles.length;
+      }
+  
+      return (
+        registrosVisibles.reduce(
+          (acc: number, empresa: Usuario) =>
+            acc + (Number(empresa[def.key as keyof Usuario]) || 0),
+          0
+        ) / registrosVisibles.length
+      );
+    }
+  
+    getVisibleTotal(campo: string, dt: any): number {
+      const registrosVisibles = dt.filteredValue ? dt.filteredValue : this.usuarios;
+    
+      if (campo === 'nombre') {
+        return registrosVisibles.length;
+      }
+    
+      return registrosVisibles.reduce(
+        (acc: number, empresa: Usuario) =>
+          acc + (Number(empresa[campo as keyof Usuario] || 0)),
+        0
+      );
+    }
   
     obtenerArregloFiltros(data: any[], columna: string): any[] {
       const lsGroupBy = groupBy(data, columna);

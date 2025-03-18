@@ -21,9 +21,9 @@ export class OportunidadesCanceladasComponent {  @ViewChild('dt') dt!: Table;
   isDescargando = false;
   anchoTabla = 100;//porciento
 
-  oportunidades: Oportunidad[] = [];
-  oportunidadesOriginal: Oportunidad[] = [];
-  oportunidadSeleccionada!: Oportunidad;
+  oportunidadesCanceladas: Oportunidad[] = [];
+  oportunidadesCanceladasOriginal: Oportunidad[] = [];
+  oportunidadCanceladaSeleccionada!: Oportunidad;
 
   idUsuario: number = 1;
   idEstatus: number = 4;
@@ -38,7 +38,7 @@ export class OportunidadesCanceladasComponent {  @ViewChild('dt') dt!: Table;
   ];
 
   lsTodasColumnas: any[] = [
-    { key: 'nombre', isCheck: true, valor: 'Nombre', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'nombre', isCheck: true, valor: 'Nombre', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreSector', isCheck: false, valor: 'Sector', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreOportunidad', isCheck: true, valor: 'Oportunidad', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'abreviatura', isCheck: true, valor: 'Abreviatura', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
@@ -73,8 +73,8 @@ export class OportunidadesCanceladasComponent {  @ViewChild('dt') dt!: Table;
     getOportunidades() {
       this.oportunidadService.getOportunidades(this.idUsuario, this.loginService.obtenerIdEmpresa(), this.idEstatus).subscribe({
         next: (result: Oportunidad[]) => {
-          this.oportunidades = [...result];
-          this.oportunidadesOriginal = result;
+          this.oportunidadesCanceladas = [...result];
+          this.oportunidadesCanceladasOriginal = result;
           this.cdr.detectChanges(); 
           this.loading = false;
         },
@@ -89,23 +89,9 @@ export class OportunidadesCanceladasComponent {  @ViewChild('dt') dt!: Table;
       });
     }
     actualiza(licencia: Oportunidad) {
-      this.oportunidadSeleccionada = licencia;
+      this.oportunidadCanceladaSeleccionada = licencia;
       this.insertar = false;
       this.modalVisible = true;
-    }
-
-    getVisibleTotal(campo: string, dt: any): number {
-      const registrosVisibles = dt.filteredValue
-        ? dt.filteredValue
-        : this.oportunidades;
-      if (campo === 'nombre') {
-        return registrosVisibles.length; 
-      }
-      return registrosVisibles.reduce(
-        (acc: number, empresa: Oportunidad) =>
-          acc + Number(empresa[campo as keyof Oportunidad] || 0),
-        0
-      );
     }
     
     onModalClose() {
@@ -196,19 +182,37 @@ export class OportunidadesCanceladasComponent {  @ViewChild('dt') dt!: Table;
     }
   
     getTotalCostPrimeNg(table: Table, def: any) {
-      if (def.key == 'nombreCompleto') {
-        return 'Total';
-      }
-  
       if (!def.isTotal) {
-        return
+        return;
       }
   
-      if (table.filteredValue !== null && table.filteredValue !== undefined) {
-        return sumBy(this.dt.filteredValue, def.key)
+      const registrosVisibles = table.filteredValue ? table.filteredValue : this.oportunidadesCanceladas;
+    
+      if (def.key === 'nombre') {
+        return registrosVisibles.length;
       }
   
-      return sumBy(this.oportunidades, def.key)
+      return (
+        registrosVisibles.reduce(
+          (acc: number, empresa: Oportunidad) =>
+            acc + (Number(empresa[def.key as keyof Oportunidad]) || 0),
+          0
+        ) / registrosVisibles.length
+      );
+    }
+  
+    getVisibleTotal(campo: string, dt: any): number {
+      const registrosVisibles = dt.filteredValue ? dt.filteredValue : this.oportunidadesCanceladas;
+    
+      if (campo === 'nombreCompleto') {
+        return registrosVisibles.length;
+      }
+    
+      return registrosVisibles.reduce(
+        (acc: number, empresa: Oportunidad) =>
+          acc + (Number(empresa[campo as keyof Oportunidad] || 0)),
+        0
+      );
     }
   
     obtenerArregloFiltros(data: any[], columna: string): any[] {

@@ -120,19 +120,7 @@ actualiza(licencia: Prospectos) {
   this.insertar = false;
   this.modalVisible = true;
 }
-getVisibleTotal(campo: string, dt: any): number {
-  const registrosVisibles = dt.filteredValue
-    ? dt.filteredValue
-    : this.prospectos;
-  if (campo === 'nombreSector') {
-    return registrosVisibles.length; // Retorna el número de registros visibles
-  }
-  return registrosVisibles.reduce(
-    (acc: number, empresa: Prospectos) =>
-      acc + Number(empresa[campo as keyof Prospectos] || 0),
-    0
-  );
-}
+
 // metodos moda
 onModalClose() {
   this.modalVisible = false;
@@ -220,19 +208,37 @@ clear(table: Table) {
     }
   
     getTotalCostPrimeNg(table: Table, def: any) {
-          if (def.key == 'nombre') {
-            return '';
-          }
-      
           if (!def.isTotal) {
-            return
+            return;
           }
       
-          if (table.filteredValue !== null && table.filteredValue !== undefined) {
-            return sumBy(this.dt.filteredValue, def.key)
+          const registrosVisibles = table.filteredValue ? table.filteredValue : this.prospectos;
+        
+          if (def.key === 'nombreCompleto') {
+            return registrosVisibles.length;
           }
       
-          return sumBy(this.prospectos, def.key)
+          return (
+            registrosVisibles.reduce(
+              (acc: number, empresa: Prospectos) =>
+                acc + (Number(empresa[def.key as keyof Prospectos]) || 0),
+              0
+            ) / registrosVisibles.length
+          );
+        }
+      
+        getVisibleTotal(campo: string, dt: any): number {
+          const registrosVisibles = dt.filteredValue ? dt.filteredValue : this.prospectos;
+        
+          if (campo === 'nombreCompleto') {
+            return registrosVisibles.length;
+          }
+        
+          return registrosVisibles.reduce(
+            (acc: number, empresa: Prospectos) =>
+              acc + (Number(empresa[campo as keyof Prospectos] || 0)),
+            0
+          );
         }
   
     obtenerArregloFiltros(data: any[], columna: string): any[] {

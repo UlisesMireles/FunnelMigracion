@@ -18,14 +18,14 @@ import { TooltipModule } from 'primeng/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input'; 
 import { Dropdown } from 'primeng/dropdown';
-
 import { ModalTipoServiciosComponent } from './components/catalogos/tipo-servicios/modal-tipo-servicios/modal-tipo-servicios.component';
 import { ProspectosComponent } from './components/catalogos/prospectos/prospectos.component';
 import { ModalProspectosComponent } from './components/catalogos/prospectos/modal-prospectos/modal-prospectos.component';
 import { ModalUsuariosComponent } from './components/catalogos/usuarios/modal-usuarios/modal-usuarios.component';
 import { OportunidadesEliminadasComponent } from './components/catalogos/oportunidades-eliminadas/oportunidades-eliminadas.component';
 import { ModalOportunidadesEliminadasComponent } from './components/catalogos/oportunidades-eliminadas/modal-oportunidades-eliminadas/modal-oportunidades-eliminadas.component';
-
+import { OportunidadesCanceladasComponent } from './components/catalogos/oportunidades-canceladas/oportunidades-canceladas.component';
+import { ModalOportunidadesCanceladasComponent } from './components/catalogos/oportunidades-canceladas/modal-oportunidades-canceladas/modal-oportunidades-canceladas.component';
 import { TiposEntregaComponent } from './components/catalogos/tipos-entrega/tipos-entrega.component';
 import { ModalTiposEntregaComponent } from './components/catalogos/tipos-entrega/modal-tipos-entrega/modal-tipos-entrega.component';
 import Aura from '@primeng/themes/aura';
@@ -58,7 +58,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ContactosComponent } from './components/catalogos/contactos/contactos.component';
 import { ModalContactosComponent } from './components/catalogos/contactos/modal-contactos/modal-contactos.component';
 import { TipoServiciosComponent } from './components/catalogos/tipo-servicios/tipo-servicios.component';
-
 import { OportunidadesComponent} from './components/catalogos/oportunidades/oportunidades.component';
 import { CommonModule, DatePipe, registerLocaleData } from '@angular/common';
 import { TipoCurrencyPipe } from './pipes/tipoCurrency.pipe';
@@ -67,7 +66,6 @@ import { AgregarQuitarColumnasComponent } from './components/shared/agregar-quit
 import { ColumnasDisponiblesComponent } from './components/shared/columnas-disponibles/columnas-disponibles.component';
 import { ColumnFilterComponent } from './components/shared/column-filter/column-filter.component';
 import { HeaderOpcionesComponent } from './components/shared/header-opciones/header-opciones.component';
-
 import { OportunidadesGanadasComponent } from './components/catalogos/oportunidades-ganadas/oportunidades-ganadas.component';
 import { ModalOportunidadesGanadasComponent } from './components/catalogos/oportunidades-ganadas/modal-oportunidades-ganadas/modal-oportunidades-ganadas.component';
 
@@ -105,11 +103,12 @@ registerLocaleData(localeEs, 'es-MX');
     ColumnasDisponiblesComponent,
     ColumnFilterComponent,
     HeaderOpcionesComponent,
-    
     OportunidadesGanadasComponent,
     ModalOportunidadesGanadasComponent,
     OportunidadesEliminadasComponent,
     ModalOportunidadesEliminadasComponent,
+    OportunidadesCanceladasComponent,
+    ModalOportunidadesCanceladasComponent
   ],
   imports: [
     BrowserModule,

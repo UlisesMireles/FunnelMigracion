@@ -7,7 +7,7 @@
     <div class="col-12">
       <div class="row contenedorTabla" style="justify-content: center; display: flex; width: 100% ;" >
         <div *ngIf="loading">Cargando...</div>
-        <p-table *ngIf="!loading" #dt [stripedRows]="true" [value]="oportunidades" dataKey="id" [rows]="20"
+        <p-table *ngIf="!loading" #dt [stripedRows]="true" [value]="oportunidadesCanceladas" dataKey="id" [rows]="20"
           [showCurrentPageReport]="true" [rowsPerPageOptions]="[20, 30, 50]" [paginator]="true" paginatorPosition="both"
           currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros"
           [columns]="lsColumnasAMostrar"
@@ -44,7 +44,7 @@
                         <p-columnFilter field="{{def.key}}" matchMode="in" [showMenu]="false">
                             <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                                 <p-multiSelect [ngModel]="value"
-                                    [options]="obtenerArregloFiltros(oportunidades, def.key)" placeholder=""
+                                    [options]="obtenerArregloFiltros(oportunidadesCanceladas, def.key)" placeholder=""
                                     (onChange)="filter($event.value)">
                                     <ng-template let-option pTemplate="item">
                                         <div class="p-multiselect-representative-option">
@@ -112,9 +112,12 @@
         </ng-template>
         <ng-template pTemplate="footer" let-columns #footer>
             <tr class="custom-footer">
-                <td></td>
-                <td *ngFor="let def of columns">
-                {{getTotalCostPrimeNg(dt, def) | currency:'MX ':'symbol' }}</td>
+              <td></td>
+              <td *ngFor="let def of lsColumnasAMostrar">
+                <ng-container *ngIf="def.key === 'nombre'">
+                  total de registros: {{ getTotalCostPrimeNg(dt, def) }}
+                </ng-container>
+              </td>
             </tr>
         </ng-template>
 
@@ -132,5 +135,5 @@
 </div>
 
 <app-modal-oportunidades-canceladas [(visible)]="modalVisible" [title]="'Editar Datos de '" (closeModal)="onModalClose()"
-(result)="manejarResultado($event)" [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">
+(result)="manejarResultado($event)" [oportunidades]="oportunidadesCanceladas" [oportunidad]="oportunidadCanceladaSeleccionada">
 </app-modal-oportunidades-canceladas>

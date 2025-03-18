@@ -7,7 +7,7 @@
     <div class="col-12">
       <div class="row contenedorTabla" style="justify-content: center; display: flex; width: 100% ;" >
         <div *ngIf="loading">Cargando...</div>
-        <p-table *ngIf="!loading" #dt [stripedRows]="true" [value]="oportunidades" dataKey="id" [rows]="20"
+        <p-table *ngIf="!loading" #dt [stripedRows]="true" [value]="oportunidadesPerdidas" dataKey="id" [rows]="20"
           [showCurrentPageReport]="true" [rowsPerPageOptions]="[20, 30, 50]" [paginator]="true" paginatorPosition="both"
           currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros"
           [columns]="lsColumnasAMostrar"
@@ -44,7 +44,7 @@
                         <p-columnFilter field="{{def.key}}" matchMode="in" [showMenu]="false">
                             <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                                 <p-multiSelect [ngModel]="value"
-                                    [options]="obtenerArregloFiltros(oportunidades, def.key)" placeholder=""
+                                    [options]="obtenerArregloFiltros(oportunidadesPerdidas, def.key)" placeholder=""
                                     (onChange)="filter($event.value)">
                                     <ng-template let-option pTemplate="item">
                                         <div class="p-multiselect-representative-option">
@@ -132,5 +132,5 @@
 </div>
 
 <app-modal-oportunidades-perdidas [(visible)]="modalVisible" [title]="'Editar Datos de '" (closeModal)="onModalClose()"
-(result)="manejarResultado($event)" [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">
+(result)="manejarResultado($event)" [oportunidades]="oportunidadesPerdidas" [oportunidad]="oportunidadSeleccionadaPerdidas">
 </app-modal-oportunidades-perdidas>

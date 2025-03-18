@@ -24,9 +24,9 @@ export class OportunidadesPerdidasComponent {
   isDescargando = false;
   anchoTabla = 100;
 
-  oportunidades: Oportunidad[] = [];
-  oportunidadesOriginal: Oportunidad[] = [];
-  oportunidadSeleccionada!: Oportunidad;
+  oportunidadesPerdidas: Oportunidad[] = [];
+  oportunidadesOriginalPerdidas: Oportunidad[] = [];
+  oportunidadSeleccionadaPerdidas!: Oportunidad;
 
   idUsuario: number = 1;
   idEstatus: number = 3;
@@ -76,8 +76,8 @@ export class OportunidadesPerdidasComponent {
   getOportunidades() {
     this.oportunidadService.getOportunidades(this.idUsuario, this.loginService.obtenerIdEmpresa(), this.idEstatus).subscribe({
       next: (result: Oportunidad[]) => {
-        this.oportunidades = [...result];
-        this.oportunidadesOriginal = result;
+        this.oportunidadesPerdidas = [...result];
+        this.oportunidadesOriginalPerdidas = result;
         this.cdr.detectChanges(); 
         this.loading = false;
       },
@@ -92,7 +92,7 @@ export class OportunidadesPerdidasComponent {
     });
   }
   actualiza(licencia: Oportunidad) {
-    this.oportunidadSeleccionada = licencia;
+    this.oportunidadSeleccionadaPerdidas = licencia;
     this.insertar = false;
     this.modalVisible = true;
   }
@@ -193,7 +193,7 @@ export class OportunidadesPerdidasComponent {
       return;
     }
 
-    const registrosVisibles = table.filteredValue ? table.filteredValue : this.oportunidades;
+    const registrosVisibles = table.filteredValue ? table.filteredValue : this.oportunidadesPerdidas;
   
     if (def.key === 'nombre' || def.key === 'idOportunidad') {
       return registrosVisibles.length;
@@ -217,7 +217,7 @@ export class OportunidadesPerdidasComponent {
   }
 
   getVisibleTotal(campo: string, dt: any): number {
-    const registrosVisibles = dt.filteredValue ? dt.filteredValue : this.oportunidades;
+    const registrosVisibles = dt.filteredValue ? dt.filteredValue : this.oportunidadesPerdidas;
   
     if (campo === 'nombre') {
       return registrosVisibles.length;

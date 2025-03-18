@@ -34,8 +34,10 @@ export class ModalOportunidadesCanceladasComponent {
     inicializarFormulario() {
         this.oportunidadForm = this.fb.group({
           bandera: ['UPD-OPORTUNIDAD'],
+          idOportunidad: [this.oportunidad.idOportunidad],
           descripcion: [this.oportunidad.nombreOportunidad],
-          idEstatusOportunidad: [this.oportunidad.idEstatusOportunidad]
+          idEstatusOportunidad: [this.oportunidad.idEstatusOportunidad],
+          probabilidad: [this.oportunidad.probabilidad]
         });
         this.limpiarProbabilidad();
     }
@@ -44,7 +46,6 @@ export class ModalOportunidadesCanceladasComponent {
       this.cargarEstatus();
       this.cdr.detectChanges();
       this.inicializarFormulario(); 
-      
     }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -61,7 +62,7 @@ export class ModalOportunidadesCanceladasComponent {
     }
 
     cargarEstatus() {
-      this.oportunidadService.getEtapas(this.loginService.obtenerIdEmpresa()).subscribe({
+      this.oportunidadService.getEstatus(this.loginService.obtenerIdEmpresa()).subscribe({
         next: (result) => (this.estatus = result),
         error: (error) => this.mostrarToastError(error.errorMessage)
       });
@@ -94,6 +95,4 @@ export class ModalOportunidadesCanceladasComponent {
             this.oportunidadForm.get('probabilidad')?.setValue(probabilidad);
         }
     }
-
-
 }

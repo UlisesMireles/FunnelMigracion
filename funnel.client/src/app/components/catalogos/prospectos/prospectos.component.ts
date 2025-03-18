@@ -214,7 +214,7 @@ clear(table: Table) {
       
           const registrosVisibles = table.filteredValue ? table.filteredValue : this.prospectos;
         
-          if (def.key === 'nombreCompleto') {
+          if (def.key === 'nombre') {
             return registrosVisibles.length;
           }
       

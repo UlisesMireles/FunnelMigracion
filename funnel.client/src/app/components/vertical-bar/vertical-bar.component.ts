@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, HostListener, Output, ViewChild } from '@angular/core';
-
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-vertical-bar',
@@ -85,7 +85,7 @@ export class VerticalBarComponent {
     },
     {
       nombre: 'SALIR',
-      path: '/',
+      path: '/login',
       icono: 'bi-box-arrow-right',  // Icono de salir o cerrar sesión
       tooltip: 'Cerrar sesión',
       subMenu: []  // Sin submenú
@@ -93,7 +93,13 @@ export class VerticalBarComponent {
   ];
 
 
+  constructor(private router: Router) {}
 
+  navigateTo(path: string) {
+    if (path) {
+      this.router.navigate([path]);
+    }
+  }
   showSubmenu(menuIndex: number) {
     this.hoveredMenu = menuIndex;
   }

@@ -9,9 +9,11 @@
   <div class="menu-container" #menuList>
     <ul class="menu">
       <li class="menu-item" *ngFor="let item of ListaMenu; let i = index"
-          (mouseenter)="showSubmenu(i)" (mouseleave)="hideSubmenu()">
-        <i [ngClass]="item.icono" [title]="item.tooltip"></i>
-        <span *ngIf="isExpanded">{{ item.nombre }}</span>
+      (mouseenter)="showSubmenu(i)"
+      (mouseleave)="hideSubmenu()"
+      (click)="navigateTo(item.path)">
+    <i [ngClass]="item.icono" [title]="item.tooltip"></i>
+    <span *ngIf="isExpanded">{{ item.nombre }}</span>
 
         <!-- Solo mostrar submenú si existe y tiene elementos -->
         <ul class="submenu" *ngIf="item.subMenu && item.subMenu.length > 0" [ngClass]="{'visible': hoveredMenu === i}">

@@ -38,7 +38,6 @@ namespace Funnel.Data
             }
             return result;
         }
-
         public async Task<List<ComboEjecutivosDto>> ComboEjecutivos(int IdEmpresa)
         {
             List<ComboEjecutivosDto> result = new List<ComboEjecutivosDto>();
@@ -60,7 +59,6 @@ namespace Funnel.Data
             }
             return result;
         }
-
         public async Task<List<ComboEntregasDto>> ComboEntregas(int IdEmpresa)
         {
             List<ComboEntregasDto> result = new List<ComboEntregasDto>();
@@ -82,7 +80,6 @@ namespace Funnel.Data
             }
             return result;
         }
-
         public async Task<List<ComboEtapasDto>> ComboEtapas(int IdEmpresa)
         {
             List<ComboEtapasDto> result = new List<ComboEtapasDto>();
@@ -106,7 +103,6 @@ namespace Funnel.Data
             }
             return result;
         }
-
         public async Task<List<ComboProspectosDto>> ComboProspectos(int IdEmpresa)
         {
             List<ComboProspectosDto> result = new List<ComboProspectosDto>();
@@ -127,7 +123,6 @@ namespace Funnel.Data
             }
             return result;
         }
-
         public async Task<List<ComboServiciosDto>> ComboServicios(int IdEmpresa)
         {
             List<ComboServiciosDto> result = new List<ComboServiciosDto>();
@@ -148,7 +143,6 @@ namespace Funnel.Data
             }
             return result;
         }
-
         public async Task<List<ComboEstatusOportunidad>> ComboTipoOportunidad(int IdEmpresa)
         {
             List<ComboEstatusOportunidad> result = new List<ComboEstatusOportunidad>();

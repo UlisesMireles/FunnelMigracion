@@ -1,5 +1,6 @@
 ﻿using Funnel.Models.Base;
 using Funnel.Models.Dto;
+using System.Threading.Tasks;
 
 namespace Funnel.Data.Interfaces
 {

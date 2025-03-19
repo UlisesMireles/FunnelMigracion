@@ -42,6 +42,7 @@ export class OportunidadesComponent {
   ];
 
   lsTodasColumnas: any[] = [
+    { key: 'idOportunidad', isCheck: false, valor: 'Seleccion', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombre', isCheck: true, valor: 'Nombre', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreSector', isCheck: true, valor: 'Sector', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreOportunidad', isCheck: true, valor: 'Oportunidad', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },

@@ -22,12 +22,21 @@
             <div class="row">
               <div class="col inDivDatatableHeader" style="text-align:right; margin-right:5px">
                 <p-button label="" icon="bi bi-arrow-clockwise" (click)="clear(dt)" severity="secondary"
+                  pTooltip="Refrescar" tooltipPosition="top"
                   [ngStyle]="{'margin-right': '5px'}" />
-                <p-button label="" icon="bi bi-download" severity="secondary" (click)="exportExcel(dt)" [ngStyle]="{'margin-right': '5px'}"/>
-                <p-button label="" icon="bi-pencil" (click)="agregarColumna($event)" severity="secondary" [ngStyle]="{'margin-right': '5px'}"/>
-                <p-button label="" icon="bi bi-plus" severity="secondary" (click)="inserta()" />
                 
-              </div> 
+                <p-button label="" icon="bi bi-download" severity="secondary" (click)="exportExcel(dt)" 
+                  pTooltip="Descargar Excel" tooltipPosition="top"
+                  [ngStyle]="{'margin-right': '5px'}"/>
+                
+                <p-button label="" icon="bi-list" (click)="agregarColumna($event)" severity="secondary"  
+                  pTooltip="Agregar columna" tooltipPosition="top"
+                  [ngStyle]="{'margin-right': '5px'}"/>
+                
+                <p-button label="" icon="bi bi-plus" severity="secondary" (click)="inserta()"  
+                  pTooltip="Añadir nuevo" tooltipPosition="top"
+                  [ngStyle]="{'margin-right': '5px'}"/>
+              </div>
             </div>
           </ng-template>
 
@@ -103,8 +112,10 @@
             <ng-template pTemplate="body" let-rowData let-columns="columns">
               <tr>
                 <td>
-                  <p-button type="button" icon="bi bi-pencil" text (click)="actualiza(rowData)"/>
+                  <p-button type="button" icon="bi bi-pencil" text (click)="actualiza(rowData)" 
+                    pTooltip="Editar registro" tooltipPosition="top"/>
                 </td>
+                
                 <td *ngFor="let def of lsColumnasAMostrar">
                   <ng-container [ngSwitch]="def.tipoFormato">
                     <span *ngSwitchCase="'text'">{{ rowData[def.key] }}</span>

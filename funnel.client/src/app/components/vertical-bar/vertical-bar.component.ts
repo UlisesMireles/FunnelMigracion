@@ -23,12 +23,12 @@ export class VerticalBarComponent {
       icono: 'bi-house-door',  // Icono relacionado con un dashboard (pantalla de inicio)
       tooltip: 'Ir a DASHBOARD',
       subMenu: [
-        { nombre: 'OPORTUNIDADES GENERAL', path: '/DASHBOARD/subopcion1'
-          ,hasIcon: true, // 🟠 Indica si tiene icono adicional
+        { nombre: 'OPORTUNIDADES GENERAL', path: '/oportunidades'
+          ,hasIcon: false, // 🟠 Indica si tiene icono adicional
           tooltipMessage: 'Esta característica está incluida'}, // Mensaje del globo
-        { nombre: 'OPORTUNIDADES POR AGENTE', path: '/oportunidades/subopcion2'   ,hasIcon: true, // 🟠 Indica si tiene icono adicional
+        { nombre: 'OPORTUNIDADES POR AGENTE', path: '/oportunidades/subopcion2'   ,hasIcon: false, // 🟠 Indica si tiene icono adicional
           tooltipMessage: 'Esta característica está incluida'}, // Mensaje del globo
-        { nombre: 'CLIENTES TOP 20', path: '/oportunidades/subopcion3'    ,hasIcon: true, // 🟠 Indica si tiene icono adicional
+        { nombre: 'CLIENTES TOP 20', path: '/oportunidades/subopcion3'    ,hasIcon: false, // 🟠 Indica si tiene icono adicional
           tooltipMessage: 'Esta característica está incluida'} // Mensaje del globo
       ]
     },
@@ -57,9 +57,9 @@ export class VerticalBarComponent {
       icono: 'bi-gear',  // Icono de engranaje, representando administración o configuración
       tooltip: 'Ir a administración',
       subMenu: [
-        { nombre: 'PROSPECTOS', path: '/prospectos' ,hasIcon: true, // 🟠 Indica si tiene icono adicional
+        { nombre: 'PROSPECTOS', path: '/prospectos' ,hasIcon: false, // 🟠 Indica si tiene icono adicional
           tooltipMessage: 'Esta característica está incluida'} ,// Mensaje del globo
-        { nombre: 'CONTACTOS', path: '/contactos' ,hasIcon: true, // 🟠 Indica si tiene icono adicional
+        { nombre: 'CONTACTOS', path: '/contactos' ,hasIcon: false, // 🟠 Indica si tiene icono adicional
           tooltipMessage: 'Esta característica está incluida'} // Mensaje del globo
       ]
     },
@@ -71,7 +71,7 @@ export class VerticalBarComponent {
       subMenu: [
         { nombre: 'USUARIOS', path: '/usuarios', hasIcon: false, tooltipMessage:'' },
         { nombre: 'PERMISOS', path: '/permisos' , hasIcon: false , tooltipMessage:''},
-        { nombre: 'TIPO SERVICIO', path: '/tipo-servicios' , hasIcon: false, tooltipMessage:'' },
+        { nombre: 'TIPO SERVICIO', path: '/tipos-servicios' , hasIcon: false, tooltipMessage:'' },
         { nombre: 'TIPO ENTREGA', path: '/tipos-entrega' , hasIcon: false , tooltipMessage:''}
       ]
     },

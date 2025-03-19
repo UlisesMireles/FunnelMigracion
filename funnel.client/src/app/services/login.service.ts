@@ -141,6 +141,14 @@ export class LoginService {
     return 0;
   }
 
+  obtenerIdUsuario(): number {
+    const sesion = this.desencriptaSesion();
+    if (sesion?.idUsuario) {
+        return sesion?.idUsuario;
+    }
+    return 0;
+  }
+
   recuperarContrasena(user: string) {
     let datos = { usuario: user };
     return this.http.get<any>(this.baseUrl + "api/Login/RecuperarContrasena", { params: datos });

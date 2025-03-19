@@ -23,6 +23,30 @@
           <li class="menuI nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="catalogosDropdown" role="button"
                data-bs-toggle="dropdown" aria-expanded="false">
+              TERMINADAS
+            </a>
+            <ul class="dropdown-menu subm" aria-labelledby="catalogosDropdown">
+              <li class="submenu">
+                <a class="subm dropdown-item" [attr.data-bs-toggle]="isMobile ? 'collapse' : null"
+                   [attr.data-bs-target]="isMobile ? '.navbar-collapse' : null" [routerLink]="['/oportunidades-ganadas']">GANADAS</a>
+              </li>
+              <li class="submenu">
+                <a class="subm dropdown-item" [attr.data-bs-toggle]="isMobile ? 'collapse' : null"
+                   [attr.data-bs-target]="isMobile ? '.navbar-collapse' : null" [routerLink]="['/oportunidades-perdidas']">PERDIDAS</a>
+              </li>
+              <li class="submenu">
+                <a class="subm dropdown-item" [attr.data-bs-toggle]="isMobile ? 'collapse' : null"
+                   [attr.data-bs-target]="isMobile ? '.navbar-collapse' : null" [routerLink]="['/oportunidades-canceladas']">CANCELADAS</a>
+              </li>
+              <li class="submenu">
+                <a class="subm dropdown-item" [attr.data-bs-toggle]="isMobile ? 'collapse' : null"
+                   [attr.data-bs-target]="isMobile ? '.navbar-collapse' : null" [routerLink]="['/oportunidades-eliminadas']">ELIMINADAS</a>
+              </li>
+            </ul>
+          </li>
+          <li class="menuI nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="catalogosDropdown" role="button"
+               data-bs-toggle="dropdown" aria-expanded="false">
               ADMINISTRACIÓN
             </a>
             <ul class="dropdown-menu subm" aria-labelledby="catalogosDropdown">

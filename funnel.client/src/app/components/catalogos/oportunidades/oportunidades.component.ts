@@ -28,11 +28,12 @@ export class OportunidadesComponent {
   oportunidadesOriginal: Oportunidad[] = [];
   oportunidadSeleccionada!: Oportunidad;
 
-  idUsuario: number = 1;
   idEstatus: number = 1;
 
   insertar: boolean = false;
+  seguimientoOportunidad: boolean = false;
   modalVisible: boolean = false;
+  modalSeguimientoVisible: boolean = false; 
 
   loading: boolean = true;
 
@@ -75,7 +76,7 @@ export class OportunidadesComponent {
 
 
     getOportunidades() {
-      this.oportunidadService.getOportunidades(this.idUsuario, this.loginService.obtenerIdEmpresa(), this.idEstatus).subscribe({
+      this.oportunidadService.getOportunidades(this.loginService.obtenerIdEmpresa(), this.loginService.obtenerIdUsuario(), this.idEstatus).subscribe({
         next: (result: Oportunidad[]) => {
           this.oportunidades = [...result];
           this.oportunidadesOriginal = result;
@@ -99,6 +100,12 @@ export class OportunidadesComponent {
       };
       this.insertar = true;
       this.modalVisible = true;
+    }
+
+    seguimiento(licencia: Oportunidad) {
+      this.oportunidadSeleccionada = licencia;
+      this.seguimientoOportunidad = true;
+      this.modalSeguimientoVisible = true;
     }
     
     actualiza(licencia: Oportunidad) {

@@ -151,7 +151,7 @@ export class OportunidadesComponent {
       dialogConfig.autoFocus = false;
       dialogConfig.backdropClass = 'popUpBackDropClass';
       dialogConfig.panelClass = 'popUpPanelAddColumnClass';
-      dialogConfig.width = '350px';
+      dialogConfig.width = '50px';
   
       dialogConfig.data = {
         todosColumnas: this.lsTodasColumnas
@@ -159,7 +159,7 @@ export class OportunidadesComponent {
   
       dialogConfig.position = {
         top: targetAttr.y + targetAttr.height + 10 + "px",
-        left: targetAttr.x - targetAttr.width - 240 + "px"
+        left: targetAttr.x - targetAttr.width - 250 + "px"
       };
       const dialogRef = this.dialog.open(ColumnasDisponiblesComponent, dialogConfig);
   

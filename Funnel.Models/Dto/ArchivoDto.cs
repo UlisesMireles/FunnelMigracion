@@ -11,10 +11,12 @@ namespace Funnel.Models.Dto
         public string? Bandera { get; set; }
         public int IdArchivo { get; set; }
         public string NombreArchivo { get; set; }
+        public string? NombreArchivoFormateado { get; set; }
         public int IdOportunidad { get; set; }
         public int IdUsuario { get; set; }
         public DateTime FechaRegistro { get; set; }
         public int? NumArchivos { get; set; }
         public bool Eliminado { get; set; }
+        public string? Iniciales { get; set; }
     }
 }

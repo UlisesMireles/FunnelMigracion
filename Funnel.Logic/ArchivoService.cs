@@ -24,6 +24,11 @@ namespace Funnel.Logic
             return await _ArchivoData.ConsultaArchivosPorOportunidad(idOportunidad);
         }
 
+        public async Task <BaseOut> DescargarArchivo(int idArchivo)
+        {
+            return await _ArchivoData.DescargarArchivo(idArchivo);
+        }
+
         public async Task<BaseOut> EliminarArchivo(int idArchivo)
         {
             return await _ArchivoData.EliminarArchivo(idArchivo);
@@ -39,10 +44,9 @@ namespace Funnel.Logic
             return await _ArchivoData.ObtenerNumeroArchivosSubidos(idOportunidad);
         }
 
-        public async Task<List<ArchivoDto>> RecuperarArchivo(int idArchivo)
+        public async Task<BaseOut> RecuperarArchivo(int idArchivo)
         {
-            var result = await _ArchivoData.RecuperarArchivo(idArchivo);
-            return result;
+            return await _ArchivoData.RecuperarArchivo(idArchivo);
         }
     }
 }

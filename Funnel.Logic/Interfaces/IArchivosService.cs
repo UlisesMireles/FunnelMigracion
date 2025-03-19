@@ -12,9 +12,10 @@ namespace Funnel.Logic.Interfaces
     public interface IArchivosService
     {
         public Task<List<ArchivoDto>> ConsultaArchivosPorOportunidad(int IdEmpresa);
+        public Task <BaseOut> DescargarArchivo(int idArchivo);
         public Task<BaseOut> GuardarArchivo(ArchivoDto request);
         public Task<BaseOut> EliminarArchivo(int idArchivo);
-        public Task<List<ArchivoDto>> RecuperarArchivo(int idArchivo);
+        public Task<BaseOut> RecuperarArchivo(int idArchivo);
         public Task<int> ObtenerNumeroArchivosSubidos(int IdEmpresa);
     }
 }

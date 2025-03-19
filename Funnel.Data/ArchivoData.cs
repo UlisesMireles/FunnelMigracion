@@ -38,18 +38,48 @@ namespace Funnel.Data
                     var dto = new ArchivoDto
                     {
                         IdArchivo = ComprobarNulos.CheckIntNull(reader["IdArchivo"]),
-                        IdOportunidad = ComprobarNulos.CheckIntNull(reader["IdOportunidad"]),
-                        IdUsuario = ComprobarNulos.CheckIntNull(reader["IdUsuario"]),
-                        NombreArchivo = ComprobarNulos.CheckStringNull(reader["NombreArchivo"]),
                         FechaRegistro = ComprobarNulos.CheckDateTimeNull(reader["FechaRegistro"]),
-                        Eliminado = ComprobarNulos.CheckBooleanNull(reader["Eliminado"])
+                        Eliminado = ComprobarNulos.CheckBooleanNull(reader["Eliminado"]),
+                        NombreArchivo = ComprobarNulos.CheckStringNull(reader["NombreArchivo"]),
+                        NombreArchivoFormateado = ComprobarNulos.CheckStringNull(reader["NombreArchivoFormateado"]),
+                        NumArchivos = ComprobarNulos.CheckIntNull(reader["NumArchivos"]),
+                        Iniciales = ComprobarNulos.CheckStringNull(reader["Iniciales"]),
+
                     };
                     result.Add(dto);
                 }
             }
             return result;
         }
-        public async Task<int> ObtenerNumeroArchivosSubidos(int idOportunidad)
+        public async Task<BaseOut> DescargarArchivo(int idArchivo)
+        {
+            BaseOut result = new BaseOut();
+            try
+            {
+                IList<ParameterSQl> list = new List<ParameterSQl>
+                {
+                    DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "SEL-ARCHIVO-ID"),
+                    DataBase.CreateParameterSql("@pIdArchivo", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, idArchivo)
+                };
+
+                using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoArchivos", CommandType.StoredProcedure, list, _connectionString))
+                {
+                    result.ErrorMessage = "Archivo descardado correctamente.";
+                    result.Id = 1;
+                    result.Result = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                result.ErrorMessage = "Error al descargar archivo: " + ex.Message;
+                result.Id = 0;
+                result.Result = false;
+            }
+            return result;
+        }
+
+
+public async Task<int> ObtenerNumeroArchivosSubidos(int idOportunidad)
         {
             int numArchivos = 0;
             IList<ParameterSQl> list = new List<ParameterSQl>
@@ -67,33 +97,33 @@ namespace Funnel.Data
             }
             return numArchivos;
         }
-        public async Task<List<ArchivoDto>> RecuperarArchivo(int idArchivo)
+        public async Task<BaseOut> RecuperarArchivo(int idArchivo)
         {
-            List<ArchivoDto> result = new List<ArchivoDto>();
-            IList<ParameterSQl> list = new List<ParameterSQl>
-    {
-        DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "RECOVER"),
-        DataBase.CreateParameterSql("@pIdArchivo", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, idArchivo)
-    };
-
-            using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoArchivos", CommandType.StoredProcedure, list, _connectionString))
+            BaseOut result = new BaseOut();
+            try
             {
-                while (reader.Read())
+                IList<ParameterSQl> list = new List<ParameterSQl>
                 {
-                    var dto = new ArchivoDto
-                    {
-                        IdArchivo = ComprobarNulos.CheckIntNull(reader["IdArchivo"]),
-                        IdOportunidad = ComprobarNulos.CheckIntNull(reader["IdOportunidad"]),
-                        IdUsuario = ComprobarNulos.CheckIntNull(reader["IdUsuario"]),
-                        NombreArchivo = ComprobarNulos.CheckStringNull(reader["NombreArchivo"]),
-                        FechaRegistro = ComprobarNulos.CheckDateTimeNull(reader["FechaRegistro"]),
-                        Eliminado = ComprobarNulos.CheckBooleanNull(reader["Eliminado"])
-                    };
-                    result.Add(dto);
+                    DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "RECOVER"),
+                    DataBase.CreateParameterSql("@pIdArchivo", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, idArchivo)
+                };
+
+                using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoArchivos", CommandType.StoredProcedure, list, _connectionString))
+                {
+                    result.ErrorMessage = "Archivo recuperado correctamente.";
+                    result.Id = 0;
+                    result.Result = true;
                 }
+            }
+            catch (Exception ex)
+            {
+                result.ErrorMessage = "Error al recuperar el archivo: " + ex.Message;
+                result.Id = 1;
+                result.Result = false;
             }
             return result;
         }
+            
         public async Task<BaseOut> GuardarArchivo(ArchivoDto request)
         {
             BaseOut result = new BaseOut();
@@ -110,47 +140,61 @@ namespace Funnel.Data
 
                 using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoArchivos", CommandType.StoredProcedure, list, _connectionString))
                 {
-                    if (reader.Read())
+                    while (reader.Read())
                     {
-                        result.Id = ComprobarNulos.CheckIntNull(reader["IdArchivo"]);
-                        result.ErrorMessage = request.Bandera == "INSERT" ? "Archivo insertado correctamente." : "Archivo actualizado correctamente.";
-                        result.Result = true;
+
                     }
                 }
+                switch (request.Bandera)
+                {
+                    case "INSERT":
+                        result.ErrorMessage = "Archivo insertado correctamente.";
+                        result.Id = 1;
+                        result.Result = true;
+                        break;
+                }
+
             }
             catch (Exception ex)
             {
-                result.ErrorMessage = request.Bandera == "INSERT" ? "Error al insertar archivo: " + ex.Message : "Error al actualizar archivo: " + ex.Message;
-                result.Id = 0;
-                result.Result = false;
-            }
-            return result;
-        }
-        public async Task<BaseOut> EliminarArchivo(int idArchivo)
-        {
-            BaseOut result = new BaseOut();
-            try
-            {
-                IList<ParameterSQl> list = new List<ParameterSQl>
-        {
-            DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "DELETE"),
-            DataBase.CreateParameterSql("@pIdArchivo", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, idArchivo)
-        };
 
-                using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoArchivos", CommandType.StoredProcedure, list, _connectionString))
+                switch (request.Bandera)
                 {
-                    result.ErrorMessage = "Archivo eliminado correctamente.";
-                    result.Id = 1;
-                    result.Result = true;
+                    case "INSERT":
+                        result.ErrorMessage = "Error al insertar archivo: " + ex.Message;
+                        result.Id = 0;
+                        result.Result = false;
+                        break;
                 }
             }
-            catch (Exception ex)
-            {
-                result.ErrorMessage = "Error al eliminar archivo: " + ex.Message;
-                result.Id = 0;
-                result.Result = false;
-            }
             return result;
         }
-    }
+    
+        public async Task<BaseOut> EliminarArchivo(int idArchivo)
+                {
+                    BaseOut result = new BaseOut();
+                    try
+                    {
+                        IList<ParameterSQl> list = new List<ParameterSQl>
+                {
+                    DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "DELETE"),
+                    DataBase.CreateParameterSql("@pIdArchivo", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, idArchivo)
+                };
+
+                        using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoArchivos", CommandType.StoredProcedure, list, _connectionString))
+                        {
+                            result.ErrorMessage = "Archivo eliminado correctamente.";
+                            result.Id = 1;
+                            result.Result = true;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        result.ErrorMessage = "Error al eliminar archivo: " + ex.Message;
+                        result.Id = 0;
+                        result.Result = false;
+                    }
+                    return result;
+                }
+            }
 }

@@ -21,6 +21,13 @@ namespace Funnel.Server.Controllers
             return Ok(result);
         }
 
+        [HttpPost("[action]/{idArchivo}")]
+        public async Task<ActionResult> DescargarArchivo(int idArchivo)
+        {
+            var result = await _archivosService.DescargarArchivo(idArchivo);
+            return Ok(result);
+        }
+
         [HttpPost("[action]")]
         public async Task<ActionResult> GuardarArchivo(ArchivoDto request)
         {
@@ -28,7 +35,7 @@ namespace Funnel.Server.Controllers
             return Ok(result);
         }
 
-        [HttpDelete("[action]/{idArchivo}")]
+        [HttpPost("[action]/{idArchivo}")]
         public async Task<ActionResult> EliminarArchivo(int idArchivo)
         {
             var result = await _archivosService.EliminarArchivo(idArchivo);

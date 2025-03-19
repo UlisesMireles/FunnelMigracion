@@ -249,15 +249,3 @@
 
 }
 
-.bodyDialog {
-  width: 60rem !important; 
-  height: 45rem !important; 
-  display: flex;
-  flex-direction: column;
-}
-
-.bodyDialog .p-dialog-content {
-  flex-grow: 1; 
-
-}
-

@@ -74,6 +74,7 @@ import { ColumnFilterComponent } from './components/shared/column-filter/column-
 import { HeaderOpcionesComponent } from './components/shared/header-opciones/header-opciones.component';
 import { OportunidadesGanadasComponent } from './components/catalogos/oportunidades-ganadas/oportunidades-ganadas.component';
 import { ModalOportunidadesGanadasComponent } from './components/catalogos/oportunidades-ganadas/modal-oportunidades-ganadas/modal-oportunidades-ganadas.component';
+import { SeguimientoOportunidadesComponent } from './components/catalogos/seguimiento-oportunidades/seguimiento-oportunidades.component';
 
 import { APP_INITIALIZER, LOCALE_ID } from '@angular/core';
 import localeEs from '@angular/common/locales/es-MX';
@@ -115,6 +116,7 @@ registerLocaleData(localeEs, 'es-MX');
     ModalOportunidadesGanadasComponent,
     OportunidadesEliminadasComponent,
     ModalOportunidadesEliminadasComponent,
+    SeguimientoOportunidadesComponent,
   ],
   imports: [
     BrowserModule,

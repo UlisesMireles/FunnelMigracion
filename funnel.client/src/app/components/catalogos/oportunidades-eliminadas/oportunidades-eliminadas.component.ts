@@ -27,11 +27,12 @@ export class OportunidadesEliminadasComponent {
   oportunidadesOriginal: Oportunidad[] = [];
   oportunidadSeleccionada!: Oportunidad;
 
-  idUsuario: number = 1;
   idEstatus: number = 5;
 
   insertar: boolean = false;
   modalVisible: boolean = false;
+  modalSeguimientoVisible: boolean = false; 
+  seguimientoOportunidad: boolean = false;
 
   years: number[] = [];
   selectedYear: number = new Date().getFullYear();
@@ -92,7 +93,7 @@ export class OportunidadesEliminadasComponent {
 
 
     getOportunidades() {
-      this.oportunidadService.getOportunidades(this.idUsuario, this.loginService.obtenerIdEmpresa(), this.idEstatus).subscribe({
+      this.oportunidadService.getOportunidades(this.loginService.obtenerIdEmpresa(), this.loginService.obtenerIdUsuario(), this.idEstatus).subscribe({
         next: (result: Oportunidad[]) => {
           this.oportunidades = [...result];
           this.oportunidadesOriginal = result;
@@ -114,6 +115,12 @@ export class OportunidadesEliminadasComponent {
       this.oportunidadSeleccionada = licencia;
       this.insertar = false;
       this.modalVisible = true;
+    }
+
+    seguimiento(licencia: Oportunidad) {
+      this.oportunidadSeleccionada = licencia;
+      this.seguimientoOportunidad = true;
+      this.modalSeguimientoVisible = true;
     }
     
     onModalClose() {

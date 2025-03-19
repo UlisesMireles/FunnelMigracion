@@ -28,11 +28,13 @@ export class OportunidadesGanadasComponent {
   oportunidadesOriginal: Oportunidad[] = [];
   oportunidadSeleccionada!: Oportunidad;
 
-  idUsuario: number = 1;
   idEstatus: number = 2;
 
   insertar: boolean = false;
   modalVisible: boolean = false;
+  modalSeguimientoVisible: boolean = false; 
+  seguimientoOportunidad: boolean = false;
+
 
   loading: boolean = true;
 
@@ -100,7 +102,7 @@ export class OportunidadesGanadasComponent {
 
 
     getOportunidades() {
-      this.oportunidadService.getOportunidades(this.idUsuario, this.loginService.obtenerIdEmpresa(), this.idEstatus).subscribe({
+      this.oportunidadService.getOportunidades(this.loginService.obtenerIdEmpresa(),  this.loginService.obtenerIdUsuario(), this.idEstatus).subscribe({
         next: (result: Oportunidad[]) => {
           this.oportunidades = [...result];
           this.oportunidadesOriginal = result;
@@ -123,6 +125,13 @@ export class OportunidadesGanadasComponent {
       this.insertar = false;
       this.modalVisible = true;
     }
+
+    seguimiento(licencia: Oportunidad) {
+      this.oportunidadSeleccionada = licencia;
+      this.seguimientoOportunidad = true;
+      this.modalSeguimientoVisible = true;
+    }
+
     onModalClose() {
       this.modalVisible = false;
     }

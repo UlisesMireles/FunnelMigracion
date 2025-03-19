@@ -1,0 +1,226 @@
+.titulo {
+  text-align: left;
+  font-size: 1.75rem;
+  font-weight: bold;
+}
+
+.error-label {
+  color: red;
+  font-weight: bold;
+}
+
+.margen {
+  margin-top: 10px
+}
+
+::ng-deep .p-datatable-header {
+  border:0 !important;
+  padding: 0 !important;
+  height: 35px;
+}
+
+div.inDivDatatableHeader > p-button > button.p-button {
+  width: 36px;
+  height: 35px;
+}
+
+/*
+::ng-deep .Iconos .pi {
+  color: red;
+}
+
+::ng-deep .Iconos {
+  color: red;
+} */
+
+.inDivDatatableHeader {
+  padding-left: 50px;
+  padding-top: 5px;
+
+}
+
+.custom-header th {
+  background: rgb(247, 106, 19);
+  background: linear-gradient(0deg, rgba(247, 106, 19, 1) 0%, rgba(200, 87, 24, 1) 35%, rgba(231, 91, 42, 1) 100%);
+  color: white;
+  border: 0.1px solid #872B07;
+  text-align: center;
+  font-size: 15px;
+}
+
+.custom-header2 th {
+  background: #E1DAC7;
+
+}
+
+.custom-header3 td {
+  height: 20px;
+  width: 20px;
+}
+
+::ng-deep .p-paginator .p-component {
+  text-align: left !important;
+}
+
+::ng-deep .p-toast {
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+}
+
+::ng-deep .p-datatable-thead>tr>th {
+  padding: 0px !important;
+}
+
+::ng-deep .p-datatable-tbody>tr>td {
+
+  padding: 1px !important;
+}
+
+::ng-deep .custom-width input {
+  width: 100px !important;
+}
+
+::ng-deep .custom-width2 input {
+  width: 150px !important;
+}
+
+::ng-deep .custom-width3 input {
+  width: 100px !important;
+}
+
+::ng-deep .custom-width4 input {
+  width: 200px !important;
+}
+
+::ng-deep .p-datatable {
+  table-layout: fixed;
+  width: 100%;
+  
+}
+
+::ng-deep .p-datatable-thead>tr>th,
+::ng-deep .p-datatable-tbody>tr>td {
+  white-space: normal;
+  word-wrap: break-word;
+  overflow: visible;
+  text-overflow: clip;
+  padding: 4px !important;
+}
+
+::ng-deep .p-datatable-wrapper {
+  max-height: 400px;
+  height: 400px !important;
+  overflow-y: auto;
+  overflow-x: auto;
+  display: block;
+  position: relative;
+}
+
+::ng-deep .p-datatable-tbody>tr {
+  display: table-row !important;
+}
+
+/*Estilos modal*/
+::ng-deep .p-dialog .p-dialog-header {
+  background: rgb(247, 106, 19);
+  background: linear-gradient(0deg, rgba(247, 106, 19, 1) 0%, rgba(200, 87, 24, 1) 35%, rgba(231, 91, 42, 1) 100%);
+  color: white;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  height: 50px;
+  
+}
+
+::ng-deep .p-dialog .p-dialog-header .p-icon {
+  background-color: transparent !important;
+  /* padding: 5px;*/
+  /* Ajusta el tamaño del ícono según necesites */
+  color: #103D70;
+}
+
+::ng-deep .lbl {
+  margin-top: 5px;
+  text-align: left !important;
+  padding-top: 5px;
+}
+
+::ng-deep .inptSpace {
+  text-align: left !important;
+  padding: 0px;
+  padding-top: 5px;
+}
+
+::ng-deep .bodyDialog {
+  background: #F0F0F0 !important;
+}
+
+::ng-deep .inptSize {
+  height: 35px;
+  width: 250px;
+  padding-right: 4px;
+}
+::ng-deep .inptSize1{
+  height: 42px;
+  width: 250px;
+  padding-right: 4px;
+}
+
+.inputModal {
+  width: 80% !important;
+  padding-left: 2px;
+}
+
+::ng-deep .hide-filter-icon p-button {
+  display: none;
+}
+
+::ng-deep .filas {
+  font-size: 12.5px !important;
+}
+
+::ng-deep .filas td {
+  height: 20px;
+  font-size: 12px !important;
+}
+
+::ng-deep .custom-footer td {
+  padding: 0px !important;
+  font-weight: bold;
+  font-size: 12.5px !important;
+  background: #E1DAC7 !important;
+}
+
+:host ::ng-deep .custom-header2 input,
+:host ::ng-deep .custom-header2 .p-select {
+  height: 30px !important;
+  min-height: 30px !important;
+  line-height: 30px !important;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  width: 100% !important;
+  margin:3px
+}
+
+::ng-deep .custom-header2 .p-select li{
+  padding:0px;
+}
+
+.fixed-width-column {
+  width: 150px !important;
+  max-width: 150px;
+  white-space: normal !important;
+  word-break: break-word !important;
+  overflow-wrap: anywhere;
+  line-height: 1.4;
+}
+.contenedorTabla{
+  overflow-x: auto;
+  width: 100%;
+}
+.table-responsive{
+  overflow-x: auto;
+  width: 100%;
+  max-width: 100%;
+}

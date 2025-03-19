@@ -34,7 +34,7 @@ export class OportunidadesGanadasComponent {
   modalVisible: boolean = false;
   modalSeguimientoVisible: boolean = false; 
   seguimientoOportunidad: boolean = false;
-
+  modalDocumentosVisible: boolean = false;
 
   loading: boolean = true;
 
@@ -131,6 +131,12 @@ export class OportunidadesGanadasComponent {
       this.seguimientoOportunidad = true;
       this.modalSeguimientoVisible = true;
     }
+    documento(licencia: Oportunidad) {
+      this.oportunidadSeleccionada = licencia;
+      this.seguimientoOportunidad = true;
+      this.modalDocumentosVisible = true;
+    }
+    
 
     onModalClose() {
       this.modalVisible = false;

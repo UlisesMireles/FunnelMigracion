@@ -33,6 +33,9 @@ export class OportunidadesPerdidasComponent {
 
   insertar: boolean = false;
   modalVisible: boolean = false;
+  modalSeguimientoVisible: boolean = false; 
+  seguimientoOportunidad: boolean = false;
+  modalDocumentosVisible: boolean = false;
 
   loading: boolean = true;
 
@@ -118,6 +121,19 @@ export class OportunidadesPerdidasComponent {
     this.insertar = false;
     this.modalVisible = true;
   }
+
+  seguimiento(licencia: Oportunidad) {
+    this.oportunidadSeleccionadaPerdidas = licencia;
+    this.seguimientoOportunidad = true;
+    this.modalSeguimientoVisible = true;
+  }
+
+  documento(licencia: Oportunidad) {
+    this.oportunidadSeleccionadaPerdidas = licencia;
+    this.seguimientoOportunidad = true;
+    this.modalDocumentosVisible = true;
+  }
+  
   
   onModalClose() {
     this.modalVisible = false;

@@ -34,6 +34,7 @@ export class OportunidadesComponent {
   seguimientoOportunidad: boolean = false;
   modalVisible: boolean = false;
   modalSeguimientoVisible: boolean = false; 
+  modalDocumentosVisible: boolean = false;
 
   loading: boolean = true;
 
@@ -112,6 +113,12 @@ export class OportunidadesComponent {
       this.oportunidadSeleccionada = licencia;
       this.insertar = false;
       this.modalVisible = true;
+    }
+
+    documento(licencia: Oportunidad) {
+      this.oportunidadSeleccionada = licencia;
+      this.seguimientoOportunidad = true;
+      this.modalDocumentosVisible = true;
     }
     
     onModalClose() {

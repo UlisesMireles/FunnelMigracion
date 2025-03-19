@@ -34,11 +34,13 @@
               <tr class="custom-header">
                   <th></th>
                   <th></th>
+                  <th></th>
                   <th *ngFor="let def of lsColumnasAMostrar" pSortableColumn="{{def.key}}">
                     {{def.valor}}<p-sortIcon field="{{def.key}}"></p-sortIcon>
                   </th>
               </tr>
               <tr>
+                  <th></th>
                   <th></th>
                   <th></th>
                   <th *ngFor="let def of lsColumnasAMostrar" style="min-width: 30%;">
@@ -94,6 +96,9 @@
 
           <ng-template pTemplate="body" let-rowData let-columns="columns">
             <tr>
+                <td>
+                  <p-button type="button" icon="bi bi-folder2" text (click)="documento(rowData)"/>
+                </td>
                 <td>
                   <p-button type="button" icon="bi bi-file-earmark-text" text (click)="seguimiento(rowData)"/>
                 </td>
@@ -153,5 +158,9 @@
 <app-seguimiento-oportunidades [(visible)]="modalSeguimientoVisible" [title]="'Seguimiento de '" (closeModal)="onModalClose()"
   (result)="manejarResultado($event)" [insertar]="insertar" [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">
 </app-seguimiento-oportunidades>
+
+<app-documentos-oportunidades [(visible)]="modalDocumentosVisible" [title]="'Documentos de '" (closeModal)="onModalClose()"
+  (result)="manejarResultado($event)" [insertar]="insertar" [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">
+</app-documentos-oportunidades>
 
   

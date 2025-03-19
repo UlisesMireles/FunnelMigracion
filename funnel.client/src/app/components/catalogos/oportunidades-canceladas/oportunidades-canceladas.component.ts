@@ -19,7 +19,7 @@ export class OportunidadesCanceladasComponent {  @ViewChild('dt') dt!: Table;
 
   disableOportunidades = true;
   isDescargando = false;
-  anchoTabla = 100;//porciento
+  anchoTabla = 100;
 
   oportunidadesCanceladas: Oportunidad[] = [];
   oportunidadesCanceladasOriginal: Oportunidad[] = [];
@@ -32,6 +32,9 @@ export class OportunidadesCanceladasComponent {  @ViewChild('dt') dt!: Table;
   modalVisible: boolean = false;
 
   loading: boolean = true;
+
+  years: number[] = [];
+  selectedYear: number = new Date().getFullYear();
 
   lsColumnasAMostrar: any[] = [
    
@@ -67,7 +70,24 @@ export class OportunidadesCanceladasComponent {  @ViewChild('dt') dt!: Table;
       this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
       this.getOportunidades();
 
+      const currentYear = new Date().getFullYear();
+  for (let year = currentYear; year >= 2020; year--) {
+    this.years.push(year);
+  }
+
       document.documentElement.style.fontSize = 12 + 'px';
+    }
+
+    filterByYear() {
+      if (this.oportunidadesCanceladasOriginal) {
+        this.oportunidadesCanceladas = this.oportunidadesCanceladasOriginal.filter(oportunidad => {
+          if (oportunidad.fechaRegistro) {
+            const fechaRegistro = new Date(oportunidad.fechaRegistro);
+            return fechaRegistro.getFullYear() === this.selectedYear;
+          }
+          return false;
+        });
+      }
     }
 
 
@@ -76,6 +96,7 @@ export class OportunidadesCanceladasComponent {  @ViewChild('dt') dt!: Table;
         next: (result: Oportunidad[]) => {
           this.oportunidadesCanceladas = [...result];
           this.oportunidadesCanceladasOriginal = result;
+          this.filterByYear();
           this.cdr.detectChanges(); 
           this.loading = false;
         },
@@ -123,6 +144,7 @@ export class OportunidadesCanceladasComponent {  @ViewChild('dt') dt!: Table;
       this.lsTodasColumnas = JSON.parse(this.columnsTodasResp);
       this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
       this.anchoTabla = 100;
+      this.selectedYear = new Date().getFullYear();
     }
   
     agregarColumna(event: any) {

@@ -3,7 +3,9 @@ using Funnel.Data.Interfaces;
 using Funnel.Data.Utils;
 using Funnel.Models.Base;
 using Funnel.Models.Dto;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using Microsoft.SqlServer.Server;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -51,35 +53,8 @@ namespace Funnel.Data
             }
             return result;
         }
-        public async Task<BaseOut> DescargarArchivo(int idArchivo)
-        {
-            BaseOut result = new BaseOut();
-            try
-            {
-                IList<ParameterSQl> list = new List<ParameterSQl>
-                {
-                    DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "SEL-ARCHIVO-ID"),
-                    DataBase.CreateParameterSql("@pIdArchivo", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, idArchivo)
-                };
 
-                using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoArchivos", CommandType.StoredProcedure, list, _connectionString))
-                {
-                    result.ErrorMessage = "Archivo descardado correctamente.";
-                    result.Id = 1;
-                    result.Result = true;
-                }
-            }
-            catch (Exception ex)
-            {
-                result.ErrorMessage = "Error al descargar archivo: " + ex.Message;
-                result.Id = 0;
-                result.Result = false;
-            }
-            return result;
-        }
-
-
-public async Task<int> ObtenerNumeroArchivosSubidos(int idOportunidad)
+        public async Task<int> ObtenerNumeroArchivosSubidos(int idOportunidad)
         {
             int numArchivos = 0;
             IList<ParameterSQl> list = new List<ParameterSQl>
@@ -123,19 +98,71 @@ public async Task<int> ObtenerNumeroArchivosSubidos(int idOportunidad)
             }
             return result;
         }
-            
-        public async Task<BaseOut> GuardarArchivo(ArchivoDto request)
+
+        public async Task<ArchivoDto> GuardarArchivo(IFormFile archivo, ArchivoDto request)
         {
-            BaseOut result = new BaseOut();
+            var insertaArchivo = new ArchivoDto();
+            var path = "";
+
+            var formatosPermitidos = new List<string> { "doc", "docx", "pdf", "xls", "xlsx", "ppt", "pptx", "rar", "zip" };
+
+            // Obtener la extensión del archivo
+            var extension = Path.GetExtension(archivo.FileName).TrimStart('.').ToLower();
+
+            if (!formatosPermitidos.Contains(extension))
+            {
+                insertaArchivo.ErrorMessage = "Formato de archivo no permitido.";
+                insertaArchivo.Result = false;
+                return insertaArchivo;
+            }
+
+            if (string.IsNullOrEmpty(request.NombreArchivo))
+            {
+                request.NombreArchivo = Path.GetFileNameWithoutExtension(archivo.FileName);
+            }
+
+            String nombreArchivoBD = $"{request.NombreArchivo}^{request.IdEmpresa}_{request.IdProspecto}_{request.IdOportunidad}.{extension}"; 
+            path = Directory.GetCurrentDirectory() + "/Archivos/" + archivo.FileName;
+
+            try
+            {
+                if (archivo != null)
+                {
+                    var fileName = Path.GetFileName(archivo.FileName);
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                        await archivo.CopyToAsync(stream);
+                    }
+
+                    insertaArchivo.Bandera = request.Bandera;
+                    insertaArchivo.IdOportunidad = request.IdOportunidad;
+                    insertaArchivo.IdUsuario = request.IdUsuario;
+                    insertaArchivo.NombreArchivo = nombreArchivoBD;
+                    insertaArchivo.Formato = extension;
+
+                    insertaArchivo = await GuardarArchivo(insertaArchivo);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                insertaArchivo.ErrorMessage = "Error al guardar el archivo: " + ex.Message;
+                insertaArchivo.Result = false;
+            }
+            return insertaArchivo;
+        }
+        public async Task<ArchivoDto> GuardarArchivo(ArchivoDto request)
+        {
+
             try
             {
                 IList<ParameterSQl> list = new List<ParameterSQl>
         {
             DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Bandera ?? (object)DBNull.Value),
             DataBase.CreateParameterSql("@pIdArchivo", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdArchivo),
-            DataBase.CreateParameterSql("@IdOportunidad", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdOportunidad),
-            DataBase.CreateParameterSql("@IdUsuario", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdUsuario),
-            DataBase.CreateParameterSql("@NombreArchivo", SqlDbType.VarChar, 200, ParameterDirection.Input, false, null, DataRowVersion.Default, request.NombreArchivo ?? (object)DBNull.Value)
+            DataBase.CreateParameterSql("@pIdOportunidad", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdOportunidad),
+            DataBase.CreateParameterSql("@pIdUsuario", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdUsuario),
+            DataBase.CreateParameterSql("@pNombreArchivo", SqlDbType.VarChar, 200, ParameterDirection.Input, false, null, DataRowVersion.Default, request.NombreArchivo ?? (object)DBNull.Value)
         };
 
                 using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoArchivos", CommandType.StoredProcedure, list, _connectionString))
@@ -148,9 +175,9 @@ public async Task<int> ObtenerNumeroArchivosSubidos(int idOportunidad)
                 switch (request.Bandera)
                 {
                     case "INSERT":
-                        result.ErrorMessage = "Archivo insertado correctamente.";
-                        result.Id = 1;
-                        result.Result = true;
+                        request.ErrorMessage = "Archivo insertado correctamente.";
+                        request.Id = 1;
+                        request.Result = true;
                         break;
                 }
 
@@ -161,40 +188,43 @@ public async Task<int> ObtenerNumeroArchivosSubidos(int idOportunidad)
                 switch (request.Bandera)
                 {
                     case "INSERT":
-                        result.ErrorMessage = "Error al insertar archivo: " + ex.Message;
-                        result.Id = 0;
-                        result.Result = false;
+                        request.ErrorMessage = "Error al insertar archivo: " + ex.Message;
+                        request.Id = 0;
+                        request.Result = false;
                         break;
                 }
             }
-            return result;
+            return request;
         }
-    
+
+
         public async Task<BaseOut> EliminarArchivo(int idArchivo)
-                {
-                    BaseOut result = new BaseOut();
-                    try
-                    {
-                        IList<ParameterSQl> list = new List<ParameterSQl>
+        {
+            BaseOut result = new BaseOut();
+            try
+            {
+                IList<ParameterSQl> list = new List<ParameterSQl>
                 {
                     DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "DELETE"),
                     DataBase.CreateParameterSql("@pIdArchivo", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, idArchivo)
                 };
 
-                        using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoArchivos", CommandType.StoredProcedure, list, _connectionString))
-                        {
-                            result.ErrorMessage = "Archivo eliminado correctamente.";
-                            result.Id = 1;
-                            result.Result = true;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        result.ErrorMessage = "Error al eliminar archivo: " + ex.Message;
-                        result.Id = 0;
-                        result.Result = false;
-                    }
-                    return result;
+                using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoArchivos", CommandType.StoredProcedure, list, _connectionString))
+                {
+                    result.ErrorMessage = "Archivo eliminado correctamente.";
+                    result.Id = 1;
+                    result.Result = true;
                 }
             }
+            catch (Exception ex)
+            {
+                result.ErrorMessage = "Error al eliminar archivo: " + ex.Message;
+                result.Id = 0;
+                result.Result = false;
+            }
+            return result;
+        }
+
+    }
+    
 }

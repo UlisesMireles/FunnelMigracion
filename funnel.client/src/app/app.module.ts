@@ -26,15 +26,11 @@ import { ProspectosComponent } from './components/catalogos/prospectos/prospecto
 import { ModalTipoServiciosComponent } from './components/catalogos/tipo-servicios/modal-tipo-servicios/modal-tipo-servicios.component';
 import { ModalUsuariosComponent } from './components/catalogos/usuarios/modal-usuarios/modal-usuarios.component';
 
-import { MatIconModule } from '@angular/material/icon';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import Aura from '@primeng/themes/aura';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { CheckboxModule } from 'primeng/checkbox';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DatePickerModule } from 'primeng/datepicker';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
@@ -55,7 +51,6 @@ import { ModalContactosComponent } from './components/catalogos/contactos/modal-
 import { TipoServiciosComponent } from './components/catalogos/tipo-servicios/tipo-servicios.component';
 import { ModalTiposEntregaComponent } from './components/catalogos/tipos-entrega/modal-tipos-entrega/modal-tipos-entrega.component';
 import { TiposEntregaComponent } from './components/catalogos/tipos-entrega/tipos-entrega.component';
-import { MenuSidenavComponent } from './components/menu-sidenav/menu-sidenav.component';
 import { PrimeNgConfiguracionService } from './services/primeNgConfiguracion.service';
 
 export function getBaseUrl() {
@@ -76,12 +71,12 @@ import { AgregarQuitarColumnasComponent } from './components/shared/agregar-quit
 import { ColumnFilterComponent } from './components/shared/column-filter/column-filter.component';
 import { ColumnasDisponiblesComponent } from './components/shared/columnas-disponibles/columnas-disponibles.component';
 import { HeaderOpcionesComponent } from './components/shared/header-opciones/header-opciones.component';
-import { VerticalBarComponent } from './components/vertical-bar/vertical-bar.component';
 import { TipoCurrencyPipe } from './pipes/tipoCurrency.pipe';
 
 import localeEs from '@angular/common/locales/es-MX';
 import { APP_INITIALIZER, LOCALE_ID } from '@angular/core';
-
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { VerticalBarComponent } from './components/vertical-bar/vertical-bar.component';
 export function configurationProviderFactory(provider: PrimeNgConfiguracionService) {
   return () => provider.load();
 }
@@ -103,7 +98,6 @@ registerLocaleData(localeEs, 'es-MX');
     ContactosComponent,
     ModalContactosComponent,
     TipoServiciosComponent,
-    MenuSidenavComponent,
     UsuariosComponent,
     ModalUsuariosComponent,
     OportunidadesComponent,
@@ -112,7 +106,6 @@ registerLocaleData(localeEs, 'es-MX');
     ModalOportunidadesComponent,
     TiposEntregaComponent,
     ModalTiposEntregaComponent,
-    VerticalBarComponent,
     AgregarQuitarColumnasComponent,
     ColumnasDisponiblesComponent,
     ColumnFilterComponent,
@@ -122,6 +115,7 @@ registerLocaleData(localeEs, 'es-MX');
     OportunidadesEliminadasComponent,
     ModalOportunidadesEliminadasComponent,
     SeguimientoOportunidadesComponent,
+    VerticalBarComponent,
   ],
   imports: [
     BrowserModule,
@@ -150,11 +144,6 @@ registerLocaleData(localeEs, 'es-MX');
     TextareaModule,
     PasswordModule,
     DialogModule,
-    MatTooltipModule,
-    MatSidenavModule,
-    MatIconModule,
-    ConfirmDialogModule,
-
     TooltipModule,
     DatePipe,
     CommonModule,
@@ -163,6 +152,7 @@ registerLocaleData(localeEs, 'es-MX');
     MatFormFieldModule,
     MatInputModule,
     DropdownModule,
+    MatSidenavModule,
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'es-MX' },
@@ -182,10 +172,8 @@ registerLocaleData(localeEs, 'es-MX');
       }
     }),
     MessageService,
-    ConfirmationService,
   ],
   bootstrap: [AppComponent],
-
 
 })
 export class AppModule { }

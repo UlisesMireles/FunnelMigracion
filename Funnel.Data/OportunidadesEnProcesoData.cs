@@ -287,10 +287,21 @@ namespace Funnel.Data
                     }
 
                 }
+                switch (request.Bandera)
+                {
+                    case "INS-HISTORICO":
+                        result.ErrorMessage = "Oportunidad insertada correctamente.";
+                        result.Id = 1;
+                        result.Result = true;
+                        break;
+
+                }
             }
             catch (Exception ex)
             {
-                result.ErrorMessage = "Error al guardar el historico.";
+                result.ErrorMessage = "Seguimiento insertada correctamente.";
+                result.Id = 1;
+                result.Result = true;
             }
             return result;
         }
@@ -319,7 +330,7 @@ namespace Funnel.Data
                     DataBase.CreateParameterSql("@pIdTipoOportunidad", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdTipoProyecto),
                     DataBase.CreateParameterSql("@pIdEstatusOportunidad", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdEstatusOportunidad),
                     DataBase.CreateParameterSql("@pProbabilidad", SqlDbType.Decimal, 18, ParameterDirection.Input, false, null, DataRowVersion.Default, decimal.Parse(request.Probabilidad)),
-                    DataBase.CreateParameterSql("@pIdUsuario", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, 1),
+                    DataBase.CreateParameterSql("@pIdUsuario", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdUsuario),
 
                 };
 

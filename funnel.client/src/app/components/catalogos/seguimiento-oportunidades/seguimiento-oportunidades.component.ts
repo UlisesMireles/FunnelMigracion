@@ -9,7 +9,7 @@ import { OportunidadesService } from '../../../services/oportunidades.service';
 import { RequestOportunidad } from '../../../interfaces/oportunidades';
 import { LoginService } from '../../../services/login.service';
 
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { get } from 'lodash-es';
 
 @Component({
@@ -35,7 +35,7 @@ export class SeguimientoOportunidadesComponent {
   disableOportunidades = true;
   isDescargando = false;
   anchoTabla = 100;
-
+  validacionActiva = false;
 
   historialOportunidad: Oportunidad[] = [];
 
@@ -51,19 +51,26 @@ export class SeguimientoOportunidadesComponent {
         descripcion: [this.oportunidad.nombreOportunidad],
         monto: [this.oportunidad.monto],
         idEjecutivo: [this.oportunidad.idEjecutivo],
-        comentario: ['', [Validators.required, Validators.minLength(20)]],
+        comentario: ['', [Validators.required, this.validarComentario]],
         idEmpresa: [this.loginService.obtenerIdEmpresa()],
         probabilidad: [this.oportunidad.probabilidad],
         idEstatusOportunidad: [this.oportunidad.idEstatusOportunidad],
         tooltipStage: [this.oportunidad.tooltipStage],
         montoNormalizado: [this.oportunidad.montoNormalizado],
-        idUsuario: [2], 
-        stage: [this.oportunidad.stage],
+        idUsuario: [this.loginService.obtenerIdUsuario()], 
+        stage: [this.oportunidad.stage, Validators.required],
         bandera: ['INS-HISTORICO'],
       });
       if (this.oportunidad.idOportunidad) {
         this.getHistorial(this.oportunidad.idOportunidad);
       }
+      console.log(this.oportunidadForm.value);
+    }
+
+    validarComentario(control: AbstractControl) {
+      const value = control.value || '';
+      const wordCount = value.trim().split(/\s+/).length;
+      return wordCount >= 10 ? null : { minWords: true };
     }
     
     onDialogShow() {
@@ -86,6 +93,9 @@ export class SeguimientoOportunidadesComponent {
     }
 
     guardarHistorial(){
+
+      this.validacionActiva = true;
+      
       if (this.oportunidadForm.invalid) {
         this.oportunidadForm.markAllAsTouched(); 
         return; 

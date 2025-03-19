@@ -28,6 +28,9 @@
         <label class="margen text-left">
           {{ oportunidadForm.get('tooltipStage')?.value }}
         </label>
+        <small *ngIf="validacionActiva && oportunidadForm.get('stage')?.errors?.['required']" class="text-danger">
+          Necesita asignar una etapa para registrar un seguimiento
+        </small>
       </div>
       <div class="col-sm-4">
         <label class="margen text-left">
@@ -51,9 +54,9 @@
             <small *ngIf="oportunidadForm.get('comentario')?.errors?.['required']">
               El comentario es obligatorio.
             </small>
-            <small *ngIf="oportunidadForm.get('comentario')?.errors?.['minlength']">
-              El comentario debe tener al menos 20 caracteres.
-            </small>
+            <small *ngIf="oportunidadForm.get('comentario')?.errors?.['minWords']">
+              El comentario debe tener al menos 10 palabras.
+            </small>            
           </div>
         </div>
       </div>
@@ -87,7 +90,7 @@
   
   <ng-template pTemplate="footer">
     <button pButton label="Descargar Seguimiento" (click)="exportExcel(oportunidadForm.get('idOportunidad')?.value)" severity="secondary"></button>
-    <button pButton label="Guardar"  (click)="guardarHistorial()" severity="secondary"></button>
+    <button pButton label="Guardar"  (click)="guardarHistorial()" severity="secondary"  *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value === 1" ></button>
     <button pButton label="Cancelar" (click)="close()" severity="secondary"></button>
   </ng-template>
 </p-dialog>

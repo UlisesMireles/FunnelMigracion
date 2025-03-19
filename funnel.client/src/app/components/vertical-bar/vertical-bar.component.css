@@ -34,21 +34,26 @@
   position: relative;
 }
 
-
-
-
-
 .menu-item:hover {
   background-color: #495057;
 }
 
 /* Estilo del botón de expandir */
-.expand-btn-container {
+/* .expand-btn-container {
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 15px;
+} */
+
+.expand-btn-container {
+  position: absolute;
+  top: 85%; /* Ajusta este valor según lo necesites */
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .expand-btn {
@@ -63,18 +68,6 @@
   background-color: #6c757d;
 }
 
-/* Estilo del Tooltip (Historieta) */
-.tooltip-box {
-  position: absolute;
-  left: 70px;
-  background-color:  rgb(45, 62, 80);
-  color: #DFE3EB; /* Color de la letra */
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-size: 12px;
-  white-space: nowrap;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
-}
 
 .sidebar.expanded .tooltip-box {
   display: none;
@@ -258,8 +251,6 @@ text-align: left;
   cursor: default !important; /* Cambia el cursor a una flecha normal */
 }
 
-
-
 .submenu-item {
   display: flex;
   align-items: center;
@@ -314,4 +305,38 @@ text-align: left;
 
 .icono-naranja i {
   color: #FFA500;  /* Asegura que el icono sea naranja */
+}
+.tooltip-box {
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  transform: translateY(-50%);
+  background-color:  rgb(45, 62, 80);
+  color: #DFE3EB; /* Color de la letra */
+  padding: 5px 10px;
+  border-radius: 5px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+  margin-left: 8px; /* Espacio entre el botón y el tooltip */
+}
+
+.expand-btn-container:hover .tooltip-box {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Agregar el pico apuntando a la izquierda */
+.tooltip-box::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  transform: translateY(-50%);
+  border-width: 8px;
+  border-style: solid;
+  border-color: transparent  rgb(45, 62, 80) transparent transparent;
+  margin-left: 15px; /* Espacio entre el botón y el tooltip */
+
 }

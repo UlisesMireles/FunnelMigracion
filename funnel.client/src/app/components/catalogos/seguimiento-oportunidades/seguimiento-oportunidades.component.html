@@ -41,7 +41,7 @@
     </div>
     <br />
     <form [formGroup]="oportunidadForm">
-      <div class="row">
+      <div class="row" *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value === 1">
         <div class="col-sm-4">
           <label for="Comentario" class="margen text-left">Seguimiento:</label>
         </div>
@@ -58,7 +58,7 @@
         </div>
       </div>
     </form>
-
+    
     <div class="row mt-3">
       <div class="col-sm-12" *ngIf="oportunidades.length > 0; else noComments">
         <table class="table table-bordered">
@@ -86,6 +86,7 @@
   </ng-template>
   
   <ng-template pTemplate="footer">
+    <button pButton label="Descargar Seguimiento" (click)="exportExcel(oportunidadForm.get('idOportunidad')?.value)" severity="secondary"></button>
     <button pButton label="Guardar"  (click)="guardarHistorial()" severity="secondary"></button>
     <button pButton label="Cancelar" (click)="close()" severity="secondary"></button>
   </ng-template>

@@ -33,11 +33,13 @@
             <ng-template pTemplate="header" let-columns>
               <tr class="custom-header">
                   <th></th>
+                  <th></th>
                   <th *ngFor="let def of lsColumnasAMostrar" pSortableColumn="{{def.key}}">
                     {{def.valor}}<p-sortIcon field="{{def.key}}"></p-sortIcon>
                   </th>
               </tr>
               <tr>
+                  <th></th>
                   <th></th>
                   <th *ngFor="let def of lsColumnasAMostrar" style="min-width: 30%;">
                       <ng-container *ngIf="def.groupColumn">
@@ -93,6 +95,9 @@
           <ng-template pTemplate="body" let-rowData let-columns="columns">
             <tr>
                 <td>
+                  <p-button type="button" icon="bi bi-file-earmark-text" text (click)="seguimiento(rowData)"/>
+                </td>
+                <td>
                   <p-button type="button" icon="bi bi-pencil" text (click)="actualiza(rowData)"/>
                 </td>
                 <td *ngFor="let def of lsColumnasAMostrar">
@@ -144,3 +149,7 @@
 <app-modal-oportunidades-eliminadas [(visible)]="modalVisible" [title]="'Editar Datos de '" (closeModal)="onModalClose()"
 (result)="manejarResultado($event)" [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">
 </app-modal-oportunidades-eliminadas>
+
+<app-seguimiento-oportunidades [(visible)]="modalSeguimientoVisible" [title]="'Seguimiento de '" (closeModal)="onModalClose()"
+  (result)="manejarResultado($event)" [insertar]="insertar" [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">
+</app-seguimiento-oportunidades>

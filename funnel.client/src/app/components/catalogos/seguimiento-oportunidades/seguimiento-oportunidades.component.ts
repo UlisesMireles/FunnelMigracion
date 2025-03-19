@@ -36,6 +36,7 @@ export class SeguimientoOportunidadesComponent {
   isDescargando = false;
   anchoTabla = 100;
 
+
   historialOportunidad: Oportunidad[] = [];
 
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -121,6 +122,20 @@ export class SeguimientoOportunidadesComponent {
         });
       }
       
-      
+       exportExcel(idOportunidad: number) { 
+          const dataExport = this.historialOportunidad.map(opportunity => ({
+            NombreEjecutivo: opportunity.nombreEjecutivo,
+            Fecha: opportunity.fechaRegistro,
+            Comentario: opportunity.comentario
+          }));
+
+            import('xlsx').then(xlsx => {
+              const hojadeCalculo: import('xlsx').WorkSheet = xlsx.utils.json_to_sheet(dataExport);
+              const libro: import('xlsx').WorkBook = xlsx.utils.book_new();
+              xlsx.utils.book_append_sheet(libro, hojadeCalculo, "Seguimiento Oportunidades");
+              xlsx.writeFile(libro, "Seguimiento Oportunidades.xlsx");
+            });
+          }
+
   }
 

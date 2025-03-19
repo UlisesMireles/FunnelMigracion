@@ -61,6 +61,7 @@ import { OportunidadesComponent} from './components/catalogos/oportunidades/opor
 import { CommonModule, DatePipe} from '@angular/common';
 import { TipoCurrencyPipe } from './pipes/tipoCurrency.pipe';
 import { ModalOportunidadesComponent } from './components/catalogos/oportunidades/modal-oportunidades/modal-oportunidades.component';
+import { VerticalBarComponent } from './components/vertical-bar/vertical-bar.component';
 
 @NgModule({
   declarations: [
@@ -81,7 +82,8 @@ import { ModalOportunidadesComponent } from './components/catalogos/oportunidade
     OportunidadesComponent,
     ModalOportunidadesComponent,
     TiposEntregaComponent,
-    ModalTiposEntregaComponent
+    ModalTiposEntregaComponent,
+    VerticalBarComponent
   ],
   imports: [
     BrowserModule,

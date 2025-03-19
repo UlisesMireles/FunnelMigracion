@@ -1,0 +1,44 @@
+<div class="sidebar" [class.expanded]="isExpanded">
+
+  <!-- Botón de Scroll Arriba (Solo aparece si hay scroll) -->
+  <button class="scroll-btn up-btn" *ngIf="isScrollable" (mouseenter)="scrollUp()" (mouseleave)="stopScroll()">
+    <i class="bi bi-chevron-up"></i>
+  </button>
+
+  <!-- Contenedor del Menú con Scroll -->
+  <div class="menu-container" #menuList>
+    <ul class="menu">
+      <li class="menu-item" *ngFor="let item of ListaMenu; let i = index"
+          (mouseenter)="showSubmenu(i)" (mouseleave)="hideSubmenu()">
+        <i [ngClass]="item.icono" [title]="item.tooltip"></i>
+        <span *ngIf="isExpanded">{{ item.nombre }}</span>
+
+        <!-- Solo mostrar submenú si existe y tiene elementos -->
+        <ul class="submenu" *ngIf="item.subMenu && item.subMenu.length > 0" [ngClass]="{'visible': hoveredMenu === i}">
+          <!-- Encabezado con el nombre del menú como título -->
+          <li class="submenu-header">{{ item.nombre }}</li>
+
+          <!-- Submenú de opciones -->
+          <li *ngFor="let subItem of item.subMenu">
+            <a [routerLink]="subItem.path">{{ subItem.nombre }}</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Botón de Scroll Abajo (Solo aparece si hay scroll) -->
+  <button class="scroll-btn down-btn" *ngIf="isScrollable" (mouseenter)="scrollDown()" (mouseleave)="stopScroll()">
+    <i class="bi bi-chevron-down"></i>
+  </button>
+
+  <div class="separator"></div>
+
+  <!-- Botón de Expandir -->
+  <div class="expand-btn-container" (mouseenter)="showTooltip = true" (mouseleave)="showTooltip = false">
+    <div class="expand-btn" (click)="toggleMenu()">
+      <i class="bi" [ngClass]="isExpanded ? 'bi-chevron-left' : 'bi-chevron-right'"></i>
+    </div>
+    <div class="tooltip-box" *ngIf="showTooltip">Ampliar la navegación</div>
+  </div>
+</div>

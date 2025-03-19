@@ -21,6 +21,9 @@
               </div>
               <div class="row">
                 <div class="col inDivDatatableHeader" style="text-align:right; margin-right:5px">
+                  <p-dropdown [options]="years" [(ngModel)]="selectedYear" (onChange)="filterByYear()" placeholder="Selecciona un año"
+                    [ngStyle]="{'margin-right': '5px'}">
+                  </p-dropdown>
                   <p-button label="" icon="bi bi-arrow-clockwise" (click)="clear(dt)" severity="secondary"
                     pTooltip="Refrescar" tooltipPosition="top"
                     [ngStyle]="{'margin-right': '5px'}" />
@@ -37,7 +40,6 @@
                     pTooltip="Añadir nuevo" tooltipPosition="top"
                     [ngStyle]="{'margin-right': '5px'}"/>
                 </div>
-                
               </div>
             </ng-template>
 

@@ -55,6 +55,5 @@
         public string? NombreContactoCompleto { get; set; }
         public int? IdTipoOportunidad { get; set; }
         public string? Bandera { get; set; }
-
     }
 }

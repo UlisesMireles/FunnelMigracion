@@ -15,6 +15,5 @@ namespace Funnel.Data.Interfaces
         public Task<List<ComboEjecutivosDto>> ComboEjecutivos(int IdEmpresa);
         public Task<List<ContactoDto>> ComboContactos(int IdEmpresa, int IdProspecto);
         public Task<List<ComboEstatusOportunidad>> ComboTipoOportunidad(int IdEmpresa);
-
     }
 }

@@ -58,8 +58,5 @@ namespace Funnel.Logic
         {
             return await _oportunidadesData.GuardarOportunidad(request);
         }
-
-       
-
     }
 }

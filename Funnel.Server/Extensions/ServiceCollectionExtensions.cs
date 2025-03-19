@@ -24,10 +24,6 @@ namespace Funnel.Server.Extensions
             services.AddScoped<ITipoEntregaData, TipoEntregaData>();
             services.AddScoped<ITiposEntregaService, TiposEntregaService>();
 
-
-
-
-
             return services;
         }
     }

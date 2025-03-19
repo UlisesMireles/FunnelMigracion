@@ -1,34 +1,21 @@
-<!-- <mat-sidenav-container class="containerSideNav">
-  <mat-sidenav id="sidenav" #sidenav
-    [ngClass]="this.sideNavService.getToggleValue ? 'sideNavOpen' : 'sideNavClosed'"
-    [opened]="this.sideNavService.getToggleValue" mode="side">
-    <div class="contentSidenav">
-
-      <app-menu-sidenav class="menuAdmin"></app-menu-sidenav>
-    </div>
-
-  </mat-sidenav>
-  <mat-sidenav-content
-    [ngClass]="!this.sideNavService.getToggleValue ? 'sideContentOpen' : 'sideContentClosed'">
-    <mat-icon matSuffix (click)="toggleSideNav()" class="cursorPointer iconClass">
-      {{!this.sideNavService.getToggleValue ? 'chevron_right' : 'chevron_left'}} </mat-icon>
-
-    <div class="tituloAdmin">
-      <router-outlet></router-outlet>
-    </div>
-  </mat-sidenav-content>
-</mat-sidenav-container>
-<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"
-rejectButtonStyleClass="p-button-text"></p-confirmDialog> -->
-
 <mat-sidenav-container class="containerSideNav">
-  <mat-sidenav id="sidenav" mode="side" opened>
+  <!-- Barra lateral (siempre visible) -->
+  <mat-sidenav
+    id="sidenav"
+    mode="side"
+    [opened]="true"
+    class="sidenav"
+    [style.width.px]="isExpanded ? 250 : 60">
     <div class="contentSidenav">
-      <app-vertical-bar class="menuAdmin"></app-vertical-bar>
+      <app-vertical-bar
+        class="menuAdmin"
+        (toggleSidebar)="onSidebarToggle($event)">
+      </app-vertical-bar>
     </div>
   </mat-sidenav>
 
-  <mat-sidenav-content>
+  <!-- Contenido principal (se mueve automáticamente) -->
+  <mat-sidenav-content class="content" [style.margin-left.px]="isExpanded ? 250 : 60">
     <div class="tituloAdmin">
       <router-outlet></router-outlet>
     </div>

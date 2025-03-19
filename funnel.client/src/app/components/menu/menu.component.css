@@ -24,7 +24,7 @@
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
   border-radius: 0% 20% 20% 0%;
   position: absolute;
-  top: 60px;  
+  top: 60px;
   left: 10px;
   z-index: 1000;
 }
@@ -64,4 +64,17 @@ html body #container {
   #contenidoRouting {
       height: 100%;
   }
+}
+
+
+.containerSideNav {
+  height: 100vh;
+}
+
+.sidenav {
+  transition: width 0.3s ease; /* Animación de la barra lateral */
+}
+
+.content {
+  transition: margin-left 0.3s ease; /* Animación del contenido */
 }

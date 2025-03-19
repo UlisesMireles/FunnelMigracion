@@ -303,7 +303,7 @@ text-align: left;
 }
 
 .icono-naranja i {
-  color: #FFA500;  /* Asegura que el icono sea naranja */
+  color: #ff7b00;  /* Asegura que el icono sea naranja */
 }
 .tooltip-box {
   position: absolute;

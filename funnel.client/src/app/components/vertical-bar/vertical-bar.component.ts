@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Output, ViewChild } from '@angular/core';
 
 
 @Component({
@@ -10,10 +10,11 @@ import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 export class VerticalBarComponent {
 
 
-  isExpanded: boolean = false;
+  isExpanded: boolean = true;
   hoveredMenu: number | null = null;
   showTooltip: boolean = false;
   @ViewChild('menuList', { static: false }) menuList!: ElementRef;
+  @Output() toggleSidebar = new EventEmitter<boolean>();
   isScrollable: boolean = false;
   scrollInterval: any = null;
   ListaMenu = [
@@ -45,10 +46,10 @@ export class VerticalBarComponent {
       icono: 'bi-check-circle',  // Icono de marca de verificación, indicando que está terminado
       tooltip: 'Ir a Terminadas',
       subMenu: [
-        { nombre: 'GANADAS', path: '/TERMINADAS/GANADAS' , hasIcon: false, tooltipMessage:'' },
-        { nombre: 'PERDIDAS', path: '/TERMINADAS/PERDIDAS' , hasIcon: false ,tooltipMessage:'' },
-        { nombre: 'CANCELADAS', path: '/TERMINADAS/CANCELADAS' , hasIcon: false ,tooltipMessage:'' },
-        { nombre: 'ELIMINADAS', path: '/TERMINADAS/ELIMINADAS' , hasIcon: false,tooltipMessage:''  },
+        { nombre: 'GANADAS', path: '/oportunidades-ganadas' , hasIcon: false, tooltipMessage:'' },
+        { nombre: 'PERDIDAS', path: '/oportunidades-perdidas' , hasIcon: false ,tooltipMessage:'' },
+        { nombre: 'CANCELADAS', path: 'oportunidades-canceladas' , hasIcon: false ,tooltipMessage:'' },
+        { nombre: 'ELIMINADAS', path: '/oportunidades-eliminadas' , hasIcon: false,tooltipMessage:''  },
       ]
     },
     {
@@ -105,6 +106,7 @@ export class VerticalBarComponent {
 
   toggleMenu() {
     this.isExpanded = !this.isExpanded;
+    this.toggleSidebar.emit(this.isExpanded); // Emitimos el nuevo estado
   }
 
   ngAfterViewInit() {

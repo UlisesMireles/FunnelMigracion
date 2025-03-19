@@ -23,9 +23,13 @@ export class VerticalBarComponent {
       icono: 'bi-house-door',  // Icono relacionado con un dashboard (pantalla de inicio)
       tooltip: 'Ir a DASHBOARD',
       subMenu: [
-        { nombre: 'OPORTUNIDADES GENERAL', path: '/DASHBOARD/subopcion1' },
-        { nombre: 'OPORTUNIDADES POR AGENTE', path: '/oportunidades/subopcion2' },
-        { nombre: 'CLIENTES TOP 20', path: '/oportunidades/subopcion3' }
+        { nombre: 'OPORTUNIDADES GENERAL', path: '/DASHBOARD/subopcion1'
+          ,hasIcon: true, // 🟠 Indica si tiene icono adicional
+          tooltipMessage: 'Esta característica está incluida'}, // Mensaje del globo
+        { nombre: 'OPORTUNIDADES POR AGENTE', path: '/oportunidades/subopcion2'   ,hasIcon: true, // 🟠 Indica si tiene icono adicional
+          tooltipMessage: 'Esta característica está incluida'}, // Mensaje del globo
+        { nombre: 'CLIENTES TOP 20', path: '/oportunidades/subopcion3'    ,hasIcon: true, // 🟠 Indica si tiene icono adicional
+          tooltipMessage: 'Esta característica está incluida'} // Mensaje del globo
       ]
     },
     {
@@ -41,10 +45,10 @@ export class VerticalBarComponent {
       icono: 'bi-check-circle',  // Icono de marca de verificación, indicando que está terminado
       tooltip: 'Ir a Terminadas',
       subMenu: [
-        { nombre: 'GANADAS', path: '/TERMINADAS/GANADAS' },
-        { nombre: 'PERDIDAS', path: '/TERMINADAS/PERDIDAS' },
-        { nombre: 'CANCELADAS', path: '/TERMINADAS/CANCELADAS' },
-        { nombre: 'ELIMINADAS', path: '/TERMINADAS/ELIMINADAS' }
+        { nombre: 'GANADAS', path: '/TERMINADAS/GANADAS' , hasIcon: false, tooltipMessage:'' },
+        { nombre: 'PERDIDAS', path: '/TERMINADAS/PERDIDAS' , hasIcon: false ,tooltipMessage:'' },
+        { nombre: 'CANCELADAS', path: '/TERMINADAS/CANCELADAS' , hasIcon: false ,tooltipMessage:'' },
+        { nombre: 'ELIMINADAS', path: '/TERMINADAS/ELIMINADAS' , hasIcon: false,tooltipMessage:''  },
       ]
     },
     {
@@ -53,8 +57,10 @@ export class VerticalBarComponent {
       icono: 'bi-gear',  // Icono de engranaje, representando administración o configuración
       tooltip: 'Ir a administración',
       subMenu: [
-        { nombre: 'PROSPECTOS', path: '/prospectos' },
-        { nombre: 'CONTACTOS', path: '/contactos' },
+        { nombre: 'PROSPECTOS', path: '/prospectos' ,hasIcon: true, // 🟠 Indica si tiene icono adicional
+          tooltipMessage: 'Esta característica está incluida'} ,// Mensaje del globo
+        { nombre: 'CONTACTOS', path: '/contactos' ,hasIcon: true, // 🟠 Indica si tiene icono adicional
+          tooltipMessage: 'Esta característica está incluida'} // Mensaje del globo
       ]
     },
     {
@@ -63,10 +69,10 @@ export class VerticalBarComponent {
       icono: 'bi-list-ul',  // Icono de lista, adecuado para catálogos
       tooltip: 'Ir a Catálogos',
       subMenu: [
-        { nombre: 'USUARIOS', path: '/usuarios' },
-        { nombre: 'PERMISOS', path: '/permisos' },
-        { nombre: 'TIPO SERVICIO', path: '/tipo-servicios' },
-        { nombre: 'TIPO ENTREGA', path: '/tipos-entrega' }
+        { nombre: 'USUARIOS', path: '/usuarios', hasIcon: false, tooltipMessage:'' },
+        { nombre: 'PERMISOS', path: '/permisos' , hasIcon: false , tooltipMessage:''},
+        { nombre: 'TIPO SERVICIO', path: '/tipo-servicios' , hasIcon: false, tooltipMessage:'' },
+        { nombre: 'TIPO ENTREGA', path: '/tipos-entrega' , hasIcon: false , tooltipMessage:''}
       ]
     },
     {

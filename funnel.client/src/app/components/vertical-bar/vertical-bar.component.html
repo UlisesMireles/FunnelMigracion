@@ -18,10 +18,17 @@
           <!-- Encabezado con el nombre del menú como título -->
           <li class="submenu-header">{{ item.nombre }}</li>
 
-          <!-- Submenú de opciones -->
-          <li *ngFor="let subItem of item.subMenu">
+          <li *ngFor="let subItem of item.subMenu" class="submenu-item">
             <a [routerLink]="subItem.path">{{ subItem.nombre }}</a>
+
+            <!-- 🟠 Icono y tooltip si hasIcon es true -->
+            <span *ngIf="subItem.hasIcon" class="icono-naranja">
+              <i class="bi bi-arrow-right-circle-fill"></i>
+              <span class="tooltip">{{ subItem.tooltipMessage }}</span>
+            </span>
           </li>
+
+
         </ul>
       </li>
     </ul>

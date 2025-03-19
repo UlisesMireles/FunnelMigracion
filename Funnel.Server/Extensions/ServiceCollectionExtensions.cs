@@ -27,7 +27,6 @@ namespace Funnel.Server.Extensions
             services.AddScoped<IArchivosService, ArchivoService>();
           
 
-
             return services;
         }
     }

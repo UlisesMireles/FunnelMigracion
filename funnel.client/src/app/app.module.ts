@@ -14,6 +14,7 @@ import { ReactiveFormsModule, FormsModule} from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
 import { UsuariosComponent } from './components/catalogos/usuarios/usuarios.component';
+
 import { TooltipModule } from 'primeng/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input'; 
@@ -60,6 +61,10 @@ import { ModalContactosComponent } from './components/catalogos/contactos/modal-
 import { TipoServiciosComponent } from './components/catalogos/tipo-servicios/tipo-servicios.component';
 
 import { OportunidadesComponent} from './components/catalogos/oportunidades/oportunidades.component';
+import { OportunidadesPerdidasComponent} from './components/catalogos/oportunidades-perdidas/oportunidades-perdidas.component';
+import { ModalOportunidadesPerdidasComponent } from './components/catalogos/oportunidades-perdidas/modal-oportunidades-perdidas/modal-oportunidades-perdidas.component';
+
+
 import { CommonModule, DatePipe, registerLocaleData } from '@angular/common';
 import { TipoCurrencyPipe } from './pipes/tipoCurrency.pipe';
 import { ModalOportunidadesComponent } from './components/catalogos/oportunidades/modal-oportunidades/modal-oportunidades.component';
@@ -69,6 +74,7 @@ import { ColumnFilterComponent } from './components/shared/column-filter/column-
 import { HeaderOpcionesComponent } from './components/shared/header-opciones/header-opciones.component';
 import { OportunidadesGanadasComponent } from './components/catalogos/oportunidades-ganadas/oportunidades-ganadas.component';
 import { ModalOportunidadesGanadasComponent } from './components/catalogos/oportunidades-ganadas/modal-oportunidades-ganadas/modal-oportunidades-ganadas.component';
+import { SeguimientoOportunidadesComponent } from './components/catalogos/seguimiento-oportunidades/seguimiento-oportunidades.component';
 
 import { APP_INITIALIZER, LOCALE_ID } from '@angular/core';
 import localeEs from '@angular/common/locales/es-MX';
@@ -97,6 +103,8 @@ registerLocaleData(localeEs, 'es-MX');
     UsuariosComponent,
     ModalUsuariosComponent,
     OportunidadesComponent,
+    OportunidadesPerdidasComponent,
+    ModalOportunidadesPerdidasComponent,
     ModalOportunidadesComponent,
     TiposEntregaComponent,
     ModalTiposEntregaComponent,
@@ -108,6 +116,7 @@ registerLocaleData(localeEs, 'es-MX');
     ModalOportunidadesGanadasComponent,
     OportunidadesEliminadasComponent,
     ModalOportunidadesEliminadasComponent,
+    SeguimientoOportunidadesComponent,
   ],
   imports: [
     BrowserModule,

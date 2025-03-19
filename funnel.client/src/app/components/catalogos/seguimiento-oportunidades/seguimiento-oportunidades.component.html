@@ -2,11 +2,15 @@
   [(visible)]="visible"
   [modal]="true"
   [closable]="true"
-  [style]="{ width: '60rem', height: '45rem' }"
+  [style]="{
+    width: '65rem',
+    height: historialOportunidad.length > 0 ? '50rem' : '30rem'
+  }"
   (onHide)="close()"
   (onShow)="onDialogShow()"
   class="bodyDialog"
 >
+
   <ng-template pTemplate="header">
     <label class="margen">
       {{ title + ' ' + oportunidadForm.get('descripcion')?.value }}
@@ -89,8 +93,8 @@
   </ng-template>
   
   <ng-template pTemplate="footer">
-    <button pButton label="Descargar Seguimiento" (click)="exportExcel(oportunidadForm.get('idOportunidad')?.value)" severity="secondary"></button>
-    <button pButton label="Guardar"  (click)="guardarHistorial()" severity="secondary"  *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value === 1" ></button>
+    <button pButton label="Descargar Seguimiento" (click)="exportExcel(oportunidadForm.get('idOportunidad')?.value)" severity="secondary"  [disabled]="historialOportunidad.length === 0"></button>
+    <button pButton label="Guardar"  (click)="guardarHistorial()" severity="secondary"  *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value === 1" [disabled]="!oportunidadForm.get('comentario')?.value" ></button>
     <button pButton label="Cancelar" (click)="close()" severity="secondary"></button>
   </ng-template>
 </p-dialog>

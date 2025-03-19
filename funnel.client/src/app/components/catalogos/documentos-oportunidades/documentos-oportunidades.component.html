@@ -2,7 +2,10 @@
   [(visible)]="visible"
   [modal]="true"
   [closable]="true"
-  [style]="{ width: '65rem', height: '45rem' }"
+  [style]="{
+    width: '65rem',
+    height: historialOportunidad.length > 0 ? '50rem' : '30rem'
+  }"
   (onHide)="close()"
   (onShow)="onDialogShow()"
   class="bodyDialog"
@@ -37,7 +40,7 @@
             <input type="file" class="form-control" formControlName="documento" accept=".pdf,.doc,.docx,.jpg,.png">
         </div>
         <div class="col-sm-2 inptSpace">
-            <button pButton label="Guardar"  (click)="guardarDocumento()" severity="secondary"  ></button>
+            <button pButton label="Guardar"  (click)="guardarDocumento()" severity="secondary" [disabled]="!oportunidadForm.get('documento')?.value" ></button>
         </div>
       </div>
     </form>
@@ -77,6 +80,6 @@
   </ng-template>
   
   <ng-template pTemplate="footer">
-    <button pButton label="Cancelar" (click)="close()" severity="secondary"></button>
+    <button pButton label="Cancelar" (click)="close()" severity="secondary" ></button>
   </ng-template>
 </p-dialog>

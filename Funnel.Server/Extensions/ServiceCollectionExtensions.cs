@@ -23,6 +23,9 @@ namespace Funnel.Server.Extensions
             services.AddScoped<IOportunidadesEnProcesoService, OportunidadesEnProcesoService>();
             services.AddScoped<ITipoEntregaData, TipoEntregaData>();
             services.AddScoped<ITiposEntregaService, TiposEntregaService>();
+            services.AddScoped<IArchivoData, ArchivoData>();
+            services.AddScoped<IArchivosService, ArchivoService>();
+          
 
 
             return services;

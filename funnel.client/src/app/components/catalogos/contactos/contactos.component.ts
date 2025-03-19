@@ -6,6 +6,9 @@ import { Contacto } from '../../../interfaces/contactos';
 import { ContactosService } from '../../../services/contactos.service';
 import { baseOut } from '../../../interfaces/utils/utils/baseOut';
 import { LoginService } from '../../../services/login.service';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { ColumnasDisponiblesComponent } from '../../shared/columnas-disponibles/columnas-disponibles.component';
+import { sumBy, map as mapping, omit, sortBy, groupBy, keys as getKeys } from "lodash-es";
 
 @Component({
   selector: 'app-contactos',
@@ -14,51 +17,62 @@ import { LoginService } from '../../../services/login.service';
   styleUrl: './contactos.component.css'
 })
 export class ContactosComponent {
-  constructor(private contactosService: ContactosService, private messageService: MessageService, private cdr: ChangeDetectorRef,
-    private readonly loginService: LoginService
-  ) { }
 
-  ngOnInit(): void {
-    this.getContactos();
-  }
   @ViewChild('dt') dt!: Table;
 
+
+  disableContactos = true;
+  isDescargando = false;
+  anchoTabla = 100;
   contactos: Contacto[] = [];
   contactosOriginal: Contacto[] = [];
   contactoSeleccionado!: Contacto;
 
   selectedEstatus: string = 'Activo';
   loading: boolean = true;
-  first: number = 0;
-  rows: number = 10;
-
-  filtroContacto='';
-  filtroNombre='';
-  filtroTelefono='';
-  filtroCorreo='';
-  filtroProspecto='';
+  
 
   insertar: boolean = false;
   modalVisible: boolean = false;
 
-
   EstatusDropdown = [
-    { label: 'Todo', value: null }, 
+    { label: 'Todo', value: null },
     { label: 'Activo', value: 'Activo' },
     { label: 'Inactivo', value: 'Inactivo' },
   ];
-  rowsOptions = [
-    { label: '10', value: 10 },
-    { label: '20', value: 20 },
-    { label: '50', value: 50 }
+
+  lsColumnasAMostrar: any[] = [];
+  lsTodasColumnas: any[] = [
+    { key: 'nombreCompleto', isCheck: true, valor: 'Nombre', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
+    { key: 'telefono', isCheck: true, valor: 'Teléfono', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'correoElectronico', isCheck: true, valor: 'Correo Electrónico', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'prospecto', isCheck: true, valor: 'Prospecto', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'desEstatus', isCheck: true, valor: 'Estatus', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'estatus' },
   ];
+
+  columnsAMostrarResp: string = JSON.stringify(this.lsColumnasAMostrar);
+  columnsTodasResp: string = JSON.stringify(this.lsTodasColumnas);
+
+  constructor(
+    private contactosService: ContactosService,
+    private messageService: MessageService,
+    private cdr: ChangeDetectorRef,
+    private readonly loginService: LoginService,
+    public dialog: MatDialog
+  ) { }
+
+  ngOnInit(): void {
+    this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
+    this.getContactos();
+    document.documentElement.style.fontSize = 12 + 'px';
+  }
 
   getContactos() {
     this.contactosService.getContactos(this.loginService.obtenerIdEmpresa()).subscribe({
       next: (result: Contacto[]) => {
         this.contactosOriginal = result;
         this.selectedEstatus = 'Activo';
-        this.cdr.detectChanges(); 
+        this.cdr.detectChanges();
         this.loading = false;
         this.FiltrarPorEstatus();
       },
@@ -72,6 +86,7 @@ export class ContactosComponent {
       },
     });
   }
+
   inserta() {
     this.contactoSeleccionado = {
       idContactoProspecto: 0,
@@ -89,62 +104,13 @@ export class ContactosComponent {
     this.insertar = true;
     this.modalVisible = true;
   }
-  
+
   actualiza(licencia: Contacto) {
     this.contactoSeleccionado = licencia;
     this.insertar = false;
     this.modalVisible = true;
   }
-  
-  pageChange(event: LazyLoadEvent) {
-    if (event.first !== undefined) {
-      this.first = event.first;
-    }
-    if (event.rows !== undefined) {
-      this.rows = event.rows;
-    }
-  }
-  onInput(event: Event): void {
-    const input = event.target as HTMLInputElement; // Casting de tipo
-    if (this.dt) {
-      this.dt.filterGlobal(input.value, 'contains');
-    }
-  }
-  prev() {
-    this.first = this.first - this.rows;
-  }
-  reset() {
-    this.first = 0;
-    this.getContactos();
-    this.dt.reset();
-  }
-  next() {
-    this.first = this.first + this.rows;
-  }
 
-  updateFilter(event: any, field: string) {
-    this.dt.filter(event, field, 'contains');
-  }
-
-  getVisibleTotal(campo: string, dt: any): number {
-    const registrosVisibles = dt.filteredValue
-      ? dt.filteredValue
-      : this.contactos;
-    if (campo === 'nombreCompleto') {
-      return registrosVisibles.length; 
-    }
-    return registrosVisibles.reduce(
-      (acc: number, empresa: Contacto) =>
-        acc + Number(empresa[campo as keyof Contacto] || 0),
-      0
-    );
-  }
-  isLastPage(): boolean {
-    return this.contactos
-      ? this.first + this.rows >= this.contactos.length
-      : true;
-  }
-  
   onModalClose() {
     this.modalVisible = false;
   }
@@ -174,4 +140,112 @@ export class ContactosComponent {
       this.dt.first = 0;
     }
   }
+
+  //#region Funciones para el filtrado de columnas y exportación a Excel
+
+  clear(table: Table) {
+    table.clear();
+    this.getContactos();
+    this.lsColumnasAMostrar = JSON.parse(this.columnsAMostrarResp);
+    this.lsTodasColumnas = JSON.parse(this.columnsTodasResp);
+    this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
+    this.anchoTabla = 100;
+  }
+
+  agregarColumna(event: any) {
+    const targetAttr = event.target.getBoundingClientRect();
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.autoFocus = false;
+    dialogConfig.backdropClass = 'popUpBackDropClass';
+    dialogConfig.panelClass = 'popUpPanelAddColumnClass';
+    dialogConfig.width = '350px';
+
+    dialogConfig.data = {
+      todosColumnas: this.lsTodasColumnas
+    };
+
+    dialogConfig.position = {
+      top: targetAttr.y + targetAttr.height + 10 + "px",
+      left: targetAttr.x - targetAttr.width - 240 + "px"
+    };
+    const dialogRef = this.dialog.open(ColumnasDisponiblesComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(r => {
+      if (r) {
+        this.lsColumnasAMostrar = JSON.parse(this.columnsAMostrarResp);
+        const selectedColumns = r.filter((f: any) => f.isCheck);
+
+        selectedColumns.forEach((element: any) => {
+          this.lsColumnasAMostrar.push(element)
+        });
+        if (this.lsColumnasAMostrar.length > 5) {
+          this.anchoTabla = 100
+        }
+      }
+    });
+  }
+
+  exportExcel(table: Table) {
+    let colsIgnorar: any[] = [];
+  
+    let dataExport = (table.filteredValue || table.value || []);
+
+    let lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
+    let columnasAMostrarKeys = lsColumnasAMostrar.map(col => col.key);
+  
+    dataExport = dataExport.map(row => {
+      return columnasAMostrarKeys.reduce((acc, key) => {
+        acc[key] = row[key];
+        return acc;
+      }, {});
+    });
+  
+    import('xlsx').then(xlsx => {
+      const hojadeCalculo: import('xlsx').WorkSheet = xlsx.utils.json_to_sheet(dataExport);
+      const libro: import('xlsx').WorkBook = xlsx.utils.book_new();
+      xlsx.utils.book_append_sheet(libro, hojadeCalculo, "Contactos");
+      xlsx.writeFile(libro, "Contactos.xlsx");
+    });
+  }
+
+  getTotalCostPrimeNg(table: Table, def: any) {
+    if (!def.isTotal) {
+      return;
+    }
+
+    const registrosVisibles = table.filteredValue ? table.filteredValue : this.contactos;
+  
+    if (def.key === 'nombreCompleto') {
+      return registrosVisibles.length;
+    }
+
+    return (
+      registrosVisibles.reduce(
+        (acc: number, empresa: Contacto) =>
+          acc + (Number(empresa[def.key as keyof Contacto]) || 0),
+        0
+      ) / registrosVisibles.length
+    );
+  }
+
+  getVisibleTotal(campo: string, dt: any): number {
+    const registrosVisibles = dt.filteredValue ? dt.filteredValue : this.contactos;
+  
+    if (campo === 'nombreCompleto') {
+      return registrosVisibles.length;
+    }
+  
+    return registrosVisibles.reduce(
+      (acc: number, empresa: Contacto) =>
+        acc + (Number(empresa[campo as keyof Contacto] || 0)),
+      0
+    );
+  }
+
+  obtenerArregloFiltros(data: any[], columna: string): any[] {
+    const lsGroupBy = groupBy(data, columna);
+    return sortBy(getKeys(lsGroupBy));
+  }
+
 }

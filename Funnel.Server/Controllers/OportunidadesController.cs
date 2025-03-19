@@ -62,6 +62,24 @@ namespace Funnel.Server.Controllers
             var result = await _oportunidadesService.ComboContactos(idEmpresa, idProspecto);
             return Ok(result);
         }
-        
+        [HttpGet("[action]/")]
+        public async Task<ActionResult> ComboTipoOportunidad(int idEmpresa)
+        {
+            var result = await _oportunidadesService.ComboTipoOportunidad(idEmpresa);
+            return Ok(result);
+        }
+        [HttpGet("[action]/")]
+        public async Task<ActionResult> ConsultarHistoricoOportunidades(int idEmpresa, int idOportunidad)
+        {
+            var result = await _oportunidadesService.ConsultarHistoricoOportunidades(idEmpresa, idOportunidad);
+            return Ok(result);
+        }
+        [HttpPost("[action]/")]
+        public async Task<ActionResult> GuardarHistorico(OportunidadesEnProcesoDto request)
+        {
+            var result = await _oportunidadesService.GuardarHistorico(request);
+            return Ok(result);
+        }
+
     }
 }

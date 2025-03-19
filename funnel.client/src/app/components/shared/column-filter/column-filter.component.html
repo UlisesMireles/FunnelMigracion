@@ -1,0 +1,40 @@
+<div class="row">
+    <mat-form-field appearance="outline">
+      <input class="inputSearch" matInput placeholder="Buscar" [(ngModel)]="searchValue" (input)="onChangeValue()">
+    </mat-form-field>
+  </div>
+  <div class="row" class="listCheck">
+    <div *ngFor="let filtro of listaFiltrada,let index = index">
+      <input class="check form-check-input" type="checkbox" [(ngModel)]="filtro.isCheck" aria-label="check"
+        id="flexCheckChecked{{index}}">
+      <label *ngIf="filtro.valor === ''" class="form-check-label" for="flexCheckChecked{{index}}">
+        Vacío
+      </label>
+      <label *ngIf="filtro.valor === '  '" class="form-check-label" for="flexCheckChecked{{index}}">
+        Vacío
+      </label>
+      <label *ngIf="filtro.valor === 'false' || filtro.valor === 'true'" class="form-check-label"
+        for="flexCheckChecked{{index}}">
+        {{filtro.valor === 'false' ? 'NO' : 'SI'}}
+      </label>
+      <label
+        *ngIf="filtro.valor !== '' && filtro.valor !== 'false' && filtro.valor !== 'true' && !isDateString(filtro.valor)"
+        class="form-check-label" for="flexCheckChecked{{index}}">
+        {{filtro.valor}}
+      </label>
+      <label
+        *ngIf="filtro.valor !== '' && filtro.valor !== 'false' && filtro.valor !== 'true' && isDateString(filtro.valor)"
+        class="form-check-label" for="flexCheckChecked{{index}}">
+        {{filtro.valor | date :'dd/MMM/YYYY'}} a las {{filtro.valor | date: 'h:mm a'}}
+      </label>
+    </div>
+  </div>
+  
+  <div class="row justify-content-center">
+    <div class="col-6">
+      <button class="col-6 btnCancelar" mat-raised-button (click)="limpiarFiltroParent()">Limpiar Filtro</button>
+    </div>
+    <div class="col-6">
+      <button class="col-6 btnPrimario pl-2" mat-raised-button (click)="aplicarFiltroParent()">Filtrar</button>
+    </div>
+  </div>

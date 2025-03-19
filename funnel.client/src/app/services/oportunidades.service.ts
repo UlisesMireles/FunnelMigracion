@@ -59,5 +59,19 @@ export class OportunidadesService {
       });
     }
 
+    getEstatus(idEmpresa: number): Observable<any> {
+      return this.http.get(`${this.baseUrl}api/Oportunidades/ComboTipoOportunidad`, {
+        params: { idEmpresa: idEmpresa.toString() }
+      });
+    }
 
+    getHistorial(idOportunidad: number, idEmpresa: number): Observable<any> {
+      return this.http.get(`${this.baseUrl}api/Oportunidades/ConsultarHistoricoOportunidades`, {
+        params: { idOportunidad: idOportunidad.toString(), idEmpresa: idEmpresa.toString() }
+      });
+    }
+
+    postHistorial(data: any): Observable <baseOut>{
+      return this.http.post<baseOut>(this.baseUrl+'api/Oportunidades/GuardarHistorico', data);
+    }
 }

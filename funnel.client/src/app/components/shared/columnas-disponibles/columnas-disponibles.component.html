@@ -1,0 +1,20 @@
+<div class="listCheck">
+  <div class="row">
+    <div *ngFor="let filtro of data.todosColumnas; let index = index">
+      <div *ngIf="!filtro.isIgnore" class="form-check">
+        <input class="check form-check-input cursorPointer" type="checkbox" [(ngModel)]="filtro.isCheck"
+          id="flexCheckChecked{{index}}">
+        <label class="form-check-label cursorPointer" for="flexCheckChecked{{index}}">
+          {{filtro.valor}}
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <button class="p-button-primary p-button-sm w-100 mt-2" (click)="aplicarFiltroParent()">
+        Mostrar
+      </button>
+    </div>
+  </div>
+</div>

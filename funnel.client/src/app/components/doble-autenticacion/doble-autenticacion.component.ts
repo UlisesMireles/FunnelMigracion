@@ -24,6 +24,7 @@ export class DobleAutenticacionComponent {
   disabled: boolean = true;
   timeLeft: number = 120;
   interval: any;
+  timeExpired: boolean = false;
   datosUsuario: LoginUser = {} as LoginUser;
   constructor(
     private fb: FormBuilder,
@@ -61,10 +62,14 @@ export class DobleAutenticacionComponent {
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   }
   enviarCorreoTwoFactor() {
-    
     this.authService.reenviarTwoFactor(this.datosUsuario.usuario, this.datosUsuario.password).subscribe({
       next: () => {
         this.startTimer();
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Éxito',
+          detail: 'El código ha sido reenviado con éxito a tu correo electrónico.',
+        });
       },
       error: (err) => {
         this.messageService.add({
@@ -77,6 +82,7 @@ export class DobleAutenticacionComponent {
       }
     });
   }
+  
 
   startTimer() {
     this.timeLeft = 120;
@@ -89,6 +95,7 @@ export class DobleAutenticacionComponent {
         this.timeLeft--;
       } else {
         clearInterval(this.interval);
+        this.timeExpired = true;
       }
     }, 1000);
   }

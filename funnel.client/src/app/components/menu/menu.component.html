@@ -1,9 +1,9 @@
-<mat-sidenav-container class="containerSideNav">
+<!-- <mat-sidenav-container class="containerSideNav">
   <mat-sidenav id="sidenav" #sidenav
     [ngClass]="this.sideNavService.getToggleValue ? 'sideNavOpen' : 'sideNavClosed'"
     [opened]="this.sideNavService.getToggleValue" mode="side">
     <div class="contentSidenav">
-      <!-- sidenav admin -->
+
       <app-menu-sidenav class="menuAdmin"></app-menu-sidenav>
     </div>
 
@@ -12,11 +12,26 @@
     [ngClass]="!this.sideNavService.getToggleValue ? 'sideContentOpen' : 'sideContentClosed'">
     <mat-icon matSuffix (click)="toggleSideNav()" class="cursorPointer iconClass">
       {{!this.sideNavService.getToggleValue ? 'chevron_right' : 'chevron_left'}} </mat-icon>
-    <!-- contenido -->
+
     <div class="tituloAdmin">
       <router-outlet></router-outlet>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
 <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"
-rejectButtonStyleClass="p-button-text"></p-confirmDialog>
+rejectButtonStyleClass="p-button-text"></p-confirmDialog> -->
+
+<mat-sidenav-container class="containerSideNav">
+  <mat-sidenav id="sidenav" mode="side" opened>
+    <div class="contentSidenav">
+      <app-vertical-bar class="menuAdmin"></app-vertical-bar>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="tituloAdmin">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+

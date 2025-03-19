@@ -17,4 +17,5 @@ export interface LoginUser {
   usuario: string;
   password: string;
   idEmpresa: number;
+  idUsuario: number;
 }

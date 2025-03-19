@@ -53,8 +53,8 @@ export class VerticalBarComponent {
       icono: 'bi-gear',  // Icono de engranaje, representando administración o configuración
       tooltip: 'Ir a administración',
       subMenu: [
-        { nombre: 'PROSPECTOS', path: 'Catalogos/prospectos' },
-        { nombre: 'CONTACTOS', path: 'Catalogos/contactos' },
+        { nombre: 'PROSPECTOS', path: '/prospectos' },
+        { nombre: 'CONTACTOS', path: '/contactos' },
       ]
     },
     {
@@ -63,10 +63,10 @@ export class VerticalBarComponent {
       icono: 'bi-list-ul',  // Icono de lista, adecuado para catálogos
       tooltip: 'Ir a Catálogos',
       subMenu: [
-        { nombre: 'USUARIOS', path: 'Catalogos/usuarios' },
-        { nombre: 'PERMISOS', path: 'Catalogos/permisos' },
-        { nombre: 'TIPO SERVICIO', path: 'Catalogos/tipo-servicios' },
-        { nombre: 'TIPO ENTREGA', path: 'Catalogos/tipop-entrega' }
+        { nombre: 'USUARIOS', path: '/usuarios' },
+        { nombre: 'PERMISOS', path: '/permisos' },
+        { nombre: 'TIPO SERVICIO', path: '/tipo-servicios' },
+        { nombre: 'TIPO ENTREGA', path: '/tipos-entrega' }
       ]
     },
     {
@@ -78,7 +78,7 @@ export class VerticalBarComponent {
     },
     {
       nombre: 'SALIR',
-      path: '/salir',
+      path: '/',
       icono: 'bi-box-arrow-right',  // Icono de salir o cerrar sesión
       tooltip: 'Cerrar sesión',
       subMenu: []  // Sin submenú

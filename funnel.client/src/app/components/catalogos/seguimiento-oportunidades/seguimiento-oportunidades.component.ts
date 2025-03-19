@@ -64,7 +64,6 @@ export class SeguimientoOportunidadesComponent {
       if (this.oportunidad.idOportunidad) {
         this.getHistorial(this.oportunidad.idOportunidad);
       }
-      console.log(this.oportunidadForm.value);
     }
 
     validarComentario(control: AbstractControl) {

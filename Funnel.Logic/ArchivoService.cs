@@ -3,6 +3,7 @@ using Funnel.Data.Interfaces;
 using Funnel.Logic.Interfaces;
 using Funnel.Models.Base;
 using Funnel.Models.Dto;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,19 +25,21 @@ namespace Funnel.Logic
             return await _ArchivoData.ConsultaArchivosPorOportunidad(idOportunidad);
         }
 
-        public async Task <BaseOut> DescargarArchivo(int idArchivo)
-        {
-            return await _ArchivoData.DescargarArchivo(idArchivo);
-        }
+        
 
         public async Task<BaseOut> EliminarArchivo(int idArchivo)
         {
             return await _ArchivoData.EliminarArchivo(idArchivo);
         }
 
-        public async Task<BaseOut> GuardarArchivo(ArchivoDto request)
+        public async Task<ArchivoDto> GuardarArchivo(ArchivoDto request)
         {
             return await _ArchivoData.GuardarArchivo(request);
+        }
+
+        public async Task <ArchivoDto> GuardarArchivo(IFormFile archivo, ArchivoDto request)
+        {
+            return await _ArchivoData.GuardarArchivo(archivo, request);    
         }
 
         public async Task<int> ObtenerNumeroArchivosSubidos(int idOportunidad)

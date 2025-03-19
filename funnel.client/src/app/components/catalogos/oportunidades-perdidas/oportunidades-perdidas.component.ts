@@ -73,9 +73,9 @@ export class OportunidadesPerdidasComponent {
     this.getOportunidades();
 
     const currentYear = new Date().getFullYear();
-  for (let year = currentYear; year >= 2020; year--) {
-    this.years.push(year);
-  }
+    for (let year = currentYear; year >= 2020; year--) {
+      this.years.push(year);
+    }
 
     document.documentElement.style.fontSize = 12 + 'px';
   }
@@ -91,8 +91,6 @@ export class OportunidadesPerdidasComponent {
       });
     }
   }
-
-
 
   getOportunidades() {
     this.oportunidadService.getOportunidades(this.idUsuario, this.loginService.obtenerIdEmpresa(), this.idEstatus).subscribe({

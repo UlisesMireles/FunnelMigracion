@@ -115,6 +115,9 @@ registerLocaleData(localeEs, 'es-MX');
     ModalOportunidadesGanadasComponent,
     OportunidadesEliminadasComponent,
     ModalOportunidadesEliminadasComponent,
+    OportunidadesCanceladasComponent,
+    ModalOportunidadesCanceladasComponent,
+    SeguimientoOportunidadesComponent
   ],
   imports: [
     BrowserModule,

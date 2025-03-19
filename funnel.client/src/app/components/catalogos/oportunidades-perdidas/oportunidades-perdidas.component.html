@@ -5,7 +5,7 @@
     </div>
     
     <div class="col-12">
-      <div class="row contenedorTabla" style="justify-content: center; display: flex; width: 100% ;" >
+      <div class="row contenedorTabla" style="justify-content: center; display: flex; width: 100%;">
         <div *ngIf="loading">Cargando...</div>
         <p-table *ngIf="!loading" #dt [stripedRows]="true" [value]="oportunidadesPerdidas" dataKey="id" [rows]="20"
           [showCurrentPageReport]="true" [rowsPerPageOptions]="[20, 30, 50]" [paginator]="true" paginatorPosition="both"
@@ -13,7 +13,7 @@
           [columns]="lsColumnasAMostrar"
           [resizableColumns]="true"
           [globalFilterFields]="['nombre','nombreSector','nombreOportunidad','abreviatura','stage','iniciales','nombreContacto','entrega','monto','probabilidadOriginal','probabilidad','montoNormalizado','fechaRegistro','diasFunnel','fechaEstimadaCierreOriginal','fechaModificacion', 'comentario']"
-          [tableStyle]="{'min-width': anchoTabla+ '%'}">
+          [tableStyle]="{'min-width': anchoTabla + '%'}">
           
           <ng-template class="divAccionesTabla" #caption>
             <div class="col-12" style="text-align: left; font-weight: bold;">
@@ -21,23 +21,17 @@
             </div>
             <div class="row">
               <div class="col inDivDatatableHeader" style="text-align:right; margin-right:5px">
-                <p-dropdown [options]="years" [(ngModel)]="selectedYear" (onChange)="filterByYear()" placeholder="Selecciona un año"></p-dropdown>
+                <p-dropdown [options]="years" [(ngModel)]="selectedYear" (onChange)="filterByYear()" placeholder="Selecciona un año"
+                  [ngStyle]="{'margin-right': '5px'}">
+                </p-dropdown>
                 <p-button label="" icon="bi bi-arrow-clockwise" (click)="clear(dt)" severity="secondary" [ngStyle]="{'margin-right': '5px'}" />
                 <p-button label="" icon="bi bi-download" severity="secondary" (click)="exportExcel(dt)" [ngStyle]="{'margin-right': '5px'}" />
                 <p-button label="" icon="bi-pencil" (click)="agregarColumna($event)" severity="secondary" [ngStyle]="{'margin-right': '5px'}" />
               </div>
             </div>
-            <div class="row">
-              <div class="col inDivDatatableHeader" style="text-align:right; margin-right:5px">
-                <p-button label="" icon="bi bi-arrow-clockwise" (click)="clear(dt)" severity="secondary"
-                  [ngStyle]="{'margin-right': '5px'}" />
-                <p-button label="" icon="bi bi-download" severity="secondary" (click)="exportExcel(dt)"  [ngStyle]="{'margin-right': '5px'}"/>
-                <p-button label="" icon="bi-pencil" (click)="agregarColumna($event)"  severity="secondary"  [ngStyle]="{'margin-right': '5px'}"/>
-               
-              </div> 
-            </div>
           </ng-template>
 
+          <!-- Resto del código de la tabla -->
           <ng-template pTemplate="header" let-columns>
             <tr class="custom-header">
                 <th></th>
@@ -93,7 +87,6 @@
                             </div>
                         </div>
                     </ng-container>
-
                 </th>
             </tr>
         </ng-template>
@@ -106,13 +99,10 @@
               <td *ngFor="let def of lsColumnasAMostrar">
                 <ng-container [ngSwitch]="def.tipoFormato">
                   <span *ngSwitchCase="'text'">{{ rowData[def.key] }}</span>
-          
                   <span *ngSwitchCase="'currency'">
                     {{ rowData[def.key] | currency:'MX ':'symbol' }}
                   </span>
-          
                   <span *ngSwitchCase="'number'">{{ rowData[def.key] | number:'1.0-2' }}</span>
-          
                   <span *ngSwitchCase="'date'">{{ rowData[def.key] | date:'dd/MM/yyyy' }}</span>
                 </ng-container>
               </td>

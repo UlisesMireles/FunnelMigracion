@@ -21,20 +21,13 @@
             </div>
             <div class="row">
               <div class="col inDivDatatableHeader" style="text-align:right; margin-right:5px">
-                <p-dropdown [options]="years" [(ngModel)]="selectedYear" (onChange)="filterByYear()" placeholder="Selecciona un año"></p-dropdown>
+                <p-dropdown [options]="years" [(ngModel)]="selectedYear" (onChange)="filterByYear()" placeholder="Selecciona un año"
+                  [ngStyle]="{'margin-right': '5px'}">
+                </p-dropdown>
                 <p-button label="" icon="bi bi-arrow-clockwise" (click)="clear(dt)" severity="secondary" [ngStyle]="{'margin-right': '5px'}" />
                 <p-button label="" icon="bi bi-download" severity="secondary" (click)="exportExcel(dt)" [ngStyle]="{'margin-right': '5px'}" />
                 <p-button label="" icon="bi-pencil" (click)="agregarColumna($event)" severity="secondary" [ngStyle]="{'margin-right': '5px'}" />
               </div>
-            </div>
-            <div class="row">
-              <div class="col inDivDatatableHeader" style="text-align:right; margin-right:5px">
-                <p-button label="" icon="bi bi-arrow-clockwise" (click)="clear(dt)" severity="secondary"
-                  [ngStyle]="{'margin-right': '5px'}" />
-                <p-button label="" icon="bi bi-download" severity="secondary" (click)="exportExcel(dt)"  [ngStyle]="{'margin-right': '5px'}"/>
-                <p-button label="" icon="bi-pencil" (click)="agregarColumna($event)"  severity="secondary"  [ngStyle]="{'margin-right': '5px'}"/>
-               
-              </div> 
             </div>
           </ng-template>
 

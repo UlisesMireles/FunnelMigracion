@@ -36,6 +36,9 @@ export class OportunidadesPerdidasComponent {
 
   loading: boolean = true;
 
+  years: number[] = [];
+  selectedYear: number = new Date().getFullYear();
+
   lsColumnasAMostrar: any[] = [
    
   ];
@@ -69,8 +72,26 @@ export class OportunidadesPerdidasComponent {
     this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
     this.getOportunidades();
 
+    const currentYear = new Date().getFullYear();
+  for (let year = currentYear; year >= 2020; year--) {
+    this.years.push(year);
+  }
+
     document.documentElement.style.fontSize = 12 + 'px';
   }
+
+  filterByYear() {
+    if (this.oportunidadesOriginalPerdidas) {
+      this.oportunidadesPerdidas = this.oportunidadesOriginalPerdidas.filter(oportunidad => {
+        if (oportunidad.fechaRegistro) {
+          const fechaRegistro = new Date(oportunidad.fechaRegistro);
+          return fechaRegistro.getFullYear() === this.selectedYear;
+        }
+        return false;
+      });
+    }
+  }
+
 
 
   getOportunidades() {
@@ -78,6 +99,7 @@ export class OportunidadesPerdidasComponent {
       next: (result: Oportunidad[]) => {
         this.oportunidadesPerdidas = [...result];
         this.oportunidadesOriginalPerdidas = result;
+        this.filterByYear();
         this.cdr.detectChanges(); 
         this.loading = false;
       },
@@ -125,6 +147,7 @@ export class OportunidadesPerdidasComponent {
     this.lsTodasColumnas = JSON.parse(this.columnsTodasResp);
     this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
     this.anchoTabla = 100;
+    this.selectedYear = new Date().getFullYear();
   }
 
   agregarColumna(event: any) {

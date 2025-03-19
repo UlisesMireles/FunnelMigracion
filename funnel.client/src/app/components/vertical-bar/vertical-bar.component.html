@@ -40,12 +40,20 @@
   </button>
 
   <div class="separator"></div>
-
-  <!-- Botón de Expandir -->
-  <div class="expand-btn-container" (mouseenter)="showTooltip = true" (mouseleave)="showTooltip = false">
-    <div class="expand-btn" (click)="toggleMenu()">
-      <i class="bi" [ngClass]="isExpanded ? 'bi-chevron-left' : 'bi-chevron-right'"></i>
-    </div>
-    <div class="tooltip-box" *ngIf="showTooltip">Ampliar la navegación</div>
+<!-- Botón de Expandir -->
+<div class="expand-btn-container"
+     (mouseenter)="showTooltip = true"
+     (mouseleave)="showTooltip = false">
+  <div class="expand-btn"
+       (click)="toggleMenu()"
+       (mouseenter)="showTooltip = true"
+       (mouseleave)="showTooltip = false">
+    <i class="bi" [ngClass]="isExpanded ? 'bi-chevron-left' : 'bi-chevron-right'"></i>
   </div>
+  <div class="tooltip-box" *ngIf="showTooltip">
+    {{ isExpanded ? 'Contraer la navegación' : 'Ampliar la navegación' }}
+  </div>
+</div>
+
+
 </div>

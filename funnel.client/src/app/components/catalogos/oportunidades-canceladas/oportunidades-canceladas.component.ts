@@ -25,7 +25,6 @@ export class OportunidadesCanceladasComponent {  @ViewChild('dt') dt!: Table;
   oportunidadesCanceladasOriginal: Oportunidad[] = [];
   oportunidadCanceladaSeleccionada!: Oportunidad;
 
-  idUsuario: number = 1;
   idEstatus: number = 4;
 
   insertar: boolean = false;
@@ -96,7 +95,7 @@ export class OportunidadesCanceladasComponent {  @ViewChild('dt') dt!: Table;
 
 
     getOportunidades() {
-      this.oportunidadService.getOportunidades(this.idUsuario, this.loginService.obtenerIdEmpresa(), this.idEstatus).subscribe({
+      this.oportunidadService.getOportunidades(this.loginService.obtenerIdEmpresa(), this.loginService.obtenerIdUsuario(), this.idEstatus).subscribe({
         next: (result: Oportunidad[]) => {
           this.oportunidadesCanceladas = [...result];
           this.oportunidadesCanceladasOriginal = result;

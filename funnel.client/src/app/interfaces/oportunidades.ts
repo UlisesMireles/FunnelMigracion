@@ -68,3 +68,16 @@ export interface RequestOportunidad {
     fechaEstimadaCierre?: Date;
     comentario?: string;
 }
+
+export interface Archivos {
+    bandera: string;
+    eliminado: number;
+    idArchivo: number;
+    nombreArchivo: string;
+    idOportunidad: number;
+    idUsuario: number;
+    fechaRegistro: Date;
+    nombreArchivoFormateado: string;
+    iniciales: string;
+    numArchivos: number;
+}

@@ -74,4 +74,8 @@ export class OportunidadesService {
     postHistorial(data: any): Observable <baseOut>{
       return this.http.post<baseOut>(this.baseUrl+'api/Oportunidades/GuardarHistorico', data);
     }
+
+    getDocumentos(idOportunidad: number): Observable<any> {
+      return this.http.get(`${this.baseUrl}api/Archivos/ConsultarArchivo/`+ idOportunidad);
+    }
 }

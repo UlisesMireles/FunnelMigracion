@@ -33,6 +33,8 @@ export class OportunidadesEliminadasComponent {
   modalVisible: boolean = false;
   modalSeguimientoVisible: boolean = false; 
   seguimientoOportunidad: boolean = false;
+  modalDocumentosVisible: boolean = false;
+
 
   years: number[] = [];
   selectedYear: number = new Date().getFullYear();
@@ -44,7 +46,7 @@ export class OportunidadesEliminadasComponent {
   ];
 
   lsTodasColumnas: any[] = [
-    { key: 'idOportunidad', isCheck: true, valor: 'Id', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
+    { key: 'idOportunidad', isCheck: true, valor: 'Seleccion', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombre', isCheck: true, valor: 'Nombre', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreSector', isCheck: false, valor: 'Sector', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreOportunidad', isCheck: true, valor: 'Oportunidad', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
@@ -122,6 +124,13 @@ export class OportunidadesEliminadasComponent {
       this.seguimientoOportunidad = true;
       this.modalSeguimientoVisible = true;
     }
+
+    documento(licencia: Oportunidad) {
+      this.oportunidadSeleccionada = licencia;
+      this.seguimientoOportunidad = true;
+      this.modalDocumentosVisible = true;
+    }
+    
     
     onModalClose() {
       this.modalVisible = false;
@@ -161,7 +170,7 @@ export class OportunidadesEliminadasComponent {
       dialogConfig.autoFocus = false;
       dialogConfig.backdropClass = 'popUpBackDropClass';
       dialogConfig.panelClass = 'popUpPanelAddColumnClass';
-      dialogConfig.width = '350px';
+      dialogConfig.width = '50px';
   
       dialogConfig.data = {
         todosColumnas: this.lsTodasColumnas

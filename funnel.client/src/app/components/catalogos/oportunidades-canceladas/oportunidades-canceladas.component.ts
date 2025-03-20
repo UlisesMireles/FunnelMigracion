@@ -25,11 +25,14 @@ export class OportunidadesCanceladasComponent {  @ViewChild('dt') dt!: Table;
   oportunidadesCanceladasOriginal: Oportunidad[] = [];
   oportunidadCanceladaSeleccionada!: Oportunidad;
 
-  idUsuario: number = 1;
   idEstatus: number = 4;
 
   insertar: boolean = false;
   modalVisible: boolean = false;
+  modalSeguimientoVisible: boolean = false; 
+  seguimientoOportunidad: boolean = false;
+  modalDocumentosVisible: boolean = false;
+
 
   loading: boolean = true;
 
@@ -42,7 +45,7 @@ export class OportunidadesCanceladasComponent {  @ViewChild('dt') dt!: Table;
 
   lsTodasColumnas: any[] = [
     { key: 'idOportunidad', isCheck: true, valor: 'Id', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
-    { key: 'nombre', isCheck: true, valor: 'Nombre', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
+    { key: 'nombre', isCheck: true, valor: 'Nombre', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreSector', isCheck: false, valor: 'Sector', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreOportunidad', isCheck: true, valor: 'Oportunidad', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'abreviatura', isCheck: true, valor: 'Abreviatura', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
@@ -92,7 +95,7 @@ export class OportunidadesCanceladasComponent {  @ViewChild('dt') dt!: Table;
 
 
     getOportunidades() {
-      this.oportunidadService.getOportunidades(this.idUsuario, this.loginService.obtenerIdEmpresa(), this.idEstatus).subscribe({
+      this.oportunidadService.getOportunidades(this.loginService.obtenerIdEmpresa(), this.loginService.obtenerIdUsuario(), this.idEstatus).subscribe({
         next: (result: Oportunidad[]) => {
           this.oportunidadesCanceladas = [...result];
           this.oportunidadesCanceladasOriginal = result;
@@ -115,7 +118,16 @@ export class OportunidadesCanceladasComponent {  @ViewChild('dt') dt!: Table;
       this.insertar = false;
       this.modalVisible = true;
     }
-    
+    seguimiento(licencia: Oportunidad) {
+      this.oportunidadCanceladaSeleccionada = licencia;
+      this.seguimientoOportunidad = true;
+      this.modalSeguimientoVisible = true;
+    }
+    documento(licencia: Oportunidad) {
+      this.oportunidadCanceladaSeleccionada = licencia;
+      this.seguimientoOportunidad = true;
+      this.modalDocumentosVisible = true;
+    }
     onModalClose() {
       this.modalVisible = false;
     }
@@ -154,7 +166,7 @@ export class OportunidadesCanceladasComponent {  @ViewChild('dt') dt!: Table;
       dialogConfig.autoFocus = false;
       dialogConfig.backdropClass = 'popUpBackDropClass';
       dialogConfig.panelClass = 'popUpPanelAddColumnClass';
-      dialogConfig.width = '350px';
+      dialogConfig.width = '50px';
   
       dialogConfig.data = {
         todosColumnas: this.lsTodasColumnas
@@ -201,16 +213,28 @@ export class OportunidadesCanceladasComponent {  @ViewChild('dt') dt!: Table;
     }
   
     getTotalCostPrimeNg(table: Table, def: any) {
+      if (def.key == 'nombreCompleto') {
+        return 'Total';
+      }
+  
       if (!def.isTotal) {
         return;
       }
-  
+
       const registrosVisibles = table.filteredValue ? table.filteredValue : this.oportunidadesCanceladas;
     
-      if (def.key === 'nombre') {
+      if (def.key === 'nombre' || def.key === 'idOportunidad') {
         return registrosVisibles.length;
       }
-  
+    
+      if (def.tipoFormato === 'currency') {
+        return registrosVisibles.reduce(
+          (acc: number, empresa: Oportunidad) =>
+            acc + (Number(empresa[def.key as keyof Oportunidad]) || 0),
+          0
+        );
+      }
+
       return (
         registrosVisibles.reduce(
           (acc: number, empresa: Oportunidad) =>
@@ -219,7 +243,7 @@ export class OportunidadesCanceladasComponent {  @ViewChild('dt') dt!: Table;
         ) / registrosVisibles.length
       );
     }
-  
+
     getVisibleTotal(campo: string, dt: any): number {
       const registrosVisibles = dt.filteredValue ? dt.filteredValue : this.oportunidadesCanceladas;
     

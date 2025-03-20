@@ -99,15 +99,13 @@
     
   }
   
-  ::ng-deep .p-datatable-thead > tr > th,
-  ::ng-deep .p-datatable-tbody > tr > td {
+  ::ng-deep .p-datatable-thead>tr>th,
+  ::ng-deep .p-datatable-tbody>tr>td {
     white-space: normal;
     word-wrap: break-word;
     overflow: visible;
     text-overflow: clip;
-    padding: 2px 1px !important;
-    height: 25px !important;
-    line-height: 0.5 !important; 
+    padding: 4px !important;
   }
   
   ::ng-deep .p-datatable-wrapper {
@@ -226,3 +224,28 @@
     width: 100%;
     max-width: 100%;
   }
+
+.text-left {
+  text-align: left !important;
+}
+
+.seguimiento-textarea {
+  width: 90%;
+  height: 80px; 
+  resize: vertical; 
+  padding: 8px; 
+  border: 1px solid #ccc; 
+  border-radius: 5px;
+}
+
+.nombre-destacado {
+  font-size: 1.5rem; 
+  font-weight: bold; 
+  color: #413939;
+}
+
+.form-control {
+  width: 90% !important;
+
+}
+

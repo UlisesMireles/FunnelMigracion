@@ -67,6 +67,7 @@ import { ModalOportunidadesGanadasComponent } from './components/catalogos/oport
 import { OportunidadesGanadasComponent } from './components/catalogos/oportunidades-ganadas/oportunidades-ganadas.component';
 import { ModalOportunidadesComponent } from './components/catalogos/oportunidades/modal-oportunidades/modal-oportunidades.component';
 import { SeguimientoOportunidadesComponent } from './components/catalogos/seguimiento-oportunidades/seguimiento-oportunidades.component';
+import { DocumentosOportunidadesComponent } from './components/catalogos/documentos-oportunidades/documentos-oportunidades.component';
 import { AgregarQuitarColumnasComponent } from './components/shared/agregar-quitar-columnas/agregar-quitar-columnas.component';
 import { ColumnFilterComponent } from './components/shared/column-filter/column-filter.component';
 import { ColumnasDisponiblesComponent } from './components/shared/columnas-disponibles/columnas-disponibles.component';
@@ -114,6 +115,8 @@ registerLocaleData(localeEs, 'es-MX');
     ModalOportunidadesGanadasComponent,
     OportunidadesEliminadasComponent,
     ModalOportunidadesEliminadasComponent,
+    SeguimientoOportunidadesComponent,
+    DocumentosOportunidadesComponent,
     VerticalBarComponent,
     OportunidadesCanceladasComponent,
     ModalOportunidadesCanceladasComponent,

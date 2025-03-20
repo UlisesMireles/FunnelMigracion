@@ -176,7 +176,7 @@ export class OportunidadesGanadasComponent {
       dialogConfig.autoFocus = false;
       dialogConfig.backdropClass = 'popUpBackDropClass';
       dialogConfig.panelClass = 'popUpPanelAddColumnClass';
-      dialogConfig.width = '350px';
+      dialogConfig.width = '50px';
   
       dialogConfig.data = {
         todosColumnas: this.lsTodasColumnas
@@ -275,7 +275,7 @@ export class OportunidadesGanadasComponent {
     getColumnWidth(key: string): object {
       const widths: { [key: string]: string } = {
           idOportunidad: '95%',
-          abreviatura: '90%',
+          abreviatura: '70%',
           monto: '40%',
           nombre: '40%',
       };

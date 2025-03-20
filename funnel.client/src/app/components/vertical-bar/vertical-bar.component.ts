@@ -25,7 +25,7 @@ export class VerticalBarComponent {
       tooltip: 'Ir a DASHBOARD',
       subMenu: [
         { nombre: 'OPORTUNIDADES GENERAL', path: '/oportunidades'
-          ,hasIcon: true, // 🟠 Indica si tiene icono adicional
+          ,hasIcon: false, // 🟠 Indica si tiene icono adicional
           tooltipMessage: 'Esta característica está incluida'}, // Mensaje del globo
         { nombre: 'OPORTUNIDADES POR AGENTE', path: '/oportunidades/subopcion2'   ,hasIcon: false, // 🟠 Indica si tiene icono adicional
           tooltipMessage: 'Esta característica está incluida'}, // Mensaje del globo
@@ -48,7 +48,7 @@ export class VerticalBarComponent {
       subMenu: [
         { nombre: 'GANADAS', path: '/oportunidades-ganadas' , hasIcon: false, tooltipMessage:'' },
         { nombre: 'PERDIDAS', path: '/oportunidades-perdidas' , hasIcon: false ,tooltipMessage:'' },
-        { nombre: 'CANCELADAS', path: 'oportunidades-canceladas' , hasIcon: false ,tooltipMessage:'' },
+        { nombre: 'CANCELADAS', path: '/oportunidades-canceladas' , hasIcon: false ,tooltipMessage:'' },
         { nombre: 'ELIMINADAS', path: '/oportunidades-eliminadas' , hasIcon: false,tooltipMessage:''  },
       ]
     },

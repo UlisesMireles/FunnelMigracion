@@ -1,8 +1,8 @@
 .sidebar {
   width: 60px;
   height: 100vh;
-  background-color:  rgb(45, 62, 80);
-  color: #DFE3EB; /* Color de la letra */
+  background-color:  #103D66;
+  color: white; /* Color de la letra */
   transition: width 0.3s ease;
   position: fixed;
   display: flex;
@@ -72,8 +72,8 @@
   top: 0;
   left: 100%;  /* Desplaza el submenú fuera de la barra lateral */
   margin-left: 5px;  /* Espacio entre la barra y el submenú */
-  background-color:  rgb(45, 62, 80);
-  color: #DFE3EB; /* Color de la letra */
+  background-color:  #103D66;
+  color: white; /* Color de la letra */
   border-radius: 8px;
   padding: 10px 0;
   box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.5);
@@ -100,8 +100,8 @@ text-align: left;
 
 /* Efecto hover en los elementos del submenú */
 .submenu li:hover {
-  background-color: rgb(45, 62, 80); /* C cambio de color */
-  color: #DFE3EB; /* Color de la letra */
+  background-color: #103D66; /* C cambio de color */
+  color: white; /* Color de la letra */
 }
 
 /* Mostrar el submenú cuando el usuario pasa el mouse */
@@ -112,15 +112,15 @@ text-align: left;
 .sidebar,
 .submenu,
 .expand-button {
-  background-color: rgb(45, 62, 80); /* Color unificado */
-  color: #DFE3EB; /* Color de la letra */
+  background-color: #103D66; /* Color unificado */
+  color: white; /* Color de la letra */
 }
 
 /* 📌 Separador antes del botón "Ampliar navegación" */
 .sidebar .separator {
   width: 50%; /* No ocupa todo el ancho */
   height: 1px;
-  background-color: #DFE3EB; /* Color de la línea */
+  background-color: white; /* Color de la línea */
   margin: 15px auto; /* Espaciado arriba/abajo y centrado */
   opacity: 0.5; /* Un poco tenue */
 }
@@ -136,8 +136,8 @@ text-align: left;
   border-radius: 6px;
   text-align: center;
   cursor: pointer;
-  background-color: rgb(45, 62, 80); /* Fondo igual que el navbar */
-  color: #DFE3EB; /* Color de la letra */
+  background-color: #103D66; /* Fondo igual que el navbar */
+  color: white; /* Color de la letra */
 }
 
 /* 📌 Tooltip (el cuadro tipo bocadillo) */
@@ -213,7 +213,7 @@ text-align: left;
 
 /* Estilo para los elementos del submenú */
 .submenu li a {
-  color: #DFE3EB; /* Cambia el color de texto a negro (o el que prefieras) */
+  color: white; /* Cambia el color de texto a negro (o el que prefieras) */
   text-decoration: none; /* Elimina el subrayado predeterminado de los enlaces */
   padding: 5px;
   display: block; /* Hace que el enlace ocupe todo el ancho del li */
@@ -222,7 +222,7 @@ text-align: left;
 
 /* Si quieres cambiar el color de texto cuando el submenú esté en hover */
 .submenu li a:hover {
-  color: #DFE3EB; /* Cambia el color al pasar el mouse (puedes usar otro color) */
+  color: white; /* Cambia el color al pasar el mouse (puedes usar otro color) */
   text-decoration: none; /* Asegura que no haya subrayado */
 }
 /* Estilo para el encabezado del submenú */
@@ -230,9 +230,9 @@ text-align: left;
   font-weight: bold;
   font-size: 1.1em;
   padding: 5px;
-  background-color: rgb(45, 62, 80);
+  background-color: #103D66;
   border-bottom: 1px solid #ddd;
-  color: #DFE3EB;
+  color: white;
   cursor: default !important; /* Cambia el cursor a una flecha normal */
 }
 
@@ -252,8 +252,8 @@ text-align: left;
 
 .tooltip {
   visibility: hidden;
-  background-color:  rgb(45, 62, 80);
-  color: #DFE3EB; /* Color de la letra */
+  background-color:  #103D66;
+  color: white; /* Color de la letra */
   text-align: center;
   padding: 8px 12px;
   border-radius: 5px;
@@ -276,7 +276,7 @@ text-align: left;
 
   transform: translateY(-50%);
   border-style: solid;
-  border-color: transparent rgb(45, 62, 80) transparent transparent; /* Pico naranja */
+  border-color: transparent #103D66 transparent transparent; /* Pico naranja */
   border-width: 15px; /* Aumenta el tamaño del triángulo */
   left: -20px; /* Ajusta la posición del pico */
 }
@@ -295,8 +295,8 @@ text-align: left;
   top: 50%;
   left: 100%;
   transform: translateY(-50%);
-  background-color:  rgb(45, 62, 80);
-  color: #DFE3EB; /* Color de la letra */
+  background-color:  #103D66;
+  color: white; /* Color de la letra */
   padding: 5px 10px;
   border-radius: 5px;
   white-space: nowrap;
@@ -320,7 +320,7 @@ text-align: left;
   transform: translateY(-50%);
   border-width: 8px;
   border-style: solid;
-  border-color: transparent  rgb(45, 62, 80) transparent transparent;
+  border-color: transparent  #103D66 transparent transparent;
   margin-left: 15px; /* Espacio entre el botón y el tooltip */
 
 }
@@ -332,7 +332,7 @@ text-align: left;
 
 /* Estilo de los botones cuando están en hover */
 .scroll-btn:hover i {
-  color: rgb(45, 62, 80);
+  color: #103D66;
 }
 
 /* Espaciado entre los botones de scroll */

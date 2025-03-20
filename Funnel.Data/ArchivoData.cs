@@ -121,15 +121,22 @@ namespace Funnel.Data
                 request.NombreArchivo = Path.GetFileNameWithoutExtension(archivo.FileName);
             }
 
-            String nombreArchivoBD = $"{request.NombreArchivo}^{request.IdEmpresa}_{request.IdProspecto}_{request.IdOportunidad}.{extension}"; 
-            path = Directory.GetCurrentDirectory() + "/Archivos/" + archivo.FileName;
+            String nombreArchivoBD = $"{request.NombreArchivo}^{request.IdEmpresa}_{request.IdProspecto}_{request.IdOportunidad}.{extension}";
+
+            string carpetaDestino = Path.Combine(Directory.GetCurrentDirectory(), "Archivos");
+            string rutaArchivo = Path.Combine(carpetaDestino, archivo.FileName);
 
             try
             {
+
+                if (!Directory.Exists(carpetaDestino))
+                {
+                    Directory.CreateDirectory(carpetaDestino);
+                }
+
                 if (archivo != null)
                 {
-                    var fileName = Path.GetFileName(archivo.FileName);
-                    using (var stream = new FileStream(path, FileMode.Create))
+                    using (var stream = new FileStream(rutaArchivo, FileMode.Create))
                     {
                         await archivo.CopyToAsync(stream);
                     }
@@ -145,7 +152,6 @@ namespace Funnel.Data
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
                 insertaArchivo.ErrorMessage = "Error al guardar el archivo: " + ex.Message;
                 insertaArchivo.Result = false;
             }

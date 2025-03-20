@@ -5,19 +5,19 @@
     </div>
     
     <div class="col-12">
-      <div class="row contenedorTabla" style="justify-content: center; display: flex; width: 100%;">
+      <div class="row contenedorTabla" style="justify-content: center; display: flex; width: 100% ;" >
         <div *ngIf="loading">Cargando...</div>
-        <p-table *ngIf="!loading" #dt [stripedRows]="true" [value]="oportunidadesPerdidas" dataKey="id" [rows]="20"
+        <p-table *ngIf="!loading" #dt [stripedRows]="true" [value]="oportunidadesCanceladas" dataKey="id" [rows]="20"
           [showCurrentPageReport]="true" [rowsPerPageOptions]="[20, 30, 50]" [paginator]="true" paginatorPosition="both"
           currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros"
           [columns]="lsColumnasAMostrar"
           [resizableColumns]="true"
           [globalFilterFields]="['nombre','nombreSector','nombreOportunidad','abreviatura','stage','iniciales','nombreContacto','entrega','monto','probabilidadOriginal','probabilidad','montoNormalizado','fechaRegistro','diasFunnel','fechaEstimadaCierreOriginal','fechaModificacion', 'comentario']"
-          [tableStyle]="{'min-width': anchoTabla + '%'}">
+          [tableStyle]="{'min-width': anchoTabla+ '%'}">
           
           <ng-template class="divAccionesTabla" #caption>
-            <div class="col-12" style="text-align: left; font-weight: bold; margin-top: 20px">
-              <h3>Administración General de Oportunidades Perdidas</h3>
+            <div class="col-12" style="text-align: left; font-weight: bold;">
+              <h3>Administración General deOportunidades Canceladas</h3>
             </div>
             <div class="row">
               <div class="col inDivDatatableHeader" style="text-align:right; margin-right:5px">
@@ -34,22 +34,18 @@
           <ng-template pTemplate="header" let-columns>
             <tr class="custom-header">
                 <th></th>
-                <th></th>
-                <th></th>
                 <th *ngFor="let def of lsColumnasAMostrar" pSortableColumn="{{def.key}}">
                   {{def.valor}}<p-sortIcon field="{{def.key}}"></p-sortIcon>
                 </th>
             </tr>
             <tr>
                 <th></th>
-                <th></th>
-                <th></th>
                 <th *ngFor="let def of lsColumnasAMostrar" style="min-width: 30%;">
                     <ng-container *ngIf="def.groupColumn">
                         <p-columnFilter field="{{def.key}}" matchMode="in" [showMenu]="false">
                             <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                                 <p-multiSelect [ngModel]="value"
-                                    [options]="obtenerArregloFiltros(oportunidadesPerdidas, def.key)" placeholder=""
+                                    [options]="obtenerArregloFiltros(oportunidadesCanceladas, def.key)" placeholder=""
                                     (onChange)="filter($event.value)">
                                     <ng-template let-option pTemplate="item">
                                         <div class="p-multiselect-representative-option">
@@ -90,48 +86,40 @@
                             </div>
                         </div>
                     </ng-container>
+
                 </th>
             </tr>
         </ng-template>
 
         <ng-template pTemplate="body" let-rowData let-columns="columns">
           <tr>
-            <td>
-              <p-button type="button" icon="bi bi-folder2" text (click)="documento(rowData)"/>
-            </td>
-              <td>
-                <p-button type="button" icon="bi bi-file-earmark-text" text (click)="seguimiento(rowData)"/>
-              </td>
               <td>
                 <p-button type="button" icon="bi bi-pencil" text (click)="actualiza(rowData)"/>
               </td>
               <td *ngFor="let def of lsColumnasAMostrar">
                 <ng-container [ngSwitch]="def.tipoFormato">
                   <span *ngSwitchCase="'text'">{{ rowData[def.key] }}</span>
+          
                   <span *ngSwitchCase="'currency'">
                     {{ rowData[def.key] | currency:'MX ':'symbol' }}
                   </span>
+          
                   <span *ngSwitchCase="'number'">{{ rowData[def.key] | number:'1.0-2' }}</span>
+          
                   <span *ngSwitchCase="'date'">{{ rowData[def.key] | date:'dd/MM/yyyy' }}</span>
                 </ng-container>
               </td>
           </tr>
         </ng-template>
         <ng-template pTemplate="footer" let-columns #footer>
-          <tr class="custom-footer">
-            <td></td>
-            <td *ngFor="let def of lsColumnasAMostrar">
-              <ng-container *ngIf="def.key === 'idOportunidad'">
-                total de registros: {{ getTotalCostPrimeNg(dt, def) }}
-              </ng-container>
-              <ng-container *ngIf="def.tipoFormato === 'currency'">
-                {{ getTotalCostPrimeNg(dt, def) | currency:'MX ': 'symbol' }}
-              </ng-container>
-              <ng-container *ngIf="def.tipoFormato !== 'currency' && def.key !== 'nombre' && def.key !== 'idOportunidad'">
-                {{ getTotalCostPrimeNg(dt, def) | number: '1.0-2' }}
-              </ng-container>
-            </td>
-          </tr>
+            <tr class="custom-footer">
+              <td></td>
+              <td *ngFor="let def of lsColumnasAMostrar">
+                <ng-container *ngIf="def.key === 'nombre'">
+                  total de registros: {{ getTotalCostPrimeNg(dt, def) }}
+                </ng-container>
+              </td>
+            </tr>
         </ng-template>
 
         <ng-template pTemplate="emptymessage">
@@ -147,14 +135,6 @@
   </div>
 </div>
 
-<app-modal-oportunidades-perdidas [(visible)]="modalVisible" [title]="'Editar Datos de '" (closeModal)="onModalClose()"
-(result)="manejarResultado($event)" [oportunidades]="oportunidadesPerdidas" [oportunidad]="oportunidadSeleccionadaPerdidas">
-</app-modal-oportunidades-perdidas>
-
-<app-seguimiento-oportunidades [(visible)]="modalSeguimientoVisible" [title]="'Seguimiento de '" (closeModal)="onModalClose()"
-  (result)="manejarResultado($event)" [insertar]="insertar" [oportunidades]="oportunidadesPerdidas" [oportunidad]="oportunidadSeleccionadaPerdidas">
-</app-seguimiento-oportunidades>
-
-<app-documentos-oportunidades [(visible)]="modalDocumentosVisible" [title]="'Documentos de '" (closeModal)="onModalClose()"
-  (result)="manejarResultado($event)" [insertar]="insertar" [oportunidades]="oportunidadesPerdidas" [oportunidad]="oportunidadSeleccionadaPerdidas">
-</app-documentos-oportunidades>
+<app-modal-oportunidades-canceladas [(visible)]="modalVisible" [title]="'Editar Datos de '" (closeModal)="onModalClose()"
+(result)="manejarResultado($event)" [oportunidades]="oportunidadesCanceladas" [oportunidad]="oportunidadCanceladaSeleccionada">
+</app-modal-oportunidades-canceladas>

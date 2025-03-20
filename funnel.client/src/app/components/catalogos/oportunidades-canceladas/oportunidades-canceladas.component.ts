@@ -9,37 +9,32 @@ import { Oportunidad } from '../../../interfaces/oportunidades';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ColumnasDisponiblesComponent } from '../../shared/columnas-disponibles/columnas-disponibles.component';
 import { sumBy, map as mapping, omit, sortBy, groupBy, keys as getKeys } from "lodash-es";
-
 @Component({
-  selector: 'app-oportunidades-eliminadas',
+  selector: 'app-oportunidades-canceladas',
   standalone: false,
-  templateUrl: './oportunidades-eliminadas.component.html',
-  styleUrl: './oportunidades-eliminadas.component.css'
+  templateUrl: './oportunidades-canceladas.component.html',
+  styleUrl: './oportunidades-canceladas.component.css'
 })
-export class OportunidadesEliminadasComponent {
-  @ViewChild('dt') dt!: Table;
+export class OportunidadesCanceladasComponent {  @ViewChild('dt') dt!: Table;
 
   disableOportunidades = true;
   isDescargando = false;
   anchoTabla = 100;
 
-  oportunidades: Oportunidad[] = [];
-  oportunidadesOriginal: Oportunidad[] = [];
-  oportunidadSeleccionada!: Oportunidad;
+  oportunidadesCanceladas: Oportunidad[] = [];
+  oportunidadesCanceladasOriginal: Oportunidad[] = [];
+  oportunidadCanceladaSeleccionada!: Oportunidad;
 
-  idEstatus: number = 5;
+  idUsuario: number = 1;
+  idEstatus: number = 4;
 
   insertar: boolean = false;
   modalVisible: boolean = false;
-  modalSeguimientoVisible: boolean = false; 
-  seguimientoOportunidad: boolean = false;
-  modalDocumentosVisible: boolean = false;
 
+  loading: boolean = true;
 
   years: number[] = [];
   selectedYear: number = new Date().getFullYear();
-
-  loading: boolean = true;
 
   lsColumnasAMostrar: any[] = [
    
@@ -47,18 +42,21 @@ export class OportunidadesEliminadasComponent {
 
   lsTodasColumnas: any[] = [
     { key: 'idOportunidad', isCheck: true, valor: 'Id', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
-    { key: 'nombre', isCheck: true, valor: 'Nombre', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'nombre', isCheck: true, valor: 'Nombre', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreSector', isCheck: false, valor: 'Sector', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreOportunidad', isCheck: true, valor: 'Oportunidad', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'abreviatura', isCheck: true, valor: 'Abreviatura', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'stage', isCheck: false, valor: 'Etapa', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreEjecutivo', isCheck: true, valor: 'Ejecutivo', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'nombreContacto', isCheck: false, valor: 'Contacto', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'monto', isCheck: true, valor: 'Monto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
-    { key: 'probabilidad', isCheck: false, valor: 'Probabilidad', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'probabilidad', isCheck: false, valor: 'Prob', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'montoNormalizado', isCheck: false, valor: 'Monto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
     { key: 'fechaRegistro', isCheck: true, valor: 'Fecha Registro', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
     { key: 'diasFunnel', isCheck: true, valor: 'Días en Funnel', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
     { key: 'fechaEstimadaCierreOriginal', isCheck: true, valor: 'Fecha Cierre', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
-    { key: 'comentario', isCheck: true, valor: 'Comentario', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    {key: 'comentario', isCheck: true, valor: 'Último comentario', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
+
   ];
 
   columnsAMostrarResp: string = JSON.stringify(this.lsColumnasAMostrar);
@@ -73,17 +71,16 @@ export class OportunidadesEliminadasComponent {
       this.getOportunidades();
 
       const currentYear = new Date().getFullYear();
-      for (let year = currentYear; year >= 2020; year--) {
-        this.years.push(year);
-      }
+  for (let year = currentYear; year >= 2020; year--) {
+    this.years.push(year);
+  }
 
       document.documentElement.style.fontSize = 12 + 'px';
     }
 
-
     filterByYear() {
-      if (this.oportunidadesOriginal) {
-        this.oportunidades = this.oportunidadesOriginal.filter(oportunidad => {
+      if (this.oportunidadesCanceladasOriginal) {
+        this.oportunidadesCanceladas = this.oportunidadesCanceladasOriginal.filter(oportunidad => {
           if (oportunidad.fechaRegistro) {
             const fechaRegistro = new Date(oportunidad.fechaRegistro);
             return fechaRegistro.getFullYear() === this.selectedYear;
@@ -95,10 +92,10 @@ export class OportunidadesEliminadasComponent {
 
 
     getOportunidades() {
-      this.oportunidadService.getOportunidades(this.loginService.obtenerIdEmpresa(), this.loginService.obtenerIdUsuario(), this.idEstatus).subscribe({
+      this.oportunidadService.getOportunidades(this.idUsuario, this.loginService.obtenerIdEmpresa(), this.idEstatus).subscribe({
         next: (result: Oportunidad[]) => {
-          this.oportunidades = [...result];
-          this.oportunidadesOriginal = result;
+          this.oportunidadesCanceladas = [...result];
+          this.oportunidadesCanceladasOriginal = result;
           this.filterByYear();
           this.cdr.detectChanges(); 
           this.loading = false;
@@ -114,23 +111,10 @@ export class OportunidadesEliminadasComponent {
       });
     }
     actualiza(licencia: Oportunidad) {
-      this.oportunidadSeleccionada = licencia;
+      this.oportunidadCanceladaSeleccionada = licencia;
       this.insertar = false;
       this.modalVisible = true;
     }
-
-    seguimiento(licencia: Oportunidad) {
-      this.oportunidadSeleccionada = licencia;
-      this.seguimientoOportunidad = true;
-      this.modalSeguimientoVisible = true;
-    }
-
-    documento(licencia: Oportunidad) {
-      this.oportunidadSeleccionada = licencia;
-      this.seguimientoOportunidad = true;
-      this.modalDocumentosVisible = true;
-    }
-    
     
     onModalClose() {
       this.modalVisible = false;
@@ -207,38 +191,26 @@ export class OportunidadesEliminadasComponent {
           return acc;
         }, {} as { [key: string]: any });
       });
-    
+      
       import('xlsx').then(xlsx => {
         const hojadeCalculo: import('xlsx').WorkSheet = xlsx.utils.json_to_sheet(dataExport);
         const libro: import('xlsx').WorkBook = xlsx.utils.book_new();
-        xlsx.utils.book_append_sheet(libro, hojadeCalculo, "Oportunidades Ganadas");
-        xlsx.writeFile(libro, "Oportunidades ganadas.xlsx");
+        xlsx.utils.book_append_sheet(libro, hojadeCalculo, "Oportunidades Canceladas");
+        xlsx.writeFile(libro, "Oportunidades Canceladas.xlsx");
       });
     }
   
     getTotalCostPrimeNg(table: Table, def: any) {
-      if (def.key == 'nombreCompleto') {
-        return 'Total';
-      }
-  
       if (!def.isTotal) {
         return;
       }
-
-      const registrosVisibles = table.filteredValue ? table.filteredValue : this.oportunidades;
+  
+      const registrosVisibles = table.filteredValue ? table.filteredValue : this.oportunidadesCanceladas;
     
-      if (def.key === 'nombre' || def.key === 'idOportunidad') {
+      if (def.key === 'nombre') {
         return registrosVisibles.length;
       }
-    
-      if (def.tipoFormato === 'currency') {
-        return registrosVisibles.reduce(
-          (acc: number, empresa: Oportunidad) =>
-            acc + (Number(empresa[def.key as keyof Oportunidad]) || 0),
-          0
-        );
-      }
-
+  
       return (
         registrosVisibles.reduce(
           (acc: number, empresa: Oportunidad) =>
@@ -247,9 +219,9 @@ export class OportunidadesEliminadasComponent {
         ) / registrosVisibles.length
       );
     }
-
+  
     getVisibleTotal(campo: string, dt: any): number {
-      const registrosVisibles = dt.filteredValue ? dt.filteredValue : this.oportunidades;
+      const registrosVisibles = dt.filteredValue ? dt.filteredValue : this.oportunidadesCanceladas;
     
       if (campo === 'nombre') {
         return registrosVisibles.length;

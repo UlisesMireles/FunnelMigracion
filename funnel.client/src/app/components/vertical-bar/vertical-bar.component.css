@@ -35,7 +35,7 @@
 }
 
 .menu-item:hover {
-  background-color: #495057;
+  background-color: rgba(16, 61, 102, 0.5);
 }
 
 
@@ -100,7 +100,7 @@ text-align: left;
 
 /* Efecto hover en los elementos del submenú */
 .submenu li:hover {
-  background-color: #495057; /* C cambio de color */
+  background-color: rgba(16, 61, 102, 0.5);  /* C cambio de color */
   color: white; /* Color de la letra */
 }
 
@@ -365,3 +365,8 @@ text-align: left;
   overflow: hidden;
   position: relative;
 } */
+.submenu,
+.expand-button {
+  background-color: rgba(16, 61, 102, 0.6);
+  color: #FFFFFF;
+}

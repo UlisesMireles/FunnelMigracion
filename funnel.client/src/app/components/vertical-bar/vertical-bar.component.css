@@ -38,18 +38,10 @@
   background-color: #495057;
 }
 
-/* Estilo del botón de expandir */
-/* .expand-btn-container {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 15px;
-} */
 
 .expand-btn-container {
   position: absolute;
-  top: 90%; /* Ajusta este valor según lo necesites */
+  top: 85%; /* Ajusta este valor según lo necesites */
   left: 0;
   width: 100%;
   display: flex;
@@ -123,8 +115,6 @@ text-align: left;
   background-color: rgb(45, 62, 80); /* Color unificado */
   color: #DFE3EB; /* Color de la letra */
 }
-
-
 
 /* 📌 Separador antes del botón "Ampliar navegación" */
 .sidebar .separator {
@@ -206,7 +196,6 @@ text-align: left;
   border: none;
   border-radius: 50%;
   margin: 5px auto;
-
   padding: 4px 8px; /* Reduce ligeramente el padding */
   cursor: pointer;
   transition: all 0.3s ease;
@@ -217,14 +206,11 @@ text-align: left;
   width: 10;   /* Ajusta el ancho */
 }
 
-
-
 .scroll-btn:hover {
   background-color: #1a2533;
 }
 
 
-/********************/
 /* Estilo para los elementos del submenú */
 .submenu li a {
   color: #DFE3EB; /* Cambia el color de texto a negro (o el que prefieras) */
@@ -289,7 +275,6 @@ text-align: left;
   top: 50%;
 
   transform: translateY(-50%);
-  border-width: 6px;
   border-style: solid;
   border-color: transparent rgb(45, 62, 80) transparent transparent; /* Pico naranja */
   border-width: 15px; /* Aumenta el tamaño del triángulo */
@@ -340,12 +325,7 @@ text-align: left;
 
 }
 
-/*
-.menu-container {
-  max-height: 400px;
-  overflow: hidden;
-  position: relative;
-} */
+
 
 
 
@@ -363,3 +343,25 @@ text-align: left;
 .scroll-btn.down-btn {
   margin-top: 5px;
 }
+
+
+/*tamaño de los menus*/
+
+.menu-item i {
+  font-size: 20px; /* Ajusta el tamaño según lo necesites */
+}
+
+.expand-btn i {
+  font-size: 16px; /* Para el botón de expandir */
+}
+
+
+
+
+
+/*
+.menu-container {
+  max-height: 400px;
+  overflow: hidden;
+  position: relative;
+} */

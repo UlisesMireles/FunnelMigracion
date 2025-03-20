@@ -25,7 +25,7 @@ export class VerticalBarComponent {
       tooltip: 'Ir a DASHBOARD',
       subMenu: [
         { nombre: 'OPORTUNIDADES GENERAL', path: '/oportunidades'
-          ,hasIcon: false, // 🟠 Indica si tiene icono adicional
+          ,hasIcon: true, // 🟠 Indica si tiene icono adicional
           tooltipMessage: 'Esta característica está incluida'}, // Mensaje del globo
         { nombre: 'OPORTUNIDADES POR AGENTE', path: '/oportunidades/subopcion2'   ,hasIcon: false, // 🟠 Indica si tiene icono adicional
           tooltipMessage: 'Esta característica está incluida'}, // Mensaje del globo

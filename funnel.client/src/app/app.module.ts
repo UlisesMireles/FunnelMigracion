@@ -16,16 +16,9 @@ import { MenuComponent } from './components/menu/menu.component';
 import { OlvidasteContrasenaComponent } from './components/olvidaste-contrasena/olvidaste-contrasena.component';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { TooltipModule } from 'primeng/tooltip';
 
-import { ModalOportunidadesEliminadasComponent } from './components/catalogos/oportunidades-eliminadas/modal-oportunidades-eliminadas/modal-oportunidades-eliminadas.component';
-import { OportunidadesEliminadasComponent } from './components/catalogos/oportunidades-eliminadas/oportunidades-eliminadas.component';
-import { ModalProspectosComponent } from './components/catalogos/prospectos/modal-prospectos/modal-prospectos.component';
-import { ProspectosComponent } from './components/catalogos/prospectos/prospectos.component';
-import { ModalTipoServiciosComponent } from './components/catalogos/tipo-servicios/modal-tipo-servicios/modal-tipo-servicios.component';
-import { ModalUsuariosComponent } from './components/catalogos/usuarios/modal-usuarios/modal-usuarios.component';
-
+import { MatInputModule } from '@angular/material/input';
 import Aura from '@primeng/themes/aura';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -48,9 +41,17 @@ import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 import { ContactosComponent } from './components/catalogos/contactos/contactos.component';
 import { ModalContactosComponent } from './components/catalogos/contactos/modal-contactos/modal-contactos.component';
+import { ModalOportunidadesCanceladasComponent } from './components/catalogos/oportunidades-canceladas/modal-oportunidades-canceladas/modal-oportunidades-canceladas.component';
+import { OportunidadesCanceladasComponent } from './components/catalogos/oportunidades-canceladas/oportunidades-canceladas.component';
+import { ModalOportunidadesEliminadasComponent } from './components/catalogos/oportunidades-eliminadas/modal-oportunidades-eliminadas/modal-oportunidades-eliminadas.component';
+import { OportunidadesEliminadasComponent } from './components/catalogos/oportunidades-eliminadas/oportunidades-eliminadas.component';
+import { ModalProspectosComponent } from './components/catalogos/prospectos/modal-prospectos/modal-prospectos.component';
+import { ProspectosComponent } from './components/catalogos/prospectos/prospectos.component';
+import { ModalTipoServiciosComponent } from './components/catalogos/tipo-servicios/modal-tipo-servicios/modal-tipo-servicios.component';
 import { TipoServiciosComponent } from './components/catalogos/tipo-servicios/tipo-servicios.component';
 import { ModalTiposEntregaComponent } from './components/catalogos/tipos-entrega/modal-tipos-entrega/modal-tipos-entrega.component';
 import { TiposEntregaComponent } from './components/catalogos/tipos-entrega/tipos-entrega.component';
+import { ModalUsuariosComponent } from './components/catalogos/usuarios/modal-usuarios/modal-usuarios.component';
 import { PrimeNgConfiguracionService } from './services/primeNgConfiguracion.service';
 
 export function getBaseUrl() {
@@ -60,7 +61,6 @@ export function getBaseUrl() {
 import { ModalOportunidadesPerdidasComponent } from './components/catalogos/oportunidades-perdidas/modal-oportunidades-perdidas/modal-oportunidades-perdidas.component';
 import { OportunidadesPerdidasComponent } from './components/catalogos/oportunidades-perdidas/oportunidades-perdidas.component';
 import { OportunidadesComponent } from './components/catalogos/oportunidades/oportunidades.component';
-
 
 import { CommonModule, DatePipe, registerLocaleData } from '@angular/common';
 import { ModalOportunidadesGanadasComponent } from './components/catalogos/oportunidades-ganadas/modal-oportunidades-ganadas/modal-oportunidades-ganadas.component';
@@ -114,8 +114,10 @@ registerLocaleData(localeEs, 'es-MX');
     ModalOportunidadesGanadasComponent,
     OportunidadesEliminadasComponent,
     ModalOportunidadesEliminadasComponent,
-    SeguimientoOportunidadesComponent,
     VerticalBarComponent,
+    OportunidadesCanceladasComponent,
+    ModalOportunidadesCanceladasComponent,
+    SeguimientoOportunidadesComponent
   ],
   imports: [
     BrowserModule,

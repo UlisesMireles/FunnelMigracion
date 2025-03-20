@@ -24,9 +24,18 @@
                 <p-dropdown [options]="years" [(ngModel)]="selectedYear" (onChange)="filterByYear()" placeholder="Selecciona un año"
                   [ngStyle]="{'margin-right': '5px'}">
                 </p-dropdown>
-                <p-button label="" icon="bi bi-arrow-clockwise" (click)="clear(dt)" severity="secondary" [ngStyle]="{'margin-right': '5px'}" />
-                <p-button label="" icon="bi bi-download" severity="secondary" (click)="exportExcel(dt)" [ngStyle]="{'margin-right': '5px'}" />
-                <p-button label="" icon="bi-pencil" (click)="agregarColumna($event)" severity="secondary" [ngStyle]="{'margin-right': '5px'}" />
+                <p-button label="" icon="bi bi-arrow-clockwise" (click)="clear(dt)" severity="secondary"
+                pTooltip="Refrescar" tooltipPosition="top"
+                [ngStyle]="{'margin-right': '5px'}" />
+              
+                <p-button label="" icon="bi bi-download" severity="secondary" (click)="exportExcel(dt)" 
+                  pTooltip="Descargar Excel" tooltipPosition="top"
+                  [ngStyle]="{'margin-right': '5px'}"/>
+                
+                <p-button label="" icon="bi-list" (click)="agregarColumna($event)" severity="secondary"  
+                  pTooltip="Agregar columna" tooltipPosition="top"
+                  [ngStyle]="{'margin-right': '5px'}"/>
+              
               </div>
             </div>
           </ng-template>
@@ -112,7 +121,7 @@
             <td></td>
             <td *ngFor="let def of lsColumnasAMostrar">
               <ng-container *ngIf="def.key === 'idOportunidad'">
-                total de registros: {{ getTotalCostPrimeNg(dt, def) }}
+                Total: {{ getTotalCostPrimeNg(dt, def) }}
               </ng-container>
               <ng-container *ngIf="def.tipoFormato === 'currency'">
                 {{ getTotalCostPrimeNg(dt, def) | currency:'MX ': 'symbol' }}

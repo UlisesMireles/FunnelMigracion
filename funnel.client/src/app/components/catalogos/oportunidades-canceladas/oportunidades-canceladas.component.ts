@@ -42,7 +42,7 @@ export class OportunidadesCanceladasComponent {  @ViewChild('dt') dt!: Table;
 
   lsTodasColumnas: any[] = [
     { key: 'idOportunidad', isCheck: true, valor: 'Id', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
-    { key: 'nombre', isCheck: true, valor: 'Nombre', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
+    { key: 'nombre', isCheck: true, valor: 'Nombre', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreSector', isCheck: false, valor: 'Sector', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreOportunidad', isCheck: true, valor: 'Oportunidad', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'abreviatura', isCheck: true, valor: 'Abreviatura', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
@@ -201,16 +201,28 @@ export class OportunidadesCanceladasComponent {  @ViewChild('dt') dt!: Table;
     }
   
     getTotalCostPrimeNg(table: Table, def: any) {
+      if (def.key == 'nombreCompleto') {
+        return 'Total';
+      }
+  
       if (!def.isTotal) {
         return;
       }
-  
+
       const registrosVisibles = table.filteredValue ? table.filteredValue : this.oportunidadesCanceladas;
     
-      if (def.key === 'nombre') {
+      if (def.key === 'nombre' || def.key === 'idOportunidad') {
         return registrosVisibles.length;
       }
-  
+    
+      if (def.tipoFormato === 'currency') {
+        return registrosVisibles.reduce(
+          (acc: number, empresa: Oportunidad) =>
+            acc + (Number(empresa[def.key as keyof Oportunidad]) || 0),
+          0
+        );
+      }
+
       return (
         registrosVisibles.reduce(
           (acc: number, empresa: Oportunidad) =>
@@ -219,7 +231,7 @@ export class OportunidadesCanceladasComponent {  @ViewChild('dt') dt!: Table;
         ) / registrosVisibles.length
       );
     }
-  
+
     getVisibleTotal(campo: string, dt: any): number {
       const registrosVisibles = dt.filteredValue ? dt.filteredValue : this.oportunidadesCanceladas;
     

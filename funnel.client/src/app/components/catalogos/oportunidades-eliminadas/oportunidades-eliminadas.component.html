@@ -24,9 +24,18 @@
                   <p-dropdown [options]="years" [(ngModel)]="selectedYear" (onChange)="filterByYear()" placeholder="Selecciona un año"
                     [ngStyle]="{'margin-right': '5px'}">
                   </p-dropdown>
-                  <p-button label="" icon="bi bi-arrow-clockwise" (click)="clear(dt)" severity="secondary" [ngStyle]="{'margin-right': '5px'}" />
-                  <p-button label="" icon="bi bi-download" severity="secondary" (click)="exportExcel(dt)" [ngStyle]="{'margin-right': '5px'}" />
-                  <p-button label="" icon="bi-pencil" (click)="agregarColumna($event)" severity="secondary" [ngStyle]="{'margin-right': '5px'}" />
+                  <p-button label="" icon="bi bi-arrow-clockwise" (click)="clear(dt)" severity="secondary"
+                  pTooltip="Refrescar" tooltipPosition="top"
+                  [ngStyle]="{'margin-right': '5px'}" />
+                
+                  <p-button label="" icon="bi bi-download" severity="secondary" (click)="exportExcel(dt)" 
+                    pTooltip="Descargar Excel" tooltipPosition="top"
+                    [ngStyle]="{'margin-right': '5px'}"/>
+                  
+                  <p-button label="" icon="bi-list" (click)="agregarColumna($event)" severity="secondary"  
+                    pTooltip="Agregar columna" tooltipPosition="top"
+                    [ngStyle]="{'margin-right': '5px'}"/>
+                
                 </div>
               </div>
             </ng-template>
@@ -63,7 +72,7 @@
                               <div *ngSwitchCase="'text'">
                                   <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false">
                                       <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                                          <input type="text" pInputText [ngModel]="value" [ngStyle]="{'width': def.key == 'idOportunidad' ? '90%' : 'auto'}"
+                                          <input type="text" pInputText [ngModel]="value" [ngStyle]="{'width': def.key == 'idOportunidad' ? '95%' : def.key == 'abreviatura' ? '85%' : 'auto'}"
                                               (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
                                       </ng-template>
                                   </p-columnFilter>
@@ -95,12 +104,14 @@
 
           <ng-template pTemplate="body" let-rowData let-columns="columns">
             <tr>
-                <td>
-                  <p-button type="button" icon="bi bi-file-earmark-text" text (click)="seguimiento(rowData)"/>
-                </td>
-                <td>
-                  <p-button type="button" icon="bi bi-pencil" text (click)="actualiza(rowData)"/>
-                </td>
+              <td>
+                <p-button type="button" icon="bi bi-file-earmark-text" text (click)="seguimiento(rowData)" 
+                  pTooltip="Ver seguimiento" tooltipPosition="top"/>
+              </td>
+              <td>
+                <p-button type="button" icon="bi bi-pencil" text (click)="actualiza(rowData)" 
+                  pTooltip="Editar oportunidad" tooltipPosition="top"/>
+              </td>
                 <td *ngFor="let def of lsColumnasAMostrar">
                   <ng-container [ngSwitch]="def.tipoFormato">
                     <span *ngSwitchCase="'text'">{{ rowData[def.key] }}</span>
@@ -119,9 +130,10 @@
           <ng-template pTemplate="footer" let-columns #footer>
             <tr class="custom-footer">
               <td></td>
+              <td></td>
               <td *ngFor="let def of lsColumnasAMostrar">
                 <ng-container *ngIf="def.key === 'idOportunidad'">
-                  total de registros: {{ getTotalCostPrimeNg(dt, def) }}
+                  Total: {{ getTotalCostPrimeNg(dt, def) }}
                 </ng-container>
                 <ng-container *ngIf="def.tipoFormato === 'currency'">
                   {{ getTotalCostPrimeNg(dt, def) | currency:'MX ': 'symbol' }}

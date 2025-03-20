@@ -41,7 +41,7 @@
 
 .expand-btn-container {
   position: absolute;
-  top: 85%; /* Ajusta este valor según lo necesites */
+  top: 80%; /* Ajusta este valor según lo necesites */
   left: 0;
   width: 100%;
   display: flex;

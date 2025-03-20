@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 export class VerticalBarComponent {
 
 
-  isExpanded: boolean = true;
+  isExpanded: boolean = false;
   hoveredMenu: number | null = null;
   showTooltip: boolean = false;
   @ViewChild('menuList', { static: false }) menuList!: ElementRef;

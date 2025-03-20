@@ -35,7 +35,7 @@ export class OportunidadesPerdidasComponent {
   modalVisible: boolean = false;
   modalSeguimientoVisible: boolean = false; 
   seguimientoOportunidad: boolean = false;
-
+  modalDocumentosVisible: boolean = false;
 
   loading: boolean = true;
 
@@ -125,6 +125,12 @@ export class OportunidadesPerdidasComponent {
     this.oportunidadSeleccionadaPerdidas = licencia;
     this.seguimientoOportunidad = true;
     this.modalSeguimientoVisible = true;
+  }
+
+  documento(licencia: Oportunidad) {
+    this.oportunidadSeleccionadaPerdidas = licencia;
+    this.seguimientoOportunidad = true;
+    this.modalDocumentosVisible = true;
   }
   
   onModalClose() {

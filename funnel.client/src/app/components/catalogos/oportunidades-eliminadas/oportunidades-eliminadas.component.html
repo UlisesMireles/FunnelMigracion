@@ -16,7 +16,7 @@
             [tableStyle]="{'min-width': anchoTabla+ '%'}">
             
             <ng-template class="divAccionesTabla" #caption>
-              <div class="col-12" style="text-align: left; font-weight: bold;">
+              <div class="col-12" style="text-align: left; font-weight: bold; margin-top: 20px">
                 <h3>Administración General de Oportunidades Eliminadas</h3>
               </div>
               <div class="row">
@@ -44,11 +44,13 @@
               <tr class="custom-header">
                   <th></th>
                   <th></th>
+                  <th></th>
                   <th *ngFor="let def of lsColumnasAMostrar" pSortableColumn="{{def.key}}">
                     {{def.valor}}<p-sortIcon field="{{def.key}}"></p-sortIcon>
                   </th>
               </tr>
               <tr>
+                  <th></th>
                   <th></th>
                   <th></th>
                   <th *ngFor="let def of lsColumnasAMostrar" style="min-width: 30%;">
@@ -112,6 +114,11 @@
                 <p-button type="button" icon="bi bi-pencil" text (click)="actualiza(rowData)" 
                   pTooltip="Editar oportunidad" tooltipPosition="top"/>
               </td>
+              <td>
+                <p-button type="button" icon="bi bi-folder2" text (click)="documento(rowData)"
+                  pTooltip="Ver documentos" tooltipPosition="top"/>
+              </td>
+
                 <td *ngFor="let def of lsColumnasAMostrar">
                   <ng-container [ngSwitch]="def.tipoFormato">
                     <span *ngSwitchCase="'text'">{{ rowData[def.key] }}</span>
@@ -129,6 +136,7 @@
           </ng-template>
           <ng-template pTemplate="footer" let-columns #footer>
             <tr class="custom-footer">
+              <td></td>
               <td></td>
               <td></td>
               <td *ngFor="let def of lsColumnasAMostrar">
@@ -166,3 +174,9 @@
 <app-seguimiento-oportunidades [(visible)]="modalSeguimientoVisible" [title]="'Seguimiento de '" (closeModal)="onModalClose()"
   (result)="manejarResultado($event)" [insertar]="insertar" [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">
 </app-seguimiento-oportunidades>
+
+<app-documentos-oportunidades [(visible)]="modalDocumentosVisible" [title]="'Documentos de '" (closeModal)="onModalClose()"
+  (result)="manejarResultado($event)" [insertar]="insertar" [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">
+</app-documentos-oportunidades>
+
+  

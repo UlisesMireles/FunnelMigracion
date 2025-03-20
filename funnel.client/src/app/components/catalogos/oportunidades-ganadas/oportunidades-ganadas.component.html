@@ -11,7 +11,7 @@
           [showCurrentPageReport]="true" [rowsPerPageOptions]="[20, 30, 50]" [paginator]="true" paginatorPosition="both"
           currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros"
           [columns]="lsColumnasAMostrar"
-          [autoLayout]="true"
+          [autoLayout]="true" [reorderableColumns]="true" [resizableColumns]="true"
           [globalFilterFields]="['idOportunidad','nombre','nombreSector','nombreOportunidad','abreviatura','stage','iniciales','nombreContacto','entrega','monto','probabilidadOriginal','probabilidad','montoNormalizado','fechaRegistro','diasFunnel','fechaEstimadaCierreOriginal','fechaModificacion']"
           [tableStyle]="{'min-width': anchoTabla + '%'}">
           
@@ -40,12 +40,12 @@
             </div>
           </ng-template>
     
-            <ng-template pTemplate="header" let-columns>
+            <ng-template pTemplate="header" let-columns >
               <tr class="custom-header">
                   <th></th>
                   <th></th>
                   <th></th>
-                  <th *ngFor="let def of lsColumnasAMostrar" pSortableColumn="{{def.key}}">
+                  <th *ngFor="let def of lsColumnasAMostrar" pSortableColumn="{{def.key}}"  pReorderableColumn>
                     {{def.valor}}<p-sortIcon field="{{def.key}}"></p-sortIcon>
                   </th>
               </tr>

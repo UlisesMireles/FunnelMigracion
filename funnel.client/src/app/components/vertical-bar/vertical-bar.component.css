@@ -10,7 +10,7 @@
   justify-content: space-between;
   padding-bottom: 20px;
   left: 0;
-  top: 0;
+  top: 40px;
   padding-top: 20px;
 }
 
@@ -52,7 +52,7 @@
   cursor: pointer;
   padding: 10px;
   border-radius: 50%;
-  background-color: #495057;
+  background-color: #103D66;
   transition: background 0.3s ease;
 }
 
@@ -100,7 +100,7 @@ text-align: left;
 
 /* Efecto hover en los elementos del submenú */
 .submenu li:hover {
-  background-color: #103D66; /* C cambio de color */
+  background-color: #495057; /* C cambio de color */
   color: white; /* Color de la letra */
 }
 

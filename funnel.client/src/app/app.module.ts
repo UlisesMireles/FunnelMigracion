@@ -78,6 +78,7 @@ import localeEs from '@angular/common/locales/es-MX';
 import { APP_INITIALIZER, LOCALE_ID } from '@angular/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { VerticalBarComponent } from './components/vertical-bar/vertical-bar.component';
+import { HeaderComponent } from './components/header/header.component';
 export function configurationProviderFactory(provider: PrimeNgConfiguracionService) {
   return () => provider.load();
 }
@@ -120,7 +121,8 @@ registerLocaleData(localeEs, 'es-MX');
     VerticalBarComponent,
     OportunidadesCanceladasComponent,
     ModalOportunidadesCanceladasComponent,
-    SeguimientoOportunidadesComponent
+    SeguimientoOportunidadesComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,

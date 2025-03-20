@@ -32,6 +32,7 @@ export class OportunidadesCanceladasComponent {  @ViewChild('dt') dt!: Table;
   modalVisible: boolean = false;
   modalSeguimientoVisible: boolean = false; 
   seguimientoOportunidad: boolean = false;
+  modalDocumentosVisible: boolean = false;
 
 
   loading: boolean = true;
@@ -123,7 +124,11 @@ export class OportunidadesCanceladasComponent {  @ViewChild('dt') dt!: Table;
       this.seguimientoOportunidad = true;
       this.modalSeguimientoVisible = true;
     }
-    
+    documento(licencia: Oportunidad) {
+      this.oportunidadCanceladaSeleccionada = licencia;
+      this.seguimientoOportunidad = true;
+      this.modalDocumentosVisible = true;
+    }
     onModalClose() {
       this.modalVisible = false;
     }

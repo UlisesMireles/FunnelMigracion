@@ -110,6 +110,10 @@
           <ng-template pTemplate="body" let-rowData let-columns="columns">
             <tr>
               <td>
+                <p-button type="button" icon="bi bi-folder2" text (click)="documento(rowData)"
+                  pTooltip="Ver documentos" tooltipPosition="top"/>
+              </td>
+              <td>
                 <p-button type="button" icon="bi bi-file-earmark-text" text (click)="seguimiento(rowData)" 
                   pTooltip="Ver seguimiento" tooltipPosition="top"/>
               </td>
@@ -117,11 +121,6 @@
                 <p-button type="button" icon="bi bi-pencil" text (click)="actualiza(rowData)" 
                   pTooltip="Editar oportunidad" tooltipPosition="top"/>
               </td>
-              
-                <td>
-                  <p-button type="button" icon="bi bi-folder2" text (click)="documento(rowData)"
-                    pTooltip="Ver documentos" tooltipPosition="top"/>
-                </td>
                 <td *ngFor="let def of lsColumnasAMostrar">
                   <ng-container [ngSwitch]="def.tipoFormato">
                     <span *ngSwitchCase="'text'">{{ rowData[def.key] }}</span>

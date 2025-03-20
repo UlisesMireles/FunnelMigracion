@@ -10,7 +10,9 @@
   }
   
   .margen {
-    margin-top: 10px
+    margin-top: 2px;
+    margin-right: 200px;
+
   }
   
   ::ng-deep .p-datatable-header {
@@ -227,6 +229,7 @@
 
 .text-left {
   text-align: left !important;
+  margin-top: 10px;
 }
 
 .seguimiento-textarea {
@@ -236,10 +239,40 @@
   padding: 8px; 
   border: 1px solid #ccc; 
   border-radius: 5px;
+  width: 70%; 
 }
 
 .nombre-destacado {
   font-size: 1.5rem; 
   font-weight: bold; 
   color: #413939;
+  margin-right: 200px;
+  margin-top: 10px;
+}
+.d-flex {
+  display: flex;
+  align-items: center; 
+}
+
+.ml-2 {
+  margin-left: 0.5rem; 
+}
+
+.p-button-icon-only {
+  width: 40px;  
+  height: 40px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+}
+
+.bi-download {
+  font-size: 1.2rem; 
+}
+
+/* Elimina el padding preeterminado del footer */
+::ng-deep .p-dialog .p-dialog-footer {
+  padding: 0.5rem 3rem;
+  text-align: left; 
 }

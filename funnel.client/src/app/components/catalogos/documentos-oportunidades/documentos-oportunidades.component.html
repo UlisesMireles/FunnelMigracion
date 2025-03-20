@@ -26,7 +26,8 @@
     </div>
     <div>
         <label class="margen ">
-            {{ 'Documentos de: ' + oportunidadForm.get('nombreOportunidad')?.value }}
+          <h2>{{ 'Documentos de: ' + nombreOportunidad }}</h2>
+
         </label>
     </div>
     
@@ -37,10 +38,10 @@
           <label for="Comentario" class="margen text-left">Agregar Documento:</label>
         </div>
         <div class="col-sm-6 inptSpace">
-            <input type="file" class="form-control" formControlName="documento" accept=".pdf,.doc,.docx,.jpg,.png">
+            <input type="file" class="form-control" accept=".pdf,.doc,.docx,.jpg,.png" (change)="onFileChange($event)">
         </div>
         <div class="col-sm-2 inptSpace">
-            <button pButton label="Guardar"  (click)="guardarDocumento()" severity="secondary" [disabled]="!oportunidadForm.get('documento')?.value" ></button>
+            <button pButton label="Guardar"  (click)="guardarDocumento()" severity="secondary" [disabled]="!archivoSeleccionado" ></button>
         </div>
       </div>
     </form>

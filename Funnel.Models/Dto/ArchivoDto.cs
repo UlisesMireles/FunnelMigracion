@@ -17,7 +17,7 @@ namespace Funnel.Models.Dto
         public int IdUsuario { get; set; }
         public DateTime FechaRegistro { get; set; }
         public int? NumArchivos { get; set; }
-        public bool Eliminado { get; set; }
+        public int Eliminado { get; set; }
         public string? Iniciales { get; set; }
         public string? NombreArchivoCargado { get; set; }
         public int? IdEmpresa { get; set; }

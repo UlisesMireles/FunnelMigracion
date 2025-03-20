@@ -71,9 +71,9 @@ export interface RequestOportunidad {
 
 export interface Archivos {
     bandera: string;
-    eliminado: boolean;
+    eliminado: number;
     idArchivo: number;
-    nombre: string;
+    nombreArchivo: string;
     idOportunidad: number;
     idUsuario: number;
     fechaRegistro: Date;

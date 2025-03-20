@@ -41,7 +41,7 @@ namespace Funnel.Data
                     {
                         IdArchivo = ComprobarNulos.CheckIntNull(reader["IdArchivo"]),
                         FechaRegistro = ComprobarNulos.CheckDateTimeNull(reader["FechaRegistro"]),
-                        Eliminado = ComprobarNulos.CheckBooleanNull(reader["Eliminado"]),
+                        Eliminado = ComprobarNulos.CheckIntNull(reader["Eliminado"]),
                         NombreArchivo = ComprobarNulos.CheckStringNull(reader["NombreArchivo"]),
                         NombreArchivoFormateado = ComprobarNulos.CheckStringNull(reader["NombreArchivoFormateado"]),
                         NumArchivos = ComprobarNulos.CheckIntNull(reader["NumArchivos"]),

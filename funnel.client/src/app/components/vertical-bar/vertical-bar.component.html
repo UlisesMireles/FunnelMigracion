@@ -18,7 +18,7 @@
         <!-- Solo mostrar submenú si existe y tiene elementos -->
         <ul class="submenu" *ngIf="item.subMenu && item.subMenu.length > 0" [ngClass]="{'visible': hoveredMenu === i}">
           <!-- Encabezado con el nombre del menú como título -->
-          <li class="submenu-header">{{ item.nombre }}</li>
+          <!-- <li class="submenu-header">{{ item.nombre }}</li> -->
 
           <li *ngFor="let subItem of item.subMenu" class="submenu-item">
             <a [routerLink]="subItem.path">{{ subItem.nombre }}</a>

@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 export class VerticalBarComponent {
 
 
-  isExpanded: boolean = true;
+  isExpanded: boolean = false;
   hoveredMenu: number | null = null;
   showTooltip: boolean = false;
   @ViewChild('menuList', { static: false }) menuList!: ElementRef;
@@ -21,7 +21,7 @@ export class VerticalBarComponent {
     {
       nombre: 'DASHBOARD',
       path: '',
-      icono: 'bi-house-door',  // Icono relacionado con un dashboard (pantalla de inicio)
+      icono: 'bi bi-bar-chart',  // Icono relacionado con un dashboard (pantalla de inicio)
       tooltip: 'Ir a DASHBOARD',
       subMenu: [
         { nombre: 'OPORTUNIDADES GENERAL', path: '/oportunidades'
@@ -36,14 +36,14 @@ export class VerticalBarComponent {
     {
       nombre: 'EN PROCESO',
       path: '/proceso',
-      icono: 'bi-person-fill',  // Icono de una persona, ya que es un estado de proceso
+      icono: 'bi bi-hourglass-split',  // Icono de una persona, ya que es un estado de proceso
       tooltip: 'Ir a en Proceso',
       subMenu: []
     },
     {
       nombre: 'TERMINADAS',
       path: '',
-      icono: 'bi-check-circle',  // Icono de marca de verificación, indicando que está terminado
+      icono: 'bi bi-fonts',  // Icono de marca de verificación, indicando que está terminado
       tooltip: 'Ir a Terminadas',
       subMenu: [
         { nombre: 'GANADAS', path: '/oportunidades-ganadas' , hasIcon: false, tooltipMessage:'' },
@@ -55,7 +55,7 @@ export class VerticalBarComponent {
     {
       nombre: 'ADMINISTRACIÓN',
       path: '',
-      icono: 'bi-gear',  // Icono de engranaje, representando administración o configuración
+      icono: 'bi bi-briefcase',  // Icono de engranaje, representando administración o configuración
       tooltip: 'Ir a administración',
       subMenu: [
         { nombre: 'PROSPECTOS', path: '/prospectos' ,hasIcon: false, // 🟠 Indica si tiene icono adicional

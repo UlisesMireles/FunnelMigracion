@@ -20,7 +20,7 @@ export class MenuComponent {
   rol: string = '';
   tipoUsuario: string = '';
   isMobile: boolean = false;
-  isExpanded = true;
+  isExpanded = false;
 
   onSidebarToggle(expanded: boolean) {
     this.isExpanded = expanded;

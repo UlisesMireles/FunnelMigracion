@@ -11,7 +11,7 @@
           [showCurrentPageReport]="true" [rowsPerPageOptions]="[20, 30, 50]" [paginator]="true" paginatorPosition="both"
           currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros"
           [columns]="lsColumnasAMostrar"
-          [resizableColumns]="true"
+          [resizableColumns]="true" [reorderableColumns]="true"
           [globalFilterFields]="['nombre', 'apellidoPaterno', 'apellidoMaterno', 'usuario','iniciales', 'correo','tipoUsuario', 'desEstatus']"
           [tableStyle]="{'min-width': anchoTabla+ '%'}">
 
@@ -43,7 +43,7 @@
           <ng-template pTemplate="header" let-columns>
             <tr class="custom-header">
               <th></th>
-              <th *ngFor="let def of lsColumnasAMostrar" pSortableColumn="{{def.key}}">
+              <th *ngFor="let def of lsColumnasAMostrar" pSortableColumn="{{def.key}}" pReorderableColumn>
                 {{def.valor}}<p-sortIcon field="{{def.key}}"></p-sortIcon>
               </th>
             </tr>

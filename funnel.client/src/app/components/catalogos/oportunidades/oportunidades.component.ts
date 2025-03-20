@@ -62,7 +62,7 @@ export class OportunidadesComponent {
     { key: 'fechaRegistro', isCheck: true, valor: 'Fecha Registro', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
     { key: 'diasFunnel', isCheck: false, valor: 'Días en Funnel', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
     { key: 'fechaEstimadaCierreOriginal', isCheck: false, valor: 'Fecha Estimada de Cierre', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
-    { key: 'fechaModificacion', isCheck: false, valor: 'Fecha de Modificación', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' }
+    { key: 'fechaModificacion', isCheck: false, valor: 'Días sin Actividad', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' }
   ];
 
   columnsAMostrarResp: string = JSON.stringify(this.lsColumnasAMostrar);
@@ -275,6 +275,37 @@ export class OportunidadesComponent {
     obtenerArregloFiltros(data: any[], columna: string): any[] {
       const lsGroupBy = groupBy(data, columna);
       return sortBy(getKeys(lsGroupBy));
+    }
+
+    getColorForFechaEstimadaCierre(fechaEstimadaCierreOriginal: string): string {
+      const hoy = new Date();
+      const fechaCierre = new Date(fechaEstimadaCierreOriginal);
+
+
+      const diferencia = fechaCierre.getTime() - hoy.getTime();
+      const diasDiferencia = Math.ceil(diferencia / (1000 * 60 * 60 * 24));
+
+      if (diasDiferencia < 0) {
+        return 'red'; 
+      } else if (diasDiferencia <= 30) {
+        return 'orange'; 
+      } else if (diasDiferencia <= 60) {
+        return 'green'; 
+      } else {
+        return 'black'; 
+      }
+    }
+
+    getColorForDiasSinActividad(dias: number): string {
+      if (dias >= 0 && dias <= 5) {
+        return 'green';
+      } else if (dias >= 6 && dias <= 10) {
+        return 'orange'; 
+      } else if (dias >= 11) {
+        return 'red'; 
+      } else {
+        return 'black'; 
+      }
     }
   
 }

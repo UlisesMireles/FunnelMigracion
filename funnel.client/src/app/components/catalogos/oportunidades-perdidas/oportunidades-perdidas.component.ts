@@ -28,11 +28,13 @@ export class OportunidadesPerdidasComponent {
   oportunidadesOriginalPerdidas: Oportunidad[] = [];
   oportunidadSeleccionadaPerdidas!: Oportunidad;
 
-  idUsuario: number = 1;
   idEstatus: number = 3;
 
   insertar: boolean = false;
   modalVisible: boolean = false;
+  modalSeguimientoVisible: boolean = false; 
+  seguimientoOportunidad: boolean = false;
+  modalDocumentosVisible: boolean = false;
 
   loading: boolean = true;
 
@@ -44,7 +46,7 @@ export class OportunidadesPerdidasComponent {
   ];
 
   lsTodasColumnas: any[] = [
-    { key: 'idOportunidad', isCheck: true, valor: 'Id', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
+    { key: 'idOportunidad', isCheck: true, valor: 'Seleccion', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombre', isCheck: true, valor: 'Nombre', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreSector', isCheck: false, valor: 'Sector', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreOportunidad', isCheck: true, valor: 'Oportunidad', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
@@ -94,7 +96,7 @@ export class OportunidadesPerdidasComponent {
   }
 
   getOportunidades() {
-    this.oportunidadService.getOportunidades(this.idUsuario, this.loginService.obtenerIdEmpresa(), this.idEstatus).subscribe({
+    this.oportunidadService.getOportunidades(this.loginService.obtenerIdEmpresa(), this.loginService.obtenerIdUsuario(), this.idEstatus).subscribe({
       next: (result: Oportunidad[]) => {
         this.oportunidadesPerdidas = [...result];
         this.oportunidadesOriginalPerdidas = result;
@@ -116,6 +118,18 @@ export class OportunidadesPerdidasComponent {
     this.oportunidadSeleccionadaPerdidas = licencia;
     this.insertar = false;
     this.modalVisible = true;
+  }
+
+  seguimiento(licencia: Oportunidad) {
+    this.oportunidadSeleccionadaPerdidas = licencia;
+    this.seguimientoOportunidad = true;
+    this.modalSeguimientoVisible = true;
+  }
+
+  documento(licencia: Oportunidad) {
+    this.oportunidadSeleccionadaPerdidas = licencia;
+    this.seguimientoOportunidad = true;
+    this.modalDocumentosVisible = true;
   }
   
   onModalClose() {
@@ -156,7 +170,7 @@ export class OportunidadesPerdidasComponent {
     dialogConfig.autoFocus = false;
     dialogConfig.backdropClass = 'popUpBackDropClass';
     dialogConfig.panelClass = 'popUpPanelAddColumnClass';
-    dialogConfig.width = '350px';
+    dialogConfig.width = '50px';
 
     dialogConfig.data = {
       todosColumnas: this.lsTodasColumnas

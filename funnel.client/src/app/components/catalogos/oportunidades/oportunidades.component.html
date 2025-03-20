@@ -16,7 +16,7 @@
             [tableStyle]="{'min-width': anchoTabla+ '%'}">
             
             <ng-template class="divAccionesTabla" #caption>
-              <div class="col-12" style="text-align: left; font-weight: bold;">
+              <div class="col-12" style="text-align: left; font-weight: bold; margin-top: 20px">
                 <h3>Administración General de Oportunidades en Proceso</h3>
               </div>
               <div class="row">
@@ -24,10 +24,21 @@
                   <p-dropdown [options]="years" [(ngModel)]="selectedYear" (onChange)="filterByYear()" placeholder="Selecciona un año"
                     [ngStyle]="{'margin-right': '5px'}">
                   </p-dropdown>
-                  <p-button label="" icon="bi bi-arrow-clockwise" (click)="clear(dt)" severity="secondary" [ngStyle]="{'margin-right': '5px'}" />
-                  <p-button label="" icon="bi bi-download" severity="secondary" (click)="exportExcel(dt)" [ngStyle]="{'margin-right': '5px'}" />
-                  <p-button label="" icon="bi-pencil" (click)="agregarColumna($event)" severity="secondary" [ngStyle]="{'margin-right': '5px'}" />
-                  <p-button label="" icon="bi bi-plus" severity="secondary" (click)="inserta()" />
+                  <p-button label="" icon="bi bi-arrow-clockwise" (click)="clear(dt)" severity="secondary"
+                    pTooltip="Refrescar" tooltipPosition="top"
+                    [ngStyle]="{'margin-right': '5px'}" />
+                  
+                  <p-button label="" icon="bi bi-download" severity="secondary" (click)="exportExcel(dt)" 
+                    pTooltip="Descargar Excel" tooltipPosition="top"
+                    [ngStyle]="{'margin-right': '5px'}"/>
+                  
+                  <p-button label="" icon="bi-list" (click)="agregarColumna($event)" severity="secondary"  
+                    pTooltip="Agregar columna" tooltipPosition="top"
+                    [ngStyle]="{'margin-right': '5px'}"/>
+                  
+                  <p-button label="" icon="bi bi-plus" severity="secondary" (click)="inserta()"  
+                    pTooltip="Añadir nuevo" tooltipPosition="top"
+                    [ngStyle]="{'margin-right': '5px'}"/>
                 </div>
               </div>
             </ng-template>
@@ -36,11 +47,13 @@
               <tr class="custom-header">
                   <th></th>
                   <th></th>
+                  <th></th>
                   <th *ngFor="let def of lsColumnasAMostrar" pSortableColumn="{{def.key}}">
                     {{def.valor}}<p-sortIcon field="{{def.key}}"></p-sortIcon>
                   </th>
               </tr>
               <tr>
+                  <th></th>
                   <th></th>
                   <th></th>
                   <th *ngFor="let def of lsColumnasAMostrar" style="min-width: 30%;">
@@ -64,7 +77,7 @@
                               <div *ngSwitchCase="'text'">
                                   <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false">
                                       <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                                          <input type="text" pInputText [ngModel]="value"
+                                          <input type="text" pInputText [ngModel]="value" [ngStyle]="{'width': def.key == 'idOportunidad' ? '90%' : 'auto'}"
                                               (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
                                       </ng-template>
                                   </p-columnFilter>
@@ -96,12 +109,18 @@
 
           <ng-template pTemplate="body" let-rowData let-columns="columns">
             <tr>
-                <td>
-                  <p-button type="button" icon="bi bi-file-earmark-text" text (click)="seguimiento(rowData)"/>
-                </td>
-                <td>
-                  <p-button type="button" icon="bi bi-pencil" text (click)="actualiza(rowData)"/>
-                </td>
+              <td>
+                <p-button type="button" icon="bi bi-folder2" text (click)="documento(rowData)"
+                  pTooltip="Ver documentos" tooltipPosition="top"/>
+              </td>
+              <td>
+                <p-button type="button" icon="bi bi-file-earmark-text" text (click)="seguimiento(rowData)" 
+                  pTooltip="Ver seguimiento" tooltipPosition="top"/>
+              </td>
+              <td>
+                <p-button type="button" icon="bi bi-pencil" text (click)="actualiza(rowData)" 
+                  pTooltip="Editar oportunidad" tooltipPosition="top"/>
+              </td>
                 <td *ngFor="let def of lsColumnasAMostrar">
                   <ng-container [ngSwitch]="def.tipoFormato">
                     <span *ngSwitchCase="'text'">{{ rowData[def.key] }}</span>
@@ -119,6 +138,7 @@
           </ng-template>
           <ng-template pTemplate="footer" let-columns #footer>
             <tr class="custom-footer">
+              <td></td>
               <td></td>
               <td></td>
               <td *ngFor="let def of lsColumnasAMostrar">
@@ -155,5 +175,9 @@
 <app-seguimiento-oportunidades [(visible)]="modalSeguimientoVisible" [title]="'Seguimiento de '" (closeModal)="onModalClose()"
   (result)="manejarResultado($event)" [insertar]="insertar" [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">
 </app-seguimiento-oportunidades>
+
+<app-documentos-oportunidades [(visible)]="modalDocumentosVisible" [title]="'Documentos de '" (closeModal)="onModalClose()"
+  (result)="manejarResultado($event)" [insertar]="insertar" [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">
+</app-documentos-oportunidades>
 
   

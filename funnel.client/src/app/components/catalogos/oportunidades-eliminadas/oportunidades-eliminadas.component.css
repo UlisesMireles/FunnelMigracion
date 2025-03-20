@@ -99,13 +99,15 @@
     
   }
   
-  ::ng-deep .p-datatable-thead>tr>th,
-  ::ng-deep .p-datatable-tbody>tr>td {
+  ::ng-deep .p-datatable-thead > tr > th,
+  ::ng-deep .p-datatable-tbody > tr > td {
     white-space: normal;
     word-wrap: break-word;
     overflow: visible;
     text-overflow: clip;
-    padding: 4px !important;
+    padding: 2px 1px !important;
+    height: 25px !important;
+    line-height: 0.5 !important; 
   }
   
   ::ng-deep .p-datatable-wrapper {

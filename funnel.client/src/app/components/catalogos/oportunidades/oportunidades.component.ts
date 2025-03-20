@@ -34,6 +34,7 @@ export class OportunidadesComponent {
   seguimientoOportunidad: boolean = false;
   modalVisible: boolean = false;
   modalSeguimientoVisible: boolean = false; 
+  modalDocumentosVisible: boolean = false;
 
   loading: boolean = true;
 
@@ -45,6 +46,7 @@ export class OportunidadesComponent {
   ];
 
   lsTodasColumnas: any[] = [
+    { key: 'idOportunidad', isCheck: false, valor: 'Seleccion', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombre', isCheck: true, valor: 'Nombre', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreSector', isCheck: true, valor: 'Sector', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreOportunidad', isCheck: true, valor: 'Oportunidad', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
@@ -133,6 +135,12 @@ export class OportunidadesComponent {
       this.insertar = false;
       this.modalVisible = true;
     }
+
+    documento(licencia: Oportunidad) {
+      this.oportunidadSeleccionada = licencia;
+      this.seguimientoOportunidad = true;
+      this.modalDocumentosVisible = true;
+    }
     
     onModalClose() {
       this.modalVisible = false;
@@ -172,7 +180,7 @@ export class OportunidadesComponent {
       dialogConfig.autoFocus = false;
       dialogConfig.backdropClass = 'popUpBackDropClass';
       dialogConfig.panelClass = 'popUpPanelAddColumnClass';
-      dialogConfig.width = '350px';
+      dialogConfig.width = '50px';
   
       dialogConfig.data = {
         todosColumnas: this.lsTodasColumnas
@@ -180,7 +188,7 @@ export class OportunidadesComponent {
   
       dialogConfig.position = {
         top: targetAttr.y + targetAttr.height + 10 + "px",
-        left: targetAttr.x - targetAttr.width - 240 + "px"
+        left: targetAttr.x - targetAttr.width - 250 + "px"
       };
       const dialogRef = this.dialog.open(ColumnasDisponiblesComponent, dialogConfig);
   

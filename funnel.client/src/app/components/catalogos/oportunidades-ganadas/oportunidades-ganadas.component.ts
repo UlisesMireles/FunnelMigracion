@@ -57,8 +57,8 @@ export class OportunidadesGanadasComponent {
     { key: 'monto', isCheck: true, valor: 'Monto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
     { key: 'probabilidad', isCheck: false, valor: 'Probabilidad', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'montoNormalizado', isCheck: false, valor: 'Monto Normalizado', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
-    { key: 'fechaRegistro', isCheck: true, valor: 'Fecha Registro', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
-    { key: 'diasFunnel', isCheck: true, valor: 'Días en Funnel', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
+    { key: 'fechaRegistro', isCheck: true, valor: 'Registro', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
+    { key: 'diasFunnel', isCheck: true, valor: 'Días Funnel', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
     { key: 'fechaEstimadaCierreOriginal', isCheck: true, valor: 'Fecha Cierre', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
     { key: 'diasEtapa1', isCheck: true, valor: 'Dias Etapa 1', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'number' },
     { key: 'diasEtapa2', isCheck: true, valor: 'Dias Etapa 2', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'number' },
@@ -265,4 +265,15 @@ export class OportunidadesGanadasComponent {
       const lsGroupBy = groupBy(data, columna);
       return sortBy(getKeys(lsGroupBy));
     }
+
+    getColumnWidth(key: string): object {
+      const widths: { [key: string]: string } = {
+          idOportunidad: '95%',
+          abreviatura: '90%',
+          monto: '40%',
+          nombre: '40%',
+      };
+      return { width: widths[key] || 'auto' };
+  }
+  
 }

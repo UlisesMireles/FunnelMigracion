@@ -152,6 +152,7 @@ export class DocumentosOportunidadesComponent {
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
+            detail: 'No se pudo descargar el archivo, es posible que el recurso no esté disponible.'
           });
         });
     }

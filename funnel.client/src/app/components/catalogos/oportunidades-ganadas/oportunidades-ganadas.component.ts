@@ -274,10 +274,25 @@ export class OportunidadesGanadasComponent {
 
     getColumnWidth(key: string): object {
       const widths: { [key: string]: string } = {
-          idOportunidad: '95%',
-          abreviatura: '70%',
-          monto: '40%',
-          nombre: '40%',
+          idOportunidad: '100%',
+          nombre: '100%',
+          nombreSector: '100%',
+          nombreOportunidad: '100%',
+          abreviatura: '100%',
+          stage: '100%',
+          nombreEjecutivo: '100%',
+          nombreContacto: '100%',
+          monto: '100%',
+          probabilidad: '100%',
+          montoNormalizado: '100%',
+          fechaRegistro: '100%',
+          diasFunnel: '100%',
+          fechaEstimadaCierreOriginal: '100%',
+          diasEtapa1: '100%',
+          diasEtapa2: '100%',
+          diasEtapa3: '100%',
+          diasEtapa4: '100%',
+          diasEtapa5: '100%',
       };
       return { width: widths[key] || 'auto' };
   }

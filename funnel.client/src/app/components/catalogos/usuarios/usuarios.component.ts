@@ -257,7 +257,8 @@ clear(table: Table) {
       const lsGroupBy = groupBy(data, columna);
       return sortBy(getKeys(lsGroupBy));
     }
-  
+    
+    
 
 
 }

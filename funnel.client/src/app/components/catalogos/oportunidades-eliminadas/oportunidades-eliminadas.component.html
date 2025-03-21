@@ -69,7 +69,7 @@
                     <div *ngSwitchCase="'text'">
                       <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false">
                         <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                          <input type="text" pInputText [ngModel]="value" [ngStyle]="{'width': def.key == 'idOportunidad' ? '95%' : def.key == 'abreviatura' ? '85%' : 'auto'}"
+                          <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
                             (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
                         </ng-template>
                       </p-columnFilter>

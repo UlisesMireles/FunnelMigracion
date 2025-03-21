@@ -58,7 +58,7 @@ export class OportunidadesComponent {
     { key: 'monto', isCheck: true, valor: 'Monto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
     { key: 'probabilidadOriginal', isCheck: false, valor: 'Prob Original', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'probabilidad', isCheck: true, valor: 'Prob', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'montoNormalizado', isCheck: true, valor: 'Monto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
+    { key: 'montoNormalizado', isCheck: true, valor: 'Monto Normalizado', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
     { key: 'fechaRegistro', isCheck: true, valor: 'Fecha Registro', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
     { key: 'diasFunnel', isCheck: false, valor: 'Días en Funnel', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
     { key: 'fechaEstimadaCierreOriginal', isCheck: false, valor: 'Fecha Estimada de Cierre', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
@@ -307,5 +307,28 @@ export class OportunidadesComponent {
         return 'black'; 
       }
     }
+
+    getColumnWidth(key: string): object {
+      const widths: { [key: string]: string } = {
+          idOportunidad: '100%',
+          nombre: '100%',
+          nombreSector: '100%',
+          nombreOportunidad: '100%',
+          abreviatura: '100%',
+          stage: '100%',
+          nombreEjecutivo: '100%',
+          nombreContacto: '100%',
+          entrega: '100%',
+          monto: '100%',
+          probabilidadOriginal: '100%',
+          probabilidad: '100%',
+          montoNormalizado: '100%',
+          fechaRegistro: '100%',
+          diasFunnel: '100%',
+          fechaEstimadaCierreOriginal: '100%',
+          fechaModificacion: '100%',
+      };
+      return { width: widths[key] || 'auto' }; 
+  }
   
 }

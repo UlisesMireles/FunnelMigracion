@@ -266,4 +266,23 @@ export class OportunidadesEliminadasComponent {
       const lsGroupBy = groupBy(data, columna);
       return sortBy(getKeys(lsGroupBy));
     }
+
+    getColumnWidth(key: string): object {
+      const widths: { [key: string]: string } = {
+          idOportunidad: '100%',
+          nombre: '100%',
+          nombreSector: '100%',
+          nombreOportunidad: '100%',
+          abreviatura: '100%',
+          stage: '100%',
+          nombreEjecutivo: '100%',
+          monto: '100%',
+          probabilidad: '100%',
+          fechaRegistro: '100%',
+          diasFunnel: '100%',
+          fechaEstimadaCierreOriginal: '100%',
+          comentario: '100%',
+      };
+      return { width: widths[key] || 'auto' };
+  }
 }

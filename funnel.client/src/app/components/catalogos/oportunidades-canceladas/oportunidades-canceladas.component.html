@@ -5,7 +5,7 @@
     </div>
     
     <div class="col-12">
-      <div class="row contenedorTabla" style="justify-content: center; display: flex; width: 100% ;" >
+      <div class="row contenedorTabla">
         <div *ngIf="loading">Cargando...</div>
         <p-table *ngIf="!loading" #dt [stripedRows]="true" [value]="oportunidadesCanceladas" dataKey="id" [rows]="20"
           [showCurrentPageReport]="true" [rowsPerPageOptions]="[20, 30, 50]" [paginator]="true" paginatorPosition="both"
@@ -45,8 +45,6 @@
               <th *ngFor="let def of lsColumnasAMostrar" pSortableColumn="{{def.key}}" pReorderableColumn>
                 {{def.valor}}<p-sortIcon field="{{def.key}}"></p-sortIcon>
               </th>
-              <th></th>
-              <th></th>
               <th></th>
             </tr>
             <tr>
@@ -94,8 +92,6 @@
                 </ng-container>
               </th>
               <th></th>
-              <th></th>
-              <th></th>
             </tr>
           </ng-template>
 
@@ -137,8 +133,6 @@
                   {{ getTotalCostPrimeNg(dt, def) | number: '1.0-2' }}
                 </ng-container>
               </td>
-              <td></td>
-              <td></td>
               <td></td>
             </tr>
           </ng-template>

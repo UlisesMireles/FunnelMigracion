@@ -5,7 +5,7 @@
     </div>
 
     <div class="col-12">
-      <div class="row contenedorTabla" style="justify-content: center; display: flex; width: 100% ;">
+      <div class="row contenedorTabla">
         <div *ngIf="loading">Cargando...</div>
         <p-table *ngIf="!loading" #dt [stripedRows]="true" [value]="usuarios" dataKey="id" [rows]="20"
           [showCurrentPageReport]="true" [rowsPerPageOptions]="[20, 30, 50]" [paginator]="true" paginatorPosition="both"

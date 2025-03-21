@@ -5,7 +5,7 @@
     </div>
     
     <div class="col-12">
-      <div class="row contenedorTabla" style="justify-content: center; display: flex; width: 100%;">
+      <div class="row contenedorTabla">
         <div *ngIf="loading">Cargando...</div>
         <p-table *ngIf="!loading" #dt [stripedRows]="true" [value]="oportunidades" dataKey="id" [rows]="20"
           [showCurrentPageReport]="true" [rowsPerPageOptions]="[20, 30, 50]" [paginator]="true" paginatorPosition="both"
@@ -49,9 +49,9 @@
                   {{def.valor}}<p-sortIcon field="{{def.key}}"></p-sortIcon>
                 </th>
                 <th></th>
-            </tr>
+            </tr> 
             <tr>
-                <th *ngFor="let def of lsColumnasAMostrar" style="min-width: 30%;">
+                <th *ngFor="let def of lsColumnasAMostrar">
                     <ng-container *ngIf="def.groupColumn">
                         <p-columnFilter field="{{def.key}}" matchMode="in" [showMenu]="false">
                             <ng-template pTemplate="filter" let-value let-filter="filterCallback">

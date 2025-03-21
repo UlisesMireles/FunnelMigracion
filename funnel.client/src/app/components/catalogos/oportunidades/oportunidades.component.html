@@ -78,10 +78,12 @@
                               </p-columnFilter>
                           </div>
                           <div *ngSwitchCase="'currency'">
-                            <div [ngStyle]="getColumnWidth(def.key)">
-                              <p-columnFilter type="numeric" field="{{def.key}}" [showButtons]="false" [maxFractionDigits]="7"></p-columnFilter>
-                          </div>
-                          
+                            <p-columnFilter type="numeric" field="{{def.key}}" [showButtons]="false" [maxFractionDigits]="7">
+                              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                  <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
+                                      (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
+                              </ng-template>
+                            </p-columnFilter>
                           </div>
                           <div *ngSwitchCase="'date'">
                               <p-columnFilter type="{{def.tipoFormato}}" [field]="def.key" [showButtons]="false">

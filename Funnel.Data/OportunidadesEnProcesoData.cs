@@ -247,6 +247,8 @@ namespace Funnel.Data
                         DiasEtapa4 = ComprobarNulos.CheckIntNull(reader["DiasEtapa4"]),
                         DiasEtapa5 = ComprobarNulos.CheckIntNull(reader["DiasEtapa5"]),
 
+                        TotalArchivos = ComprobarNulos.CheckIntNull(reader["TotalArchivos"]),
+
                         ArchivoDescripcion = ComprobarNulos.CheckStringNull(reader["ArchivoDescripcion"]),
 
                     };

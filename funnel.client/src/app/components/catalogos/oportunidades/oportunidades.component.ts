@@ -329,6 +329,6 @@ export class OportunidadesComponent {
           fechaModificacion: '100%',
       };
       return { width: widths[key] || 'auto' }; 
-  }
+    }
   
 }

@@ -78,10 +78,10 @@
                               </p-columnFilter>
                           </div>
                           <div *ngSwitchCase="'currency'">
-                              <div [ngStyle]="getColumnWidth(def.key)">
-                                  <p-columnFilter type="numeric" field="{{def.key}}" [showButtons]="false"
-                                      [maxFractionDigits]="7"></p-columnFilter>
-                              </div>
+                            <div [ngStyle]="getColumnWidth(def.key)">
+                              <p-columnFilter type="numeric" field="{{def.key}}" [showButtons]="false" [maxFractionDigits]="7"></p-columnFilter>
+                          </div>
+                          
                           </div>
                           <div *ngSwitchCase="'date'">
                               <p-columnFilter type="{{def.tipoFormato}}" [field]="def.key" [showButtons]="false">

@@ -131,14 +131,13 @@
   border-color: lightgray !important;
 }
 
-
-
-
-
 .item-acordeon.expandido .contenido-acordeon {
   display: block;
 }
 
+body {
+  font-family: "Segoe UI", Arial, Sans-Serif;
+}
 
 
 .tarjeta-row {
@@ -148,18 +147,19 @@
 .nombre-empresa {
   font-size: 17px;
   font-weight: bold;
+  color: #333333;
 }
 
 .nombre-abrev {
   font-size: 17px;
   font-weight: bold;
-  color: #555;
+  color: #333333;
 }
 
 .nombre-oportunidad {
   font-size: 15px;
   font-weight: 600;
-  color: #888;
+  color: #455a64;
 }
 
 .monto, .probabilidad, .monto-normalizado {
@@ -188,3 +188,4 @@
   text-align: center;
   margin-bottom: 0 !important;
 }
+

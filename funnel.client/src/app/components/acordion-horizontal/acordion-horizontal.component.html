@@ -1,0 +1,83 @@
+<div class="acordeon-horizontal d-flex">
+  <div *ngFor="let mes of elementos.slice(-20); let i = index" class="item-acordeon" [class.expandido]="mes.expandido">
+    <div class="encabezado-acordeon">
+      <span class="nombre-mes">{{ mes.nombre }}</span>
+      <button class="boton-toggle" (click)="alternarItem(mes, $event)">
+        <i [ngClass]="mes.expandido ? 'bi bi-chevron-left' : 'bi bi-chevron-right'"></i>
+      </button>
+    </div>
+
+    <div *ngIf="mes.expandido"
+      cdkDropList
+      #todoList="cdkDropList"
+      [cdkDropListData]="mes.tarjetas"
+      [cdkDropListConnectedTo]="connectedDropLists"
+      class="contenido-acordeon"
+      (cdkDropListDropped)="drop($event, mes)"
+      [id]="'todoList' + i">
+
+      <div class="contenedor-tarjetas">
+        <div *ngFor="let tarjeta of mes.tarjetas" cdkDrag [cdkDragData]="tarjeta" class="tarjeta">
+          <div class="row tarjeta-row">
+            <div class="col-9">
+              <div class="row justify-content-between">
+                <div class="col-8">
+                  <label class="nombre-empresa">{{ tarjeta.NombreEmpresa }}</label>
+                </div>
+                <div class="col-3 text-end">
+                  <label class="nombre-abrev" title="{{ tarjeta.Descripcion }}">{{ tarjeta.NombreAbrev }}</label>
+                </div>
+              </div>
+              <label class="nombre-oportunidad">{{ tarjeta.NombreOportunidad }}</label><br />
+              <label class="monto">{{ tarjeta.Monto | currency:'MXN':'symbol':'1.0-0' }}</label>
+              <label class="probabilidad">{{ tarjeta.Probabilidad }}%</label>
+              <label class="monto-normalizado">{{ tarjeta.MontoNormalizado | currency:'MXN':'symbol':'1.0-0' }}</label>
+            </div>
+            <div class="col-3">
+              <div class="fotoTarjeta" [ngStyle]="{'background-image': 'url(' + tarjeta.imagen + ')'}" title="{{ tarjeta.NombreEjecutivo }}"></div>
+              <p class="iniciales" title="{{ tarjeta.NombreEjecutivo }}">
+                {{ tarjeta.Iniciales | uppercase }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- Modal Bootstrap -->
+<div class="modal fade show d-block ModalRegistrarFecha" *ngIf="mostrarModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+
+      <!-- Header de la Modal con el título y botón "X" para cerrar -->
+      <div class="modal-header">
+        <h5 class="modal-title">Fecha Estimada de Cierre</h5>
+        <button type="button" class="btn-close" (click)="cancelar()" aria-label="Cerrar"></button>
+      </div>
+
+      <!-- Contenido de la Modal -->
+      <div class="modal-body">
+        <!-- Input oculto como en tu código original -->
+        <input type="hidden" [(ngModel)]="idOportunidad">
+
+        <!-- Selector de Fecha usando ng-bootstrap -->
+        <div class="mb-3">
+             <!-- Campo de fecha con ngModel -->
+    <input type="date" [(ngModel)]="fechaSeleccionada" />
+        </div>
+      </div>
+
+      <!-- Footer con los botones -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="guardarFecha()" [disabled]="!fechaSeleccionada">Guardar</button>
+        <button type="button" class="btn btn-secondary" (click)="cancelar()">Cancelar</button>
+      </div>
+
+    </div>
+  </div>
+</div>

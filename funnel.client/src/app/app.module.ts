@@ -63,22 +63,28 @@ import { OportunidadesPerdidasComponent } from './components/catalogos/oportunid
 import { OportunidadesComponent } from './components/catalogos/oportunidades/oportunidades.component';
 
 import { CommonModule, DatePipe, registerLocaleData } from '@angular/common';
+import { DocumentosOportunidadesComponent } from './components/catalogos/documentos-oportunidades/documentos-oportunidades.component';
 import { ModalOportunidadesGanadasComponent } from './components/catalogos/oportunidades-ganadas/modal-oportunidades-ganadas/modal-oportunidades-ganadas.component';
 import { OportunidadesGanadasComponent } from './components/catalogos/oportunidades-ganadas/oportunidades-ganadas.component';
 import { ModalOportunidadesComponent } from './components/catalogos/oportunidades/modal-oportunidades/modal-oportunidades.component';
 import { SeguimientoOportunidadesComponent } from './components/catalogos/seguimiento-oportunidades/seguimiento-oportunidades.component';
-import { DocumentosOportunidadesComponent } from './components/catalogos/documentos-oportunidades/documentos-oportunidades.component';
 import { AgregarQuitarColumnasComponent } from './components/shared/agregar-quitar-columnas/agregar-quitar-columnas.component';
 import { ColumnFilterComponent } from './components/shared/column-filter/column-filter.component';
 import { ColumnasDisponiblesComponent } from './components/shared/columnas-disponibles/columnas-disponibles.component';
 import { HeaderOpcionesComponent } from './components/shared/header-opciones/header-opciones.component';
 import { TipoCurrencyPipe } from './pipes/tipoCurrency.pipe';
 
+
 import localeEs from '@angular/common/locales/es-MX';
 import { APP_INITIALIZER, LOCALE_ID } from '@angular/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { VerticalBarComponent } from './components/vertical-bar/vertical-bar.component';
+import { AcordionHorizontalComponent } from './components/acordion-horizontal/acordion-horizontal.component';
 import { HeaderComponent } from './components/header/header.component';
+import { VerticalBarComponent } from './components/vertical-bar/vertical-bar.component';
+
+
+import { DragDropModule } from '@angular/cdk/drag-drop';
+
 export function configurationProviderFactory(provider: PrimeNgConfiguracionService) {
   return () => provider.load();
 }
@@ -122,7 +128,8 @@ registerLocaleData(localeEs, 'es-MX');
     OportunidadesCanceladasComponent,
     ModalOportunidadesCanceladasComponent,
     SeguimientoOportunidadesComponent,
-    HeaderComponent
+    HeaderComponent,
+    AcordionHorizontalComponent
   ],
   imports: [
     BrowserModule,
@@ -160,6 +167,8 @@ registerLocaleData(localeEs, 'es-MX');
     MatInputModule,
     DropdownModule,
     MatSidenavModule,
+    BrowserModule,
+    DragDropModule
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'es-MX' },

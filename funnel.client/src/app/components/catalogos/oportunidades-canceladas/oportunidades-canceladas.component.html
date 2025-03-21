@@ -111,13 +111,13 @@
               </td>
               <td>
                 <p-button type="button" icon="bi bi-file-earmark-text" text (click)="seguimiento(rowData)" 
-                  pTooltip="Ver seguimiento" tooltipPosition="top" styleClass="blue-icon"/>
-              </td>
-              <td>
+                pTooltip="Ver seguimiento" tooltipPosition="top" styleClass="blue-icon">
+                <span class="badge">{{ rowData.totalComentarios || 0 }}</span>
+                </p-button>
                 <p-button type="button" icon="bi bi-folder2" text (click)="documento(rowData)"
-                  pTooltip="Ver documentos" tooltipPosition="top" styleClass="black-icon"/>
-              </td>
-              <td>
+                pTooltip="Ver documentos" tooltipPosition="top" styleClass="black-icon">
+                <span class="badge">{{ rowData.totalArchivos || 0}}</span>
+                </p-button>
                 <p-button type="button" icon="bi bi-pencil" text (click)="actualiza(rowData)" 
                   pTooltip="Editar oportunidad" tooltipPosition="top" styleClass="yellow-icon"/>
               </td>

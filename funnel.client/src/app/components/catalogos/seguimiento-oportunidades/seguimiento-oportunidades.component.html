@@ -87,7 +87,9 @@
             <tr *ngFor="let item of historialOportunidad">
               <td class="text-left">{{ item.iniciales }}</td>
               <td class="text-left">{{ item.fechaRegistro | date:'dd/MM/yyyy' }}</td>
-              <td class="text-left">{{ item.comentario }}</td>
+              <td class="text-left" style="max-width: 100px; word-wrap: break-word;">
+                {{ item.comentario }}
+              </td>
             </tr>
           </tbody>
         </table>

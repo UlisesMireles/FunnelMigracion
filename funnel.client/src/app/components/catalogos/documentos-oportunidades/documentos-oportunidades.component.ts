@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, SimpleChanges, ChangeDetectorRef} from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges, ChangeDetectorRef, ElementRef, ViewChild} from '@angular/core';
 
 import { MessageService } from 'primeng/api';
 
@@ -21,7 +21,7 @@ import { get } from 'lodash-es';
 })
 export class DocumentosOportunidadesComponent {
 
-  constructor(private oportunidadService : OportunidadesService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder, private cdr: ChangeDetectorRef, private documentoService: DocumentoService) { }
+  constructor(private oportunidadService : OportunidadesService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder, private cdr: ChangeDetectorRef, private documentoService: DocumentoService, private el: ElementRef) { }
     @Input() oportunidad!: Oportunidad;
     @Input() oportunidades: Oportunidad[]=[];
     @Input() oportunidadesOriginal: Oportunidad[]=[];
@@ -42,6 +42,7 @@ export class DocumentosOportunidadesComponent {
     archivoSeleccionado: File | null = null;
     nombreOportunidad: string = '';
 
+    @ViewChild('fileInput') fileInput!: ElementRef;
 
     @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() closeModal: EventEmitter<void> = new EventEmitter();
@@ -99,6 +100,8 @@ export class DocumentosOportunidadesComponent {
                 summary: 'Éxito',
                 detail: 'Archivo guardado correctamente.'
               });
+              this.archivoSeleccionado = null;
+              this.fileInput.nativeElement.value = '';
               // Actualiza la lista de documentos
               this.getDocumentos(this.oportunidad.idOportunidad!);
             },

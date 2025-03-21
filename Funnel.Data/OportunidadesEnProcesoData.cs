@@ -237,6 +237,7 @@ namespace Funnel.Data
                         FechaRegistro = ComprobarNulos.CheckDateTimeNull(reader["FechaRegistro"]),
                         DiasFunnel = ComprobarNulos.CheckIntNull(reader["DiasFunnel"]),
                         FechaEstimadaCierreOriginal = ComprobarNulos.CheckDateTimeNull(reader["FechaEstimadaCierreOriginal"]),
+                        FechaEstimadaCierre = ComprobarNulos.CheckDateTimeNull(reader["FechaEstimadaCierre"]),
 
                         FechaModificacion = ComprobarNulos.CheckIntNull(reader["FechaModificacion"]),
                         Comentario = ComprobarNulos.CheckStringNull(reader["Comentario"]),

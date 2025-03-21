@@ -129,7 +129,7 @@
             <tr class="custom-footer">
               <td *ngFor="let def of lsColumnasAMostrar">
                 <ng-container *ngIf="def.key === 'idOportunidad'">
-                  Total: {{ getTotalCostPrimeNg(dt, def) }}
+                  Oportunidades: {{ getTotalCostPrimeNg(dt, def) }}
                 </ng-container>
                 <ng-container *ngIf="def.tipoFormato === 'currency'">
                   {{ getTotalCostPrimeNg(dt, def) | currency:'MX ': 'symbol' }}

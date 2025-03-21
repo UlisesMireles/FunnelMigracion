@@ -46,23 +46,23 @@ export class OportunidadesComponent {
   ];
 
   lsTodasColumnas: any[] = [
-    { key: 'idOportunidad', isCheck: false, valor: 'Seleccion', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
-    { key: 'nombre', isCheck: true, valor: 'Nombre', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
+    { key: 'idOportunidad', isCheck: false, valor: 'Id', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
+    { key: 'nombre', isCheck: true, valor: 'Prospecto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreSector', isCheck: true, valor: 'Sector', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreOportunidad', isCheck: true, valor: 'Oportunidad', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'abreviatura', isCheck: true, valor: 'Abreviatura', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'abreviatura', isCheck: true, valor: 'Tipo', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'stage', isCheck: true, valor: 'Etapa', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreEjecutivo', isCheck: true, valor: 'Ejecutivo', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreContacto', isCheck: true, valor: 'Contacto', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'entrega', isCheck: true, valor: 'Entrega', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'monto', isCheck: true, valor: 'Monto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
-    { key: 'probabilidadOriginal', isCheck: false, valor: 'Prob Original', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'probabilidad', isCheck: true, valor: 'Prob', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'montoNormalizado', isCheck: true, valor: 'Monto Normalizado', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
-    { key: 'fechaRegistro', isCheck: true, valor: 'Fecha Registro', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
-    { key: 'diasFunnel', isCheck: false, valor: 'Días en Funnel', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
-    { key: 'fechaEstimadaCierreOriginal', isCheck: false, valor: 'Fecha Estimada de Cierre', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
-    { key: 'fechaModificacion', isCheck: false, valor: 'Días sin Actividad', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' }
+    { key: 'probabilidadOriginal', isCheck: false, valor: '% Original', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'probabilidad', isCheck: true, valor: '% Actual', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'montoNormalizado', isCheck: true, valor: 'Venta Esperada', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
+    { key: 'fechaRegistro', isCheck: true, valor: 'Fecha Alta', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
+    { key: 'diasFunnel', isCheck: false, valor: 'Días Funnel', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
+    { key: 'fechaEstimadaCierreOriginal', isCheck: false, valor: 'Cierre Est', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
+    { key: 'fechaModificacion', isCheck: false, valor: 'Días S/Actividad', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' }
   ];
 
   columnsAMostrarResp: string = JSON.stringify(this.lsColumnasAMostrar);

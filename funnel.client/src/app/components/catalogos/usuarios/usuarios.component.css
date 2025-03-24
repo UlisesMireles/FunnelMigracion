@@ -230,3 +230,7 @@ div.inDivDatatableHeader > p-button > button.p-button {
   width: 100%;
   max-width: 100%;
 }
+
+::ng-deep .yellow-icon .p-button-icon {
+  color: rgb(202, 202, 5) !important;
+}

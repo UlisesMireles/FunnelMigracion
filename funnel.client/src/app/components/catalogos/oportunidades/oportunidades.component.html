@@ -7,8 +7,8 @@
     <div class="col-12">
       <div class="row contenedorTabla">
         <div *ngIf="loading">Cargando...</div>
-        <p-table *ngIf="!loading" #dt [stripedRows]="true" [value]="oportunidades" dataKey="id" [rows]="20"
-          [showCurrentPageReport]="true" [rowsPerPageOptions]="[20, 30, 50]" [paginator]="true" paginatorPosition="both"
+        <p-table *ngIf="!loading" #dt [stripedRows]="true" [value]="oportunidades" dataKey="id" [rows]="10"
+          [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 20, 50]" [paginator]="true" paginatorPosition="both"
           currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros"
           [columns]="lsColumnasAMostrar"
           [resizableColumns]="true" [reorderableColumns]="true"

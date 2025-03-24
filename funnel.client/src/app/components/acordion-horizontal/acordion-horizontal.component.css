@@ -6,7 +6,7 @@
 }
 
 .item-acordeon {
-  width: 500px !important;
+  width: 70px ;
   height: 700px;
   background: #f8f9fa;
   border: 1px solid #ccc;
@@ -23,7 +23,7 @@
 }
 
 .item-acordeon.expandido {
-  width: 280px;
+  width: 500px ;
 }
 
 .encabezado-acordeon {
@@ -56,15 +56,17 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+
 }
 
 .tarjeta {
   background: #ffffff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  border-radius: 0px;
   padding: 10px;
   text-align: center;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  padding-top: 0pX;
+  border: black solid 1px !important
 }
 
 .imagen-tarjeta {
@@ -249,4 +251,54 @@ div.fotoTarjeta {
 .row.justify-content-between {
   display: flex;
   align-items: center;
+}
+
+
+.card-header {
+  background-image: url('/assets/img/FondoTools.png');
+  background-size: cover;  /* Ajusta la imagen para cubrir todo el div */
+  background-position: center; /* Centra la imagen */
+  background-repeat: no-repeat; /* Evita que la imagen se repita */
+  height: 25px; /* Ajusta la altura según necesidad */
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 5px;
+  gap: 10px;
+  border-bottom: 1px solid #ddd;
+  margin-left: 3px!important;
+  margin-right: 3px!important;
+  width: 98.8% !important;
+}
+
+.edit-icon {
+  font-size: 18px;
+  cursor: pointer;
+  color: #555;
+}
+
+
+
+.commandSeguimiento {
+  width: 22px !important;
+  height: 22px !important;
+  background-repeat: no-repeat !important;
+  background-position: 50%;
+  background-size: 100% auto;
+  cursor: pointer;
+  font-size: 14.4px; /* Ajusta el tamaño si es necesario */
+}
+
+.commandEditar {
+  width: 25px !important;
+  height: 25px !important;
+  background-repeat: no-repeat !important;
+  background-position: 50%;
+  background-size: 100% auto;
+  cursor: pointer;
+  font-size: 14.4px; /* Ajusta el tamaño si es necesario */
+}
+
+.card-header i {
+  color: black; /* Establece el color de los iconos a negro */
 }

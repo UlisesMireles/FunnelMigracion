@@ -7,6 +7,9 @@
       </button>
     </div>
 
+
+
+
     <div *ngIf="mes.expandido"
       cdkDropList
       #todoList="cdkDropList"
@@ -15,10 +18,18 @@
       class="contenido-acordeon"
       (cdkDropListDropped)="drop($event, mes)"
       [id]="'todoList' + i">
-
       <div class="contenedor-tarjetas">
         <div *ngFor="let tarjeta of mes.tarjetas" cdkDrag [cdkDragData]="tarjeta" class="tarjeta">
           <div class="row  ">
+
+
+            <!-- Encabezado con título e ícono de edición -->
+          <div class="card-header">
+            <i class="bi bi-card-text commandSeguimiento"></i>
+            <i class="bi bi-pencil-fill commandEditar"></i>
+          </div>
+
+
             <div  class="col-9 tarjeta-row"  id =" Div  + {{idOportunidad}} ">
               <div class="row justify-content-between">
                 <div class="col-8">

@@ -3,7 +3,7 @@
   [modal]="true"
   [closable]="true"
   [style]="{
-    width: '65rem',
+    width: '68rem',
     height: historialOportunidad.length > 0 ? '50rem' : '30rem'
   }"
   (onHide)="close()"
@@ -24,8 +24,8 @@
           {{ oportunidadForm.get('nombre')?.value }}
         </label>
       </div>
-      <div class="col-sm-5" style="min-width: 200px;">
-        <label class="margen text-left" style="white-space: nowrap;">
+      <div class="col-sm-5" >
+        <label class="margen text-left" style="white-space: nowrap; padding-right: 50px;">
           {{ 'Probabilidad ' + oportunidadForm.get('probabilidad')?.value  }}
         </label>
         <br />

@@ -276,3 +276,10 @@
   padding: 0.5rem 3rem;
   text-align: left; 
 }
+::ng-deep .p-dialog {
+  overflow-x: hidden; 
+}
+
+::ng-deep .p-dialog-content {
+  overflow-x: hidden; 
+}

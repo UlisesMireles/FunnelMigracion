@@ -142,6 +142,7 @@ body {
 
 .tarjeta-row {
   padding-top: 10px;
+
 }
 
 .nombre-empresa {
@@ -149,8 +150,11 @@ body {
   font-weight: bold;
   color: #333333;
   text-align: left;
-}
 
+}
+.abrev{
+  text-align:right;
+}
 .nombre-abrev {
   font-size: 17px;
   font-weight: bold;
@@ -169,21 +173,20 @@ body {
   font-weight: 500;
   color: #747678;
   text-align: left;
+  white-space: nowrap; /* Evita el salto de línea */
+  margin-right: 8px; /* Espaciado entre elementos */
 }
 
-.col-3 {
-  padding-top: 10px;
-}
 
+/*
 .fotoTarjeta {
   width: 100%;
   height: 80px;
   background-size: cover;
   background-position: center;
   border-radius: 5px;
-  margin-bottom: 10px;
 }
-
+*/
 .iniciales {
   font-size: 14px;
   font-weight: 500;
@@ -226,4 +229,24 @@ div.fotoTarjeta {
   #Abrev {
       right: -29px !important;
   }
+}
+.nombre-oportunidad,
+.monto,
+.probabilidad,
+.monto-normalizado {
+  display: block; /* Hace que los labels ocupen toda la línea */
+  text-align: left;
+  width: 50%; /* Asegura que usen todo el espacio disponible */
+}
+
+.fila-monto {
+  display: flex;
+  justify-content: flex-start; /* Alinea a la izquierda */
+  gap: 8px; /* Espaciado entre los elementos (ajústalo según lo necesites) */
+  width: 100%;
+}
+
+.row.justify-content-between {
+  display: flex;
+  align-items: center;
 }

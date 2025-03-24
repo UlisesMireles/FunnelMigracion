@@ -18,29 +18,32 @@
 
       <div class="contenedor-tarjetas">
         <div *ngFor="let tarjeta of mes.tarjetas" cdkDrag [cdkDragData]="tarjeta" class="tarjeta">
-          <div class="row tarjeta-row ">
-            <div class="col-9">
+          <div class="row  ">
+            <div  class="col-9 tarjeta-row"  id =" Div  + {{idOportunidad}} ">
               <div class="row justify-content-between">
                 <div class="col-8">
                   <label id="cliente"  class="nombre-empresa" [ngClass]="getClaseNombreEmpresa(tarjeta.NombreEmpresa, tarjeta.NombreAbrev)">
-                  <p>{{ tarjeta.NombreEmpresa }}</p>
+                  {{ tarjeta.NombreEmpresa }}
                   </label>
-
                 </div>
-                <div class="col-3 text-end">
-                  <label class="nombre-abrev" title="{{ tarjeta.Descripcion }}">{{ tarjeta.NombreAbrev }}</label>
+                <div class="col-3 abrev">
+                  <label id='Abrev' class="nombre-abrev" title="{{ tarjeta.Descripcion }}">{{ tarjeta.NombreAbrev }}</label>
                 </div>
               </div>
-              <label class="nombre-oportunidad">{{ tarjeta.NombreOportunidad }}</label><br />
-              <label class="monto">{{ tarjeta.Monto | currency:'MXN':'symbol':'1.0-0' }}</label>
-              <label class="probabilidad">{{ tarjeta.Probabilidad }}%</label>
-              <label class="monto-normalizado">{{ tarjeta.MontoNormalizado | currency:'MXN':'symbol':'1.0-0' }}</label>
-            </div>
-            <div class="col-3">
-              <div class="fotoTarjeta" [ngStyle]="{'background-image': 'url(' + tarjeta.imagen + ')'}" title="{{ tarjeta.NombreEjecutivo }}"></div>
-              <p class="iniciales" title="{{ tarjeta.NombreEjecutivo }}">
-                {{ tarjeta.Iniciales | uppercase }}
-              </p>
+              <label id="NombreOportunidad" class="nombre-oportunidad">{{ tarjeta.NombreOportunidad }}</label><br />
+              <div class="fila-monto">
+                <label class="monto">{{ tarjeta.Monto | currency:'MXN':'symbol':'1.0-0' }}</label>
+                <label class="probabilidad">{{ tarjeta.Probabilidad }}%</label>
+                <label class="monto-normalizado">{{ tarjeta.MontoNormalizado | currency:'MXN':'symbol':'1.0-0' }}</label>
+              </div>
+             </div>
+            <div class="col-3" style='padding-top:10px' >
+
+              <div class="fotoTarjeta" [ngStyle]="{'background-image': 'url(' + (tarjeta.imagen) + ')', 'margin': 'auto'}"   [title]="tarjeta.NombreEjecutivo"> </div>
+
+              <label class="iniciales" title="{{ tarjeta.NombreEjecutivo }}">
+                {{ tarjeta.Iniciales | currency:'MXN':'symbol':'1.0-0' }}
+              </label>
             </div>
           </div>
         </div>

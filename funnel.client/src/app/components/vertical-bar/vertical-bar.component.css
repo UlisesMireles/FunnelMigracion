@@ -358,13 +358,13 @@ text-align: left;
 
 
 
-
+/*
 
 .menu-container {
   max-height: 400px;
   overflow: hidden;
   position: relative;
-}
+}*/
 .submenu,
 .expand-button {
   background-color: rgba(16, 61, 102, 0.6);

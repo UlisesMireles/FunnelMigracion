@@ -1,9 +1,9 @@
 <div class="sidebar" [class.expanded]="isExpanded">
 
   <!-- Botón de Scroll Arriba (Solo aparece si hay scroll) -->
- <button class="scroll-btn up-btn" *ngIf="isScrollable" (mouseenter)="scrollUp()" (mouseleave)="stopScroll()">
+ <!-- <button class="scroll-btn up-btn" *ngIf="isScrollable" (mouseenter)="scrollUp()" (mouseleave)="stopScroll()">
     <i class="bi bi-chevron-up"></i>
-  </button>
+  </button> -->
 
   <!-- Contenedor del Menú con Scroll -->
   <div class="menu-container" #menuList>
@@ -37,9 +37,9 @@
   </div>
 
   <!-- Botón de Scroll Abajo (Solo aparece si hay scroll) -->
-   <button class="scroll-btn down-btn" *ngIf="isScrollable" (mouseenter)="scrollDown()" (mouseleave)="stopScroll()">
+   <!-- <button class="scroll-btn down-btn" *ngIf="isScrollable" (mouseenter)="scrollDown()" (mouseleave)="stopScroll()">
     <i class="bi bi-chevron-down"></i>
-  </button>
+  </button> -->
 
   <div class="separator"></div>
 <!-- Botón de Expandir -->

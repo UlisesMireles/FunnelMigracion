@@ -1,0 +1,89 @@
+#header {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #103D66;
+  color: white;
+  text-align: center;
+  padding: 4px 0;
+  z-index: 1000;
+  font-family: sans-serif;
+  height: 40px;
+}
+
+header h6 {
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
+
+/* Media Queries para diferentes tamaños de pantalla */
+@media (max-width: 768px) {
+  header h6 {
+    font-size: 0.875rem; /* Ajusta el tamaño de la fuente para pantallas más pequeñas */
+  }
+}
+
+@media (max-width: 480px) {
+  header h6 {
+    font-size: 0.75rem; /* Ajusta el tamaño de la fuente para pantallas muy pequeñas */
+  }
+}
+
+
+.navbar {
+  background-color: #103D66;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 65px;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+/* Contenedor del logo */
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+/* Imagen del logo */
+.navbar img {
+  max-width: 80px;
+  height: auto;
+  margin-right: 20px;
+}
+
+/* Ajuste del texto dentro de la navbar */
+.navbar nav {
+  flex-grow: 1;
+  text-align: center;
+}
+
+/* Contenedor del botón de chat */
+.button-chat-container {
+  display: flex;
+  align-items: center;
+  margin-right: 10px; /* Deja un espacio de 1 cm (~10px) del borde derecho */
+}
+
+/* Ícono de chat */
+.notification-icon {
+  background-color: #007bff;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.notification-icon i {
+  font-size: 23px;
+  color: white;
+}

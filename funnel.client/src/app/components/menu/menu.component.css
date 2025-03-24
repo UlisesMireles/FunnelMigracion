@@ -2,10 +2,10 @@
   padding: 10px;
 }
 
-.containerSideNav {
+/* .containerSideNav {
   width: 100%;
   height: 100vh;
-}
+} */
 
 .contentSidenav {
   display: flex;
@@ -67,14 +67,18 @@ html body #container {
 }
 
 
-.containerSideNav {
-  height: 100vh;
-}
 
-.sidenav {
-  transition: width 0.3s ease; /* Animación de la barra lateral */
+
+.containerSideNav {
+  height: calc(100vh - 65px); /* Ajusta según la altura del header */
+  margin-top: 65px; /* Empuja el sidenav hacia abajo */
 }
 
 .content {
-  transition: margin-left 0.3s ease; /* Animación del contenido */
+  padding: 20px; /* Espacio alrededor del contenido */
+  margin-left: 200px; /* Ajusta según el tamaño del menú */
+}
+
+.sidenav {
+  height: 100vh; /* Asegura que el sidenav ocupe toda la altura */
 }

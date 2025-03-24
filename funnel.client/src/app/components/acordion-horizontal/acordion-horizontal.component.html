@@ -1,5 +1,5 @@
 <div class="acordeon-horizontal d-flex">
-  <div *ngFor="let mes of elementos.slice(-20); let i = index" class="item-acordeon" [class.expandido]="mes.expandido">
+  <div *ngFor="let mes of elementos.slice(-4); let i = index" class="item-acordeon" [class.expandido]="mes.expandido">
     <div class="encabezado-acordeon">
       <span class="nombre-mes">{{ mes.nombre }}</span>
       <button class="boton-toggle" (click)="alternarItem(mes, $event)">
@@ -18,11 +18,14 @@
 
       <div class="contenedor-tarjetas">
         <div *ngFor="let tarjeta of mes.tarjetas" cdkDrag [cdkDragData]="tarjeta" class="tarjeta">
-          <div class="row tarjeta-row">
+          <div class="row tarjeta-row ">
             <div class="col-9">
               <div class="row justify-content-between">
                 <div class="col-8">
-                  <label class="nombre-empresa">{{ tarjeta.NombreEmpresa }}</label>
+                  <label id="cliente"  class="nombre-empresa" [ngClass]="getClaseNombreEmpresa(tarjeta.NombreEmpresa, tarjeta.NombreAbrev)">
+                  <p>{{ tarjeta.NombreEmpresa }}</p>
+                  </label>
+
                 </div>
                 <div class="col-3 text-end">
                   <label class="nombre-abrev" title="{{ tarjeta.Descripcion }}">{{ tarjeta.NombreAbrev }}</label>

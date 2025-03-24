@@ -20,9 +20,9 @@ export class AcordionHorizontalComponent {
           NombreAbrev: 'CIA',
           NombreOportunidad: 'Chat Bot Empresarial',
           Monto: 450000,
-          Probabilidad: '40%',
+          Probabilidad: '40',
           MontoNormalizado: 180000,
-          imagen: 'https://via.placeholder.com/150',
+          imagen: 'assets/Fotografia/AlejandraCano_2.jpg',
           nombreEjecutivo: 'Juan Pérez',
           iniciales: 'JP',
           descripcion: 'Desarrollo de un chatbot para automatización empresarial.'
@@ -32,9 +32,9 @@ export class AcordionHorizontalComponent {
           NombreAbrev: 'ECOM',
           NombreOportunidad: 'Tienda en línea moderna',
           Monto: 200000,
-          Probabilidad: '20%',
+          Probabilidad: '20',
           MontoNormalizado: 160000,
-          imagen: 'https://via.placeholder.com/150',
+          imagen: 'assets/Fotografia/INGE.jpg',
           nombreEjecutivo: 'María Gómez',
           iniciales: 'MG',
           descripcion: 'Creación de una tienda en línea con capacidades de comercio internacional.'
@@ -48,9 +48,9 @@ export class AcordionHorizontalComponent {
           NombreAbrev: 'AD',
           NombreOportunidad: 'Inteligencia de Negocios',
           Monto: 600000,
-          Probabilidad: '35%',
+          Probabilidad: '35',
           MontoNormalizado: 390000,
-          imagen: 'https://via.placeholder.com/150',
+          imagen: 'assets/Fotografia/persona_icono_principal.png',
           nombreEjecutivo: 'Carlos Rodríguez',
           iniciales: 'CR',
           descripcion: 'Implementación de un sistema de inteligencia empresarial basado en datos.'
@@ -64,9 +64,9 @@ export class AcordionHorizontalComponent {
           NombreAbrev: 'RPA',
           NombreOportunidad: 'Flujos de trabajo inteligentes',
           Monto: 300000,
-          Probabilidad: '25%',
+          Probabilidad: '25',
           MontoNormalizado: 225000,
-          imagen: 'https://via.placeholder.com/150',
+          imagen: 'assets/Fotografia/persona_icono_principal.png',
           nombreEjecutivo: 'Laura Martínez',
           iniciales: 'LM',
           descripcion: 'Automatización de procesos a través de RPA para mejorar la eficiencia.'
@@ -76,9 +76,9 @@ export class AcordionHorizontalComponent {
           NombreAbrev: 'RSIA',
           NombreOportunidad: 'Análisis predictivo',
           Monto: 150000,
-          Probabilidad: '30%',
+          Probabilidad: '30',
           MontoNormalizado: 105000,
-          imagen: 'https://via.placeholder.com/150',
+          imagen: 'assets/Fotografia/UlisesMireles_1.jpg',
           nombreEjecutivo: 'Pedro Sánchez',
           iniciales: 'PS',
           descripcion: 'Uso de inteligencia artificial para prever tendencias en redes sociales.'
@@ -88,9 +88,9 @@ export class AcordionHorizontalComponent {
           NombreAbrev: 'CRM',
           NombreOportunidad: 'Gestión avanzada de clientes',
           Monto: 500000,
-          Probabilidad: '20%',
+          Probabilidad: '20',
           MontoNormalizado: 400000,
-          imagen: 'https://via.placeholder.com/150',
+          imagen: 'assets/Fotografia/UlisesMireles_1.jpg',
           nombreEjecutivo: 'Ana López',
           iniciales: 'AL',
           descripcion: 'Mejora en la gestión de relaciones con clientes mediante un CRM inteligente.'
@@ -104,9 +104,9 @@ export class AcordionHorizontalComponent {
           NombreAbrev: 'DW',
           NombreOportunidad: 'Sitios web personalizados',
           Monto: 800000,
-          Probabilidad: '15%',
+          Probabilidad: '15',
           MontoNormalizado: 680000,
-          imagen: 'https://via.placeholder.com/150',
+          imagen: 'assets/Fotografia/AlejandraCano_2.jpg',
           nombreEjecutivo: 'Luis Torres',
           iniciales: 'LT',
           descripcion: 'Desarrollo de sitios web personalizados para clientes de diversos sectores.'
@@ -116,9 +116,9 @@ export class AcordionHorizontalComponent {
           NombreAbrev: 'MD',
           NombreOportunidad: 'Estrategias de marketing efectivas',
           Monto: 400000,
-          Probabilidad: '20%',
+          Probabilidad: '20',
           MontoNormalizado: 320000,
-          imagen: 'https://via.placeholder.com/150',
+          imagen: 'assets/Fotografia/UlisesMireles_1.jpg',
           nombreEjecutivo: 'Sofía Hernández',
           iniciales: 'SH',
           descripcion: 'Creación de campañas digitales para mejorar la presencia online.'
@@ -128,9 +128,9 @@ export class AcordionHorizontalComponent {
           NombreAbrev: 'AD',
           NombreOportunidad: 'Inteligencia de Negocios',
           Monto: 600000,
-          Probabilidad: '35%',
+          Probabilidad: '35',
           MontoNormalizado: 390000,
-          imagen: 'https://via.placeholder.com/150',
+          imagen: 'assets/Fotografia/persona_icono_principal.png',
           nombreEjecutivo: 'Carlos Rodríguez',
           iniciales: 'CR',
           descripcion: 'Solución avanzada de inteligencia de negocios utilizando análisis de datos.'
@@ -140,9 +140,9 @@ export class AcordionHorizontalComponent {
           NombreAbrev: 'RSIA',
           NombreOportunidad: 'Análisis predictivo',
           Monto: 150000,
-          Probabilidad: '30%',
+          Probabilidad: '30',
           MontoNormalizado: 105000,
-          imagen: 'https://via.placeholder.com/150',
+          imagen: 'assets/Fotografia/UlisesMireles_1.jpg',
           nombreEjecutivo: 'Pedro Sánchez',
           iniciales: 'PS',
           descripcion: 'Utilización de IA para analizar datos de redes sociales y predecir comportamientos.'
@@ -152,9 +152,9 @@ export class AcordionHorizontalComponent {
           NombreAbrev: 'CRM',
           NombreOportunidad: 'Gestión avanzada de clientes',
           Monto: 500000,
-          Probabilidad: '20%',
+          Probabilidad: '20',
           MontoNormalizado: 400000,
-          imagen: 'https://via.placeholder.com/150',
+          imagen: 'assets/Fotografia/AlejandraCano_2.jpg',
           nombreEjecutivo: 'Ana López',
           iniciales: 'AL',
           descripcion: 'Implementación de un sistema CRM para optimizar la relación con los clientes.'
@@ -164,9 +164,9 @@ export class AcordionHorizontalComponent {
           NombreAbrev: 'RPA',
           NombreOportunidad: 'Flujos de trabajo inteligentes',
           Monto: 300000,
-          Probabilidad: '25%',
+          Probabilidad: '25',
           MontoNormalizado: 225000,
-          imagen: 'https://via.placeholder.com/150',
+          imagen: 'assets/Fotografia/AlejandraCano_2.jpg',
           nombreEjecutivo: 'Laura Martínez',
           iniciales: 'LM',
           descripcion: 'Implementación de flujos de trabajo automatizados para reducir costos operativos.'
@@ -180,9 +180,9 @@ export class AcordionHorizontalComponent {
           NombreAbrev: 'SI',
           NombreOportunidad: 'Protección avanzada contra ciberataques',
           Monto: 700000,
-          Probabilidad: '50%',
+          Probabilidad: '50',
           MontoNormalizado: 350000,
-          imagen: 'https://via.placeholder.com/150',
+          imagen: 'assets/Fotografia/AlejandraCano_2.jpg',
           nombreEjecutivo: 'Ricardo Silva',
           iniciales: 'RS',
           descripcion: 'Implementación de un sistema de seguridad avanzado para proteger datos empresariales.'
@@ -192,9 +192,9 @@ export class AcordionHorizontalComponent {
           NombreAbrev: 'CE',
           NombreOportunidad: 'Optimización de procesos internos',
           Monto: 350000,
-          Probabilidad: '60%',
+          Probabilidad: '60',
           MontoNormalizado: 210000,
-          imagen: 'https://via.placeholder.com/150',
+          imagen: 'assets/Fotografia/UlisesMireles_1.jpg',
           nombreEjecutivo: 'Elena Ruiz',
           iniciales: 'ER',
           descripcion: 'Asesoría para mejorar la eficiencia operativa y los procesos internos.'
@@ -208,9 +208,9 @@ export class AcordionHorizontalComponent {
           NombreAbrev: 'DS',
           NombreOportunidad: 'Aplicación móvil innovadora',
           Monto: 900000,
-          Probabilidad: '70%',
+          Probabilidad: '70',
           MontoNormalizado: 630000,
-          imagen: 'https://via.placeholder.com/150',
+          imagen: 'assets/Fotografia/UlisesMireles_1.jpg',
           nombreEjecutivo: 'Javier Gómez',
           iniciales: 'JG',
           descripcion: 'Desarrollo de una app móvil para mejorar la interacción con los clientes.'
@@ -220,9 +220,9 @@ export class AcordionHorizontalComponent {
           NombreAbrev: 'IAC',
           NombreOportunidad: 'Plataforma de IA para análisis en tiempo real',
           Monto: 500000,
-          Probabilidad: '45%',
+          Probabilidad: '45',
           MontoNormalizado: 225000,
-          imagen: 'https://via.placeholder.com/150',
+          imagen: 'assets/Fotografia/UlisesMireles_1.jpg',
           nombreEjecutivo: 'Cristina Pérez',
           iniciales: 'CP',
           descripcion: 'Implementación de una plataforma de IA para mejorar los procesos en la nube.'
@@ -236,9 +236,9 @@ export class AcordionHorizontalComponent {
           NombreAbrev: 'ER',
           NombreOportunidad: 'Soluciones sostenibles para empresas',
           Monto: 1100000,
-          Probabilidad: '65%',
+          Probabilidad: '65',
           MontoNormalizado: 715000,
-          imagen: 'https://via.placeholder.com/150',
+          imagen: 'assets/Fotografia/persona_icono_principal.png',
           nombreEjecutivo: 'Fernando Torres',
           iniciales: 'FT',
           descripcion: 'Desarrollo de soluciones energéticas sostenibles para grandes empresas.'
@@ -248,9 +248,9 @@ export class AcordionHorizontalComponent {
           NombreAbrev: 'GP',
           NombreOportunidad: 'Implementación de software de gestión',
           Monto: 300000,
-          Probabilidad: '55%',
+          Probabilidad: '55',
           MontoNormalizado: 165000,
-          imagen: 'https://via.placeholder.com/150',
+          imagen: 'assets/Fotografia/persona_icono_principal.png',
           nombreEjecutivo: 'Marta Pérez',
           iniciales: 'MP',
           descripcion: 'Optimización de la gestión de proyectos mediante software especializado.'
@@ -334,4 +334,18 @@ cancelar() {
   this.tarjetaMovida = null;
   this.mostrarModal = false;
 }
+
+getClaseNombreEmpresa(nombreEmpresa: string, nombreAbrev: string): string {
+  const cantNombre = nombreEmpresa.length;
+  const cantAbrev = nombreAbrev.length;
+
+  if (cantNombre >= 30 && cantAbrev >= 4) {
+    return 'clsNomEmpresa116';
+  } else if (cantNombre >= 30 && cantAbrev < 4) {
+    return 'clsNomEmpresa125';
+  } else {
+    return 'clsNomEmpresa';
+  }
+}
+
 }

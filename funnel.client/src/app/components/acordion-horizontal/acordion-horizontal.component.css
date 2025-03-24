@@ -6,7 +6,7 @@
 }
 
 .item-acordeon {
-  width: 70px;
+  width: 500px !important;
   height: 700px;
   background: #f8f9fa;
   border: 1px solid #ccc;
@@ -148,6 +148,7 @@ body {
   font-size: 17px;
   font-weight: bold;
   color: #333333;
+  text-align: left;
 }
 
 .nombre-abrev {
@@ -160,12 +161,14 @@ body {
   font-size: 15px;
   font-weight: 600;
   color: #455a64;
+  text-align: left;
 }
 
 .monto, .probabilidad, .monto-normalizado {
   font-size: 14px;
   font-weight: 500;
   color: #747678;
+  text-align: left;
 }
 
 .col-3 {
@@ -189,3 +192,38 @@ body {
   margin-bottom: 0 !important;
 }
 
+
+
+div.fotoTarjeta {
+  /* cambia estos dos valores para definir el tamaño de tu círculo */
+  height: 55px;
+  width: 55px;
+  /* los siguientes valores son independientes del tamaño del círculo */
+  background-repeat: no-repeat;
+  background-position: 50%;
+  border-radius: 50%;
+  background-size: 100% auto;
+}
+@media (min-width: 1900px) {
+  .clsNomEmpresa {
+      width: 138%;
+  }
+
+  .clsNomEmpresa125 {
+      width: 125%;
+  }
+
+  .clsNomEmpresa116 {
+      width: 116%;
+  }
+
+  #Abrev {
+      right: -25px !important;
+  }
+}
+
+@media (min-width: 1920px) {
+  #Abrev {
+      right: -29px !important;
+  }
+}

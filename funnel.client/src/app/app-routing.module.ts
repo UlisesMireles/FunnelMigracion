@@ -14,7 +14,7 @@ import { UsuariosComponent } from './components/catalogos/usuarios/usuarios.comp
 import { OportunidadesComponent } from './components/catalogos/oportunidades/oportunidades.component';
 
 
-
+import { TopVeinteComponent } from './components/catalogos/top-veinte/top-veinte.component';
 import { OportunidadesGanadasComponent } from './components/catalogos/oportunidades-ganadas/oportunidades-ganadas.component';
 import { OportunidadesEliminadasComponent } from './components/catalogos/oportunidades-eliminadas/oportunidades-eliminadas.component';
 import { OportunidadesCanceladasComponent } from './components/catalogos/oportunidades-canceladas/oportunidades-canceladas.component';
@@ -46,7 +46,7 @@ const routes: Routes = [
   { path:'oportunidades-perdidas', component: OportunidadesPerdidasComponent, title: 'Oportunidades Perdidas', canActivate: [AuthGuard] },
   { path:'oportunidades-canceladas-modal', component: ModalOportunidadesCanceladasComponent, title: 'Oportunidades Canceladas', canActivate: [AuthGuard] },
   { path:'oportunidades-perdidas-modal', component: ModalOportunidadesPerdidasComponent, title: 'Oportunidades Perdidas', canActivate: [AuthGuard] },
-
+  { path:'top-veinte', component: TopVeinteComponent, title: 'Top Veinte', canActivate: [AuthGuard] },
 
 ];
 

@@ -45,6 +45,7 @@ export class TopVeinteComponent {
     { key: 'nombre', isCheck: true, valor: 'Nombre', groupHeader: '', isIgnore: false, tipoFormato: 'text' },
     { key: 'nombreSector', isCheck: true, valor: 'Sector de la industria', groupHeader: '', isIgnore: false, tipoFormato: 'text' },
     { key: 'ubicacionFisica', isCheck: true, valor: 'Ubicación Física', groupHeader: '', isIgnore: false, tipoFormato: 'text' },
+    { key: 'totalOportunidades', isCheck: true, valor: 'Oportunidades Totales', groupHeader: '', isIgnore: false, tipoFormato: 'number' },
     { key: 'ganadas', isCheck: true, valor: 'Total Ganadas', groupHeader: 'Ganadas', isIgnore: false, tipoFormato: 'number', colspan: 1, isSubHeader: true },
     { key: 'porcGanadas', isCheck: true, valor: '% Ganadas', groupHeader: 'Ganadas', isIgnore: false, tipoFormato: 'percent', colspan: 1, isSubHeader: true },
     { key: 'perdidas', isCheck: true, valor: 'Total Perdidas', groupHeader: 'Perdidas', isIgnore: false, tipoFormato: 'number', colspan: 1, isSubHeader: true },
@@ -56,6 +57,7 @@ export class TopVeinteComponent {
     { key: 'proceso', isCheck: true, valor: 'En Proceso', groupHeader: '', isIgnore: false, tipoFormato: 'number' },
     { key: 'desEstatus', isCheck: true, valor: 'Estatus', groupHeader: '', isIgnore: false, tipoFormato: 'estatus' }
   ];
+  
 
   columnsAMostrarResp = JSON.stringify(this.lsColumnasAMostrar);
   columnsTodasResp = JSON.stringify(this.lsTodasColumnas);

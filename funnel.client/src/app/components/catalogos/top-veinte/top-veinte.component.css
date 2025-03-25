@@ -230,3 +230,22 @@
     width: 100%;
     max-width: 100%;
   }
+
+  /* SUBCABECERAS - MISMO ESTILO NARANJA QUE CABECERAS PRINCIPALES */
+.custom-subheader th {
+    background: rgb(247, 106, 19);
+    background: linear-gradient(0deg, rgba(247, 106, 19, 1) 0%, rgba(200, 87, 24, 1) 35%, rgba(231, 91, 42, 1) 100%);
+    color: white;
+    border: 0.1px solid #872B07;
+    text-align: center;
+    font-size: 14px; 
+    font-weight: 600;
+    height: 25px !important; 
+    line-height: 0.5 !important;
+    padding: 2px 1px !important;
+  }
+
+  th[colspan] {
+    text-align: center !important;
+    vertical-align: middle !important;
+  }

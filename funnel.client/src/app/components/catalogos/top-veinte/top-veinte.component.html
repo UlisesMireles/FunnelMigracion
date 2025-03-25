@@ -12,7 +12,7 @@
             currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros"
             [columns]="lsColumnasAMostrar"
             [resizableColumns]="true" [reorderableColumns]="true"
-            [globalFilterFields]="['nombre', 'nombreSector', 'ubicacionFisica', 'totalOportunidades', 'proceso', 'ganadas', 'porcGanadas', 'perdidas', 'porcPerdidas', 'canceladas', 'porcCanceladas', 'eliminadas', 'porcEliminadas', 'desEstatus']"
+            [globalFilterFields]="['nombre', 'nombreSector', 'ubicacionFisica', 'totalOportunidades', 'ganadas', 'porcGanadas', 'perdidas', 'porcPerdidas', 'canceladas', 'porcCanceladas', 'eliminadas', 'porcEliminadas', 'proceso','desEstatus']"
             [tableStyle]="{'min-width': anchoTabla+ '%'}">
   
             <ng-template class="divAccionesTabla" #caption>
@@ -29,80 +29,98 @@
                     pTooltip="Descargar Excel" tooltipPosition="top"
                     [ngStyle]="{'margin-right': '5px'}"/>
                   
-                  <p-button label="" icon="bi-list" (click)="agregarColumna($event)" severity="secondary"  
-                    pTooltip="Agregar columna" tooltipPosition="top"
-                    [ngStyle]="{'margin-right': '5px'}"/>
-                  
                 </div>
               </div>
             </ng-template>
   
             <ng-template pTemplate="header" let-columns>
-              <tr class="custom-header">
-                <th *ngFor="let def of lsColumnasAMostrar" pSortableColumn="{{def.key}}" pReorderableColumn>
-                  {{def.valor}}<p-sortIcon field="{{def.key}}"></p-sortIcon>
-                </th>
-              </tr>
-              <tr>
-                <th *ngFor="let def of lsColumnasAMostrar" style="min-width: 30%;">
-                  <ng-container *ngIf="def.groupColumn">
-                    <p-columnFilter field="{{def.key}}" matchMode="in" [showMenu]="false">
-                      <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                        <p-multiSelect [ngModel]="value"
-                          [options]="obtenerArregloFiltros(topveinte, def.key)" placeholder=""
-                          (onChange)="filter($event.value)">
-                          <ng-template let-option pTemplate="item">
-                            <div class="p-multiselect-representative-option">
-                              <span class="ml-1">{{option}}</span>
-                            </div>
-                          </ng-template>
-                        </p-multiSelect>
-                      </ng-template>
-                    </p-columnFilter>
-                  </ng-container>
-                  <ng-container *ngIf="!def.groupColumn">
-                    <div [ngSwitch]="def.tipoFormato">
-                      <div *ngSwitchCase="'text'">
-                        <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false">
-                          <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                            <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
-                              (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
-                          </ng-template>
-                        </p-columnFilter>
+                <tr class="custom-header">
+                    <th rowspan="2">Nombre</th>
+                    <th rowspan="2">Sector de la industria</th>
+                    <th rowspan="2">Ubicación física</th>
+                    <th rowspan="2">Oportunidades Totales</th>
+            
+                    <th colspan="2">Ganadas</th>
+                    <th colspan="2">Perdidas</th>
+                    <th colspan="2">Canceladas</th>
+                    <th colspan="2">Eliminadas</th>
+                    
+                    <th rowspan="2">En Proceso</th>
+                    <th rowspan="2">Estatus</th>
+                </tr>
+                <tr class="custom-subheader">
+                    <th>Total Ganadas</th>
+                    <th>% Ganadas</th>
+            
+                    <th>Total Perdidas</th>
+                    <th>% Perdidas</th>
+            
+                    <th>Total Canceladas</th>
+                    <th>% Canceladas</th>
+            
+                    <th>Total Eliminadas</th>
+                    <th>% Eliminadas</th>
+                </tr>
+                <tr>
+                  <th *ngFor="let def of lsColumnasAMostrar" style="min-width: 30%;">
+                    <ng-container *ngIf="def.groupColumn">
+                      <p-columnFilter field="{{def.key}}" matchMode="in" [showMenu]="false">
+                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                          <p-multiSelect [ngModel]="value"
+                            [options]="obtenerArregloFiltros(topveinte, def.key)" placeholder=""
+                            (onChange)="filter($event.value)">
+                            <ng-template let-option pTemplate="item">
+                              <div class="p-multiselect-representative-option">
+                                <span class="ml-1">{{option}}</span>
+                              </div>
+                            </ng-template>
+                          </p-multiSelect>
+                        </ng-template>
+                      </p-columnFilter>
+                    </ng-container>
+                    <ng-container *ngIf="!def.groupColumn">
+                      <div [ngSwitch]="def.tipoFormato">
+                        <div *ngSwitchCase="'text'">
+                          <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false">
+                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                              <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
+                                (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
+                            </ng-template>
+                          </p-columnFilter>
+                        </div>
+                        <div *ngSwitchCase="'number'">
+                          <p-columnFilter type="numeric" field="{{def.key}}" [showMenu]="false" [showButtons]="false">
+                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                              <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
+                                (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
+                            </ng-template>
+                          </p-columnFilter>
+                        </div>
+                        <div *ngSwitchCase="'percent'">
+                          <p-columnFilter type="numeric" field="{{def.key}}" [showMenu]="false" [showButtons]="false">
+                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                              <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
+                                (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
+                            </ng-template>
+                          </p-columnFilter>
+                        </div>
+                        <div *ngSwitchCase="'estatus'">
+                          <p-columnFilter field="{{def.key}}" matchMode="equals" [showMenu]="false">
+                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                              <p-dropdown [options]="EstatusDropdown" [(ngModel)]="selectedEstatus" [appendTo]="'body'"
+                              (onChange)="FiltrarPorEstatus()" optionLabel="label" optionValue="value">
+                              </p-dropdown>
+                            </ng-template>
+                          </p-columnFilter>
+                        </div>
+                        <div *ngSwitchDefault>
+                          <p-columnFilter type="text" field="{{def.key}}" [showMenu]="false"></p-columnFilter>
+                        </div>
                       </div>
-                      <div *ngSwitchCase="'number'">
-                        <p-columnFilter type="numeric" field="{{def.key}}" [showMenu]="false" [showButtons]="false">
-                          <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                            <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
-                              (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
-                          </ng-template>
-                        </p-columnFilter>
-                      </div>
-                      <div *ngSwitchCase="'percent'">
-                        <p-columnFilter type="numeric" field="{{def.key}}" [showMenu]="false" [showButtons]="false">
-                          <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                            <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
-                              (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
-                          </ng-template>
-                        </p-columnFilter>
-                      </div>
-                      <div *ngSwitchCase="'estatus'">
-                        <p-columnFilter field="{{def.key}}" matchMode="equals" [showMenu]="false">
-                          <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                            <p-dropdown [options]="EstatusDropdown" [(ngModel)]="selectedEstatus" [appendTo]="'body'"
-                            (onChange)="FiltrarPorEstatus()" optionLabel="label" optionValue="value">
-                            </p-dropdown>
-                          </ng-template>
-                        </p-columnFilter>
-                      </div>
-                      <div *ngSwitchDefault>
-                        <p-columnFilter type="text" field="{{def.key}}" [showMenu]="false"></p-columnFilter>
-                      </div>
-                    </div>
-                  </ng-container>
-                </th>
-              </tr>
-            </ng-template>
+                    </ng-container>
+                  </th>
+                </tr>
+              </ng-template>
   
             <ng-template pTemplate="body" let-rowData let-columns="columns">
                 <tr>

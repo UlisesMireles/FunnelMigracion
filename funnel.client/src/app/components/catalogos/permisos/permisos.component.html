@@ -1,1 +1,34 @@
-<p>permisos works!</p>
+<table class="table table-bordered table-striped table-sm">
+    <thead>
+      <tr>
+        <th>Menú</th>
+        <th>Página</th>
+        <th class="text-center">Administrador</th>
+        <th class="text-center">Gerente</th>
+        <th class="text-center">Agente</th>
+        <th class="text-center">Invitado</th>
+      </tr> 
+    </thead>
+    <tbody>
+      <tr *ngFor="let permiso of permisos">
+        <td class="padding-column">{{ permiso.menu }}</td>
+        <td class="padding-column">{{ permiso.pagina }}</td>
+        <td class="text-center">
+          <input type="checkbox" [(ngModel)]="permiso.administrador" />
+        </td>
+        <td class="text-center">
+          <input type="checkbox" [(ngModel)]="permiso.gerente" />
+        </td>
+        <td class="text-center">
+          <input type="checkbox" [(ngModel)]="permiso.agente"  />
+        </td>
+        <td class="text-center">
+          <input type="checkbox" [(ngModel)]="permiso.invitado"  />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="text-right mt-3">
+    <button class="btn btn-primary" >Guardar</button>
+  </div>
+  

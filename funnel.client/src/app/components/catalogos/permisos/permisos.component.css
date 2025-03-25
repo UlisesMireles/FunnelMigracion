@@ -1,0 +1,5 @@
+.table-sm th, .table-sm td {
+    padding: 4px !important;  
+    font-size: 14px;         
+    white-space: nowrap;     
+}

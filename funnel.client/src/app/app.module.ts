@@ -54,6 +54,7 @@ import { TiposEntregaComponent } from './components/catalogos/tipos-entrega/tipo
 import { ModalUsuariosComponent } from './components/catalogos/usuarios/modal-usuarios/modal-usuarios.component';
 import { PrimeNgConfiguracionService } from './services/primeNgConfiguracion.service';
 
+
 export function getBaseUrl() {
   return 'https://localhost:49834/'
 }

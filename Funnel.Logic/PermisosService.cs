@@ -17,9 +17,20 @@ namespace Funnel.Logic
         {
             _permisosData = permisosData;
         }
+
+        public async Task<List<PermisosDto>> ComboRoles(int IdEmpresa)
+        {
+            return await _permisosData.ComboRoles(IdEmpresa);
+        }
+
         public async Task<List<PermisosDto>> ConsultarPermisos(int IdEmpresa)
         {
             return await _permisosData.ConsultarPermisos(IdEmpresa);
+        }
+
+        public async Task<bool> GuardarPermisos(List<PermisosDto> listPermisos)
+        {
+            return await _permisosData.GuardarPermisos(listPermisos);
         }
     }
 }

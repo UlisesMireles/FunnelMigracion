@@ -15,10 +15,22 @@ namespace Funnel.Server.Controllers
         {
             _permisosService = permisosService;
         }
-        [HttpGet]
+        [HttpGet("[action]/")]
         public async Task<ActionResult<List<PermisosDto>>> ConsultarPermisos(int idEmpresa)
         {
             var respuesta = await _permisosService.ConsultarPermisos(idEmpresa);
+            return Ok(respuesta);
+        }
+        [HttpPost("[action]/")]
+        public async Task<ActionResult<bool>> GuardarPermisos(List<PermisosDto> listPermisos)
+        {
+            var respuesta = await _permisosService.GuardarPermisos(listPermisos);
+            return Ok(respuesta);
+        }
+        [HttpGet("[action]/")]
+        public async Task<ActionResult<List<PermisosDto>>> ComboRoles(int idEmpresa)
+        {
+            var respuesta = await _permisosService.ComboRoles(idEmpresa);
             return Ok(respuesta);
         }
     }

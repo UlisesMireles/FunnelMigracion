@@ -10,5 +10,7 @@ namespace Funnel.Data.Interfaces
     public interface IPermisosData
     {
         public Task<List<PermisosDto>> ConsultarPermisos(int IdEmpresa);
+        public Task<bool> GuardarPermisos(List<PermisosDto> listPermisos);
+        public Task<List<PermisosDto>> ComboRoles(int IdEmpresa);
     }
 }

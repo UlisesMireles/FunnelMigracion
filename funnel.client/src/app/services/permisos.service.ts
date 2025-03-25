@@ -14,7 +14,13 @@ export class PermisosService {
 
   constructor(private http: HttpClient) { }
   getPermisos(idEmpresa: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}api/Permisos`, {
+    return this.http.get(`${this.baseUrl}api/Permisos/ConsultarPermisos`, {
+      params: { idEmpresa: idEmpresa.toString() }
+    });
+  }
+
+  getRoles(idEmpresa: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}api/Permisos/ComboRoles`, {
       params: { idEmpresa: idEmpresa.toString() }
     });
   }

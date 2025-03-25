@@ -2,7 +2,7 @@
     <thead>
       <tr>
         <th>Página</th>
-        <th class="text-center">Administrador</th>
+        <th>Administrador</th>
         <th>Gerente</th>
         <th>Agente</th>
         <th>Invitado</th>
@@ -10,7 +10,7 @@
     </thead>
     <tbody>
       <ng-container *ngFor="let menu of agrupadosPermisos">
-        <!-- Fila del menú con botón para expandir/contraer -->
+      
         <tr (click)="toggleMenu(menu)" class="menu-header" style="cursor: pointer;">
           <td colspan="6">
             <span [ngClass]="{'text-center': menu.expanded, 'text-left': !menu.expanded}">
@@ -22,7 +22,6 @@
           </td>
         </tr>
   
-        <!-- Filas de permisos, solo visibles si el menú está expandido -->
         <ng-container *ngIf="menu.expanded">
             <tr *ngFor="let permiso of menu.paginas">
               <td>{{ permiso.pagina }}</td>

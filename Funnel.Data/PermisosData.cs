@@ -3,6 +3,7 @@ using Funnel.Data.Utils;
 using Funnel.Models.Dto;
 using Microsoft.Extensions.Configuration;
 using System.Data;
+using System.Security.Authentication;
 
 namespace Funnel.Data
 {
@@ -32,10 +33,10 @@ namespace Funnel.Data
                     dto.IdMenu = ComprobarNulos.CheckIntNull(reader["IdMenu"]);
                     dto.Menu = ComprobarNulos.CheckStringNull(reader["Menu"]);
                     dto.Pagina = ComprobarNulos.CheckStringNull(reader["Pagina"]);
-                    dto.Administrador = ComprobarNulos.CheckStringNull(reader["Administrador"]);
-                    dto.Gerente = ComprobarNulos.CheckStringNull(reader["Gerente"]);
-                    dto.Agente = ComprobarNulos.CheckStringNull(reader["Agente"]);
-                    dto.Invitado = ComprobarNulos.CheckStringNull(reader["Invitado"]);
+                    dto.Administrador = ComprobarNulos.CheckBooleanNull(reader["Administrador"]);
+                    dto.Gerente = ComprobarNulos.CheckBooleanNull(reader["Gerente"]);
+                    dto.Agente = ComprobarNulos.CheckBooleanNull(reader["Agente"]);
+                    dto.Invitado = ComprobarNulos.CheckBooleanNull(reader["Invitado"]);
 
 
                     result.Add(dto);

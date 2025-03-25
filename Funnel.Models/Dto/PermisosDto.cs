@@ -11,10 +11,10 @@
         public int? IdMenu { get; set; }
         public string? Menu { get; set; }
         public string? Pagina { get; set; }
-        public string? Administrador { get; set; }
-        public string? Gerente { get; set; }
-        public string? Agente { get; set; }
-        public string? Invitado { get; set; }
+        public bool? Administrador { get; set; }
+        public bool? Gerente { get; set; }
+        public bool? Agente { get; set; }
+        public bool? Invitado { get; set; }
 
     }
 }

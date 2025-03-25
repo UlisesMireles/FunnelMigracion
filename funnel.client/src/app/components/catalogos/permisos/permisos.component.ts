@@ -67,7 +67,7 @@ export class PermisosComponent {
       const menuKey = permiso.menu ?? 'Sin menú';
   
       if (!agrupados[menuKey]) {
-        agrupados[menuKey] = { menu: menuKey, paginas: [], expanded: false }; // 🔹 Propiedad 'expanded' añadida
+        agrupados[menuKey] = { menu: menuKey, paginas: [], expanded: true };
       }
       agrupados[menuKey].paginas.push(permiso);
     });

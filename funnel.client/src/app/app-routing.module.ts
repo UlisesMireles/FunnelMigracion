@@ -12,7 +12,7 @@ import { TipoServiciosComponent } from './components/catalogos/tipo-servicios/ti
 import { ModalTipoServiciosComponent } from './components/catalogos/tipo-servicios/modal-tipo-servicios/modal-tipo-servicios.component';
 import { UsuariosComponent } from './components/catalogos/usuarios/usuarios.component';
 import { OportunidadesComponent } from './components/catalogos/oportunidades/oportunidades.component';
-
+import { EstadisticasPorEtapaComponent } from './components/catalogos/estadisticas-por-etapa/estadisticas-por-etapa.component';
 
 
 import { OportunidadesGanadasComponent } from './components/catalogos/oportunidades-ganadas/oportunidades-ganadas.component';
@@ -46,6 +46,7 @@ const routes: Routes = [
   { path:'oportunidades-perdidas', component: OportunidadesPerdidasComponent, title: 'Oportunidades Perdidas', canActivate: [AuthGuard] },
   { path:'oportunidades-canceladas-modal', component: ModalOportunidadesCanceladasComponent, title: 'Oportunidades Canceladas', canActivate: [AuthGuard] },
   { path:'oportunidades-perdidas-modal', component: ModalOportunidadesPerdidasComponent, title: 'Oportunidades Perdidas', canActivate: [AuthGuard] },
+  { path:'estadisticas-por-etapa', component: EstadisticasPorEtapaComponent, title: 'Estadisticas Por Etapa', canActivate: [AuthGuard] },
 
 
 ];

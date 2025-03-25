@@ -14,7 +14,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { LoginComponent } from './components/login/login.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { OlvidasteContrasenaComponent } from './components/olvidaste-contrasena/olvidaste-contrasena.component';
-
+import {TabViewModule} from 'primeng/tabview';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TooltipModule } from 'primeng/tooltip';
 
@@ -79,6 +79,7 @@ import { APP_INITIALIZER, LOCALE_ID } from '@angular/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { VerticalBarComponent } from './components/vertical-bar/vertical-bar.component';
 import { HeaderComponent } from './components/header/header.component';
+import { EstadisticasPorEtapaComponent } from './components/catalogos/estadisticas-por-etapa/estadisticas-por-etapa.component';
 export function configurationProviderFactory(provider: PrimeNgConfiguracionService) {
   return () => provider.load();
 }
@@ -122,7 +123,8 @@ registerLocaleData(localeEs, 'es-MX');
     OportunidadesCanceladasComponent,
     ModalOportunidadesCanceladasComponent,
     SeguimientoOportunidadesComponent,
-    HeaderComponent
+    HeaderComponent,
+    EstadisticasPorEtapaComponent
   ],
   imports: [
     BrowserModule,
@@ -160,6 +162,7 @@ registerLocaleData(localeEs, 'es-MX');
     MatInputModule,
     DropdownModule,
     MatSidenavModule,
+    TabViewModule,
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'es-MX' },

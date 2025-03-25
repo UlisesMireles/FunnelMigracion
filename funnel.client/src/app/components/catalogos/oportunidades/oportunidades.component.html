@@ -1,10 +1,12 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-12" style="text-align: left; font-weight: bold;">
-      <h3></h3>
+      <h3>{{titulo}}</h3>
     </div>
     
     <div class="col-12">
+      <p-tabView (onChange)="camTitulo($event)">
+        <p-tabPanel header = "" leftIcon="bi-list">
       <div class="row contenedorTabla">
         <div *ngIf="loading">Cargando...</div>
         <p-table *ngIf="!loading" #dt [stripedRows]="true" [value]="oportunidades" dataKey="id" [rows]="10"
@@ -17,7 +19,6 @@
           
           <ng-template class="divAccionesTabla" #caption>
             <div class="col-12" style="text-align: left; font-weight: bold; margin-top: 20px">
-              <h3>Administración General de Oportunidades en Proceso</h3>
             </div>
             <div class="row">
               <div class="col inDivDatatableHeader" style="text-align:right; margin-right:5px">
@@ -169,10 +170,36 @@
           </ng-template>
         </p-table>
       </div>
-      <p-toast position="center"></p-toast>
-    </div>
+      </p-tabPanel>
+      <!-- Pestaña "Oportunidades por Mes" -->
+      <p-tabPanel header="" leftIcon="bi-calendar">
+        <div class="row">
+          <div class="col-12">
+            <p>"Oportunidades por Mes" </p>
+          </div>
+        </div>
+      </p-tabPanel>
+      <!-- Pestaña "Oportunidades por Etapa" -->
+      <p-tabPanel header="" leftIcon="bi-calendar-check">
+        <div class="row">
+          <div class="col-12">
+            <p>"Oportunidades por Etapa"</p>
+          </div>
+        </div>
+      </p-tabPanel>
+       <!-- Pestaña "Estadísticas por Etapa" -->
+       <p-tabPanel header="" leftIcon="bi-bar-chart">
+        <div class="row">
+          <div class="col-12">
+            <app-estadisticas-por-etapa></app-estadisticas-por-etapa>
+          </div>
+        </div>
+      </p-tabPanel>
+    </p-tabView>
   </div>
 </div>
+</div>
+      <p-toast position="center"></p-toast>
 
 <app-modal-oportunidades [(visible)]="modalVisible" [title]="'Editar Datos de '" (closeModal)="onModalClose()"
   (result)="manejarResultado($event)" [insertar]="insertar" [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">

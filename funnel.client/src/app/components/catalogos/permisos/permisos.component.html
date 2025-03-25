@@ -1,34 +1,42 @@
-<table class="table table-bordered table-striped table-sm">
+<table class="table table-bordered table-striped table-sm"> 
     <thead>
       <tr>
-        <th>Menú</th>
         <th>Página</th>
         <th class="text-center">Administrador</th>
-        <th class="text-center">Gerente</th>
-        <th class="text-center">Agente</th>
-        <th class="text-center">Invitado</th>
-      </tr> 
+        <th>Gerente</th>
+        <th>Agente</th>
+        <th>Invitado</th>
+      </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let permiso of permisos">
-        <td class="padding-column">{{ permiso.menu }}</td>
-        <td class="padding-column">{{ permiso.pagina }}</td>
-        <td class="text-center">
-          <input type="checkbox" [(ngModel)]="permiso.administrador" />
-        </td>
-        <td class="text-center">
-          <input type="checkbox" [(ngModel)]="permiso.gerente" />
-        </td>
-        <td class="text-center">
-          <input type="checkbox" [(ngModel)]="permiso.agente"  />
-        </td>
-        <td class="text-center">
-          <input type="checkbox" [(ngModel)]="permiso.invitado"  />
-        </td>
-      </tr>
+      <ng-container *ngFor="let menu of agrupadosPermisos">
+        <!-- Fila del menú con botón para expandir/contraer -->
+        <tr (click)="toggleMenu(menu)" class="menu-header" style="cursor: pointer;">
+          <td colspan="6">
+            <span [ngClass]="{'text-center': menu.expanded, 'text-left': !menu.expanded}">
+              {{ menu.menu }} 
+            </span>
+            <span class="float-right">
+              <i class="fas" [ngClass]="menu.expanded ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+            </span>
+          </td>
+        </tr>
+  
+        <!-- Filas de permisos, solo visibles si el menú está expandido -->
+        <ng-container *ngIf="menu.expanded">
+            <tr *ngFor="let permiso of menu.paginas">
+              <td>{{ permiso.pagina }}</td>
+              <td><input type="checkbox" [(ngModel)]="permiso.administrador" /></td>
+              <td><input type="checkbox" [(ngModel)]="permiso.gerente" /></td>
+              <td><input type="checkbox" [(ngModel)]="permiso.agente" /></td>
+              <td><input type="checkbox" [(ngModel)]="permiso.invitado" /></td>
+            </tr>
+          </ng-container>
+          
+      </ng-container>
     </tbody>
   </table>
-  <div class="text-right mt-3">
-    <button class="btn btn-primary" >Guardar</button>
-  </div>
   
+<div class="text-left mt-3">
+  <button pButton label="Guardar" severity="secondary" style="left: 650px"></button>
+</div>

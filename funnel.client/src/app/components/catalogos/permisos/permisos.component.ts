@@ -24,6 +24,7 @@ export class PermisosComponent {
   permisosOriginal: Permiso[] = [];
   permisoSeleccionado!: Permiso;
 
+  agrupadosPermisos: any[] = [];
   loading: boolean = true;
 
   constructor(
@@ -44,6 +45,7 @@ export class PermisosComponent {
       next: (result: Permiso[]) => {
         console.log(result);
         this.permisos = result;
+        this.agrupadosPermisos = this.obtenerMenusAgrupados(); 
         this.cdr.detectChanges();
         this.loading = false;
       },
@@ -58,5 +60,24 @@ export class PermisosComponent {
     });
   }
 
+  obtenerMenusAgrupados() {
+    const agrupados: any = {};
+  
+    this.permisos.forEach((permiso) => {
+      const menuKey = permiso.menu ?? 'Sin menú';
+  
+      if (!agrupados[menuKey]) {
+        agrupados[menuKey] = { menu: menuKey, paginas: [], expanded: false }; // 🔹 Propiedad 'expanded' añadida
+      }
+      agrupados[menuKey].paginas.push(permiso);
+    });
+  
+    return Object.values(agrupados);
+  }
 
+  toggleMenu(menu: any) {
+    menu.expanded = !menu.expanded;
+  }
+  
+  
 }

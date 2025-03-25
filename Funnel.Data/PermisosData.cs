@@ -70,7 +70,7 @@ namespace Funnel.Data
             return result;
         }
 
-        public async Task<bool> GuardarPermisos(List<PermisosDto> listPermisos)
+        public async Task<BaseOut> GuardarPermisos(List<PermisosDto> listPermisos)
         {
             BaseOut result = new BaseOut();
             DataTable dtPermisos = new DataTable("Permisos");
@@ -94,19 +94,28 @@ namespace Funnel.Data
                 DataBase.CreateParameterSql("@pPermisos", SqlDbType.Structured, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, dtPermisos)
             };
 
-            using (IDataReader reader = await DataBase.GetReaderSql("F_GuardarPermisos", CommandType.StoredProcedure, list, _connectionString))
+            try
             {
-                while (reader.Read())
+                using (IDataReader reader = await DataBase.GetReaderSql("F_GuardarPermisos", CommandType.StoredProcedure, list, _connectionString))
                 {
-
+                    while (reader.Read())
+                    {
+                        
+                    }
                 }
 
+                result.ErrorMessage = "Permisos guardados correctamente.";
+                result.Id = 1;
+                result.Result = true;
             }
-            result.ErrorMessage = "Contacto insertado correctamente.";
-            result.Id = 1;
-            result.Result = true;
+            catch (Exception ex)
+            {
+                result.ErrorMessage = $"Error al guardar permisos: {ex.Message}";
+                result.Id = 0;
+                result.Result = false;
+            }
 
-            return result.Result ?? false;
+            return result;
 
         }
 

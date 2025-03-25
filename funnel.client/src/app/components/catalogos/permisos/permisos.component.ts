@@ -2,7 +2,8 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { LazyLoadEvent } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { MessageService } from 'primeng/api';
-import { Permiso } from '../../../interfaces/permisos';
+import { Permiso} from '../../../interfaces/permisos';
+import { PermisoSeleccionado} from '../../../interfaces/permisos';
 import { ContactosService } from '../../../services/contactos.service';
 import { baseOut } from '../../../interfaces/utils/utils/baseOut';
 import { LoginService } from '../../../services/login.service';
@@ -22,7 +23,6 @@ export class PermisosComponent {
 
   permisos: Permiso[] = [];
   permisosOriginal: Permiso[] = [];
-  permisoSeleccionado!: Permiso;
 
   agrupadosPermisos: any[] = [];
   loading: boolean = true;
@@ -78,6 +78,67 @@ export class PermisosComponent {
   toggleMenu(menu: any) {
     menu.expanded = !menu.expanded;
   }
+
+  getSelectedPermisos(): PermisoSeleccionado[] {
+    const selectedPages: PermisoSeleccionado[] = [];
+    this.agrupadosPermisos.forEach(menu => {
+      menu.paginas.forEach((permiso: Permiso) => {
+        if (permiso.administrador !== undefined) {
+          selectedPages.push({
+            idEmpresa: this.loginService.obtenerIdEmpresa(),
+            idPagina: permiso.idPagina,
+            idRol: 1,  // 1 = Administrador
+            estatus: permiso.administrador
+          });
+        }
+        if (permiso.gerente !== undefined) {
+          selectedPages.push({
+            idEmpresa: this.loginService.obtenerIdEmpresa(),
+            idPagina: permiso.idPagina,
+            idRol: 2,  // 2 = Gerente
+            estatus: permiso.gerente
+          });
+        }
+        if (permiso.agente !== undefined) {
+          selectedPages.push({
+            idEmpresa: this.loginService.obtenerIdEmpresa(),
+            idPagina: permiso.idPagina,
+            idRol: 3,  // 3 = Agente
+            estatus: permiso.agente
+          });
+        }
+        if (permiso.invitado !== undefined) {
+          selectedPages.push({
+            idEmpresa: this.loginService.obtenerIdEmpresa(),
+            idPagina: permiso.idPagina,
+            idRol: 4,  // 4 = Invitado
+            estatus: permiso.invitado
+          });
+        }
+      });
+    });
+
+    return selectedPages;
+  }
+
+  guardarPermisos() {
+    const permisosSeleccionados = this.getSelectedPermisos();
+    this.permisosService.postPermisos(permisosSeleccionados).subscribe({
+      next: (result: baseOut) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Guardado exitoso.',
+          detail: result.errorMessage,
+        });
+      },
+      error: (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Se ha producido un error.',
+          detail: error.errorMessage,
+        });
+      },
+    });
   
-  
+  }
 }

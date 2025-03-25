@@ -1,4 +1,5 @@
-﻿using Funnel.Models.Dto;
+﻿using Funnel.Models.Base;
+using Funnel.Models.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace Funnel.Data.Interfaces
     public interface IPermisosData
     {
         public Task<List<PermisosDto>> ConsultarPermisos(int IdEmpresa);
-        public Task<bool> GuardarPermisos(List<PermisosDto> listPermisos);
+        public Task<BaseOut> GuardarPermisos(List<PermisosDto> listPermisos);
         public Task<List<PermisosDto>> ComboRoles(int IdEmpresa);
     }
 }

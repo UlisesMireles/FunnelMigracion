@@ -13,3 +13,10 @@ export interface Permiso {
     agente?: boolean;
     invitado?: boolean;
 }
+
+export interface PermisoSeleccionado {
+    idPagina?: number;
+    idRol?: number;
+    idEmpresa?: number;
+    estatus?: boolean;
+  }

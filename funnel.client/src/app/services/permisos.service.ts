@@ -24,4 +24,8 @@ export class PermisosService {
       params: { idEmpresa: idEmpresa.toString() }
     });
   }
+
+  postPermisos(data: any): Observable <baseOut> {
+    return this.http.post<baseOut>(this.baseUrl+'api/Permisos/GuardarPermisos', data);
+  }
 }

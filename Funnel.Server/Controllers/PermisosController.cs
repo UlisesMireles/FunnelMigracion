@@ -1,6 +1,7 @@
 ﻿using Funnel.Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Funnel.Models.Dto;
+using Funnel.Models.Base;
 
 
 namespace Funnel.Server.Controllers
@@ -22,7 +23,7 @@ namespace Funnel.Server.Controllers
             return Ok(respuesta);
         }
         [HttpPost("[action]/")]
-        public async Task<ActionResult<bool>> GuardarPermisos(List<PermisosDto> listPermisos)
+        public async Task<ActionResult<BaseOut>> GuardarPermisos(List<PermisosDto> listPermisos)
         {
             var respuesta = await _permisosService.GuardarPermisos(listPermisos);
             return Ok(respuesta);

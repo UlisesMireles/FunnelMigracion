@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Funnel.Models.Base;
 
 namespace Funnel.Logic
 {
@@ -28,7 +29,7 @@ namespace Funnel.Logic
             return await _permisosData.ConsultarPermisos(IdEmpresa);
         }
 
-        public async Task<bool> GuardarPermisos(List<PermisosDto> listPermisos)
+        public async Task<BaseOut> GuardarPermisos(List<PermisosDto> listPermisos)
         {
             return await _permisosData.GuardarPermisos(listPermisos);
         }

@@ -4,12 +4,12 @@ import {
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-acordion-horizontal',
+  selector: 'app-acordeon-horizontal',
   standalone: false,
-  templateUrl: './acordion-horizontal.component.html',
-  styleUrl: './acordion-horizontal.component.css'
+  templateUrl: './app-acordeon-horizontal.component.html',
+  styleUrl: './app-acordeon-horizontal.component.css'
 })
-export class AcordionHorizontalComponent {
+export class AcordeonHorizontalComponent {
 
 
   elementos: any[] = [
@@ -278,7 +278,7 @@ export class AcordionHorizontalComponent {
     // Expandir los últimos 4 elementos si hay al menos 4 elementos en la lista
     const MontoNormalizadoElementos = this.elementos.length;
     this.elementos.forEach((mes, index) => {
-      mes.expandido = index >= MontoNormalizadoElementos - 4; // Solo los últimos 4 se expanden
+      mes.expandido = index >= MontoNormalizadoElementos - 4; // Solo los últimos 4 se expanden aqui se cambia para si no quiero se expandan
     });
   }
 

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AcordionHorizontalComponent } from './acordion-horizontal.component';
+import { AcordeonHorizontalComponent } from './app-acordeon-horizontal.component';
 
 describe('AcordionHorizontalComponent', () => {
-  let component: AcordionHorizontalComponent;
-  let fixture: ComponentFixture<AcordionHorizontalComponent>;
+  let component: AcordeonHorizontalComponent;
+  let fixture: ComponentFixture<AcordeonHorizontalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AcordionHorizontalComponent]
+      declarations: [AcordeonHorizontalComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AcordionHorizontalComponent);
+    fixture = TestBed.createComponent(AcordeonHorizontalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

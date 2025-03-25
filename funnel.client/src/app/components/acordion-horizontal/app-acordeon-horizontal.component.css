@@ -184,6 +184,7 @@ body {
 }
 
 .iniciales {
+  display: block !important; /* Asegura que sea visible */
   font-size: 14px;
   font-weight: 500;
   color: #747678;
@@ -232,14 +233,14 @@ div.fotoTarjeta {
 .monto-normalizado {
   display: block; /* Hace que los labels ocupen toda la línea */
   text-align: left;
-  width: 50%; /* Asegura que usen todo el espacio disponible */
+  width: 100%; /* Asegura que usen todo el espacio disponible */
 }
 
 .fila-monto {
   display: flex;
   justify-content: flex-start; /* Alinea a la izquierda */
   gap: 8px; /* Espaciado entre los elementos (ajústalo según lo necesites) */
-  width: 40%;
+  width: 20% !important;
 }
 
 .row.justify-content-between {
@@ -287,3 +288,6 @@ div.fotoTarjeta {
   font-size: 14.4px; /* Ajusta el tamaño si es necesario */
 }
 
+.col-8-tarjeta {
+  text-align: start;
+}

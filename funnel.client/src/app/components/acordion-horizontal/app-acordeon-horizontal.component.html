@@ -7,9 +7,6 @@
       </button>
     </div>
 
-
-
-
     <div *ngIf="mes.expandido"
       cdkDropList
       #todoList="cdkDropList"
@@ -21,18 +18,14 @@
       <div class="contenedor-tarjetas">
         <div *ngFor="let tarjeta of mes.tarjetas" cdkDrag [cdkDragData]="tarjeta" class="tarjeta">
           <div class="row  ">
-
-
             <!-- Encabezado con título e ícono de edición -->
           <div class="card-header">
             <i class="bi bi-card-text commandSeguimiento" title="Seguimiento"></i>
             <i class="bi bi-pencil-fill commandEditar" title="Editar"></i>
           </div>
-
-
             <div  class="col-9 tarjeta-row"  id =" Div  + {{idOportunidad}} ">
               <div class="row justify-content-between">
-                <div class="col-8">
+                <div class="col-8 col-8-tarjeta">
                   <label id="cliente"  class="nombre-empresa" [ngClass]="getClaseNombreEmpresa(tarjeta.NombreEmpresa, tarjeta.NombreAbrev)">
                   {{ tarjeta.NombreEmpresa }}
                   </label>
@@ -52,9 +45,9 @@
 
               <div class="fotoTarjeta" [ngStyle]="{'background-image': 'url(' + (tarjeta.imagen) + ')', 'margin': 'auto'}"   [title]="tarjeta.NombreEjecutivo"> </div>
 
-              <label class="iniciales" title="{{ tarjeta.NombreEjecutivo }}">
-                {{ tarjeta.Iniciales | currency:'MXN':'symbol':'1.0-0' }}
-              </label>
+              <p class="iniciales" title="{{ tarjeta.nombreEjecutivo }}">
+                {{ tarjeta.iniciales  }}
+              </p>
             </div>
           </div>
         </div>

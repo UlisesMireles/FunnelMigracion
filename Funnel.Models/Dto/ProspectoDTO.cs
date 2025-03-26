@@ -23,6 +23,10 @@ namespace Funnel.Models.Dto
         public int? Canceladas { get; set; }
         public int? Eliminadas { get; set; }
         public int? IdEmpresa  { get; set; }
+        public decimal PorcGanadas { get; set; }
+        public decimal PorcPerdidas { get; set; }
+        public decimal PorcCanceladas { get; set; }
+        public decimal PorcEliminadas { get; set; }
 
     }
 }

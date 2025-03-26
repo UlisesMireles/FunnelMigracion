@@ -61,6 +61,7 @@ export function getBaseUrl() {
 import { ModalOportunidadesPerdidasComponent } from './components/catalogos/oportunidades-perdidas/modal-oportunidades-perdidas/modal-oportunidades-perdidas.component';
 import { OportunidadesPerdidasComponent } from './components/catalogos/oportunidades-perdidas/oportunidades-perdidas.component';
 import { OportunidadesComponent } from './components/catalogos/oportunidades/oportunidades.component';
+import { TopVeinteComponent } from './components/catalogos/top-veinte/top-veinte.component';
 
 import { CommonModule, DatePipe, registerLocaleData } from '@angular/common';
 import { ModalOportunidadesGanadasComponent } from './components/catalogos/oportunidades-ganadas/modal-oportunidades-ganadas/modal-oportunidades-ganadas.component';
@@ -113,6 +114,7 @@ registerLocaleData(localeEs, 'es-MX');
     ColumnFilterComponent,
     HeaderOpcionesComponent,
     OportunidadesGanadasComponent,
+    TopVeinteComponent,
     ModalOportunidadesGanadasComponent,
     OportunidadesEliminadasComponent,
     ModalOportunidadesEliminadasComponent,

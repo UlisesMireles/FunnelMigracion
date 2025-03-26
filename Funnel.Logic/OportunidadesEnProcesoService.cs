@@ -112,6 +112,7 @@ namespace Funnel.Logic
                     Mes = meses[i],
                     Tarjetas = oportunidades.Where(x => x.FechaEstimadaCierre.Value.Year == anio[i] && x.FechaEstimadaCierre.Value.Month == meses[i]).Select(y => new TarjetasDto
                     {
+                        IdOportunidad = y.IdOportunidad,
                         NombreEmpresa = y.Nombre ?? "Sin nombre",
                         NombreAbrev = y.Abreviatura ?? "",
                         NombreOportunidad = y.NombreOportunidad ?? "",
@@ -145,6 +146,7 @@ namespace Funnel.Logic
                     Anio = item.Id,
                     Tarjetas = oportunidades.Where(x => x.IdStage == item.Id).Select(y => new TarjetasDto
                     {
+                        IdOportunidad = y.IdOportunidad,
                         NombreEmpresa = y.Nombre ?? "Sin nombre",
                         NombreAbrev = y.Abreviatura ?? "",
                         NombreOportunidad = y.NombreOportunidad ?? "",
@@ -164,63 +166,9 @@ namespace Funnel.Logic
             lista = lista.Where(x => x.Nombre != "Sin etapa" && x.Anio > 0).OrderBy(x => x.Anio).ToList();
             return lista;
         }
-        public int[] ObtenerArrayMes(List<OportunidadesEnProcesoDto> data)
+        public async Task<BaseOut> ActualizarFechaEstimada(OportunidadesEnProcesoDto request)
         {
-            int[] meses = new int[4];
-            int[] anio = new int[4];
-            string[] NombresMeses = new string[4];
-            int primerMes = 0, primerAnio = 0;
-            primerMes = data.OrderBy(x => x.FechaEstimadaCierre).Select(x => x.FechaEstimadaCierre.Value.Month).FirstOrDefault(DateTime.Now.Month);
-            primerAnio = data.OrderBy(x => x.FechaEstimadaCierre).Select(x => x.FechaEstimadaCierre.Value.Year).FirstOrDefault(DateTime.Now.Year);
-
-            for (int i = 0, j = primerMes; i < 4; i++, j++)
-            {
-                DateTimeFormatInfo formatoFecha = CultureInfo.CurrentCulture.DateTimeFormat;
-                if (j > 12)
-                {
-                    meses[i] = j - 12;
-                    string nombreMes = formatoFecha.GetMonthName(j - 12);
-                    NombresMeses[i] = nombreMes;
-                    anio[i] = primerAnio + 1;
-                }
-                else
-                {
-                    meses[i] = j;
-                    string nombreMes = formatoFecha.GetMonthName(j);
-                    NombresMeses[i] = nombreMes;
-                    anio[i] = primerAnio;
-                }
-            }
-            return meses;
-        }
-        public int[] ObtenerArrayAnio(List<OportunidadesEnProcesoDto> data)
-        {
-            int[] meses = new int[4];
-            int[] anio = new int[4];
-            string[] NombresMeses = new string[4];
-            int primerMes = 0, primerAnio = 0;
-            primerMes = data.OrderBy(x => x.FechaEstimadaCierre).Select(x => x.FechaEstimadaCierre.Value.Month).FirstOrDefault(DateTime.Now.Month);
-            primerAnio = data.OrderBy(x => x.FechaEstimadaCierre).Select(x => x.FechaEstimadaCierre.Value.Year).FirstOrDefault(DateTime.Now.Year);
-
-            for (int i = 0, j = primerMes; i < 4; i++, j++)
-            {
-                DateTimeFormatInfo formatoFecha = CultureInfo.CurrentCulture.DateTimeFormat;
-                if (j > 12)
-                {
-                    meses[i] = j - 12;
-                    string nombreMes = formatoFecha.GetMonthName(j - 12);
-                    NombresMeses[i] = nombreMes;
-                    anio[i] = primerAnio + 1;
-                }
-                else
-                {
-                    meses[i] = j;
-                    string nombreMes = formatoFecha.GetMonthName(j);
-                    NombresMeses[i] = nombreMes;
-                    anio[i] = primerAnio;
-                }
-            }
-            return anio;
+            return await _oportunidadesData.GuardarOportunidad(request);
         }
     }
 }

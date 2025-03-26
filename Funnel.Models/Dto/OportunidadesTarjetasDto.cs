@@ -16,6 +16,7 @@ namespace Funnel.Models.Dto
     }
     public class TarjetasDto
     {
+        public int? IdOportunidad { get; set; }
         public string NombreEmpresa { get; set; } = string.Empty;
         public string NombreAbrev { get; set; } = string.Empty;
         public string NombreOportunidad { get; set; } = string.Empty;

@@ -15,6 +15,27 @@ export interface Prospectos {
     eliminadas: number;
     idEmpresa: number;
 }
+
+export interface ClientesTopVeinte {
+  idProspecto: number;
+  nombre: string;
+  ubicacionFisica: string;
+  estatus: number;
+  desEstatus: string;
+  nombreSector: string;
+  idSector: number;
+  totalOportunidades: number;
+  proceso: number;
+  ganadas: number;
+  perdidas: number;
+  canceladas: number;
+  eliminadas: number;
+  porcGanadas: number;      
+  porcPerdidas: number;     
+  porcCanceladas: number;   
+  porcEliminadas: number;   
+  idEmpresa?: number;       
+}
 export interface ProspectosCmb{
     idProspecto: number,
     nombre: string,

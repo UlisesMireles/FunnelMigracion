@@ -1,4 +1,5 @@
-﻿using Funnel.Logic.Interfaces;
+﻿using Funnel.Logic;
+using Funnel.Logic.Interfaces;
 using Funnel.Models.Base;
 using Funnel.Models.Dto;
 using Microsoft.AspNetCore.Mvc;
@@ -36,6 +37,13 @@ namespace Funnel.Server.Controllers
         {
             request.IdEmpresa = 1; //<--------de donde sale este parametro
             var respuesta = await _prospectosService.GuardarProspecto(request);
+            return Ok(respuesta);
+        }
+
+        [HttpGet("[action]/")]
+        public async Task<ActionResult<List<ProspectoDTO>>> ConsultarTopVeinte(int IdEmpresa)
+        {
+            var respuesta = await _prospectosService.ConsultarTopVeinte(IdEmpresa);
             return Ok(respuesta);
         }
     }

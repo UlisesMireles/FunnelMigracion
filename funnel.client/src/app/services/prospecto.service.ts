@@ -28,4 +28,10 @@ export class ProspectoService {
     console.log(data);
     return this.http.post<baseOut>(this.baseUrl+'api/Prospectos/GuardarProspecto', data);
   }
+
+  getTopVeinte(idEmpresa: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}api/Prospectos/ConsultarTopVeinte`, {
+      params: { idEmpresa: idEmpresa.toString() }
+    });
+  }
 }

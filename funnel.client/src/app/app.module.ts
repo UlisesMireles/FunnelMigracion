@@ -54,6 +54,7 @@ import { TiposEntregaComponent } from './components/catalogos/tipos-entrega/tipo
 import { ModalUsuariosComponent } from './components/catalogos/usuarios/modal-usuarios/modal-usuarios.component';
 import { PrimeNgConfiguracionService } from './services/primeNgConfiguracion.service';
 
+
 export function getBaseUrl() {
   return 'https://localhost:49834/'
 }
@@ -61,6 +62,7 @@ export function getBaseUrl() {
 import { ModalOportunidadesPerdidasComponent } from './components/catalogos/oportunidades-perdidas/modal-oportunidades-perdidas/modal-oportunidades-perdidas.component';
 import { OportunidadesPerdidasComponent } from './components/catalogos/oportunidades-perdidas/oportunidades-perdidas.component';
 import { OportunidadesComponent } from './components/catalogos/oportunidades/oportunidades.component';
+import { PermisosComponent } from './components/catalogos/permisos/permisos.component';
 import { TopVeinteComponent } from './components/catalogos/top-veinte/top-veinte.component';
 
 import { CommonModule, DatePipe, registerLocaleData } from '@angular/common';
@@ -124,7 +126,8 @@ registerLocaleData(localeEs, 'es-MX');
     OportunidadesCanceladasComponent,
     ModalOportunidadesCanceladasComponent,
     SeguimientoOportunidadesComponent,
-    HeaderComponent
+    HeaderComponent,
+    PermisosComponent
   ],
   imports: [
     BrowserModule,

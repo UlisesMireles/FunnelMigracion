@@ -1,3 +1,6 @@
+<div class="col-12" style="text-align: left; font-weight: bold">
+  <h3>Administración de Permisos</h3>
+</div>
 <table class="table table-bordered table-striped table-sm"> 
     <thead>
       <tr>
@@ -25,10 +28,10 @@
         <ng-container *ngIf="menu.expanded">
             <tr *ngFor="let permiso of menu.paginas">
               <td>{{ permiso.pagina }}</td>
-              <td><input type="checkbox" [(ngModel)]="permiso.administrador" /></td>
-              <td><input type="checkbox" [(ngModel)]="permiso.gerente" /></td>
-              <td><input type="checkbox" [(ngModel)]="permiso.agente" /></td>
-              <td><input type="checkbox" [(ngModel)]="permiso.invitado" /></td>
+              <td><input type="checkbox" [(ngModel)]="permiso.administrador" disabled /></td>
+              <td><input type="checkbox" [(ngModel)]="permiso.gerente" [disabled]="permiso.menu.includes('CATÁLOGOS')" /></td>
+              <td><input type="checkbox" [(ngModel)]="permiso.agente"  [disabled]="permiso.menu.includes('CATÁLOGOS')" /></td>
+              <td><input type="checkbox" [(ngModel)]="permiso.invitado"  [disabled]="permiso.menu.includes('CATÁLOGOS')" /></td>
             </tr>
           </ng-container>
           

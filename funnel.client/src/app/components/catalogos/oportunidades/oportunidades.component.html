@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-12" style="text-align: left; font-weight: bold;">
-      <h3></h3>
+      <h3>{{titulo}}</h3>
     </div>
     
     <div class="col-12">
@@ -17,7 +17,7 @@
           
           <ng-template class="divAccionesTabla" #caption>
             <div class="col-12" style="text-align: left; font-weight: bold; margin-top: 20px">
-              <h3>Oportunidades en Proceso</h3>
+              <h3>Administración General de Oportunidades en Proceso</h3>
             </div>
             <div class="row">
               <div class="col inDivDatatableHeader" style="text-align:right; margin-right:5px">
@@ -45,14 +45,9 @@
 
           <ng-template pTemplate="header" let-columns>
             <tr class="custom-header">
-              <th *ngFor="let def of lsColumnasAMostrar" 
-              [ngStyle]="{
-                'text-align': 
-                  def.tipoFormato === 'currency' ? 'right' : 
-                  (def.tipoFormato === 'number' || def.tipoFormato === 'date') ? 'center' : 'left'
-                }">
-                {{def.valor}}<p-sortIcon field="{{def.key}}"></p-sortIcon>
-              </th>
+                <th *ngFor="let def of lsColumnasAMostrar" pSortableColumn="{{def.key}}" pReorderableColumn>
+                  {{def.valor}}<p-sortIcon field="{{def.key}}"></p-sortIcon>
+                </th>
                 <th></th>
             </tr> 
             <tr>
@@ -113,30 +108,14 @@
 
           <ng-template pTemplate="body" let-rowData let-columns="columns">
             <tr>
-              <td *ngFor="let def of lsColumnasAMostrar" 
-                  [ngStyle]="{
-                    'text-align': 
-                      (def.valor.includes('%')) ? 'center' :
-                      def.tipoFormato === 'currency' ? 'right' : 
-                      (def.tipoFormato === 'number' || def.tipoFormato === 'date') ? 'center' : 'left'
-                  }">
+              <td *ngFor="let def of lsColumnasAMostrar">
                 <ng-container [ngSwitch]="def.tipoFormato">
-                  <span *ngSwitchCase="'text'">
-                    <span *ngIf="def.key === 'nombreContacto'" pTooltip="{{rowData[def.key]}}" tooltipPosition="top">
-                      {{ rowData[def.key]?.split(' ')[0] }}
-                    </span>
-                    <span *ngIf="def.key === 'iniciales'" pTooltip="{{rowData['nombreEjecutivo']}}" tooltipPosition="top">
-                      {{ rowData[def.key] }}
-                    </span>
-                    <span *ngIf="def.key !== 'nombreContacto' && def.key !== 'iniciales'">
-                      {{ rowData[def.key] }}
-                    </span>
-                  </span>
-                  
+                  <span *ngSwitchCase="'text'">{{ rowData[def.key] }}</span>
+          
                   <span *ngSwitchCase="'currency'">
-                    {{ rowData[def.key] | currency:'$':'symbol':'1.2-2' }}
+                    {{ rowData[def.key] | currency:'MX ':'symbol' }}
                   </span>
-                  
+          
                   <span *ngSwitchCase="'number'">
                     <span *ngIf="def.key === 'fechaModificacion'" [ngStyle]="{ 'color': getColorForDiasSinActividad(rowData[def.key]) }">
                       {{ rowData[def.key] }}
@@ -145,22 +124,22 @@
                       {{ rowData[def.key] | number:'1.0-2' }}
                     </span>
                   </span>
-                  
+          
                   <span *ngSwitchCase="'date'" [ngStyle]="def.key === 'fechaEstimadaCierreOriginal' ? { 'color': getColorForFechaEstimadaCierre(rowData[def.key]) } : {}">
                     {{ rowData[def.key] | date:'dd/MM/yyyy' }}
                   </span>
                 </ng-container>
               </td>
               <td>
-                <p-button type="button" icon="bi bi-file-earmark-text fs-4" text (click)="seguimiento(rowData)" 
+                <p-button type="button" icon="bi bi-file-earmark-text" text (click)="seguimiento(rowData)" 
                 pTooltip="Ver seguimiento" tooltipPosition="top" styleClass="blue-icon">
                 <span class="badge">{{ rowData.totalComentarios || 0 }}</span>
                 </p-button>
-                <p-button type="button" icon="bi bi-folder2 fs-4" text (click)="documento(rowData)"
+                <p-button type="button" icon="bi bi-folder2" text (click)="documento(rowData)"
                 pTooltip="Ver documentos" tooltipPosition="top" styleClass="black-icon">
                 <span class="badge">{{ rowData.totalArchivos || 0}}</span>
                 </p-button>
-                <p-button type="button" icon="bi bi-pencil fs-4" text (click)="actualiza(rowData)" 
+                <p-button type="button" icon="bi bi-pencil" text (click)="actualiza(rowData)" 
                   pTooltip="Editar oportunidad" tooltipPosition="top" styleClass="yellow-icon"/>
               </td>
             </tr>
@@ -168,17 +147,12 @@
 
           <ng-template pTemplate="footer" let-columns #footer>
             <tr class="custom-footer">
-              <td *ngFor="let def of lsColumnasAMostrar" 
-                  [ngStyle]="{
-                    'text-align': 
-                      def.tipoFormato === 'currency' ? 'right' : 
-                      (def.tipoFormato === 'number' || def.tipoFormato === 'date') ? 'center' : 'left'
-                  }">
+              <td *ngFor="let def of lsColumnasAMostrar">
                 <ng-container *ngIf="def.key === 'nombre'">
                   Total de registros: {{ getTotalCostPrimeNg(dt, def) }}
                 </ng-container>
                 <ng-container *ngIf="def.tipoFormato === 'currency'">
-                  {{ getTotalCostPrimeNg(dt, def) | currency:'$':'symbol':'1.2-2' }}
+                  {{ getTotalCostPrimeNg(dt, def) | currency:'MX ': 'symbol' }}
                 </ng-container>
                 <ng-container *ngIf="def.tipoFormato !== 'currency' && def.key !== 'nombre' && def.key !== 'idOportunidad'">
                   {{ getTotalCostPrimeNg(dt, def) | number: '1.0-2' }}
@@ -188,17 +162,47 @@
             </tr>
           </ng-template>
 
-          <ng-template pTemplate="emptymessage">
-            <tr>
-                <td colspan="5">No preguntas encontradas.</td>
-            </tr>
-          </ng-template>
-        </p-table>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="5">No preguntas encontradas.</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+
+        <!-- Oportunidades por Mes -->
+        <div class="tab-pane fade" id="porMes">
+          <div class="row">
+            <div class="col-12">
+              <p>"Oportunidades por Mes" </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Oportunidades por Etapa -->
+        <div class="tab-pane fade" id="porEtapa">
+          <div class="row">
+            <div class="col-12">
+              <p>"Oportunidades por Etapa"</p>
+            </div>
+          </div>
+        </div>
+
+        <!--Estadísticas por Etapa -->
+        <div class="tab-pane fade" id="estadisticas">
+          <div class="row">
+            <div class="col-12">
+              <app-estadisticas-por-etapa></app-estadisticas-por-etapa>
+            </div>
+          </div>
+        </div>
       </div>
-      <p-toast position="center"></p-toast>
     </div>
   </div>
 </div>
+
+<p-toast position="center"></p-toast>
 
 <app-modal-oportunidades [(visible)]="modalVisible" [title]="'Editar Datos de '" (closeModal)="onModalClose()"
   (result)="manejarResultado($event)" [insertar]="insertar" [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">

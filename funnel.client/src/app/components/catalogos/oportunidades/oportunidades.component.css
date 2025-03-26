@@ -250,4 +250,28 @@ div.inDivDatatableHeader > p-button > button.p-button {
 
 .p-button {
   position: relative;
+} 
+/* Estilos personalizados para las pestañas */
+
+.custom-tabs .bi {
+  font-size: 1.5rem;  
+  margin-right: 0rem; 
+}
+
+.custom-tabs .nav-link {
+  color: #11489b !important; 
+  border-bottom: 3px solid transparent;
+}
+
+
+.custom-tabs .nav-link:hover {
+  color: #084298 !important;  
+}
+.custom-tabs {
+  display: inline-flex;
+  border-bottom: 1px solid #dee2e6;
+  margin-right: 1050px;}
+
+.custom-tabs .nav-link.active {
+  color: #3c3e41 !important;
 }

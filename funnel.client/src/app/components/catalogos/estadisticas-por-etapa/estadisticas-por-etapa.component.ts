@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, OnInit, ViewChild,  } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit, ViewChild } from '@angular/core';
 import { LazyLoadEvent } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { MessageService } from 'primeng/api';
@@ -10,16 +10,13 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ColumnasDisponiblesComponent } from '../../shared/columnas-disponibles/columnas-disponibles.component';
 import { sumBy, map as mapping, omit, sortBy, groupBy, keys as getKeys } from "lodash-es";
 
-
 @Component({
-  selector: 'app-oportunidades',
+  selector: 'app-estadisticas-por-etapa',
   standalone: false,
-  templateUrl: './oportunidades.component.html',
-  styleUrl: './oportunidades.component.css',
+  templateUrl: './estadisticas-por-etapa.component.html',
+  styleUrl: './estadisticas-por-etapa.component.css'
 })
-export class OportunidadesComponent {
-
-  @ViewChild('dt') dt!: Table;
+export class EstadisticasPorEtapaComponent {@ViewChild('dt') dt!: Table;
 
   disableOportunidades = true;
   isDescargando = false;
@@ -31,18 +28,14 @@ export class OportunidadesComponent {
 
   idEstatus: number = 1;
 
-  insertar: boolean = false;
-  seguimientoOportunidad: boolean = false;
-  modalVisible: boolean = false;
-  modalSeguimientoVisible: boolean = false; 
-  modalDocumentosVisible: boolean = false;
+ 
 
   loading: boolean = true;
 
   years: number[] = [];
   selectedYear: number = new Date().getFullYear();
 
-  titulo: string = 'Oportunidades en Proceso';
+  columnsToAverage = ['diasFunnel', 'diasEtapa1', 'diasEtapa2', 'diasEtapa3', 'diasEtapa4', 'diasEtapa5'];
 
 
   lsColumnasAMostrar: any[] = [
@@ -50,23 +43,20 @@ export class OportunidadesComponent {
   ];
 
   lsTodasColumnas: any[] = [
-    { key: 'idOportunidad', isCheck: false, valor: 'Id', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
+    { key: 'idOportunidad', isCheck: true, valor: 'Id', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombre', isCheck: true, valor: 'Prospecto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreSector', isCheck: true, valor: 'Sector', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreOportunidad', isCheck: true, valor: 'Oportunidad', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'abreviatura', isCheck: true, valor: 'Tipo', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'stage', isCheck: true, valor: 'Etapa', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
-    { key: 'iniciales', isCheck: true, valor: 'Ejecutivo', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'nombreContacto', isCheck: true, valor: 'Contacto', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'entrega', isCheck: true, valor: 'Entrega', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'monto', isCheck: true, valor: 'Monto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
-    { key: 'probabilidadOriginal', isCheck: false, valor: '% Orig', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'probabilidad', isCheck: true, valor: '% Act', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'montoNormalizado', isCheck: true, valor: 'Vta Esperada', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
+    { key: 'stage', isCheck: true, valor: 'Etapa', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'nombreEjecutivo', isCheck: true, valor: 'Ejecutivo', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'fechaRegistro', isCheck: true, valor: 'Fecha Alta', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
-    { key: 'diasFunnel', isCheck: false, valor: 'Días Funnel', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
-    { key: 'fechaEstimadaCierreOriginal', isCheck: false, valor: 'Cierre Est', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
-    { key: 'fechaModificacion', isCheck: false, valor: 'Días S/Act', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' }
+    { key: 'diasFunnel', isCheck: true, valor: 'Días Funnel', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
+    {key: 'diasEtapa1', isCheck: true, valor: 'Etapa 1', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
+    {key: 'diasEtapa2', isCheck: true, valor: 'Etapa 2', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
+    {key: 'diasEtapa3', isCheck: true, valor: 'Etapa 3', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
+    {key: 'diasEtapa4', isCheck: true, valor: 'Etapa 4', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
+    {key: 'diasEtapa5', isCheck: true, valor: ' Días Etapa 5', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
   ];
 
   columnsAMostrarResp: string = JSON.stringify(this.lsColumnasAMostrar);
@@ -120,52 +110,6 @@ export class OportunidadesComponent {
       });
     }
 
-    inserta() {
-      this.oportunidadSeleccionada = {
-        
-      };
-      this.insertar = true;
-      this.modalVisible = true;
-    }
-
-    seguimiento(licencia: Oportunidad) {
-      this.oportunidadSeleccionada = licencia;
-      this.seguimientoOportunidad = true;
-      this.modalSeguimientoVisible = true;
-    }
-    
-    actualiza(licencia: Oportunidad) {
-      this.oportunidadSeleccionada = licencia;
-      this.insertar = false;
-      this.modalVisible = true;
-    }
-
-    documento(licencia: Oportunidad) {
-      this.oportunidadSeleccionada = licencia;
-      this.seguimientoOportunidad = true;
-      this.modalDocumentosVisible = true;
-    }
-    
-    onModalClose() {
-      this.modalVisible = false;
-    }
-
-    manejarResultado(result: baseOut) {
-      if (result.result) {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'La operación se realizó con éxito.',
-          detail: result.errorMessage,
-        });
-        this.getOportunidades();
-      } else {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Se ha producido un error.',
-          detail: result.errorMessage,
-        });
-      }
-    }
 
     clear(table: Table) {
       table.clear();
@@ -225,8 +169,8 @@ export class OportunidadesComponent {
       import('xlsx').then(xlsx => {
         const hojadeCalculo: import('xlsx').WorkSheet = xlsx.utils.json_to_sheet(dataExport);
         const libro: import('xlsx').WorkBook = xlsx.utils.book_new();
-        xlsx.utils.book_append_sheet(libro, hojadeCalculo, "Oportunidades en proceso");
-        xlsx.writeFile(libro, "Oportunidades en proceso.xlsx");
+        xlsx.utils.book_append_sheet(libro, hojadeCalculo, "Estadísticas Por Etapa");
+        xlsx.writeFile(libro, "Estadísticas Por Etapa.xlsx");
       });
     }
   
@@ -320,28 +264,28 @@ export class OportunidadesComponent {
           nombreOportunidad: '100%',
           abreviatura: '100%',
           stage: '100%',
-          iniciales: '100%',
+          nombreEjecutivo: '100%',
           nombreContacto: '100%',
-          entrega: '100%',
-          monto: '100%',
-          probabilidadOriginal: '100%',
-          probabilidad: '100%',
-          montoNormalizado: '100%',
           fechaRegistro: '100%',
           diasFunnel: '100%',
-          fechaEstimadaCierreOriginal: '100%',
           fechaModificacion: '100%',
+          diasEtapa1: '100%',
+          diasEtapa2: '100%',
+          diasEtapa3: '100%',
+          diasEtapa4: '100%',
+          diasEtapa5: '100%',
       };
       return { width: widths[key] || 'auto' }; 
     }
-    camTitulo(index: number) {
-      const titulos = [
-        'Oportunidades En Proceso',  
-        'Oportunidades Por Mes',
-        'Oportunidades Por Etapa',
-        'Estadísticas Por Etapa'
-      ];
-      this.titulo = titulos[index] || 'Administración General';
+    getAverage(columnKey: 'diasFunnel' | 'diasEtapa1' | 'diasEtapa2' | 'diasEtapa3' | 'diasEtapa4' | 'diasEtapa5'): number {
+      if (!this.oportunidades || this.oportunidades.length === 0) return 0;
+      
+      const sum = this.oportunidades.reduce((acc, curr) => {
+        return acc + (curr[columnKey] || 0);
+      }, 0);
+      
+      return sum / this.oportunidades.length;
     }
+    
   
 }

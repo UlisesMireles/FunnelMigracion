@@ -1,5 +1,9 @@
 import { Component, ElementRef, EventEmitter, HostListener, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { Permiso } from '../../interfaces/permisos';
+import { LoginService } from '../../services/login.service';
+import { PermisosService } from '../../services/permisos.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-vertical-bar',
@@ -24,7 +28,7 @@ export class VerticalBarComponent {
       icono: 'bi bi-bar-chart',  // Icono relacionado con un dashboard (pantalla de inicio)
       tooltip: 'Ir a DASHBOARD',
       subMenu: [
-        { nombre: 'OPORTUNIDADES GENERAL', path: '/oportunidades/subopcion3'
+        { nombre: 'OPORTUNIDADES GENERAL', path: '/oportunidades'
           ,hasIcon: false, // 🟠 Indica si tiene icono adicional
           tooltipMessage: 'Esta característica está incluida'}, // Mensaje del globo
         { nombre: 'OPORTUNIDADES POR AGENTE', path: '/oportunidades/subopcion2'   ,hasIcon: false, // 🟠 Indica si tiene icono adicional
@@ -35,7 +39,7 @@ export class VerticalBarComponent {
     },
     {
       nombre: 'EN PROCESO',
-      path: '/oportunidades',
+      path: '/proceso',
       icono: 'bi bi-hourglass-split',  // Icono de una persona, ya que es un estado de proceso
       tooltip: 'Ir a en Proceso',
       subMenu: []

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml, SafeStyle } from '@angular/platform-browser';
 import { environment } from '../../../environments/environment';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoginService } from '../../services/login.service';
@@ -28,9 +28,12 @@ export class LoginComponent implements OnInit {
   showErrors: boolean = false;
   resetErrorMessage: SafeHtml = '';
   showIniciarSesion: Boolean = false;
+  public backgroundImg: SafeStyle = "";
   constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private authService: LoginService, private sanitizer: DomSanitizer) {}
 
   ngOnInit() {
+    this.backgroundImg = this.sanitizer.bypassSecurityTrustStyle('url(' + this.baseUrl + '/assets/img/PMAGRISES.png' + ')');
+
     this.aFormGroup = this.formBuilder.group({
       recaptcha: ['', Validators.required]
     });

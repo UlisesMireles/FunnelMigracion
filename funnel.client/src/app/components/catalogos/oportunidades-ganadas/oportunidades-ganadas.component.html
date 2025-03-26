@@ -17,7 +17,7 @@
           
           <ng-template class="divAccionesTabla" #caption>
             <div class="col-12" style="text-align: left; font-weight: bold;">
-              <h3>Administración General de Oportunidades Ganadas</h3>
+              <h3>Oportunidades Ganadas</h3>
             </div>
             <div class="row">
               <div class="col inDivDatatableHeader" style="text-align:right; margin-right:5px">
@@ -109,7 +109,17 @@
                       (def.tipoFormato === 'number' || def.tipoFormato === 'date') ? 'center' : 'left'
                   }">
                 <ng-container [ngSwitch]="def.tipoFormato">
-                  <span *ngSwitchCase="'text'">{{ rowData[def.key] }}</span>
+                  <span *ngSwitchCase="'text'">
+                    <span *ngIf="def.key === 'nombreContacto'" pTooltip="{{rowData[def.key]}}" tooltipPosition="top">
+                      {{ rowData[def.key]?.split(' ')[0] }}
+                    </span>
+                    <span *ngIf="def.key === 'iniciales'" pTooltip="{{rowData['nombreEjecutivo']}}" tooltipPosition="top">
+                      {{ rowData[def.key] }}
+                    </span>
+                    <span *ngIf="def.key !== 'nombreContacto' && def.key !== 'iniciales'">
+                      {{ rowData[def.key] }}
+                    </span>
+                  </span>
                   
                   <span *ngSwitchCase="'currency'">
                     {{ rowData[def.key] | currency:'$':'symbol':'1.2-2' }}

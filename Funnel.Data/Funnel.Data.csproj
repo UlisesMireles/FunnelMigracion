@@ -19,4 +19,8 @@
     <ProjectReference Include="..\Funnel.Models\Funnel.Models.csproj" />
   </ItemGroup>
 
+    <ItemGroup>
+		<Folder Include="Utils\" />
+	</ItemGroup>
+	
 </Project>

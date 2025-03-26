@@ -42,7 +42,7 @@ export class VerticalBarComponent {
         this.ListaMenu.push(
           {
             nombre: 'SALIR',
-            path: '/login',
+            ruta: '/login',
             icono: 'bi-box-arrow-right',
             tooltip: 'Cerrar sesión',
             subMenu: []

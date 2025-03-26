@@ -1,10 +1,13 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { BrowserModule } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { NgxCaptchaModule } from 'ngx-captcha';
 import { providePrimeNG } from 'primeng/config';
+import { TabViewModule } from 'primeng/tabview';
+import { TooltipModule } from 'primeng/tooltip';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CambiarContrasenaComponent } from './components/cambiar-contrasena/cambiar-contrasena.component';
@@ -14,9 +17,6 @@ import { FooterComponent } from './components/footer/footer.component';
 import { LoginComponent } from './components/login/login.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { OlvidasteContrasenaComponent } from './components/olvidaste-contrasena/olvidaste-contrasena.component';
-
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { TooltipModule } from 'primeng/tooltip';
 
 import { MatInputModule } from '@angular/material/input';
 import Aura from '@primeng/themes/aura';
@@ -88,6 +88,7 @@ import { VerticalBarComponent } from './components/vertical-bar/vertical-bar.com
 
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
+import { EstadisticasPorEtapaComponent } from './components/catalogos/estadisticas-por-etapa/estadisticas-por-etapa.component';
 export function configurationProviderFactory(provider: PrimeNgConfiguracionService) {
   return () => provider.load();
 }
@@ -134,7 +135,8 @@ registerLocaleData(localeEs, 'es-MX');
     SeguimientoOportunidadesComponent,
     HeaderComponent,
     AcordeonHorizontalComponent,
-    PermisosComponent
+    EstadisticasPorEtapaComponent,
+    PermisosComponent,
   ],
   imports: [
     BrowserModule,
@@ -173,7 +175,8 @@ registerLocaleData(localeEs, 'es-MX');
     DropdownModule,
     MatSidenavModule,
     BrowserModule,
-    DragDropModule
+    DragDropModule,
+    TabViewModule
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'es-MX' },

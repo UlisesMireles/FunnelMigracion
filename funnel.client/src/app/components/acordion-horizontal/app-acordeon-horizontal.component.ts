@@ -14,7 +14,7 @@ export class AcordeonHorizontalComponent {
 
   elementos: any[] = [
     {
-      nombre: 'Enero', expandido: false, tarjetas: [
+      nombre: 'Enero', anio: '2025 ',expandido: false, tarjetas: [
         {
           NombreEmpresa: 'Centro de IA',
           NombreAbrev: 'CIA',
@@ -42,7 +42,7 @@ export class AcordeonHorizontalComponent {
       ]
     },
     {
-      nombre: 'Febrero', expandido: false, tarjetas: [
+      nombre: 'Febrero',  anio: '2025 ',expandido: false, tarjetas: [
         {
           NombreEmpresa: 'Análisis de Datos',
           NombreAbrev: 'AD',
@@ -58,7 +58,7 @@ export class AcordeonHorizontalComponent {
       ]
     },
     {
-      nombre: 'Marzo', expandido: false, tarjetas: [
+      nombre: 'Marzo',  anio: '2025 ',expandido: false, tarjetas: [
         {
           NombreEmpresa: 'Automatización RPA',
           NombreAbrev: 'RPA',
@@ -98,7 +98,7 @@ export class AcordeonHorizontalComponent {
       ]
     },
     {
-      nombre: 'Abril', expandido: false, tarjetas: [
+      nombre: 'Abril', anio: '2025 ', expandido: false, tarjetas: [
         {
           NombreEmpresa: 'Desarrollo Web',
           NombreAbrev: 'DW',
@@ -115,7 +115,7 @@ export class AcordeonHorizontalComponent {
       ]
     },
     {
-      nombre: 'Mayo', expandido: false, tarjetas: [
+      nombre: 'Mayo',  anio: '2025 ',expandido: false, tarjetas: [
         {
           NombreEmpresa: 'Seguridad Informática',
           NombreAbrev: 'SI',
@@ -143,7 +143,7 @@ export class AcordeonHorizontalComponent {
       ]
     },
     {
-      nombre: 'Junio', expandido: false, tarjetas: [
+      nombre: 'Junio',  anio: '2025 ',expandido: false, tarjetas: [
         {
           NombreEmpresa: 'Desarrollo de Software',
           NombreAbrev: 'DS',
@@ -171,7 +171,7 @@ export class AcordeonHorizontalComponent {
       ]
     },
     {
-      nombre: 'Julio', expandido: false, tarjetas: [
+      nombre: 'Julio',  anio: '2025 ',expandido: false, tarjetas: [
         {
           NombreEmpresa: 'Energías Renovables',
           NombreAbrev: 'ER',
@@ -197,26 +197,152 @@ export class AcordeonHorizontalComponent {
           descripcion: 'Optimización de la gestión de proyectos mediante software especializado.'
         }
       ]
+    },
+    {
+      nombre: 'Agosto', anio: '2025 ', expandido: false, tarjetas: [
+        {
+          NombreEmpresa: 'Análisis de Datos',
+          NombreAbrev: 'AD',
+          NombreOportunidad: 'Inteligencia de Negocios',
+          Monto: 600000,
+          Probabilidad: '35',
+          MontoNormalizado: 390000,
+          imagen: 'assets/Fotografia/persona_icono_principal.png',
+          nombreEjecutivo: 'Carlos Rodríguez',
+          iniciales: 'CR',
+          descripcion: 'Implementación de un sistema de inteligencia empresarial basado en datos.'
+        }
+      ]
+    },
+    {
+      nombre: 'Septiembre', anio: '2025 ', expandido: false, tarjetas: [
+        {
+          NombreEmpresa: 'Automatización RPA',
+          NombreAbrev: 'RPA',
+          NombreOportunidad: 'Flujos de trabajo inteligentes',
+          Monto: 300000,
+          Probabilidad: '25',
+          MontoNormalizado: 225000,
+          imagen: 'assets/Fotografia/persona_icono_principal.png',
+          nombreEjecutivo: 'Laura Martínez',
+          iniciales: 'LM',
+          descripcion: 'Automatización de procesos a través de RPA para mejorar la eficiencia.'
+        },
+        {
+          NombreEmpresa: 'Redes Sociales IA',
+          NombreAbrev: 'RSIA',
+          NombreOportunidad: 'Análisis predictivo',
+          Monto: 150000,
+          Probabilidad: '30',
+          MontoNormalizado: 105000,
+          imagen: 'assets/Fotografia/UlisesMireles_1.jpg',
+          nombreEjecutivo: 'Pedro Sánchez',
+          iniciales: 'PS',
+          descripcion: 'Uso de inteligencia artificial para prever tendencias en redes sociales.'
+        },
+        {
+          NombreEmpresa: 'CRM Inteligente',
+          NombreAbrev: 'CRM',
+          NombreOportunidad: 'Gestión avanzada de clientes',
+          Monto: 500000,
+          Probabilidad: '20',
+          MontoNormalizado: 400000,
+          imagen: 'assets/Fotografia/UlisesMireles_1.jpg',
+          nombreEjecutivo: 'Ana López',
+          iniciales: 'AL',
+          descripcion: 'Mejora en la gestión de relaciones con clientes mediante un CRM inteligente.'
+
+        }
+      ]
+    },
+    {
+      nombre: 'Octubre', anio: '2025 ', expandido: false, tarjetas: [
+        {
+          NombreEmpresa: 'Análisis de Datos',
+          NombreAbrev: 'AD',
+          NombreOportunidad: 'Inteligencia de Negocios',
+          Monto: 600000,
+          Probabilidad: '35',
+          MontoNormalizado: 390000,
+          imagen: 'assets/Fotografia/persona_icono_principal.png',
+          nombreEjecutivo: 'Carlos Rodríguez',
+          iniciales: 'CR',
+          descripcion: 'Implementación de un sistema de inteligencia empresarial basado en datos.'
+        }
+      ]
+    },
+    {
+      nombre: 'Noviembre', anio: '2025 ', expandido: false, tarjetas: [
+        {
+          NombreEmpresa: 'Análisis de Datos',
+          NombreAbrev: 'AD',
+          NombreOportunidad: 'Inteligencia de Negocios',
+          Monto: 600000,
+          Probabilidad: '35',
+          MontoNormalizado: 390000,
+          imagen: 'assets/Fotografia/persona_icono_principal.png',
+          nombreEjecutivo: 'Carlos Rodríguez',
+          iniciales: 'CR',
+          descripcion: 'Implementación de un sistema de inteligencia empresarial basado en datos.'
+        }
+      ]
+    },
+    {
+      nombre: 'Diciembre', anio: '2025 ', expandido: false, tarjetas: [
+        {
+          NombreEmpresa: 'Análisis de Datos',
+          NombreAbrev: 'AD',
+          NombreOportunidad: 'Inteligencia de Negocios',
+          Monto: 600000,
+          Probabilidad: '35',
+          MontoNormalizado: 390000,
+          imagen: 'assets/Fotografia/persona_icono_principal.png',
+          nombreEjecutivo: 'Carlos Rodríguez',
+          iniciales: 'CR',
+          descripcion: 'Implementación de un sistema de inteligencia empresarial basado en datos.'
+        }
+      ]
+    },
+    {
+      nombre: 'Enero', anio: '2026 ', expandido: false, tarjetas: [
+        {
+          NombreEmpresa: 'Análisis de Datos',
+          NombreAbrev: 'AD',
+          NombreOportunidad: 'Inteligencia de Negocios',
+          Monto: 600000,
+          Probabilidad: '35',
+          MontoNormalizado: 390000,
+          imagen: 'assets/Fotografia/persona_icono_principal.png',
+          nombreEjecutivo: 'Carlos Rodríguez',
+          iniciales: 'CR',
+          descripcion: 'Implementación de un sistema de inteligencia empresarial basado en datos.'
+        }
+      ]
     }
   ];
 
 
+  errorMessage: string = '';
   connectedDropLists: string[] = [];
-
   mostrarModal: boolean = false;  // Controla la visibilidad del modal
   tarjetaMovida: any;  // Tarjeta que fue movida
   fechaSeleccionada: string = '';  // Variable para almacenar la fecha seleccionada
   today: string = new Date().toISOString().split('T')[0];  // Fecha actual en formato YYYY-MM-DD
   idOportunidad: number = 0;  // Simulación del input oculto
 
-  // ngOnInit() {
-  //   this.connectedDropLists = this.elementos.map((_, i) => `todoList${i}`);
-  // }
+   // Variable auxiliar para determinar el siguiente mes a agregar
+   ultimoMesAgregado: string='';
 
-  ngOnInit() {
+
+
+   ngOnInit() {
     this.connectedDropLists = this.elementos.map((_, i) => `todoList${i}`);
-    // Expande los últimos 4 meses
-    this.actualizarExpansiones();
+
+    // Expandir los últimos 4 elementos si hay al menos 4 elementos en la lista
+    const MontoNormalizadoElementos = this.elementos.length;
+    this.elementos.forEach((mes, index) => {
+      mes.expandido = index >= MontoNormalizadoElementos - 4; // Solo los últimos 4 se expanden aqui se cambia para si no quiero se expandan
+    });
   }
 
   alternarItem(item: any, event: Event) {
@@ -224,30 +350,135 @@ export class AcordeonHorizontalComponent {
     item.expandido = !item.expandido;
   }
 
+  // drop(event: any, mesDestino: any) {
+  //   if (event.previousContainer === event.container) {
+  //     return;
+  //   }
+
+  //   // Guardamos la información:
+  //   // event.previousContainer.data es el array de tarjetas (mesOrigen.tarjetas)
+  //   // Además, buscamos el objeto mesOrigen completo.
+  //   const mesOrigenObj = this.elementos.find(m => m.tarjetas === event.previousContainer.data);
+
+  //   this.tarjetaMovida = {
+  //     tarjeta: event.item.data,
+  //     mesOrigen: event.previousContainer.data,  // Array de tarjetas del mes de origen
+  //     mesDestino: mesDestino,                      // Objeto mes de destino
+  //     indexOrigen: event.previousIndex,
+  //     indexDestino: event.currentIndex,
+  //     mesOrigenObj: mesOrigenObj                   // Objeto completo del mes de origen
+  //   };
+
+  //   console.log('Tarjeta en espera de confirmación:', this.tarjetaMovida);
+  //   this.fechaSeleccionada = this.today;
+  //   this.mostrarModal = true;
+  // }
+
+  getUltimoDiaDelMes(mes: number, anio: number): string {
+    console.log('Recibiendo valores - Mes:', mes, 'Año:', anio);  // Imprimir valores antes de crear la fecha
+
+    // Verificar si el mes y año son válidos
+    if (isNaN(mes) || mes < 0 || mes > 11) {
+      console.error('Mes inválido:', mes);
+      return '';  // Salir si el mes no es válido
+    }
+
+    if (isNaN(anio) || anio < 1000 || anio > 9999) {
+      console.error('Año inválido:', anio);
+      return '';  // Salir si el año no es válido
+    }
+
+    // Crear la fecha con el último día del mes
+    const fecha = new Date(anio, mes + 1, 0);  // `mes + 1` porque enero es 0 en JavaScript
+    if (isNaN(fecha.getTime())) {
+      console.error('Fecha inválida:', fecha);
+      return '';  // Salir si la fecha es inválida
+    }
+
+    console.log('Último día del mes:', fecha.toISOString().split('T')[0]);
+    return fecha.toISOString().split('T')[0];
+  }
   drop(event: any, mesDestino: any) {
     if (event.previousContainer === event.container) {
       return;
     }
 
-    // Guardamos la información:
-    // event.previousContainer.data es el array de tarjetas (mesOrigen.tarjetas)
-    // Además, buscamos el objeto mesOrigen completo.
     const mesOrigenObj = this.elementos.find(m => m.tarjetas === event.previousContainer.data);
 
     this.tarjetaMovida = {
       tarjeta: event.item.data,
-      mesOrigen: event.previousContainer.data,  // Array de tarjetas del mes de origen
-      mesDestino: mesDestino,                      // Objeto mes de destino
+      mesOrigen: event.previousContainer.data,
+      mesDestino: mesDestino,
       indexOrigen: event.previousIndex,
       indexDestino: event.currentIndex,
-      mesOrigenObj: mesOrigenObj                   // Objeto completo del mes de origen
+      mesOrigenObj: mesOrigenObj
     };
 
     console.log('Tarjeta en espera de confirmación:', this.tarjetaMovida);
-    this.fechaSeleccionada = this.today;
+
+    // Asegúrate de que el año sea un número
+    let anioDestino = parseInt(mesDestino.año, 10);
+    if (isNaN(anioDestino)) {
+      console.error('Año no válido:', mesDestino.año);
+      anioDestino = new Date().getFullYear();  // Si el año no es válido, asignamos el año actual
+    }
+
+    // Obtener el número de mes y el año del mes destino
+    const mesDestinoNumero = this.obtenerMesNumero(mesDestino.nombre);
+
+    console.log('Mes destino:', mesDestino.nombre, 'Número del mes destino:', mesDestinoNumero, 'Año destino:', anioDestino);
+
+    // Verificar que los valores sean válidos
+    if (mesDestinoNumero < 0 || anioDestino < 1000 || anioDestino > 9999) {
+      console.error('Mes o año inválido:', mesDestinoNumero, anioDestino);
+      this.mostrarModal = false;
+      return;
+    }
+
+    // Obtener el último día del mes destino
+    this.fechaSeleccionada = this.getUltimoDiaDelMes(mesDestinoNumero, anioDestino);
+
+    console.log('Último día del mes destino:', this.fechaSeleccionada);
+
     this.mostrarModal = true;
   }
 
+
+  obtenerMesNumero(mesNombre: string): number {
+    const meses = [
+      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
+
+    // Verificar si el mes es válido
+    const mesIndex = meses.indexOf(mesNombre);
+    if (mesIndex === -1) {
+      console.error('Mes no válido:', mesNombre);
+      return -1;  // Si el mes no es válido, devolvemos -1
+    }
+
+    return mesIndex;  // Devolver el índice del mes
+  }
+
+
+
+  cancelar() {
+    console.log('Movimiento cancelado');
+    this.tarjetaMovida = null;
+    this.mostrarModal = false;
+  }
+
+  getClaseNombreEmpresa(nombreEmpresa: string, nombreAbrev: string): string {
+    const cantNombre = nombreEmpresa.length;
+    const cantAbrev = nombreAbrev.length;
+    if (cantNombre >= 30 && cantAbrev >= 4) {
+      return 'clsNomEmpresa116';
+    } else if (cantNombre >= 30 && cantAbrev < 4) {
+      return 'clsNomEmpresa125';
+    } else {
+      return 'clsNomEmpresa';
+    }
+  }
   guardarFecha() {
     if (this.tarjetaMovida) {
       // Transferir la tarjeta usando los arrays (ya que mesOrigen es el array de tarjetas)
@@ -283,25 +514,6 @@ export class AcordeonHorizontalComponent {
     this.mostrarModal = false;
     this.actualizarExpansiones();
   }
-
-  cancelar() {
-    console.log('Movimiento cancelado');
-    this.tarjetaMovida = null;
-    this.mostrarModal = false;
-  }
-
-  getClaseNombreEmpresa(nombreEmpresa: string, nombreAbrev: string): string {
-    const cantNombre = nombreEmpresa.length;
-    const cantAbrev = nombreAbrev.length;
-    if (cantNombre >= 30 && cantAbrev >= 4) {
-      return 'clsNomEmpresa116';
-    } else if (cantNombre >= 30 && cantAbrev < 4) {
-      return 'clsNomEmpresa125';
-    } else {
-      return 'clsNomEmpresa';
-    }
-  }
-
   actualizarExpansiones() {
     const total = this.elementos.length;
     // Aseguramos que solo los últimos 4 estén expandido

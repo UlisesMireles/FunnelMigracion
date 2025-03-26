@@ -105,14 +105,30 @@
   
             <ng-template pTemplate="body" let-rowData let-columns="columns">
               <tr>
-                <td *ngFor="let def of lsColumnasAMostrar">
+                <td *ngFor="let def of lsColumnasAMostrar"
+                    [ngStyle]="{
+                      'text-align':
+                        (def.valor.includes('%')) ? 'center' :
+                        def.tipoFormato === 'currency' ? 'right' :
+                        (def.tipoFormato === 'number' || def.tipoFormato === 'date') ? 'center' : 'left'
+                    }">
                   <ng-container [ngSwitch]="def.tipoFormato">
-                    <span *ngSwitchCase="'text'">{{ rowData[def.key] }}</span>
-            
-                    <span *ngSwitchCase="'currency'">
-                      {{ rowData[def.key] | currency:'MX ':'symbol' }}
+                    <span *ngSwitchCase="'text'">
+                      <span *ngIf="def.key === 'nombreContacto'" pTooltip="{{rowData[def.key]}}" tooltipPosition="top">
+                        {{ rowData[def.key]?.split(' ')[0] }}
+                      </span>
+                      <span *ngIf="def.key === 'iniciales'" pTooltip="{{rowData['nombreEjecutivo']}}" tooltipPosition="top">
+                        {{ rowData[def.key] }}
+                      </span>
+                      <span *ngIf="def.key !== 'nombreContacto' && def.key !== 'iniciales'">
+                        {{ rowData[def.key] }}
+                      </span>
                     </span>
-            
+                   
+                    <span *ngSwitchCase="'currency'">
+                      {{ rowData[def.key] | currency:'$':'symbol':'1.2-2' }}
+                    </span>
+                   
                     <span *ngSwitchCase="'number'">
                       <span *ngIf="def.key === 'fechaModificacion'" [ngStyle]="{ 'color': getColorForDiasSinActividad(rowData[def.key]) }">
                         {{ rowData[def.key] }}
@@ -121,31 +137,30 @@
                         {{ rowData[def.key] | number:'1.0-2' }}
                       </span>
                     </span>
-            
+                   
                     <span *ngSwitchCase="'date'" [ngStyle]="def.key === 'fechaEstimadaCierreOriginal' ? { 'color': getColorForFechaEstimadaCierre(rowData[def.key]) } : {}">
                       {{ rowData[def.key] | date:'dd/MM/yyyy' }}
                     </span>
                   </ng-container>
-                </td>
-                <td>
                 </td>
               </tr>
             </ng-template>
   
             <ng-template pTemplate="footer" let-columns #footer>
               <tr class="custom-footer">
-                <td *ngFor="let def of lsColumnasAMostrar">
+                <td *ngFor="let def of lsColumnasAMostrar"
+                    [ngStyle]="{
+                      'text-align':
+                        def.tipoFormato === 'currency' ? 'right' :
+                        (def.tipoFormato === 'number' || def.tipoFormato === 'date') ? 'center' : 'left'
+                    }">
                   <ng-container *ngIf="def.key === 'nombre'">
                     Total de registros: {{ getTotalCostPrimeNg(dt, def) }}
                   </ng-container>
                   <ng-container *ngIf="def.tipoFormato === 'currency'">
-                    {{ getTotalCostPrimeNg(dt, def) | currency:'MX ': 'symbol' }}
+                    {{ getTotalCostPrimeNg(dt, def) | currency:'$':'symbol':'1.2-2' }}
                   </ng-container>
-                  <ng-container *ngIf="columnsToAverage.includes(def.key)">
-                    {{ getAverage(def.key) | number: '1.0-2' }}
-                  </ng-container>
-                  <ng-container *ngIf="def.tipoFormato !== 'currency' && def.key !== 'nombre' && def.key !== 'idOportunidad' &&
-                                      !columnsToAverage.includes(def.key)">
+                  <ng-container *ngIf="def.tipoFormato !== 'currency' && def.key !== 'nombre' && def.key !== 'idOportunidad'">
                     {{ getTotalCostPrimeNg(dt, def) | number: '1.0-2' }}
                   </ng-container>
                 </td>

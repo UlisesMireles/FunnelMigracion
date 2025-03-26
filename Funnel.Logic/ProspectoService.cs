@@ -1,4 +1,5 @@
-﻿using Funnel.Data.Interfaces;
+﻿using Funnel.Data;
+using Funnel.Data.Interfaces;
 using Funnel.Logic.Interfaces;
 using Funnel.Models.Base;
 using Funnel.Models.Dto;
@@ -26,6 +27,11 @@ namespace Funnel.Logic
         public async Task<List<ProspectoDTO>> ConsultarProspectos(int IdEmpresa)
         {
             return await _ProspectoData.ConsultarProspectos(IdEmpresa);
+        }
+
+        public async Task<List<ProspectoDTO>> ConsultarTopVeinte(int IdEmpresa)
+        {
+            return await _ProspectoData.ConsultarTopVeinte(IdEmpresa);
         }
 
         public async Task<BaseOut> GuardarProspecto(ProspectoDTO request)

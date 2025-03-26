@@ -21,6 +21,7 @@ export class VerticalBarComponent {
   @Output() toggleSidebar = new EventEmitter<boolean>();
   isScrollable: boolean = false;
   scrollInterval: any = null;
+
   ListaMenu: any[] = [];
 
   constructor(private router: Router,

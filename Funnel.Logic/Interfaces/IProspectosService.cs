@@ -13,5 +13,6 @@ namespace Funnel.Logic.Interfaces
         public Task<List<ProspectoDTO>> ConsultarProspectos(int IdEmpresa);
         public Task<BaseOut> GuardarProspecto(ProspectoDTO request);
         public Task<List<ComboSectoresDto>> ComboSectores();
+        Task<List<ProspectoDTO>> ConsultarTopVeinte(int IdEmpresa);
     }
 }

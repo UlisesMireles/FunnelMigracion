@@ -80,6 +80,49 @@ namespace Funnel.Data
             return result;
         }
 
+        public async Task<List<ProspectoDTO>> ConsultarTopVeinte(int IdEmpresa)
+        {
+            List<ProspectoDTO> result = new List<ProspectoDTO>();
+            IList<ParameterSQl> list = new List<ParameterSQl>
+    {
+        DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "SELECT-TOPVEINTE"),
+        DataBase.CreateParameterSql("@Nombre", SqlDbType.VarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, DBNull.Value),
+        DataBase.CreateParameterSql("@UsbicacionFisica", SqlDbType.VarChar, 200, ParameterDirection.Input, false, null, DataRowVersion.Default, DBNull.Value),
+        DataBase.CreateParameterSql("@IdProspecto", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, 0),
+        DataBase.CreateParameterSql("@Estatus", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, 0),
+        DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, IdEmpresa),
+        DataBase.CreateParameterSql("@pIdSector", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, 0)
+    };
+
+            using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoProspectos", CommandType.StoredProcedure, list, _connectionString))
+            {
+                while (reader.Read())
+                {
+                    var dto = new ProspectoDTO();
+                    dto.IdProspecto = ComprobarNulos.CheckIntNull(reader["IdProspecto"]);
+                    dto.Nombre = ComprobarNulos.CheckStringNull(reader["Nombre"]);
+                    dto.UbicacionFisica = ComprobarNulos.CheckStringNull(reader["UbicacionFisica"]);
+                    dto.Estatus = ComprobarNulos.CheckIntNull(reader["Estatus"]);
+                    dto.DesEstatus = ComprobarNulos.CheckStringNull(reader["DesEstatus"]);
+                    dto.NombreSector = ComprobarNulos.CheckStringNull(reader["NombreSector"]);
+                    dto.IdSector = ComprobarNulos.CheckIntNull(reader["IdSector"]);
+                    dto.TotalOportunidades = ComprobarNulos.CheckIntNull(reader["TotalOportunidades"]);
+                    dto.Proceso = ComprobarNulos.CheckIntNull(reader["Proceso"]);
+                    dto.Ganadas = ComprobarNulos.CheckIntNull(reader["Ganadas"]);
+                    dto.Perdidas = ComprobarNulos.CheckIntNull(reader["Perdidas"]);
+                    dto.Canceladas = ComprobarNulos.CheckIntNull(reader["Canceladas"]);
+                    dto.Eliminadas = ComprobarNulos.CheckIntNull(reader["Eliminadas"]);
+                    dto.PorcGanadas = ComprobarNulos.CheckDecimalNull(reader["PorcGanadas"]);
+                    dto.PorcPerdidas = ComprobarNulos.CheckDecimalNull(reader["PorcPerdidas"]);
+                    dto.PorcCanceladas = ComprobarNulos.CheckDecimalNull(reader["PorcCanceladas"]);
+                    dto.PorcEliminadas = ComprobarNulos.CheckDecimalNull(reader["PorcEliminadas"]);
+
+                    result.Add(dto);
+                }
+            }
+            return result;
+        }
+
         public async Task<BaseOut> GuardarProspecto(ProspectoDTO request)
         {
             BaseOut result = new BaseOut();

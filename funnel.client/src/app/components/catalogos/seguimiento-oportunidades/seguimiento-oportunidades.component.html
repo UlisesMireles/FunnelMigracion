@@ -55,11 +55,6 @@
         <div class="col-sm-9 inptSpace pl-0">
           <div class="d-flex align-items-center">
           <textarea pInputText class="inptSize seguimiento-textarea" formControlName="comentario"></textarea>
-          <button class="btn btn-outline-secondary btn-sm ml-2" 
-          (click)="exportExcel(oportunidadForm.get('idOportunidad')?.value)" 
-          [disabled]="historialOportunidad.length === 0">
-          <i class="bi bi-download"></i>
-        </button>
           </div>
           <div *ngIf="oportunidadForm.get('comentario')?.invalid && oportunidadForm.get('comentario')?.touched" class="text-danger">
             <small *ngIf="oportunidadForm.get('comentario')?.errors?.['required']">
@@ -68,6 +63,18 @@
             <small *ngIf="oportunidadForm.get('comentario')?.errors?.['minWords']">
               El comentario debe tener al menos 10 palabras.
             </small>            
+          </div>
+          <div class="guardar-btn-container">
+            <button pButton label="Añadir Comentario" (click)="guardarHistorial()" severity="secondary" 
+                   *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value === 1" 
+                   [disabled]="!oportunidadForm.get('comentario')?.value" class="me-2"></button>
+          </div>
+          <div class="export-button-container">
+            <button class="btn btn-outline-secondary btn-sm export-button" 
+                    (click)="exportExcel(oportunidadForm.get('idOportunidad')?.value)" 
+                    [disabled]="historialOportunidad.length === 0">
+              <i class="bi bi-download"></i> 
+            </button>
           </div>
         </div>
       </div>
@@ -101,10 +108,4 @@
     <p class="text-center">Sin comentarios</p>
   </ng-template>
   
-  <ng-template pTemplate="footer">
-    <div class="d-flex justify-content-start">
-    <button pButton label="Guardar"  (click)="guardarHistorial()" severity="secondary"  *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value === 1" [disabled]="!oportunidadForm.get('comentario')?.value" class="me-2" ></button>
-    <button pButton label="Cancelar" (click)="close()" severity="secondary"></button>
-    </div>
-  </ng-template>
 </p-dialog>

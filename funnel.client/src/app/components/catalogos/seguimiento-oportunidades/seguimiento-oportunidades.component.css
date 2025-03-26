@@ -271,15 +271,29 @@
   font-size: 1.2rem; 
 }
 
-/* Elimina el padding preeterminado del footer */
-::ng-deep .p-dialog .p-dialog-footer {
-  padding: 0.5rem 3rem;
-  text-align: left; 
-}
+
 ::ng-deep .p-dialog {
   overflow-x: hidden; 
+  z-index: 1001 !important;
+  margin-top: 70px; /* header para espacio */
+  margin-bottom: 45px; /*footer para espacio */
+  max-height: calc(100vh - 115px) !important;
 }
 
 ::ng-deep .p-dialog-content {
+  max-height: calc(100vh - 180px) !important; 
+  overflow-y: auto;
   overflow-x: hidden; 
 }
+.export-button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 50px; 
+  margin-right: 10px;
+}
+.guardar-btn-container {
+  display: flex;
+  margin-top: -60px;
+  margin-left: 430px;
+}
+

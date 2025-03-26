@@ -56,13 +56,13 @@ export class OportunidadesComponent {
     { key: 'nombreContacto', isCheck: true, valor: 'Contacto', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'entrega', isCheck: true, valor: 'Entrega', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'monto', isCheck: true, valor: 'Monto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
-    { key: 'probabilidadOriginal', isCheck: false, valor: '% Original', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'probabilidad', isCheck: true, valor: '% Actual', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'montoNormalizado', isCheck: true, valor: 'Venta Esperada', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
+    { key: 'probabilidadOriginal', isCheck: false, valor: '% Orig', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'probabilidad', isCheck: true, valor: '% Act', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'montoNormalizado', isCheck: true, valor: 'Vta Esperada', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
     { key: 'fechaRegistro', isCheck: true, valor: 'Fecha Alta', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
     { key: 'diasFunnel', isCheck: false, valor: 'Días Funnel', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
     { key: 'fechaEstimadaCierreOriginal', isCheck: false, valor: 'Cierre Est', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
-    { key: 'fechaModificacion', isCheck: false, valor: 'Días S/Actividad', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' }
+    { key: 'fechaModificacion', isCheck: false, valor: 'Días S/Act', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' }
   ];
 
   columnsAMostrarResp: string = JSON.stringify(this.lsColumnasAMostrar);

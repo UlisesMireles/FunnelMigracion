@@ -45,7 +45,7 @@
               <th *ngFor="let def of lsColumnasAMostrar" pSortableColumn="{{def.key}}" pReorderableColumn>
                 {{def.valor}}<p-sortIcon field="{{def.key}}"></p-sortIcon>
               </th>
-              <th></th>
+              <th></th> 
             </tr>
             <tr>
               <th *ngFor="let def of lsColumnasAMostrar" style="min-width: 30%;">
@@ -90,24 +90,44 @@
                     </div>
                     <div *ngSwitchDefault>
                       <p-columnFilter *ngIf="def.tipoFormato !== 'text' && def.tipoFormato !== 'currency' && def.tipoFormato !== 'date'"
-                        type="{{def.tipoFormato}}" field="{{def.key}}" [showButtons]="false">
+                        type="{{def.tipoFormato}}" field="{{def.key}}" [showButtons]="false" [showMenu]="false">
                       </p-columnFilter>
                     </div>
                   </div>
                 </ng-container>
               </th>
-              <th></th>
+              <th></th> 
             </tr>
           </ng-template>
 
           <ng-template pTemplate="body" let-rowData let-columns="columns">
             <tr>
-              <td *ngFor="let def of lsColumnasAMostrar">
+              <td *ngFor="let def of lsColumnasAMostrar" 
+                  [ngStyle]="{
+                    'text-align': 
+                      (def.valor.includes('%')) ? 'center' :
+                      def.tipoFormato === 'currency' ? 'right' : 
+                      (def.tipoFormato === 'number' || def.tipoFormato === 'date') ? 'center' : 'left'
+                  }">
                 <ng-container [ngSwitch]="def.tipoFormato">
                   <span *ngSwitchCase="'text'">{{ rowData[def.key] }}</span>
-                  <span *ngSwitchCase="'currency'">{{ rowData[def.key] | currency:'$':'symbol':'1.2-2' }}</span>
-                  <span *ngSwitchCase="'number'">{{ rowData[def.key] | number:'1.0-2' }}</span>
-                  <span *ngSwitchCase="'date'">{{ rowData[def.key] | date:'dd/MM/yyyy' }}</span>
+                  
+                  <span *ngSwitchCase="'currency'">
+                    {{ rowData[def.key] | currency:'$':'symbol':'1.2-2' }}
+                  </span>
+                  
+                  <span *ngSwitchCase="'number'">
+                    <span *ngIf="def.key === 'fechaModificacion'">
+                      {{ rowData[def.key] }}
+                    </span>
+                    <span *ngIf="def.key !== 'fechaModificacion'">
+                      {{ rowData[def.key] | number:'1.0-2' }}
+                    </span>
+                  </span>
+                  
+                  <span *ngSwitchCase="'date'" >
+                    {{ rowData[def.key] | date:'dd/MM/yyyy' }}
+                  </span>
                 </ng-container>
               </td>
               <td>
@@ -127,9 +147,14 @@
 
           <ng-template pTemplate="footer" let-columns #footer>
             <tr class="custom-footer">
-              <td *ngFor="let def of lsColumnasAMostrar">
+              <td *ngFor="let def of lsColumnasAMostrar" 
+                  [ngStyle]="{
+                    'text-align': 
+                      def.tipoFormato === 'currency' ? 'right' : 
+                      (def.tipoFormato === 'number' || def.tipoFormato === 'date') ? 'center' : 'left'
+                  }">
                 <ng-container *ngIf="def.key === 'idOportunidad'">
-                  Oportunidades: {{ getTotalCostPrimeNg(dt, def) }}
+                  Total de registros: {{ getTotalCostPrimeNg(dt, def) }}
                 </ng-container>
                 <ng-container *ngIf="def.tipoFormato === 'currency'">
                   {{ getTotalCostPrimeNg(dt, def) | currency:'$':'symbol':'1.2-2' }}
@@ -153,6 +178,7 @@
     </div>
   </div>
 </div>
+
 
 <app-modal-oportunidades-canceladas [(visible)]="modalVisible" [title]="'Editar Datos de '" (closeModal)="onModalClose()"
   (result)="manejarResultado($event)" [oportunidades]="oportunidadesCanceladas" [oportunidad]="oportunidadCanceladaSeleccionada">

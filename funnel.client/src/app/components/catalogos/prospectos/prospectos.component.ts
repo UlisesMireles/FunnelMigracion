@@ -45,12 +45,12 @@ EstatusDropdown = [
     {key:'nombre', isCheck: true, valor: 'Nombre', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text'},
     {key: 'nombreSector', isCheck: true, valor: 'Sector de la industria', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
     {key: 'ubicacionFisica', isCheck: true, valor: 'Ubicación Física', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
-    {key: 'totalOportunidades', isCheck: true, valor: 'Todas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
-    {key: 'proceso', isCheck: true, valor: 'En Proceso', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
-    {key: 'ganadas', isCheck: true, valor: 'Ganadas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
-    {key: 'perdidas', isCheck: true, valor: 'Perdidas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
-    {key: 'canceladas', isCheck: true, valor: 'Canceladas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
-    {key: 'eliminadas', isCheck: true, valor: 'Eliminadas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
+    {key: 'totalOportunidades', isCheck: true, valor: 'Todas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
+    {key: 'proceso', isCheck: true, valor: 'En Proceso', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
+    {key: 'ganadas', isCheck: true, valor: 'Ganadas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
+    {key: 'perdidas', isCheck: true, valor: 'Perdidas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
+    {key: 'canceladas', isCheck: true, valor: 'Canceladas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
+    {key: 'eliminadas', isCheck: true, valor: 'Eliminadas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
     {key: 'desEstatus', isCheck: true, valor: 'Estatus', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'estatus'}
   ];
 

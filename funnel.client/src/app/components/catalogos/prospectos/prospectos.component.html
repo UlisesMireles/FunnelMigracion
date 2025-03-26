@@ -110,15 +110,27 @@
 
           <ng-template pTemplate="body" let-rowData let-columns="columns">
             <tr>
-              <td *ngFor="let def of lsColumnasAMostrar">
+              <td *ngFor="let def of lsColumnasAMostrar" 
+                  [ngStyle]="{
+                    'text-align': 
+                      def.tipoFormato === 'currency' ? 'right' : 
+                      (def.tipoFormato === 'number') ? 'center' : 'left'
+                  }">
                 <ng-container [ngSwitch]="def.tipoFormato">
                   <span *ngSwitchCase="'text'">{{ rowData[def.key] }}</span>
-                  <div *ngSwitchCase="'currency'">
-                    <p-columnFilter type="numeric" field="{{def.key}}" [showButtons]="false"
-                        [maxFractionDigits]="7"></p-columnFilter>
-                  </div>
-                  <span *ngSwitchCase="'number'">{{ rowData[def.key] | number:'1.0-2' }}</span>
-                  <span *ngSwitchCase="'date'">{{ rowData[def.key] | date:'dd/MM/yyyy' }}</span>
+                  
+                  <span *ngSwitchCase="'currency'">
+                    {{ rowData[def.key] | currency:'$':'symbol':'1.2-2' }}
+                  </span>
+                  
+                  <span *ngSwitchCase="'number'">
+                    {{ rowData[def.key] | number:'1.0-0' }}
+                  </span>
+                  
+                  <span *ngSwitchCase="'date'">
+                    {{ rowData[def.key] | date:'dd/MM/yyyy' }}
+                  </span>
+                  
                   <span *ngSwitchDefault>{{ rowData[def.key] }}</span>
                 </ng-container>
               </td>
@@ -131,9 +143,17 @@
 
           <ng-template pTemplate="footer" let-columns #footer>
             <tr class="custom-footer">
-              <td *ngFor="let def of lsColumnasAMostrar">
+              <td *ngFor="let def of lsColumnasAMostrar" 
+                  [ngStyle]="{
+                    'text-align': 
+                      def.tipoFormato === 'currency' ? 'right' : 
+                      (def.tipoFormato === 'number') ? 'center' : 'left'
+                  }">
                 <ng-container *ngIf="def.key === 'nombre'">
-                  total de registros: {{ getTotalCostPrimeNg(dt, def) }}
+                  Total de registros: {{ getTotalCostPrimeNg(dt, def) }}
+                </ng-container>
+                <ng-container *ngIf="def.tipoFormato === 'number' && def.key !== 'nombre'">
+                  {{ getTotalCostPrimeNg(dt, def) | number:'1.0-0' }}
                 </ng-container>
               </td>
               <td></td>

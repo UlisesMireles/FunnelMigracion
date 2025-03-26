@@ -3,6 +3,10 @@
   gap: 10px;
   overflow-x: auto;
   padding: 10px;
+  transition: background-color 0.3s ease-in-out;
+}
+.item-acordeon:hover {
+  background-color: rgba(0, 0, 0, 0.1); /* Color más oscuro al pasar el cursor */
 }
 
 .item-acordeon {
@@ -100,18 +104,40 @@
 
 
 .nombre-mes {
-  writing-mode: vertical-rl; /* Texto en vertical cuando está colapsado */
+  writing-mode: vertical-rl;
   transform: rotate(180deg);
   white-space: nowrap;
   transition: writing-mode 0.3s ease-in-out, transform 0.3s ease-in-out;
   text-align: center;
   font-weight: bold;
   font-size: 14px;
+  display: flex;
+  align-items: center;
+   justify-content: space-between; /* Separa el nombre y el contador */
 }
+
+.contador-tarjetas {
+  font-weight: bold;
+  font-size: 14px;
+  margin-left: 2px;
+  margin-top: 5px;  /* Espacio extra entre el nombre y el contador */
+}
+
 .item-acordeon.expandido .nombre-mes {
-  writing-mode: horizontal-tb; /* Texto en horizontal cuando está expandido */
+  writing-mode: horizontal-tb;
   transform: rotate(0);
+  flex-direction: row;
+  display: flex;
+  justify-content: space-between; /* Separa el nombre y el contador */
+  align-items: center;
+  width: 100%;
 }
+
+.item-acordeon.expandido .contador-tarjetas {
+  margin: 0 8px 0 auto; /* Se alinea al final, con un poco de margen a la derecha */
+}
+
+
 
 /* Posicionamiento y estilos de la modal */
 .ModalRegistrarFecha {

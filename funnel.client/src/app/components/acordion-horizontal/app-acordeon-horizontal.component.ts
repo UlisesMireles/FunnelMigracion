@@ -110,66 +110,7 @@ export class AcordeonHorizontalComponent {
           nombreEjecutivo: 'Luis Torres',
           iniciales: 'LT',
           descripcion: 'Desarrollo de sitios web personalizados para clientes de diversos sectores.'
-        },
-        {
-          NombreEmpresa: 'Marketing Digital',
-          NombreAbrev: 'MD',
-          NombreOportunidad: 'Estrategias de marketing efectivas',
-          Monto: 400000,
-          Probabilidad: '20',
-          MontoNormalizado: 320000,
-          imagen: 'assets/Fotografia/UlisesMireles_1.jpg',
-          nombreEjecutivo: 'Sofía Hernández',
-          iniciales: 'SH',
-          descripcion: 'Creación de campañas digitales para mejorar la presencia online.'
-        },
-        {
-          NombreEmpresa: 'Análisis de Datos',
-          NombreAbrev: 'AD',
-          NombreOportunidad: 'Inteligencia de Negocios',
-          Monto: 600000,
-          Probabilidad: '35',
-          MontoNormalizado: 390000,
-          imagen: 'assets/Fotografia/persona_icono_principal.png',
-          nombreEjecutivo: 'Carlos Rodríguez',
-          iniciales: 'CR',
-          descripcion: 'Solución avanzada de inteligencia de negocios utilizando análisis de datos.'
-        },
-        {
-          NombreEmpresa: 'Redes Sociales IA',
-          NombreAbrev: 'RSIA',
-          NombreOportunidad: 'Análisis predictivo',
-          Monto: 150000,
-          Probabilidad: '30',
-          MontoNormalizado: 105000,
-          imagen: 'assets/Fotografia/UlisesMireles_1.jpg',
-          nombreEjecutivo: 'Pedro Sánchez',
-          iniciales: 'PS',
-          descripcion: 'Utilización de IA para analizar datos de redes sociales y predecir comportamientos.'
-        },
-        {
-          NombreEmpresa: 'CRM Inteligente',
-          NombreAbrev: 'CRM',
-          NombreOportunidad: 'Gestión avanzada de clientes',
-          Monto: 500000,
-          Probabilidad: '20',
-          MontoNormalizado: 400000,
-          imagen: 'assets/Fotografia/AlejandraCano_2.jpg',
-          nombreEjecutivo: 'Ana López',
-          iniciales: 'AL',
-          descripcion: 'Implementación de un sistema CRM para optimizar la relación con los clientes.'
-        },
-        {
-          NombreEmpresa: 'Automatización RPA',
-          NombreAbrev: 'RPA',
-          NombreOportunidad: 'Flujos de trabajo inteligentes',
-          Monto: 300000,
-          Probabilidad: '25',
-          MontoNormalizado: 225000,
-          imagen: 'assets/Fotografia/AlejandraCano_2.jpg',
-          nombreEjecutivo: 'Laura Martínez',
-          iniciales: 'LM',
-          descripcion: 'Implementación de flujos de trabajo automatizados para reducir costos operativos.'
+        // }
         }
       ]
     },
@@ -274,78 +215,120 @@ export class AcordeonHorizontalComponent {
 
   ngOnInit() {
     this.connectedDropLists = this.elementos.map((_, i) => `todoList${i}`);
-
-    // Expandir los últimos 4 elementos si hay al menos 4 elementos en la lista
-    const MontoNormalizadoElementos = this.elementos.length;
-    this.elementos.forEach((mes, index) => {
-      mes.expandido = index >= MontoNormalizadoElementos - 4; // Solo los últimos 4 se expanden aqui se cambia para si no quiero se expandan
-    });
+    // Expande los últimos 4 meses
+    this.actualizarExpansiones();
   }
 
   alternarItem(item: any, event: Event) {
-    event.stopPropagation(); // Evita que otros clics afecten
+    event.stopPropagation();
     item.expandido = !item.expandido;
   }
- // Método que maneja el movimiento de la tarjeta
 
+  drop(event: any, mesDestino: any) {
+    if (event.previousContainer === event.container) {
+      return;
+    }
 
- drop(event: any, mesDestino: any) {
-  if (event.previousContainer === event.container) {
-    return; // No hacer nada si es el mismo contenedor
+    // Guardamos la información:
+    // event.previousContainer.data es el array de tarjetas (mesOrigen.tarjetas)
+    // Además, buscamos el objeto mesOrigen completo.
+    const mesOrigenObj = this.elementos.find(m => m.tarjetas === event.previousContainer.data);
+
+    this.tarjetaMovida = {
+      tarjeta: event.item.data,
+      mesOrigen: event.previousContainer.data,  // Array de tarjetas del mes de origen
+      mesDestino: mesDestino,                      // Objeto mes de destino
+      indexOrigen: event.previousIndex,
+      indexDestino: event.currentIndex,
+      mesOrigenObj: mesOrigenObj                   // Objeto completo del mes de origen
+    };
+
+    console.log('Tarjeta en espera de confirmación:', this.tarjetaMovida);
+    this.fechaSeleccionada = this.today;
+    this.mostrarModal = true;
   }
 
-  // Guardamos la información sin mover la tarjeta aún
-  this.tarjetaMovida = {
-    tarjeta: event.item.data,
-    mesOrigen: event.previousContainer.data,
-    mesDestino: mesDestino,
-    indexOrigen: event.previousIndex,
-    indexDestino: event.currentIndex
-  };
+  guardarFecha() {
+    if (this.tarjetaMovida) {
+      // Transferir la tarjeta usando los arrays (ya que mesOrigen es el array de tarjetas)
+      transferArrayItem(
+        this.tarjetaMovida.mesOrigen,
+        this.tarjetaMovida.mesDestino.tarjetas,
+        this.tarjetaMovida.indexOrigen,
+        this.tarjetaMovida.indexDestino
+      );
+      console.log('Movimiento confirmado:', this.tarjetaMovida);
 
-  console.log('Tarjeta en espera de confirmación:', this.tarjetaMovida);
-
-  this.fechaSeleccionada = this.today;
-  this.mostrarModal = true;
-}
-
-// Guardar fecha y confirmar el movimiento
-guardarFecha() {
-  if (this.tarjetaMovida) {
-    // Transferir la tarjeta al mes de destino
-    transferArrayItem(
-      this.tarjetaMovida.mesOrigen,
-      this.tarjetaMovida.mesDestino.tarjetas,
-      this.tarjetaMovida.indexOrigen,
-      this.tarjetaMovida.indexDestino
-    );
-
-    console.log('Movimiento confirmado:', this.tarjetaMovida);
+      // Si el mes de origen quedó vacío, y es el primero de los 4 visibles, lo eliminamos
+      if (this.tarjetaMovida.mesOrigenObj && this.tarjetaMovida.mesOrigenObj.tarjetas.length === 0) {
+        // Solo eliminar si este mes es el primer mes de los últimos 4
+        // Suponemos que "los últimos 4" se obtienen con elementos.slice(-4)
+        const mesesVisibles = this.elementos.slice(-4);
+        if (mesesVisibles[0] === this.tarjetaMovida.mesOrigenObj) {
+          const index = this.elementos.findIndex(m => m === this.tarjetaMovida.mesOrigenObj);
+          if (index !== -1) {
+            console.log(`Mes ${this.tarjetaMovida.mesOrigenObj.nombre} eliminado`);
+            this.elementos.splice(index, 1);  // Eliminar el mes vacío
+            // Agregar el siguiente mes disponible (dinámicamente)
+            const nuevoMes = this.obtenerProximoMes();
+            if (nuevoMes) {
+              this.elementos.push(nuevoMes);
+              console.log(`Nuevo mes añadido: ${nuevoMes.nombre}`);
+            }
+          }
+        }
+      }
+    }
+    this.tarjetaMovida = null;
+    this.mostrarModal = false;
+    this.actualizarExpansiones();
   }
 
-  // Limpiar y cerrar modal
-  this.tarjetaMovida = null;
-  this.mostrarModal = false;
-}
-
-// Cancelar y descartar el movimiento
-cancelar() {
-  console.log('Movimiento cancelado');
-  this.tarjetaMovida = null;
-  this.mostrarModal = false;
-}
-
-getClaseNombreEmpresa(nombreEmpresa: string, nombreAbrev: string): string {
-  const cantNombre = nombreEmpresa.length;
-  const cantAbrev = nombreAbrev.length;
-
-  if (cantNombre >= 30 && cantAbrev >= 4) {
-    return 'clsNomEmpresa116';
-  } else if (cantNombre >= 30 && cantAbrev < 4) {
-    return 'clsNomEmpresa125';
-  } else {
-    return 'clsNomEmpresa';
+  cancelar() {
+    console.log('Movimiento cancelado');
+    this.tarjetaMovida = null;
+    this.mostrarModal = false;
   }
-}
 
+  getClaseNombreEmpresa(nombreEmpresa: string, nombreAbrev: string): string {
+    const cantNombre = nombreEmpresa.length;
+    const cantAbrev = nombreAbrev.length;
+    if (cantNombre >= 30 && cantAbrev >= 4) {
+      return 'clsNomEmpresa116';
+    } else if (cantNombre >= 30 && cantAbrev < 4) {
+      return 'clsNomEmpresa125';
+    } else {
+      return 'clsNomEmpresa';
+    }
+  }
+
+  actualizarExpansiones() {
+    const total = this.elementos.length;
+    // Aseguramos que solo los últimos 4 estén expandido
+    this.elementos.forEach((mes, index) => {
+      mes.expandido = index >= total - 4;
+    });
+  }
+
+  obtenerProximoMes(): any {
+    // Definimos la secuencia de meses completa
+    const mesesSecuencia = [
+      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
+
+    // Obtener el nombre del último mes actual en la lista de elementos
+    const ultimoMesActual = this.elementos[this.elementos.length - 1].nombre;
+    const index = mesesSecuencia.indexOf(ultimoMesActual);
+
+    // Obtener el siguiente mes en la secuencia
+    const siguienteMes = mesesSecuencia[(index + 1) % 12];
+
+    // Retornar un nuevo objeto mes basado en el siguiente mes disponible
+    return {
+      nombre: siguienteMes,
+      tarjetas: [],
+      expandido: false
+    };
+  }
 }

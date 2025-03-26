@@ -1,11 +1,18 @@
 <div class="acordeon-horizontal d-flex">
   <div *ngFor="let mes of elementos.slice(-4); let i = index" class="item-acordeon" [class.expandido]="mes.expandido">
     <div class="encabezado-acordeon">
-      <span class="nombre-mes">{{ mes.nombre }}</span>
+      <span class="nombre-mes">
+        {{ mes.nombre }}
+        <span class="contador-tarjetas">
+          ({{ mes.tarjetas.length }})
+        </span>
+      </span>
       <button class="boton-toggle" (click)="alternarItem(mes, $event)">
         <i [ngClass]="mes.expandido ? 'bi bi-chevron-left' : 'bi bi-chevron-right'"></i>
       </button>
     </div>
+
+
 
     <div *ngIf="mes.expandido"
       cdkDropList

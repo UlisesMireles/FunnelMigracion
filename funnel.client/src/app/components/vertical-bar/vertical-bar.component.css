@@ -15,7 +15,7 @@
 }
 
 .sidebar.expanded {
-  width: 200px;
+  width: 160px;
 }
 
 .menu {
@@ -82,15 +82,17 @@
   border: none; /* Asegura que no haya bordes */
 text-align: left;
   list-style-type: none;
+
 }
 
 /* Bordes y separación de los elementos del submenú */
 .submenu li {
-  padding: 12px 15px;
+  padding: 6px 7px;
   list-style: none;
   cursor: pointer;
   transition: background 0.3s;
   border-bottom: none
+
 }
 
 /* Último elemento sin borde */

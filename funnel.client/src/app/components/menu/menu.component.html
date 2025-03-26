@@ -5,7 +5,7 @@
     mode="side"
     [opened]="true"
     class="sidenav"
-    [style.width.px]="isExpanded ? 200 : 60">
+    [style.width.px]="isExpanded ? 130 : 30">
     <div class="contentSidenav">
       <app-vertical-bar
         class="menuAdmin"
@@ -15,7 +15,7 @@
   </mat-sidenav>
 
   <!-- Contenido principal (se mueve automáticamente) -->
-  <mat-sidenav-content class="content" [style.margin-left.px]="isExpanded ? 200 : 60">
+  <mat-sidenav-content class="content" [style.margin-left.px]="isExpanded ? 130 : 30">
     <div class="tituloAdmin">
       <router-outlet></router-outlet>
     </div>

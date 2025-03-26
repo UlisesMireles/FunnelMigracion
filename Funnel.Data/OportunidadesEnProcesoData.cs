@@ -251,6 +251,7 @@ namespace Funnel.Data
                         TotalArchivos = ComprobarNulos.CheckIntNull(reader["TotalArchivos"]),
 
                         ArchivoDescripcion = ComprobarNulos.CheckStringNull(reader["ArchivoDescripcion"]),
+                        Foto = ComprobarNulos.CheckStringNull(reader["Foto"]),
 
                     };
 

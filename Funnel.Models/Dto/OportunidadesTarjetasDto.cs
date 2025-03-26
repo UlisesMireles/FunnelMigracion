@@ -1,0 +1,31 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Funnel.Models.Dto
+{
+    public class OportunidadesTarjetasDto
+    {
+        public string Nombre { get; set; } = string.Empty;
+        public int Mes { get; set; }
+        public int? Anio { get; set; }
+        public List<TarjetasDto> Tarjetas { get; set; }
+
+    }
+    public class TarjetasDto
+    {
+        public string NombreEmpresa { get; set; } = string.Empty;
+        public string NombreAbrev { get; set; } = string.Empty;
+        public string NombreOportunidad { get; set; } = string.Empty;
+        public decimal? Monto { get; set; }
+        public string? Probabilidad { get; set; }
+        public decimal? MontoNormalizado { get; set; }
+        public string Imagen { get; set; } = string.Empty;
+        public string NombreEjecutivo { get; set; } = string.Empty;
+        public string Iniciales { get; set; } = string.Empty;
+        public string Descripcion { get; set; } = string.Empty;
+        public DateTime? FechaEstimadaCierre { get; set; } 
+    }
+}

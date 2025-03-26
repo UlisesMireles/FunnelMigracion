@@ -28,18 +28,18 @@ export class VerticalBarComponent {
       icono: 'bi bi-bar-chart',  // Icono relacionado con un dashboard (pantalla de inicio)
       tooltip: 'Ir a DASHBOARD',
       subMenu: [
-        { nombre: 'OPORTUNIDADES GENERAL', path: '/oportunidades'
+        { nombre: 'OPORTUNIDADES GENERAL', path: '/oportunidades/subopcion1'
           ,hasIcon: false, // 🟠 Indica si tiene icono adicional
           tooltipMessage: 'Esta característica está incluida'}, // Mensaje del globo
         { nombre: 'OPORTUNIDADES POR AGENTE', path: '/oportunidades/subopcion2'   ,hasIcon: false, // 🟠 Indica si tiene icono adicional
           tooltipMessage: 'Esta característica está incluida'}, // Mensaje del globo
-        { nombre: 'CLIENTES TOP 20', path: '/oportunidades/subopcion3'    ,hasIcon: false, // 🟠 Indica si tiene icono adicional
+        { nombre: 'CLIENTES TOP 20', path: '/top-veinte'    ,hasIcon: false, // 🟠 Indica si tiene icono adicional
           tooltipMessage: 'Esta característica está incluida'} // Mensaje del globo
       ]
     },
     {
       nombre: 'EN PROCESO',
-      path: '/proceso',
+      path: '/oportunidades',
       icono: 'bi bi-hourglass-split',  // Icono de una persona, ya que es un estado de proceso
       tooltip: 'Ir a en Proceso',
       subMenu: []

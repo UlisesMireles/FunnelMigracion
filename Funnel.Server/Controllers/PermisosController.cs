@@ -34,5 +34,11 @@ namespace Funnel.Server.Controllers
             var respuesta = await _permisosService.ComboRoles(idEmpresa);
             return Ok(respuesta);
         }
+        [HttpGet("[action]/")]
+        public async Task<ActionResult<List<MenuPermisos>>> ConsultarPermisosPorRol(int IdRol, int idEmpresa)
+        {
+            var respuesta = await _permisosService.ConsultarPermisosPorRol(IdRol, idEmpresa);
+            return Ok(respuesta);
+        }
     }
 }

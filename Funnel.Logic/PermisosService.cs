@@ -33,5 +33,35 @@ namespace Funnel.Logic
         {
             return await _permisosData.GuardarPermisos(listPermisos);
         }
+        public async Task<List<MenuPermisos>> ConsultarPermisosPorRol(int IdRol, int IdEmpresa)
+        {
+            List<MenuPermisos> listaMenu = new List<MenuPermisos>();
+            var datos = await _permisosData.ConsultarPermisosPorRol(IdRol, IdEmpresa);
+
+            listaMenu = datos.GroupBy(x => x.IdMenu).Select(x => new MenuPermisos
+            {
+                IdMenu = x.Key,
+                Nombre = x.First().Menu,
+                Icono = x.First().Icono,
+                Tooltip = String.Format("Ir a {0}", x.First().Menu?.ToLower()),
+                SubMenu = x.Select(y => new PaginasDto
+                {
+                    IdPagina = y.IdPagina,
+                    Pagina = y.Pagina,
+                    Ruta = y.Ruta,
+                }).ToList()
+            }).ToList();
+
+            foreach(MenuPermisos item in listaMenu)
+            {
+                if(item.SubMenu.Count == 1)
+                {
+                    item.Ruta = item.SubMenu[0].Ruta;
+                    item.SubMenu = null;
+                }
+            }
+
+            return listaMenu;
+        }
     }
 }

@@ -28,4 +28,10 @@ export class PermisosService {
   postPermisos(data: any): Observable <baseOut> {
     return this.http.post<baseOut>(this.baseUrl+'api/Permisos/GuardarPermisos', data);
   }
+
+  getPermisosPorRol(idRol: number, idEmpresa: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}api/Permisos/ConsultarPermisosPorRol`, {
+      params: { idRol: idRol.toString(), idEmpresa: idEmpresa.toString() }
+    });
+  }
 }

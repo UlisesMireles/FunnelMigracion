@@ -15,6 +15,26 @@
         public bool? Gerente { get; set; }
         public bool? Agente { get; set; }
         public bool? Invitado { get; set; }
+        public string Ruta { get; set; }
+        public string Icono { get; set; }
+
+    }
+    public class MenuPermisos
+    {
+        public int? IdMenu { get; set; }
+        public string Nombre { get; set; }
+        public string Ruta { get; set; }
+        public string Tooltip { get; set; }
+        public string Icono { get; set; }
+        public List<PaginasDto> SubMenu { get; set; }
+    }
+    public class PaginasDto
+    {
+        public int? IdPagina { get; set; }
+        public string Pagina { get; set; }
+        public string Ruta { get; set; }
+        public string TooltipMessage { get; set; }
+        public bool HasIcon { get; set; }
 
     }
 }

@@ -118,6 +118,31 @@ namespace Funnel.Data
             return result;
 
         }
+        public async Task<List<PermisosDto>> ConsultarPermisosPorRol(int IdRol, int IdEmpresa)
+        {
+            List<PermisosDto> result = new List<PermisosDto>();
+            IList<ParameterSQl> list = new List<ParameterSQl>
+                {
+                    DataBase.CreateParameterSql("@pIdRol", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, IdRol ),
+                    DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, IdEmpresa ),
+                };
+            using (IDataReader reader = await DataBase.GetReaderSql("spRolesPermisos_ConsultaPermisosPorRol", CommandType.StoredProcedure, list, _connectionString))
+            {
+                while (reader.Read())
+                {
+                    var dto = new PermisosDto();
 
+                    dto.IdPagina = ComprobarNulos.CheckIntNull(reader["IdPagina"]);
+                    dto.IdMenu = ComprobarNulos.CheckIntNull(reader["IdMenu"]);
+                    dto.Menu = ComprobarNulos.CheckStringNull(reader["Menu"]);
+                    dto.Pagina = ComprobarNulos.CheckStringNull(reader["Pagina"]);
+                    dto.Ruta = ComprobarNulos.CheckStringNull(reader["Ruta"]);
+                    dto.Icono = ComprobarNulos.CheckStringNull(reader["Icono"]);
+
+                    result.Add(dto);
+                }
+            }
+            return result;
+        }
     }
 }

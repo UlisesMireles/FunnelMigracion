@@ -59,7 +59,7 @@ export class OportunidadesCanceladasComponent {  @ViewChild('dt') dt!: Table;
     { key: 'fechaEstimadaCierre', isCheck: true, valor: 'Cierre Est', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
     { key: 'fechaEstimadaCierreOriginal', isCheck: true, valor: 'Fecha Cierre', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
     { key: 'diasFunnel', isCheck: true, valor: 'Días Funnel', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
-    {key: 'comentario', isCheck: true, valor: 'Último comentario', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
+    {key: 'comentario', isCheck: true, valor: 'Último Coment', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
 
   ];
 

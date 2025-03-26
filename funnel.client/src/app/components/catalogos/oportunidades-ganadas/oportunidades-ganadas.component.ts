@@ -54,7 +54,7 @@ export class OportunidadesGanadasComponent {
     { key: 'iniciales', isCheck: true, valor: 'Ejecutivo', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreContacto', isCheck: false, valor: 'Contacto', isIgnore: true, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'monto', isCheck: true, valor: 'Monto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
-    { key: 'probabilidad', isCheck: false, valor: 'Probabilidad', isIgnore: true, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'probabilidad', isCheck: false, valor: 'Prob', isIgnore: true, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'fechaRegistro', isCheck: true, valor: 'Inicio', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
     { key: 'fechaEstimadaCierreOriginal', isCheck: true, valor: 'Fecha Cierre', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
     { key: 'diasFunnel', isCheck: true, valor: 'Días Funnel', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },

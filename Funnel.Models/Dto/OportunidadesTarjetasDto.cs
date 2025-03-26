@@ -27,6 +27,7 @@ namespace Funnel.Models.Dto
         public string NombreEjecutivo { get; set; } = string.Empty;
         public string Iniciales { get; set; } = string.Empty;
         public string Descripcion { get; set; } = string.Empty;
-        public DateTime? FechaEstimadaCierre { get; set; } 
+        public DateTime? FechaEstimadaCierre { get; set; }
+     
     }
 }

@@ -124,6 +124,7 @@ namespace Funnel.Logic
                         Iniciales = y.Iniciales ?? "",
                         Descripcion = y.Descripcion ?? "",
                         FechaEstimadaCierre = y.FechaEstimadaCierre
+                        
                     }).ToList()
                 });
             }

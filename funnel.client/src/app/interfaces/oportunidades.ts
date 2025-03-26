@@ -81,3 +81,25 @@ export interface Archivos {
     iniciales: string;
     numArchivos: number;
 }
+export interface Tarjeta {
+  idOportunidad: number;
+  nombreEmpresa: string;
+  nombreAbrev: string;
+  nombreOportunidad: string;
+  monto: number;
+  probabilidad: string;
+  montoNormalizado: number;
+  imagen: string;
+  nombreEjecutivo: string;
+  iniciales: string;
+  descripcion: string;
+  fechaEstimadaCierre: string;
+}
+
+export  interface OportunidadesPorMes {
+  nombre: string;
+  expandido: boolean;
+  mes: number;
+  anio: number;
+  tarjetas: Tarjeta[];
+}

@@ -47,7 +47,6 @@ export class VerticalBarComponent {
             subMenu: []
           }
         );
-        console.log(this.ListaMenu)
       },
       error: (error) => {
         this.messageService.add({

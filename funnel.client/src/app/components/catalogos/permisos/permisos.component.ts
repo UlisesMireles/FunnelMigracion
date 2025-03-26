@@ -125,6 +125,7 @@ export class PermisosComponent {
     const permisosSeleccionados = this.getSelectedPermisos();
     this.permisosService.postPermisos(permisosSeleccionados).subscribe({
       next: (result: baseOut) => {
+        console.log(result);
         this.messageService.add({
           severity: 'success',
           summary: 'Guardado exitoso.',

@@ -15,8 +15,8 @@
         public bool? Gerente { get; set; }
         public bool? Agente { get; set; }
         public bool? Invitado { get; set; }
-        public string Ruta { get; set; }
-        public string Icono { get; set; }
+        public string? Ruta { get; set; }
+        public string? Icono { get; set; }
 
     }
     public class MenuPermisos

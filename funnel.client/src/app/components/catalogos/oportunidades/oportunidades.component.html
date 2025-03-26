@@ -6,28 +6,28 @@
     
     <div class="col-12">
       <!-- Pestañas  -->
-      <ul class="nav nav-tabs custom-tabs">
-        <li class="nav-item">
-          <a class="nav-link active" data-bs-toggle="tab"  (click)="camTitulo(0)">
-            <i class="bi bi-list"></i> 
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" data-bs-toggle="tab"  (click)="camTitulo(1)">
-            <i class="bi bi-calendar"></i> 
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" data-bs-toggle="tab"  (click)="camTitulo(2)">
-            <i class="bi bi-calendar-check"></i>  
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" data-bs-toggle="tab" (click)="camTitulo(3)">
-            <i class="bi bi-bar-chart"></i> 
-          </a>
-        </li>
-      </ul>
+    <ul class="nav nav-tabs custom-tabs">
+      <li class="nav-item">
+        <a class="nav-link active" data-bs-toggle="tab" href="#lista" (click)="camTitulo(0)">
+          <i class="bi bi-list"></i> 
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#porMes" (click)="camTitulo(1)">
+          <i class="bi bi-calendar"></i> 
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#porEtapa" (click)="camTitulo(2)">
+          <i class="bi bi-calendar-check"></i>  
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#estadisticas" (click)="camTitulo(3)">
+          <i class="bi bi-bar-chart"></i> 
+        </a>
+      </li>
+    </ul>
 
       <!-- Contenido de las pestañas -->
       <div class="tab-content">

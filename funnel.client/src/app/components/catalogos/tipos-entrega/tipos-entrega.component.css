@@ -230,3 +230,12 @@ div.inDivDatatableHeader > p-button > button.p-button {
   width: 100%;
   max-width: 100%;
 }
+/* Oculta el icono por defecto */
+th p-sortIcon {
+  display: none;
+}
+
+/* Muestra el icono SOLO cuando la columna está ordenada (asc o desc) */
+th.sort-active p-sortIcon {
+  display: inline-block;
+}

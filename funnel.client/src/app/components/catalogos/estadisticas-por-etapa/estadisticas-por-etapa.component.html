@@ -38,15 +38,14 @@
     
                 </div>
               </div>
-            </ng-template>
-  
-            <ng-template pTemplate="header" let-columns>
+            </ng-template><ng-template pTemplate="header" let-columns>
               <tr class="custom-header">
-                  <th *ngFor="let def of lsColumnasAMostrar" pSortableColumn="{{def.key}}" pReorderableColumn>
-                    {{def.valor}}<p-sortIcon field="{{def.key}}"></p-sortIcon>
+                  <th *ngFor="let def of lsColumnasAMostrar" pSortableColumn="{{def.key}}" pReorderableColumn [class.sort-active]="isSorted(def.key)">
+                      {{def.valor}}
+                    <p-sortIcon field="{{def.key}}"></p-sortIcon>
                   </th>
-                  <th></th>
-              </tr> 
+                  <th></th> 
+              </tr>
               <tr>
                   <th *ngFor="let def of lsColumnasAMostrar">
                       <ng-container *ngIf="def.groupColumn">

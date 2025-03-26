@@ -252,3 +252,12 @@
   .p-button {
     position: relative;
   }
+  /* Oculta el icono por defecto */
+th p-sortIcon {
+  display: none;
+}
+
+/* Muestra el icono SOLO cuando la columna está ordenada (asc o desc) */
+th.sort-active p-sortIcon {
+  display: inline-block;
+}

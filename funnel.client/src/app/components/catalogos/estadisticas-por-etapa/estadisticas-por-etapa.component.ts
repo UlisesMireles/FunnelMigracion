@@ -286,6 +286,10 @@ export class EstadisticasPorEtapaComponent {@ViewChild('dt') dt!: Table;
       
       return sum / this.oportunidades.length;
     }
+    isSorted(columnKey: string): boolean {
+    
+      return this.dt?.sortField === columnKey;
+  }
     
   
 }

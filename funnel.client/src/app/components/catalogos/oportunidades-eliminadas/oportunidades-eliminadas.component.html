@@ -38,13 +38,13 @@
               </div>
             </div>
           </ng-template>
-
           <ng-template pTemplate="header" let-columns>
             <tr class="custom-header">
-              <th *ngFor="let def of lsColumnasAMostrar" pSortableColumn="{{def.key}}" pReorderableColumn>
-                {{def.valor}}<p-sortIcon field="{{def.key}}"></p-sortIcon>
-              </th>
-              <th></th> 
+                <th *ngFor="let def of lsColumnasAMostrar" pSortableColumn="{{def.key}}" pReorderableColumn [class.sort-active]="isSorted(def.key)">
+                    {{def.valor}}
+                  <p-sortIcon field="{{def.key}}"></p-sortIcon>
+                </th>
+                <th></th> 
             </tr>
             <tr>
               <th *ngFor="let def of lsColumnasAMostrar" style="min-width: 30%;">
@@ -143,10 +143,6 @@
                 <p-button type="button" icon="bi bi-file-earmark-text fs-4" text (click)="seguimiento(rowData)" 
                 pTooltip="Ver seguimiento" tooltipPosition="top" styleClass="blue-icon">
                 <span class="badge">{{ rowData.totalComentarios || 0 }}</span>
-                </p-button>
-                <p-button type="button" icon="bi bi-folder2" text (click)="documento(rowData)"
-                pTooltip="Ver documentos" tooltipPosition="top" styleClass="black-icon">
-                <span class="badge">{{ rowData.totalArchivos || 0}}</span>
                 </p-button>
                 <p-button type="button" icon="bi bi-pencil fs-4" text (click)="actualiza(rowData)" 
                   pTooltip="Editar oportunidad" tooltipPosition="top" styleClass="yellow-icon"/>

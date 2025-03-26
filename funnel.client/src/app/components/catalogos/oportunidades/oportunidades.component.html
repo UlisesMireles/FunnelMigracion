@@ -5,6 +5,34 @@
     </div>
     
     <div class="col-12">
+       <!-- Pestañas  -->
+    <ul class="nav nav-tabs custom-tabs">
+      <li class="nav-item">
+        <a class="nav-link active" data-bs-toggle="tab" href="#lista" (click)="camTitulo(0)">
+          <i class="bi bi-list"></i> 
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#porMes" (click)="camTitulo(1)">
+          <i class="bi bi-calendar"></i> 
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#porEtapa" (click)="camTitulo(2)">
+          <i class="bi bi-calendar-check"></i>  
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#estadisticas" (click)="camTitulo(3)">
+          <i class="bi bi-bar-chart"></i> 
+        </a>
+      </li>
+    </ul>
+
+       <!-- Contenido de las pestañas -->
+       <div class="tab-content">
+        <!-- Pestaña 1 -->
+        <div class="tab-pane fade show active" id="lista">
       <div class="row contenedorTabla">
         <div *ngIf="loading">Cargando...</div>
         <p-table *ngIf="!loading" #dt [stripedRows]="true" [value]="oportunidades" dataKey="id" [rows]="10"
@@ -147,15 +175,15 @@
                 </ng-container>
               </td>
               <td>
-                <p-button type="button" icon="bi bi-file-earmark-text" text (click)="seguimiento(rowData)" 
+                <p-button type="button" icon="bi bi-file-earmark-text fs-4" text (click)="seguimiento(rowData)" 
                 pTooltip="Ver seguimiento" tooltipPosition="top" styleClass="blue-icon">
                 <span class="badge">{{ rowData.totalComentarios || 0 }}</span>
                 </p-button>
-                <p-button type="button" icon="bi bi-folder2" text (click)="documento(rowData)"
+                <p-button type="button" icon="bi bi-folder2 fs-4" text (click)="documento(rowData)"
                 pTooltip="Ver documentos" tooltipPosition="top" styleClass="black-icon">
                 <span class="badge">{{ rowData.totalArchivos || 0}}</span>
                 </p-button>
-                <p-button type="button" icon="bi bi-pencil" text (click)="actualiza(rowData)" 
+                <p-button type="button" icon="bi bi-pencil fs-4" text (click)="actualiza(rowData)" 
                   pTooltip="Editar oportunidad" tooltipPosition="top" styleClass="yellow-icon"/>
               </td>
             </tr>

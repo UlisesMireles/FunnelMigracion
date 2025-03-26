@@ -286,4 +286,8 @@ export class OportunidadesEliminadasComponent {
       };
       return { width: widths[key] || 'auto' };
   }
+  isSorted(columnKey: string): boolean {
+    
+    return this.dt?.sortField === columnKey;
+}
 }

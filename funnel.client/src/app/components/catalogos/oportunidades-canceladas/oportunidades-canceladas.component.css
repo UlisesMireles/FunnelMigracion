@@ -13,6 +13,18 @@
   margin-top: 10px
 }
 
+::ng-deep .yellow-icon .p-button-icon {
+  color: rgb(202, 202, 5) !important;
+}
+
+::ng-deep .blue-icon .p-button-icon {
+  color: blue !important;
+}
+
+::ng-deep .black-icon .p-button-icon {
+  color: black !important;
+}
+
 ::ng-deep .p-datatable-header {
   border:0 !important;
   padding: 0 !important;
@@ -223,4 +235,17 @@ div.inDivDatatableHeader > p-button > button.p-button {
   overflow-x: auto;
   width: 100%;
   max-width: 100%;
+}
+.badge {
+  position: absolute;
+  top: 13px;
+  right: 10px;
+  color: black;
+  padding: 2px 6px;
+  font-size: 10px;
+  font-weight: normal;
+}
+
+.p-button {
+  position: relative;
 }

@@ -38,7 +38,7 @@
           <label for="Comentario" class="margen text-left">Agregar Documento:</label>
         </div>
         <div class="col-sm-6 inptSpace">
-            <input type="file" class="form-control" accept=".pdf,.doc,.docx,.jpg,.png" (change)="onFileChange($event)">
+            <input #fileInput type="file" class="form-control" accept=".pdf,.doc,.docx,.jpg,.png" (change)="onFileChange($event)">
         </div>
         <div class="col-sm-2 inptSpace">
             <button pButton label="Guardar"  (click)="guardarDocumento()" severity="secondary" [disabled]="!archivoSeleccionado" ></button>
@@ -60,9 +60,9 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of historialOportunidad">
-              <td>{{ item.iniciales }}</td>
-              <td>{{ item.fechaRegistro | date:'dd/MM/yyyy' }}</td>
-              <td>{{ item.nombreArchivoFormateado }}</td>
+              <td  class="text-left">{{ item.iniciales }}</td>
+              <td  class="text-left">{{ item.fechaRegistro | date:'dd/MM/yyyy' }}</td>
+              <td  class="text-left">{{ item.nombreArchivoFormateado }}</td>
               <td>
                 <p-button type="button" icon="bi bi-download" text (click)="descargarArchivo(item)"/>
               </td>

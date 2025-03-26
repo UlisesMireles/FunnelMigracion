@@ -4,11 +4,11 @@
       <h3></h3>
       </div>
 
-      <div class="col-12">
-        <div class="row contenedorTabla" style="justify-content: center; display: flex; width: 100% ;" >
-          <div *ngIf="loading">Cargando...</div>
-          <p-table *ngIf="!loading" #dt [stripedRows]="true" [value]="usuarios" dataKey="id" [rows]="20"
-          [showCurrentPageReport]="true" [rowsPerPageOptions]="[20, 30, 50]" [paginator]="true" paginatorPosition="both"
+    <div class="col-12">
+      <div class="row contenedorTabla">
+        <div *ngIf="loading">Cargando...</div>
+        <p-table *ngIf="!loading" #dt [stripedRows]="true" [value]="usuarios" dataKey="id" [rows]="10"
+          [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 20, 50]" [paginator]="true" paginatorPosition="both"
           currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros"
           [columns]="lsColumnasAMostrar"
           [resizableColumns]="true" [reorderableColumns]="true"
@@ -42,13 +42,14 @@
 
           <ng-template pTemplate="header" let-columns>
             <tr class="custom-header">
-              <th></th>
+              
               <th *ngFor="let def of lsColumnasAMostrar" pSortableColumn="{{def.key}}" pReorderableColumn>
                 {{def.valor}}<p-sortIcon field="{{def.key}}"></p-sortIcon>
               </th>
+              <th></th>
             </tr>
             <tr>
-              <th></th>
+              
               <th *ngFor="let def of lsColumnasAMostrar" style="min-width: 30%;">
                 <ng-container *ngIf="def.groupColumn">
                   <p-columnFilter field="{{def.key}}" matchMode="in" [showMenu]="false">
@@ -70,7 +71,7 @@
                     <div *ngSwitchCase="'text'">
                       <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false">
                         <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                          <input type="text" pInputText [ngModel]="value"
+                          <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
                             (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
                         </ng-template>
                       </p-columnFilter>
@@ -106,15 +107,13 @@
                   </div>
                 </ng-container>
               </th>
+              <th></th>
             </tr>
             </ng-template>
 
             <ng-template pTemplate="body" let-rowData let-columns="columns">
               <tr>
-                <td>
-                  <p-button type="button" icon="bi bi-pencil" text (click)="actualiza(rowData)" 
-                    pTooltip="Editar registro" tooltipPosition="top"/>
-                </td>
+                
                 
                 <td *ngFor="let def of lsColumnasAMostrar">
                   <ng-container [ngSwitch]="def.tipoFormato">
@@ -130,6 +129,10 @@
                     <span *ngSwitchCase="'date'">{{ rowData[def.key] | date:'dd/MM/yyyy' }}</span>
                     <span *ngSwitchDefault>{{ rowData[def.key] }}</span>
                   </ng-container>
+                </td>
+                <td>
+                  <p-button type="button" icon="bi bi-pencil" text (click)="actualiza(rowData)" 
+                    pTooltip="Editar registro" tooltipPosition="top" styleClass="yellow-icon"/>
                 </td>
               </tr>
             </ng-template>

@@ -237,6 +237,7 @@ namespace Funnel.Data
                         FechaRegistro = ComprobarNulos.CheckDateTimeNull(reader["FechaRegistro"]),
                         DiasFunnel = ComprobarNulos.CheckIntNull(reader["DiasFunnel"]),
                         FechaEstimadaCierreOriginal = ComprobarNulos.CheckDateTimeNull(reader["FechaEstimadaCierreOriginal"]),
+                        FechaEstimadaCierre = ComprobarNulos.CheckDateTimeNull(reader["FechaEstimadaCierre"]),
 
                         FechaModificacion = ComprobarNulos.CheckIntNull(reader["FechaModificacion"]),
                         Comentario = ComprobarNulos.CheckStringNull(reader["Comentario"]),
@@ -246,6 +247,8 @@ namespace Funnel.Data
                         DiasEtapa3 = ComprobarNulos.CheckIntNull(reader["DiasEtapa3"]),
                         DiasEtapa4 = ComprobarNulos.CheckIntNull(reader["DiasEtapa4"]),
                         DiasEtapa5 = ComprobarNulos.CheckIntNull(reader["DiasEtapa5"]),
+
+                        TotalArchivos = ComprobarNulos.CheckIntNull(reader["TotalArchivos"]),
 
                         ArchivoDescripcion = ComprobarNulos.CheckStringNull(reader["ArchivoDescripcion"]),
 

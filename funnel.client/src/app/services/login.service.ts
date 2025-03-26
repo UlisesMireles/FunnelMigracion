@@ -140,6 +140,13 @@ export class LoginService {
     }
     return 0;
   }
+  obtenerRolUsuario(): number {
+    const sesion = this.desencriptaSesion();
+    if (sesion?.idRol) {
+      return sesion?.idRol;
+    }
+    return 0;
+  }
 
   obtenerIdUsuario(): number {
     const sesion = this.desencriptaSesion();

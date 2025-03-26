@@ -273,7 +273,6 @@ p {
 
 .imagenFondo {
     background-repeat: no-repeat;
-    background-image: url('/assets/img/PMAGRISES.png');
     background-size: cover;
     background-position: center;
     height: 100vh;

@@ -242,6 +242,20 @@ clear(table: Table) {
       return sortBy(getKeys(lsGroupBy));
     }
   
-
+    getColumnWidth(key: string): object {
+      const widths: { [key: string]: string } = {
+          nombre: '100%',
+          nombreSector: '100%',
+          ubicacionFisica: '100%',
+          totalOportunidades: '100%',
+          proceso: '100%',
+          ganadas: '100%',
+          perdidas: '100%',
+          canceladas: '100%',
+          eliminadas: '100%',
+          desEstatus: '100%',
+      };
+      return { width: widths[key] || 'auto' };
+  }
 
 }

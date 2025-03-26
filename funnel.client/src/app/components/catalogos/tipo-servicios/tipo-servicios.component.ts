@@ -235,7 +235,14 @@ export class TipoServiciosComponent {
         return sortBy(getKeys(lsGroupBy));
       }
     
-  
+      getColumnWidth(key: string): object {
+        const widths: { [key: string]: string } = {
+            descripcion: '100%',
+            abreviatura: '100%',
+            desEstatus: '100%',
+        };
+        return { width: widths[key] || 'auto' };
+      }
   
   }
   

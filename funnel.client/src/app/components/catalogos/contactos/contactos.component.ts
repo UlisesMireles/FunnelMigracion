@@ -245,4 +245,15 @@ export class ContactosComponent {
     return sortBy(getKeys(lsGroupBy));
   }
 
+  getColumnWidth(key: string): object {
+    const widths: { [key: string]: string } = {
+        nombreCompleto: '100%',
+        telefono: '100%',
+        correoElectronico: '100%',
+        prospecto: '100%',
+        desEstatus: '100%',
+    };
+    return { width: widths[key] || 'auto' };
+}
+
 }

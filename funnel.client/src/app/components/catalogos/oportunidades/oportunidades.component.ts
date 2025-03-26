@@ -334,14 +334,14 @@ export class OportunidadesComponent {
       };
       return { width: widths[key] || 'auto' }; 
     }
-    camTitulo(event: any) {
+    camTitulo(index: number) {
       const titulos = [
         'Oportunidades En Proceso',  
         'Oportunidades Por Mes',
         'Oportunidades Por Etapa',
         'Estadísticas Por Etapa'
       ];
-      this.titulo = titulos[event.index] || 'Administración General';
+      this.titulo = titulos[index] || 'Administración General';
     }
   
 }

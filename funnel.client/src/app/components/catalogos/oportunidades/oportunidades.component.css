@@ -250,58 +250,28 @@ div.inDivDatatableHeader > p-button > button.p-button {
 
 .p-button {
   position: relative;
-}
-/* Estilos personalizados para las pestañas */
-::ng-deep .p-tabview .p-tabview-nav {
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid #dee2e6;
-}
-
-/* Iconos inactivos - color azul */
-::ng-deep .p-tabview .p-tabview-nav li .p-tabview-nav-link i {
-  color: #3b82f6; /* Azul */
-}
-/* Icono activo - color negro */
-::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link i {
-  color: #000000; /* Negro */
-}
-/* Línea inferior solo alrededor del icono activo */
-::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
-  background: transparent;
-  border: none;
-  border-bottom: 2px solid rgba(247, 106, 19, 1);
-  padding-bottom: 0.5rem;
-  margin-bottom: -1px;
-  position: relative;
-  transition: all 0.3s ease;
-}
-/* Centrar la línea debajo del icono */
-::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link::after {
-  content: '';
-  position: absolute;
-  bottom: -1px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60%; /* controlar el ancho de la línea */
-  height: 2px;
-  background: rgba(247, 106, 19, 1);
-}
-/* Eliminar el borde por defecto de PrimeNG */
-::ng-deep .p-tabview .p-tabview-nav li .p-tabview-nav-link {
-  border: none !important;
-  background: transparent !important;
-  color: #495057;
-  font-weight: 600;
-  margin-right: 2px;
-  padding: 0.75rem 1rem;
-}
-/* Efecto hover para los iconos inactivos */
-::ng-deep .p-tabview .p-tabview-nav li:not(.p-highlight) .p-tabview-nav-link:hover i {
-  color: #1d4ed8; /* Azul más oscuro al hacer hover */
-}
-
-/* Ajustar el espaciado entre pestañas */
-::ng-deep .p-tabview .p-tabview-nav li {
-  margin-right: 4px;
 } 
+/* Estilos personalizados para las pestañas */
+
+.custom-tabs .bi {
+  font-size: 1.5rem;  
+  margin-right: 0rem; 
+}
+
+.custom-tabs .nav-link {
+  color: #11489b !important; 
+  border-bottom: 3px solid transparent;
+}
+
+
+.custom-tabs .nav-link:hover {
+  color: #084298 !important;  
+}
+.custom-tabs {
+  display: inline-flex;
+  border-bottom: 1px solid #dee2e6;
+  margin-right: 1050px;}
+
+.custom-tabs .nav-link.active {
+  color: #3c3e41 !important;
+}

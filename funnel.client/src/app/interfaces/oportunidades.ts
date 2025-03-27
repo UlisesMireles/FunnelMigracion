@@ -109,6 +109,6 @@ export interface RequestActualizarFechaEstimadaCierre {
   bandera: string;
   idOportunidad?: number;
   idEmpresa?: number;
-  FechaEstimadaCierre?: Date;
+  fechaEstimadaCierre?: Date;
   idUsuario?: number;
 }

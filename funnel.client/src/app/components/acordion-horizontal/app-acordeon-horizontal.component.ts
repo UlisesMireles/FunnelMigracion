@@ -5,65 +5,72 @@ import { OportunidadesPorMes, RequestActualizarFechaEstimadaCierre } from '../..
 import { baseOut } from '../../interfaces/utils/utils/baseOut';
 import { LoginService } from '../../services/login.service';
 import { OportunidadesService } from '../../services/oportunidades.service';
+
 @Component({
   selector: 'app-acordeon-horizontal',
   standalone: false,
   templateUrl: './app-acordeon-horizontal.component.html',
-  styleUrls: ['./app-acordeon-horizontal.component.css']
+  styleUrls: ['./app-acordeon-horizontal.component.css'] // Uso de styleUrls en plural
 })
 export class AcordeonHorizontalComponent {
 
-  // Tu objeto de meses (OportunidadesPorMes) se carga en getOportunidadesPorMes()
-  elementos: OportunidadesPorMes[] = [];
-  loading: boolean = true;
-  errorMessage: string = '';
-  connectedDropLists: string[] = [];
-  mostrarModal: boolean = false;  // Controla la visibilidad del modal
-  tarjetaMovida: any;            // Tarjeta que fue movida (y sus datos)
-  fechaSeleccionada: string = '';  // Fecha que se asignará en el modal
-  today: string = new Date().toISOString().split('T')[0];
-  idOportunidadTarjeta: number = 0;
-  tarjetaEnEspera : any;
-  ultimoMesAgregado: string = ''; // Variable auxiliar para llevar el seguimiento del último mes agregado (nombre y año)
+
+  elementos: OportunidadesPorMes[] = []; // Array que contendrá los meses con sus oportunidades (tarjetas)
+  loading: boolean = true;// Bandera para mostrar el spinner de carga
+  errorMessage: string = '';// Variable para almacenar mensaje de error en caso de fallo
+  connectedDropLists: string[] = [];// Lista de identificadores para los dropLists de cada mes (usado por cdkDragDrop)
+  mostrarModal: boolean = false;  // Bandera para controlar la visibilidad del modal de confirmación
+  tarjetaMovida: any;// Objeto que almacena la tarjeta que se movió y datos relacionados (origen, destino, etc.)
+  fechaSeleccionada: string = '';// Variable para almacenar la fecha (último día del mes destino) que se mostrará en el modal
+  today: string = new Date().toISOString().split('T')[0];// Fecha actual en formato ISO sin tiempo (YYYY-MM-DD)
+  idOportunidadTarjeta: number = 0;  // Variable para almacenar el ID de la oportunidad (tarjeta) que se está moviendo
+  tarjetaEnEspera: any;  // Variable para almacenar temporalmente la tarjeta arrastrada (para poder obtener su idOportunidad)
+  ultimoMesAgregado: string = '';// Variable auxiliar que guarda el nombre y año del último mes agregado (por ejemplo: "Julio 2025")
 
 
+  // Output para emitir resultados de la petición post (por ejemplo, para notificar a un padre)
+  @Output() result: EventEmitter<baseOut> = new EventEmitter();
+
+  // Inyección de servicios en el constructor
   constructor(
-    private oportunidadService: OportunidadesService,
-    private readonly loginService: LoginService,
-    private messageService: MessageService,
-    private cdr: ChangeDetectorRef
+    private oportunidadService: OportunidadesService,private readonly loginService: LoginService,private messageService: MessageService,private cdr: ChangeDetectorRef
   ) { }
 
-  @Output() result: EventEmitter<baseOut> = new EventEmitter();
   ngOnInit() {
+    // Se obtiene la información de oportunidades por mes desde el servicio
     this.getOportunidadesPorMes();
   }
 
+  // Método que consume el servicio para obtener las oportunidades por mes
   getOportunidadesPorMes() {
-    this.oportunidadService.getOportunidadesPorMes(this.loginService.obtenerIdEmpresa(), this.loginService.obtenerIdUsuario()).subscribe({
+    this.oportunidadService.getOportunidadesPorMes(
+      this.loginService.obtenerIdEmpresa(),
+      this.loginService.obtenerIdUsuario()
+    ).subscribe({
       next: (result: OportunidadesPorMes[]) => {
+        // Asignamos el resultado a nuestro array 'elementos'
         this.elementos = [...result];
-        // Aseguramos que cada mes tenga tarjetas inicializadas
+        // Aseguramos que cada mes tenga inicializado el arreglo de tarjetas
         this.elementos.forEach(mes => {
           if (!Array.isArray(mes.tarjetas)) {
             mes.tarjetas = [];
           }
         });
-        // Inicializa connectedDropLists
+        // Inicializamos la lista de identificadores para cada dropList
         this.connectedDropLists = this.elementos.map((_, i) => `todoList${i}`);
-
-        // Establecer el último mes agregado (tomando el último elemento)
+        // Establecemos 'ultimoMesAgregado' con el nombre y año del último elemento de 'elementos'
         if (this.elementos.length > 0) {
           this.ultimoMesAgregado = `${this.elementos[this.elementos.length - 1].nombre} ${this.elementos[this.elementos.length - 1].anio}`;
         } else {
           this.ultimoMesAgregado = 'Enero 2025';
         }
-
+        // Actualizamos la propiedad 'expandido' para que se muestren los 4 últimos meses
         this.actualizarExpansiones();
         this.loading = false;
         this.cdr.detectChanges();
       },
       error: (error) => {
+        // En caso de error, se muestra un mensaje con PrimeNG MessageService
         this.messageService.add({
           severity: 'error',
           summary: 'Se ha producido un error.',
@@ -73,65 +80,77 @@ export class AcordeonHorizontalComponent {
       },
     });
   }
+
+  // Método para alternar (abrir/cerrar) un mes en el acordeón
   alternarItem(item: any, event: Event) {
-    event.stopPropagation();
-    item.expandido = !item.expandido;
+    event.stopPropagation(); // Evita propagación del evento
+    item.expandido = !item.expandido; // Invierte el valor de 'expandido'
   }
+
+  // Método que se ejecuta al soltar (drop) una tarjeta en otro mes
   drop(event: any, mesDestino: OportunidadesPorMes) {
+    // Si se suelta en el mismo contenedor, no se hace nada
     if (event.previousContainer === event.container) {
       return;
     }
 
-    // Buscar el objeto mesOrigen completo usando la referencia al array de tarjetas
+    // Buscar el objeto mesOrigen completo comparando el array de tarjetas
     const mesOrigenObj = this.elementos.find(m => m.tarjetas === event.previousContainer.data);
 
+    // Almacenar información de la tarjeta y los contenedores de origen y destino
     this.tarjetaMovida = {
       tarjeta: event.item.data,
-      mesOrigen: event.previousContainer.data,  // Array de tarjetas del mes de origen
-      mesDestino: mesDestino,                      // Objeto completo del mes de destino
+      mesOrigen: event.previousContainer.data,  // Array de tarjetas del mes origen
+      mesDestino: mesDestino,                      // Objeto completo del mes destino
       indexOrigen: event.previousIndex,
       indexDestino: event.currentIndex,
-      mesOrigenObj: mesOrigenObj
+      mesOrigenObj: mesOrigenObj                   // Objeto completo del mes de origen
     };
-    this.tarjetaEnEspera = this.tarjetaMovida; // Almacenar la tarjeta arrastrada
 
+    // Guardamos también la tarjeta en espera (para usar su idOportunidad luego)
+    this.tarjetaEnEspera = this.tarjetaMovida;
 
-    console.log('Tarjeta en espera de confirmación:', this.tarjetaMovida);
+    //console.log('Tarjeta en espera de confirmación:', this.tarjetaMovida);
 
-    // Usamos las propiedades numéricas ya definidas en el objeto:
-    const mesDestinoNumero = mesDestino.mes;
+    // Usar las propiedades numéricas ya definidas en el objeto mes destino
+    const mesDestinoNumero = mesDestino.mes;  // Ejemplo: 2 para febrero (si es 1-indexado)
     const anioDestino = mesDestino.anio;
 
-    console.log('Mes destino:', mesDestino.nombre, 'Número del mes destino:', mesDestinoNumero, 'Año destino:', anioDestino);
+    //console.log('Mes destino:', mesDestino.nombre, 'Número del mes destino:', mesDestinoNumero, 'Año destino:', anioDestino);
 
+    // Validar que el mes destino y el año sean correctos
     if (mesDestinoNumero < 1 || mesDestinoNumero > 12 || anioDestino < 1000 || anioDestino > 9999) {
       console.error('Mes o año inválido:', mesDestinoNumero, anioDestino);
       this.mostrarModal = false;
       return;
     }
 
-    // Obtener el último día del mes destino (como mes es 1-indexado, usar new Date(anio, mes, 0))
+    // Calcular el último día del mes destino usando la función getUltimoDiaDelMes
     this.fechaSeleccionada = this.getUltimoDiaDelMes(mesDestinoNumero, anioDestino);
     console.log('Último día del mes destino:', this.fechaSeleccionada);
 
+    // Mostrar el modal de confirmación
     this.mostrarModal = true;
   }
 
+  // Método para obtener el último día de un mes dado un número de mes (1-indexado) y un año
   getUltimoDiaDelMes(mes: number, anio: number): string {
-    // Como 'mes' es 1-indexado (1 para enero), para obtener el último día del mes usamos:
+    // new Date(anio, mes, 0) devuelve el último día del mes dado
     const fecha = new Date(anio, mes, 0);
     return fecha.toISOString().split('T')[0];
   }
 
+  // Método para cancelar el movimiento (cierra el modal y resetea la tarjeta movida)
   cancelar() {
     console.log('Movimiento cancelado');
     this.tarjetaMovida = null;
     this.mostrarModal = false;
   }
 
+  // Método que se ejecuta al confirmar (guardar) la fecha en el modal
   guardarFecha() {
     if (this.tarjetaMovida) {
-      // Transferir la tarjeta del mes de origen al mes de destino
+      // Transferir la tarjeta del array de tarjetas del mes origen al del mes destino
       transferArrayItem(
         this.tarjetaMovida.mesOrigen,
         this.tarjetaMovida.mesDestino.tarjetas,
@@ -140,6 +159,7 @@ export class AcordeonHorizontalComponent {
       );
       console.log('Movimiento confirmado:', this.tarjetaMovida);
 
+      // Asignar el idOportunidad de la tarjeta arrastrada a la variable idOportunidadTarjeta
       if (this.tarjetaEnEspera && this.tarjetaEnEspera.tarjeta) {
         this.idOportunidadTarjeta = this.tarjetaEnEspera.tarjeta.idOportunidad;
         console.log("Número de oportunidad asignado:", this.idOportunidadTarjeta);
@@ -147,45 +167,9 @@ export class AcordeonHorizontalComponent {
         console.warn("No hay tarjeta en espera.");
       }
 
+      // Llamar al servicio para actualizar la fecha estimada de cierre (POST)
       this.actualizarPostOportunidadPorMesTarjeta();
 
-/*
-      // --- Eliminamos los meses vacíos solo de los últimos 4 visibles ---
-      // Obtenemos los últimos 4 meses de la lista
-      let visibles = this.elementos.slice(-4);
-      // Eliminamos de izquierda a derecha mientras estén vacíos
-      while (visibles.length > 0 && visibles[0].tarjetas.length === 0) {
-        const mesAEliminar = visibles[0];
-        const idx = this.elementos.indexOf(mesAEliminar);
-        if (idx !== -1) {
-          console.log(`Eliminando mes vacío: ${mesAEliminar.nombre} ${mesAEliminar.anio}`);
-          this.elementos.splice(idx, 1);
-        }
-        visibles = this.elementos.slice(-4);
-      }
-
-      console.log("Lista después de eliminar vacíos:", this.elementos.map(m => `${m.nombre} ${m.anio}`));
-
-      // --- Agregar nuevos meses hasta tener 4 visibles ---
-      // Aquí, para agregar meses nuevos, usamos el último mes actual de la lista.
-      while (this.elementos.length < 4) {
-        const nuevoMes = this.obtenerSiguienteMes();
-        if (nuevoMes) {
-          this.elementos.push(nuevoMes);
-          console.log(`Nuevo mes añadido: ${nuevoMes.nombre} ${nuevoMes.anio}`);
-        } else {
-          break;
-        }
-      }
-
-      // Actualizamos la variable auxiliar con el último mes de la lista
-      if (this.elementos.length > 0) {
-        const ultimo = this.elementos[this.elementos.length - 1];
-        this.ultimoMesAgregado = `${ultimo.nombre} ${ultimo.anio}`;
-      }
-      console.log("Lista final de meses:", this.elementos.map(m => `${m.nombre} ${m.anio}`));
-    }
-*/
     }
 
     this.tarjetaMovida = null;
@@ -193,6 +177,9 @@ export class AcordeonHorizontalComponent {
     this.actualizarExpansiones();
   }
 
+
+  // Método para actualizar la propiedad 'expandido' de cada mes,
+  // asegurando que solo los 4 últimos sean expandidos
   actualizarExpansiones() {
     const total = this.elementos.length;
     this.elementos.forEach((mes, index) => {
@@ -200,14 +187,16 @@ export class AcordeonHorizontalComponent {
     });
   }
 
+  // Método para obtener el siguiente mes (usando la secuencia de meses) tomando en cuenta el año actual,
+  // basado en el último elemento de la lista
   obtenerSiguienteMes(): any {
-    // Lista de meses en orden cronológico
+    // Secuencia de meses en orden cronológico
     const mesesSecuencia = [
       'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
       'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
     ];
 
-    // Obtener el último mes actual en la lista
+    // Obtener el último mes actual de la lista de 'elementos'
     const ultimoElemento = this.elementos[this.elementos.length - 1];
     const mesActual = ultimoElemento.nombre; // Ejemplo: "Julio"
     const anioActual = ultimoElemento.anio;    // Ejemplo: 2025
@@ -217,9 +206,11 @@ export class AcordeonHorizontalComponent {
     let nuevoAnio = anioActual;
 
     if (index !== -1 && index < mesesSecuencia.length - 1) {
-      nuevoMes = mesesSecuencia[index + 1]; // Siguiente mes
+      // Si no es diciembre, el siguiente mes es el que sigue en la secuencia
+      nuevoMes = mesesSecuencia[index + 1];
     } else {
-      nuevoMes = 'Enero'; // Si el último es diciembre, reinicia en enero
+      // Si el último mes es diciembre, reiniciamos a enero y aumentamos el año
+      nuevoMes = 'Enero';
       nuevoAnio += 1;
     }
 
@@ -231,6 +222,7 @@ export class AcordeonHorizontalComponent {
     };
   }
 
+  // Método que retorna la clase CSS para el nombre de la empresa, basado en la longitud de nombre y abreviatura
   getClaseNombreEmpresa(nombreEmpresa: string, nombreAbrev: string): string {
     const cantNombre = nombreEmpresa.length;
     const cantAbrev = nombreAbrev.length;
@@ -243,32 +235,38 @@ export class AcordeonHorizontalComponent {
     }
   }
 
-  actualizarPostOportunidadPorMesTarjeta(){
+  // Método para enviar el request POST para actualizar la fecha estimada de cierre
+  actualizarPostOportunidadPorMesTarjeta() {
 
-  const request: RequestActualizarFechaEstimadaCierre = {
-    bandera: "UPD-FECHAESTIMADA", // Asigna un valor adecuado para la bandera
-    idOportunidad: this.idOportunidadTarjeta, // ID de la oportunidad que moviste
-    idEmpresa: this.loginService.obtenerIdEmpresa(), // Ajusta según la empresa relacionada
-    FechaEstimadaCierre: new Date(this.fechaSeleccionada), // Último día del mes destino
-    idUsuario: this.loginService.obtenerIdUsuario(), // Ajusta según el usuario actual
-  };
+    // Construir el objeto request con la interfaz RequestActualizarFechaEstimadaCierre
+    const request: RequestActualizarFechaEstimadaCierre = {
+      bandera: "UPD-FECHAESTIMADA",
+      idOportunidad: this.idOportunidadTarjeta,
+      idEmpresa: this.loginService.obtenerIdEmpresa(),
+      // Convertir fechaSeleccionada (string) a Date; si la API espera Date o un string en formato ISO
+      fechaEstimadaCierre: new Date(this.fechaSeleccionada),
+      idUsuario: this.loginService.obtenerIdUsuario(),
+    };
 
-  console.log("RequestActualizarFechaEstimadaCierre:");
+    //console.log("RequestActualizarFechaEstimadaCierre:", request);
+
     this.oportunidadService.postOportunidadPorMesTarjeta(request).subscribe({
-        next: (result: baseOut) => {
-          this.result.emit(result);
-          this.getOportunidadesPorMes();
-          console.log("getOportunidadesPorMes:");
-        },
-        error: (error: baseOut) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Se ha producido un error.',
-            detail: error.errorMessage,
-
-          });
-          console.log("error.errorMessage:" + error.errorMessage);
-        },
-      });
-    }
+      next: (result: baseOut) => {
+        // Emitir el resultado mediante el EventEmitter
+        this.result.emit(result);
+        // Actualizar la lista de oportunidades
+        this.getOportunidadesPorMes();
+        //console.log("getOportunidadesPorMes actualizado");
+      },
+      error: (error: baseOut) => {
+        // Mostrar mensaje de error con MessageService de PrimeNG
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Se ha producido un error.',
+          detail: error.errorMessage,
+        });
+        //console.log("error.errorMessage:" + error.errorMessage);
+      },
+    });
+  }
 }

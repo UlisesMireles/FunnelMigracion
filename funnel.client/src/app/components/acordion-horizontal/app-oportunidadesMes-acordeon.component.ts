@@ -116,6 +116,8 @@ export class OortunidadesMesAcordeonComponent {
 
     //console.log('Tarjeta en espera de confirmación:', this.tarjetaMovida);
 
+
+//****************ESTA LOGICA ES APRA CALCULAR FECHA */
     // Usar las propiedades numéricas ya definidas en el objeto mes destino
     const mesDestinoNumero = mesDestino.mes;  // Ejemplo: 2 para febrero (si es 1-indexado)
     const anioDestino = mesDestino.anio;
@@ -133,7 +135,9 @@ export class OortunidadesMesAcordeonComponent {
     this.fechaSeleccionada = this.getUltimoDiaDelMes(mesDestinoNumero, anioDestino);
     console.log('Último día del mes destino:', this.fechaSeleccionada);
 
-    // Mostrar el modal de confirmación
+//****************ESTA LOGICA ES APRA CALCULAR FECHA */
+
+// Mostrar el modal de confirmación
     this.mostrarModal = true;
   }
 
@@ -165,7 +169,7 @@ export class OortunidadesMesAcordeonComponent {
 
       // Asignar el idOportunidad de la tarjeta arrastrada a la variable idOportunidadTarjeta
       if (this.tarjetaEnEspera && this.tarjetaEnEspera.tarjeta) {
-        this.idOportunidadTarjeta = this.tarjetaEnEspera.tarjeta.idOportunidad;
+        this.idOportunidadTarjeta = this.tarjetaEnEspera.tarjeta.idOportunidad;//con esto asigno el id a la tarjeta q voy a guardar
         console.log("Número de oportunidad asignado:", this.idOportunidadTarjeta);
       } else {
         console.warn("No hay tarjeta en espera.");
@@ -191,40 +195,7 @@ export class OortunidadesMesAcordeonComponent {
     });
   }
 
-  // Método para obtener el siguiente mes (usando la secuencia de meses) tomando en cuenta el año actual,
-  // basado en el último elemento de la lista
-  obtenerSiguienteMes(): any {
-    // Secuencia de meses en orden cronológico
-    const mesesSecuencia = [
-      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
-    ];
 
-    // Obtener el último mes actual de la lista de 'elementos'
-    const ultimoElemento = this.elementos[this.elementos.length - 1];
-    const mesActual = ultimoElemento.nombre; // Ejemplo: "Julio"
-    const anioActual = ultimoElemento.anio;    // Ejemplo: 2025
-
-    const index = mesesSecuencia.indexOf(mesActual);
-    let nuevoMes = '';
-    let nuevoAnio = anioActual;
-
-    if (index !== -1 && index < mesesSecuencia.length - 1) {
-      // Si no es diciembre, el siguiente mes es el que sigue en la secuencia
-      nuevoMes = mesesSecuencia[index + 1];
-    } else {
-      // Si el último mes es diciembre, reiniciamos a enero y aumentamos el año
-      nuevoMes = 'Enero';
-      nuevoAnio += 1;
-    }
-
-    return {
-      nombre: nuevoMes,
-      anio: nuevoAnio,
-      tarjetas: [],
-      expandido: false
-    };
-  }
 
   // Método que retorna la clase CSS para el nombre de la empresa, basado en la longitud de nombre y abreviatura
   getClaseNombreEmpresa(nombreEmpresa: string, nombreAbrev: string): string {
@@ -336,22 +307,18 @@ private crearNuevaLicencia(licencia: Tarjeta) {
     nombre: licencia.nombre
   };
 }
+actualiza(licencia: Tarjeta) {
 
+  this.oportunidadSeleccionada = this.crearNuevaLicencia(licencia);
+  this.insertar = false;
+  this.modalEditarVisible = true;
+}
 
-    actualiza(licencia: Tarjeta) {
+seguimiento(licencia: Tarjeta) {
 
-      this.oportunidadSeleccionada = this.crearNuevaLicencia(licencia);
-      this.insertar = false;
-      this.modalEditarVisible = true;
-    }
-
-
-
-    seguimiento(licencia: Tarjeta) {
-
-      this.oportunidadSeleccionada = this.crearNuevaLicencia(licencia);;
-      this.seguimientoOportunidad = true;
-      this.modalSeguimientoVisible = true;
-    }
+  this.oportunidadSeleccionada = this.crearNuevaLicencia(licencia);;
+  this.seguimientoOportunidad = true;
+  this.modalSeguimientoVisible = true;
+}
 
 }

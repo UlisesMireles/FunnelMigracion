@@ -6,6 +6,7 @@ import { UsuariosService } from '../../../../services/usuarios.service';
 import { LoginService } from '../../../../services/login.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RequestUsuario } from '../../../../interfaces/usuarios';
+import  * as bcrypt from 'bcryptjs';
 
 
 @Component({
@@ -172,19 +173,22 @@ export class ModalUsuariosComponent {
     this.closeModal.emit();
   }
 
-  guardarUsuario() {
+  async guardarUsuario() {
     if (this.usuarioForm.invalid) {
       this.mostrarToastError();
       return;
     }
-   
+  
+    if (this.usuarioForm.value.password) {
+      const salt = bcrypt.genSaltSync(10);
+      const hashedPassword = bcrypt.hashSync(this.usuarioForm.value.password, salt);
+      this.usuarioForm.controls['password'].setValue(hashedPassword);
+    }
   
     this.usuarioForm.controls['estatus'].setValue(this.usuarioForm.value.estatus ? 1 : 0);
     this.usuarioForm.controls['idEmpresa'].setValue(this.loginService.obtenerIdEmpresa());
     this.usuarioForm.controls['bandera'].setValue(this.insertar ? 'INSERT' : 'UPDATE');
-   
-    console.log(this.usuarioForm.value);
-   
+  
     this.UsuariosService.postGuardarUsuario(this.usuarioForm.value).subscribe({
       next: (result: baseOut) => {
         console.log(result);

@@ -269,4 +269,15 @@ export class AcordeonHorizontalComponent {
       },
     });
   }
+
+  // Suma todos los montos de las tarjetas del mes
+getTotalMonto(mes: OportunidadesPorMes): number {
+  return mes.tarjetas.reduce((acc, tarjeta) => acc + (tarjeta.monto || 0), 0);
+}
+
+// Suma todos los montos normalizados de las tarjetas del mes
+getTotalNormalizado(mes: OportunidadesPorMes): number {
+  return mes.tarjetas.reduce((acc, tarjeta) => acc + (tarjeta.montoNormalizado || 0), 0);
+}
+
 }

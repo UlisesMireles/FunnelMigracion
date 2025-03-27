@@ -12,7 +12,15 @@
       </button>
     </div>
 
-
+<!-- Solo se muestra cuando el mes está expandido -->
+<div class="total-row" *ngIf="mes.expandido">
+  <span id="lblTotalMes{{i}}" class="lblTotalMeses">
+    {{ getTotalMonto(mes) | currency:'MXN':'symbol':'1.0-0' }}
+  </span>
+  <span id="lblNormalizadoMes{{i}}" class="lblNormalizadoMeses">
+    {{ getTotalNormalizado(mes) | currency:'MXN':'symbol':'1.0-0' }}
+  </span>
+</div>
 
 
     <div *ngIf="mes.expandido"

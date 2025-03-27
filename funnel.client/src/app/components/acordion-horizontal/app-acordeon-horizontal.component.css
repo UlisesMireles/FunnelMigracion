@@ -15,7 +15,7 @@
 /* Cada item del acordeón (cada mes) */
 .item-acordeon {
   width: 70px; /* Ancho inicial del item (colapsado) */
-  height: 550px; /* Altura fija de 550px para el acordeón */
+  height: 600px; /* Altura fija de 550px para el acordeón */
   background: #f8f9fa; /* Color de fondo claro */
   border: 1px solid #ccc; /* Borde gris claro */
   display: flex; /* Usa flexbox para organizar el contenido internamente */
@@ -228,7 +228,7 @@ body {
   color: #747678;        /* Color gris medio */
   text-align: left;      /* Alineación a la izquierda */
   white-space: nowrap;   /* Evita el salto de línea */
-  margin-right: 25px;    /* Espaciado de 25px a la derecha entre elementos */
+  margin-right: 35px;    /* Espaciado de 25px a la derecha entre elementos */
 }
 
 /* Estilo para las iniciales */
@@ -343,4 +343,27 @@ div.fotoTarjeta {
 /* Clase para la columna que contiene el nombre de la empresa */
 .col-8-tarjeta {
   text-align: start; /* Alinea el contenido al inicio (izquierda) */
+}
+.lblTotalMeses {
+  font-weight: 600;
+  font-size: 1em;
+  color: #103D66;
+}
+.lblNormalizadoMeses {
+  font-weight: 600;
+  font-size: 1em;
+  color: #08a742;
+}
+.total-row {
+  display: flex;                /* Convierto la fila en un contenedor flex */
+  justify-content: flex-end;    /* Alinea los elementos al final (derecha) */
+  align-items: center;          /* Centra verticalmente los elementos */
+  width: 100%;                  /* Ocupa todo el ancho del contenedor */
+  margin-top: 5px;              /* Opcional: espacio superior */
+}
+
+.total-row span {
+  margin-left: 15px;            /* Espacio entre los totales */
+  text-align: right;            /* Alinea el texto a la derecha */
+  white-space: nowrap;          /* Evita que se rompa la línea */
 }

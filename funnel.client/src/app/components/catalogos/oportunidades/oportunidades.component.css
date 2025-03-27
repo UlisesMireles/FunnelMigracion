@@ -278,3 +278,46 @@ div.inDivDatatableHeader > p-button > button.p-button {
 .custom-tabs .nav-link.active {
   color: #3c3e41 !important;
 }
+<<<<<<<<< Temporary merge branch 1
+=========
+/* Oculta el icono por defecto */
+th p-sortIcon {
+  display: none;
+}
+
+/* Muestra el icono SOLO cuando la columna está ordenada (asc o desc) */
+th.sort-active p-sortIcon {
+  display: inline-block;
+}
+/* Estilo para los botones */
+
+::ng-deep .custom-button.p-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+}
+
+::ng-deep .refresh-button.p-button:hover {
+  background-color: #4682b4 !important; 
+  border-color: #4682b4 !important;
+  color: white !important;
+}
+
+::ng-deep .download-button.p-button:hover {
+  background-color: #4682b4 !important; 
+  border-color: #4682b4 !important;
+  color: white !important;
+}
+
+::ng-deep .column-button.p-button:hover {
+  background-color: #4682b4 !important; 
+  border-color: #4682b4 !important;
+  color: white !important;
+}
+
+::ng-deep .add-button.p-button:hover {
+  background-color: #4682b4 !important; 
+  border-color: #4682b4 !important;
+  color: white !important;
+}
+>>>>>>>>> Temporary merge branch 2

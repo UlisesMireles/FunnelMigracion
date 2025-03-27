@@ -270,7 +270,10 @@ div.inDivDatatableHeader > p-button > button.p-button {
 .custom-tabs {
   display: inline-flex;
   border-bottom: 1px solid #dee2e6;
-  margin-right: 1050px;}
+  position: absolute;
+  left: 46px;
+  z-index: 2;
+}
 
 .custom-tabs .nav-link.active {
   color: #3c3e41 !important;

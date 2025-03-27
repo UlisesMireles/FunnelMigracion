@@ -103,3 +103,12 @@ export  interface OportunidadesPorMes {
   anio: number;
   tarjetas: Tarjeta[];
 }
+
+
+export interface RequestActualizarFechaEstimadaCierre {
+  bandera: string;
+  idOportunidad?: number;
+  idEmpresa?: number;
+  FechaEstimadaCierre?: Date;
+  idUsuario?: number;
+}

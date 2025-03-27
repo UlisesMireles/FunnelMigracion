@@ -170,7 +170,7 @@ namespace Funnel.Logic
         public async Task<BaseOut> ActualizarFechaEstimada(OportunidadesEnProcesoDto request)
         {
             request.Bandera = "UPD-FECHAESTIMADA";
-            return await _oportunidadesData.GuardarOportunidad(request);
+            return await _oportunidadesData.ActualizarFechaEstimada(request);
         }
     }
 }

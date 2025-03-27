@@ -83,8 +83,6 @@ namespace Funnel.Server.Controllers
         [HttpGet("[action]/")]
         public async Task<ActionResult> ConsultarOportunidadesPorMes(int IdUsuario, int idEmpresa )
         {
-            idEmpresa = 1;
-            IdUsuario = 1051;
             var result = await _oportunidadesService.ConsultarOportunidadesPorMes(IdUsuario, idEmpresa);
             return Ok(result);
         }
@@ -92,6 +90,12 @@ namespace Funnel.Server.Controllers
         public async Task<ActionResult> ConsultarOportunidadesPorEtapa(int IdUsuario, int idEmpresa )
         {
             var result = await _oportunidadesService.ConsultarOportunidadesPorEtapa(IdUsuario, idEmpresa);
+            return Ok(result);
+        }
+        [HttpPost("[action]/")]
+        public async Task<ActionResult> ActualizarFechaEstimada(OportunidadesEnProcesoDto request)
+        {
+            var result = await _oportunidadesService.ActualizarFechaEstimada(request);
             return Ok(result);
         }
     }

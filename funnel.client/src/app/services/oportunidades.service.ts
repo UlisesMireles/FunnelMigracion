@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { RequestOportunidad } from '../interfaces/oportunidades';
+import { RequestActualizarFechaEstimadaCierre, RequestOportunidad } from '../interfaces/oportunidades';
 import { baseOut } from '../interfaces/utils/utils/baseOut';
 
 @Injectable({
@@ -84,4 +84,9 @@ export class OportunidadesService {
         params: {idUsuario: idUsuario.toString(),idEmpresa: idEmpresa.toString() }
       });
     }
+
+    postOportunidadPorMesTarjeta(data: RequestActualizarFechaEstimadaCierre): Observable <baseOut>{
+      return this.http.post<baseOut>(this.baseUrl+'api/Oportunidades/ActualizarFechaEstimada', data);
+    }
+
 }

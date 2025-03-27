@@ -1,10 +1,10 @@
 import { transferArrayItem } from '@angular/cdk/drag-drop';
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Output } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { OportunidadesPorMes } from '../../interfaces/oportunidades';
+import { OportunidadesPorMes, RequestActualizarFechaEstimadaCierre } from '../../interfaces/oportunidades';
+import { baseOut } from '../../interfaces/utils/utils/baseOut';
 import { LoginService } from '../../services/login.service';
 import { OportunidadesService } from '../../services/oportunidades.service';
-
 @Component({
   selector: 'app-acordeon-horizontal',
   standalone: false,
@@ -15,7 +15,6 @@ export class AcordeonHorizontalComponent {
 
   // Tu objeto de meses (OportunidadesPorMes) se carga en getOportunidadesPorMes()
   elementos: OportunidadesPorMes[] = [];
-
   loading: boolean = true;
   errorMessage: string = '';
   connectedDropLists: string[] = [];
@@ -23,10 +22,10 @@ export class AcordeonHorizontalComponent {
   tarjetaMovida: any;            // Tarjeta que fue movida (y sus datos)
   fechaSeleccionada: string = '';  // Fecha que se asignará en el modal
   today: string = new Date().toISOString().split('T')[0];
-  idOportunidad: number = 0;
+  idOportunidadTarjeta: number = 0;
+  tarjetaEnEspera : any;
+  ultimoMesAgregado: string = ''; // Variable auxiliar para llevar el seguimiento del último mes agregado (nombre y año)
 
-  // Variable auxiliar para llevar el seguimiento del último mes agregado (nombre y año)
-  ultimoMesAgregado: string = '';
 
   constructor(
     private oportunidadService: OportunidadesService,
@@ -35,6 +34,7 @@ export class AcordeonHorizontalComponent {
     private cdr: ChangeDetectorRef
   ) { }
 
+  @Output() result: EventEmitter<baseOut> = new EventEmitter();
   ngOnInit() {
     this.getOportunidadesPorMes();
   }
@@ -73,12 +73,10 @@ export class AcordeonHorizontalComponent {
       },
     });
   }
-
   alternarItem(item: any, event: Event) {
     event.stopPropagation();
     item.expandido = !item.expandido;
   }
-
   drop(event: any, mesDestino: OportunidadesPorMes) {
     if (event.previousContainer === event.container) {
       return;
@@ -95,6 +93,8 @@ export class AcordeonHorizontalComponent {
       indexDestino: event.currentIndex,
       mesOrigenObj: mesOrigenObj
     };
+    this.tarjetaEnEspera = this.tarjetaMovida; // Almacenar la tarjeta arrastrada
+
 
     console.log('Tarjeta en espera de confirmación:', this.tarjetaMovida);
 
@@ -140,6 +140,16 @@ export class AcordeonHorizontalComponent {
       );
       console.log('Movimiento confirmado:', this.tarjetaMovida);
 
+      if (this.tarjetaEnEspera && this.tarjetaEnEspera.tarjeta) {
+        this.idOportunidadTarjeta = this.tarjetaEnEspera.tarjeta.idOportunidad;
+        console.log("Número de oportunidad asignado:", this.idOportunidadTarjeta);
+      } else {
+        console.warn("No hay tarjeta en espera.");
+      }
+
+      this.actualizarPostOportunidadPorMesTarjeta();
+
+/*
       // --- Eliminamos los meses vacíos solo de los últimos 4 visibles ---
       // Obtenemos los últimos 4 meses de la lista
       let visibles = this.elementos.slice(-4);
@@ -174,6 +184,8 @@ export class AcordeonHorizontalComponent {
         this.ultimoMesAgregado = `${ultimo.nombre} ${ultimo.anio}`;
       }
       console.log("Lista final de meses:", this.elementos.map(m => `${m.nombre} ${m.anio}`));
+    }
+*/
     }
 
     this.tarjetaMovida = null;
@@ -230,4 +242,33 @@ export class AcordeonHorizontalComponent {
       return 'clsNomEmpresa';
     }
   }
+
+  actualizarPostOportunidadPorMesTarjeta(){
+
+  const request: RequestActualizarFechaEstimadaCierre = {
+    bandera: "UPD-FECHAESTIMADA", // Asigna un valor adecuado para la bandera
+    idOportunidad: this.idOportunidadTarjeta, // ID de la oportunidad que moviste
+    idEmpresa: this.loginService.obtenerIdEmpresa(), // Ajusta según la empresa relacionada
+    FechaEstimadaCierre: new Date(this.fechaSeleccionada), // Último día del mes destino
+    idUsuario: this.loginService.obtenerIdUsuario(), // Ajusta según el usuario actual
+  };
+
+  console.log("RequestActualizarFechaEstimadaCierre:");
+    this.oportunidadService.postOportunidadPorMesTarjeta(request).subscribe({
+        next: (result: baseOut) => {
+          this.result.emit(result);
+          this.getOportunidadesPorMes();
+          console.log("getOportunidadesPorMes:");
+        },
+        error: (error: baseOut) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Se ha producido un error.',
+            detail: error.errorMessage,
+
+          });
+          console.log("error.errorMessage:" + error.errorMessage);
+        },
+      });
+    }
 }

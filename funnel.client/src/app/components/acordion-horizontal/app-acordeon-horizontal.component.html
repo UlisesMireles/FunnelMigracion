@@ -31,7 +31,7 @@
             <i class="bi bi-card-text commandSeguimiento" title="Seguimiento"></i>
             <i class="bi bi-pencil-fill commandEditar" title="Editar"></i>
           </div>
-            <div  class="col-9 tarjeta-row"  id =" Div  + {{idOportunidad}} ">
+            <div  class="col-9 tarjeta-row"  id =" Div  + {{idOportunidadTarjeta}} ">
               <div class="row justify-content-between">
                 <div class="col-8 col-8-tarjeta">
                   <label id="cliente"  class="nombre-empresa" [ngClass]="getClaseNombreEmpresa(tarjeta.nombreEmpresa, tarjeta.nombreAbrev)">
@@ -81,7 +81,7 @@
       <!-- Contenido de la Modal -->
       <div class="modal-body">
         <!-- Input oculto como en tu código original -->
-        <input type="hidden" [(ngModel)]="idOportunidad">
+        <input type="hidden" [(ngModel)]="idOportunidadTarjeta">
 
         <!-- Selector de Fecha usando ng-bootstrap -->
         <div class="mb-3">

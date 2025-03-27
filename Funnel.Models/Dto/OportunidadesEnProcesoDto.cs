@@ -2,6 +2,14 @@
 {
     public class OportunidadesEnProcesoDto
     {
+        public OportunidadesEnProcesoDto()
+        {
+            Bandera = string.Empty;
+            IdOportunidad = 0;
+            FechaEstimadaCierre= DateTime.Now;
+            IdEmpresa = 0;
+            IdUsuario = 0;        
+        }
         public int? IdUsuario { get; set; }
         public int? IdEmpresa { get; set; }
         public int? IdEstatus { get; set; }

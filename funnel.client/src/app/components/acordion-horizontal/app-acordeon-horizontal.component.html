@@ -36,7 +36,7 @@
           <div class="row  ">
             <!-- Encabezado con título e ícono de edición -->
           <div class="card-header">
-            <p-button type="button" icon="bi bi-file-earmark-text" text
+            <p-button type="button" icon="bi bi-file-earmark-text" text (click)="seguimiento(tarjeta)"
             pTooltip="Ver seguimiento" tooltipPosition="top" styleClass="blue-icon">
             <span class="badge">{{ tarjeta.totalComentarios || 0 }}</span>
             </p-button>
@@ -120,3 +120,6 @@
   (result)="manejarResultado($event)" [insertar]="insertar" [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">
 </app-modal-oportunidades>
 
+<app-seguimiento-oportunidades [(visible)]="modalSeguimientoVisible" [title]="'Seguimiento de '" (closeModal)="onModalClose()"
+  (result)="manejarResultado($event)" [insertar]="insertar" [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">
+</app-seguimiento-oportunidades>

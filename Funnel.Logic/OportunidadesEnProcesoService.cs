@@ -135,7 +135,9 @@ namespace Funnel.Logic
                         IdTipoEntrega = y.IdTipoEntrega,
                         IdEjecutivo = y.IdEjecutivo,
                         IdContactoProspecto = y.IdContactoProspecto,
-                        TotalComentarios = y.TotalComentarios
+                        TotalComentarios = y.TotalComentarios,
+                        Stage = y.Stage,
+                        Nombre = y.Nombre ?? "Sin nombre"
 
 
 

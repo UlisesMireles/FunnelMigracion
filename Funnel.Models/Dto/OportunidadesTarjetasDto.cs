@@ -40,5 +40,7 @@ namespace Funnel.Models.Dto
         public int? IdEjecutivo { get; set; }
         public int? IdContactoProspecto { get; set; }
         public int? TotalComentarios { get; set; }
+        public string? Stage { get; set; }
+        public string? Nombre { get; set; }
     }
 }

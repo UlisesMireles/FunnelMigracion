@@ -106,6 +106,10 @@ export interface Tarjeta {
   idEjecutivo?: number;
   idContactoProspecto?: number;
   totalComentarios?: number;
+  idUsuario?: number;
+  idEmpresa?: number;
+  stage?: string;
+  nombre?: string;
 }
 
 export  interface OportunidadesPorMes {

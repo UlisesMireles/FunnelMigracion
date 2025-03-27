@@ -304,16 +304,17 @@ div.fotoTarjeta {
   background-size: cover;         /* La imagen cubre todo el contenedor */
   background-position: center;    /* La imagen se centra */
   background-repeat: no-repeat;   /* La imagen no se repite */
-  height: 27px;                   /* Altura fija de 27px */
+  height: 35px;                   /* Altura fija de 27px */
   display: flex;                  /* Usa flexbox */
   justify-content: flex-end;      /* Alinea el contenido a la derecha */
   align-items: center;            /* Centra verticalmente */
-  padding: 5px;                   /* Espaciado interno de 5px */
+  padding: 0px;                   /* Espaciado interno de 5px */
   gap: 10px;                    /* Espacio entre los iconos */
   border-bottom: 1px solid #ddd;  /* Borde inferior gris */
   margin-left: 0px!important;     /* Margen izquierdo 0 (forzado) */
   margin-right: 0px!important;    /* Margen derecho 0 (forzado) */
   width: 99.8% !important;        /* Ancho casi completo, forzado */
+  padding-right: 5px !important;  /* Espaciado interno derecho 5px (forzado) */
 }
 
 /* Icono para seguimiento en la tarjeta */

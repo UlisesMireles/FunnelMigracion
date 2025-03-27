@@ -27,9 +27,11 @@ export class AcordeonHorizontalComponent {
   tarjetaEnEspera: any;  // Variable para almacenar temporalmente la tarjeta arrastrada (para poder obtener su idOportunidad)
   ultimoMesAgregado: string = '';// Variable auxiliar que guarda el nombre y año del último mes agregado (por ejemplo: "Julio 2025")
   modalEditarVisible: boolean = false;
+  modalSeguimientoVisible: boolean = false;
   insertar: boolean = false;
   oportunidadSeleccionada!: Oportunidad;
   oportunidades: Oportunidad[] = [];
+  seguimientoOportunidad: boolean = false;
   // Output para emitir resultados de la petición post (por ejemplo, para notificar a un padre)
   @Output() result: EventEmitter<baseOut> = new EventEmitter();
 
@@ -302,10 +304,54 @@ manejarResultado(result: baseOut) {
     });
   }
 }
+private crearNuevaLicencia(licencia: Tarjeta) {
+  return {
+    idOportunidad: licencia.idOportunidad,
+    nombreEmpresa: licencia.nombreEmpresa,
+    nombreAbrev: licencia.nombreAbrev,
+    nombreOportunidad: licencia.nombreOportunidad,
+    monto: licencia.monto,
+    probabilidad: licencia.probabilidad,
+    montoNormalizado: licencia.montoNormalizado,
+    imagen: licencia.imagen,
+    nombreEjecutivo: licencia.nombreEjecutivo,
+    iniciales: licencia.iniciales,
+    descripcion: licencia.descripcion,
+    fechaEstimadaCierre: licencia.fechaEstimadaCierre,
+    idTipoProyecto: licencia.idTipoProyecto,
+    nombreContacto: licencia.nombreContacto,
+    entrega: licencia.entrega,
+    fechaEstimadaCierreOriginal: licencia.fechaEstimadaCierreOriginal,
+    idEstatusOportunidad: licencia.idEstatusOportunidad,
+    comentario: licencia.comentario,
+    idProspecto: licencia.idProspecto,
+    idStage: licencia.idStage,
+    idTipoEntrega: licencia.idTipoEntrega,
+    idEjecutivo: licencia.idEjecutivo,
+    idContactoProspecto: licencia.idContactoProspecto,
+    totalComentarios: licencia.totalComentarios,
+    idEmpresa: this.loginService.obtenerIdEmpresa(),
+    idUsuario: this.loginService.obtenerIdUsuario(),
+    stage: licencia.stage,
+    nombre: licencia.nombre
+  };
+}
+
 
     actualiza(licencia: Tarjeta) {
-      this.oportunidadSeleccionada = licencia;
+
+      this.oportunidadSeleccionada = this.crearNuevaLicencia(licencia);
       this.insertar = false;
       this.modalEditarVisible = true;
     }
+
+
+
+    seguimiento(licencia: Tarjeta) {
+
+      this.oportunidadSeleccionada = this.crearNuevaLicencia(licencia);;
+      this.seguimientoOportunidad = true;
+      this.modalSeguimientoVisible = true;
+    }
+
 }

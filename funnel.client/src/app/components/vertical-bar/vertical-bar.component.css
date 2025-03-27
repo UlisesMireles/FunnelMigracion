@@ -11,7 +11,7 @@
   padding-bottom: 20px;
   left: 0;
   top: 40px;
-  padding-top: 20px;
+  padding-top: 50px;
 }
 
 .sidebar.expanded {
@@ -41,7 +41,7 @@
 
 .expand-btn-container {
   position: absolute;
-  top: 80%; /* Ajusta este valor según lo necesites */
+  top:520px; /* Ajusta este valor según lo necesites */
   left: 0;
   width: 100%;
   display: flex;
@@ -50,7 +50,7 @@
 
 .expand-btn {
   cursor: pointer;
-  padding: 10px;
+  padding: 0px;
   border-radius: 50%;
   background-color: #103D66;
   transition: background 0.3s ease;
@@ -354,11 +354,9 @@
 }
 
 .expand-btn i {
-  font-size: 16px; /* Para el botón de expandir */
+  font-size: 25px; /* Para el botón de expandir */
+  padding-left: 30px;
 }
-
-
-
 
 /*
 
@@ -366,7 +364,7 @@
   max-height: 400px;
   overflow: hidden;
   position: relative;
-} */
+}*/
 .submenu,
 .expand-button {
   background-color: rgba(16, 61, 102, 0.6);

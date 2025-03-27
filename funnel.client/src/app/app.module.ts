@@ -1,10 +1,13 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { BrowserModule } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { NgxCaptchaModule } from 'ngx-captcha';
 import { providePrimeNG } from 'primeng/config';
+import { TabViewModule } from 'primeng/tabview';
+import { TooltipModule } from 'primeng/tooltip';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CambiarContrasenaComponent } from './components/cambiar-contrasena/cambiar-contrasena.component';
@@ -14,9 +17,6 @@ import { FooterComponent } from './components/footer/footer.component';
 import { LoginComponent } from './components/login/login.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { OlvidasteContrasenaComponent } from './components/olvidaste-contrasena/olvidaste-contrasena.component';
-import {TabViewModule} from 'primeng/tabview';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { TooltipModule } from 'primeng/tooltip';
 
 import { MatInputModule } from '@angular/material/input';
 import Aura from '@primeng/themes/aura';
@@ -66,22 +66,28 @@ import { PermisosComponent } from './components/catalogos/permisos/permisos.comp
 import { TopVeinteComponent } from './components/catalogos/top-veinte/top-veinte.component';
 
 import { CommonModule, DatePipe, registerLocaleData } from '@angular/common';
+import { DocumentosOportunidadesComponent } from './components/catalogos/documentos-oportunidades/documentos-oportunidades.component';
 import { ModalOportunidadesGanadasComponent } from './components/catalogos/oportunidades-ganadas/modal-oportunidades-ganadas/modal-oportunidades-ganadas.component';
 import { OportunidadesGanadasComponent } from './components/catalogos/oportunidades-ganadas/oportunidades-ganadas.component';
 import { ModalOportunidadesComponent } from './components/catalogos/oportunidades/modal-oportunidades/modal-oportunidades.component';
 import { SeguimientoOportunidadesComponent } from './components/catalogos/seguimiento-oportunidades/seguimiento-oportunidades.component';
-import { DocumentosOportunidadesComponent } from './components/catalogos/documentos-oportunidades/documentos-oportunidades.component';
 import { AgregarQuitarColumnasComponent } from './components/shared/agregar-quitar-columnas/agregar-quitar-columnas.component';
 import { ColumnFilterComponent } from './components/shared/column-filter/column-filter.component';
 import { ColumnasDisponiblesComponent } from './components/shared/columnas-disponibles/columnas-disponibles.component';
 import { HeaderOpcionesComponent } from './components/shared/header-opciones/header-opciones.component';
 import { TipoCurrencyPipe } from './pipes/tipoCurrency.pipe';
 
+
 import localeEs from '@angular/common/locales/es-MX';
 import { APP_INITIALIZER, LOCALE_ID } from '@angular/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { VerticalBarComponent } from './components/vertical-bar/vertical-bar.component';
+import { OortunidadesMesAcordeonComponent } from './components/acordion-horizontal/app-oportunidadesMes-acordeon.component';
 import { HeaderComponent } from './components/header/header.component';
+import { VerticalBarComponent } from './components/vertical-bar/vertical-bar.component';
+
+
+import { DragDropModule } from '@angular/cdk/drag-drop';
+
 import { EstadisticasPorEtapaComponent } from './components/catalogos/estadisticas-por-etapa/estadisticas-por-etapa.component';
 export function configurationProviderFactory(provider: PrimeNgConfiguracionService) {
   return () => provider.load();
@@ -128,6 +134,7 @@ registerLocaleData(localeEs, 'es-MX');
     ModalOportunidadesCanceladasComponent,
     SeguimientoOportunidadesComponent,
     HeaderComponent,
+    OortunidadesMesAcordeonComponent,
     EstadisticasPorEtapaComponent,
     PermisosComponent,
   ],
@@ -167,7 +174,9 @@ registerLocaleData(localeEs, 'es-MX');
     MatInputModule,
     DropdownModule,
     MatSidenavModule,
-    TabViewModule,
+    BrowserModule,
+    DragDropModule,
+    TabViewModule
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'es-MX' },

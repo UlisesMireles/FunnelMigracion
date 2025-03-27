@@ -251,6 +251,7 @@ namespace Funnel.Data
                         TotalArchivos = ComprobarNulos.CheckIntNull(reader["TotalArchivos"]),
 
                         ArchivoDescripcion = ComprobarNulos.CheckStringNull(reader["ArchivoDescripcion"]),
+                        Foto = ComprobarNulos.CheckStringNull(reader["Foto"]),
 
                     };
 
@@ -329,6 +330,65 @@ namespace Funnel.Data
                     DataBase.CreateParameterSql("@pIdTipoOportunidad", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdTipoProyecto),
                     DataBase.CreateParameterSql("@pIdEstatusOportunidad", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdEstatusOportunidad),
                     DataBase.CreateParameterSql("@pProbabilidad", SqlDbType.Decimal, 18, ParameterDirection.Input, false, null, DataRowVersion.Default, decimal.Parse(request.Probabilidad)),
+                    DataBase.CreateParameterSql("@pIdUsuario", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdUsuario),
+
+                };
+
+                using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoOportunidades", CommandType.StoredProcedure, list, _connectionString))
+                {
+                    while (reader.Read())
+                    {
+
+                    }
+
+                }
+                switch (request.Bandera)
+                {
+                    case "INS-OPORTUNIDAD":
+                        result.ErrorMessage = "Oportunidad insertada correctamente.";
+                        result.Id = 1;
+                        result.Result = true;
+                        break;
+                    case "UPD-OPORTUNIDAD":
+                        result.ErrorMessage = "Oportunidad actualizada correctamente.";
+                        result.Id = 1;
+                        result.Result = true;
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                switch (request.Bandera)
+                {
+                    case "INS-OPORTUNIDAD":
+                        result.ErrorMessage = "Oportunidad insertada correctamente.";
+                        result.Id = 1;
+                        result.Result = true;
+                        break;
+                    case "UPD-OPORTUNIDAD":
+                        result.ErrorMessage = "Oportunidad actualizada correctamente.";
+                        result.Id = 1;
+                        result.Result = true;
+                        break;
+                }
+            }
+            return result;
+        }
+
+        public async Task<BaseOut> ActualizarFechaEstimada(OportunidadesEnProcesoDto request)
+        {
+            BaseOut result = new BaseOut();
+            try
+            {
+                decimal probabilidadDecimal = 0;
+
+                IList<ParameterSQl> list = new List<ParameterSQl>
+                {
+                    DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Bandera),
+                    DataBase.CreateParameterSql("@pIdOportunidad", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdOportunidad),
+                    DataBase.CreateParameterSql("@pFechaEstimadaCierre", SqlDbType.Date, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.FechaEstimadaCierre),
+                    DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdEmpresa),
                     DataBase.CreateParameterSql("@pIdUsuario", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdUsuario),
 
                 };

@@ -3,12 +3,14 @@
     justify-content: space-between;
     align-items: center;
     padding: 20px 50px;
-    background-color: #103D66;
+    background: linear-gradient(to right, #103D66, #2a5673, #457e81, #5e9c8d, #77b99a);
+
     border-bottom: 1px solid #eaeaea;
 }
 /* Estilos base */
 .navbar {
-  background-color: #103D66;
+  background: linear-gradient(to right, #103D66, #2a5673, #457e81, #5e9c8d, #77b99a);
+
   padding: 0 20px;
   display: flex;
   justify-content: space-between;
@@ -632,7 +634,7 @@ label {
         width: 10% !important;
         margin-left: 142px !important;
     }
-    
+
 
     .captcha-container {
         flex-direction: column;

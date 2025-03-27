@@ -1,9 +1,9 @@
 import { Component, ElementRef, EventEmitter, HostListener, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { Permiso } from '../../interfaces/permisos';
 import { LoginService } from '../../services/login.service';
 import { PermisosService } from '../../services/permisos.service';
-import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-vertical-bar',
@@ -38,16 +38,24 @@ export class VerticalBarComponent {
 
     this.permisosService.getPermisosPorRol(this.loginService.obtenerRolUsuario(), this.loginService.obtenerIdEmpresa()).subscribe({
       next: (result: Permiso[]) => {
-        this.ListaMenu = result;
-        this.ListaMenu.push(
-          {
-            nombre: 'SALIR',
-            ruta: '/login',
-            icono: 'bi-box-arrow-right',
-            tooltip: 'Cerrar sesión',
-            subMenu: []
-          }
-        );
+        const perfil = {
+          nombre: 'Perfil',
+          ruta: '/login',
+          icono: 'bi bi-person-circle',
+          tooltip: 'Perfil',
+          subMenu: []
+        };
+
+        const salir = {
+          nombre: 'SALIR',
+          ruta: '/login',
+          icono: 'bi-box-arrow-right',
+          tooltip: 'Cerrar sesión',
+          subMenu: []
+        };
+
+        // Combinar: primero "Perfil", luego los permisos, luego "SALIR"
+        this.ListaMenu = [perfil, ...result, salir];
       },
       error: (error) => {
         this.messageService.add({

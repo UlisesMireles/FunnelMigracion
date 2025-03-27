@@ -32,10 +32,11 @@ header h6 {
 
 
 .navbar {
-  background-color: #103D66;
+  background: linear-gradient(to right, #103D66, #2a5673, #457e81, #5e9c8d, #77b99a);
+
   padding: 0 20px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   height: 65px;
   width: 100%;

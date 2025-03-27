@@ -3,28 +3,28 @@
     <div class="col-12" style="text-align: left; font-weight: bold;">
       <h3>{{titulo}}</h3>
     </div>
-    
+
     <div class="col-12">
       <!-- Pestañas  -->
     <ul class="nav nav-tabs custom-tabs">
       <li class="nav-item">
         <a class="nav-link active" data-bs-toggle="tab" href="#lista" (click)="camTitulo(0)">
-          <i class="bi bi-list"></i> 
+          <i class="bi bi-list"></i>
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" data-bs-toggle="tab" href="#porMes" (click)="camTitulo(1)">
-          <i class="bi bi-calendar"></i> 
+          <i class="bi bi-calendar"></i>
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" data-bs-toggle="tab" href="#porEtapa" (click)="camTitulo(2)">
-          <i class="bi bi-calendar-check"></i>  
+          <i class="bi bi-calendar-check"></i>
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" data-bs-toggle="tab" href="#estadisticas" (click)="camTitulo(3)">
-          <i class="bi bi-bar-chart"></i> 
+          <i class="bi bi-bar-chart"></i>
         </a>
       </li>
     </ul>
@@ -42,7 +42,7 @@
               [resizableColumns]="true" [reorderableColumns]="true"
               [globalFilterFields]="['nombre','nombreSector','nombreOportunidad','abreviatura','stage','iniciales','nombreContacto','entrega','monto','probabilidadOriginal','probabilidad','montoNormalizado','fechaRegistro','diasFunnel','fechaEstimadaCierreOriginal','fechaModificacion']"
               [tableStyle]="{'min-width': anchoTabla + '%'}">
-              
+
               <ng-template class="divAccionesTabla" #caption>
                 <div class="col-12" style="text-align: left; font-weight: bold; margin-top: 20px">
                 </div>
@@ -54,16 +54,16 @@
                     <p-button label="" icon="bi bi-arrow-clockwise" (click)="clear(dt)" severity="secondary"
                       pTooltip="Refrescar" tooltipPosition="top"
                       [ngStyle]="{'margin-right': '5px'}" />
-                    
-                    <p-button label="" icon="bi bi-download" severity="secondary" (click)="exportExcel(dt)" 
+
+                    <p-button label="" icon="bi bi-download" severity="secondary" (click)="exportExcel(dt)"
                       pTooltip="Descargar Excel" tooltipPosition="top"
                       [ngStyle]="{'margin-right': '5px'}"/>
-                    
-                    <p-button label="" icon="bi-list" (click)="agregarColumna($event)" severity="secondary"  
+
+                    <p-button label="" icon="bi-list" (click)="agregarColumna($event)" severity="secondary"
                       pTooltip="Agregar columna" tooltipPosition="top"
                       [ngStyle]="{'margin-right': '5px'}"/>
-                    
-                    <p-button label="" icon="bi bi-plus" severity="secondary" (click)="inserta()"  
+
+                    <p-button label="" icon="bi bi-plus" severity="secondary" (click)="inserta()"
                       pTooltip="Añadir nuevo" tooltipPosition="top"
                       [ngStyle]="{'margin-right': '5px'}"/>
                   </div>
@@ -76,7 +76,7 @@
                       {{def.valor}}<p-sortIcon field="{{def.key}}"></p-sortIcon>
                     </th>
                     <th></th>
-                </tr> 
+                </tr>
                 <tr>
                     <th *ngFor="let def of lsColumnasAMostrar">
                         <ng-container *ngIf="def.groupColumn">
@@ -138,11 +138,11 @@
                   <td *ngFor="let def of lsColumnasAMostrar">
                     <ng-container [ngSwitch]="def.tipoFormato">
                       <span *ngSwitchCase="'text'">{{ rowData[def.key] }}</span>
-              
+
                       <span *ngSwitchCase="'currency'">
                         {{ rowData[def.key] | currency:'MX ':'symbol' }}
                       </span>
-              
+
                       <span *ngSwitchCase="'number'">
                         <span *ngIf="def.key === 'fechaModificacion'" [ngStyle]="{ 'color': getColorForDiasSinActividad(rowData[def.key]) }">
                           {{ rowData[def.key] }}
@@ -151,14 +151,14 @@
                           {{ rowData[def.key] | number:'1.0-2' }}
                         </span>
                       </span>
-              
+
                       <span *ngSwitchCase="'date'" [ngStyle]="def.key === 'fechaEstimadaCierreOriginal' ? { 'color': getColorForFechaEstimadaCierre(rowData[def.key]) } : {}">
                         {{ rowData[def.key] | date:'dd/MM/yyyy' }}
                       </span>
                     </ng-container>
                   </td>
                   <td>
-                    <p-button type="button" icon="bi bi-file-earmark-text" text (click)="seguimiento(rowData)" 
+                    <p-button type="button" icon="bi bi-file-earmark-text" text (click)="seguimiento(rowData)"
                     pTooltip="Ver seguimiento" tooltipPosition="top" styleClass="blue-icon">
                     <span class="badge">{{ rowData.totalComentarios || 0 }}</span>
                     </p-button>
@@ -166,7 +166,7 @@
                     pTooltip="Ver documentos" tooltipPosition="top" styleClass="black-icon">
                     <span class="badge">{{ rowData.totalArchivos || 0}}</span>
                     </p-button>
-                    <p-button type="button" icon="bi bi-pencil" text (click)="actualiza(rowData)" 
+                    <p-button type="button" icon="bi bi-pencil" text (click)="actualiza(rowData)"
                       pTooltip="Editar oportunidad" tooltipPosition="top" styleClass="yellow-icon"/>
                   </td>
                 </tr>
@@ -202,7 +202,7 @@
         <div class="tab-pane fade" id="porMes">
           <div class="row">
             <div class="col-12">
-              <p>"Oportunidades por Mes" </p>
+              <app-oportunidadesMes-acordeon></app-oportunidadesMes-acordeon>
             </div>
           </div>
         </div>

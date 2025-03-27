@@ -48,8 +48,10 @@
   .inDivDatatableHeader {
     padding-left: 50px;
     padding-top: 5px;
-  
+    margin-top: 35px; 
+    margin-bottom: 10px; 
   }
+  
   
   .custom-header th {
     background: rgb(247, 106, 19);
@@ -232,6 +234,7 @@
   .contenedorTabla{
     overflow-x: auto;
     width: 100%;
+    margin-top: -45px !important;
   }
   .table-responsive{
     overflow-x: auto;

@@ -224,6 +224,7 @@
   .contenedorTabla{
     overflow-x: auto;
     width: 100%;
+    margin-top: -45px !important;
   }
   .table-responsive{
     overflow-x: auto;

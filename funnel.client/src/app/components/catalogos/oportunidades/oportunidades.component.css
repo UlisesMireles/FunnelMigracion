@@ -31,11 +31,12 @@
   height: 35px;
 }
 
-div.inDivDatatableHeader > p-button > button.p-button {
-  width: 36px;
-  height: 35px;
+.inDivDatatableHeader {
+  padding-left: 50px;
+  padding-top: 5px;
+  margin-top: 35px; 
+  margin-bottom: 10px; 
 }
-
 /*
 ::ng-deep .Iconos .pi {
   color: red;
@@ -45,10 +46,9 @@ div.inDivDatatableHeader > p-button > button.p-button {
   color: red;
 } */
 
-.inDivDatatableHeader {
-  padding-left: 50px;
-  padding-top: 5px;
-
+div.inDivDatatableHeader > p-button > button.p-button {
+  width: 36px;
+  height: 35px;
 }
 
 .custom-header th {
@@ -232,6 +232,7 @@ div.inDivDatatableHeader > p-button > button.p-button {
 .contenedorTabla{
   overflow-x: auto;
   width: 100%;
+  margin-top: -45px !important; 
 }
 .table-responsive{
   overflow-x: auto;
@@ -272,14 +273,13 @@ div.inDivDatatableHeader > p-button > button.p-button {
   border-bottom: 1px solid #dee2e6;
   position: absolute;
   left: 46px;
+  top: 60px; 
   z-index: 2;
 }
 
 .custom-tabs .nav-link.active {
   color: #3c3e41 !important;
 }
-<<<<<<<<< Temporary merge branch 1
-=========
 /* Oculta el icono por defecto */
 th p-sortIcon {
   display: none;
@@ -320,4 +320,11 @@ th.sort-active p-sortIcon {
   border-color: #4682b4 !important;
   color: white !important;
 }
->>>>>>>>> Temporary merge branch 2
+
+.container-fluid .row > .col-12:first-child h3 {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  line-height: 1.2;
+  position: relative;
+  top: -20px; 
+}

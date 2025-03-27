@@ -134,3 +134,10 @@ p {
 .enviar:hover {
     background-color: #0230617e;
 }
+
+.large-placeholder::placeholder {
+    font-size: 1.5rem; 
+    letter-spacing: 0.2rem; 
+    color: #999; 
+    text-align: center; 
+  }

@@ -28,6 +28,7 @@ export class LoginComponent implements OnInit {
   showErrors: boolean = false;
   resetErrorMessage: SafeHtml = '';
   showIniciarSesion: Boolean = false;
+  showPassword = false;
   public backgroundImg: SafeStyle = "";
   constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private authService: LoginService, private sanitizer: DomSanitizer) {}
 
@@ -135,6 +136,10 @@ export class LoginComponent implements OnInit {
 
   handleSuccess(event: any) {
     console.log('reCAPTCHA success:', event);
+  }
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
   }
 
 }

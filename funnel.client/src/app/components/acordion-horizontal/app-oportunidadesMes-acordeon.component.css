@@ -48,6 +48,7 @@
   cursor: pointer; /* Cursor pointer para indicar que es clickeable */
   font-size: 20px; /* Tamaño de fuente de 20px para el icono */
   margin-top: auto; /* Empuja el botón hacia abajo, dejando el espacio restante arriba */
+
 }
 
 /* Contenedor del contenido del item (donde se muestran las tarjetas) */
@@ -300,7 +301,7 @@ div.fotoTarjeta {
 
 /* Estilos para el encabezado de la tarjeta (donde se muestran los iconos) */
 .card-header {
-  background-image: url('/assets/img/FondoTools.png'); /* Imagen de fondo */
+  /*background-image: url('/assets/img/FondoTools.png'); *//* Imagen de fondo */
   background-size: cover;         /* La imagen cubre todo el contenedor */
   background-position: center;    /* La imagen se centra */
   background-repeat: no-repeat;   /* La imagen no se repite */
@@ -387,3 +388,5 @@ div.fotoTarjeta {
 .p-button {
   position: relative;
 }
+
+

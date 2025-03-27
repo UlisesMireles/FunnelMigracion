@@ -7,12 +7,12 @@ import { LoginService } from '../../services/login.service';
 import { OportunidadesService } from '../../services/oportunidades.service';
 
 @Component({
-  selector: 'app-acordeon-horizontal',
+  selector: 'app-oportunidadesMes-acordeon',
   standalone: false,
-  templateUrl: './app-acordeon-horizontal.component.html',
-  styleUrls: ['./app-acordeon-horizontal.component.css'] // Uso de styleUrls en plural
+  templateUrl: './app-oportunidadesMes-acordeon.component.html',
+  styleUrls: ['./app-oportunidadesMes-acordeon.component.css'] // Uso de styleUrls en plural
 })
-export class AcordeonHorizontalComponent {
+export class OortunidadesMesAcordeonComponent {
 
 
   elementos: OportunidadesPorMes[] = []; // Array que contendrá los meses con sus oportunidades (tarjetas)

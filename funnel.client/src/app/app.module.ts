@@ -81,7 +81,7 @@ import { TipoCurrencyPipe } from './pipes/tipoCurrency.pipe';
 import localeEs from '@angular/common/locales/es-MX';
 import { APP_INITIALIZER, LOCALE_ID } from '@angular/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { AcordeonHorizontalComponent } from './components/acordion-horizontal/app-acordeon-horizontal.component';
+import { OortunidadesMesAcordeonComponent } from './components/acordion-horizontal/app-oportunidadesMes-acordeon.component';
 import { HeaderComponent } from './components/header/header.component';
 import { VerticalBarComponent } from './components/vertical-bar/vertical-bar.component';
 
@@ -134,7 +134,7 @@ registerLocaleData(localeEs, 'es-MX');
     ModalOportunidadesCanceladasComponent,
     SeguimientoOportunidadesComponent,
     HeaderComponent,
-    AcordeonHorizontalComponent,
+    OortunidadesMesAcordeonComponent,
     EstadisticasPorEtapaComponent,
     PermisosComponent,
   ],

@@ -70,9 +70,9 @@
 .submenu {
   position: absolute;
   top: 0;
-  left: 100%;  /* Desplaza el submenú fuera de la barra lateral */
-  margin-left: 5px;  /* Espacio entre la barra y el submenú */
-  background-color:  #103D66;
+  left: 100%; /* Desplaza el submenú fuera de la barra lateral */
+ /* Espacio entre la barra y el submenú */
+  background-color: #103D66;
   color: white; /* Color de la letra */
   border-radius: 8px;
   padding: 10px 0;
@@ -80,9 +80,9 @@
   min-width: 180px;
   display: none;
   border: none; /* Asegura que no haya bordes */
-text-align: left;
+  text-align: left;
   list-style-type: none;
-
+  border-left: 1px solid #fff;
 }
 
 /* Bordes y separación de los elementos del submenú */

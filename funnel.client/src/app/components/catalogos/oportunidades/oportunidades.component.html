@@ -45,7 +45,6 @@
           
           <ng-template class="divAccionesTabla" #caption>
             <div class="col-12" style="text-align: left; font-weight: bold; margin-top: 20px">
-              <h3>Administración General de Oportunidades en Proceso</h3>
             </div>
             <div class="row">
               <div class="col inDivDatatableHeader" style="text-align:right; margin-right:5px">
@@ -53,31 +52,28 @@
                   [ngStyle]="{'margin-right': '5px'}">
                 </p-dropdown>
                 <p-button label="" icon="bi bi-arrow-clockwise" (click)="clear(dt)" severity="secondary"
-                  pTooltip="Refrescar" tooltipPosition="top"
-                  [ngStyle]="{'margin-right': '5px'}" />
-                
+                pTooltip="Refrescar" tooltipPosition="top" styleClass="custom-button refresh-button"
+                [ngStyle]="{'margin-right': '5px'}" />
                 <p-button label="" icon="bi bi-download" severity="secondary" (click)="exportExcel(dt)" 
-                  pTooltip="Descargar Excel" tooltipPosition="top"
-                  [ngStyle]="{'margin-right': '5px'}"/>
-                
+                pTooltip="Descargar Excel" tooltipPosition="top" styleClass="custom-button download-button"
+                [ngStyle]="{'margin-right': '5px'}"/>
                 <p-button label="" icon="bi-list" (click)="agregarColumna($event)" severity="secondary"  
-                  pTooltip="Agregar columna" tooltipPosition="top"
-                  [ngStyle]="{'margin-right': '5px'}"/>
-                
+                pTooltip="Agregar columna" tooltipPosition="top" styleClass="custom-button column-button"
+                [ngStyle]="{'margin-right': '5px'}"/>
                 <p-button label="" icon="bi bi-plus" severity="secondary" (click)="inserta()"  
-                  pTooltip="Añadir nuevo" tooltipPosition="top"
+                  pTooltip="Añadir nuevo" tooltipPosition="top" styleClass="custom-button add-button"
                   [ngStyle]="{'margin-right': '5px'}"/>
               </div>
             </div>
           </ng-template>
-
           <ng-template pTemplate="header" let-columns>
             <tr class="custom-header">
-                <th *ngFor="let def of lsColumnasAMostrar" pSortableColumn="{{def.key}}" pReorderableColumn>
-                  {{def.valor}}<p-sortIcon field="{{def.key}}"></p-sortIcon>
+                <th *ngFor="let def of lsColumnasAMostrar" pSortableColumn="{{def.key}}" pReorderableColumn [class.sort-active]="isSorted(def.key)">
+                    {{def.valor}}
+                  <p-sortIcon field="{{def.key}}"></p-sortIcon>
                 </th>
-                <th></th>
-            </tr> 
+                <th></th> 
+            </tr>
             <tr>
                 <th *ngFor="let def of lsColumnasAMostrar">
                     <ng-container *ngIf="def.groupColumn">

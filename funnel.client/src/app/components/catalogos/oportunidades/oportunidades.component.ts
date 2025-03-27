@@ -343,5 +343,9 @@ export class OportunidadesComponent {
       ];
       this.titulo = titulos[index] || 'Administración General';
     }
+    isSorted(columnKey: string): boolean {
+    
+      return this.dt?.sortField === columnKey;
+  }
   
 }

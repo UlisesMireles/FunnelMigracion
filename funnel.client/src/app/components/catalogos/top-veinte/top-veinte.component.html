@@ -22,12 +22,12 @@
               <div class="row">
                 <div class="col inDivDatatableHeader" style="text-align:right; margin-right:5px">
                   <p-button label="" icon="bi bi-arrow-clockwise" (click)="clear(dt)" severity="secondary"
-                    pTooltip="Refrescar" tooltipPosition="top"
-                    [ngStyle]="{'margin-right': '5px'}" />
-                  
-                  <p-button label="" icon="bi bi-download" severity="secondary" (click)="exportExcel(dt)" 
-                    pTooltip="Descargar Excel" tooltipPosition="top"
-                    [ngStyle]="{'margin-right': '5px'}"/>
+                pTooltip="Refrescar" tooltipPosition="top" styleClass="custom-button refresh-button"
+                [ngStyle]="{'margin-right': '5px'}" />
+                <p-button label="" icon="bi bi-download" severity="secondary" (click)="exportExcel(dt)" 
+                pTooltip="Descargar Excel" tooltipPosition="top" styleClass="custom-button download-button"
+                [ngStyle]="{'margin-right': '5px'}"/>
+              
                   
                 </div>
               </div>

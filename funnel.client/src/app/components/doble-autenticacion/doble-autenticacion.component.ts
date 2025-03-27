@@ -34,6 +34,7 @@ export class DobleAutenticacionComponent {
     private authService: LoginService,
   ) { }
   ngOnInit(): void {
+    console.log("hola");
     this.twoFactorForm = this.fb.group({
       codigo: ['', [Validators.required, Validators.minLength(6)]],
       sesion: [false]
@@ -114,7 +115,7 @@ export class DobleAutenticacionComponent {
     this.authenticationService.DobleAutenticacion(TwoFactor).subscribe({
       next: (data) => {
         if (data.tipoMensaje == 1) {
-          this.router.navigate(['/prospectos']);
+          this.router.navigate(['/oportunidades']);
         } else {
           this.messageService.add({
             severity: 'error',

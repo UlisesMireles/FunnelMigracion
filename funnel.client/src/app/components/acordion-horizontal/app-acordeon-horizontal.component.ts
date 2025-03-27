@@ -1,7 +1,7 @@
 import { transferArrayItem } from '@angular/cdk/drag-drop';
 import { ChangeDetectorRef, Component, EventEmitter, Output } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { OportunidadesPorMes, RequestActualizarFechaEstimadaCierre } from '../../interfaces/oportunidades';
+import { Oportunidad, OportunidadesPorMes, RequestActualizarFechaEstimadaCierre, Tarjeta } from '../../interfaces/oportunidades';
 import { baseOut } from '../../interfaces/utils/utils/baseOut';
 import { LoginService } from '../../services/login.service';
 import { OportunidadesService } from '../../services/oportunidades.service';
@@ -26,8 +26,10 @@ export class AcordeonHorizontalComponent {
   idOportunidadTarjeta: number = 0;  // Variable para almacenar el ID de la oportunidad (tarjeta) que se está moviendo
   tarjetaEnEspera: any;  // Variable para almacenar temporalmente la tarjeta arrastrada (para poder obtener su idOportunidad)
   ultimoMesAgregado: string = '';// Variable auxiliar que guarda el nombre y año del último mes agregado (por ejemplo: "Julio 2025")
-
-
+  modalEditarVisible: boolean = false;
+  insertar: boolean = false;
+  oportunidadSeleccionada!: Oportunidad;
+  oportunidades: Oportunidad[] = [];
   // Output para emitir resultados de la petición post (por ejemplo, para notificar a un padre)
   @Output() result: EventEmitter<baseOut> = new EventEmitter();
 
@@ -280,4 +282,30 @@ getTotalNormalizado(mes: OportunidadesPorMes): number {
   return mes.tarjetas.reduce((acc, tarjeta) => acc + (tarjeta.montoNormalizado || 0), 0);
 }
 
+onModalClose() {
+  this.modalEditarVisible = false;
+}
+
+manejarResultado(result: baseOut) {
+  if (result.result) {
+    this.messageService.add({
+      severity: 'success',
+      summary: 'La operación se realizó con éxito.',
+      detail: result.errorMessage,
+    });
+    this.getOportunidadesPorMes();
+  } else {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Se ha producido un error.',
+      detail: result.errorMessage,
+    });
+  }
+}
+
+    actualiza(licencia: Tarjeta) {
+      this.oportunidadSeleccionada = licencia;
+      this.insertar = false;
+      this.modalEditarVisible = true;
+    }
 }

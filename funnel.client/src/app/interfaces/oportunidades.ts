@@ -93,7 +93,19 @@ export interface Tarjeta {
   nombreEjecutivo: string;
   iniciales: string;
   descripcion: string;
-  fechaEstimadaCierre: string;
+  fechaEstimadaCierre?: Date;
+  idTipoProyecto : number;
+  nombreContacto: string;
+  entrega: string;
+  fechaEstimadaCierreOriginal?: Date;
+  idEstatusOportunidad?: number;
+  comentario?: string;
+  idProspecto?: number;
+  idStage?: number;
+  idTipoEntrega?: number;
+  idEjecutivo?: number;
+  idContactoProspecto?: number;
+  totalComentarios?: number;
 }
 
 export  interface OportunidadesPorMes {

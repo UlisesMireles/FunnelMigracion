@@ -36,8 +36,12 @@
           <div class="row  ">
             <!-- Encabezado con título e ícono de edición -->
           <div class="card-header">
-            <i class="bi bi-card-text commandSeguimiento" title="Seguimiento"></i>
-            <i class="bi bi-pencil-fill commandEditar" title="Editar"></i>
+            <p-button type="button" icon="bi bi-file-earmark-text" text
+            pTooltip="Ver seguimiento" tooltipPosition="top" styleClass="blue-icon">
+            <span class="badge">{{ tarjeta.totalComentarios || 0 }}</span>
+            </p-button>
+            <p-button type="button" icon="bi bi-pencil" text (click)="actualiza(tarjeta)"
+            pTooltip="Editar oportunidad" tooltipPosition="top" styleClass="yellow-icon"/>
           </div>
             <div  class="col-9 tarjeta-row"  id =" Div  + {{idOportunidadTarjeta}} ">
               <div class="row justify-content-between">
@@ -107,3 +111,12 @@
     </div>
   </div>
 </div>
+
+
+
+<p-toast position="center"></p-toast>
+
+<app-modal-oportunidades [(visible)]="modalEditarVisible" [title]="'Editar Datos de '" (closeModal)="onModalClose()"
+  (result)="manejarResultado($event)" [insertar]="insertar" [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">
+</app-modal-oportunidades>
+

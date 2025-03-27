@@ -123,8 +123,22 @@ namespace Funnel.Logic
                         NombreEjecutivo = y.NombreEjecutivo ?? "",
                         Iniciales = y.Iniciales ?? "",
                         Descripcion = y.Descripcion ?? "",
-                        FechaEstimadaCierre = y.FechaEstimadaCierre
-                        
+                        FechaEstimadaCierre = y.FechaEstimadaCierre,
+                        IdTipoProyecto = y.IdTipoProyecto,
+                        NombreContacto = y.NombreContacto ?? "",
+                        Entrega = y.Entrega,
+                        FechaEstimadaCierreOriginal = y.FechaEstimadaCierreOriginal,
+                        IdEstatusOportunidad = y.IdEstatusOportunidad,
+                        Comentario = y.Comentario,
+                        IdProspecto = y.IdProspecto,
+                        IdStage = y.IdStage,
+                        IdTipoEntrega = y.IdTipoEntrega,
+                        IdEjecutivo = y.IdEjecutivo,
+                        IdContactoProspecto = y.IdContactoProspecto,
+                        TotalComentarios = y.TotalComentarios
+
+
+
                     }).ToList()
                 });
             }
@@ -158,7 +172,20 @@ namespace Funnel.Logic
                         NombreEjecutivo = y.NombreEjecutivo ?? "",
                         Iniciales = y.Iniciales ?? "",
                         Descripcion = y.Descripcion ?? "",
-                        FechaEstimadaCierre = y.FechaEstimadaCierre
+                        FechaEstimadaCierre = y.FechaEstimadaCierre,
+                        IdTipoProyecto = y.IdTipoProyecto,
+                        NombreContacto = y.NombreContacto ?? "",
+                        Entrega = y.Entrega,
+                        FechaEstimadaCierreOriginal = y.FechaEstimadaCierreOriginal,
+                        IdEstatusOportunidad = y.IdEstatusOportunidad,
+                        Comentario = y.Comentario,
+                        IdProspecto = y.IdProspecto,
+                        IdStage = y.IdStage,
+                        IdTipoEntrega = y.IdTipoEntrega,
+                        IdEjecutivo = y.IdEjecutivo,
+                        IdContactoProspecto = y.IdContactoProspecto,
+                        TotalComentarios = y.TotalComentarios
+
                     }).ToList()
                 });
             }

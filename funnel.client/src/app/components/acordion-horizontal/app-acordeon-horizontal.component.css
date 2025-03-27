@@ -367,3 +367,22 @@ div.fotoTarjeta {
   text-align: right;            /* Alinea el texto a la derecha */
   white-space: nowrap;          /* Evita que se rompa la línea */
 }
+::ng-deep .yellow-icon .p-button-icon {
+  color: rgb(202, 202, 5) !important;
+}
+::ng-deep .blue-icon .p-button-icon {
+  color: blue !important;
+}
+.badge {
+  position: absolute;
+  top: 7px;
+  right: 10px;
+  color: black;
+  padding: 2px 6px;
+  font-size: 10px;
+  font-weight: normal;
+}
+
+.p-button {
+  position: relative;
+}

@@ -22,7 +22,13 @@ export class VerticalBarComponent {
   isScrollable: boolean = false;
   scrollInterval: any = null;
 
-  constructor(private router: Router, private permisosService: PermisosService, private messageService: MessageService, private loginService: LoginService) {}
+  ListaMenu: any[] = [];
+
+  constructor(private router: Router,
+    private messageService: MessageService,
+    private permisosService: PermisosService,
+    private readonly loginService: LoginService) {}
+
 
   ngOnInit(): void {
     this.consultarMenu();
@@ -48,6 +54,8 @@ export class VerticalBarComponent {
           subMenu: []
         };
 
+        // Combinar: primero "Perfil", luego los permisos, luego "SALIR"
+        this.ListaMenu = [perfil, ...result, salir];
       },
       error: (error) => {
         this.messageService.add({

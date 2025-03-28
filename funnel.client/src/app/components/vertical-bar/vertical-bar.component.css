@@ -41,19 +41,25 @@
 
 .expand-btn-container {
   position: absolute;
-  top:520px; /* Ajusta este valor según lo necesites */
-  left: 0;
-  width: 100%;
+  bottom: 200px;
+  right: 10px;
+  width: auto;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
+  padding-right: 5px; 
+  overflow: visible; 
 }
 
 .expand-btn {
   cursor: pointer;
-  padding: 0px;
+  padding: 5px;       
   border-radius: 50%;
   background-color: #103D66;
   transition: background 0.3s ease;
+  margin-left: 0;     
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .expand-btn:hover {
@@ -295,18 +301,21 @@
 .tooltip-box {
   position: absolute;
   top: 50%;
-  left: 100%;
+  left: calc(100% + 15px); 
   transform: translateY(-50%);
-  background-color:  #103D66;
-  color: white; /* Color de la letra */
+  background-color: #103D66;
+  color: white;
   padding: 5px 10px;
   border-radius: 5px;
   white-space: nowrap;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s, visibility 0.3s;
-  margin-left: 8px; /* Espacio entre el botón y el tooltip */
+  transition: opacity 0.3s;
+  z-index: 1000;
+  pointer-events: none;
+  margin-left: 0;
 }
+
 
 .expand-btn-container:hover .tooltip-box {
   opacity: 1;
@@ -318,18 +327,12 @@
   content: "";
   position: absolute;
   top: 50%;
-  right: 100%;
+  right: 100%; 
   transform: translateY(-50%);
-  border-width: 8px;
+  border-width: 6px;
   border-style: solid;
-  border-color: transparent  #103D66 transparent transparent;
-  margin-left: 15px; /* Espacio entre el botón y el tooltip */
-
+  border-color: transparent #103D66 transparent transparent;
 }
-
-
-
-
 
 
 /* Estilo de los botones cuando están en hover */
@@ -354,8 +357,8 @@
 }
 
 .expand-btn i {
-  font-size: 25px; /* Para el botón de expandir */
-  padding-left: 30px;
+  font-size: 20px; /* Para el botón de expandir */
+  padding-left: 0px;
 }
 
 /*

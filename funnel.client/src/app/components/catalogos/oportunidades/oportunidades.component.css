@@ -232,7 +232,7 @@ div.inDivDatatableHeader > p-button > button.p-button {
 .contenedorTabla{
   overflow-x: auto;
   width: 100%;
-  margin-top: -50px !important; 
+  margin-top: -45px !important; 
 }
 .table-responsive{
   overflow-x: auto;
@@ -273,7 +273,7 @@ div.inDivDatatableHeader > p-button > button.p-button {
   border-bottom: 1px solid #dee2e6;
   position: absolute;
   left: 46px;
-  top: 60px; 
+  top: 65px; 
   z-index: 2;
 }
 

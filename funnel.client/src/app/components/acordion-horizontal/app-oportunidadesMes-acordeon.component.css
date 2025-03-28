@@ -37,19 +37,21 @@
 
 /* Encabezado del item (nombre del mes y botón) */
 .encabezado-acordeon {
-  display: flex; /* Usa flexbox para organizar el contenido interno */
-  flex-direction: column; /* Organiza los elementos en columna */
-  align-items: center; /* Centra horizontalmente los elementos */
+  display: flex;            /* Organiza en fila */
+  align-items: center;      /* Centra verticalmente */
+  gap: 10px;               /* Espacio entre botón y texto */
+  width: 100%;             /* Ocupa todo el ancho */
 }
 
 /* Botón de toggle para expandir/collapse */
 .boton-toggle {
-  background: transparent; /* Fondo transparente */
-  border: none; /* Sin borde */
-  cursor: pointer; /* Cursor pointer para indicar que es clickeable */
-  font-size: 20px; /* Tamaño de fuente de 20px para el icono */
-  margin-top: auto; /* Empuja el botón hacia abajo, dejando el espacio restante arriba */
-
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  margin: 0;               /* Elimina margen inferior */
+  padding: 0;              /* Elimina padding */
+  order: 1;                /* Posición izquierda (primero) */
 }
 
 /* Contenedor del contenido del item (donde se muestran las tarjetas) */
@@ -130,13 +132,14 @@
   display: flex;             /* Usa flexbox para organizar el contenido interno (nombre y contador) */
   align-items: center;       /* Centra verticalmente los elementos dentro */
   justify-content: space-between; /* Distribuye el espacio entre el nombre y el contador */
+  order: 2;
 }
 
 /* Estilo para el contador de tarjetas (número entre paréntesis) */
 .contador-tarjetas {
   font-weight: bold;    /* Fuente en negrita */
   font-size: 14px;      /* Tamaño de fuente de 14px */
-  margin-left: 2px;     /* Pequeño margen a la izquierda */
+  margin-left: 5px;     /* Pequeño margen a la izquierda */
   margin-top: 5px;      /* Espacio extra por encima para separar del nombre en estado vertical */
 }
 
@@ -149,6 +152,7 @@
   justify-content: space-between; /* Separa el nombre y el contador a los extremos */
   align-items: center;          /* Centra verticalmente */
   width: 100%;                  /* Ocupa todo el ancho del contenedor */
+  order: 2;
 }
 
 /* En estado expandido, el contador se alinea a la derecha con margen */
@@ -389,5 +393,4 @@ div.fotoTarjeta {
 .p-button {
   position: relative;
 }
-
 

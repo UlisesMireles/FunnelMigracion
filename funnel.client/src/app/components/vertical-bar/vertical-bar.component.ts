@@ -48,7 +48,7 @@ export class VerticalBarComponent {
           tooltipMessage: 'Esta característica está incluida'}, // Mensaje del globo
         { nombre: 'OPORTUNIDADES POR AGENTE', path: '/oportunidades/subopcion2'   ,hasIcon: false, // 🟠 Indica si tiene icono adicional
           tooltipMessage: 'Esta característica está incluida'}, // Mensaje del globo
-        { nombre: 'CLIENTES TOP 20', path: '/oportunidades/subopcion3'    ,hasIcon: false, // 🟠 Indica si tiene icono adicional
+        { nombre: 'CLIENTES TOP 20', path: '/top-veinte'    ,hasIcon: false, // 🟠 Indica si tiene icono adicional
           tooltipMessage: 'Esta característica está incluida'} // Mensaje del globo
       ]
     },

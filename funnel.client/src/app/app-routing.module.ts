@@ -13,7 +13,7 @@ import { ModalTipoServiciosComponent } from './components/catalogos/tipo-servici
 import { UsuariosComponent } from './components/catalogos/usuarios/usuarios.component';
 import { OportunidadesComponent } from './components/catalogos/oportunidades/oportunidades.component';
 import { EstadisticasPorEtapaComponent } from './components/catalogos/estadisticas-por-etapa/estadisticas-por-etapa.component';
-
+import { OortunidadesMesAcordeonComponent } from './components/acordion-horizontal/app-oportunidadesMes-acordeon.component';
 import { TopVeinteComponent } from './components/catalogos/top-veinte/top-veinte.component';
 import { OportunidadesGanadasComponent } from './components/catalogos/oportunidades-ganadas/oportunidades-ganadas.component';
 import { OportunidadesEliminadasComponent } from './components/catalogos/oportunidades-eliminadas/oportunidades-eliminadas.component';
@@ -21,6 +21,7 @@ import { OportunidadesCanceladasComponent } from './components/catalogos/oportun
 import { OportunidadesPerdidasComponent } from './components/catalogos/oportunidades-perdidas/oportunidades-perdidas.component';
 import { ModalOportunidadesCanceladasComponent } from './components/catalogos/oportunidades-canceladas/modal-oportunidades-canceladas/modal-oportunidades-canceladas.component';
 import { ModalOportunidadesPerdidasComponent } from './components/catalogos/oportunidades-perdidas/modal-oportunidades-perdidas/modal-oportunidades-perdidas.component';
+
 
 import { TiposEntregaComponent } from './components/catalogos/tipos-entrega/tipos-entrega.component';
 import { ModalTiposEntregaComponent } from './components/catalogos/tipos-entrega/modal-tipos-entrega/modal-tipos-entrega.component';
@@ -59,7 +60,7 @@ const routes: Routes = [
   { path: 'oportunidades-perdidas-modal', component: ModalOportunidadesPerdidasComponent, title: 'Oportunidades Perdidas', canActivate: [AuthGuard] },
   { path: 'permisos', component: PermisosComponent, title: 'Permisos', canActivate: [AuthGuard] },
   { path: 'top-veinte', component: TopVeinteComponent, title: 'Top Veinte', canActivate: [AuthGuard] },
-
+  { path: 'app-oportunidadesMes-acordeon', component: OortunidadesMesAcordeonComponent, title: 'Oportunidades Mes', canActivate: [AuthGuard] },
 ];
 
 

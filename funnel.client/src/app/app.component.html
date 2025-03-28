@@ -1,7 +1,6 @@
 <div class="main-container">
   <app-header *ngIf="!login"></app-header>
   <app-menu *ngIf="!login"></app-menu>
-  <app-login *ngIf="login"></app-login>
 
   <app-login *ngIf="login && !dobleAutenticacion"></app-login>
   <app-doble-autenticacion *ngIf="dobleAutenticacion" ></app-doble-autenticacion>

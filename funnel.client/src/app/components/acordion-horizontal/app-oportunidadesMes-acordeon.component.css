@@ -5,6 +5,7 @@
   overflow-x: auto; /* Permite scroll horizontal si el contenido excede el ancho */
   padding: 10px; /* Espacio interno de 10px en todos los lados */
   transition: background-color 0.3s ease-in-out; /* Transición suave para cambios en el fondo */
+  padding-top: 50px !important; /* Aumenta el espacio superior para que el contenido se vea bien */
 }
 
 /* Efecto hover en cada item del acordeón */

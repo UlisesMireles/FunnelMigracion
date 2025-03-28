@@ -36,14 +36,13 @@
         <div *ngFor="let tarjeta of mes.tarjetas" cdkDrag [cdkDragData]="tarjeta" class="tarjeta">
           <div class="row  ">
             <!-- Encabezado con título e ícono de edición -->
-          <div class="card-header">
-            <p-button type="button" icon="bi bi-file-earmark-text" text (click)="seguimiento(tarjeta)"
-            pTooltip="Ver seguimiento" tooltipPosition="top" styleClass="blue-icon">
-            <span class="badge">{{ tarjeta.totalComentarios || 0 }}</span>
-            </p-button>
-            <p-button type="button" icon="bi bi-pencil" text (click)="actualiza(tarjeta)"
-            pTooltip="Editar oportunidad" tooltipPosition="top" styleClass="yellow-icon"/>
-          </div>
+            <div class="card-header">
+              <p-button type="button" icon="bi bi-file-earmark-text fs-4" text (click)="seguimiento(tarjeta)"
+                pTooltip="Ver seguimiento" tooltipPosition="top" styleClass="blue-icon" [style]="{'font-size': '1.5rem'}">
+              </p-button>
+              <p-button type="button" icon="bi bi-pencil" text (click)="actualiza(tarjeta)"
+                pTooltip="Editar oportunidad" tooltipPosition="top" styleClass="yellow-icon" [style]="{'font-size': '1.5rem'}"/>
+            </div>
             <div  class="col-9 tarjeta-row"  id =" Div  + {{idOportunidadTarjeta}} ">
               <div class="row justify-content-between">
                 <div class="col-8 col-8-tarjeta">

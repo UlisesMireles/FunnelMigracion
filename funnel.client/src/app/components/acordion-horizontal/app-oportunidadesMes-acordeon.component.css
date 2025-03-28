@@ -1,0 +1,392 @@
+/* Contenedor principal del acordeón horizontal */
+.acordeon-horizontal {
+  display: flex; /* Usa flexbox para organizar los elementos en fila */
+  gap: 10px; /* Espacio de 10px entre cada elemento del acordeón */
+  overflow-x: auto; /* Permite scroll horizontal si el contenido excede el ancho */
+  padding: 10px; /* Espacio interno de 10px en todos los lados */
+  transition: background-color 0.3s ease-in-out; /* Transición suave para cambios en el fondo */
+}
+
+/* Efecto hover en cada item del acordeón */
+.item-acordeon:hover {
+  background-color: rgba(0, 0, 0, 0.1); /* Cambia el fondo a un tono más oscuro al pasar el cursor */
+}
+
+/* Cada item del acordeón (cada mes) */
+.item-acordeon {
+  width: 70px; /* Ancho inicial del item (colapsado) */
+  height: 600px; /* Altura fija de 550px para el acordeón */
+  background: #f8f9fa; /* Color de fondo claro */
+  border: 1px solid #ccc; /* Borde gris claro */
+  display: flex; /* Usa flexbox para organizar el contenido internamente */
+  flex-direction: column; /* Organiza los elementos en columna */
+  align-items: center; /* Centra horizontalmente el contenido */
+  justify-content: space-between; /* Distribuye el contenido con espacio entre ellos */
+  padding: 10px; /* Espaciado interno de 10px */
+  cursor: pointer; /* Cambia el cursor para indicar interactividad */
+  transition: width 0.3s ease-in-out; /* Transición suave para el cambio de ancho (cuando se expande) */
+  position: relative; /* Posicionamiento relativo para posicionar elementos internos si es necesario */
+  overflow: hidden; /* Oculta el contenido que se salga del contenedor */
+}
+
+/* Cuando el item está expandido */
+.item-acordeon.expandido {
+  width: 320px; /* Ancho mayor para el estado expandido (ajusta según lo necesites) */
+}
+
+/* Encabezado del item (nombre del mes y botón) */
+.encabezado-acordeon {
+  display: flex; /* Usa flexbox para organizar el contenido interno */
+  flex-direction: column; /* Organiza los elementos en columna */
+  align-items: center; /* Centra horizontalmente los elementos */
+}
+
+/* Botón de toggle para expandir/collapse */
+.boton-toggle {
+  background: transparent; /* Fondo transparente */
+  border: none; /* Sin borde */
+  cursor: pointer; /* Cursor pointer para indicar que es clickeable */
+  font-size: 20px; /* Tamaño de fuente de 20px para el icono */
+  margin-top: auto; /* Empuja el botón hacia abajo, dejando el espacio restante arriba */
+
+}
+
+/* Contenedor del contenido del item (donde se muestran las tarjetas) */
+.contenido-acordeon {
+  width: 100%; /* Ocupa el 100% del ancho del item */
+  height: 100%; /* Ocupa el 100% de la altura del item */
+  overflow: hidden; /* Oculta el contenido que exceda el contenedor */
+  display: flex; /* Usa flexbox */
+  flex-direction: column; /* Organiza el contenido en columna */
+}
+
+/* Contenedor de las tarjetas (lista interna de tarjetas) */
+.contenedor-tarjetas {
+  height: 100%;           /* Se establece la altura completa del contenedor padre */
+  overflow-y: auto;       /* Activa scroll vertical cuando el contenido excede la altura */
+  padding: 5px;           /* Espaciado interno de 5px */
+  display: flex;          /* Usa flexbox para organizar las tarjetas */
+  flex-direction: column; /* Organiza las tarjetas en columna */
+  gap: 8px;               /* Espacio de 8px entre cada tarjeta */
+  box-sizing: border-box; /* Incluye padding y border dentro de la altura definida */
+}
+
+/* Cada tarjeta individual */
+.tarjeta {
+  background: #ffffff; /* Fondo blanco para cada tarjeta */
+  border-radius: 0px;  /* Sin redondeo en las esquinas */
+  padding: 10px;       /* Espaciado interno de 10px */
+  text-align: center;  /* Centrado del texto */
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave para dar profundidad */
+  padding-top: 0pX;    /* (Posible error tipográfico: "0pX" en lugar de "0px") */
+  border: black solid 1px !important; /* Borde negro de 1px, con !important para forzar la regla */
+}
+
+/* Imagen interna de la tarjeta */
+.imagen-tarjeta {
+  width: 100%;         /* La imagen ocupa el 100% del ancho del contenedor */
+  border-radius: 5px;  /* Esquinas redondeadas con un radio de 5px */
+}
+
+/* Estilos para el preview del drag and drop */
+.cdk-drag-preview {
+  box-sizing: border-box; /* Incluye padding y borde en el tamaño total */
+  border-radius: 4px;       /* Esquinas redondeadas con 4px */
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+              0 8px 10px 1px rgba(0, 0, 0, 0.14),
+              0 3px 14px 2px rgba(0, 0, 0, 0.12); /* Sombra para el preview */
+}
+
+/* Estilos para el placeholder durante el drag */
+.cdk-drag-placeholder {
+  opacity: 0; /* Hace el placeholder invisible */
+}
+
+/* Transición para el drag animado */
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1); /* Transición suave para la animación del drag */
+}
+
+/* Para la última tarjeta, se elimina el borde inferior */
+.tarjeta:last-child {
+  border: none;
+}
+
+/* Transición para las tarjetas mientras se arrastra (no placeholder) */
+.contenedor-tarjetas.cdk-drop-list-dragging .tarjeta:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+/* Estilo para el nombre del mes */
+.nombre-mes {
+  writing-mode: vertical-rl; /* Muestra el texto de manera vertical cuando está colapsado */
+  transform: rotate(180deg); /* Rota el texto 180 grados para la orientación deseada */
+  white-space: nowrap;       /* Evita que el texto se divida en varias líneas */
+  transition: writing-mode 0.3s ease-in-out, transform 0.3s ease-in-out; /* Transición suave para cambios de estado */
+  text-align: center;        /* Centra el texto */
+  font-weight: bold;         /* Fuente en negrita */
+  font-size: 14px;           /* Tamaño de fuente de 14px */
+  display: flex;             /* Usa flexbox para organizar el contenido interno (nombre y contador) */
+  align-items: center;       /* Centra verticalmente los elementos dentro */
+  justify-content: space-between; /* Distribuye el espacio entre el nombre y el contador */
+}
+
+/* Estilo para el contador de tarjetas (número entre paréntesis) */
+.contador-tarjetas {
+  font-weight: bold;    /* Fuente en negrita */
+  font-size: 14px;      /* Tamaño de fuente de 14px */
+  margin-left: 2px;     /* Pequeño margen a la izquierda */
+  margin-top: 5px;      /* Espacio extra por encima para separar del nombre en estado vertical */
+}
+
+/* Cuando el item está expandido, el nombre se muestra horizontalmente */
+.item-acordeon.expandido .nombre-mes {
+  writing-mode: horizontal-tb; /* Muestra el texto en línea */
+  transform: rotate(0);         /* Sin rotación */
+  flex-direction: row;          /* Organiza en fila */
+  display: flex;                /* Usa flexbox */
+  justify-content: space-between; /* Separa el nombre y el contador a los extremos */
+  align-items: center;          /* Centra verticalmente */
+  width: 100%;                  /* Ocupa todo el ancho del contenedor */
+}
+
+/* En estado expandido, el contador se alinea a la derecha con margen */
+.item-acordeon.expandido .contador-tarjetas {
+  margin: 0 8px 0 auto; /* Margen: 0 arriba, 8px a la derecha, 0 abajo y automático a la izquierda para empujar al final */
+}
+
+/* Posicionamiento y estilos de la modal */
+.ModalRegistrarFecha {
+  position: fixed;         /* Posicionamiento fijo respecto a la ventana */
+  top: 50%;                /* Centrado verticalmente */
+  left: 50%;               /* Centrado horizontalmente */
+  transform: translate(-50%, -50%); /* Ajuste para centrar perfectamente */
+  z-index: 1000;           /* Alta prioridad en la superposición */
+  width: auto;             /* Ancho automático */
+  max-width: 90%;          /* Máximo ancho del 90% para pantallas pequeñas */
+}
+
+/* Estilos para el botón primario */
+.btn-primary {
+  color: #fff !important;              /* Texto blanco, forzado con !important */
+  background-color: #007bff !important; /* Fondo azul, forzado */
+  border-color: #007bff !important;     /* Borde azul, forzado */
+}
+
+/* Estilos para el botón secundario */
+.btn-secondary {
+  background-color: lightgray !important; /* Fondo gris claro */
+  border-color: lightgray !important;     /* Borde gris claro */
+}
+
+/* En estado expandido, se asegura que el contenido del item se muestre */
+.item-acordeon.expandido .contenido-acordeon {
+  display: block;
+}
+
+/* Fuente global para el body */
+body {
+  font-family: "Segoe UI", Arial, Sans-Serif; /* Fuente preferida: Segoe UI, con Arial y Sans-Serif como fallback */
+}
+
+/* Espaciado superior para la fila de la tarjeta */
+.tarjeta-row {
+  padding-top: 10px;
+}
+
+/* Estilo para el nombre de la empresa */
+.nombre-empresa {
+  font-size: 17px;       /* Tamaño de fuente de 17px */
+  font-weight: bold;     /* Negrita */
+  color: #333333;        /* Color gris oscuro */
+  text-align: left;      /* Alineación a la izquierda */
+}
+
+/* Alineación a la derecha para la abreviatura */
+.abrev {
+  text-align: right;
+}
+
+/* Estilo para la abreviatura del nombre */
+.nombre-abrev {
+  font-size: 17px;       /* Tamaño de fuente de 17px */
+  font-weight: bold;     /* Negrita */
+  color: #333333;        /* Color gris oscuro */
+}
+
+/* Estilo para el nombre de la oportunidad */
+.nombre-oportunidad {
+  font-size: 15px;       /* Tamaño de fuente de 15px */
+  font-weight: 600;      /* Semi-negrita */
+  color: #455a64;        /* Color azul grisáceo */
+  text-align: left;      /* Alineación a la izquierda */
+}
+
+/* Estilos para monto, probabilidad y monto normalizado */
+.monto, .probabilidad, .monto-normalizado {
+  font-size: 14px;       /* Tamaño de fuente de 14px */
+  font-weight: 500;      /* Peso medio */
+  color: #747678;        /* Color gris medio */
+  text-align: left;      /* Alineación a la izquierda */
+  white-space: nowrap;   /* Evita el salto de línea */
+  margin-right: 35px;    /* Espaciado de 25px a la derecha entre elementos */
+}
+
+/* Estilo para las iniciales */
+.iniciales {
+  display: block !important; /* Asegura que se muestre en bloque */
+  font-size: 14px;           /* Tamaño de fuente de 14px */
+  font-weight: 500;          /* Peso medio */
+  color: #747678;            /* Color gris medio */
+  text-align: center;        /* Centrado */
+  margin-bottom: 0 !important; /* Sin margen inferior, forzado con !important */
+}
+
+/* Estilos para la foto (círculo) de la tarjeta */
+div.fotoTarjeta {
+  height: 55px;            /* Altura del círculo: 55px */
+  width: 55px;             /* Ancho del círculo: 55px */
+  background-repeat: no-repeat; /* No repetir la imagen de fondo */
+  background-position: 50%;     /* Centrar la imagen de fondo */
+  border-radius: 50%;      /* Hacer el contenedor circular */
+  background-size: 100% auto;  /* Ajustar el tamaño de la imagen de fondo */
+}
+
+/* Estilos para pantallas grandes (min-width: 1900px) */
+@media (min-width: 1900px) {
+  .clsNomEmpresa {
+      width: 138%;       /* Ajusta el ancho para esta clase */
+  }
+  .clsNomEmpresa125 {
+      width: 125%;       /* Ajusta el ancho para esta clase */
+  }
+  .clsNomEmpresa116 {
+      width: 116%;       /* Ajusta el ancho para esta clase */
+  }
+  #Abrev {
+      right: -25px !important; /* Posiciona el elemento con id "Abrev" */
+  }
+}
+
+/* Ajustes para pantallas aún más grandes (min-width: 1920px) */
+@media (min-width: 1920px) {
+  #Abrev {
+      right: -29px !important; /* Ajuste fino de la posición del elemento */
+  }
+}
+
+/* Asegura que nombre-oportunidad, monto, probabilidad y monto-normalizado ocupen toda la línea */
+.nombre-oportunidad,
+.monto,
+.probabilidad,
+.monto-normalizado {
+  display: block;       /* Cada label ocupa toda la línea */
+  text-align: left;     /* Alineación a la izquierda */
+  width: 100%;          /* Usan el 100% del ancho disponible */
+}
+
+/* Contenedor para los datos de monto, probabilidad y monto-normalizado en una sola fila */
+.fila-monto {
+  display: flex;                /* Usa flexbox para organizar en fila */
+  justify-content: flex-start;  /* Alinea los elementos a la izquierda */
+  gap: 8px;                     /* Espacio de 8px entre cada elemento */
+  width: 20% !important;        /* Fuerza el ancho a 20% (ajusta según lo necesites) */
+}
+
+/* Reglas para filas con justificación entre elementos */
+.row.justify-content-between {
+  display: flex;            /* Usa flexbox */
+  align-items: center;      /* Centra verticalmente los elementos */
+}
+
+/* Estilos para el encabezado de la tarjeta (donde se muestran los iconos) */
+.card-header {
+  /*background-image: url('/assets/img/FondoTools.png'); *//* Imagen de fondo */
+  background-size: cover;         /* La imagen cubre todo el contenedor */
+  background-position: center;    /* La imagen se centra */
+  background-repeat: no-repeat;   /* La imagen no se repite */
+  height: 35px;                   /* Altura fija de 27px */
+  display: flex;                  /* Usa flexbox */
+  justify-content: flex-end;      /* Alinea el contenido a la derecha */
+  align-items: center;            /* Centra verticalmente */
+  padding: 0px;                   /* Espaciado interno de 5px */
+  gap: 10px;                    /* Espacio entre los iconos */
+  border-bottom: 1px solid #ddd;  /* Borde inferior gris */
+  margin-left: 0px!important;     /* Margen izquierdo 0 (forzado) */
+  margin-right: 0px!important;    /* Margen derecho 0 (forzado) */
+  width: 99.8% !important;        /* Ancho casi completo, forzado */
+  padding-right: 5px !important;  /* Espaciado interno derecho 5px (forzado) */
+}
+
+/* Icono para seguimiento en la tarjeta */
+.commandSeguimiento {
+  width: 20px !important;        /* Ancho de 20px */
+  height: 20px !important;       /* Altura de 20px */
+  background: url('/assets/img/list-alt-regular.svg') !important; /* Imagen de fondo del icono */
+  background-repeat: no-repeat !important;  /* No repetir imagen */
+  background-position: 50%;       /* Centrar la imagen */
+  background-size: 100% auto;     /* Ajustar el tamaño de la imagen */
+  cursor: pointer;                /* Cursor pointer para indicar clickeable */
+  font-size: 14.4px;              /* Tamaño de fuente (ajustable si es necesario) */
+}
+
+/* Icono para editar en la tarjeta */
+.commandEditar {
+  width: 19px !important;        /* Ancho de 19px */
+  height: 19px !important;       /* Altura de 19px */
+  background: url('/assets/img/pencil-alt-solid.svg') !important; /* Imagen de fondo del icono de editar */
+  background-repeat: no-repeat !important; /* No repetir la imagen */
+  background-position: 50%;       /* Centrar la imagen */
+  background-size: 100% auto;     /* Ajustar tamaño de la imagen */
+  cursor: pointer;                /* Cursor pointer para indicar interactividad */
+  font-size: 14.4px;              /* Tamaño de fuente ajustable */
+}
+
+/* Clase para la columna que contiene el nombre de la empresa */
+.col-8-tarjeta {
+  text-align: start; /* Alinea el contenido al inicio (izquierda) */
+}
+.lblTotalMeses {
+  font-weight: 600;
+  font-size: 1em;
+  color: #103D66;
+}
+.lblNormalizadoMeses {
+  font-weight: 600;
+  font-size: 1em;
+  color: #08a742;
+}
+.total-row {
+  display: flex;                /* Convierto la fila en un contenedor flex */
+  justify-content: flex-end;    /* Alinea los elementos al final (derecha) */
+  align-items: center;          /* Centra verticalmente los elementos */
+  width: 100%;                  /* Ocupa todo el ancho del contenedor */
+  margin-top: 5px;              /* Opcional: espacio superior */
+}
+
+.total-row span {
+  margin-left: 15px;            /* Espacio entre los totales */
+  text-align: right;            /* Alinea el texto a la derecha */
+  white-space: nowrap;          /* Evita que se rompa la línea */
+}
+::ng-deep .yellow-icon .p-button-icon {
+  color: rgb(202, 202, 5) !important;
+}
+::ng-deep .blue-icon .p-button-icon {
+  color: blue !important;
+}
+.badge {
+  position: absolute;
+  top: 7px;
+  right: 10px;
+  color: black;
+  padding: 2px 6px;
+  font-size: 10px;
+  font-weight: normal;
+}
+
+.p-button {
+  position: relative;
+}
+
+

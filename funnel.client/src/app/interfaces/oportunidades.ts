@@ -81,3 +81,50 @@ export interface Archivos {
     iniciales: string;
     numArchivos: number;
 }
+export interface Tarjeta {
+  idOportunidad: number;
+  nombreEmpresa: string;
+  nombreAbrev: string;
+  nombreOportunidad: string;
+  monto: number;
+  probabilidad: string;
+  montoNormalizado: number;
+  imagen: string;
+  nombreEjecutivo: string;
+  iniciales: string;
+  descripcion: string;
+  fechaEstimadaCierre?: Date;
+  idTipoProyecto : number;
+  nombreContacto: string;
+  entrega: string;
+  fechaEstimadaCierreOriginal?: Date;
+  idEstatusOportunidad?: number;
+  comentario?: string;
+  idProspecto?: number;
+  idStage?: number;
+  idTipoEntrega?: number;
+  idEjecutivo?: number;
+  idContactoProspecto?: number;
+  totalComentarios?: number;
+  idUsuario?: number;
+  idEmpresa?: number;
+  stage?: string;
+  nombre?: string;
+}
+
+export  interface OportunidadesPorMes {
+  nombre: string;
+  expandido: boolean;
+  mes: number;
+  anio: number;
+  tarjetas: Tarjeta[];
+}
+
+
+export interface RequestActualizarFechaEstimadaCierre {
+  bandera: string;
+  idOportunidad?: number;
+  idEmpresa?: number;
+  fechaEstimadaCierre?: Date;
+  idUsuario?: number;
+}

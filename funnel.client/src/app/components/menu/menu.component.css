@@ -1,5 +1,8 @@
 .tituloAdmin {
-  padding: 10px;
+  padding-top: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 10pX;
 }
 
 /* .containerSideNav {
@@ -75,7 +78,9 @@ html body #container {
 }
 
 .content {
-  padding: 20px; /* Espacio alrededor del contenido */
+  padding-left: 20px;
+  padding-top: 0px!important;
+  padding-bottom: 0px;
   margin-left: 200px; /* Ajusta según el tamaño del menú */
 }
 

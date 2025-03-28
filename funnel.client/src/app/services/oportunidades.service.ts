@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import{ Observable } from 'rxjs';
-import { RequestOportunidad } from '../interfaces/oportunidades';
+import { RequestActualizarFechaEstimadaCierre, RequestOportunidad } from '../interfaces/oportunidades';
 import { baseOut } from '../interfaces/utils/utils/baseOut';
 
 @Injectable({
@@ -18,7 +18,7 @@ export class OportunidadesService {
         params: { idEmpresa: idEmpresa.toString(), idUsuario: idUsuario.toString(), idEstatus: idEstatus.toString() }
       });
     }
-    
+
     postOportunidad(data: RequestOportunidad): Observable <baseOut>{
       return this.http.post<baseOut>(this.baseUrl+'api/Oportunidades/GuardarOportunidad', data);
     }
@@ -28,31 +28,31 @@ export class OportunidadesService {
         params: { idEmpresa: idEmpresa.toString() }
       });
     }
-  
+
     getServicios(idEmpresa: number): Observable<any> {
       return this.http.get(`${this.baseUrl}api/Oportunidades/ComboServicios`, {
         params: { idEmpresa: idEmpresa.toString() }
       });
     }
-  
+
     getEtapas(idEmpresa: number): Observable<any> {
       return this.http.get(`${this.baseUrl}api/Oportunidades/ComboEtapas`, {
         params: { idEmpresa: idEmpresa.toString() }
       });
     }
-  
+
     getEntregas(idEmpresa: number): Observable<any> {
       return this.http.get(`${this.baseUrl}api/Oportunidades/ComboEntregas`, {
         params: { idEmpresa: idEmpresa.toString() }
       });
     }
-  
+
     getEjecutivos(idEmpresa: number): Observable<any> {
       return this.http.get(`${this.baseUrl}api/Oportunidades/ComboEjecutivos`, {
         params: { idEmpresa: idEmpresa.toString() }
       });
     }
-  
+
     getContactos(idEmpresa: number, idProspecto: number): Observable<any> {
       return this.http.get(`${this.baseUrl}api/Oportunidades/ComboContactos`, {
         params: { idEmpresa: idEmpresa.toString(), idProspecto: idProspecto.toString() }
@@ -78,4 +78,15 @@ export class OportunidadesService {
     getDocumentos(idOportunidad: number): Observable<any> {
       return this.http.get(`${this.baseUrl}api/Archivos/ConsultarArchivo/`+ idOportunidad);
     }
+
+    getOportunidadesPorMes(idEmpresa: number, idUsuario: number): Observable<any> {
+      return this.http.get(`${this.baseUrl}api/Oportunidades/ConsultarOportunidadesPorMes`, {
+        params: {idUsuario: idUsuario.toString(),idEmpresa: idEmpresa.toString() }
+      });
+    }
+
+    postOportunidadPorMesTarjeta(data: RequestActualizarFechaEstimadaCierre): Observable <baseOut>{
+      return this.http.post<baseOut>(this.baseUrl+'api/Oportunidades/ActualizarFechaEstimada', data);
+    }
+
 }

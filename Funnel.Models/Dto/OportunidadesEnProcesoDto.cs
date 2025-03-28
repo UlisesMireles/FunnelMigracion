@@ -2,6 +2,7 @@
 {
     public class OportunidadesEnProcesoDto
     {
+       
         public int? IdUsuario { get; set; }
         public int? IdEmpresa { get; set; }
         public int? IdEstatus { get; set; }
@@ -55,5 +56,6 @@
         public string? NombreContactoCompleto { get; set; }
         public int? IdTipoOportunidad { get; set; }
         public string? Bandera { get; set; }
+        public string? Foto { get; set; }
     }
 }

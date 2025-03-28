@@ -13,7 +13,7 @@ import { PermisosService } from '../../services/permisos.service';
 })
 export class VerticalBarComponent {
 
-
+  modalVisible: boolean = false;
   isExpanded: boolean = false;
   hoveredMenu: number | null = null;
   showTooltip: boolean = false;
@@ -40,7 +40,7 @@ export class VerticalBarComponent {
       next: (result: Permiso[]) => {
         const perfil = {
           nombre: 'Perfil',
-          ruta: '/login',
+          ruta: '/perfil',
           icono: 'bi bi-person-circle',
           tooltip: 'Perfil',
           subMenu: []
@@ -67,11 +67,21 @@ export class VerticalBarComponent {
     });
   }
 
+
   navigateTo(path: string) {
-    if (path) {
+    if (path === '/perfil') {
+      console.log('Perfil');
+     this.modalVisible = true;
+     console.log('this.modalVisible ' + this.modalVisible);
+    } else {
       this.router.navigate([path]);
     }
   }
+  // navigateTo(path: string) {
+  //   if (path) {
+  //     this.router.navigate([path]);
+  //   }
+  // }
   showSubmenu(menuIndex: number) {
     this.hoveredMenu = menuIndex;
   }

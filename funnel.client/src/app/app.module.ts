@@ -89,6 +89,7 @@ import { VerticalBarComponent } from './components/vertical-bar/vertical-bar.com
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { EstadisticasPorEtapaComponent } from './components/catalogos/estadisticas-por-etapa/estadisticas-por-etapa.component';
+import { UsuarioPerfilComponent } from './components/usuario-perfil/usuario-perfil.component';
 export function configurationProviderFactory(provider: PrimeNgConfiguracionService) {
   return () => provider.load();
 }
@@ -137,6 +138,7 @@ registerLocaleData(localeEs, 'es-MX');
     OortunidadesMesAcordeonComponent,
     EstadisticasPorEtapaComponent,
     PermisosComponent,
+    UsuarioPerfilComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,9 +1,5 @@
 import { Component, ElementRef, EventEmitter, HostListener, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
-import { Permiso } from '../../interfaces/permisos';
-import { LoginService } from '../../services/login.service';
-import { PermisosService } from '../../services/permisos.service';
 
 @Component({
   selector: 'app-vertical-bar',
@@ -21,51 +17,83 @@ export class VerticalBarComponent {
   @Output() toggleSidebar = new EventEmitter<boolean>();
   isScrollable: boolean = false;
   scrollInterval: any = null;
+  ListaMenu = [
+    {
+      nombre: 'EN PROCESO',
+      path: '/oportunidades',
+      icono: 'bi bi-hourglass-split',  // Icono de una persona, ya que es un estado de proceso
+      tooltip: 'Ir a en Proceso',
+      subMenu: []
+    },
+    {
+      nombre: 'TERMINADAS',
+      path: '',
+      icono: 'bi bi-fonts',  // Icono de marca de verificación, indicando que está terminado
+      tooltip: 'Ir a Terminadas',
+      subMenu: [
+        { nombre: 'GANADAS', path: '/oportunidades-ganadas' , hasIcon: false, tooltipMessage:'' },
+        { nombre: 'PERDIDAS', path: '/oportunidades-perdidas' , hasIcon: false ,tooltipMessage:'' },
+        { nombre: 'CANCELADAS', path: '/oportunidades-canceladas' , hasIcon: false ,tooltipMessage:'' },
+        { nombre: 'ELIMINADAS', path: '/oportunidades-eliminadas' , hasIcon: false,tooltipMessage:''  },
+      ]
+    },
+    {
+      nombre: 'DASHBOARD',
+      path: '',
+      icono: 'bi bi-bar-chart',  // Icono relacionado con un dashboard (pantalla de inicio)
+      tooltip: 'Ir a DASHBOARD',
+      subMenu: [
+        { nombre: 'OPORTUNIDADES GENERAL', path: '/oportunidades54'
+          ,hasIcon: false, // 🟠 Indica si tiene icono adicional
+          tooltipMessage: 'Esta característica está incluida'}, // Mensaje del globo
+        { nombre: 'OPORTUNIDADES POR AGENTE', path: '/oportunidades/subopcion2'   ,hasIcon: false, // 🟠 Indica si tiene icono adicional
+          tooltipMessage: 'Esta característica está incluida'}, // Mensaje del globo
+        { nombre: 'CLIENTES TOP 20', path: '/top-veinte'    ,hasIcon: false, // 🟠 Indica si tiene icono adicional
+          tooltipMessage: 'Esta característica está incluida'} // Mensaje del globo
+      ]
+    },
+    {
+      nombre: 'ADMINISTRACIÓN',
+      path: '',
+      icono: 'bi bi-briefcase',  // Icono de engranaje, representando administración o configuración
+      tooltip: 'Ir a administración',
+      subMenu: [
+        { nombre: 'PROSPECTOS', path: '/prospectos' ,hasIcon: false, // 🟠 Indica si tiene icono adicional
+          tooltipMessage: 'Esta característica está incluida'} ,// Mensaje del globo
+        { nombre: 'CONTACTOS', path: '/contactos' ,hasIcon: false, // 🟠 Indica si tiene icono adicional
+          tooltipMessage: 'Esta característica está incluida'} // Mensaje del globo
+      ]
+    },
+    {
+      nombre: 'CATÁLOGOS',
+      path: '',
+      icono: 'bi-list-ul',  // Icono de lista, adecuado para catálogos
+      tooltip: 'Ir a Catálogos',
+      subMenu: [
+        { nombre: 'USUARIOS', path: '/usuarios', hasIcon: false, tooltipMessage:'' },
+        { nombre: 'PERMISOS', path: '/permisos' , hasIcon: false , tooltipMessage:''},
+        { nombre: 'TIPO SERVICIO', path: '/tipos-servicios' , hasIcon: false, tooltipMessage:'' },
+        { nombre: 'TIPO ENTREGA', path: '/tipos-entrega' , hasIcon: false , tooltipMessage:''}
+      ]
+    },
+    {
+      nombre: 'HERRAMIENTAS',
+      path: '/herramientas',
+      icono: 'bi-wrench',  // Icono de llave inglesa, representando herramientas
+      tooltip: 'Ir a Herramientas',
+      subMenu: []
+    },
+    {
+      nombre: 'SALIR',
+      path: '/login',
+      icono: 'bi-box-arrow-right',  // Icono de salir o cerrar sesión
+      tooltip: 'Cerrar sesión',
+      subMenu: []  // Sin submenú
+    }
+  ];
 
-  ListaMenu: any[] = [];
 
-  constructor(private router: Router,
-    private messageService: MessageService,
-    private permisosService: PermisosService,
-    private readonly loginService: LoginService) {}
-
-
-  ngOnInit(): void {
-    this.consultarMenu();
-  }
-
-  consultarMenu(): void {
-
-    this.permisosService.getPermisosPorRol(this.loginService.obtenerRolUsuario(), this.loginService.obtenerIdEmpresa()).subscribe({
-      next: (result: Permiso[]) => {
-        const perfil = {
-          nombre: 'Perfil',
-          ruta: '/login',
-          icono: 'bi bi-person-circle',
-          tooltip: 'Perfil',
-          subMenu: []
-        };
-
-        const salir = {
-          nombre: 'SALIR',
-          ruta: '/login',
-          icono: 'bi-box-arrow-right',
-          tooltip: 'Cerrar sesión',
-          subMenu: []
-        };
-
-        // Combinar: primero "Perfil", luego los permisos, luego "SALIR"
-        this.ListaMenu = [perfil, ...result, salir];
-      },
-      error: (error) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Se ha producido un error al consultar los permisos.',
-          detail: error.errorMessage,
-        });
-      },
-    });
-  }
+  constructor(private router: Router) {}
 
   navigateTo(path: string) {
     if (path) {

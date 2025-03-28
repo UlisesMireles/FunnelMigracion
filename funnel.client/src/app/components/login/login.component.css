@@ -676,4 +676,34 @@ label {
     .recaptcha-container {
         transform: scale(0.8, 0.7);
     }
+
+
+    .toggle-password {
+      cursor: pointer;
+      background-color: white;
+      border-left: none !important;
+    }
+    
+    .toggle-password:hover {
+      background-color: #f5f5f5;
+    }
+
+    .input-group {
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .input-group-text {
+      background-color: white;
+      border: 1px solid #ced4da;
+      padding: 0.375rem 0.75rem;
+    }
+
+    .input-group-prepend .input-group-text {
+      border-right: none;
+    }
+
+    .pass input {
+      border-right: none;
+    }
 }

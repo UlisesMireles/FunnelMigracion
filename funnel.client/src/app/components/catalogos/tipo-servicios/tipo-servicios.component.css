@@ -223,9 +223,51 @@ div.inDivDatatableHeader > p-button > button.p-button {
 .contenedorTabla{
   overflow-x: auto;
   width: 100%;
+  margin-top: -45px !important;
 }
 .table-responsive{
   overflow-x: auto;
   width: 100%;
   max-width: 100%;
+}
+/* Oculta el icono por defecto */
+th p-sortIcon {
+  display: none;
+}
+
+/* Muestra el icono SOLO cuando la columna está ordenada (asc o desc) */
+th.sort-active p-sortIcon {
+  display: inline-block;
+}
+
+/* Estilo para los botones */
+
+::ng-deep .custom-button.p-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+}
+
+::ng-deep .refresh-button.p-button:hover {
+  background-color: #4682b4 !important; 
+  border-color: #4682b4 !important;
+  color: white !important;
+}
+
+::ng-deep .download-button.p-button:hover {
+  background-color: #4682b4 !important; 
+  border-color: #4682b4 !important;
+  color: white !important;
+}
+
+::ng-deep .column-button.p-button:hover {
+  background-color: #4682b4 !important; 
+  border-color: #4682b4 !important;
+  color: white !important;
+}
+
+::ng-deep .add-button.p-button:hover {
+  background-color: #4682b4 !important; 
+  border-color: #4682b4 !important;
+  color: white !important;
 }

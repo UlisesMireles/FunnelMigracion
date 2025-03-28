@@ -151,7 +151,15 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
                   </div>
-                  <input type="password" class="form-control" placeholder="contraseña" formControlName="password" />
+                  <input 
+                    [type]="showPassword ? 'text' : 'password'" 
+                    class="form-control" 
+                    placeholder="contraseña" 
+                    formControlName="password"
+                  />
+                  <span class="input-group-text toggle-password" (click)="togglePasswordVisibility()">
+                    <i class="bi" [class.bi-eye-slash]="!showPassword" [class.bi-eye]="showPassword"></i>
+                  </span>
                 </div>
                 <div class="input-group btn-l">
                   <button class="btn btn-login btn-lg btn-block form-control" (click)="login()">Iniciar Sesión</button>

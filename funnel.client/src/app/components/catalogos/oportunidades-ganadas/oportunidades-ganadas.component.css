@@ -232,22 +232,58 @@
   .contenedorTabla{
     overflow-x: auto;
     width: 100%;
+    margin-top: -25px !important;
   }
   .table-responsive{
     overflow-x: auto;
     width: 100%;
     max-width: 100%;
   }
+
   .badge {
     position: absolute;
-    top: 7px;
-    right: 10px;
+    top: 9px;
+    right: 12px;
     color: black;
     padding: 2px 6px;
-    font-size: 10px;
+    font-size: 11px;
     font-weight: normal;
   }
-  
   .p-button {
     position: relative;
   }
+  /* Oculta el icono por defecto */
+th p-sortIcon {
+  display: none;
+}
+
+/* Muestra el icono SOLO cuando la columna está ordenada (asc o desc) */
+th.sort-active p-sortIcon {
+  display: inline-block;
+}
+
+/* Estilo para los botones */
+
+::ng-deep .custom-button.p-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+}
+
+::ng-deep .refresh-button.p-button:hover {
+  background-color: #4682b4 !important; 
+  border-color: #4682b4 !important;
+  color: white !important;
+}
+
+::ng-deep .download-button.p-button:hover {
+  background-color: #4682b4 !important; 
+  border-color: #4682b4 !important;
+  color: white !important;
+}
+
+::ng-deep .column-button.p-button:hover {
+  background-color: #4682b4 !important; 
+  border-color: #4682b4 !important;
+  color: white !important;
+}

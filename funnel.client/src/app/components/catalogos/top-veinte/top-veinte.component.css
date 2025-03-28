@@ -224,6 +224,7 @@
   .contenedorTabla{
     overflow-x: auto;
     width: 100%;
+    margin-top: -45px !important;
   }
   .table-responsive{
     overflow-x: auto;
@@ -248,3 +249,23 @@
     text-align: center !important;
     vertical-align: middle !important;
   }
+  
+/* Estilo para los botones */
+
+::ng-deep .custom-button.p-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+}
+
+::ng-deep .refresh-button.p-button:hover {
+  background-color: #4682b4 !important; 
+  border-color: #4682b4 !important;
+  color: white !important;
+}
+
+::ng-deep .download-button.p-button:hover {
+  background-color: #4682b4 !important; 
+  border-color: #4682b4 !important;
+  color: white !important;
+}

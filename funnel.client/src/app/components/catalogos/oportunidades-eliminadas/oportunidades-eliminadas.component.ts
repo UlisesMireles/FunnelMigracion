@@ -276,7 +276,7 @@ export class OportunidadesEliminadasComponent {
           nombreOportunidad: '100%',
           abreviatura: '100%',
           stage: '100%',
-          nombreEjecutivo: '100%',
+          iniciales: '100%',
           monto: '100%',
           probabilidad: '100%',
           fechaRegistro: '100%',
@@ -286,4 +286,8 @@ export class OportunidadesEliminadasComponent {
       };
       return { width: widths[key] || 'auto' };
   }
+  isSorted(columnKey: string): boolean {
+    
+    return this.dt?.sortField === columnKey;
+}
 }

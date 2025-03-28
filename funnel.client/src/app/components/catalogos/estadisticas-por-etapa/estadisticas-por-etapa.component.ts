@@ -48,8 +48,8 @@ export class EstadisticasPorEtapaComponent {@ViewChild('dt') dt!: Table;
     { key: 'nombreSector', isCheck: true, valor: 'Sector', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreOportunidad', isCheck: true, valor: 'Oportunidad', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'abreviatura', isCheck: true, valor: 'Tipo', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'stage', isCheck: true, valor: 'Etapa', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'nombreEjecutivo', isCheck: true, valor: 'Ejecutivo', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'stage', isCheck: true, valor: 'Etapa', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
+    { key: 'iniciales', isCheck: true, valor: 'Ejecutivo', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'fechaRegistro', isCheck: true, valor: 'Fecha Alta', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
     { key: 'diasFunnel', isCheck: true, valor: 'Días Funnel', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
     {key: 'diasEtapa1', isCheck: true, valor: 'Etapa 1', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
@@ -286,6 +286,10 @@ export class EstadisticasPorEtapaComponent {@ViewChild('dt') dt!: Table;
       
       return sum / this.oportunidades.length;
     }
+    isSorted(columnKey: string): boolean {
+    
+      return this.dt?.sortField === columnKey;
+  }
     
   
 }

@@ -80,6 +80,23 @@ namespace Funnel.Server.Controllers
             var result = await _oportunidadesService.GuardarHistorico(request);
             return Ok(result);
         }
-
+        [HttpGet("[action]/")]
+        public async Task<ActionResult> ConsultarOportunidadesPorMes(int IdUsuario, int idEmpresa )
+        {
+            var result = await _oportunidadesService.ConsultarOportunidadesPorMes(IdUsuario, idEmpresa);
+            return Ok(result);
+        }
+        [HttpGet("[action]/")]
+        public async Task<ActionResult> ConsultarOportunidadesPorEtapa(int IdUsuario, int idEmpresa )
+        {
+            var result = await _oportunidadesService.ConsultarOportunidadesPorEtapa(IdUsuario, idEmpresa);
+            return Ok(result);
+        }
+        [HttpPost("[action]/")]
+        public async Task<ActionResult> ActualizarFechaEstimada(OportunidadesEnProcesoDto request)
+        {
+            var result = await _oportunidadesService.ActualizarFechaEstimada(request);
+            return Ok(result);
+        }
     }
 }

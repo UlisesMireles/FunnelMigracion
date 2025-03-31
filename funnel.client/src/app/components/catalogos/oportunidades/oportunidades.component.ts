@@ -36,6 +36,7 @@ export class OportunidadesComponent {
   modalVisible: boolean = false;
   modalSeguimientoVisible: boolean = false; 
   modalDocumentosVisible: boolean = false;
+  
 
   loading: boolean = true;
 
@@ -324,5 +325,33 @@ export class OportunidadesComponent {
     
       return this.dt?.sortField === columnKey;
   }
+  getFilterValue(field: string): any {
+    const filter = this.dt?.filters[field];
+    if (Array.isArray(filter)) {
+      // If it's an array, return an empty string or a default value
+      return '';
+    } else {
+      // If it's a single FilterMetadata object, return its value
+      return filter?.value || '';
+    }
+  }
   
+  onFilterChange(field: string, value: any): void {
+    if (this.dt) {
+      this.dt.filter(value, field, 'contains');
+    }
+  }
+
+  getNombreEtapa(numeroEtapa: number): string {
+    const etapas: {[key: number]: string} = {
+      1: 'Calificación de Prospectos',
+      2: 'Investigación de Necesidades',
+      3: 'Elaboración de Propuestas',
+      4: 'Presentación de Propuestas',
+      5: 'Negociación'
+    };
+    return etapas[numeroEtapa] || 'Etapa desconocida';
+  }
 }
+
+

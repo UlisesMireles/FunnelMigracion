@@ -263,4 +263,15 @@ export class EstadisticasPorEtapaComponent {@ViewChild('dt') dt!: Table;
     isSorted(columnKey: string): boolean {
       return this.dt?.sortField === columnKey;
     }
+
+    getNombreEtapa(numeroEtapa: number): string {
+      const etapas: {[key: number]: string} = {
+        1: 'Calificación de Prospectos',
+        2: 'Investigación de Necesidades',
+        3: 'Elaboración de Propuestas',
+        4: 'Presentación de Propuestas',
+        5: 'Negociación'
+      };
+      return etapas[numeroEtapa] || 'Etapa desconocida';
+    }
 }

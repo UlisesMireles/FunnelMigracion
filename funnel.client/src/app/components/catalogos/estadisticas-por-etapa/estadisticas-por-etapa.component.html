@@ -75,13 +75,13 @@
                             </p-columnFilter>
                           </div>
                           <div *ngSwitchCase="'date'">
-                              <p-columnFilter type="{{def.tipoFormato}}" [field]="def.key" [showButtons]="false">
-                                  <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                                      <p-calendar #calendar [ngModel]="value" (onSelect)="filter(calendar.value)"
-                                          [showButtonBar]="true"></p-calendar>
-                                  </ng-template>
-                              </p-columnFilter>
-                          </div>
+                            <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false">
+                                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                    <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
+                                        (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
+                                </ng-template>
+                            </p-columnFilter>
+                        </div>
                           <div *ngSwitchDefault>
                               <p-columnFilter
                                   *ngIf="def.tipoFormato !== 'text' && def.tipoFormato !== 'currency' && def.tipoFormato !== 'date'"
@@ -99,6 +99,7 @@
               <td *ngFor="let def of lsColumnasAMostrar"
                   [ngStyle]="{
                     'text-align':
+                      def.key === 'abreviatura' ? 'center' :
                       (def.valor.includes('%')) ? 'center' :
                       def.tipoFormato === 'currency' ? 'right' :
                       (def.tipoFormato === 'number' || def.tipoFormato === 'date') ? 'center' : 'left'
@@ -108,10 +109,14 @@
                     <span *ngIf="def.key === 'nombreContacto'" pTooltip="{{rowData[def.key]}}" tooltipPosition="top">
                       {{ rowData[def.key]?.split(' ')[0] }}
                     </span>
+                    
                     <span *ngIf="def.key === 'iniciales'" pTooltip="{{rowData['nombreEjecutivo']}}" tooltipPosition="top">
                       {{ rowData[def.key] }}
                     </span>
-                    <span *ngIf="def.key !== 'nombreContacto' && def.key !== 'iniciales'">
+                    <span *ngIf="def.key === 'abreviatura'" pTooltip="{{rowData['descripcion']}}" tooltipPosition="top">
+                      {{ rowData[def.key] }}
+                    </span>
+                    <span *ngIf="def.key !== 'nombreContacto' && def.key !== 'iniciales' && def.key !== 'abreviatura'" >
                       {{ rowData[def.key] }}
                     </span>
                   </span>
@@ -124,7 +129,10 @@
                     <span *ngIf="def.key === 'fechaModificacion'" [ngStyle]="{ 'color': getColorForDiasSinActividad(rowData[def.key]) }">
                       {{ rowData[def.key] }}
                     </span>
-                    <span *ngIf="def.key !== 'fechaModificacion'">
+                    <span *ngIf="def.key === 'stage'" pTooltip="{{getNombreEtapa(rowData[def.key])}}" tooltipPosition="top">
+                      {{ rowData[def.key] | number:'1.0-2' }}
+                    </span>
+                    <span *ngIf="def.key !== 'fechaModificacion' && def.key !== 'stage'">
                       {{ rowData[def.key] | number:'1.0-2' }}
                     </span>
                   </span>

@@ -11,7 +11,7 @@
       <li class="menu-item" *ngFor="let item of ListaMenu; let i = index"
       (mouseenter)="showSubmenu(i)"
       (mouseleave)="hideSubmenu()"
-      (click)="navigateTo(item.path)">
+      (click)="navigateTo(item.ruta)">
     <i [ngClass]="item.icono" [title]="item.tooltip"></i>
     <span *ngIf="isExpanded">{{ item.nombre }}</span>
 
@@ -21,7 +21,7 @@
           <!-- <li class="submenu-header">{{ item.pagina }}</li> -->
 
           <li *ngFor="let subItem of item.subMenu" class="submenu-item">
-            <a [routerLink]="subItem.path">{{ subItem.nombre }}</a>
+            <a [routerLink]="subItem.ruta">{{ subItem.pagina }}</a>
 
             <!-- 🟠 Icono y tooltip si hasIcon es true -->
             <span *ngIf="subItem.hasIcon" class="icono-naranja">

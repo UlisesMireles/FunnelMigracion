@@ -43,7 +43,7 @@ export class VerticalBarComponent {
             nombre: 'SALIR',
             ruta: '/login',
             icono: 'bi-box-arrow-right',
-            tooltip: 'Cerrar sesión',
+            tooltip: 'CERRAR SESIÓN',
             subMenu: []
           }
         );

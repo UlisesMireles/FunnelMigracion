@@ -374,8 +374,8 @@ div.fotoTarjeta {
   text-align: right;            /* Alinea el texto a la derecha */
   white-space: nowrap;          /* Evita que se rompa la línea */
 }
-::ng-deep .yellow-icon .p-button-icon {
-  color: rgb(202, 202, 5) !important;
+::ng-deep .coloreditar-icon .p-button-icon {
+  color: rgb(122, 122, 4) !important;
 }
 ::ng-deep .blue-icon .p-button-icon {
   color: blue !important;

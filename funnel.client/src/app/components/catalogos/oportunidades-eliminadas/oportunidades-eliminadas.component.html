@@ -143,12 +143,14 @@
                 </ng-container>
               </td>
               <td>
-                <p-button type="button" icon="bi bi-file-earmark-text fs-4" text (click)="seguimiento(rowData)" 
-                pTooltip="Ver seguimiento" tooltipPosition="top" styleClass="blue-icon">
+                <p-button type="button" icon="bi bi-file-earmark-text fs-3" text (click)="seguimiento(rowData)" 
+                pTooltip="Ver seguimiento" tooltipPosition="top" styleClass="blue-icon" [style]="{'font-size': '1.5rem','background': 'transparent','border-color': 'transparent'}"
+                [ngStyle]="{'hover': {'background': 'transparent'}}">
                 <span class="badge">{{ rowData.totalComentarios || 0 }}</span>
                 </p-button>
                 <p-button type="button" icon="bi bi-pencil fs-4" text (click)="actualiza(rowData)" 
-                  pTooltip="Editar oportunidad" tooltipPosition="top" styleClass="coloreditar-icon"/>
+                  pTooltip="Editar oportunidad" tooltipPosition="top" styleClass="coloreditar-icon" [style]="{'font-size': '1.5rem','background': 'transparent','border-color': 'transparent'}"
+                  [ngStyle]="{'hover': {'background': 'transparent'}}"/>
               </td>
             </tr>
           </ng-template>

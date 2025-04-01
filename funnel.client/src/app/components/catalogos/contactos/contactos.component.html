@@ -126,7 +126,8 @@
               </td>
               <td>
                 <p-button type="button" icon="bi bi-pencil fs-4" text (click)="actualiza(rowData)" 
-                  pTooltip="Editar registro" tooltipPosition="top" styleClass="coloreditar-icon"/>
+                  pTooltip="Editar registro" tooltipPosition="top" styleClass="coloreditar-icon" [style]="{'font-size': '1.5rem','background': 'transparent','border-color': 'transparent'}"
+                  [ngStyle]="{'hover': {'background': 'transparent'}}"/>
               </td>
             </tr>
           </ng-template>

@@ -53,6 +53,11 @@ export class LoginComponent implements OnInit {
   }
 
   closeLoginModal() {
+    this.loginForm.reset();
+
+    this.errorMessage = '';
+    this.showErrors = false;
+
     this.isLoginModalOpen = false;
   }
 
@@ -63,6 +68,11 @@ export class LoginComponent implements OnInit {
   }
 
   closeResetModal() {
+    this.resetUsername = ''; 
+
+    this.resetErrorMessage = '';
+    this.showErrors = false;
+
     this.isResetModalOpen = false;
   }
 

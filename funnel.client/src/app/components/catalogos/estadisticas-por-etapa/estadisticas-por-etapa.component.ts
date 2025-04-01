@@ -28,15 +28,9 @@ export class EstadisticasPorEtapaComponent {@ViewChild('dt') dt!: Table;
 
   idEstatus: number = 1;
 
- 
-
   loading: boolean = true;
 
-  years: number[] = [];
-  selectedYear: number = new Date().getFullYear();
-
   columnsToAverage = ['diasFunnel', 'diasEtapa1', 'diasEtapa2', 'diasEtapa3', 'diasEtapa4', 'diasEtapa5'];
-
 
   lsColumnasAMostrar: any[] = [
    
@@ -69,25 +63,7 @@ export class EstadisticasPorEtapaComponent {@ViewChild('dt') dt!: Table;
     ngOnInit(): void {
       this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
       this.getOportunidades();
-
-      const currentYear = new Date().getFullYear();
-      for (let year = currentYear; year >= 2020; year--) {
-        this.years.push(year);
-      }
-
       document.documentElement.style.fontSize = 12 + 'px';
-    }
-
-    filterByYear() {
-      if (this.oportunidadesOriginal) {
-        this.oportunidades = this.oportunidadesOriginal.filter(oportunidad => {
-          if (oportunidad.fechaRegistro) {
-            const fechaRegistro = new Date(oportunidad.fechaRegistro);
-            return fechaRegistro.getFullYear() === this.selectedYear;
-          }
-          return false;
-        });
-      }
     }
 
     getOportunidades() {
@@ -95,7 +71,6 @@ export class EstadisticasPorEtapaComponent {@ViewChild('dt') dt!: Table;
         next: (result: Oportunidad[]) => {
           this.oportunidades = [...result];
           this.oportunidadesOriginal = result;
-          this.filterByYear();
           this.cdr.detectChanges(); 
           this.loading = false;
         },
@@ -110,7 +85,6 @@ export class EstadisticasPorEtapaComponent {@ViewChild('dt') dt!: Table;
       });
     }
 
-
     clear(table: Table) {
       table.clear();
       this.getOportunidades();
@@ -118,7 +92,6 @@ export class EstadisticasPorEtapaComponent {@ViewChild('dt') dt!: Table;
       this.lsTodasColumnas = JSON.parse(this.columnsTodasResp);
       this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
       this.anchoTabla = 100;
-      this.selectedYear = new Date().getFullYear();
     }
   
     agregarColumna(event: any) {
@@ -229,7 +202,6 @@ export class EstadisticasPorEtapaComponent {@ViewChild('dt') dt!: Table;
       const hoy = new Date();
       const fechaCierre = new Date(fechaEstimadaCierreOriginal);
 
-
       const diferencia = fechaCierre.getTime() - hoy.getTime();
       const diasDiferencia = Math.ceil(diferencia / (1000 * 60 * 60 * 24));
 
@@ -277,6 +249,7 @@ export class EstadisticasPorEtapaComponent {@ViewChild('dt') dt!: Table;
       };
       return { width: widths[key] || 'auto' }; 
     }
+    
     getAverage(columnKey: 'diasFunnel' | 'diasEtapa1' | 'diasEtapa2' | 'diasEtapa3' | 'diasEtapa4' | 'diasEtapa5'): number {
       if (!this.oportunidades || this.oportunidades.length === 0) return 0;
       
@@ -286,10 +259,19 @@ export class EstadisticasPorEtapaComponent {@ViewChild('dt') dt!: Table;
       
       return sum / this.oportunidades.length;
     }
+    
     isSorted(columnKey: string): boolean {
-    
       return this.dt?.sortField === columnKey;
-  }
-    
-  
+    }
+
+    getNombreEtapa(numeroEtapa: number): string {
+      const etapas: {[key: number]: string} = {
+        1: 'Calificación de Prospectos',
+        2: 'Investigación de Necesidades',
+        3: 'Elaboración de Propuestas',
+        4: 'Presentación de Propuestas',
+        5: 'Negociación'
+      };
+      return etapas[numeroEtapa] || 'Etapa desconocida';
+    }
 }

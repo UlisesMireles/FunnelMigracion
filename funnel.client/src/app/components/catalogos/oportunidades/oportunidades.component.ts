@@ -36,11 +36,9 @@ export class OportunidadesComponent {
   modalVisible: boolean = false;
   modalSeguimientoVisible: boolean = false; 
   modalDocumentosVisible: boolean = false;
+  
 
   loading: boolean = true;
-
-  years: number[] = [];
-  selectedYear: number = new Date().getFullYear();
 
   titulo: string = 'Oportunidades en Proceso';
 
@@ -79,25 +77,7 @@ export class OportunidadesComponent {
     ngOnInit(): void {
       this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
       this.getOportunidades();
-
-      const currentYear = new Date().getFullYear();
-      for (let year = currentYear; year >= 2020; year--) {
-        this.years.push(year);
-      }
-
       document.documentElement.style.fontSize = 12 + 'px';
-    }
-
-    filterByYear() {
-      if (this.oportunidadesOriginal) {
-        this.oportunidades = this.oportunidadesOriginal.filter(oportunidad => {
-          if (oportunidad.fechaRegistro) {
-            const fechaRegistro = new Date(oportunidad.fechaRegistro);
-            return fechaRegistro.getFullYear() === this.selectedYear;
-          }
-          return false;
-        });
-      }
     }
 
     getOportunidades() {
@@ -105,7 +85,6 @@ export class OportunidadesComponent {
         next: (result: Oportunidad[]) => {
           this.oportunidades = [...result];
           this.oportunidadesOriginal = result;
-          this.filterByYear();
           this.cdr.detectChanges(); 
           this.loading = false;
         },
@@ -174,7 +153,6 @@ export class OportunidadesComponent {
       this.lsTodasColumnas = JSON.parse(this.columnsTodasResp);
       this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
       this.anchoTabla = 100;
-      this.selectedYear = new Date().getFullYear();
     }
   
     agregarColumna(event: any) {
@@ -339,7 +317,7 @@ export class OportunidadesComponent {
         'Oportunidades En Proceso',  
         'Oportunidades Por Mes',
         'Oportunidades Por Etapa',
-        'Estadísticas Por Etapa'
+        'Estadística Oportunidades por Etapa'
       ];
       this.titulo = titulos[index] || 'Administración General';
     }
@@ -347,5 +325,33 @@ export class OportunidadesComponent {
     
       return this.dt?.sortField === columnKey;
   }
+  getFilterValue(field: string): any {
+    const filter = this.dt?.filters[field];
+    if (Array.isArray(filter)) {
+      // If it's an array, return an empty string or a default value
+      return '';
+    } else {
+      // If it's a single FilterMetadata object, return its value
+      return filter?.value || '';
+    }
+  }
   
+  onFilterChange(field: string, value: any): void {
+    if (this.dt) {
+      this.dt.filter(value, field, 'contains');
+    }
+  }
+
+  getNombreEtapa(numeroEtapa: number): string {
+    const etapas: {[key: number]: string} = {
+      1: 'Calificación de Prospectos',
+      2: 'Investigación de Necesidades',
+      3: 'Elaboración de Propuestas',
+      4: 'Presentación de Propuestas',
+      5: 'Negociación'
+    };
+    return etapas[numeroEtapa] || 'Etapa desconocida';
+  }
 }
+
+

@@ -47,9 +47,6 @@
             </div>
             <div class="row">
               <div class="col inDivDatatableHeader" style="text-align:right; margin-right:5px">
-                <p-dropdown [options]="years" [(ngModel)]="selectedYear" (onChange)="filterByYear()" placeholder="Selecciona un año"
-                  [ngStyle]="{'margin-right': '5px'}">
-                </p-dropdown>
                 <p-button label="" icon="bi bi-arrow-clockwise" (click)="clear(dt)" severity="secondary"
                 pTooltip="Refrescar" tooltipPosition="top" styleClass="custom-button refresh-button"
                 [ngStyle]="{'margin-right': '5px'}" />
@@ -109,13 +106,13 @@
                             </p-columnFilter>
                           </div>
                           <div *ngSwitchCase="'date'">
-                              <p-columnFilter type="{{def.tipoFormato}}" [field]="def.key" [showButtons]="false">
-                                  <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                                      <p-calendar #calendar [ngModel]="value" (onSelect)="filter(calendar.value)"
-                                          [showButtonBar]="true"></p-calendar>
-                                  </ng-template>
-                              </p-columnFilter>
-                          </div>
+                            <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false">
+                                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                    <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
+                                        (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
+                                </ng-template>
+                            </p-columnFilter>
+                        </div>
                           <div *ngSwitchDefault>
                               <p-columnFilter
                                   *ngIf="def.tipoFormato !== 'text' && def.tipoFormato !== 'currency' && def.tipoFormato !== 'date'"
@@ -134,6 +131,7 @@
               <td *ngFor="let def of lsColumnasAMostrar"
                   [ngStyle]="{
                     'text-align':
+                      def.key === 'abreviatura' ? 'center' : 
                       (def.valor.includes('%')) ? 'center' :
                       def.tipoFormato === 'currency' ? 'right' :
                       (def.tipoFormato === 'number' || def.tipoFormato === 'date') ? 'center' : 'left'
@@ -146,7 +144,13 @@
                     <span *ngIf="def.key === 'iniciales'" pTooltip="{{rowData['nombreEjecutivo']}}" tooltipPosition="top">
                       {{ rowData[def.key] }}
                     </span>
-                    <span *ngIf="def.key !== 'nombreContacto' && def.key !== 'iniciales'">
+                    <span *ngIf="def.key === 'abreviatura'" pTooltip="{{rowData['descripcion']}}" tooltipPosition="top">
+                      {{ rowData[def.key] }}
+                    </span>
+                    <span *ngIf="def.key === 'entrega'" pTooltip="{{rowData['descripcionEntrega'] || rowData['descripcion']}}" tooltipPosition="top">
+                      {{ rowData[def.key] }}
+                    </span>
+                    <span *ngIf="def.key !== 'nombreContacto' && def.key !== 'iniciales' && def.key !== 'abreviatura' && def.key !== 'entrega'" >
                       {{ rowData[def.key] }}
                     </span>
                   </span>
@@ -159,7 +163,10 @@
                     <span *ngIf="def.key === 'fechaModificacion'" [ngStyle]="{ 'color': getColorForDiasSinActividad(rowData[def.key]) }">
                       {{ rowData[def.key] }}
                     </span>
-                    <span *ngIf="def.key !== 'fechaModificacion'">
+                    <span *ngIf="def.key === 'stage'" pTooltip="{{getNombreEtapa(rowData[def.key])}}" tooltipPosition="top">
+                      {{ rowData[def.key] | number:'1.0-2' }}
+                    </span>
+                    <span *ngIf="def.key !== 'fechaModificacion' && def.key !== 'stage'">
                       {{ rowData[def.key] | number:'1.0-2' }}
                     </span>
                   </span>
@@ -170,16 +177,16 @@
                 </ng-container>
               </td>
               <td>
-                <p-button type="button" icon="bi bi-file-earmark-text fs-4" text (click)="seguimiento(rowData)"
-                pTooltip="Ver seguimiento" tooltipPosition="top" styleClass="blue-icon">
+                <p-button type="button" icon="bi bi-file-earmark-text fs-3" text (click)="seguimiento(rowData)"
+                pTooltip="Ver seguimiento" tooltipPosition="top" styleClass="blue-icon" >
                 <span class="badge">{{ rowData.totalComentarios || 0 }}</span>
                 </p-button>
-                <p-button type="button" icon="bi bi-folder2 fs-4" text (click)="documento(rowData)"
+                <p-button type="button" icon="bi bi-folder2 fs-3" text (click)="documento(rowData)"
                 pTooltip="Ver documentos" tooltipPosition="top" styleClass="black-icon">
                 <span class="badge">{{ rowData.totalArchivos || 0}}</span>
                 </p-button>
-                <p-button type="button" icon="bi bi-pencil fs-4" text (click)="actualiza(rowData)"
-                  pTooltip="Editar oportunidad" tooltipPosition="top" styleClass="yellow-icon"/>
+                <p-button type="button" icon="bi bi-pencil fs-4" text (click)="actualiza(rowData)" pTooltip="Editar registro" 
+                tooltipPosition="top" styleClass="coloreditar-icon"/>
               </td>
             </tr>
           </ng-template>
@@ -258,4 +265,3 @@
 <app-documentos-oportunidades [(visible)]="modalDocumentosVisible" [title]="'Documentos de '" (closeModal)="onModalClose()"
   (result)="manejarResultado($event)" [insertar]="insertar" [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">
 </app-documentos-oportunidades>
- 

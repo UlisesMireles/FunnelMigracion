@@ -43,7 +43,7 @@ namespace Funnel.Logic
                 IdMenu = x.Key,
                 Nombre = x.First().Menu,
                 Icono = x.First().Icono,
-                Tooltip = String.Format("Ir a {0}", x.First().Menu?.ToLower()),
+                Tooltip = x.First().Menu,
                 SubMenu = x.Select(y => new PaginasDto
                 {
                     IdPagina = y.IdPagina,

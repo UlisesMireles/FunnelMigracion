@@ -374,11 +374,26 @@ div.fotoTarjeta {
   text-align: right;            /* Alinea el texto a la derecha */
   white-space: nowrap;          /* Evita que se rompa la línea */
 }
-::ng-deep .yellow-icon .p-button-icon {
-  color: rgb(202, 202, 5) !important;
+::ng-deep .coloreditar-icon .p-button-icon {
+  color: rgb(122, 122, 4) !important;
+  font-size: 1.5rem;
+  background: transparent;
+  border-color: transparent;
 }
+
+::ng-deep .coloreditar-icon:hover {
+  background: transparent !important;
+}
+
 ::ng-deep .blue-icon .p-button-icon {
   color: blue !important;
+  font-size: 1.5rem;
+  background: transparent;
+  border-color: transparent;
+}
+
+::ng-deep .blue-icon:hover {
+  background: transparent !important;
 }
 .badge {
   position: absolute;

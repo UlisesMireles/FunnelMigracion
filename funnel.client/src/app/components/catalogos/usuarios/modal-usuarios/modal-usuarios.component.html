@@ -77,7 +77,22 @@
           <span *ngIf="usuarioForm.get('password')?.invalid && usuarioForm.get('password')?.touched" class="text-danger">
             <br />
             <ng-container *ngIf="usuarioForm.get('password')?.errors?.['required']">La contraseña es obligatoria.</ng-container>
-            <ng-container *ngIf="usuarioForm.get('password')?.errors?.['minlength']">La contraseña debe tener al menos 6 caracteres.</ng-container>
+            <ng-container *ngIf="usuarioForm.get('password')?.errors?.['minlength']">La contraseña debe tener al menos 8 caracteres.</ng-container>
+            <ng-container *ngIf="usuarioForm.get('password')?.errors?.['pattern']">La contraseña solo puede contener letras, números y los caracteres _ . -</ng-container>
+          </span>
+        </div>
+      </div>
+
+      <div class="row inptSpace">
+        <div class="col-sm-4 lbl">
+          <label for="confirmPassword">Confirmar Contraseña:</label>
+        </div>
+        <div class="col-sm-8 inptSpace">
+          <input type="password" pInputText class="inptSize" formControlName="confirmPassword" />
+          <span *ngIf="(usuarioForm.get('confirmPassword')?.invalid || usuarioForm.errors?.['mismatch']) && usuarioForm.get('confirmPassword')?.touched" class="text-danger">
+            <br />
+            <ng-container *ngIf="usuarioForm.get('confirmPassword')?.errors?.['required']">La confirmación de contraseña es obligatoria.</ng-container>
+            <ng-container *ngIf="usuarioForm.errors?.['mismatch']">Las contraseñas no coinciden.</ng-container>
           </span>
         </div>
       </div>

@@ -76,12 +76,12 @@ export class ModalUsuariosComponent {
           ]
         ],
         password: ['', [
-            Validators.required,
-            Validators.minLength(8),
-            Validators.maxLength(50),
-            Validators.pattern('^[a-zA-Z0-9_.-]+$')
-          ]
-        ],
+          Validators.required,
+          Validators.minLength(8),
+          Validators.maxLength(50),
+          Validators.pattern('^[a-zA-Z0-9_.-]+$')
+        ]],
+        confirmPassword: ['', Validators.required],
         iniciales: ['', [
             Validators.required,
             Validators.maxLength(5),
@@ -94,7 +94,7 @@ export class ModalUsuariosComponent {
         usuarioCreador: [this.loginService.obtenerIdEmpresa()],
         idEmpresa: [this.loginService.obtenerIdEmpresa()],
         bandera: ['INSERT']
-      });
+      },{ validator: this.passwordMatchValidator });
       return;
     }
 
@@ -126,6 +126,7 @@ export class ModalUsuariosComponent {
           ]
         ],
         password: [''], 
+        confirmPassword: [''],
         iniciales: [this.usuario.iniciales, [
             Validators.required,
             Validators.maxLength(5),
@@ -143,7 +144,7 @@ export class ModalUsuariosComponent {
         usuarioCreador: [this.loginService.obtenerIdEmpresa()],
         idEmpresa: [this.loginService.obtenerIdEmpresa()],
         bandera: ['UPDATE']
-      });
+      }, { validator: this.passwordMatchValidator });
     }
   }
 
@@ -178,15 +179,16 @@ export class ModalUsuariosComponent {
       this.mostrarToastError();
       return;
     }
-   
   
-    this.usuarioForm.controls['estatus'].setValue(this.usuarioForm.value.estatus ? 1 : 0);
-    this.usuarioForm.controls['idEmpresa'].setValue(this.loginService.obtenerIdEmpresa());
-    this.usuarioForm.controls['bandera'].setValue(this.insertar ? 'INSERT' : 'UPDATE');
-   
-    console.log(this.usuarioForm.value);
-   
-    this.UsuariosService.postGuardarUsuario(this.usuarioForm.value).subscribe({
+    // Remover el campo de confirmación antes de enviar
+    const formValue = { ...this.usuarioForm.value };
+    delete formValue.confirmPassword;
+  
+    formValue.estatus = formValue.estatus ? 1 : 0;
+    formValue.idEmpresa = this.loginService.obtenerIdEmpresa();
+    formValue.bandera = this.insertar ? 'INSERT' : 'UPDATE';
+  
+    this.UsuariosService.postGuardarUsuario(formValue).subscribe({
       next: (result: baseOut) => {
         console.log(result);
         this.result.emit(result);
@@ -202,13 +204,19 @@ export class ModalUsuariosComponent {
     });
   }
 
-
   mostrarToastError() {
-    console.log(this.usuarioForm);
+    let detail = 'Es necesario llenar los campos indicados.';
+    
+    if (this.usuarioForm.errors?.['mismatch']) {
+      detail = 'Las contraseñas no coinciden.';
+    } else if (this.usuarioForm.get('password')?.errors || this.usuarioForm.get('confirmPassword')?.errors) {
+      detail = 'Por favor verifica los campos de contraseña.';
+    }
+  
     this.messageService.add({
       severity: 'error',
       summary: 'Error',
-      detail: 'Es necesario llenar los campos indicados.',
+      detail: detail,
     });
   }
 
@@ -216,6 +224,18 @@ export class ModalUsuariosComponent {
     this.usuarioForm.get('nombre')?.valueChanges.subscribe(() => this.actualizarIniciales());
     this.usuarioForm.get('apellidoPaterno')?.valueChanges.subscribe(() => this.actualizarIniciales());
     this.usuarioForm.get('apellidoMaterno')?.valueChanges.subscribe(() => this.actualizarIniciales());
+    
+    this.usuarioForm.get('password')?.valueChanges.subscribe(() => {
+      if (this.usuarioForm.get('confirmPassword')?.value) {
+        this.usuarioForm.get('confirmPassword')?.updateValueAndValidity();
+      }
+    });
+    
+    this.usuarioForm.get('confirmPassword')?.valueChanges.subscribe(() => {
+      if (this.usuarioForm.get('password')?.value) {
+        this.usuarioForm.get('password')?.updateValueAndValidity();
+      }
+    });
   }
   
   private async actualizarIniciales() {
@@ -270,5 +290,15 @@ export class ModalUsuariosComponent {
       console.error('Error al validar iniciales', error);
       return false; 
     }
+  }
+
+  private passwordMatchValidator(g: FormGroup) {
+    const password = g.get('password')?.value;
+    const confirmPassword = g.get('confirmPassword')?.value;
+
+    if (password && confirmPassword) {
+      return password === confirmPassword ? null : { mismatch: true };
+    }
+    return null;
   }
 }

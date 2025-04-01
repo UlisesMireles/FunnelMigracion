@@ -13,8 +13,15 @@
   margin-top: 10px
 }
 
-::ng-deep .yellow-icon .p-button-icon {
-  color: rgb(202, 202, 5) !important;
+::ng-deep .coloreditar-icon .p-button-icon {
+  color: rgb(122, 122, 4) !important;
+  font-size: 1.5rem;
+  background: transparent;
+  border-color: transparent;
+}
+
+::ng-deep .coloreditar-icon:hover {
+  background: transparent !important;
 }
 
 ::ng-deep .p-datatable-header {

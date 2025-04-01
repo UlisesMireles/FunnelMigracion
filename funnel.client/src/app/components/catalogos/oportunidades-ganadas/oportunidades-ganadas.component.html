@@ -143,19 +143,16 @@
                 </ng-container>
               </td>
               <td>
-                <p-button type="button" icon="bi bi-file-earmark-text fs-3" text (click)="seguimiento(rowData)" 
-                pTooltip="Ver seguimiento" tooltipPosition="top" styleClass="blue-icon" [style]="{'font-size': '1.5rem','background': 'transparent','border-color': 'transparent'}"
-                [ngStyle]="{'hover': {'background': 'transparent'}}">
+                <p-button type="button" icon="bi bi-file-earmark-text fs-3" text (click)="seguimiento(rowData)"
+                pTooltip="Ver seguimiento" tooltipPosition="top" styleClass="blue-icon" >
                 <span class="badge">{{ rowData.totalComentarios || 0 }}</span>
                 </p-button>
                 <p-button type="button" icon="bi bi-folder2 fs-3" text (click)="documento(rowData)"
-                pTooltip="Ver documentos" tooltipPosition="top" styleClass="black-icon" [style]="{'font-size': '1.5rem','background': 'transparent','border-color': 'transparent'}"
-                [ngStyle]="{'hover': {'background': 'transparent'}}">
+                pTooltip="Ver documentos" tooltipPosition="top" styleClass="black-icon">
                 <span class="badge">{{ rowData.totalArchivos || 0}}</span>
                 </p-button>
-                <p-button type="button" icon="bi bi-pencil fs-4" text (click)="actualiza(rowData)" 
-                  pTooltip="Editar oportunidad" tooltipPosition="top" styleClass="coloreditar-icon" [style]="{'font-size': '1.5rem','background': 'transparent','border-color': 'transparent'}"
-                  [ngStyle]="{'hover': {'background': 'transparent'}}"/>
+                <p-button type="button" icon="bi bi-pencil fs-4" text (click)="actualiza(rowData)" pTooltip="Editar registro" 
+                tooltipPosition="top" styleClass="coloreditar-icon"/>
               </td>
             </tr>
           </ng-template>

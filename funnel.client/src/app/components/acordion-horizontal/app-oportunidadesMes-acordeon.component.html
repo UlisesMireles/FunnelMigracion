@@ -40,8 +40,9 @@
               <p-button type="button" icon="bi bi-file-earmark-text fs-3" text (click)="seguimiento(tarjeta)"
                 pTooltip="Ver seguimiento" tooltipPosition="top" styleClass="blue-icon">
               </p-button>
-              <p-button type="button" icon="bi bi-pencil fs-4" text (click)="actualiza(tarjeta)"
-                pTooltip="Editar oportunidad" tooltipPosition="top" styleClass="coloreditar-icon"/>
+              <p-button styleClass="coloreditar-icon" (click)="actualiza(tarjeta)" pTooltip="Editar registro" tooltipPosition="top">
+                <span class="custom-pencil">✏️</span> 
+              </p-button>
             </div>
             <div  class="col-9 tarjeta-row"  id =" Div  + {{idOportunidadTarjeta}} ">
               <div class="row justify-content-between">

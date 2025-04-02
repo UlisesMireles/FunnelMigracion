@@ -125,8 +125,9 @@
                 </ng-container>
               </td>
               <td>
-                <p-button type="button" icon="bi bi-pencil fs-4" text (click)="actualiza(rowData)" pTooltip="Editar registro" 
-                tooltipPosition="top" styleClass="coloreditar-icon"/>
+                <p-button styleClass="coloreditar-icon" (click)="actualiza(rowData)" pTooltip="Editar registro" tooltipPosition="top">
+                  <span class="custom-pencil">✏️</span> 
+                </p-button>
               </td>
             </tr>
           </ng-template>

@@ -13,17 +13,6 @@
   margin-top: 10px
 }
 
-::ng-deep .coloreditar-icon .p-button-icon {
-  color: rgb(122, 122, 4) !important;
-  font-size: 1.5rem;
-  background: transparent;
-  border-color: transparent;
-}
-
-::ng-deep .coloreditar-icon:hover {
-  background: transparent !important;
-}
-
 ::ng-deep .blue-icon .p-button-icon {
   color: blue !important;
   font-size: 1.5rem;
@@ -353,3 +342,22 @@ th.sort-active p-sortIcon {
   position: relative;
   top: -20px; 
 }
+
+::ng-deep .coloreditar-icon {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+::ng-deep .coloreditar-icon .p-button {
+  background: transparent !important;
+  border: none !important;
+}
+
+::ng-deep .custom-pencil {
+  color: #000; 
+  font-size: 1.5rem;
+  display: inline-block;
+  background: transparent !important;
+}
+

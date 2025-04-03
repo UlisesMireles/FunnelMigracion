@@ -15,7 +15,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   selector: 'app-modal-oportunidades',
   standalone: false,
   templateUrl: './modal-oportunidades.component.html',
-  styleUrl: './modal-oportunidades.component.css'
 })
 export class ModalOportunidadesComponent {
 
@@ -38,6 +37,8 @@ export class ModalOportunidadesComponent {
     @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() closeModal: EventEmitter<void> = new EventEmitter();
     @Output() result: EventEmitter<baseOut> = new EventEmitter();
+
+    nombreProspecto: string = '';
   
     inicializarFormulario() {
       if (this.insertar) {
@@ -69,6 +70,7 @@ export class ModalOportunidadesComponent {
         });
         return;
       } else {
+        this.nombreProspecto = this.oportunidad.nombre??'';
         this.oportunidadForm = this.fb.group({
           bandera: ['UPD-OPORTUNIDAD'],
           idOportunidad: [this.oportunidad.idOportunidad],
@@ -99,6 +101,7 @@ export class ModalOportunidadesComponent {
         });
         this.limpiarProbabilidad();
       }
+      
     }
 
     onDialogShow() {

@@ -23,12 +23,13 @@ namespace Funnel.Server.Controllers
                 HttpContext.Session.SetString("User", usr.Usuario);
             return Ok(respuesta);
         }
-        //[HttpGet("[action]/")]
-        //public async Task<ActionResult<BaseOut>> RecuperarContrasena(string usuario)
-        //{
-        //    var respuesta = await _loginService.ResetPassword(usuario);
-        //    return Ok(respuesta);
-        //}
+
+        [HttpGet("[action]/")]
+        public async Task<ActionResult<BaseOut>> RecuperarContrasena(string usuario)
+        {
+            var respuesta = await _loginService.ResetPassword(usuario);
+            return Ok(respuesta);
+        }
 
         [HttpPost("[action]/")]
         public IActionResult Logout()

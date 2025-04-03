@@ -1,1 +1,38 @@
-/* You can add global styles to this file, and also import other style files */
+.success-snackbar {
+  /* padding-bottom: 5px !important; */
+  /* padding-top: 5px !important; */
+  border-radius: 9px !important;
+  min-height: 38px !important;
+  background: #6EB74B !important;
+  /* opacity: 0.65 !important; */
+}
+
+.error-snackbar {
+  /* padding-bottom: 5px !important; */
+  /* padding-top: 5px !important; */
+  border-radius: 9px !important;
+  min-height: 38px !important;
+  background: #FF8F43 !important;
+}
+
+.warning-snackbar {
+  /* padding-bottom: 5px !important; */
+  /* padding-top: 5px !important; */
+  border-radius: 9px !important;
+  min-height: 38px !important;
+  background: #FFC600 !important;
+  color: black !important;
+}
+
+.default-snackbar {
+  /* padding-bottom: 5px !important; */
+  /* padding-top: 5px !important; */
+  border-radius: 9px !important;
+  min-height: 38px !important;
+  background: #0053f1 !important;
+  opacity: 0.65 !important;
+}
+
+.mat-mdc-snack-bar-container .mat-mdc-button.mat-mdc-snack-bar-action:not(:disabled) {
+  --mat-text-button-state-layer-color: rgb(33 37 41 / 21%) !important;
+}

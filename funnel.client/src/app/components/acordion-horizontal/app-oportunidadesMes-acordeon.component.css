@@ -295,7 +295,8 @@ div.fotoTarjeta {
   display: flex;                /* Usa flexbox para organizar en fila */
   justify-content: flex-start;  /* Alinea los elementos a la izquierda */
   gap: 8px;                     /* Espacio de 8px entre cada elemento */
-  width: 20% !important;        /* Fuerza el ancho a 20% (ajusta según lo necesites) */
+  width: 20% !important;
+  margin-right: 110px;        /* Fuerza el ancho a 20% (ajusta según lo necesites) */
 }
 
 /* Reglas para filas con justificación entre elementos */

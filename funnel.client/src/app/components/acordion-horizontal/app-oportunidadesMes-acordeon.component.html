@@ -37,8 +37,12 @@
           <div class="row  ">
             <!-- Encabezado con título e ícono de edición -->
             <div class="card-header">
+              <div class="fila-monto">
+                <label class="probabilidad">{{ tarjeta.probabilidad }}</label>
+                <label class="monto-normalizado">{{ tarjeta.montoNormalizado | currency:'MXN':'symbol':'1.0-0' }}</label>
+              </div>
               <p-button type="button" icon="bi bi-file-earmark-text fs-3" text (click)="seguimiento(tarjeta)"
-                pTooltip="Ver seguimiento" tooltipPosition="top" styleClass="blue-icon">
+                pTooltip="Seguimiento" tooltipPosition="top" styleClass="blue-icon">
               </p-button>
               <p-button styleClass="coloreditar-icon" (click)="actualiza(tarjeta)" pTooltip="Editar registro" tooltipPosition="top">
                 <span class="custom-pencil">✏️</span> 
@@ -56,11 +60,7 @@
                 </div>
               </div>
               <label id="NombreOportunidad" class="nombre-oportunidad">{{ tarjeta.nombreOportunidad }}</label><br />
-              <div class="fila-monto">
-                <label class="monto">{{ tarjeta.monto | currency:'MXN':'symbol':'1.0-0' }}</label>
-                <label class="probabilidad">{{ tarjeta.probabilidad }}</label>
-                <label class="monto-normalizado">{{ tarjeta.montoNormalizado | currency:'MXN':'symbol':'1.0-0' }}</label>
-              </div>
+              
              </div>
             <div class="col-3" style='padding-top:10px' >
 

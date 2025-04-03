@@ -37,9 +37,9 @@ namespace Funnel.Logic
             return await _ArchivoData.GuardarArchivo(request);
         }
 
-        public async Task <ArchivoDto> GuardarArchivo(IFormFile archivo, ArchivoDto request)
+        public async Task<List<ArchivoDto>> GuardarArchivos(List<IFormFile> archivos, ArchivoDto request)
         {
-            return await _ArchivoData.GuardarArchivo(archivo, request);    
+            return await _ArchivoData.GuardarArchivos(archivos, request);    
         }
 
         public async Task<int> ObtenerNumeroArchivosSubidos(int idOportunidad)

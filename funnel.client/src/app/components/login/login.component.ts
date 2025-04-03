@@ -46,6 +46,18 @@ export class LoginComponent implements OnInit {
       password: ['', [Validators.required]],
       sesion: [false]
     }); 
+
+    this.loginForm.get('usuario')?.valueChanges.subscribe(() => {
+      if (this.errorMessage) {
+        this.errorMessage = '';
+      }
+    });
+
+    this.loginForm.get('password')?.valueChanges.subscribe(() => {
+      if (this.errorMessage) {
+        this.errorMessage = '';
+      }
+    });
   }
   openLoginModal() {
     this.isLoginModalOpen = true;

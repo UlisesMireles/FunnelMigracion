@@ -38,10 +38,29 @@
           <label for="Comentario" class="margen text-left">Agregar Documento:</label>
         </div>
         <div class="col-sm-6 inptSpace">
-            <input #fileInput type="file" class="form-control" accept=".pdf,.doc,.docx,.jpg,.png" (change)="onFileChange($event)">
+          <input #fileInput type="file" class="form-control" accept=".pdf,.doc,.docx,.jpg,.png" 
+                 (change)="onFileChange($event)" multiple>
         </div>
         <div class="col-sm-2 inptSpace">
-            <button pButton label="Guardar"  (click)="guardarDocumento()" severity="secondary" [disabled]="!archivoSeleccionado" ></button>
+          <button pButton label="Guardar" (click)="guardarDocumento()" 
+                  severity="secondary" [disabled]="!archivosSeleccionados || archivosSeleccionados.length === 0"></button>
+        </div>
+      </div>
+      
+      <!-- Agrega esta sección para mostrar los archivos seleccionados -->
+      <div class="row mt-3" *ngIf="archivosSeleccionados && archivosSeleccionados.length > 0">
+        <div class="col-sm-12">
+          <div class="selected-files-container">
+            <h5>Archivos seleccionados:</h5>
+            <div class="file-list">
+              <div class="file-item" *ngFor="let file of archivosSeleccionados; let i = index">
+                <span class="file-name">{{ file.name }}</span>
+                <button type="button" class="remove-file-btn" (click)="eliminarArchivoSeleccionado(i)">
+                  <i class="bi bi-x"></i>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </form>

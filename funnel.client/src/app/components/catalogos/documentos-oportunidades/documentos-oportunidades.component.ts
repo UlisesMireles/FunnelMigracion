@@ -39,7 +39,7 @@ export class DocumentosOportunidadesComponent {
     validacionActiva = false;
   
     historialOportunidad: Archivos[] = [];
-    archivoSeleccionado: File | null = null;
+    archivosSeleccionados: File[] = [];
     nombreOportunidad: string = '';
 
     @ViewChild('fileInput') fileInput!: ElementRef;
@@ -84,42 +84,72 @@ export class DocumentosOportunidadesComponent {
       }
   
       guardarDocumento() {
-        if (this.archivoSeleccionado) {
-          const formData = new FormData();
-          formData.append('archivo', this.archivoSeleccionado);
-          formData.append('bandera', this.oportunidadForm.get('bandera')?.value);
-          formData.append('idOportunidad', this.oportunidadForm.get('idOportunidad')?.value);
-          formData.append('idUsuario', this.oportunidadForm.get('idUsuario')?.value);
-          formData.append('idEmpresa', this.oportunidadForm.get('idEmpresa')?.value);
-          formData.append('nombreArchivo', this.oportunidadForm.get('nombreArchivo')?.value);
+        if (this.archivosSeleccionados && this.archivosSeleccionados.length > 0) {
+          let uploadCount = 0;
+          let successCount = 0;
+          let errorCount = 0;
+          
+          this.archivosSeleccionados.forEach(file => {
+            const formData = new FormData();
+            formData.append('archivo', file);
+            formData.append('bandera', this.oportunidadForm.get('bandera')?.value);
+            formData.append('idOportunidad', this.oportunidadForm.get('idOportunidad')?.value);
+            formData.append('idUsuario', this.oportunidadForm.get('idUsuario')?.value);
+            formData.append('idEmpresa', this.oportunidadForm.get('idEmpresa')?.value);
+            formData.append('nombreArchivo', file.name);
       
-          this.documentoService.guardarDocumento(formData).subscribe({
-            next: (result) => {
-              this.messageService.add({
-                severity: 'success',
-                summary: 'Éxito',
-                detail: 'Archivo guardado correctamente.'
-              });
-              this.archivoSeleccionado = null;
-              this.fileInput.nativeElement.value = '';
-              // Actualiza la lista de documentos
-              this.getDocumentos(this.oportunidad.idOportunidad!);
-            },
-            error: (error) => {
-              this.messageService.add({
-                severity: 'error',
-                summary: 'Error',
-                detail: 'No se pudo guardar el archivo.'
-              });
-            }
+            this.documentoService.guardarDocumento(formData).subscribe({
+              next: (result) => {
+                successCount++;
+                if (++uploadCount === this.archivosSeleccionados.length) {
+                  this.mostrarResultadoSubida(successCount, errorCount);
+                }
+              },
+              error: (error) => {
+                errorCount++;
+                if (++uploadCount === this.archivosSeleccionados.length) {
+                  this.mostrarResultadoSubida(successCount, errorCount);
+                }
+              }
+            });
           });
         } else {
           this.messageService.add({
             severity: 'warn',
             summary: 'Advertencia',
-            detail: 'Por favor, seleccione un archivo.'
+            detail: 'Por favor, seleccione al menos un archivo.'
           });
         }
+      }
+
+      private mostrarResultadoSubida(successCount: number, errorCount: number) {
+        if (successCount > 0) {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Éxito',
+            detail: `${successCount} archivo(s) subido(s) correctamente.`
+          });
+          this.archivosSeleccionados = [];
+          this.fileInput.nativeElement.value = '';
+          this.getDocumentos(this.oportunidad.idOportunidad!);
+        }
+        
+        if (errorCount > 0) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: `${errorCount} archivo(s) no se pudieron subir.`
+          });
+        }
+      }
+      
+      eliminarArchivoSeleccionado(index: number) {
+        this.archivosSeleccionados.splice(index, 1);
+        this.oportunidadForm.get('nombreArchivo')?.setValue(
+          this.archivosSeleccionados.length > 0 
+            ? this.archivosSeleccionados.map(f => f.name).join(', ') 
+            : ''
+        );
       }
         
       getDocumentos(idOportunidad: number) {
@@ -195,15 +225,15 @@ export class DocumentosOportunidadesComponent {
             }
           });}
       
-        onFileChange(event: any) {
-        const file = event.target.files[0]; 
-        if (file) {
-          this.archivoSeleccionado = file; 
-          this.oportunidadForm.get('nombreArchivo')?.setValue(file.name);
-        } else {
-          this.archivoSeleccionado = null; 
-          this.oportunidadForm.get('nombreArchivo')?.setValue('');
-        }
-
-        }
+          onFileChange(event: any) {
+            const input = event.target as HTMLInputElement;
+            if (input.files && input.files.length > 0) {
+              // Convertir FileList a array de File y agregar a la lista existente
+              const newFiles = Array.from(input.files) as File[];
+              this.archivosSeleccionados = [...this.archivosSeleccionados, ...newFiles];
+              this.oportunidadForm.get('nombreArchivo')?.setValue(
+                this.archivosSeleccionados.map(f => f.name).join(', ')
+              );
+            }
+          }
 }

@@ -46,6 +46,7 @@ namespace Funnel.Data
                         NombreArchivoFormateado = ComprobarNulos.CheckStringNull(reader["NombreArchivoFormateado"]),
                         NumArchivos = ComprobarNulos.CheckIntNull(reader["NumArchivos"]),
                         Iniciales = ComprobarNulos.CheckStringNull(reader["Iniciales"]),
+                        diasParaEliminacion = ComprobarNulos.CheckStringNull(reader["diasParaEliminacion"])
 
                     };
                     result.Add(dto);
@@ -124,10 +125,7 @@ namespace Funnel.Data
                     continue;
                 }
 
-                if (string.IsNullOrEmpty(request.NombreArchivo))
-                {
-                    request.NombreArchivo = Path.GetFileNameWithoutExtension(archivo.FileName);
-                }
+                string nombreArchivo = Path.GetFileNameWithoutExtension(archivo.FileName);
 
                 string nombreArchivoBD = $"{request.NombreArchivo}^{request.IdEmpresa}_{request.IdProspecto}_{request.IdOportunidad}.{extension}";
                 string rutaArchivo = Path.Combine(carpetaDestino, archivo.FileName);

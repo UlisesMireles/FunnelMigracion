@@ -126,8 +126,7 @@ namespace Funnel.Data
                 }
 
                 string nombreArchivo = Path.GetFileNameWithoutExtension(archivo.FileName);
-
-                string nombreArchivoBD = $"{request.NombreArchivo}^{request.IdEmpresa}_{request.IdProspecto}_{request.IdOportunidad}.{extension}";
+                string nombreArchivoBD = $"{nombreArchivo}^{request.IdEmpresa}_{request.IdProspecto}_{request.IdOportunidad}.{extension}";
                 string rutaArchivo = Path.Combine(carpetaDestino, archivo.FileName);
 
                 try
@@ -140,10 +139,14 @@ namespace Funnel.Data
                     insertaArchivo.Bandera = request.Bandera;
                     insertaArchivo.IdOportunidad = request.IdOportunidad;
                     insertaArchivo.IdUsuario = request.IdUsuario;
+                    insertaArchivo.IdEmpresa = request.IdEmpresa;
+                    insertaArchivo.IdProspecto = request.IdProspecto;
                     insertaArchivo.NombreArchivo = nombreArchivoBD;
                     insertaArchivo.Formato = extension;
 
                     insertaArchivo = await GuardarArchivo(insertaArchivo);
+
+                    insertaArchivo.Result = true;
                 }
                 catch (Exception ex)
                 {

@@ -85,33 +85,43 @@ export class DocumentosOportunidadesComponent {
   
       guardarDocumento() {
         if (this.archivosSeleccionados && this.archivosSeleccionados.length > 0) {
-          let uploadCount = 0;
-          let successCount = 0;
-          let errorCount = 0;
+          const formData = new FormData();
           
+          // 1. Agregar cada archivo con el nombre 'archivos' (plural)
           this.archivosSeleccionados.forEach(file => {
-            const formData = new FormData();
-            formData.append('archivo', file);
-            formData.append('bandera', this.oportunidadForm.get('bandera')?.value);
-            formData.append('idOportunidad', this.oportunidadForm.get('idOportunidad')?.value);
-            formData.append('idUsuario', this.oportunidadForm.get('idUsuario')?.value);
-            formData.append('idEmpresa', this.oportunidadForm.get('idEmpresa')?.value);
-            formData.append('nombreArchivo', file.name);
+            formData.append('archivos', file); // ¡Nota el plural 'archivos'!
+          });
       
-            this.documentoService.guardarDocumento(formData).subscribe({
-              next: (result) => {
-                successCount++;
-                if (++uploadCount === this.archivosSeleccionados.length) {
-                  this.mostrarResultadoSubida(successCount, errorCount);
-                }
-              },
-              error: (error) => {
-                errorCount++;
-                if (++uploadCount === this.archivosSeleccionados.length) {
-                  this.mostrarResultadoSubida(successCount, errorCount);
+          // 2. Agregar cada campo del DTO por separado (no como JSON)
+          formData.append('Bandera', this.oportunidadForm.get('bandera')?.value);
+          formData.append('IdOportunidad', this.oportunidadForm.get('idOportunidad')?.value);
+          formData.append('IdUsuario', this.oportunidadForm.get('idUsuario')?.value);
+          formData.append('IdEmpresa', this.oportunidadForm.get('idEmpresa')?.value);
+          // El nombreArchivo puede ir vacío como en tu backend
+          formData.append('NombreArchivo', ''); 
+      
+          this.documentoService.guardarDocumento(formData).subscribe({
+            next: (result: any) => {
+              // Manejo de resultados igual que antes
+              if (result && result.length > 0) {
+                const successCount = result.filter((r: any) => r.result).length;
+                const errorCount = result.length - successCount;
+                this.mostrarResultadoSubida(successCount, errorCount);
+                
+                if (successCount > 0) {
+                  this.archivosSeleccionados = [];
+                  this.fileInput.nativeElement.value = '';
+                  this.getDocumentos(this.oportunidad.idOportunidad!);
                 }
               }
-            });
+            },
+            error: (error) => {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Error al subir los archivos: ' + error.message
+              });
+            }
           });
         } else {
           this.messageService.add({
@@ -121,7 +131,6 @@ export class DocumentosOportunidadesComponent {
           });
         }
       }
-
       private mostrarResultadoSubida(successCount: number, errorCount: number) {
         if (successCount > 0) {
           this.messageService.add({
@@ -170,36 +179,39 @@ export class DocumentosOportunidadesComponent {
       }
 
       descargarArchivo(item: Archivos) {
-        let nombreArchivo = item.nombreArchivo;
-        nombreArchivo = this.limpiarNombreArchivo(nombreArchivo);
-        this.documentoService.descargarDocumento(nombreArchivo).subscribe((blob: Blob) => {
-          const url = window.URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = nombreArchivo; 
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          window.URL.revokeObjectURL(url);
-        }, error => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'No se pudo descargar el archivo, es posible que el recurso no esté disponible.'
+        const nombreArchivo = this.limpiarNombreArchivo(item.nombreArchivo);
+        
+        this.documentoService.descargarDocumento(nombreArchivo).subscribe({
+            next: (blob: Blob) => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = nombreArchivo; 
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            },
+            error: (error) => {
+                console.error('Error al descargar:', error);
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: `No se pudo descargar es posible que no esté disponible`
+                });
+            }
           });
-        });
-    }
-    
-        limpiarNombreArchivo(nombreArchivo: string): string {
-          let limpio = nombreArchivo.replace(/\^\d+__\d+_\d+/, '');
-
-          const extension = limpio.split('.').pop();
-          if (extension && limpio.endsWith('.' + extension)) {
-            limpio = limpio.slice(0, -extension.length - 1); // Eliminar la extensión duplicada
         }
     
-        return limpio;
-    } 
+    limpiarNombreArchivo(nombreArchivo: string): string {
+      const limpio = nombreArchivo.replace(/\^\d+__\d+_\d+/, '');
+      const tieneExtension = limpio.includes('.');
+      if (tieneExtension) {
+          return limpio;
+      }
+      const extensionOriginal = nombreArchivo.split('.').pop();
+      return extensionOriginal ? `${limpio}.${extensionOriginal}` : limpio;
+    }
       
 
         eliminarArchivo(item: Archivos) {

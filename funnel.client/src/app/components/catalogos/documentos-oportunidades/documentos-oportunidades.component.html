@@ -27,7 +27,6 @@
     <div>
         <label class="margen ">
           <h2>{{ 'Documentos de: ' + nombreOportunidad }}</h2>
-
         </label>
     </div>
     
@@ -47,7 +46,6 @@
         </div>
       </div>
       
-      <!-- Agrega esta sección para mostrar los archivos seleccionados -->
       <div class="row mt-3" *ngIf="archivosSeleccionados && archivosSeleccionados.length > 0">
         <div class="col-sm-12">
           <div class="selected-files-container">
@@ -78,15 +76,40 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let item of historialOportunidad">
-              <td  class="text-left">{{ item.iniciales }}</td>
-              <td  class="text-left">{{ item.fechaRegistro | date:'dd/MM/yyyy' }}</td>
-              <td  class="text-left">{{ item.nombreArchivoFormateado }}</td>
+            <tr *ngFor="let item of historialOportunidad" 
+                [class.archivo-eliminado]="item.diasParaEliminacion">
+              <td class="text-left">{{ item.iniciales }}</td>
+              <td class="text-left">{{ item.fechaRegistro | date:'dd/MM/yyyy' }}</td>
+              <td class="text-left">{{ item.nombreArchivoFormateado }}</td>
               <td>
                 <p-button type="button" icon="bi bi-download" text (click)="descargarArchivo(item)"/>
               </td>
               <td>
-                <p-button type="button" icon="bi bi-trash" text  (click)="eliminarArchivo(item)"/>
+                <ng-container *ngIf="!item.diasParaEliminacion">
+                  <p-button 
+                    type="button" 
+                    icon="bi bi-trash" 
+                    text  
+                    (click)="eliminarArchivo(item)"
+                    pTooltip="Eliminar archivo"
+                    tooltipPosition="top"
+                  />
+                </ng-container>
+                
+                <ng-container *ngIf="item.diasParaEliminacion">
+                  <div class="restore-button-container">
+                    <p-button 
+                      type="button" 
+                      icon="bi bi-arrow-counterclockwise" 
+                      text  
+                      (click)="recuperarArchivo(item)"
+                      [pTooltip]="'Recuperar archivo (se eliminará en ' + item.diasParaEliminacion + ' días)'"
+                      tooltipPosition="top"
+                      styleClass="p-button-success"
+                    />
+                    <span class="days-badge">{{item.diasParaEliminacion}}</span>
+                  </div>
+                </ng-container>
               </td>
             </tr>
           </tbody>
@@ -100,6 +123,6 @@
   </ng-template>
   
   <ng-template pTemplate="footer">
-    <button pButton label="Cancelar" (click)="close()" severity="secondary" ></button>
+    <button pButton label="Cancelar" (click)="close()" severity="secondary"></button>
   </ng-template>
 </p-dialog>

@@ -164,7 +164,14 @@ export class DocumentosOportunidadesComponent {
       getDocumentos(idOportunidad: number) {
         this.documentoService.getDocumentos(idOportunidad).subscribe({
           next: (result: Archivos[]) => {
-            this.historialOportunidad = result.filter(documento => documento.eliminado !== 1);
+            this.historialOportunidad = result.filter(documento => 
+
+              documento.eliminado !== 1 || 
+            
+              (documento.eliminado === 1 && Number(documento.diasParaEliminacion) > 0)
+            
+            );
+                        
             this.loading = false;
           },
           error: (error) => {
@@ -214,29 +221,26 @@ export class DocumentosOportunidadesComponent {
     }
       
 
-        eliminarArchivo(item: Archivos) {
-          this.loading = true;
+    eliminarArchivo(item: Archivos) {
+      this.loading = true;
       
-          this.documentoService.eliminarDocumento(item.idArchivo).subscribe({
-            next: () => {
-              this.historialOportunidad = this.historialOportunidad.filter(documento => documento.idArchivo !== item.idArchivo);
-              this.messageService.add({
-                severity: 'success',
-                summary: 'Éxito',
-                detail: 'Archivo eliminado correctamente.'
-              });
-              this.loading = false;
-            },
-            error: (error) => {
-              this.messageService.add({
-                severity: 'error',
-                summary: 'Error',
-                detail: 'No se pudo eliminar el archivo.'
-              });
-              this.loading = false;
-            }
-          });}
-      
+      this.documentoService.eliminarDocumento(item.idArchivo).subscribe({
+        next: () => {
+          item.diasParaEliminacion = "2"; 
+          
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Éxito',
+            detail: 'Archivo movido a la papelera. Tienes 2 días para recuperarlo.'
+          });
+          this.loading = false;
+        },
+        error: (error) => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo eliminar el archivo.' });
+          this.loading = false;
+        }
+      });
+    }
           onFileChange(event: any) {
             const input = event.target as HTMLInputElement;
             if (input.files && input.files.length > 0) {
@@ -248,4 +252,42 @@ export class DocumentosOportunidadesComponent {
               );
             }
           }
+
+          recuperarArchivo(item: Archivos) {
+            this.loading = true;
+            
+            this.documentoService.recuperarArchivo(item.idArchivo).subscribe({
+              next: (result) => {
+                if (result.result) {
+                  item.diasParaEliminacion = '';
+                  this.messageService.add({
+                    severity: 'success',
+                    summary: 'Éxito',
+                    detail: 'Archivo recuperado correctamente.'
+                  });
+                } else {
+                  this.messageService.add({ severity: 'error', summary: 'Error', detail: result.errorMessage });
+                }
+                this.loading = false;
+              },
+              error: (error) => {
+                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo recuperar el archivo.' });
+                this.loading = false;
+              }
+            });
+          }
+
+        estaEliminado(item: Archivos): boolean {
+          return !!item.diasParaEliminacion && item.diasParaEliminacion !== "0";
+        }
+
+        getIconoEliminacion(item: Archivos): string {
+          return this.estaEliminado(item) ? 'bi bi-arrow-counterclockwise' : 'bi bi-trash';
+        }
+
+        getTooltipEliminacion(item: Archivos): string {
+          return this.estaEliminado(item) 
+            ? `Recuperar archivo (eliminación definitiva en ${item.diasParaEliminacion} días)`
+            : 'Eliminar archivo';
+        }
 }

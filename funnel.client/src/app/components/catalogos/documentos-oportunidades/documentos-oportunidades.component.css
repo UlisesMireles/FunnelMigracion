@@ -297,7 +297,49 @@
   color: #a71d2a;
 }
 
-/* Ajustes para el input de archivo */
+
 input[type="file"] {
   padding: 8px;
+}
+
+.archivo-eliminado {
+  opacity: 0.7;
+  background-color: #fff3cd; 
+}
+
+.archivo-eliminado button[icon="bi bi-download"] {
+  opacity: 0.5;
+}
+
+.bi-arrow-counterclockwise {
+  color: #28a745 !important;
+}
+
+.restore-button-container {
+  position: relative;
+  display: inline-block;
+}
+
+.days-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  color: black;
+  border-radius: 50%;
+  width: 30px;
+  height: 20px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.archivo-eliminado {
+  opacity: 0.7;
+  background-color: #fff8e6;
+}
+
+.p-button-success {
+  color: #28a745 !important;
 }

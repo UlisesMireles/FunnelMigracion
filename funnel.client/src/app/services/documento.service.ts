@@ -28,4 +28,8 @@ export class DocumentoService {
   guardarDocumento(formData: FormData): Observable<any> {
     return this.http.post(`${this.baseUrl}api/Archivos/GuardarArchivos`, formData);
   }
+  recuperarArchivo(idArchivo: number): Observable<any> {
+    return this.http.post(`${this.baseUrl}api/Archivos/RecuperarArchivo/${idArchivo}`, {});
+  
+}
 }

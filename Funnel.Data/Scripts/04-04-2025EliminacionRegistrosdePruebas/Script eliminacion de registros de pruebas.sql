@@ -1,0 +1,2 @@
+ DELETE FROM [SFS-MASTER-QA].[dbo].[Archivos]
+WHERE [IdArchivo] BETWEEN 76 AND 103;

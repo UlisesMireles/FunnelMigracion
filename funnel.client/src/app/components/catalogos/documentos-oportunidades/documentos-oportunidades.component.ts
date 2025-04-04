@@ -154,6 +154,10 @@ export class DocumentosOportunidadesComponent {
       
       eliminarArchivoSeleccionado(index: number) {
         this.archivosSeleccionados.splice(index, 1);
+        if (this.archivosSeleccionados.length === 0) {
+          this.fileInput.nativeElement.value = '';
+        }
+        
         this.oportunidadForm.get('nombreArchivo')?.setValue(
           this.archivosSeleccionados.length > 0 
             ? this.archivosSeleccionados.map(f => f.name).join(', ') 
@@ -241,17 +245,22 @@ export class DocumentosOportunidadesComponent {
         }
       });
     }
-          onFileChange(event: any) {
-            const input = event.target as HTMLInputElement;
-            if (input.files && input.files.length > 0) {
-              // Convertir FileList a array de File y agregar a la lista existente
-              const newFiles = Array.from(input.files) as File[];
-              this.archivosSeleccionados = [...this.archivosSeleccionados, ...newFiles];
-              this.oportunidadForm.get('nombreArchivo')?.setValue(
-                this.archivosSeleccionados.map(f => f.name).join(', ')
-              );
-            }
-          }
+    onFileChange(event: any) {
+      const input = event.target as HTMLInputElement;
+      if (input.files && input.files.length > 0) {
+        // Convertir FileList a array y agregar a la lista existente
+        const newFiles = Array.from(input.files) as File[];
+        this.archivosSeleccionados = [...this.archivosSeleccionados, ...newFiles];
+        
+        // Limpiar el input file después de seleccionar
+        input.value = '';
+        
+        // Actualizar el valor del formulario
+        this.oportunidadForm.get('nombreArchivo')?.setValue(
+          this.archivosSeleccionados.map(f => f.name).join(', ')
+        );
+      }
+    }
 
           recuperarArchivo(item: Archivos) {
             this.loading = true;

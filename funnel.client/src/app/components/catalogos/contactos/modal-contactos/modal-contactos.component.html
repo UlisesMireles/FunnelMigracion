@@ -16,6 +16,28 @@
 
   <ng-template pTemplate="content">
     <form [formGroup]="contactoForm">
+
+      <div class="row inptSpace">
+        <div class="col-sm-4 lbl">
+          <label for="prospecto">Prospecto:</label>
+        </div>
+        <div class="col-sm-8 inptSpace">
+          <p-dropdown 
+            class="inptSize1"
+            [options]="prospectos"
+            [filter]="true"
+            formControlName="idProspecto"
+            optionLabel="nombre"
+            optionValue="id"
+            appendTo="body"
+            placeholder="Seleccione un prospecto">
+          </p-dropdown>
+          <span *ngIf="contactoForm.get('idProspecto')?.invalid && contactoForm.get('idProspecto')?.touched" class="text-danger"><br>
+            <ng-container *ngIf="contactoForm.get('idProspecto')?.errors?.['required']">Debe seleccionar un prospecto.</ng-container>
+          </span>
+        </div>
+      </div>
+
       <!-- Nombre -->
       <div class="row inptSpace">
         <div class="col-sm-4 lbl">
@@ -28,20 +50,6 @@
             <ng-container *ngIf="contactoForm.get('nombre')?.errors?.['maxLength']">El nombre no puede ser mayor a 50 caracteres.</ng-container>
             <ng-container *ngIf="contactoForm.get('nombre')?.errors?.['pattern']">El nombre solo puede contener letras y espacios.</ng-container></span>
          
-        </div>
-      </div>
-
-      <div class="row inptSpace">
-        <div class="col-sm-4 lbl">
-          <label for="apellidos">Apellidos: </label>
-        </div>
-        <div class="col-sm-8 inptSpace">
-          <input pInputText class="inptSize" formControlName="apellidos" />
-          <span *ngIf="contactoForm.get('apellidos')?.invalid && contactoForm.get('apellidos')?.touched" class="text-danger"><br>
-            <ng-container *ngIf="contactoForm.get('apellidos')?.errors?.['required']">Los apellidos son obligatorios.</ng-container>
-            <ng-container *ngIf="contactoForm.get('apellidos')?.errors?.['maxLength']">Los apellidos no pueden ser mayores a 50 caracteres.</ng-container>
-            <ng-container *ngIf="contactoForm.get('apellidos')?.errors?.['pattern']">Los apellidos solo pueden contener letras y espacios.</ng-container>
-          </span>
         </div>
       </div>
 
@@ -72,27 +80,7 @@
            
           </span>
         </div>
-      </div>
-
-      <div class="row inptSpace">
-        <div class="col-sm-4 lbl">
-          <label for="prospecto">Prospecto:</label>
-        </div>
-        <div class="col-sm-8 inptSpace">
-          <p-dropdown 
-            class="inptSize1"
-            [options]="prospectos"
-            formControlName="idProspecto"
-            optionLabel="nombre"
-            optionValue="id"
-            appendTo="body"
-            placeholder="Seleccione un prospecto">
-          </p-dropdown>
-          <span *ngIf="contactoForm.get('idProspecto')?.invalid && contactoForm.get('idProspecto')?.touched" class="text-danger"><br>
-            <ng-container *ngIf="contactoForm.get('idProspecto')?.errors?.['required']">Debe seleccionar un prospecto.</ng-container>
-          </span>
-        </div>
-      </div>
+      </div>     
 
       <div class="row inptSpace" *ngIf="!insertar">
         <div class="col-sm-4 lbl">

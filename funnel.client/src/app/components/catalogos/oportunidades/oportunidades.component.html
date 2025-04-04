@@ -132,6 +132,7 @@
                   [ngStyle]="{
                     'text-align':
                       def.key === 'abreviatura' ? 'center' : 
+                      def.key === 'entrega' ? 'center' : 
                       (def.valor.includes('%')) ? 'center' :
                       def.tipoFormato === 'currency' ? 'right' :
                       (def.tipoFormato === 'number' || def.tipoFormato === 'date') ? 'center' : 'left'

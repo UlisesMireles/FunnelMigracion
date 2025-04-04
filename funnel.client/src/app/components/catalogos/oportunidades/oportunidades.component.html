@@ -176,21 +176,18 @@
                   </span>
                 </ng-container>
               </td>
-              <td style="position: relative;">
-                <div style="position: relative; display: inline-block;">
-                  <p-button type="button" icon="bi bi-file-earmark-text fs-3" text (click)="seguimiento(rowData)"
-                  pTooltip="Seguimiento" tooltipPosition="top" styleClass="blue-icon" >
-                  </p-button>
-                  <span class="badge">{{ rowData.totalComentarios || 0 }}</span>
-                </div>
-                <div style="position: relative; display: inline-block; padding-left: 6px; padding-right: 6px;">
-                  <p-button type="button" icon="bi bi-folder2 fs-3" text (click)="documento(rowData)"
-                  pTooltip="Documentos" tooltipPosition="top" styleClass="black-icon">
-                  </p-button>
-                  <span class="badge">{{ rowData.totalArchivos || 0}}</span>
-                </div>
-                <p-button type="button" icon="bi bi-pencil fs-4" text (click)="actualiza(rowData)" pTooltip="Editar registro" 
-                tooltipPosition="top" styleClass="coloreditar-icon"/>
+              <td>
+                <p-button type="button" icon="bi bi-file-earmark-text fs-3" text (click)="seguimiento(rowData)"
+                pTooltip="Seguimiento" tooltipPosition="top" styleClass="blue-icon" >
+                <span class="badge">{{ rowData.totalComentarios || 0 }}</span>
+                </p-button>
+                <p-button type="button" icon="bi bi-folder2 fs-3" text (click)="documento(rowData)"
+                pTooltip="Documentos" tooltipPosition="top" styleClass="black-icon">
+                <span class="badge">{{ rowData.totalArchivos || 0}}</span>
+                </p-button>
+                <p-button styleClass="coloreditar-icon" (click)="actualiza(rowData)" pTooltip="Editar registro" tooltipPosition="top">
+                  <span class="custom-pencil">✏️</span> 
+                </p-button>
               </td>
             </tr>
           </ng-template>

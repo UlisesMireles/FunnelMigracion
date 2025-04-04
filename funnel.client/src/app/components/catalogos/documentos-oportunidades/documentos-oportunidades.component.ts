@@ -39,7 +39,7 @@ export class DocumentosOportunidadesComponent {
     validacionActiva = false;
   
     historialOportunidad: Archivos[] = [];
-    archivoSeleccionado: File | null = null;
+    archivosSeleccionados: File[] = [];
     nombreOportunidad: string = '';
 
     @ViewChild('fileInput') fileInput!: ElementRef;
@@ -84,32 +84,42 @@ export class DocumentosOportunidadesComponent {
       }
   
       guardarDocumento() {
-        if (this.archivoSeleccionado) {
+        if (this.archivosSeleccionados && this.archivosSeleccionados.length > 0) {
           const formData = new FormData();
-          formData.append('archivo', this.archivoSeleccionado);
-          formData.append('bandera', this.oportunidadForm.get('bandera')?.value);
-          formData.append('idOportunidad', this.oportunidadForm.get('idOportunidad')?.value);
-          formData.append('idUsuario', this.oportunidadForm.get('idUsuario')?.value);
-          formData.append('idEmpresa', this.oportunidadForm.get('idEmpresa')?.value);
-          formData.append('nombreArchivo', this.oportunidadForm.get('nombreArchivo')?.value);
+          
+          // 1. Agregar cada archivo con el nombre 'archivos' (plural)
+          this.archivosSeleccionados.forEach(file => {
+            formData.append('archivos', file); // ¡Nota el plural 'archivos'!
+          });
+      
+          // 2. Agregar cada campo del DTO por separado (no como JSON)
+          formData.append('Bandera', this.oportunidadForm.get('bandera')?.value);
+          formData.append('IdOportunidad', this.oportunidadForm.get('idOportunidad')?.value);
+          formData.append('IdUsuario', this.oportunidadForm.get('idUsuario')?.value);
+          formData.append('IdEmpresa', this.oportunidadForm.get('idEmpresa')?.value);
+          // El nombreArchivo puede ir vacío como en tu backend
+          formData.append('NombreArchivo', ''); 
       
           this.documentoService.guardarDocumento(formData).subscribe({
-            next: (result) => {
-              this.messageService.add({
-                severity: 'success',
-                summary: 'Éxito',
-                detail: 'Archivo guardado correctamente.'
-              });
-              this.archivoSeleccionado = null;
-              this.fileInput.nativeElement.value = '';
-              // Actualiza la lista de documentos
-              this.getDocumentos(this.oportunidad.idOportunidad!);
+            next: (result: any) => {
+              // Manejo de resultados igual que antes
+              if (result && result.length > 0) {
+                const successCount = result.filter((r: any) => r.result).length;
+                const errorCount = result.length - successCount;
+                this.mostrarResultadoSubida(successCount, errorCount);
+                
+                if (successCount > 0) {
+                  this.archivosSeleccionados = [];
+                  this.fileInput.nativeElement.value = '';
+                  this.getDocumentos(this.oportunidad.idOportunidad!);
+                }
+              }
             },
             error: (error) => {
               this.messageService.add({
                 severity: 'error',
                 summary: 'Error',
-                detail: 'No se pudo guardar el archivo.'
+                detail: 'Error al subir los archivos: ' + error.message
               });
             }
           });
@@ -117,15 +127,55 @@ export class DocumentosOportunidadesComponent {
           this.messageService.add({
             severity: 'warn',
             summary: 'Advertencia',
-            detail: 'Por favor, seleccione un archivo.'
+            detail: 'Por favor, seleccione al menos un archivo.'
           });
         }
+      }
+      private mostrarResultadoSubida(successCount: number, errorCount: number) {
+        if (successCount > 0) {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Éxito',
+            detail: `${successCount} archivo(s) subido(s) correctamente.`
+          });
+          this.archivosSeleccionados = [];
+          this.fileInput.nativeElement.value = '';
+          this.getDocumentos(this.oportunidad.idOportunidad!);
+        }
+        
+        if (errorCount > 0) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: `${errorCount} archivo(s) no se pudieron subir.`
+          });
+        }
+      }
+      
+      eliminarArchivoSeleccionado(index: number) {
+        this.archivosSeleccionados.splice(index, 1);
+        if (this.archivosSeleccionados.length === 0) {
+          this.fileInput.nativeElement.value = '';
+        }
+        
+        this.oportunidadForm.get('nombreArchivo')?.setValue(
+          this.archivosSeleccionados.length > 0 
+            ? this.archivosSeleccionados.map(f => f.name).join(', ') 
+            : ''
+        );
       }
         
       getDocumentos(idOportunidad: number) {
         this.documentoService.getDocumentos(idOportunidad).subscribe({
           next: (result: Archivos[]) => {
-            this.historialOportunidad = result.filter(documento => documento.eliminado !== 1);
+            this.historialOportunidad = result.filter(documento => 
+
+              documento.eliminado !== 1 || 
+            
+              (documento.eliminado === 1 && Number(documento.diasParaEliminacion) > 0)
+            
+            );
+                        
             this.loading = false;
           },
           error: (error) => {
@@ -140,70 +190,113 @@ export class DocumentosOportunidadesComponent {
       }
 
       descargarArchivo(item: Archivos) {
-        let nombreArchivo = item.nombreArchivo;
-        nombreArchivo = this.limpiarNombreArchivo(nombreArchivo);
-        this.documentoService.descargarDocumento(nombreArchivo).subscribe((blob: Blob) => {
-          const url = window.URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = nombreArchivo; 
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          window.URL.revokeObjectURL(url);
-        }, error => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'No se pudo descargar el archivo, es posible que el recurso no esté disponible.'
-          });
-        });
-    }
-    
-        limpiarNombreArchivo(nombreArchivo: string): string {
-          let limpio = nombreArchivo.replace(/\^\d+__\d+_\d+/, '');
-
-          const extension = limpio.split('.').pop();
-          if (extension && limpio.endsWith('.' + extension)) {
-            limpio = limpio.slice(0, -extension.length - 1); // Eliminar la extensión duplicada
-        }
-    
-        return limpio;
-    } 
-      
-
-        eliminarArchivo(item: Archivos) {
-          this.loading = true;
-      
-          this.documentoService.eliminarDocumento(item.idArchivo).subscribe({
-            next: () => {
-              this.historialOportunidad = this.historialOportunidad.filter(documento => documento.idArchivo !== item.idArchivo);
-              this.messageService.add({
-                severity: 'success',
-                summary: 'Éxito',
-                detail: 'Archivo eliminado correctamente.'
-              });
-              this.loading = false;
+        const nombreArchivo = this.limpiarNombreArchivo(item.nombreArchivo);
+        
+        this.documentoService.descargarDocumento(nombreArchivo).subscribe({
+            next: (blob: Blob) => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = nombreArchivo; 
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
             },
             error: (error) => {
-              this.messageService.add({
-                severity: 'error',
-                summary: 'Error',
-                detail: 'No se pudo eliminar el archivo.'
-              });
-              this.loading = false;
+                console.error('Error al descargar:', error);
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: `No se pudo descargar es posible que no esté disponible`
+                });
             }
-          });}
+          });
+        }
+    
+    limpiarNombreArchivo(nombreArchivo: string): string {
+      const limpio = nombreArchivo.replace(/\^\d+__\d+_\d+/, '');
+      const tieneExtension = limpio.includes('.');
+      if (tieneExtension) {
+          return limpio;
+      }
+      const extensionOriginal = nombreArchivo.split('.').pop();
+      return extensionOriginal ? `${limpio}.${extensionOriginal}` : limpio;
+    }
       
-        onFileChange(event: any) {
-        const file = event.target.files[0]; 
-        if (file) {
-          this.archivoSeleccionado = file; 
-          this.oportunidadForm.get('nombreArchivo')?.setValue(file.name);
-        } else {
-          this.archivoSeleccionado = null; 
-          this.oportunidadForm.get('nombreArchivo')?.setValue('');
+
+    eliminarArchivo(item: Archivos) {
+      this.loading = true;
+      
+      this.documentoService.eliminarDocumento(item.idArchivo).subscribe({
+        next: () => {
+          item.diasParaEliminacion = "2"; 
+          
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Éxito',
+            detail: 'Archivo movido a la papelera. Tienes 2 días para recuperarlo.'
+          });
+          this.loading = false;
+        },
+        error: (error) => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo eliminar el archivo.' });
+          this.loading = false;
+        }
+      });
+    }
+    onFileChange(event: any) {
+      const input = event.target as HTMLInputElement;
+      if (input.files && input.files.length > 0) {
+        // Convertir FileList a array y agregar a la lista existente
+        const newFiles = Array.from(input.files) as File[];
+        this.archivosSeleccionados = [...this.archivosSeleccionados, ...newFiles];
+        
+        // Limpiar el input file después de seleccionar
+        input.value = '';
+        
+        // Actualizar el valor del formulario
+        this.oportunidadForm.get('nombreArchivo')?.setValue(
+          this.archivosSeleccionados.map(f => f.name).join(', ')
+        );
+      }
+    }
+
+          recuperarArchivo(item: Archivos) {
+            this.loading = true;
+            
+            this.documentoService.recuperarArchivo(item.idArchivo).subscribe({
+              next: (result) => {
+                if (result.result) {
+                  item.diasParaEliminacion = '';
+                  this.messageService.add({
+                    severity: 'success',
+                    summary: 'Éxito',
+                    detail: 'Archivo recuperado correctamente.'
+                  });
+                } else {
+                  this.messageService.add({ severity: 'error', summary: 'Error', detail: result.errorMessage });
+                }
+                this.loading = false;
+              },
+              error: (error) => {
+                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo recuperar el archivo.' });
+                this.loading = false;
+              }
+            });
+          }
+
+        estaEliminado(item: Archivos): boolean {
+          return !!item.diasParaEliminacion && item.diasParaEliminacion !== "0";
         }
 
+        getIconoEliminacion(item: Archivos): string {
+          return this.estaEliminado(item) ? 'bi bi-arrow-counterclockwise' : 'bi bi-trash';
+        }
+
+        getTooltipEliminacion(item: Archivos): string {
+          return this.estaEliminado(item) 
+            ? `Recuperar archivo (eliminación definitiva en ${item.diasParaEliminacion} días)`
+            : 'Eliminar archivo';
         }
 }

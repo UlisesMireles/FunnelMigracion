@@ -92,7 +92,7 @@ constructor(private TipoServicioService: TipoServicioService, private messageSer
       }
      
     
-      this.servicioForm.controls['estatus'].setValue(this.servicioForm.value.estatus ? 1 : 0);
+      this.servicioForm.controls['estatus'].setValue(this.servicioForm.controls['estatus'].value ? 1 : 0);
       this.servicioForm.controls['idEmpresa'].setValue(this.loginService.obtenerIdEmpresa());
       this.servicioForm.controls['bandera'].setValue(this.insertar ? 'INSERT' : 'UPDATE');
      

@@ -26,9 +26,9 @@ namespace Funnel.Server.Controllers
 
 
         [HttpPost ("[action]")]
-        public async Task<ActionResult<ArchivoDto>> GuardarArchivo([FromForm] InsertaArchivoDto request )
+        public async Task<ActionResult<ArchivoDto>> GuardarArchivos([FromForm] List<IFormFile> archivos, [FromForm] ArchivoDto request)
         {
-            var result = await _archivosService.GuardarArchivo(request.Archivo, request);
+            var result = await _archivosService.GuardarArchivos(archivos, request);
             return Ok(result);
         }
 

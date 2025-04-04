@@ -46,6 +46,7 @@ namespace Funnel.Data
                         NombreArchivoFormateado = ComprobarNulos.CheckStringNull(reader["NombreArchivoFormateado"]),
                         NumArchivos = ComprobarNulos.CheckIntNull(reader["NumArchivos"]),
                         Iniciales = ComprobarNulos.CheckStringNull(reader["Iniciales"]),
+                        DiasParaEliminacion = ComprobarNulos.CheckStringNull(reader["diasParaEliminacion"])
 
                     };
                     result.Add(dto);
@@ -99,42 +100,36 @@ namespace Funnel.Data
             return result;
         }
 
-        public async Task<ArchivoDto> GuardarArchivo(IFormFile archivo, ArchivoDto request)
+        public async Task<List<ArchivoDto>> GuardarArchivos(List<IFormFile> archivos, ArchivoDto request)
         {
-            var insertaArchivo = new ArchivoDto();
-            var path = "";
-
+            var archivosGuardados = new List<ArchivoDto>();
             var formatosPermitidos = new List<string> { "doc", "docx", "pdf", "xls", "xlsx", "ppt", "pptx", "rar", "zip" };
 
-            // Obtener la extensión del archivo
-            var extension = Path.GetExtension(archivo.FileName).TrimStart('.').ToLower();
-
-            if (!formatosPermitidos.Contains(extension))
-            {
-                insertaArchivo.ErrorMessage = "Formato de archivo no permitido.";
-                insertaArchivo.Result = false;
-                return insertaArchivo;
-            }
-
-            if (string.IsNullOrEmpty(request.NombreArchivo))
-            {
-                request.NombreArchivo = Path.GetFileNameWithoutExtension(archivo.FileName);
-            }
-
-            String nombreArchivoBD = $"{request.NombreArchivo}^{request.IdEmpresa}_{request.IdProspecto}_{request.IdOportunidad}.{extension}";
-
             string carpetaDestino = Path.Combine(Directory.GetCurrentDirectory(), "Archivos");
-            string rutaArchivo = Path.Combine(carpetaDestino, archivo.FileName);
 
-            try
+            if (!Directory.Exists(carpetaDestino))
             {
+                Directory.CreateDirectory(carpetaDestino);
+            }
 
-                if (!Directory.Exists(carpetaDestino))
+            foreach (var archivo in archivos)
+            {
+                var insertaArchivo = new ArchivoDto();
+                var extension = Path.GetExtension(archivo.FileName).TrimStart('.').ToLower();
+
+                if (!formatosPermitidos.Contains(extension))
                 {
-                    Directory.CreateDirectory(carpetaDestino);
+                    insertaArchivo.ErrorMessage = $"Formato de archivo {extension} no permitido.";
+                    insertaArchivo.Result = false;
+                    archivosGuardados.Add(insertaArchivo);
+                    continue;
                 }
 
-                if (archivo != null)
+                string nombreArchivo = Path.GetFileNameWithoutExtension(archivo.FileName);
+                string nombreArchivoBD = $"{nombreArchivo}^{request.IdEmpresa}_{request.IdProspecto}_{request.IdOportunidad}.{extension}";
+                string rutaArchivo = Path.Combine(carpetaDestino, archivo.FileName);
+
+                try
                 {
                     using (var stream = new FileStream(rutaArchivo, FileMode.Create))
                     {
@@ -144,19 +139,27 @@ namespace Funnel.Data
                     insertaArchivo.Bandera = request.Bandera;
                     insertaArchivo.IdOportunidad = request.IdOportunidad;
                     insertaArchivo.IdUsuario = request.IdUsuario;
+                    insertaArchivo.IdEmpresa = request.IdEmpresa;
+                    insertaArchivo.IdProspecto = request.IdProspecto;
                     insertaArchivo.NombreArchivo = nombreArchivoBD;
                     insertaArchivo.Formato = extension;
 
                     insertaArchivo = await GuardarArchivo(insertaArchivo);
+
+                    insertaArchivo.Result = true;
                 }
+                catch (Exception ex)
+                {
+                    insertaArchivo.ErrorMessage = "Error al guardar el archivo: " + ex.Message;
+                    insertaArchivo.Result = false;
+                }
+
+                archivosGuardados.Add(insertaArchivo);
             }
-            catch (Exception ex)
-            {
-                insertaArchivo.ErrorMessage = "Error al guardar el archivo: " + ex.Message;
-                insertaArchivo.Result = false;
-            }
-            return insertaArchivo;
+
+            return archivosGuardados;
         }
+
         public async Task<ArchivoDto> GuardarArchivo(ArchivoDto request)
         {
 

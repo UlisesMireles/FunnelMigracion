@@ -27,7 +27,6 @@
     <div>
         <label class="margen ">
           <h2>{{ 'Documentos de: ' + nombreOportunidad }}</h2>
-
         </label>
     </div>
     
@@ -38,10 +37,28 @@
           <label for="Comentario" class="margen text-left">Agregar Documento:</label>
         </div>
         <div class="col-sm-6 inptSpace">
-            <input #fileInput type="file" class="form-control" accept=".pdf,.doc,.docx,.jpg,.png" (change)="onFileChange($event)">
+          <input #fileInput type="file" class="form-control" accept=".pdf,.doc,.docx,.jpg,.png" 
+                 (change)="onFileChange($event)" multiple>
         </div>
         <div class="col-sm-2 inptSpace">
-            <button pButton label="Guardar"  (click)="guardarDocumento()" severity="secondary" [disabled]="!archivoSeleccionado" ></button>
+          <button pButton label="Guardar" (click)="guardarDocumento()" 
+                  severity="secondary" [disabled]="!archivosSeleccionados || archivosSeleccionados.length === 0"></button>
+        </div>
+      </div>
+      
+      <div class="row mt-3" *ngIf="archivosSeleccionados && archivosSeleccionados.length > 0">
+        <div class="col-sm-12">
+          <div class="selected-files-container">
+            <h5>Archivos seleccionados:</h5>
+            <div class="file-list">
+              <div class="file-item" *ngFor="let file of archivosSeleccionados; let i = index">
+                <span class="file-name">{{ file.name }}</span>
+                <button type="button" class="remove-file-btn" (click)="eliminarArchivoSeleccionado(i)">
+                  <i class="bi bi-x"></i>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </form>
@@ -59,15 +76,40 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let item of historialOportunidad">
-              <td  class="text-left">{{ item.iniciales }}</td>
-              <td  class="text-left">{{ item.fechaRegistro | date:'dd/MM/yyyy' }}</td>
-              <td  class="text-left">{{ item.nombreArchivoFormateado }}</td>
+            <tr *ngFor="let item of historialOportunidad" 
+                [class.archivo-eliminado]="item.diasParaEliminacion">
+              <td class="text-left">{{ item.iniciales }}</td>
+              <td class="text-left">{{ item.fechaRegistro | date:'dd/MM/yyyy' }}</td>
+              <td class="text-left">{{ item.nombreArchivoFormateado }}</td>
               <td>
                 <p-button type="button" icon="bi bi-download" text (click)="descargarArchivo(item)"/>
               </td>
               <td>
-                <p-button type="button" icon="bi bi-trash" text  (click)="eliminarArchivo(item)"/>
+                <ng-container *ngIf="!item.diasParaEliminacion">
+                  <p-button 
+                    type="button" 
+                    icon="bi bi-trash" 
+                    text  
+                    (click)="eliminarArchivo(item)"
+                    pTooltip="Eliminar archivo"
+                    tooltipPosition="top"
+                  />
+                </ng-container>
+                
+                <ng-container *ngIf="item.diasParaEliminacion">
+                  <div class="restore-button-container">
+                    <p-button 
+                      type="button" 
+                      icon="bi bi-arrow-counterclockwise" 
+                      text  
+                      (click)="recuperarArchivo(item)"
+                      [pTooltip]="'Recuperar archivo (se eliminará en ' + item.diasParaEliminacion + ' días)'"
+                      tooltipPosition="top"
+                      styleClass="p-button-success"
+                    />
+                    <span class="days-badge">{{item.diasParaEliminacion}}</span>
+                  </div>
+                </ng-container>
               </td>
             </tr>
           </tbody>
@@ -81,6 +123,6 @@
   </ng-template>
   
   <ng-template pTemplate="footer">
-    <button pButton label="Cancelar" (click)="close()" severity="secondary" ></button>
+    <button pButton label="Cancelar" (click)="close()" severity="secondary"></button>
   </ng-template>
 </p-dialog>

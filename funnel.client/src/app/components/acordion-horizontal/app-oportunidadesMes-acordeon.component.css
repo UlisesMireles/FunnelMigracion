@@ -295,7 +295,8 @@ div.fotoTarjeta {
   display: flex;                /* Usa flexbox para organizar en fila */
   justify-content: flex-start;  /* Alinea los elementos a la izquierda */
   gap: 8px;                     /* Espacio de 8px entre cada elemento */
-  width: 20% !important;        /* Fuerza el ancho a 20% (ajusta según lo necesites) */
+  width: 20% !important;
+  margin-right: 110px;        /* Fuerza el ancho a 20% (ajusta según lo necesites) */
 }
 
 /* Reglas para filas con justificación entre elementos */
@@ -374,14 +375,21 @@ div.fotoTarjeta {
   text-align: right;            /* Alinea el texto a la derecha */
   white-space: nowrap;          /* Evita que se rompa la línea */
 }
-::ng-deep .coloreditar-icon .p-button-icon {
-  color: rgb(122, 122, 4) !important;
-  font-size: 1.5rem;
-  background: transparent;
-  border-color: transparent;
+::ng-deep .coloreditar-icon {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
-::ng-deep .coloreditar-icon:hover {
+::ng-deep .coloreditar-icon .p-button {
+  background: transparent !important;
+  border: none !important;
+}
+
+::ng-deep .custom-pencil {
+  color: #000; 
+  font-size: 1.5rem;
+  display: inline-block;
   background: transparent !important;
 }
 

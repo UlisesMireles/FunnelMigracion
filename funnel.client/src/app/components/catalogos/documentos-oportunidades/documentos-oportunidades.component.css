@@ -249,3 +249,97 @@
 
 }
 
+.selected-files-container {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.file-list {
+  margin-top: 10px;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.file-name {
+  flex-grow: 1;
+  margin-right: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-size {
+  color: #6c757d;
+  font-size: 0.85em;
+  margin-right: 10px;
+}
+
+.remove-file-btn {
+  background: none;
+  border: none;
+  color: #dc3545;
+  cursor: pointer;
+  padding: 0 5px;
+}
+
+.remove-file-btn:hover {
+  color: #a71d2a;
+}
+
+
+input[type="file"] {
+  padding: 8px;
+}
+
+.archivo-eliminado {
+  opacity: 0.7;
+  background-color: #fff3cd; 
+}
+
+.archivo-eliminado button[icon="bi bi-download"] {
+  opacity: 0.5;
+}
+
+.bi-arrow-counterclockwise {
+  color: #28a745 !important;
+}
+
+.restore-button-container {
+  position: relative;
+  display: inline-block;
+}
+
+.days-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  color: black;
+  border-radius: 50%;
+  width: 30px;
+  height: 20px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.archivo-eliminado {
+  opacity: 0.7;
+  background-color: #fff8e6;
+}
+
+.p-button-success {
+  color: #28a745 !important;
+}

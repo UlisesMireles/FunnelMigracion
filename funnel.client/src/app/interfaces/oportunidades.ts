@@ -80,7 +80,7 @@ export interface Archivos {
     nombreArchivoFormateado: string;
     iniciales: string;
     numArchivos: number;
-    diasParaEliminacion: string;
+    DiasParaEliminacion: string;
 }
 export interface Tarjeta {
   idOportunidad: number;

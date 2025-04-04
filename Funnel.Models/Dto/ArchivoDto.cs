@@ -24,6 +24,6 @@ namespace Funnel.Models.Dto
         public int? IdEmpresa { get; set; }
         public int? IdProspecto { get; set; }
         public string? Formato { get; set; }
-        public string? diasParaEliminacion { get; set; }
+        public string? DiasParaEliminacion { get; set; }
     }
 }

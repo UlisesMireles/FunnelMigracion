@@ -172,7 +172,7 @@ export class DocumentosOportunidadesComponent {
 
               documento.eliminado !== 1 || 
             
-              (documento.eliminado === 1 && Number(documento.diasParaEliminacion) > 0)
+              (documento.eliminado === 1 && Number(documento.DiasParaEliminacion) > 0)
             
             );
                         
@@ -230,7 +230,7 @@ export class DocumentosOportunidadesComponent {
       
       this.documentoService.eliminarDocumento(item.idArchivo).subscribe({
         next: () => {
-          item.diasParaEliminacion = "2"; 
+          item.DiasParaEliminacion = "2"; 
           
           this.messageService.add({
             severity: 'success',
@@ -268,7 +268,7 @@ export class DocumentosOportunidadesComponent {
             this.documentoService.recuperarArchivo(item.idArchivo).subscribe({
               next: (result) => {
                 if (result.result) {
-                  item.diasParaEliminacion = '';
+                  item.DiasParaEliminacion = '';
                   this.messageService.add({
                     severity: 'success',
                     summary: 'Éxito',
@@ -287,7 +287,7 @@ export class DocumentosOportunidadesComponent {
           }
 
         estaEliminado(item: Archivos): boolean {
-          return !!item.diasParaEliminacion && item.diasParaEliminacion !== "0";
+          return !!item.DiasParaEliminacion && item.DiasParaEliminacion !== "0";
         }
 
         getIconoEliminacion(item: Archivos): string {
@@ -296,7 +296,7 @@ export class DocumentosOportunidadesComponent {
 
         getTooltipEliminacion(item: Archivos): string {
           return this.estaEliminado(item) 
-            ? `Recuperar archivo (eliminación definitiva en ${item.diasParaEliminacion} días)`
+            ? `Recuperar archivo (eliminación definitiva en ${item.DiasParaEliminacion} días)`
             : 'Eliminar archivo';
         }
 }

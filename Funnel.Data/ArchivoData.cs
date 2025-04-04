@@ -46,7 +46,7 @@ namespace Funnel.Data
                         NombreArchivoFormateado = ComprobarNulos.CheckStringNull(reader["NombreArchivoFormateado"]),
                         NumArchivos = ComprobarNulos.CheckIntNull(reader["NumArchivos"]),
                         Iniciales = ComprobarNulos.CheckStringNull(reader["Iniciales"]),
-                        diasParaEliminacion = ComprobarNulos.CheckStringNull(reader["diasParaEliminacion"])
+                        DiasParaEliminacion = ComprobarNulos.CheckStringNull(reader["diasParaEliminacion"])
 
                     };
                     result.Add(dto);

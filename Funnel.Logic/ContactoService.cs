@@ -35,7 +35,7 @@ namespace Funnel.Logic
             var listaProspectos = await _contactoData.ConsultarContacto((int)request.IdEmpresa);
 
             var coincidencias = listaProspectos
-                .Where(v => v.Nombre == request.Nombre && v.Apellidos == request.Apellidos)
+                .Where(v => v.Nombre == request.Nombre )
                 .ToList();
 
             if (request.Bandera == "INSERT" && coincidencias.Count >= 2)

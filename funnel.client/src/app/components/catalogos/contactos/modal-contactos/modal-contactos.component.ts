@@ -54,12 +54,6 @@ export class ModalContactosComponent {
             Validators.pattern('^[a-zA-ZÀ-ÿ\\s]+$')
           ]
         ],
-        apellidos: ['', [
-            Validators.required,
-            Validators.maxLength(50),
-            Validators.pattern('^[a-zA-ZÀ-ÿ\\s]+$')
-          ]
-        ],
         telefono: ['', [
             Validators.required,
             Validators.minLength(8),
@@ -78,12 +72,6 @@ export class ModalContactosComponent {
       this.contactoForm = this.fb.group({
         idContactoProspecto: [this.contacto?.idContactoProspecto],
         nombre: [this.contacto?.nombre, [
-            Validators.required,
-            Validators.maxLength(50),
-            Validators.pattern('^[a-zA-ZÀ-ÿ\\s]+$')
-          ]
-        ],
-        apellidos: [this.contacto?.apellidos, [
             Validators.required,
             Validators.maxLength(50),
             Validators.pattern('^[a-zA-ZÀ-ÿ\\s]+$')

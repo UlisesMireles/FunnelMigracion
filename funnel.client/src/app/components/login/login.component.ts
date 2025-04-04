@@ -5,6 +5,7 @@ import { DomSanitizer, SafeHtml, SafeStyle } from '@angular/platform-browser';
 import { environment } from '../../../environments/environment';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoginService } from '../../services/login.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -30,7 +31,7 @@ export class LoginComponent implements OnInit {
   showIniciarSesion: Boolean = false;
   showPassword = false;
   public backgroundImg: SafeStyle = "";
-  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private authService: LoginService, private sanitizer: DomSanitizer) {}
+  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private authService: LoginService, private sanitizer: DomSanitizer, private snackBar: MatSnackBar) {}
 
   ngOnInit() {
     this.backgroundImg = this.sanitizer.bypassSecurityTrustStyle('url(' + this.baseUrl + '/assets/img/PMAGRISES.png' + ')');
@@ -128,11 +129,16 @@ export class LoginComponent implements OnInit {
       return;
     }
     this.showErrors = false;
-    const user = this.resetForm.get('usuario')?.value;
+    const user = this.resetUsername;//this.resetForm.get('usuario')?.value;
     this.authService.recuperarContrasena(user).subscribe({
       next: (data: any) => {
-        this.showErrors = true;
-        this.resetErrorMessage = this.sanitizer.bypassSecurityTrustHtml(data.errorMessage);
+        this.snackBar.open(data.errorMessage, 'X', { 
+          horizontalPosition: 'end', 
+          verticalPosition: 'top', 
+          duration: 300000,
+          panelClass: 'success-snackbar'
+        });
+        //this.snackbarService.showSnackbar(data.errorMessage, 'success');
 
       },
       error: (err: Error) => {

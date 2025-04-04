@@ -77,7 +77,7 @@ export class ModalProspectosComponent {
           ]
         ],
         idSector: [this.prospecto.idSector, Validators.required],
-        estatus: [this.prospecto.estatus],
+        estatus: [this.prospecto?.estatus === 1],
         idEmpresa: [this.loginService.obtenerIdEmpresa()],
         bandera: ['UPDATE']
       });
@@ -85,7 +85,6 @@ export class ModalProspectosComponent {
     
   }
   onDialogShow(){
-    console.log('dialogo');
     this.cargarSectores();
     this.inicializarFormulario();
   }
@@ -93,7 +92,6 @@ export class ModalProspectosComponent {
   cargarSectores() {
     this.prospectoService.getSectores(this.loginService.obtenerIdEmpresa()).subscribe({
       next: (result: any) => {
-        console.log('sectores', result);
         this.sectores = result;
       },
       error: (error) => {
@@ -138,7 +136,6 @@ export class ModalProspectosComponent {
   
 
   mostrarToastError() {
-    console.log(this.prospectoForm);
     this.messageService.add({
       severity: 'error',
       summary: 'Error',

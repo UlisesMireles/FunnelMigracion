@@ -286,3 +286,7 @@ th.sort-active p-sortIcon {
   border-color: #4682b4 !important;
   color: white !important;
 }
+
+::ng-deep .p-fluid {
+  width: 100% !important;
+}

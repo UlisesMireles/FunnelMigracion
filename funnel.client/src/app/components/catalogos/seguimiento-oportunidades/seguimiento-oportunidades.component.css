@@ -233,9 +233,9 @@
 }
 
 .seguimiento-textarea {
-  width: 90%;
+  width: 100%!important;
   height: 80px; 
-  resize: vertical; 
+  resize: none; 
   padding: 8px; 
   border: 1px solid #ccc; 
   border-radius: 5px;
@@ -297,3 +297,6 @@
   margin-left: 430px;
 }
 
+.accion-btn{
+  width: 60px;
+}

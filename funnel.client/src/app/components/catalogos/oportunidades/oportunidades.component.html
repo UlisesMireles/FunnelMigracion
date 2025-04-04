@@ -178,11 +178,11 @@
               </td>
               <td>
                 <p-button type="button" icon="bi bi-file-earmark-text fs-3" text (click)="seguimiento(rowData)"
-                pTooltip="Ver seguimiento" tooltipPosition="top" styleClass="blue-icon" >
+                pTooltip="Seguimiento" tooltipPosition="top" styleClass="blue-icon" >
                 <span class="badge">{{ rowData.totalComentarios || 0 }}</span>
                 </p-button>
                 <p-button type="button" icon="bi bi-folder2 fs-3" text (click)="documento(rowData)"
-                pTooltip="Ver documentos" tooltipPosition="top" styleClass="black-icon">
+                pTooltip="Documentos" tooltipPosition="top" styleClass="black-icon">
                 <span class="badge">{{ rowData.totalArchivos || 0}}</span>
                 </p-button>
                 <p-button styleClass="coloreditar-icon" (click)="actualiza(rowData)" pTooltip="Editar registro" tooltipPosition="top">
@@ -243,11 +243,11 @@
  
         <!--Estadísticas por Etapa -->
         <div class="tab-pane fade" id="estadisticas">
-          <div class="row">
-            <div class="col-12">
+          <!-- <div class="row">
+            <div class="col-12"> -->
               <app-estadisticas-por-etapa></app-estadisticas-por-etapa>
-            </div>
-          </div>
+            <!-- </div>
+          </div> -->
         </div>
       </div>
     </div>

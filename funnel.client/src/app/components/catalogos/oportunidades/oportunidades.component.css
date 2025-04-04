@@ -128,7 +128,7 @@ div.inDivDatatableHeader > p-button > button.p-button {
   overflow: visible;
   text-overflow: clip;
   padding: 2px 1px !important;
-  height: 25px !important;
+  height: 26px !important;
   line-height: 0.5 !important; 
 }
 
@@ -240,16 +240,17 @@ div.inDivDatatableHeader > p-button > button.p-button {
   line-height: 1.4;
 }
 .contenedorTabla{
-  overflow-x: auto;
+  /* overflow-x: auto; */
   width: 100%;
   margin-top: -45px !important; 
+  margin-bottom: 50px;
 }
 .table-responsive{
   overflow-x: auto;
   width: 100%;
   max-width: 100%;
 }
-.badge {
+/* .badge {
   position: fixed;
   transform: translate(-50%, 50%); 
   color: black;
@@ -261,6 +262,22 @@ div.inDivDatatableHeader > p-button > button.p-button {
   text-align: center;
   z-index: 1000; 
   pointer-events: none; 
+} */
+
+.badge {
+  position: absolute;
+  top: -5px;
+  right: -2px;
+  color: black;
+  font-size: 10px;
+  font-weight: bold;
+  width: 16px;
+  height: 16px;
+  line-height: 16px; 
+  text-align: right !important;
+  border-radius: 50%; 
+  z-index: 10; 
+  pointer-events: none;
 }
 
 .p-button {

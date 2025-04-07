@@ -18,6 +18,10 @@ export class ColumnasDisponiblesComponent implements OnInit {
   ngOnInit() {
   }
 
+  cerrarModal(): void {
+    this.dialogRef.close();
+  }
+
   aplicarFiltroParent(): void {
     this.dialogRef.close(this.data.todosColumnas);
   }

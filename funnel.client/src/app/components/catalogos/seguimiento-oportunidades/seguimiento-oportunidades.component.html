@@ -48,6 +48,15 @@
           <div class="row" [class.justify-content-end]="oportunidadForm.get('idEstatusOportunidad')?.value !== 1">
             <div class="col-sm-8" *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value === 1">
               <textarea pInputText class="seguimiento-textarea" formControlName="comentario"></textarea>
+              <div *ngIf="oportunidadForm.get('comentario')?.invalid && oportunidadForm.get('comentario')?.touched"
+                class="text-danger">
+                <small *ngIf="oportunidadForm.get('comentario')?.errors?.['required']">
+                  El comentario es obligatorio.
+                </small>
+                <small *ngIf="oportunidadForm.get('comentario')?.errors?.['minWords']">
+                  El comentario debe tener al menos 10 palabras.
+                </small>
+              </div>
             </div>
             <div class="col-sm-4" [class.col-12]="oportunidadForm.get('idEstatusOportunidad')?.value !== 1"
                  [class.text-right]="oportunidadForm.get('idEstatusOportunidad')?.value !== 1">

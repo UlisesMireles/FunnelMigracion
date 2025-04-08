@@ -1,4 +1,5 @@
-﻿using Funnel.Logic;
+﻿using DinkToPdf.Contracts;
+using Funnel.Logic;
 using Funnel.Logic.Interfaces;
 using Funnel.Models.Dto;
 using Microsoft.AspNetCore.Mvc;
@@ -10,9 +11,11 @@ namespace Funnel.Server.Controllers
     public class OportunidadesController : Controller
     {
         private readonly IOportunidadesEnProcesoService _oportunidadesService;
-        public OportunidadesController(IOportunidadesEnProcesoService oportunidadesService)
+        private readonly IConverter _converter;
+        public OportunidadesController(IOportunidadesEnProcesoService oportunidadesService, IConverter converter)
         {
             _oportunidadesService = oportunidadesService;
+            _converter = converter;
         }
         [HttpGet("[action]/")]
         public async Task<ActionResult<List<OportunidadesEnProcesoDto>>> ConsultarOportunidadesEnProceso(int IdUsuario, int IdEmpresa, int IdEstatus)
@@ -97,6 +100,14 @@ namespace Funnel.Server.Controllers
         {
             var result = await _oportunidadesService.ActualizarFechaEstimada(request);
             return Ok(result);
+        }
+        [HttpGet("[action]/")]
+        public async Task<ActionResult> DescargarReporteSeguimientoOportunidades(int idEmpresa, int idOportunidad)
+        {
+            var rutaPlantilla = Path.Combine(Directory.GetCurrentDirectory(), "PlantillasReporteHtml", "PlantillaReporteFunnel.html");
+            var doc = await _oportunidadesService.GenerarReporteSeguimientoOportunidades(idEmpresa, idOportunidad,rutaPlantilla);
+            var pdf = _converter.Convert(doc);
+            return File(pdf, "application/pdf", "SeguimientoOportunidades.pdf");
         }
     }
 }

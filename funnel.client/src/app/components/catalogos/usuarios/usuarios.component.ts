@@ -5,7 +5,7 @@ import { Table } from 'primeng/table';
 import { LazyLoadEvent, MessageService } from 'primeng/api';
 import { baseOut } from '../../../interfaces/utils/utils/baseOut';
 import { LoginService } from '../../../services/login.service';
-import { ColumnasDisponiblesComponent } from '../../shared/columnas-disponibles/columnas-disponibles.component';
+import { ColumnasDisponiblesComponent } from '../../utils/tablas/columnas-disponibles/columnas-disponibles.component';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { sumBy, map as mapping, omit, sortBy, groupBy, keys as getKeys } from 'lodash-es';
 

@@ -10,13 +10,6 @@ import { TabViewModule } from 'primeng/tabview';
 import { TooltipModule } from 'primeng/tooltip';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CambiarContrasenaComponent } from './components/cambiar-contrasena/cambiar-contrasena.component';
-import { UsuariosComponent } from './components/catalogos/usuarios/usuarios.component';
-import { DobleAutenticacionComponent } from './components/doble-autenticacion/doble-autenticacion.component';
-import { FooterComponent } from './components/footer/footer.component';
-import { LoginComponent } from './components/login/login.component';
-import { MenuComponent } from './components/menu/menu.component';
-import { OlvidasteContrasenaComponent } from './components/olvidaste-contrasena/olvidaste-contrasena.component';
 
 import { MatInputModule } from '@angular/material/input';
 import Aura from '@primeng/themes/aura';
@@ -39,56 +32,79 @@ import { TableModule } from 'primeng/table';
 import { Tag, TagModule } from 'primeng/tag';
 import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
-import { ContactosComponent } from './components/catalogos/contactos/contactos.component';
-import { ModalContactosComponent } from './components/catalogos/contactos/modal-contactos/modal-contactos.component';
-import { ModalOportunidadesCanceladasComponent } from './components/catalogos/oportunidades-canceladas/modal-oportunidades-canceladas/modal-oportunidades-canceladas.component';
-import { OportunidadesCanceladasComponent } from './components/catalogos/oportunidades-canceladas/oportunidades-canceladas.component';
-import { ModalOportunidadesEliminadasComponent } from './components/catalogos/oportunidades-eliminadas/modal-oportunidades-eliminadas/modal-oportunidades-eliminadas.component';
-import { OportunidadesEliminadasComponent } from './components/catalogos/oportunidades-eliminadas/oportunidades-eliminadas.component';
-import { ModalProspectosComponent } from './components/catalogos/prospectos/modal-prospectos/modal-prospectos.component';
-import { ProspectosComponent } from './components/catalogos/prospectos/prospectos.component';
+
+//Login
+
+import { DobleAutenticacionComponent } from './components/inicio/doble-autenticacion/doble-autenticacion.component';
+import { LoginComponent } from './components/inicio/login/login.component';
+import { OlvidasteContrasenaComponent } from './components/inicio/olvidaste-contrasena/olvidaste-contrasena.component';
+import { CambiarContrasenaComponent } from './components/inicio/cambiar-contrasena/cambiar-contrasena.component';
+
+// En Proceso
+import { OportunidadesComponent } from './components/en-proceso/oportunidades/oportunidades.component';
+import { ModalOportunidadesComponent } from './components/en-proceso/oportunidades/modal-oportunidades/modal-oportunidades.component';
+import { EstadisticasPorEtapaComponent } from './components/en-proceso/estadisticas-por-etapa/estadisticas-por-etapa.component';
+
+//Terminadas
+import { ModalOportunidadesCanceladasComponent } from './components/terminadas/oportunidades-canceladas/modal-oportunidades-canceladas/modal-oportunidades-canceladas.component';
+import { OportunidadesCanceladasComponent } from './components/terminadas/oportunidades-canceladas/oportunidades-canceladas.component';
+import { ModalOportunidadesEliminadasComponent } from './components/terminadas/oportunidades-eliminadas/modal-oportunidades-eliminadas/modal-oportunidades-eliminadas.component';
+import { OportunidadesEliminadasComponent } from './components/terminadas/oportunidades-eliminadas/oportunidades-eliminadas.component';
+import { ModalOportunidadesGanadasComponent } from './components/terminadas/oportunidades-ganadas/modal-oportunidades-ganadas/modal-oportunidades-ganadas.component';
+import { OportunidadesGanadasComponent } from './components/terminadas/oportunidades-ganadas/oportunidades-ganadas.component';
+import { ModalOportunidadesPerdidasComponent } from './components/terminadas/oportunidades-perdidas/modal-oportunidades-perdidas/modal-oportunidades-perdidas.component';
+import { OportunidadesPerdidasComponent } from './components/terminadas/oportunidades-perdidas/oportunidades-perdidas.component';
+
+
+// Adminsitracion
+import { ModalProspectosComponent } from './components/administracion/prospectos/modal-prospectos/modal-prospectos.component';
+import { ProspectosComponent } from './components/administracion/prospectos/prospectos.component';
+import { ContactosComponent } from './components/administracion/contactos/contactos.component';
+import { ModalContactosComponent } from './components/administracion/contactos/modal-contactos/modal-contactos.component';
+
+
+//Catalogos
 import { ModalTipoServiciosComponent } from './components/catalogos/tipo-servicios/modal-tipo-servicios/modal-tipo-servicios.component';
 import { TipoServiciosComponent } from './components/catalogos/tipo-servicios/tipo-servicios.component';
 import { ModalTiposEntregaComponent } from './components/catalogos/tipos-entrega/modal-tipos-entrega/modal-tipos-entrega.component';
 import { TiposEntregaComponent } from './components/catalogos/tipos-entrega/tipos-entrega.component';
 import { ModalUsuariosComponent } from './components/catalogos/usuarios/modal-usuarios/modal-usuarios.component';
-import { PrimeNgConfiguracionService } from './services/primeNgConfiguracion.service';
+import { UsuariosComponent } from './components/catalogos/usuarios/usuarios.component';
+import { PermisosComponent } from './components/catalogos/permisos/permisos.component';
 
+
+import { TopVeinteComponent } from './components/dashboard/top-veinte/top-veinte.component';
+
+// Shared
+
+import { DocumentosOportunidadesComponent } from './components/layouts/oportunidades/documentos-oportunidades/documentos-oportunidades.component';
+import { SeguimientoOportunidadesComponent } from './components/layouts/oportunidades/seguimiento-oportunidades/seguimiento-oportunidades.component';
+import { HeaderComponent } from './components/layouts/master/header/header.component';
+import { VerticalBarComponent } from './components/layouts/master/vertical-bar/vertical-bar.component';
+import { FooterComponent } from './components/layouts/master/footer/footer.component';
+import { MenuComponent } from './components/layouts/master/menu/menu.component';
+import { AgregarQuitarColumnasComponent } from './components/utils/tablas/agregar-quitar-columnas/agregar-quitar-columnas.component';
+import { ColumnFilterComponent } from './components/utils/tablas/column-filter/column-filter.component';
+import { OortunidadesMesAcordeonComponent } from './components/utils/acordion-horizontal/app-oportunidadesMes-acordeon.component';
+import { ColumnasDisponiblesComponent } from './components/utils/tablas/columnas-disponibles/columnas-disponibles.component';
+import { HeaderOpcionesComponent } from './components/utils/tablas/header-opciones/header-opciones.component';
 
 export function getBaseUrl() {
   return 'https://localhost:49834/'
 }
 
-import { ModalOportunidadesPerdidasComponent } from './components/catalogos/oportunidades-perdidas/modal-oportunidades-perdidas/modal-oportunidades-perdidas.component';
-import { OportunidadesPerdidasComponent } from './components/catalogos/oportunidades-perdidas/oportunidades-perdidas.component';
-import { OportunidadesComponent } from './components/catalogos/oportunidades/oportunidades.component';
-import { PermisosComponent } from './components/catalogos/permisos/permisos.component';
-import { TopVeinteComponent } from './components/catalogos/top-veinte/top-veinte.component';
-
+import { PrimeNgConfiguracionService } from './services/primeNgConfiguracion.service';
 import { CommonModule, DatePipe, registerLocaleData } from '@angular/common';
-import { DocumentosOportunidadesComponent } from './components/catalogos/documentos-oportunidades/documentos-oportunidades.component';
-import { ModalOportunidadesGanadasComponent } from './components/catalogos/oportunidades-ganadas/modal-oportunidades-ganadas/modal-oportunidades-ganadas.component';
-import { OportunidadesGanadasComponent } from './components/catalogos/oportunidades-ganadas/oportunidades-ganadas.component';
-import { ModalOportunidadesComponent } from './components/catalogos/oportunidades/modal-oportunidades/modal-oportunidades.component';
-import { SeguimientoOportunidadesComponent } from './components/catalogos/seguimiento-oportunidades/seguimiento-oportunidades.component';
-import { AgregarQuitarColumnasComponent } from './components/shared/agregar-quitar-columnas/agregar-quitar-columnas.component';
-import { ColumnFilterComponent } from './components/shared/column-filter/column-filter.component';
-import { ColumnasDisponiblesComponent } from './components/shared/columnas-disponibles/columnas-disponibles.component';
-import { HeaderOpcionesComponent } from './components/shared/header-opciones/header-opciones.component';
 import { TipoCurrencyPipe } from './pipes/tipoCurrency.pipe';
 
 
 import localeEs from '@angular/common/locales/es-MX';
 import { APP_INITIALIZER, LOCALE_ID } from '@angular/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { OortunidadesMesAcordeonComponent } from './components/acordion-horizontal/app-oportunidadesMes-acordeon.component';
-import { HeaderComponent } from './components/header/header.component';
-import { VerticalBarComponent } from './components/vertical-bar/vertical-bar.component';
 
 
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
-import { EstadisticasPorEtapaComponent } from './components/catalogos/estadisticas-por-etapa/estadisticas-por-etapa.component';
 export function configurationProviderFactory(provider: PrimeNgConfiguracionService) {
   return () => provider.load();
 }
@@ -132,7 +148,6 @@ registerLocaleData(localeEs, 'es-MX');
     VerticalBarComponent,
     OportunidadesCanceladasComponent,
     ModalOportunidadesCanceladasComponent,
-    SeguimientoOportunidadesComponent,
     HeaderComponent,
     OortunidadesMesAcordeonComponent,
     EstadisticasPorEtapaComponent,

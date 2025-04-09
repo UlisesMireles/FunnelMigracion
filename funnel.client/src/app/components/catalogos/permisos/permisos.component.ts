@@ -1,16 +1,10 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { LazyLoadEvent } from 'primeng/api';
-import { Table } from 'primeng/table';
-import { MessageService } from 'primeng/api';
-import { Permiso} from '../../../interfaces/permisos';
-import { PermisoSeleccionado} from '../../../interfaces/permisos';
-import { ContactosService } from '../../../services/contactos.service';
+import { Permiso, PermisoSeleccionado} from '../../../interfaces/permisos';
 import { baseOut } from '../../../interfaces/utils/utils/baseOut';
 import { LoginService } from '../../../services/login.service';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { ColumnasDisponiblesComponent } from '../../shared/columnas-disponibles/columnas-disponibles.component';
-import { sumBy, map as mapping, omit, sortBy, groupBy, keys as getKeys } from "lodash-es";
 import { PermisosService } from '../../../services/permisos.service';
+import { MessageService } from 'primeng/api';
+import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({

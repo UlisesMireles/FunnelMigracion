@@ -3,7 +3,7 @@ import { TipoEntrega} from '../../../interfaces/tipo-entrega';
 import { TipoEntregaService } from '../../../services/tipo-entrega.service';
 import { Table } from 'primeng/table';
 import { LazyLoadEvent, MessageService } from 'primeng/api';
-import { ColumnasDisponiblesComponent } from '../../shared/columnas-disponibles/columnas-disponibles.component';
+import { ColumnasDisponiblesComponent } from '../../utils/tablas/columnas-disponibles/columnas-disponibles.component';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { sumBy, map as mapping, omit, sortBy, groupBy, keys as getKeys } from 'lodash-es';
 import { baseOut } from '../../../interfaces/utils/utils/baseOut';

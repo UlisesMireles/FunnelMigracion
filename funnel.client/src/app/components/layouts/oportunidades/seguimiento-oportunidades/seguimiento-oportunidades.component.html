@@ -65,7 +65,7 @@
                 <button pButton label="Añadir" (click)="guardarHistorial()" severity="secondary"
                         *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value === 1"
                         [disabled]="!oportunidadForm.get('comentario')?.value" class="me-2"></button>
-                <button pButton severity="secondary" (click)="exportExcel(oportunidadForm.get('idOportunidad')?.value)"
+                <button pButton severity="secondary" (click)="exportPdf(oportunidadForm.get('idOportunidad')?.value)"
                         [disabled]="historialOportunidad.length === 0" class="me-2">
                   <i class="bi bi-download"></i>
                 </button>

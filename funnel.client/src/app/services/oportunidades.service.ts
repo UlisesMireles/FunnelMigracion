@@ -95,4 +95,8 @@ export class OportunidadesService {
     });
   }
 
+  descargarReporteOportunidadesEnProceso(data: any): Observable<Blob> {
+    return this.http.post(`${this.baseUrl}api/Oportunidades/DescargarReporteOportunidadesEnProceso`, data, { responseType: 'blob' });
+  }
+
 }

@@ -125,7 +125,7 @@ export class SeguimientoOportunidadesComponent {
     });
   }
 
-  exportExcel(idOportunidad: number) {
+  exportPdf(idOportunidad: number) {
     this.oportunidadService.descargarReporteSeguimientoOportunidades(idOportunidad, this.loginService.obtenerIdEmpresa()).subscribe({
       next: (result: Blob) => {
         const url = window.URL.createObjectURL(result);

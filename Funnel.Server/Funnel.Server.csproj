@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="DinkToPdf" Version="1.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.SpaProxy">
@@ -24,6 +25,16 @@
     </ProjectReference>
     <ProjectReference Include="..\Funnel.Logic\Funnel.Logic.csproj" />
     <ProjectReference Include="..\Funnel.Models\Funnel.Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="PdfTools\libwkhtmltox.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="PlantillasReporteHtml\" />
   </ItemGroup>
 
 </Project>

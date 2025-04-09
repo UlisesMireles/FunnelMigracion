@@ -1,9 +1,11 @@
-﻿using Funnel.Data;
+﻿using DinkToPdf;
+using Funnel.Data;
 using Funnel.Data.Interfaces;
 using Funnel.Logic.Interfaces;
 using Funnel.Models.Base;
 using Funnel.Models.Dto;
 using System.Globalization;
+using System.Text;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Funnel.Logic
@@ -86,7 +88,7 @@ namespace Funnel.Logic
             DateTimeFormatInfo formatoFecha = CultureInfo.CurrentCulture.DateTimeFormat;
             for (int i = 0, j = primerMes; i < 4; i++, j++)
             {
-                
+
                 if (j > 12)
                 {
                     meses[i] = j - 12;
@@ -103,7 +105,7 @@ namespace Funnel.Logic
                 }
             }
 
-            for(int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
                 lista.Add(new OportunidadesTarjetasDto
                 {
@@ -155,7 +157,7 @@ namespace Funnel.Logic
             List<ComboEtapasDto> etapas = await _oportunidadesData.ComboEtapas(IdEmpresa);
             List<OportunidadesEnProcesoDto> oportunidades = await _oportunidadesData.ConsultarOportunidadesEnProceso(IdUsuario, IdEmpresa, 1);
 
-            foreach(var item in etapas)
+            foreach (var item in etapas)
             {
                 lista.Add(new OportunidadesTarjetasDto
                 {
@@ -191,7 +193,7 @@ namespace Funnel.Logic
                     }).ToList()
                 });
             }
-            
+
 
             lista = lista.Where(x => x.Nombre != "Sin etapa" && x.Anio > 0).OrderBy(x => x.Anio).ToList();
             return lista;
@@ -200,6 +202,56 @@ namespace Funnel.Logic
         {
             request.Bandera = "UPD-FECHAESTIMADA";
             return await _oportunidadesData.ActualizarFechaEstimada(request);
+        }
+
+        public async Task<HtmlToPdfDocument> GenerarReporteSeguimientoOportunidades(int IdEmpresa, int IdOportunidad, string DirectorioPlantilla)
+        {
+            var datos = await _oportunidadesData.ConsultarHistoricoOportunidades(IdEmpresa, IdOportunidad);
+
+            var htmlTemplate = System.IO.File.ReadAllText(DirectorioPlantilla);
+
+            // Generar tabla HTML dinámica
+            var sb = new StringBuilder();
+            sb.Append("<table>");
+            sb.Append("" +
+                "<thead>" +
+                    "<tr>" +
+                        "<th class='center'  style=\"width: 250px;\">Usuario</th>" +
+                        "<th class='center' style=\"width: 100px;\">Fecha</th>" +
+                        "<th class='center'>Comentario</th>" +
+                   "</tr>" +
+                "</thead>");
+            sb.Append("<tbody>");
+            foreach (var item in datos)
+            {
+                sb.Append("<tr>");
+                sb.Append($"<td>{item.NombreEjecutivo}</td>");
+                sb.Append($"<td class='center'>{item.FechaRegistro?.ToString("dd-MM-yyyy")}</td>");
+                sb.Append($"<td class='justify'>{item.Comentario}</td>");
+                sb.Append("</tr>");
+            }
+            sb.Append("</tbody></table>");
+
+            // Reemplazar la tabla en la plantilla
+            htmlTemplate = htmlTemplate.Replace("{{TABLA}}", sb.ToString());
+
+            var doc = new HtmlToPdfDocument()
+            {
+                GlobalSettings = {
+                PaperSize = PaperKind.A4,
+                Orientation = Orientation.Portrait,
+                DocumentTitle = "Seguimiento Oportunidades",
+            },
+                Objects = {
+                new ObjectSettings() {
+                    PagesCount = true,
+                    HtmlContent = htmlTemplate,
+                    WebSettings = { DefaultEncoding = "utf-8" },
+                }
+            }
+            };
+
+            return doc;
         }
     }
 }

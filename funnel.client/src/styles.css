@@ -36,3 +36,8 @@
 .mat-mdc-snack-bar-container .mat-mdc-button.mat-mdc-snack-bar-action:not(:disabled) {
   --mat-text-button-state-layer-color: rgb(33 37 41 / 21%) !important;
 }
+
+.mat-mdc-dialog-surface {
+  border-radius: var(--mdc-dialog-container-shape, var(--mat-sys-corner-extra-large, 9px)) !important;
+  background-color: transparent !important;
+}

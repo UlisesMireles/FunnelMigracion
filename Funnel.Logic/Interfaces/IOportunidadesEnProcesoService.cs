@@ -20,6 +20,7 @@ namespace Funnel.Logic.Interfaces
         public Task<List<OportunidadesTarjetasDto>> ConsultarOportunidadesPorMes(int IdUsuario, int IdEmpresa);
         public Task<List<OportunidadesTarjetasDto>> ConsultarOportunidadesPorEtapa(int IdUsuario, int IdEmpresa);
         public Task<BaseOut> ActualizarFechaEstimada(OportunidadesEnProcesoDto request);
-        public Task<HtmlToPdfDocument> GenerarReporteSeguimientoOportunidades(int IdEmpresa, int IdOportunidad, string DirectorioPlantilla);
+        public Task<HtmlToPdfDocument> GenerarReporteSeguimientoOportunidades(int IdEmpresa, int IdOportunidad, string RutaBase);
+        public Task<HtmlToPdfDocument> GenerarReporteOportunidadesEnProceso(OportunidadesReporteDto oportunidades, string RutaBase);
     }
 }

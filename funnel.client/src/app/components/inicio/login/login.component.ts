@@ -102,13 +102,13 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.loginForm.get('usuario')?.value, this.loginForm.get('password')?.value).subscribe({
       next: (data: any) => {
         if (data.result && data.idUsuario > 0 && data.id == 0) {
-          if (environment.production) {
-            this.closeLoginModal();
-            this.router.navigate(['/two-factor']);
-          } else {
+          // if (environment.production) {
+          //   this.closeLoginModal();
+          //   this.router.navigate(['/two-factor']);
+          // } else {
             this.closeLoginModal();
             this.router.navigate(['/oportunidades']);
-          }
+          // }
         } else {
           this.showErrors = true;
           this.errorMessage = data.errorMessage ? data.errorMessage : "Usuario y/o Contraseña no validos."

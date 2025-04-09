@@ -300,3 +300,36 @@
 .accion-btn{
   width: 60px;
 }
+
+.compact-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 20px;
+  margin-right: 20px;
+}
+
+.compact-buttons .p-button {
+  min-width: auto !important;  
+  width: auto !important;     
+  padding: 0.5rem 1rem !important; 
+}
+
+
+.compact-buttons .p-button-icon-only {
+  width: 2.5rem !important;   
+}
+
+
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+
+.p-button {
+  flex-shrink: 0;
+}
+
+
+

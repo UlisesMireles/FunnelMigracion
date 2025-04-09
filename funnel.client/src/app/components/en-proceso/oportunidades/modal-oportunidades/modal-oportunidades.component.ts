@@ -59,9 +59,9 @@ export class ModalOportunidadesComponent {
           idEstatusOportunidad: [1]
         });
 
-        this.oportunidadForm.get('idEjecutivo')?.valueChanges.subscribe((idEjecutivo) => {
-          if (idEjecutivo) {
-            this.cargarContactos(idEjecutivo);
+        this.oportunidadForm.get('idProspecto')?.valueChanges.subscribe((idProspecto) => {
+          if (idProspecto) {
+            this.cargarContactos(idProspecto);
           }
         });
         this.oportunidadForm.get('idStage')?.valueChanges.subscribe(() => {
@@ -87,12 +87,13 @@ export class ModalOportunidadesComponent {
           probabilidad: [this.oportunidad.probabilidad],
           idEstatusOportunidad: [this.oportunidad.idEstatusOportunidad]
         });
-        if (this.oportunidad.idEjecutivo) {
-          this.cargarContactos(this.oportunidad.idEjecutivo);
+        if (this.oportunidad.idProspecto) {
+          this.cargarContactos(this.oportunidad.idProspecto);
         }
-        this.oportunidadForm.get('idEjecutivo')?.valueChanges.subscribe((idEjecutivo) => {
-          if (idEjecutivo) {
-            this.cargarContactos(idEjecutivo);
+      
+        this.oportunidadForm.get('idProspecto')?.valueChanges.subscribe((idProspecto) => {
+          if (idProspecto) {
+            this.cargarContactos(idProspecto);
           }
         });
         this.oportunidadForm.get('idStage')?.valueChanges.subscribe(() => {
@@ -160,8 +161,8 @@ export class ModalOportunidadesComponent {
       });
     }
   
-    cargarContactos(idEjecutivo: number) {
-      this.oportunidadService.getContactos(this.loginService.obtenerIdEmpresa(), idEjecutivo).subscribe({
+    cargarContactos(idProspecto: number) {
+      this.oportunidadService.getContactos(this.loginService.obtenerIdEmpresa(), idProspecto).subscribe({
         next: (result) => (this.contactos = result),
         error: (error) => this.mostrarToastError(error.errorMessage)
       });

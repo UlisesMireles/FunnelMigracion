@@ -40,13 +40,13 @@
     </div>
     <br />
     <form [formGroup]="oportunidadForm">
-      <div class="row" *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value === 1">
-        <div class="col-sm-2">
-          <label for="Comentario" class="margen text-left" style="margin-top: 35px;">Seguimiento:</label>
+      <div class="row">
+        <div class="col-sm-2" *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value === 1">
+          <label class="margen text-left" style="margin-top: 35px;">Seguimiento:</label>
         </div>
-        <div class="col-sm-10 inptSpace pl-0">
-          <div class="row">
-            <div class="col-sm-8">
+        <div class="col-sm-10 inptSpace pl-0" [class.col-sm-12]="oportunidadForm.get('idEstatusOportunidad')?.value !== 1">
+          <div class="row" [class.justify-content-end]="oportunidadForm.get('idEstatusOportunidad')?.value !== 1">
+            <div class="col-sm-8" *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value === 1">
               <textarea pInputText class="seguimiento-textarea" formControlName="comentario"></textarea>
               <div *ngIf="oportunidadForm.get('comentario')?.invalid && oportunidadForm.get('comentario')?.touched"
                 class="text-danger">
@@ -57,18 +57,21 @@
                   El comentario debe tener al menos 10 palabras.
                 </small>
               </div>
-
             </div>
-            <div class="col-sm-4" style="padding-top: 20px;">
-              <button pButton label="Añadir" (click)="guardarHistorial()" severity="secondary"
-                *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value === 1"
-                [disabled]="!oportunidadForm.get('comentario')?.value" class="me-2 accion-btn"></button>
-              <button pButton severity="secondary" 
-                (click)="exportExcel(oportunidadForm.get('idOportunidad')?.value)"
-                [disabled]="historialOportunidad.length === 0"  class="me-2 accion-btn">
-                <i class="bi bi-download"></i>
-              </button>
-              <button pButton label="Salir" (click)="close()" severity="secondary" class="me-2 accion-btn"></button>
+            <div class="col-sm-4" [class.col-12]="oportunidadForm.get('idEstatusOportunidad')?.value !== 1"
+                 [class.text-right]="oportunidadForm.get('idEstatusOportunidad')?.value !== 1">
+              <div class="button-group" 
+                   [class.compact-buttons]="oportunidadForm.get('idEstatusOportunidad')?.value === 1">
+                <button pButton label="Añadir" (click)="guardarHistorial()" severity="secondary"
+                        *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value === 1"
+                        [disabled]="!oportunidadForm.get('comentario')?.value" class="me-2"></button>
+                <button pButton severity="secondary" (click)="exportExcel(oportunidadForm.get('idOportunidad')?.value)"
+                        [disabled]="historialOportunidad.length === 0" class="me-2">
+                  <i class="bi bi-download"></i>
+                </button>
+                <button pButton label="Salir" (click)="close()" severity="secondary"
+                        *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value === 1"></button>
+              </div>
             </div>
           </div>
 

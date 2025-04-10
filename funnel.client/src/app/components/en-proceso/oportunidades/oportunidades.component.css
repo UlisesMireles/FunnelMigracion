@@ -172,7 +172,7 @@ div.inDivDatatableHeader > p-button > button.p-button {
 ::ng-deep .inptSpace {
   text-align: left !important;
   padding: 0px;
-  padding-top: 5px;
+  /* padding-top: 5px; */
 }
 
 ::ng-deep .bodyDialog {

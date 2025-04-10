@@ -99,4 +99,10 @@ export class OportunidadesService {
     return this.http.post(`${this.baseUrl}api/Oportunidades/DescargarReporteOportunidadesEnProceso`, data, { responseType: 'blob' });
   }
 
+  getEstatusOportunidad(idEmpresa: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}api/Oportunidades/ComboTipoOportunidad`, {
+      params: { idEmpresa: idEmpresa.toString() }
+    });
+  }
+
 }

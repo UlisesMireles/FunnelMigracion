@@ -9,6 +9,7 @@ import { OportunidadesService } from '../../../../services/oportunidades.service
 import { LoginService } from '../../../../services/login.service';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { distinctUntilChanged, takeUntil, throttleTime } from 'rxjs';
 
 @Component({
   selector: 'app-modal-oportunidades',
@@ -32,20 +33,23 @@ export class ModalOportunidadesComponent {
     ejecutivos: any[] = [];
     contactos: any[] = [];
     entregas: any[] = [];
+    estatusOportunidad: any[] = [];
 
     @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() closeModal: EventEmitter<void> = new EventEmitter();
     @Output() result: EventEmitter<baseOut> = new EventEmitter();
 
     nombreProspecto: string = '';
-  
+    validaGuadar: boolean = false;
+
     inicializarFormulario() {
+      let valoresIniciales: Record<string, any>;
       if (this.insertar) {
         this.oportunidadForm = this.fb.group({
           idOportunidad: [0],
           idProspecto: ['', Validators.required],
           descripcion: ['', [Validators.required, Validators.minLength(5)]],
-          monto: ['', [Validators.required, Validators.pattern(/^[0-9]+(\.[0-9]{1,2})?$/), Validators.min(1)]],
+          monto: [0, [Validators.required, Validators.min(1)]],
           idTipoProyecto: ['', Validators.required],
           idStage: ['', Validators.required],
           idTipoEntrega: ['', Validators.required],
@@ -56,7 +60,16 @@ export class ModalOportunidadesComponent {
           idEmpresa: [this.loginService.obtenerIdEmpresa()],
           probabilidad: ['0'],
           bandera: ['INS-OPORTUNIDAD'],
-          idEstatusOportunidad: [1]
+          idEstatus: [1]
+        });
+
+        valoresIniciales = this.oportunidadForm.getRawValue();
+
+        this.oportunidadForm.valueChanges.subscribe((changes) => {
+          this.validarCambios(valoresIniciales, changes);
+          // if (this.oportunidadForm.dirty) {
+          //   this.validaGuadar = true;
+          // }
         });
 
         this.oportunidadForm.get('idProspecto')?.valueChanges.subscribe((idProspecto) => {
@@ -75,7 +88,7 @@ export class ModalOportunidadesComponent {
           idOportunidad: [this.oportunidad.idOportunidad],
           idProspecto: [this.oportunidad.idProspecto, Validators.required],
           descripcion: [this.oportunidad.nombreOportunidad, [Validators.required, Validators.minLength(5)]],
-          monto: [this.oportunidad.monto, [Validators.required, Validators.pattern(/^[0-9]+(\.[0-9]{1,2})?$/), Validators.min(1)]],
+          monto: [this.oportunidad.monto, [Validators.required, Validators.min(1)]],
           idTipoProyecto: [this.oportunidad.idTipoProyecto, Validators.required],
           idStage: [this.oportunidad.idStage, Validators.required],
           idTipoEntrega: [this.oportunidad.idTipoEntrega, Validators.required],
@@ -85,37 +98,84 @@ export class ModalOportunidadesComponent {
           comentario: [''],
           idEmpresa: [this.loginService.obtenerIdEmpresa()],
           probabilidad: [this.oportunidad.probabilidad],
-          idEstatusOportunidad: [this.oportunidad.idEstatusOportunidad]
+          idEstatus: [this.oportunidad.idEstatusOportunidad]
         });
-        if (this.oportunidad.idProspecto) {
-          this.cargarContactos(this.oportunidad.idProspecto);
-        }
-      
-        this.oportunidadForm.get('idProspecto')?.valueChanges.subscribe((idProspecto) => {
-          if (idProspecto) {
-            this.cargarContactos(idProspecto);
-          }
+
+        valoresIniciales = this.oportunidadForm.getRawValue();
+
+        
+
+        this.oportunidadForm.valueChanges.subscribe((changes) => {
+          this.validarCambios(valoresIniciales, changes);
         });
-        this.oportunidadForm.get('idStage')?.valueChanges.subscribe(() => {
-          this.obtenerProbabilidadPorEtapa();
-        });
-        this.limpiarProbabilidad();
+        
+
+        // if (this.oportunidad.idProspecto) {
+        //     this.cargarContactos(this.oportunidad.idProspecto);
+        //   }
+        
+        // this.oportunidadForm.get('idStage')?.valueChanges.subscribe(() => {
+        //   this.obtenerProbabilidadPorEtapa();
+        // });
+
+        // this.limpiarProbabilidad();
       }
       
+    }
+
+    validarCambios(valoresIniciales: any, cambios: any) {
+      const valoresActuales = cambios;
+
+      if (this.oportunidadForm.dirty) {
+        this.validaGuadar = true;
+      }
+      const valoresRegresaron = this.compararValores(valoresIniciales, valoresActuales);
+      if (valoresRegresaron) {
+        this.validaGuadar = false;
+        console.log('El formulario ha vuelto a su valor inicial');
+      }
+    }
+
+    compararValores(valoresIniciales: any, valoresActuales: any) {
+      let valoresInicialesJson = JSON.stringify(valoresIniciales);
+      let valoresActualesJson = JSON.stringify(valoresActuales);
+      return valoresInicialesJson === valoresActualesJson;
+    }
+
+    // onDialogShow() {
+    //   this.cargarDatos();
+    //   this.cdr.detectChanges();
+    //   this.inicializarFormulario();
+    //   this.cdr.detectChanges(); 
+      
+    // }    
+
+    // ngOnChanges(changes: SimpleChanges) {
+    //   if (changes['oportunidad'] && changes['oportunidad'].currentValue) {
+    //     this.inicializarFormulario();
+    //     this.cdr.detectChanges();
+    //   }
+    // }
+    
+    onChangeProspecto() {
+      this.oportunidadForm.get('idProspecto')?.valueChanges.subscribe((idProspecto) => {
+        if (idProspecto) {
+          this.cargarContactos(idProspecto);
+        }
+      });
+    }
+
+    onChangeProbabilidad() {
+      this.oportunidadForm.get('idStage')?.valueChanges.subscribe(() => {
+        this.obtenerProbabilidadPorEtapa();
+      });
+
+      if(!this.insertar)
+        this.limpiarProbabilidad();
     }
 
     onDialogShow() {
-      this.cargarDatos();
-      this.cdr.detectChanges();
-      this.inicializarFormulario(); 
-      
-    }
-
-    ngOnChanges(changes: SimpleChanges) {
-      if (changes['oportunidad'] && changes['oportunidad'].currentValue) {
-        this.inicializarFormulario();
-        this.cdr.detectChanges();
-      }
+       this.cargarDatos(); 
     }
     
     cargarDatos() {
@@ -124,6 +184,7 @@ export class ModalOportunidadesComponent {
       this.cargarEtapas();
       this.cargarEjecutivos();
       this.cargarEntregas();
+      this.cargarEstatusOportunidad();
     }
 
   
@@ -135,28 +196,40 @@ export class ModalOportunidadesComponent {
 
     cargarProspectos() {
       this.oportunidadService.getProspectos(this.loginService.obtenerIdEmpresa()).subscribe({
-        next: (result) => (this.prospectos = result),
+        next: (result) => {
+          this.prospectos = result
+          this.cargarServicios();
+        },
         error: (error) => this.mostrarToastError(error.errorMessage)
       });
     }
   
     cargarServicios() {
       this.oportunidadService.getServicios(this.loginService.obtenerIdEmpresa()).subscribe({
-        next: (result) => (this.servicios = result),
+        next: (result) => {
+          this.servicios = result
+          this.cargarEtapas();
+        },
         error: (error) => this.mostrarToastError(error.errorMessage)
       });
     }
   
     cargarEtapas() {
       this.oportunidadService.getEtapas(this.loginService.obtenerIdEmpresa()).subscribe({
-        next: (result) => (this.etapas = result),
+        next: (result) => {
+          this.etapas = result
+          this.cargarEjecutivos();
+        },
         error: (error) => this.mostrarToastError(error.errorMessage)
       });
     }
 
     cargarEjecutivos() {
       this.oportunidadService.getEjecutivos(this.loginService.obtenerIdEmpresa()).subscribe({
-        next: (result) => (this.ejecutivos = result),
+        next: (result) => {
+          this.ejecutivos = result
+          this.cargarEntregas();
+        },
         error: (error) => this.mostrarToastError(error.errorMessage)
       });
     }
@@ -170,7 +243,24 @@ export class ModalOportunidadesComponent {
   
     cargarEntregas() {
       this.oportunidadService.getEntregas(this.loginService.obtenerIdEmpresa()).subscribe({
-        next: (result) => (this.entregas = result),
+        next: (result) => {
+          this.entregas = result
+          this.cargarEstatusOportunidad();
+        },
+        error: (error) => this.mostrarToastError(error.errorMessage)
+      });
+    }
+
+    cargarEstatusOportunidad() {
+      this.oportunidadService.getEstatusOportunidad(this.loginService.obtenerIdEmpresa()).subscribe({
+        next: (result) => {
+          this.estatusOportunidad = result
+          if (this.oportunidad.idProspecto) {
+            this.cargarContactos(this.oportunidad.idProspecto);
+          }
+          this.inicializarFormulario();
+          this.cdr.detectChanges();
+        },
         error: (error) => this.mostrarToastError(error.errorMessage)
       });
     }

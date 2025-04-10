@@ -21,6 +21,7 @@ export class CatalogoService {
     this.cargarEjecutivos(idEmpresa);
     this.cargarContactos(idEmpresa);
     this.cargarEntregas(idEmpresa);
+    this.cargarEstatusOportunidad(idEmpresa);
   }
   cargarProspectos(idEmpresa:number) {
     this.http.get(`${this.baseUrl}api/Oportunidades/ComboProspectos`, {
@@ -87,6 +88,16 @@ export class CatalogoService {
       error: (error) =>  sessionStorage.setItem('CatalogoEntregas', window.btoa(JSON.stringify([])))
     });
   }
+  cargarEstatusOportunidad(idEmpresa: number) {
+    this.http.get(`${this.baseUrl}api/Oportunidades/ComboTipoOportunidad`, {
+      params: { idEmpresa: idEmpresa.toString() }
+    }).subscribe({
+      next: (result) => {
+        sessionStorage.setItem('CatalogoEstatusOportunidad', window.btoa(JSON.stringify(result)))
+      },
+      error: (error) =>  sessionStorage.setItem('CatalogoEstatusOportunidad', window.btoa(JSON.stringify([])))
+    });
+  }
 
   obtenerProspectos(): any[] {
     const prospectos= sessionStorage.getItem('CatalogoProspectos');
@@ -141,7 +152,8 @@ export class CatalogoService {
       try {
         const contactosArray = JSON.parse(window.atob(contactos));
         // Filtrar contactos por idProspecto
-        return contactosArray.filter((contacto: any) => contacto.idProspecto === idProspecto);
+        let _contactos = contactosArray.filter((contacto: any) => contacto.idProspecto == idProspecto);
+        return _contactos; 
       } catch (error) {
         console.error('Error al decodificar los contactos:', error);
         return [];
@@ -155,6 +167,17 @@ export class CatalogoService {
     if (entregas) {
       try {
         return JSON.parse(window.atob(entregas));
+      } catch (error) {
+        return [];
+      }
+    }
+    return [];
+  }
+  obtenerEstatusOportunidad(): any[] {
+    const estatus = sessionStorage.getItem('CatalogoEstatusOportunidad');
+    if (estatus) {
+      try {
+        return JSON.parse(window.atob(estatus));
       } catch (error) {
         return [];
       }

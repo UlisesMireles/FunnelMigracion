@@ -10,6 +10,7 @@ import { LoginService } from '../../../../services/login.service';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { distinctUntilChanged, takeUntil, throttleTime } from 'rxjs';
+import { CatalogoService } from '../../../../services/catalogo.service';
 
 @Component({
   selector: 'app-modal-oportunidades',
@@ -18,7 +19,7 @@ import { distinctUntilChanged, takeUntil, throttleTime } from 'rxjs';
 })
 export class ModalOportunidadesComponent {
 
-  constructor(private oportunidadService : OportunidadesService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder, private cdr: ChangeDetectorRef) { }
+  constructor(private readonly catalogoService: CatalogoService, private oportunidadService : OportunidadesService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder, private cdr: ChangeDetectorRef) { }
     @Input() oportunidad!: Oportunidad;
     @Input() oportunidades: Oportunidad[]=[];
     @Input() title: string = 'Modal';
@@ -74,7 +75,9 @@ export class ModalOportunidadesComponent {
 
         this.oportunidadForm.get('idProspecto')?.valueChanges.subscribe((idProspecto) => {
           if (idProspecto) {
-            this.cargarContactos(idProspecto);
+            if (idProspecto) {
+              this.contactos = this.catalogoService.obtenerContactos(idProspecto);
+            }
           }
         });
         this.oportunidadForm.get('idStage')?.valueChanges.subscribe(() => {
@@ -160,7 +163,7 @@ export class ModalOportunidadesComponent {
     onChangeProspecto() {
       this.oportunidadForm.get('idProspecto')?.valueChanges.subscribe((idProspecto) => {
         if (idProspecto) {
-          this.cargarContactos(idProspecto);
+          this.contactos = this.catalogoService.obtenerContactos(idProspecto);
         }
       });
     }
@@ -179,12 +182,22 @@ export class ModalOportunidadesComponent {
     }
     
     cargarDatos() {
-      this.cargarProspectos();
-      this.cargarServicios();
-      this.cargarEtapas();
-      this.cargarEjecutivos();
-      this.cargarEntregas();
-      this.cargarEstatusOportunidad();
+      this.prospectos = this.catalogoService.obtenerProspectos();
+      this.servicios = this.catalogoService.obtenerServicios();
+      this.etapas = this.catalogoService.obtenerEtapas();
+      this.ejecutivos = this.catalogoService.obtenerEjecutivos();
+      if (this.oportunidad.idProspecto) {
+        this.contactos = this.catalogoService.obtenerContactos(this.oportunidad.idProspecto);
+      }
+      this.entregas = this.catalogoService.obtenerEntregas();
+      this.estatusOportunidad = this.catalogoService.obtenerEstatusOportunidad();
+      this.inicializarFormulario(); 
+      this.cdr.detectChanges();
+      // this.cargarProspectos();
+      // this.cargarServicios();
+      // this.cargarEtapas();
+      // this.cargarEjecutivos();
+      // this.cargarEntregas();
     }
 
   
@@ -194,77 +207,6 @@ export class ModalOportunidadesComponent {
       this.closeModal.emit();
     }
 
-    cargarProspectos() {
-      this.oportunidadService.getProspectos(this.loginService.obtenerIdEmpresa()).subscribe({
-        next: (result) => {
-          this.prospectos = result
-          this.cargarServicios();
-        },
-        error: (error) => this.mostrarToastError(error.errorMessage)
-      });
-    }
-  
-    cargarServicios() {
-      this.oportunidadService.getServicios(this.loginService.obtenerIdEmpresa()).subscribe({
-        next: (result) => {
-          this.servicios = result
-          this.cargarEtapas();
-        },
-        error: (error) => this.mostrarToastError(error.errorMessage)
-      });
-    }
-  
-    cargarEtapas() {
-      this.oportunidadService.getEtapas(this.loginService.obtenerIdEmpresa()).subscribe({
-        next: (result) => {
-          this.etapas = result
-          this.cargarEjecutivos();
-        },
-        error: (error) => this.mostrarToastError(error.errorMessage)
-      });
-    }
-
-    cargarEjecutivos() {
-      this.oportunidadService.getEjecutivos(this.loginService.obtenerIdEmpresa()).subscribe({
-        next: (result) => {
-          this.ejecutivos = result
-          this.cargarEntregas();
-        },
-        error: (error) => this.mostrarToastError(error.errorMessage)
-      });
-    }
-  
-    cargarContactos(idProspecto: number) {
-      this.oportunidadService.getContactos(this.loginService.obtenerIdEmpresa(), idProspecto).subscribe({
-        next: (result) => (this.contactos = result),
-        error: (error) => this.mostrarToastError(error.errorMessage)
-      });
-    }
-  
-    cargarEntregas() {
-      this.oportunidadService.getEntregas(this.loginService.obtenerIdEmpresa()).subscribe({
-        next: (result) => {
-          this.entregas = result
-          this.cargarEstatusOportunidad();
-        },
-        error: (error) => this.mostrarToastError(error.errorMessage)
-      });
-    }
-
-    cargarEstatusOportunidad() {
-      this.oportunidadService.getEstatusOportunidad(this.loginService.obtenerIdEmpresa()).subscribe({
-        next: (result) => {
-          this.estatusOportunidad = result
-          if (this.oportunidad.idProspecto) {
-            this.cargarContactos(this.oportunidad.idProspecto);
-          }
-          this.inicializarFormulario();
-          this.cdr.detectChanges();
-        },
-        error: (error) => this.mostrarToastError(error.errorMessage)
-      });
-    }
-  
     mostrarToastError(mensaje: string) {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: mensaje });
     }

@@ -2,7 +2,7 @@
   [(visible)]="visible"
   [modal]="true"
   [closable]="true"
-  [style]="{ width: '35rem', height: '20rem' }"
+  [style]="{ width: '35rem', height: 'auto' }"
   (onHide)="close()"
   (onShow)="onDialogShow()"
   class="bodyDialog"
@@ -45,7 +45,7 @@
           <label for="estatus">Estatus: </label>
         </div>
         <div class="col-sm-8">
-          <p-checkbox pInputCheckbox class="inptSize" formControlName="estatus" [binary]="true"></p-checkbox>
+          <p-checkbox formControlName="estatus" class="inptSize" [binary]="true"></p-checkbox><label> Activo</label>
         </div>
       </div>
   </form>

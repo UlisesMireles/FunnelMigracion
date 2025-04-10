@@ -4,6 +4,7 @@ import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Usuario, DobleAutenticacion, LoginUser } from '../interfaces/usuario';
+import { CatalogoService } from './catalogo.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class LoginService {
 
   private sessionTimeout = 30 * 60 * 1000;
   private timer: any;
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private http: HttpClient, private router: Router, private readonly catalogoService: CatalogoService) {
     this.currentUser = this.currentUserSubject.asObservable();
     this.checkInitialSession();
   }
@@ -49,6 +50,7 @@ export class LoginService {
           localStorage.setItem('lastActivity', Date.now().toString());
           this.currentUserSubject.next(user);
           sessionStorage.setItem('sesion', window.btoa(JSON.stringify(user)));
+          this.catalogoService.cargarCatalogos(user.idEmpresa);
           this.startSessionTimer();
         }
         return user;

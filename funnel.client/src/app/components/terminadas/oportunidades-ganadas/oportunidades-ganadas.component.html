@@ -17,7 +17,7 @@
           currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros"
           [columns]="lsColumnasAMostrar"
           [autoLayout]="false" [reorderableColumns]="true" [resizableColumns]="true"
-          [globalFilterFields]="['idOportunidad','nombre','nombreSector','nombreOportunidad','abreviatura','stage','iniciales','nombreContacto','entrega','monto','probabilidadOriginal','probabilidad','montoNormalizado','fechaRegistro','diasFunnel','fechaEstimadaCierreOriginal','fechaModificacion']"
+          [globalFilterFields]="['idOportunidad','nombre','nombreSector','nombreOportunidad','abreviatura','stage','iniciales','nombreContacto','entrega','monto','probabilidadOriginal','probabilidad','montoNormalizado','fechaRegistro', 'fechaEstimadaCierre','diasFunnelOriginal','fechaEstimadaCierreOriginal','fechaModificacion']"
           [tableStyle]="{'min-width': anchoTabla + '%'}">
           
           <ng-template class="divAccionesTabla" #caption>
@@ -86,12 +86,13 @@
                         </p-columnFilter>
                       </div>
                       <div *ngSwitchCase="'date'">
-                        <p-columnFilter type="{{def.tipoFormato}}" [field]="def.key" [showButtons]="false">
-                          <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                            <p-calendar #calendar [ngModel]="value" (onSelect)="filter(calendar.value)" [showButtonBar]="true"></p-calendar>
-                          </ng-template>
+                        <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false">
+                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
+                                    (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
+                            </ng-template>
                         </p-columnFilter>
-                      </div>
+                    </div>
                       <div *ngSwitchDefault>
                         <p-columnFilter *ngIf="def.tipoFormato !== 'text' && def.tipoFormato !== 'currency' && def.tipoFormato !== 'date'"
                           type="{{def.tipoFormato}}" field="{{def.key}}" [showButtons]="false" [showMenu]="false">
@@ -117,13 +118,16 @@
                   }">
                 <ng-container [ngSwitch]="def.tipoFormato">
                   <span *ngSwitchCase="'text'">
+                    <span *ngIf="def.key === 'abreviatura'" pTooltip="{{rowData['descripcion']}}" tooltipPosition="top">
+                      {{ rowData[def.key] }}
+                    </span>
                     <span *ngIf="def.key === 'nombreContacto'" pTooltip="{{rowData[def.key]}}" tooltipPosition="top">
                       {{ rowData[def.key]?.split(' ')[0] }}
                     </span>
                     <span *ngIf="def.key === 'iniciales'" pTooltip="{{rowData['nombreEjecutivo']}}" tooltipPosition="top">
                       {{ rowData[def.key] }}
                     </span>
-                    <span *ngIf="def.key !== 'nombreContacto' && def.key !== 'iniciales'">
+                    <span *ngIf="def.key !== 'nombreContacto' && def.key !== 'iniciales' && def.key !== 'abreviatura'">
                       {{ rowData[def.key] }}
                     </span>
                   </span>

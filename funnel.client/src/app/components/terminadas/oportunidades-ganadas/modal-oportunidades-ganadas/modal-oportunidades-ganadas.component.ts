@@ -16,7 +16,7 @@ import { identity } from 'rxjs';
   selector: 'app-modal-oportunidades-ganadas',
   standalone: false,
   templateUrl: './modal-oportunidades-ganadas.component.html',
-  styleUrl: './modal-oportunidades-ganadas.component.css'
+  
 })
 export class ModalOportunidadesGanadasComponent {
   constructor(private oportunidadService : OportunidadesService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder, private cdr: ChangeDetectorRef) { }

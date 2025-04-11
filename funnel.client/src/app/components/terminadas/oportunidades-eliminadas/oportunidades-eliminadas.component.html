@@ -17,7 +17,7 @@
           currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros"
           [columns]="lsColumnasAMostrar"
           [autoLayout]="true" [reorderableColumns]="true" [resizableColumns]="true"
-          [globalFilterFields]="['idOportunidad', 'nombre','nombreSector','nombreOportunidad','abreviatura','stage','iniciales','nombreContacto','entrega','monto','probabilidadOriginal','probabilidad','montoNormalizado','fechaRegistro','diasFunnel','fechaEstimadaCierreOriginal','fechaModificacion']"
+          [globalFilterFields]="['nombre','nombreSector','nombreOportunidad','abreviatura','stage','iniciales','nombreContacto','entrega','monto','probabilidadOriginal','probabilidad','montoNormalizado','fechaRegistro','diasFunnelOriginal','fechaEstimadaCierreOriginal','fechaModificacion']"
           [tableStyle]="{'min-width': anchoTabla+ '%'}">
           
           <ng-template class="divAccionesTabla" #caption>
@@ -51,51 +51,55 @@
             </tr>
             <tr>
               <th *ngFor="let def of lsColumnasAMostrar" style="min-width: 30%;">
-                <ng-container *ngIf="def.groupColumn">
-                  <p-columnFilter field="{{def.key}}" matchMode="in" [showMenu]="false">
-                    <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                      <p-multiSelect [ngModel]="value" [options]="obtenerArregloFiltros(oportunidades, def.key)" placeholder=""
-                        (onChange)="filter($event.value)">
-                        <ng-template let-option pTemplate="item">
-                          <div class="p-multiselect-representative-option">
-                            <span class="ml-1">{{option}}</span>
-                          </div>
-                        </ng-template>
-                      </p-multiSelect>
-                    </ng-template>
-                  </p-columnFilter>
-                </ng-container>
-                <ng-container *ngIf="!def.groupColumn">
-                  <div [ngSwitch]="def.tipoFormato">
-                    <div *ngSwitchCase="'text'">
-                      <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false">
-                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                          <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
-                            (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
-                        </ng-template>
-                      </p-columnFilter>
-                    </div>
-                    <div *ngSwitchCase="'currency'">
-                      <p-columnFilter type="numeric" field="{{def.key}}" [showButtons]="false" [maxFractionDigits]="7">
-                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                <!-- Excluir filtros para idOportunidad y comentario -->
+                <ng-container *ngIf="def.key !== 'idOportunidad' && def.key !== 'comentario'">
+                  <ng-container *ngIf="def.groupColumn">
+                    <p-columnFilter field="{{def.key}}" matchMode="in" [showMenu]="false">
+                      <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                        <p-multiSelect [ngModel]="value" [options]="obtenerArregloFiltros(oportunidades, def.key)" placeholder=""
+                          (onChange)="filter($event.value)">
+                          <ng-template let-option pTemplate="item">
+                            <div class="p-multiselect-representative-option">
+                              <span class="ml-1">{{option}}</span>
+                            </div>
+                          </ng-template>
+                        </p-multiSelect>
+                      </ng-template>
+                    </p-columnFilter>
+                  </ng-container>
+                  <ng-container *ngIf="!def.groupColumn">
+                    <div [ngSwitch]="def.tipoFormato">
+                      <div *ngSwitchCase="'text'">
+                        <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false">
+                          <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                             <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
-                                (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
-                        </ng-template>
-                      </p-columnFilter>
+                              (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
+                          </ng-template>
+                        </p-columnFilter>
+                      </div>
+                      <div *ngSwitchCase="'currency'">
+                        <p-columnFilter type="numeric" field="{{def.key}}" [showButtons]="false" [maxFractionDigits]="7">
+                          <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                              <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
+                                  (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
+                          </ng-template>
+                        </p-columnFilter>
+                      </div>
+                      <div *ngSwitchCase="'date'">
+                        <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false">
+                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
+                                    (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
+                            </ng-template>
+                        </p-columnFilter>
                     </div>
-                    <div *ngSwitchCase="'date'">
-                      <p-columnFilter type="{{def.tipoFormato}}" [field]="def.key" [showButtons]="false">
-                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                          <p-calendar #calendar [ngModel]="value" (onSelect)="filter(calendar.value)" [showButtonBar]="true"></p-calendar>
-                        </ng-template>
-                      </p-columnFilter>
+                      <div *ngSwitchDefault>
+                        <p-columnFilter *ngIf="def.tipoFormato !== 'text' && def.tipoFormato !== 'currency' && def.tipoFormato !== 'date'"
+                          type="{{def.tipoFormato}}" field="{{def.key}}" [showButtons]="false" [showMenu]="false">
+                        </p-columnFilter>
+                      </div>
                     </div>
-                    <div *ngSwitchDefault>
-                      <p-columnFilter *ngIf="def.tipoFormato !== 'text' && def.tipoFormato !== 'currency' && def.tipoFormato !== 'date'"
-                        type="{{def.tipoFormato}}" field="{{def.key}}" [showButtons]="false" [showMenu]="false">
-                      </p-columnFilter>
-                    </div>
-                  </div>
+                  </ng-container>
                 </ng-container>
               </th>
               <th></th> 
@@ -109,17 +113,20 @@
                     'text-align': 
                       (def.valor.includes('%')) ? 'center' :
                       def.tipoFormato === 'currency' ? 'right' : 
-                      (def.tipoFormato === 'number' || def.tipoFormato === 'date') ? 'center' : 'left'
+                      def.tipoFormato === 'number'  ? 'center' : 'left'
                   }">
                 <ng-container [ngSwitch]="def.tipoFormato">
                   <span *ngSwitchCase="'text'">
+                    <span *ngIf="def.key === 'abreviatura'" pTooltip="{{rowData['descripcion']}}" tooltipPosition="top">
+                      {{ rowData[def.key] }}
+                    </span>
                     <span *ngIf="def.key === 'nombreContacto'" pTooltip="{{rowData[def.key]}}" tooltipPosition="top">
                       {{ rowData[def.key]?.split(' ')[0] }}
                     </span>
                     <span *ngIf="def.key === 'iniciales'" pTooltip="{{rowData['nombreEjecutivo']}}" tooltipPosition="top">
                       {{ rowData[def.key] }}
                     </span>
-                    <span *ngIf="def.key !== 'nombreContacto' && def.key !== 'iniciales'">
+                    <span *ngIf="def.key !== 'nombreContacto' && def.key !== 'iniciales' && def.key !== 'abreviatura'">
                       {{ rowData[def.key] }}
                     </span>
                   </span>

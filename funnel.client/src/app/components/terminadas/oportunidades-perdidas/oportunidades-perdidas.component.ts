@@ -57,11 +57,11 @@ export class OportunidadesPerdidasComponent {
     { key: 'monto', isCheck: true, valor: 'Monto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
     { key: 'probabilidad', isCheck: false, valor: 'Prob', isIgnore: true, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'montoNormalizado', isCheck: false, valor: 'Monto', isIgnore: true, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
-    { key: 'fechaRegistro', isCheck: true, valor: 'Inicio', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
+    { key: 'fechaRegistro', isCheck: true, valor: 'Fecha Inicio', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
     { key: 'fechaEstimadaCierre', isCheck: true, valor: 'Cierre Est', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
     { key: 'fechaEstimadaCierreOriginal', isCheck: true, valor: 'Fecha Cierre', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
-    { key: 'diasFunnel', isCheck: true, valor: 'Días Funnel', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
-    {key: 'comentario', isCheck: true, valor: 'Último Coment', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
+    { key: 'diasFunnelOriginal', isCheck: true, valor: 'Días Funnel', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
+    {key: 'comentario', isCheck: true, valor: 'Último Comentario', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
 
   ];
 
@@ -275,9 +275,7 @@ export class OportunidadesPerdidasComponent {
   getColumnWidth(key: string): object {
     const widths: { [key: string]: string } = {
         idOportunidad: '100%',
-        nombre: '100%',
         nombreSector: '100%',
-        nombreOportunidad: '100%',
         abreviatura: '100%',
         stage: '100%',
         nombreEjecutivo: '100%',

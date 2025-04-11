@@ -240,6 +240,7 @@ export class OportunidadesComponent {
         link.download = 'OportunidadesEnProceso.pdf';
         link.click();
         URL.revokeObjectURL(url);
+
       },
       error: (error) => {
         this.messageService.add({
@@ -247,7 +248,6 @@ export class OportunidadesComponent {
           summary: 'Se ha producido un error al generar reporte',
           detail: error.errorMessage,
         });
-        this.loading = false;
       },
     });
 

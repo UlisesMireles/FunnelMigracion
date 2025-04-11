@@ -112,9 +112,49 @@ namespace Funnel.Server.Controllers
         [HttpPost("[action]/")]
         public async Task<ActionResult> DescargarReporteOportunidadesEnProceso(OportunidadesReporteDto oportunidades)
         {
-            var doc = await _oportunidadesService.GenerarReporteOportunidadesEnProceso(oportunidades, Directory.GetCurrentDirectory());
+            var doc = await _oportunidadesService.GenerarReporteOportunidades(oportunidades, Directory.GetCurrentDirectory(),"Reporte de Oportunidades en Proceso");
             var pdf = _converter.Convert(doc);
             return File(pdf, "application/pdf", "OportunidadesEnProceso.pdf");
+        }
+
+        [HttpPost("[action]/")]
+        public async Task<ActionResult> DescargarReporteOportunidadesPorEtapa(OportunidadesReporteDto oportunidades)
+        {
+            var doc = await _oportunidadesService.GenerarReporteOportunidades(oportunidades, Directory.GetCurrentDirectory(),"Reporte de Oportunidades por Etapa");
+            var pdf = _converter.Convert(doc);
+            return File(pdf, "application/pdf", "OportunidadesPorEtapa.pdf");
+        }
+
+        [HttpPost("[action]/")]
+        public async Task<ActionResult> DescargarReporteOportunidadesGanadas([FromBody]OportunidadesReporteDto oportunidades, int anio)
+        {
+            var doc = await _oportunidadesService.GenerarReporteOportunidades(oportunidades, Directory.GetCurrentDirectory(), "Reporte de Oportunidades Ganadas del Año "+anio);
+            var pdf = _converter.Convert(doc);
+            return File(pdf, "application/pdf", "OportunidadesGanadas.pdf");
+        }
+
+        [HttpPost("[action]/")]
+        public async Task<ActionResult> DescargarReporteOportunidadesPerdidas([FromBody] OportunidadesReporteDto oportunidades, int anio)
+        {
+            var doc = await _oportunidadesService.GenerarReporteOportunidades(oportunidades, Directory.GetCurrentDirectory(), "Reporte de Oportunidades Perdidas del Año " + anio);
+            var pdf = _converter.Convert(doc);
+            return File(pdf, "application/pdf", "OportunidadesPerdidas.pdf");
+        }
+
+        [HttpPost("[action]/")]
+        public async Task<ActionResult> DescargarReporteOportunidadesCanceladas([FromBody] OportunidadesReporteDto oportunidades, int anio)
+        {
+            var doc = await _oportunidadesService.GenerarReporteOportunidades(oportunidades, Directory.GetCurrentDirectory(), "Reporte de Oportunidades Canceladas del Año " + anio);
+            var pdf = _converter.Convert(doc);
+            return File(pdf, "application/pdf", "OportunidadesCanceladas.pdf");
+        }
+
+        [HttpPost("[action]/")]
+        public async Task<ActionResult> DescargarReporteOportunidadesEliminadas([FromBody] OportunidadesReporteDto oportunidades, int anio)
+        {
+            var doc = await _oportunidadesService.GenerarReporteOportunidades(oportunidades, Directory.GetCurrentDirectory(), "Reporte de Oportunidades Eliminadas del Año " + anio);
+            var pdf = _converter.Convert(doc);
+            return File(pdf, "application/pdf", "OportunidadesEliminadas.pdf");
         }
     }
 }

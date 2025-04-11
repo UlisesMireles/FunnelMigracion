@@ -43,14 +43,13 @@ export class ModalUsuariosComponent {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['usuario'] && this.usuario) {
       this.inicializarFormulario();
+      this.escucharCambiosEnCampos();
     }
   }
 
   inicializarFormulario() {
-    console.log(this.insertar);
     if (this.insertar) {
       this.usuarioForm = this.fb.group({
-        idUsuario: [0],
         nombre: ['', [
             Validators.required,
             Validators.maxLength(50),
@@ -76,22 +75,21 @@ export class ModalUsuariosComponent {
           ]
         ],
         password: ['', [
-          Validators.required,
           Validators.minLength(8),
           Validators.maxLength(50),
           Validators.pattern('^[a-zA-Z0-9_.-]+$')
         ]],
-        confirmPassword: ['', Validators.required],
-        iniciales: ['', [
-            Validators.required,
-            Validators.maxLength(5),
-            Validators.pattern('^[A-Z]+$')
+        confirmPassword: [''],
+        iniciales: [{ value: '', disabled: true }, [
+          Validators.required,
+          Validators.maxLength(5),
+          Validators.pattern('^[A-Z]+$')
           ]
-        ],
+        ],    
         idTipoUsuario: [null, Validators.required],
         estatus: [true],
         correo: ['', [Validators.required, Validators.email]],
-        usuarioCreador: [this.loginService.obtenerIdEmpresa()],
+        idUsuario: [this.loginService.obtenerIdUsuario()],
         idEmpresa: [this.loginService.obtenerIdEmpresa()],
         bandera: ['INSERT']
       },{ validator: this.passwordMatchValidator });
@@ -127,12 +125,12 @@ export class ModalUsuariosComponent {
         ],
         password: [''], 
         confirmPassword: [''],
-        iniciales: [this.usuario.iniciales, [
-            Validators.required,
-            Validators.maxLength(5),
-            Validators.pattern('^[A-Z]+$')
+        iniciales: [{ value: '', disabled: false }, [
+          Validators.required,
+          Validators.maxLength(5),
+          Validators.pattern('^[A-Z]+$')
           ]
-        ],
+        ],      
         idTipoUsuario: [this.usuario.idTipoUsuario, Validators.required],
         estatus: [this.usuario.estatus === 1],
         correo: [this.usuario.correo, [
@@ -141,10 +139,11 @@ export class ModalUsuariosComponent {
             Validators.maxLength(100)
           ]
         ],
-        usuarioCreador: [this.loginService.obtenerIdEmpresa()],
         idEmpresa: [this.loginService.obtenerIdEmpresa()],
         bandera: ['UPDATE']
       }, { validator: this.passwordMatchValidator });
+      this.actualizarIniciales(); 
+      
     }
   }
 
@@ -179,18 +178,22 @@ export class ModalUsuariosComponent {
       this.mostrarToastError();
       return;
     }
-  
-    // Remover el campo de confirmación antes de enviar
+    this.usuarioForm.get('iniciales')?.enable();
+
     const formValue = { ...this.usuarioForm.value };
     delete formValue.confirmPassword;
+    this.usuarioForm.get('iniciales')?.disable(); 
   
     formValue.estatus = formValue.estatus ? 1 : 0;
     formValue.idEmpresa = this.loginService.obtenerIdEmpresa();
     formValue.bandera = this.insertar ? 'INSERT' : 'UPDATE';
-  
+
+    if (!this.insertar && !formValue.password) {
+      delete formValue.password;
+    }  
+
     this.UsuariosService.postGuardarUsuario(formValue).subscribe({
       next: (result: baseOut) => {
-        console.log(result);
         this.result.emit(result);
         this.close();
       },

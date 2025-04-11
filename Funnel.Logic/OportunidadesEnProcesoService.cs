@@ -211,8 +211,8 @@ namespace Funnel.Logic
         {
             var datos = await _oportunidadesData.ConsultarHistoricoOportunidades(IdEmpresa, IdOportunidad);
 
-            var rutaPlantillaHeader = Path.Combine(Directory.GetCurrentDirectory(), "PlantillasReporteHtml", "SeguimientoOportunidadesHeader.html");
-            var rutaPlantillaBody = Path.Combine(Directory.GetCurrentDirectory(), "PlantillasReporteHtml", "PlantillaReporteFunnel.html");
+            var rutaPlantillaHeader = Path.Combine(RutaBase, "PlantillasReporteHtml", "PlantillaReporteFunnelHeader.html");
+            var rutaPlantillaBody = Path.Combine(RutaBase, "PlantillasReporteHtml", "PlantillaReporteFunnel.html");
             var htmlTemplateBody = System.IO.File.ReadAllText(rutaPlantillaBody);
 
             // Generar tabla HTML dinámica
@@ -238,6 +238,7 @@ namespace Funnel.Logic
             sb.Append("</tbody></table>");
 
             // Reemplazar la tabla en la plantilla
+            htmlTemplateBody = htmlTemplateBody.Replace("{{TITULO}}", "Reporte Seguimiento Oportunidades en Proceso");
             htmlTemplateBody = htmlTemplateBody.Replace("{{TABLA}}", sb.ToString());
 
             var doc = new HtmlToPdfDocument()
@@ -265,10 +266,10 @@ namespace Funnel.Logic
             return doc;
         }
 
-        public async Task<HtmlToPdfDocument> GenerarReporteOportunidadesEnProceso(OportunidadesReporteDto oportunidades, string RutaBase)
+        public async Task<HtmlToPdfDocument> GenerarReporteOportunidades(OportunidadesReporteDto oportunidades, string RutaBase, string titulo)
         {
-            var rutaPlantillaHeader = Path.Combine(Directory.GetCurrentDirectory(), "PlantillasReporteHtml", "OportunidadesEnProcesoHeader.html");
-            var rutaPlantillaBody = Path.Combine(Directory.GetCurrentDirectory(), "PlantillasReporteHtml", "PlantillaReporteFunnel.html");
+            var rutaPlantillaHeader = Path.Combine(RutaBase, "PlantillasReporteHtml", "PlantillaReporteFunnelHeader.html");
+            var rutaPlantillaBody = Path.Combine(RutaBase, "PlantillasReporteHtml", "PlantillaReporteFunnel.html");
             var htmlTemplateBody = System.IO.File.ReadAllText(rutaPlantillaBody);
 
             var propiedadesTexto = typeof(OportunidadesEnProcesoDto).GetProperties(BindingFlags.Public | BindingFlags.Instance).Select(v => v.Name.ToLower()).ToList();
@@ -312,6 +313,7 @@ namespace Funnel.Logic
             sb.Append("</tbody></table>");
 
             // Reemplazar la tabla en la plantilla
+            htmlTemplateBody = htmlTemplateBody.Replace("{{TITULO}}", titulo);
             htmlTemplateBody = htmlTemplateBody.Replace("{{TABLA}}", sb.ToString());
 
             var doc = new HtmlToPdfDocument()
@@ -320,7 +322,7 @@ namespace Funnel.Logic
                     PaperSize = PaperKind.Legal,
                     Orientation = Orientation.Landscape,
                     Margins = new MarginSettings { Top = 45 },
-                    DocumentTitle = "Seguimiento Oportunidades",
+                    DocumentTitle = titulo,
                 },
                 Objects = {
                     new ObjectSettings() {
@@ -337,9 +339,6 @@ namespace Funnel.Logic
             };
 
             return doc;
-
-
-            //throw new NotImplementedException();
         }
     }
 }

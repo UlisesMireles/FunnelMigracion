@@ -32,7 +32,8 @@ namespace Funnel.Data
                     var dto = new ContactoDto();
                     dto.IdContactoProspecto = ComprobarNulos.CheckIntNull(reader["IdContactoProspecto"]);
                     dto.NombreCompleto = ComprobarNulos.CheckStringNull(reader["NombreCompleto"]);
-                   
+                    dto.IdProspecto = ComprobarNulos.CheckIntNull(reader["IdProspecto"]);
+
                     result.Add(dto);
                 }
             }
@@ -317,11 +318,11 @@ namespace Funnel.Data
                 IList<ParameterSQl> list = new List<ParameterSQl>
                 {
                     DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Bandera),
-                    DataBase.CreateParameterSql("@pIdOportunidad", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdOportunidad),
                     DataBase.CreateParameterSql("@pIdProspecto", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdProspecto),
+                    DataBase.CreateParameterSql("@pIdOportunidad", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdOportunidad),
                     DataBase.CreateParameterSql("@pNombreOportunidad", SqlDbType.VarChar, 100, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Descripcion),
                     DataBase.CreateParameterSql("@pMonto", SqlDbType.Decimal, 18, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Monto),
-                    DataBase.CreateParameterSql("@pFechaEstimadaCierre", SqlDbType.Date, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.FechaEstimadaCierreOriginal),
+                    DataBase.CreateParameterSql("@pFechaEstimadaCierre", SqlDbType.Date, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.FechaEstimadaCierre),
                     DataBase.CreateParameterSql("@pIdEjecutivo", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdEjecutivo),
                     DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdEmpresa),
                     DataBase.CreateParameterSql("@pIdTipoEntrega", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdTipoEntrega),
@@ -330,7 +331,7 @@ namespace Funnel.Data
                     DataBase.CreateParameterSql("@pComentario", SqlDbType.VarChar, -1, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Comentario),
                     DataBase.CreateParameterSql("@pIdTipoOportunidad", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdTipoProyecto),
                     DataBase.CreateParameterSql("@pIdEstatusOportunidad", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdEstatusOportunidad),
-                    DataBase.CreateParameterSql("@pProbabilidad", SqlDbType.Decimal, 18, ParameterDirection.Input, false, null, DataRowVersion.Default, decimal.Parse(request.Probabilidad)),
+                    DataBase.CreateParameterSql("@pProbabilidad", SqlDbType.VarChar, 100, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Probabilidad),
                     DataBase.CreateParameterSql("@pIdUsuario", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdUsuario),
 
                 };

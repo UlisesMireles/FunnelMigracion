@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { RequestActualizarFechaEstimadaCierre, RequestOportunidad } from '../interfaces/oportunidades';
+import { Oportunidad, RequestActualizarFechaEstimadaCierre, RequestOportunidad } from '../interfaces/oportunidades';
 import { baseOut } from '../interfaces/utils/utils/baseOut';
 
 @Injectable({
@@ -19,7 +19,7 @@ export class OportunidadesService {
     });
   }
 
-  postOportunidad(data: RequestOportunidad): Observable<baseOut> {
+  postOportunidad(data: Oportunidad): Observable<baseOut> {
     return this.http.post<baseOut>(this.baseUrl + 'api/Oportunidades/GuardarOportunidad', data);
   }
 
@@ -99,4 +99,23 @@ export class OportunidadesService {
     return this.http.post(`${this.baseUrl}api/Oportunidades/DescargarReporteOportunidadesEnProceso`, data, { responseType: 'blob' });
   }
 
+  descargarReporteOportunidadesPorEtapa(data: any): Observable<Blob> {
+    return this.http.post(`${this.baseUrl}api/Oportunidades/DescargarReporteOportunidadesPorEtapa`, data, { responseType: 'blob' });
+  }
+
+  descargarReporteOportunidadesGanadas(data: any, anio:number): Observable<Blob> {
+    return this.http.post(`${this.baseUrl}api/Oportunidades/DescargarReporteOportunidadesGanadas`, data, { responseType: 'blob', params: {anio: anio} });
+  }
+
+  descargarReporteOportunidadesPerdidas(data: any, anio:number): Observable<Blob> {
+    return this.http.post(`${this.baseUrl}api/Oportunidades/DescargarReporteOportunidadesPerdidas`, data, { responseType: 'blob', params: {anio: anio} });
+  }
+
+  descargarReporteOportunidadesCanceladas(data: any, anio:number): Observable<Blob> {
+    return this.http.post(`${this.baseUrl}api/Oportunidades/DescargarReporteOportunidadesCanceladas`, data, { responseType: 'blob', params: {anio: anio} });
+  }
+
+  descargarReporteOportunidadesEliminadas(data: any, anio:number): Observable<Blob> {
+    return this.http.post(`${this.baseUrl}api/Oportunidades/DescargarReporteOportunidadesEliminadas`, data, { responseType: 'blob', params: {anio: anio} });
+  }
 }

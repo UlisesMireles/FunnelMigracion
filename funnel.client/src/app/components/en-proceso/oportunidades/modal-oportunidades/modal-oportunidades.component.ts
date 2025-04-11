@@ -142,10 +142,10 @@ export class ModalOportunidadesComponent {
     }
 
     onChangeProbabilidad() {
-      this.oportunidadForm.get('idStage')?.valueChanges.subscribe(() => {
-        this.obtenerProbabilidadPorEtapa();
-      });
-
+      const idStage = this.oportunidadForm.get('idStage')?.value;
+      if(idStage > 0) {
+        this.obtenerProbabilidadPorEtapa(idStage);
+      }
       if(!this.insertar)
         this.limpiarProbabilidad();
     }
@@ -197,6 +197,7 @@ export class ModalOportunidadesComponent {
         fechaEstimadaCierre: this.oportunidadForm.get('fechaEstimadaCierreOriginal')?.value || new Date(),
         comentario: this.oportunidadForm.get('comentario')?.value,
         idProspecto: this.oportunidadForm.get('idProspecto')?.value,
+        probabilidad: this.oportunidadForm.get('probabilidad')?.value
       };
       this.informacionOportunidad.probabilidad = this.informacionOportunidad.probabilidad?.replace('%', '').trim();
       this.informacionOportunidad.idUsuario = this.loginService.obtenerIdUsuario();
@@ -216,8 +217,8 @@ export class ModalOportunidadesComponent {
         });
       }
 
-      obtenerProbabilidadPorEtapa() {
-        const etapaSeleccionada = this.etapas.find(etapa => etapa.id === this.oportunidadForm.get('idStage')?.value);
+      obtenerProbabilidadPorEtapa(idStage: number) {
+        const etapaSeleccionada = this.etapas.find(etapa => etapa.id === idStage);
     
         if (etapaSeleccionada) {
             let probabilidad = etapaSeleccionada.probabilidad;

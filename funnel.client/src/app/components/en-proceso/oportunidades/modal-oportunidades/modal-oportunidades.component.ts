@@ -42,10 +42,12 @@ export class ModalOportunidadesComponent {
     nombreProspecto: string = '';
     validaGuadar: boolean = false;
     banderaContacto: boolean = true;
+    informacionOportunidad: Oportunidad = {};
 
     inicializarFormulario() {
       let valoresIniciales: Record<string, any>;
       if (this.insertar) {
+        this.informacionOportunidad = {probabilidad: '0', idEstatus: 1};
         this.banderaContacto = true;
         this.oportunidadForm = this.fb.group({
           idOportunidad: [0],
@@ -74,6 +76,7 @@ export class ModalOportunidadesComponent {
         this.cdr.detectChanges(); 
 
       } else {
+        this.informacionOportunidad = this.oportunidad;
         this.banderaContacto = false;
         this.nombreProspecto = this.oportunidad.nombre??'';
         this.oportunidadForm = this.fb.group({
@@ -178,7 +181,27 @@ export class ModalOportunidadesComponent {
     }
 
     guardarOportunidad(){
-      this.oportunidadService.postOportunidad(this.oportunidadForm.value).subscribe({
+      this.informacionOportunidad = {
+        ...this.informacionOportunidad,
+        bandera: this.oportunidadForm.get('bandera')?.value,
+        idOportunidad: this.oportunidadForm.get('idOportunidad')?.value,
+        idEstatusOportunidad: this.oportunidadForm.get('idEstatus')?.value,
+        idEjecutivo: this.oportunidadForm.get('idEjecutivo')?.value,
+        idContactoProspecto: this.oportunidadForm.get('idContactoProspecto')?.value,
+        idStage: this.oportunidadForm.get('idStage')?.value,
+        idEmpresa: this.oportunidadForm.get('idEmpresa')?.value,
+        idTipoProyecto: this.oportunidadForm.get('idTipoProyecto')?.value,
+        idTipoEntrega: this.oportunidadForm.get('idTipoEntrega')?.value,
+        descripcion: this.oportunidadForm.get('descripcion')?.value,
+        monto: this.oportunidadForm.get('monto')?.value,
+        fechaEstimadaCierre: this.oportunidadForm.get('fechaEstimadaCierreOriginal')?.value || new Date(),
+        comentario: this.oportunidadForm.get('comentario')?.value,
+        idProspecto: this.oportunidadForm.get('idProspecto')?.value,
+      };
+      this.informacionOportunidad.probabilidad = this.informacionOportunidad.probabilidad?.replace('%', '').trim();
+      this.informacionOportunidad.idUsuario = this.loginService.obtenerIdUsuario();
+      
+      this.oportunidadService.postOportunidad(this.informacionOportunidad).subscribe({
           next: (result: baseOut) => {
             this.result.emit(result);
             this.close();

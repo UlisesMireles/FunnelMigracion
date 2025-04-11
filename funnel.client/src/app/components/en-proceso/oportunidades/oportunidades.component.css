@@ -378,3 +378,6 @@ th.sort-active p-sortIcon {
   background: transparent !important;
 }
 
+::ng-deep .p-fluid {
+  width: 100% !important;
+}

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { RequestActualizarFechaEstimadaCierre, RequestOportunidad } from '../interfaces/oportunidades';
+import { Oportunidad, RequestActualizarFechaEstimadaCierre, RequestOportunidad } from '../interfaces/oportunidades';
 import { baseOut } from '../interfaces/utils/utils/baseOut';
 
 @Injectable({
@@ -19,7 +19,7 @@ export class OportunidadesService {
     });
   }
 
-  postOportunidad(data: RequestOportunidad): Observable<baseOut> {
+  postOportunidad(data: Oportunidad): Observable<baseOut> {
     return this.http.post<baseOut>(this.baseUrl + 'api/Oportunidades/GuardarOportunidad', data);
   }
 

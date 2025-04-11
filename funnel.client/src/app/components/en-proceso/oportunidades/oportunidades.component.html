@@ -97,10 +97,18 @@
                                   </ng-template>
                               </p-columnFilter>
                           </div>
+                          <div *ngSwitchCase="'textNFilter'">
+                            <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false">
+                                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                    <!-- <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
+                                        (ngModelChange)="filter($event)" class="p-inputtext" placeholder=""> -->
+                                </ng-template>
+                            </p-columnFilter>
+                        </div>
                           <div *ngSwitchCase="'currency'">
-                            <p-columnFilter type="numeric" field="{{def.key}}" [showButtons]="false" [maxFractionDigits]="7">
+                            <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false"[maxFractionDigits]="7">
                               <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                                  <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
+                                  <input type="number" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
                                       (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
                               </ng-template>
                             </p-columnFilter>
@@ -112,6 +120,14 @@
                                         (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
                                 </ng-template>
                             </p-columnFilter>
+                        </div>
+                        <div *ngSwitchCase="'numberFilter'">
+                          <p-columnFilter type="numeric" field="{{def.key}}" [showButtons]="false" [maxFractionDigits]="7">
+                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
+                                    (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
+                            </ng-template>
+                          </p-columnFilter>
                         </div>
                           <div *ngSwitchDefault>
                               <p-columnFilter
@@ -133,6 +149,7 @@
                     'text-align':
                       def.key === 'abreviatura' ? 'center' : 
                       def.key === 'entrega' ? 'center' : 
+                      def.key === 'stage' ? 'center' :
                       (def.valor.includes('%')) ? 'center' :
                       def.tipoFormato === 'currency' ? 'right' :
                       (def.tipoFormato === 'number' || def.tipoFormato === 'date') ? 'center' : 'left'
@@ -155,6 +172,12 @@
                       {{ rowData[def.key] }}
                     </span>
                   </span>
+
+                  <span *ngSwitchCase="'textNFilter'">
+                    <span *ngIf="def.key !== 'nombreContacto' && def.key !== 'iniciales' && def.key !== 'abreviatura' && def.key !== 'entrega'" >
+                      {{ rowData[def.key] }}
+                    </span>
+                  </span>
                  
                   <span *ngSwitchCase="'currency'">
                     {{ rowData[def.key] | currency:'$':'symbol':'1.2-2' }}
@@ -168,6 +191,11 @@
                       {{ rowData[def.key] | number:'1.0-2' }}
                     </span>
                     <span *ngIf="def.key !== 'fechaModificacion' && def.key !== 'stage'">
+                      {{ rowData[def.key] | number:'1.0-2' }}
+                    </span>
+                  </span>
+                  <span *ngSwitchCase="'numberFilter'">
+                    <span *ngIf="def.key === 'stage'" pTooltip="{{getNombreEtapa(rowData[def.key])}}" tooltipPosition="top">
                       {{ rowData[def.key] | number:'1.0-2' }}
                     </span>
                   </span>

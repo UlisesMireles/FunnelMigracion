@@ -153,9 +153,11 @@ export class CatalogoService {
         const contactosArray = JSON.parse(window.atob(contactos));
         // Filtrar contactos por idProspecto
         let _contactos = contactosArray.filter((contacto: any) => contacto.idProspecto == idProspecto);
+        // console.log(contactosArray);
+        // console.log(_contactos);
         return _contactos; 
       } catch (error) {
-        console.error('Error al decodificar los contactos:', error);
+        // console.error('Error al decodificar los contactos:', error);
         return [];
       }
     }

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, SimpleChanges, ChangeDetectorRef} from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectorRef} from '@angular/core';
 
 import { MessageService } from 'primeng/api';
 
@@ -9,7 +9,6 @@ import { OportunidadesService } from '../../../../services/oportunidades.service
 import { LoginService } from '../../../../services/login.service';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { distinctUntilChanged, takeUntil, throttleTime } from 'rxjs';
 import { CatalogoService } from '../../../../services/catalogo.service';
 
 @Component({
@@ -42,13 +41,15 @@ export class ModalOportunidadesComponent {
 
     nombreProspecto: string = '';
     validaGuadar: boolean = false;
+    banderaContacto: boolean = true;
 
     inicializarFormulario() {
       let valoresIniciales: Record<string, any>;
       if (this.insertar) {
+        this.banderaContacto = true;
         this.oportunidadForm = this.fb.group({
           idOportunidad: [0],
-          idProspecto: ['', Validators.required],
+          idProspecto: [0, Validators.required],
           descripcion: ['', [Validators.required, Validators.minLength(5)]],
           monto: [0, [Validators.required, Validators.min(1)]],
           idTipoProyecto: ['', Validators.required],
@@ -63,28 +64,17 @@ export class ModalOportunidadesComponent {
           bandera: ['INS-OPORTUNIDAD'],
           idEstatus: [1]
         });
-
+        
         valoresIniciales = this.oportunidadForm.getRawValue();
 
         this.oportunidadForm.valueChanges.subscribe((changes) => {
           this.validarCambios(valoresIniciales, changes);
-          // if (this.oportunidadForm.dirty) {
-          //   this.validaGuadar = true;
-          // }
         });
 
-        this.oportunidadForm.get('idProspecto')?.valueChanges.subscribe((idProspecto) => {
-          if (idProspecto) {
-            if (idProspecto) {
-              this.contactos = this.catalogoService.obtenerContactos(idProspecto);
-            }
-          }
-        });
-        this.oportunidadForm.get('idStage')?.valueChanges.subscribe(() => {
-          this.obtenerProbabilidadPorEtapa();
-        });
-        return;
+        this.cdr.detectChanges(); 
+
       } else {
+        this.banderaContacto = false;
         this.nombreProspecto = this.oportunidad.nombre??'';
         this.oportunidadForm = this.fb.group({
           bandera: ['UPD-OPORTUNIDAD'],
@@ -105,23 +95,15 @@ export class ModalOportunidadesComponent {
         });
 
         valoresIniciales = this.oportunidadForm.getRawValue();
-
+        
         
 
         this.oportunidadForm.valueChanges.subscribe((changes) => {
           this.validarCambios(valoresIniciales, changes);
         });
-        
 
-        // if (this.oportunidad.idProspecto) {
-        //     this.cargarContactos(this.oportunidad.idProspecto);
-        //   }
-        
-        // this.oportunidadForm.get('idStage')?.valueChanges.subscribe(() => {
-        //   this.obtenerProbabilidadPorEtapa();
-        // });
+        this.cdr.detectChanges(); 
 
-        // this.limpiarProbabilidad();
       }
       
     }
@@ -135,7 +117,6 @@ export class ModalOportunidadesComponent {
       const valoresRegresaron = this.compararValores(valoresIniciales, valoresActuales);
       if (valoresRegresaron) {
         this.validaGuadar = false;
-        console.log('El formulario ha vuelto a su valor inicial');
       }
     }
 
@@ -144,28 +125,17 @@ export class ModalOportunidadesComponent {
       let valoresActualesJson = JSON.stringify(valoresActuales);
       return valoresInicialesJson === valoresActualesJson;
     }
-
-    // onDialogShow() {
-    //   this.cargarDatos();
-    //   this.cdr.detectChanges();
-    //   this.inicializarFormulario();
-    //   this.cdr.detectChanges(); 
-      
-    // }    
-
-    // ngOnChanges(changes: SimpleChanges) {
-    //   if (changes['oportunidad'] && changes['oportunidad'].currentValue) {
-    //     this.inicializarFormulario();
-    //     this.cdr.detectChanges();
-    //   }
-    // }
     
     onChangeProspecto() {
-      this.oportunidadForm.get('idProspecto')?.valueChanges.subscribe((idProspecto) => {
-        if (idProspecto) {
+      const idProspecto = this.oportunidadForm.get('idProspecto')?.value;
+        if (idProspecto > 0) {
           this.contactos = this.catalogoService.obtenerContactos(idProspecto);
+          this.banderaContacto = false;
         }
-      });
+        else {
+          this.banderaContacto = true;
+        }
+        this.cdr.detectChanges();
     }
 
     onChangeProbabilidad() {
@@ -182,6 +152,7 @@ export class ModalOportunidadesComponent {
     }
     
     cargarDatos() {
+      this.banderaContacto = true;
       this.prospectos = this.catalogoService.obtenerProspectos();
       this.servicios = this.catalogoService.obtenerServicios();
       this.etapas = this.catalogoService.obtenerEtapas();
@@ -193,11 +164,6 @@ export class ModalOportunidadesComponent {
       this.estatusOportunidad = this.catalogoService.obtenerEstatusOportunidad();
       this.inicializarFormulario(); 
       this.cdr.detectChanges();
-      // this.cargarProspectos();
-      // this.cargarServicios();
-      // this.cargarEtapas();
-      // this.cargarEjecutivos();
-      // this.cargarEntregas();
     }
 
   

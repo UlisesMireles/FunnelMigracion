@@ -32,7 +32,8 @@ namespace Funnel.Data
                     var dto = new ContactoDto();
                     dto.IdContactoProspecto = ComprobarNulos.CheckIntNull(reader["IdContactoProspecto"]);
                     dto.NombreCompleto = ComprobarNulos.CheckStringNull(reader["NombreCompleto"]);
-                   
+                    dto.IdProspecto = ComprobarNulos.CheckIntNull(reader["IdProspecto"]);
+
                     result.Add(dto);
                 }
             }

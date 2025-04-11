@@ -41,3 +41,20 @@
   border-radius: var(--mdc-dialog-container-shape, var(--mat-sys-corner-extra-large, 9px)) !important;
   background-color: transparent !important;
 }
+
+.p-select-option:hover {
+  background: lightgrey;
+}
+
+.p-select:hover {
+  background: lightgrey;
+}
+
+.estiloComentario {
+  resize: none;
+  height: 60px !important;
+}
+
+.p-datepicker-buttonbar {
+  display: none !important;
+}

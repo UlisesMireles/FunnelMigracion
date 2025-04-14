@@ -131,7 +131,7 @@
         </div>
       </div>
   
-      <div class="row ">
+      <div class="row "  *ngIf="!insertar">
         <div class="col-sm-4 lbl">
           <label for="estatus">Estatus:</label>
         </div>
@@ -140,15 +140,21 @@
         </div>
       </div>
 
-      <div class="row ">
+      <div class="row">
         <div class="col-sm-4 lbl">
-          <label for="confirmPassword">Foto:</label>
+          <label for="foto">Foto:</label>
         </div>
-        <div class="col-sm-8 ">
-          <input type="file" (change)="onFileSelected($event)" accept="image/*" />
-          <small *ngIf="selectedFileName">{{ selectedFileName }}</small>
+        <div class="col-sm-8">
+          <input 
+            type="file" 
+            class="inptSize1 custom-file-input"
+            (change)="onFileSelected($event)" 
+            accept="image/*"
+            id="foto"
+          />
         </div>
       </div>
+      
     </form>
   </ng-template>
   

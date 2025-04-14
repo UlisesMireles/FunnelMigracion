@@ -181,9 +181,10 @@ div.inDivDatatableHeader > p-button > button.p-button {
   padding-right: 4px;
 }
 ::ng-deep .inptSize1{
-  height: 42px;
+  height: 35px;
   width: 250px;
   padding-right: 4px;
+  text-align: left;
 }
 
 .inputModal {
@@ -290,4 +291,17 @@ th.sort-active p-sortIcon {
   background-color: #4682b4 !important; 
   border-color: #4682b4 !important;
   color: white !important;
+}
+
+::ng-deep .custom-file-input {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 5px 8px;
+  font-size: 14px;
+  background-color: #fff;
+  transition: border-color 0.2s;
+}
+
+::ng-deep .custom-file-input:hover {
+  border-color: #86b7fe;
 }

@@ -10,6 +10,7 @@ using Funnel.Data.Interfaces;
 using Funnel.Models.Base;
 using Azure.Core;
 using Funnel.Logic.Interfaces;
+using Microsoft.AspNetCore.Http;
 
 
 namespace Funnel.Logic
@@ -29,6 +30,11 @@ namespace Funnel.Logic
         public async Task<List<UsuarioDto>> ConsultarUsuarios(int IdUsuario)
         {
             return await _usuarioData.ConsultarUsuarios(IdUsuario);
+        }
+
+        public async Task<List<UsuarioDto>> GuardarImagen(List<IFormFile> imagen, UsuarioDto request)
+        {
+            return await _usuarioData.GuardarImagen(imagen, request);
         }
 
         public async Task<BaseOut> GuardarUsuarios(UsuarioDto request)

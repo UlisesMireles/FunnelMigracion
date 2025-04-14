@@ -30,6 +30,10 @@ export class ModalUsuariosComponent {
 
     tiposUsuario: any[] = [];
 
+    selectedFile: File | null = null;
+    selectedFileName: string = '';
+
+
     @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() closeModal: EventEmitter<void> = new EventEmitter();
     @Output() result: EventEmitter<baseOut> = new EventEmitter();
@@ -191,19 +195,28 @@ export class ModalUsuariosComponent {
     if (!this.insertar && !formValue.password) {
       delete formValue.password;
     }  
+    
+    const formData = new FormData();
+    for (const key in formValue) {
+      formData.append(key, formValue[key]);
+    }
 
-    this.UsuariosService.postGuardarUsuario(formValue).subscribe({
-      next: (result: baseOut) => {
-        this.result.emit(result);
+    if (this.selectedFile) {
+      formData.append('imagen', this.selectedFile, this.selectedFile.name);
+    }
+
+    this.UsuariosService.postGuardarUsuario(formData).subscribe({
+      next: (result: any) => {
+        this.result.emit(result); 
         this.close();
       },
-      error: (error: baseOut) => {
+      error: (error) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Se ha producido un error.',
           detail: error.errorMessage,
         });
-      },
+      }
     });
   }
 
@@ -304,4 +317,13 @@ export class ModalUsuariosComponent {
     }
     return null;
   }
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
+      this.selectedFileName = this.selectedFile.name;
+    }
+  }
+  
 }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Funnel.Data;
+using Microsoft.AspNetCore.Http;
 
 namespace Funnel.Data.Interfaces
 {
@@ -18,5 +19,6 @@ namespace Funnel.Data.Interfaces
         Task<List<string>> ObtenerInicialesPorEmpresa(int idEmpresa);
         Task<bool> ValidarInicialesExistente(string iniciales, int idEmpresa);
 
+        Task<List<UsuarioDto>> GuardarImagen(List<IFormFile> imagen, UsuarioDto request);
     }
 }

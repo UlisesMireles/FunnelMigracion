@@ -72,9 +72,9 @@ namespace Funnel.Data
             return result;
         }
 
-        public async Task<List<UsuarioDto>> GuardarImagen(List<IFormFile> imagen, UsuarioDto request)
+        public async Task<BaseOut> GuardarImagen(List<IFormFile> imagen, UsuarioDto request)
         {
-            var archivosGuardados = new List<UsuarioDto>();
+            BaseOut result = new BaseOut();
             var formatosPermitidos = new List<string> { ".jpg", ".png" };
 
             string carpetaDestino = Path.Combine(Directory.GetCurrentDirectory(), "ImagenPerfil");
@@ -86,7 +86,6 @@ namespace Funnel.Data
 
             foreach (var file in imagen)
             {
-                var insertaImagen = new UsuarioDto();
                 var extension = Path.GetExtension(file.FileName).ToLower();
 
                 if (formatosPermitidos.Contains(extension))
@@ -102,48 +101,49 @@ namespace Funnel.Data
                 }
                 else
                 {
-                    insertaImagen.ErrorMessage = $"Formato de archivo {extension} no permitido.";
-                    insertaImagen.Result = false;
-                    archivosGuardados.Add(insertaImagen);
-                    continue;
+                    result.ErrorMessage = $"Formato de archivo {extension} no permitido.";
+                    result.Result = false;
+                    return result; // Se puede retornar en este punto si hay un error con los formatos
                 }
 
                 try
                 {
-                    insertaImagen.Bandera = request.Bandera;
-                    insertaImagen.Nombre = request.Nombre;
-                    insertaImagen.ApellidoPaterno = request.ApellidoPaterno;
-                    insertaImagen.ApellidoMaterno = request.ApellidoMaterno;
-                    insertaImagen.Usuario = request.Usuario;
-                    insertaImagen.Password = request.Password;
-                    insertaImagen.Iniciales = request.Iniciales;
-                    insertaImagen.Correo = request.Correo;
-                    insertaImagen.IdTipoUsuario = request.IdTipoUsuario;
-                    insertaImagen.IdUsuario = request.IdUsuario;
-                    insertaImagen.IdEmpresa = request.IdEmpresa;
-                    insertaImagen.Estatus = request.Estatus;
-                    insertaImagen.ArchivoImagen = request.ArchivoImagen;
+                    // Asignamos los valores del usuario en la variable 'insertaImagen'
+                    var insertaImagen = new UsuarioDto
+                    {
+                        Bandera = request.Bandera,
+                        Nombre = request.Nombre,
+                        ApellidoPaterno = request.ApellidoPaterno,
+                        ApellidoMaterno = request.ApellidoMaterno,
+                        Usuario = request.Usuario,
+                        Password = request.Password,
+                        Iniciales = request.Iniciales,
+                        Correo = request.Correo,
+                        IdTipoUsuario = request.IdTipoUsuario,
+                        IdUsuario = request.IdUsuario,
+                        IdEmpresa = request.IdEmpresa,
+                        Estatus = request.Estatus,
+                        ArchivoImagen = request.ArchivoImagen
+                    };
 
+                    // Llamamos a la función GuardarUsuarios
                     var resultado = await GuardarUsuarios(insertaImagen);
-                
 
-                    insertaImagen.Result = resultado.Result;
-                    insertaImagen.ErrorMessage = resultado.ErrorMessage;
+                    // Asignamos el resultado a 'result'
+                    result.Result = resultado.Result;
+                    result.ErrorMessage = resultado.ErrorMessage;
+                    result.Id = resultado.Id; // Asumiendo que 'BaseOut' tiene una propiedad Id para almacenar el ID del usuario
 
                 }
                 catch (Exception ex)
                 {
-                    insertaImagen.ErrorMessage = "Error al guardar el archivo: " + ex.Message;
-                    insertaImagen.Result = false;
-                    archivosGuardados.Add(insertaImagen);
-                    continue;
+                    result.ErrorMessage = "Error al guardar el archivo: " + ex.Message;
+                    result.Result = false;
+                    return result; // Retornamos el error si ocurre alguna excepción
                 }
-
-                archivosGuardados.Add(insertaImagen);
             }
 
-            return archivosGuardados;
-
+            return result; // Se retorna el resultado final al finalizar el procesamiento de todas las imágenes
         }
 
 

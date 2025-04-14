@@ -19,6 +19,6 @@ namespace Funnel.Data.Interfaces
         Task<List<string>> ObtenerInicialesPorEmpresa(int idEmpresa);
         Task<bool> ValidarInicialesExistente(string iniciales, int idEmpresa);
 
-        Task<List<UsuarioDto>> GuardarImagen(List<IFormFile> imagen, UsuarioDto request);
+        Task<BaseOut> GuardarImagen(List<IFormFile> imagen, UsuarioDto request);
     }
 }

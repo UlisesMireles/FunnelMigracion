@@ -32,7 +32,7 @@ namespace Funnel.Logic
             return await _usuarioData.ConsultarUsuarios(IdUsuario);
         }
 
-        public async Task<List<UsuarioDto>> GuardarImagen(List<IFormFile> imagen, UsuarioDto request)
+        public async Task<BaseOut> GuardarImagen(List<IFormFile> imagen, UsuarioDto request)
         {
             return await _usuarioData.GuardarImagen(imagen, request);
         }

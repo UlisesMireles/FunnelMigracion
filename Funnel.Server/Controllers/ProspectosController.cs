@@ -1,8 +1,10 @@
-﻿using Funnel.Logic;
+﻿using DinkToPdf.Contracts;
+using Funnel.Logic;
 using Funnel.Logic.Interfaces;
 using Funnel.Models.Base;
 using Funnel.Models.Dto;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace Funnel.Server.Controllers
 {
@@ -11,10 +13,12 @@ namespace Funnel.Server.Controllers
     public class ProspectosController : Controller
     {
         private readonly IProspectosService _prospectosService;
+        private readonly IConverter _converter;
 
-        public ProspectosController(IProspectosService prospectosService)
+        public ProspectosController(IProspectosService prospectosService, IConverter converter)
         {
             _prospectosService = prospectosService;
+            _converter = converter;
         }
 
         [HttpGet("[action]/")]
@@ -45,6 +49,22 @@ namespace Funnel.Server.Controllers
         {
             var respuesta = await _prospectosService.ConsultarTopVeinte(IdEmpresa);
             return Ok(respuesta);
+        }
+
+        [HttpPost("[action]/")]
+        public async Task<ActionResult> DescargarReporteProspectos([FromBody] ProspectosReporteDTO prospectos)
+        {
+            var doc = await _prospectosService.GenerarReporteProspectos(prospectos, Directory.GetCurrentDirectory(), "Reporte de Prospectos");
+            var pdf = _converter.Convert(doc);
+            return File(pdf, "application/pdf", "Prospectos.pdf");
+        }
+
+        [HttpPost("[action]/")]
+        public async Task<ActionResult> DescargarReporteTop20([FromBody] ProspectosReporteDTO prospectos)
+        {
+            var doc = await _prospectosService.GenerarReporteTop20(prospectos, Directory.GetCurrentDirectory(), "Reporte de Clientes Top 20");
+            var pdf = _converter.Convert(doc);
+            return File(pdf, "application/pdf", "ClientesTop20.pdf");
         }
     }
 }

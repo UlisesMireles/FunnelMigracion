@@ -28,4 +28,8 @@ export class ContactosService {
       params: { idEmpresa: idEmpresa.toString() }
     });
   }
+
+  descargarReporteContactos(data: any): Observable<Blob> {
+    return this.http.post(`${this.baseUrl}api/Contacto/DescargarReporteContactos`, data, { responseType: 'blob' });
+  }
 }

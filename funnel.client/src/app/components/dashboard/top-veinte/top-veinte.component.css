@@ -270,3 +270,7 @@
   border-color: #4682b4 !important;
   color: white !important;
 }
+
+.bold-row {
+  font-weight: bold;
+}

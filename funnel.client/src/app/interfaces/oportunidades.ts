@@ -50,6 +50,7 @@ export interface Oportunidad {
     idContactoProspecto?: number;
     primerNombreContacto?: string;
     nombreContactoCompleto?: string;
+    bandera?: string;
 }
 
 export interface RequestOportunidad {

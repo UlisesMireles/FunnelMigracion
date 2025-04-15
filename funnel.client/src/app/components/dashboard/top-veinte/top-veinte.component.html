@@ -128,7 +128,7 @@
               </ng-template>
   
             <ng-template pTemplate="body" let-rowData let-columns="columns">
-                <tr>
+                <tr [ngClass]="{'bold-row': rowData['porcGanadas'] >= 50}">
                   <td *ngFor="let def of lsColumnasAMostrar">
                     <ng-container [ngSwitch]="def.tipoFormato">
                       <span *ngSwitchCase="'text'">{{ rowData[def.key] }}</span>

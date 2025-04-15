@@ -22,7 +22,7 @@
                 <p-button label="" icon="bi bi-arrow-clockwise" (click)="clear(dt)" severity="secondary"
                 pTooltip="Refrescar" tooltipPosition="top" styleClass="custom-button refresh-button"
                 [ngStyle]="{'margin-right': '5px'}" />
-                <p-button label="" icon="bi bi-download" severity="secondary" (click)="exportExcel(dt)" 
+                <p-button label="" icon="bi bi-download" severity="secondary" (click)="exportPdf(dt)" 
                 pTooltip="Descargar Excel" tooltipPosition="top" styleClass="custom-button download-button"
                 [ngStyle]="{'margin-right': '5px'}"/>
                 <p-button label="" icon="bi-list" (click)="agregarColumna($event)" severity="secondary"  
@@ -74,6 +74,14 @@
                               </ng-template>
                             </p-columnFilter>
                           </div>
+                          <div *ngSwitchCase="'numberFilter'">
+                            <p-columnFilter type="numeric" field="{{def.key}}" [showButtons]="false" [maxFractionDigits]="7">
+                              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                  <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
+                                      (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
+                              </ng-template>
+                            </p-columnFilter>
+                          </div>
                           <div *ngSwitchCase="'date'">
                             <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false">
                                 <ng-template pTemplate="filter" let-value let-filter="filterCallback">
@@ -102,7 +110,8 @@
                       def.key === 'abreviatura' ? 'center' :
                       (def.valor.includes('%')) ? 'center' :
                       def.tipoFormato === 'currency' ? 'right' :
-                      (def.tipoFormato === 'number' || def.tipoFormato === 'date') ? 'center' : 'left'
+                      def.key === 'stage' ? 'center' :
+                      (def.tipoFormato === 'number' || def.tipoFormato === 'date' || def.tipoFormato === 'numberFilter') ? 'center' : 'left'
                   }">
                 <ng-container [ngSwitch]="def.tipoFormato">
                   <span *ngSwitchCase="'text'">
@@ -136,6 +145,11 @@
                       {{ rowData[def.key] | number:'1.0-2' }}
                     </span>
                   </span>
+                  <span *ngSwitchCase="'numberFilter'">
+                    <span *ngIf="def.key === 'stage'" pTooltip="{{getNombreEtapa(rowData[def.key])}}" tooltipPosition="top">
+                      {{ rowData[def.key] | number:'1.0-2' }}
+                    </span>
+                  </span>
                  
                   <span *ngSwitchCase="'date'" [ngStyle]="def.key === 'fechaEstimadaCierreOriginal' ? { 'color': getColorForFechaEstimadaCierre(rowData[def.key]) } : {}">
                     {{ rowData[def.key] | date:'dd/MM/yyyy' }}
@@ -151,7 +165,8 @@
                   [ngStyle]="{
                     'text-align':
                       def.tipoFormato === 'currency' ? 'right' :
-                      (def.tipoFormato === 'number' || def.tipoFormato === 'date') ? 'center' : 'left'
+                      def.key === 'stage' ? 'center' :
+                      (def.tipoFormato === 'number' || def.tipoFormato === 'date' || def.tipoFormato === 'numberFilter' ) ? 'center' : 'left'
                   }">
                 <ng-container *ngIf="def.key === 'nombre'">
                   Total de registros: {{ getTotalCostPrimeNg(dt, def) }}

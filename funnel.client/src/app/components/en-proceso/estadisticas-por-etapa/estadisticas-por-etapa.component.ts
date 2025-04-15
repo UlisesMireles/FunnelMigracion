@@ -42,7 +42,7 @@ export class EstadisticasPorEtapaComponent {@ViewChild('dt') dt!: Table;
     { key: 'nombreSector', isCheck: true, valor: 'Sector', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreOportunidad', isCheck: true, valor: 'Oportunidad', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'abreviatura', isCheck: true, valor: 'Tipo', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'stage', isCheck: true, valor: 'Etapa', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
+    { key: 'stage', isCheck: true, valor: 'Etapa', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'numberFilter' },
     { key: 'iniciales', isCheck: true, valor: 'Ejecutivo', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'fechaRegistro', isCheck: true, valor: 'Fecha Alta', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
     { key: 'diasFunnel', isCheck: true, valor: 'Días Funnel', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
@@ -145,6 +145,47 @@ export class EstadisticasPorEtapaComponent {@ViewChild('dt') dt!: Table;
         xlsx.utils.book_append_sheet(libro, hojadeCalculo, "Estadísticas Por Etapa");
         xlsx.writeFile(libro, "Estadísticas Por Etapa.xlsx");
       });
+    }
+
+    exportPdf(table: Table) {
+      let lsColumnasAMostrar = this.lsColumnasAMostrar.filter(col => col.isCheck);
+      let columnasAMostrarKeys = lsColumnasAMostrar.map(col => col.key);
+  
+      let dataExport = (table.filteredValue || table.value || []).map(row => {
+        return columnasAMostrarKeys.reduce((acc, key) => {
+          acc[key] = row[key];
+          return acc;
+        }, {} as { [key: string]: any });
+      });
+  
+      let data = {
+        columnas: lsColumnasAMostrar,
+        datos: dataExport
+      }
+  
+      if (dataExport.length == 0)
+        return
+  
+  
+      this.oportunidadService.descargarReporteOportunidadesPorEtapa(data).subscribe({
+        next: (result: Blob) => {
+          const url = window.URL.createObjectURL(result);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = 'EstadisticasPorEtapa.pdf';
+          link.click();
+          URL.revokeObjectURL(url);
+        },
+        error: (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Se ha producido un error al generar reporte',
+            detail: error.errorMessage,
+          });
+          this.loading = false;
+        },
+      });
+  
     }
   
     getTotalCostPrimeNg(table: Table, def: any) {

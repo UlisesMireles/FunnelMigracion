@@ -2,7 +2,7 @@
   [(visible)]="visible"
   [modal]="true"
   [closable]="true"
-  [style]="{ width: '40rem', height: '30rem' }"
+  [contentStyle]="{ 'max-height': '500px', 'overflow': 'auto' }"
   (onHide)="close()"
   (onShow)="onDialogShow()"
   class="bodyDialog"

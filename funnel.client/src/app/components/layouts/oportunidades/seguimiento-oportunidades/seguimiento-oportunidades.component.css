@@ -331,5 +331,13 @@
   flex-shrink: 0;
 }
 
+.button-group:not(.compact-buttons) {
+  margin-top: -35px;  
+  padding-top: 0;
+}
+
+.button-group.compact-buttons {
+  margin-top: 20px; 
+}
 
 

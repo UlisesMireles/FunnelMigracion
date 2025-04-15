@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { RequestUsuario } from '../interfaces/usuarios';
+import { baseOut } from '../interfaces/utils/utils/baseOut';
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +22,8 @@ export class UsuariosService {
       });
     }
 
-      postGuardarUsuario(request: RequestUsuario): Observable<any> {
-        return this.http.post(`${this.baseUrl}api/Usuarios/GuardarUsuario`, request);
+      postGuardarUsuario(formData: FormData): Observable<any> {
+        return this.http.post(`${this.baseUrl}api/Usuarios/GuardarImagen`, formData);
       }
 
       validarInicialesExistente(iniciales: string, idEmpresa: number): Observable<boolean> {

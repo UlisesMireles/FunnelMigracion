@@ -36,6 +36,13 @@ namespace Funnel.Server.Controllers
         }
 
         [HttpPost("[action]")]
+        public async Task<ActionResult<UsuarioDto>> GuardarImagen([FromForm] List<IFormFile> imagen, [FromForm] UsuarioDto request)
+        {
+            var result = await _usuariosService.GuardarImagen(imagen, request);
+            return Ok(result);
+        }
+
+        [HttpPost("[action]")]
         public async Task<ActionResult<BaseOut>> GuardarUsuario(UsuarioDto request)
 
         {

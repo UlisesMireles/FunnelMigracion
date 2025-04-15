@@ -160,7 +160,7 @@
   
 
   <ng-template pTemplate="footer">
-    <button *ngIf="!insertar" pButton label="Actualizar" (click)="guardarUsuario()" [disabled]="usuarioForm.pristine || usuarioForm.invalid" severity="secondary"></button>
+    <button *ngIf="!insertar" pButton label="Actualizar" (click)="guardarUsuario()" [disabled]="usuarioForm.invalid || !formModificado" severity="secondary"></button>
     <button *ngIf="insertar" pButton label="Agregar" (click)="guardarUsuario()" [disabled]="usuarioForm.pristine || usuarioForm.invalid" severity="secondary"></button>
     <button pButton label="Cancelar" (click)="close()" severity="secondary"></button>
   </ng-template>

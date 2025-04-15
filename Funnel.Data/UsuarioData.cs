@@ -76,7 +76,6 @@ namespace Funnel.Data
         {
             BaseOut result = new BaseOut();
             var formatosPermitidos = new List<string> { ".jpg", ".png", ".jpeg" };
-
             string carpetaDestino = Path.Combine(Directory.GetCurrentDirectory(), "ImagenPerfil");
 
             if (!Directory.Exists(carpetaDestino))
@@ -84,64 +83,75 @@ namespace Funnel.Data
                 Directory.CreateDirectory(carpetaDestino);
             }
 
-            foreach (var file in imagen)
+            if (imagen != null && imagen.Any())
             {
-                var extension = Path.GetExtension(file.FileName).ToLower();
-
-                if (formatosPermitidos.Contains(extension))
+                foreach (var file in imagen)
                 {
-                    var nombreArchivo = $"{request.ApellidoPaterno}_{request.ApellidoMaterno}_{request.Nombre}{extension}";
-                    var rutaArchivo = Path.Combine(carpetaDestino, nombreArchivo);
-                    using (var stream = new FileStream(rutaArchivo, FileMode.Create))
+                    var extension = Path.GetExtension(file.FileName).ToLower();
+
+                    if (!formatosPermitidos.Contains(extension))
+                    {
+                        result.ErrorMessage = $"Formato de archivo {extension} no permitido.";
+                        result.Result = false;
+                        return result;
+                    }
+
+                    var nombreBase = $"{request.ApellidoPaterno}_{request.ApellidoMaterno}_{request.Nombre}";
+                    var nombreArchivoNuevo = $"{nombreBase}{extension}";
+                    var rutaArchivoNuevo = Path.Combine(carpetaDestino, nombreArchivoNuevo);
+
+                    foreach (var formato in formatosPermitidos)
+                    {
+                        var rutaAnterior = Path.Combine(carpetaDestino, $"{nombreBase}{formato}");
+                        if (File.Exists(rutaAnterior))
+                        {
+                            File.Delete(rutaAnterior);
+                        }
+                    }
+
+                    using (var stream = new FileStream(rutaArchivoNuevo, FileMode.Create))
                     {
                         await file.CopyToAsync(stream);
                     }
 
-                    request.ArchivoImagen = nombreArchivo;
-                }
-                else
-                {
-                    result.ErrorMessage = $"Formato de archivo {extension} no permitido.";
-                    result.Result = false;
-                    return result; 
-                }
-
-                try
-                {
-                    var insertaImagen = new UsuarioDto
-                    {
-                        Bandera = request.Bandera,
-                        Nombre = request.Nombre,
-                        ApellidoPaterno = request.ApellidoPaterno,
-                        ApellidoMaterno = request.ApellidoMaterno,
-                        Usuario = request.Usuario,
-                        Password = request.Password,
-                        Iniciales = request.Iniciales,
-                        Correo = request.Correo,
-                        IdTipoUsuario = request.IdTipoUsuario,
-                        IdUsuario = request.IdUsuario,
-                        IdEmpresa = request.IdEmpresa,
-                        Estatus = request.Estatus,
-                        ArchivoImagen = request.ArchivoImagen
-                    };
-
-                    var resultado = await GuardarUsuarios(insertaImagen);
-
-                    result.Result = resultado.Result;
-                    result.ErrorMessage = resultado.ErrorMessage;
-                    result.Id = resultado.Id; 
-
-                }
-                catch (Exception ex)
-                {
-                    result.ErrorMessage = "Error al guardar el archivo: " + ex.Message;
-                    result.Result = false;
-                    return result; 
+                    request.ArchivoImagen = nombreArchivoNuevo;
                 }
             }
 
-            return result; 
+            try
+            {
+                var insertaImagen = new UsuarioDto
+                {
+                    Bandera = request.Bandera,
+                    Nombre = request.Nombre,
+                    ApellidoPaterno = request.ApellidoPaterno,
+                    ApellidoMaterno = request.ApellidoMaterno,
+                    Usuario = request.Usuario,
+                    Password = request.Password,
+                    Iniciales = request.Iniciales,
+                    Correo = request.Correo,
+                    IdTipoUsuario = request.IdTipoUsuario,
+                    IdUsuario = request.IdUsuario,
+                    IdEmpresa = request.IdEmpresa,
+                    Estatus = request.Estatus,
+                    ArchivoImagen = request.ArchivoImagen 
+                };
+
+                var resultado = await GuardarUsuarios(insertaImagen);
+
+                result.Result = resultado.Result;
+                result.ErrorMessage = resultado.ErrorMessage;
+                result.Id = resultado.Id;
+            }
+            catch (Exception ex)
+            {
+                result.ErrorMessage = "Error al guardar el usuario: " + ex.Message;
+                result.Result = false;
+            }
+
+            return result;
         }
+
 
 
         public async Task<BaseOut> GuardarUsuarios(UsuarioDto request)

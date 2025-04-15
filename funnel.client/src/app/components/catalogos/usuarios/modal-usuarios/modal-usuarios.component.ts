@@ -32,6 +32,7 @@ export class ModalUsuariosComponent {
 
     selectedFile: File | null = null;
     selectedFileName: string = '';
+    formModificado: boolean = false;
 
 
     @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -182,11 +183,27 @@ export class ModalUsuariosComponent {
       this.mostrarToastError();
       return;
     }
-    this.usuarioForm.get('iniciales')?.enable();
+    const formValue = { ...this.usuarioForm.getRawValue() }; // incluye los deshabilitados
+    const usuarioIngresado = formValue.usuario?.trim()?.toLowerCase();
+  
+    const usuarioYaExiste = this.usuarios.some(u =>
+      u.usuario.toLowerCase() === usuarioIngresado &&
+      (
+        this.insertar || (!this.insertar && u.idUsuario !== this.usuario.idUsuario)
+      )
+    );
+  
+    if (usuarioYaExiste) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Usuario duplicado',
+        detail: `El nombre de usuario '${usuarioIngresado}' ya está en uso.`,
+      });
+      return;
+    }
 
-    const formValue = { ...this.usuarioForm.value };
+    this.usuarioForm.get('iniciales')?.enable();
     delete formValue.confirmPassword;
-    this.usuarioForm.get('iniciales')?.disable(); 
   
     formValue.estatus = formValue.estatus ? 1 : 0;
     formValue.idEmpresa = this.loginService.obtenerIdEmpresa();
@@ -209,6 +226,7 @@ export class ModalUsuariosComponent {
       next: (result: any) => {
         this.result.emit(result); 
         this.close();
+        this.formModificado = false;
       },
       error: (error) => {
         this.messageService.add({
@@ -251,6 +269,10 @@ export class ModalUsuariosComponent {
       if (this.usuarioForm.get('password')?.value) {
         this.usuarioForm.get('password')?.updateValueAndValidity();
       }
+    });
+
+    this.usuarioForm.valueChanges.subscribe(() => {
+      this.formModificado = true;
     });
   }
   
@@ -323,6 +345,7 @@ export class ModalUsuariosComponent {
     if (input.files && input.files.length > 0) {
       this.selectedFile = input.files[0];
       this.selectedFileName = this.selectedFile.name;
+      this.formModificado = true;
     }
   }
   

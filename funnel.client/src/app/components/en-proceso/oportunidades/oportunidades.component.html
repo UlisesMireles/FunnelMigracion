@@ -143,7 +143,7 @@
           </ng-template>
  
           <ng-template pTemplate="body" let-rowData let-columns="columns">
-            <tr>
+            <tr  [ngClass]="{'fila-activa': rowData.idOportunidad == oportunidadEdicion?.idOportunidad}">
               <td *ngFor="let def of lsColumnasAMostrar"
                   [ngStyle]="{
                     'text-align':

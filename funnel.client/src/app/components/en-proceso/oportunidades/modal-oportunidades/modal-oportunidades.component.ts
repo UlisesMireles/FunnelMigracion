@@ -72,7 +72,7 @@ export class ModalOportunidadesComponent {
         this.oportunidadForm.valueChanges.subscribe((changes) => {
           this.validarCambios(valoresIniciales, changes);
         });
-
+        this.validaGuadar = false;
         this.cdr.detectChanges(); 
 
       } else {
@@ -104,7 +104,7 @@ export class ModalOportunidadesComponent {
         this.oportunidadForm.valueChanges.subscribe((changes) => {
           this.validarCambios(valoresIniciales, changes);
         });
-
+        this.validaGuadar = false;
         this.cdr.detectChanges(); 
 
       }
@@ -181,6 +181,10 @@ export class ModalOportunidadesComponent {
     }
 
     guardarOportunidad(){
+      if (this.oportunidadForm.invalid) {
+        this.mostrarToastError("Es necesario llenar los campos indicados.");
+        return;
+      }
       this.informacionOportunidad = {
         ...this.informacionOportunidad,
         bandera: this.oportunidadForm.get('bandera')?.value,

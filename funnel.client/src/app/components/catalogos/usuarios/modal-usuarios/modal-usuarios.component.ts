@@ -30,6 +30,11 @@ export class ModalUsuariosComponent {
 
     tiposUsuario: any[] = [];
 
+    selectedFile: File | null = null;
+    selectedFileName: string = '';
+    formModificado: boolean = false;
+
+
     @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() closeModal: EventEmitter<void> = new EventEmitter();
     @Output() result: EventEmitter<baseOut> = new EventEmitter();
@@ -43,14 +48,13 @@ export class ModalUsuariosComponent {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['usuario'] && this.usuario) {
       this.inicializarFormulario();
+      this.escucharCambiosEnCampos();
     }
   }
 
   inicializarFormulario() {
-    console.log(this.insertar);
     if (this.insertar) {
       this.usuarioForm = this.fb.group({
-        idUsuario: [0],
         nombre: ['', [
             Validators.required,
             Validators.maxLength(50),
@@ -76,22 +80,21 @@ export class ModalUsuariosComponent {
           ]
         ],
         password: ['', [
-          Validators.required,
           Validators.minLength(8),
           Validators.maxLength(50),
           Validators.pattern('^[a-zA-Z0-9_.-]+$')
         ]],
-        confirmPassword: ['', Validators.required],
-        iniciales: ['', [
-            Validators.required,
-            Validators.maxLength(5),
-            Validators.pattern('^[A-Z]+$')
+        confirmPassword: [''],
+        iniciales: [{ value: '', disabled: true }, [
+          Validators.required,
+          Validators.maxLength(5),
+          Validators.pattern('^[A-Z]+$')
           ]
-        ],
+        ],    
         idTipoUsuario: [null, Validators.required],
         estatus: [true],
         correo: ['', [Validators.required, Validators.email]],
-        usuarioCreador: [this.loginService.obtenerIdEmpresa()],
+        idUsuario: [this.loginService.obtenerIdUsuario()],
         idEmpresa: [this.loginService.obtenerIdEmpresa()],
         bandera: ['INSERT']
       },{ validator: this.passwordMatchValidator });
@@ -127,12 +130,12 @@ export class ModalUsuariosComponent {
         ],
         password: [''], 
         confirmPassword: [''],
-        iniciales: [this.usuario.iniciales, [
-            Validators.required,
-            Validators.maxLength(5),
-            Validators.pattern('^[A-Z]+$')
+        iniciales: [{ value: '', disabled: false }, [
+          Validators.required,
+          Validators.maxLength(5),
+          Validators.pattern('^[A-Z]+$')
           ]
-        ],
+        ],      
         idTipoUsuario: [this.usuario.idTipoUsuario, Validators.required],
         estatus: [this.usuario.estatus === 1],
         correo: [this.usuario.correo, [
@@ -141,10 +144,11 @@ export class ModalUsuariosComponent {
             Validators.maxLength(100)
           ]
         ],
-        usuarioCreador: [this.loginService.obtenerIdEmpresa()],
         idEmpresa: [this.loginService.obtenerIdEmpresa()],
         bandera: ['UPDATE']
       }, { validator: this.passwordMatchValidator });
+      this.actualizarIniciales(); 
+      
     }
   }
 
@@ -179,28 +183,58 @@ export class ModalUsuariosComponent {
       this.mostrarToastError();
       return;
     }
+    const formValue = { ...this.usuarioForm.getRawValue() }; // incluye los deshabilitados
+    const usuarioIngresado = formValue.usuario?.trim()?.toLowerCase();
   
-    // Remover el campo de confirmación antes de enviar
-    const formValue = { ...this.usuarioForm.value };
+    const usuarioYaExiste = this.usuarios.some(u =>
+      u.usuario.toLowerCase() === usuarioIngresado &&
+      (
+        this.insertar || (!this.insertar && u.idUsuario !== this.usuario.idUsuario)
+      )
+    );
+  
+    if (usuarioYaExiste) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Usuario duplicado',
+        detail: `El nombre de usuario '${usuarioIngresado}' ya está en uso.`,
+      });
+      return;
+    }
+
+    this.usuarioForm.get('iniciales')?.enable();
     delete formValue.confirmPassword;
   
     formValue.estatus = formValue.estatus ? 1 : 0;
     formValue.idEmpresa = this.loginService.obtenerIdEmpresa();
     formValue.bandera = this.insertar ? 'INSERT' : 'UPDATE';
-  
-    this.UsuariosService.postGuardarUsuario(formValue).subscribe({
-      next: (result: baseOut) => {
-        console.log(result);
-        this.result.emit(result);
+
+    if (!this.insertar && !formValue.password) {
+      delete formValue.password;
+    }  
+    
+    const formData = new FormData();
+    for (const key in formValue) {
+      formData.append(key, formValue[key]);
+    }
+
+    if (this.selectedFile) {
+      formData.append('imagen', this.selectedFile, this.selectedFile.name);
+    }
+
+    this.UsuariosService.postGuardarUsuario(formData).subscribe({
+      next: (result: any) => {
+        this.result.emit(result); 
         this.close();
+        this.formModificado = false;
       },
-      error: (error: baseOut) => {
+      error: (error) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Se ha producido un error.',
           detail: error.errorMessage,
         });
-      },
+      }
     });
   }
 
@@ -235,6 +269,10 @@ export class ModalUsuariosComponent {
       if (this.usuarioForm.get('password')?.value) {
         this.usuarioForm.get('password')?.updateValueAndValidity();
       }
+    });
+
+    this.usuarioForm.valueChanges.subscribe(() => {
+      this.formModificado = true;
     });
   }
   
@@ -301,4 +339,14 @@ export class ModalUsuariosComponent {
     }
     return null;
   }
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
+      this.selectedFileName = this.selectedFile.name;
+      this.formModificado = true;
+    }
+  }
+  
 }

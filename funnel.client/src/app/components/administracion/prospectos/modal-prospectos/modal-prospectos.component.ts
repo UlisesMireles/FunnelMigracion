@@ -1,4 +1,4 @@
-import { Component, EventEmitter,Input, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter,Input, Output, SimpleChanges } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { RequestProspecto } from '../../../../interfaces/prospecto';
 import { BaseOut } from '../../../../interfaces/utils/baseOut';
@@ -14,7 +14,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrl: './modal-prospectos.component.css'
 })
 export class ModalProspectosComponent {
-  constructor (private prospectoService: ProspectoService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder) { }
+  constructor (private prospectoService: ProspectoService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder, private cdr: ChangeDetectorRef) { }
   @Input() prospecto!: Prospectos;
   @Input() prospectos: Prospectos[] = [];
   @Input() title: string = 'Modal';
@@ -31,22 +31,59 @@ export class ModalProspectosComponent {
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter();
   @Output() result: EventEmitter<baseOut> = new EventEmitter();
 
-  ngOnInit() {
-    this.inicializarFormulario
-  }
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['prospecto'] && this.prospecto) {
-      this.inicializarFormulario();
-    }
-  }
+  validaGuadar: boolean = false;
+  informacionProspecto: Prospectos = {idProspecto: 0,
+    nombre: "",
+    ubicacionFisica: "",
+    estatus: 0,
+    desEstatus: "",
+    nombreSector: "",
+    idSector: 0,
+    totalOportunidades: 0,
+    proceso: 0,
+    ganadas: 0,
+    perdidas: 0,
+    canceladas: 0,
+    eliminadas: 0,
+    idEmpresa: 0,
+    bandera: ""
+  };
+
+  // ngOnInit() {
+  //   this.inicializarFormulario
+  // }
+  // ngOnChanges(changes: SimpleChanges) {
+  //   if (changes['prospecto'] && this.prospecto) {
+  //     this.inicializarFormulario();
+  //   }
+  // }
   inicializarFormulario() {
+    let idEmpresa = this.loginService.obtenerIdEmpresa();
+    let valoresIniciales: Record<string, any>;
     if(this.insertar){
+      this.informacionProspecto = {idProspecto: 0,
+        nombre: "",
+        ubicacionFisica: "",
+        estatus: 0,
+        desEstatus: "",
+        nombreSector: "",
+        idSector: 0,
+        totalOportunidades: 0,
+        proceso: 0,
+        ganadas: 0,
+        perdidas: 0,
+        canceladas: 0,
+        eliminadas: 0,
+        idEmpresa: 0,
+        bandera: ""
+      };
+
       this.prospectoForm = this.fb.group({
         idProspecto: [0],
         nombre: ['', [
             Validators.required,
             Validators.maxLength(50),
-            Validators.pattern('^[a-zA-ZÀ-ÿ\\s]+$')
+            // Validators.pattern('^[a-zA-ZÀ-ÿ0-9\\s]+$')
           ]
         ],
         ubicacionFisica: ['', [
@@ -57,17 +94,25 @@ export class ModalProspectosComponent {
         ],
         idSector: [null, Validators.required],
         estatus: [true],
-        idEmpresa: [this.loginService.obtenerIdEmpresa()],
+        idEmpresa: [idEmpresa],
         bandera: ['INSERT']
       });
-      return;
+
+      valoresIniciales = this.prospectoForm.getRawValue();
+
+        this.prospectoForm.valueChanges.subscribe((changes) => {
+          this.validarCambios(valoresIniciales, changes);
+        });
+        this.validaGuadar = false;
+        this.cdr.detectChanges(); 
     }else{
+      this.informacionProspecto = this.prospecto;
       this.prospectoForm = this.fb.group({
         idProspecto: [this.prospecto.idProspecto],
         nombre: [this.prospecto.nombre, [
             Validators.required,
             Validators.maxLength(50),
-            Validators.pattern('^[a-zA-ZÀ-ÿ\\s]+$')
+            // Validators.pattern('^[a-zA-ZÀ-ÿ\\s]+$')
           ]
         ],
         ubicacionFisica: [this.prospecto.ubicacionFisica, [
@@ -77,22 +122,50 @@ export class ModalProspectosComponent {
           ]
         ],
         idSector: [this.prospecto.idSector, Validators.required],
-        estatus: [this.prospecto?.estatus === 1],
-        idEmpresa: [this.loginService.obtenerIdEmpresa()],
+        estatus: [this.prospecto?.estatus === 1 ? true : false],
+        idEmpresa: [idEmpresa],
         bandera: ['UPDATE']
       });
+
+      valoresIniciales = this.prospectoForm.getRawValue();
+
+        this.prospectoForm.valueChanges.subscribe((changes) => {
+          this.validarCambios(valoresIniciales, changes);
+        });
+        this.validaGuadar = false;
+        this.cdr.detectChanges(); 
     }
     
   }
+
+  validarCambios(valoresIniciales: any, cambios: any) {
+    const valoresActuales = cambios;
+
+    if (this.prospectoForm.dirty) {
+      this.validaGuadar = true;
+    }
+    const valoresRegresaron = this.compararValores(valoresIniciales, valoresActuales);
+    if (valoresRegresaron) {
+      this.validaGuadar = false;
+    }
+  }
+
+  compararValores(valoresIniciales: any, valoresActuales: any) {
+    let valoresInicialesJson = JSON.stringify(valoresIniciales);
+    let valoresActualesJson = JSON.stringify(valoresActuales);
+    return valoresInicialesJson === valoresActualesJson;
+  }
+
   onDialogShow(){
     this.cargarSectores();
-    this.inicializarFormulario();
   }
 
   cargarSectores() {
     this.prospectoService.getSectores(this.loginService.obtenerIdEmpresa()).subscribe({
       next: (result: any) => {
         this.sectores = result;
+        this.inicializarFormulario();
+        this.cdr.detectChanges();
       },
       error: (error) => {
         this.messageService.add({
@@ -113,12 +186,28 @@ export class ModalProspectosComponent {
     guardarProspecto() {
     if (this.prospectoForm.invalid) {
       this.mostrarToastError();
+      console.log(this.prospectoForm.errors);
+      console.log(this.prospectoForm.controls['nombre'].errors);
+      console.log(this.prospectoForm.controls['ubicacionFisica'].errors);
       return;
     }
-   this.prospectoForm.controls['estatus'].setValue(this.prospectoForm.value.estatus ? 1 : 0);
-   this.prospectoForm.controls['bandera'].setValue(this.prospectoForm.value.bandera);
-   this.prospectoForm.controls['idEmpresa'].setValue(this.loginService.obtenerIdEmpresa());
-    this.prospectoService.postInsertProspecto(this.prospectoForm.value).subscribe({
+    this.prospectoForm.controls['estatus'].setValue(this.prospectoForm.value.estatus ? 1 : 0);
+     this.prospectoForm.controls['bandera'].setValue(this.prospectoForm.value.bandera);
+     this.prospectoForm.controls['idEmpresa'].setValue(this.loginService.obtenerIdEmpresa());
+
+    this.informacionProspecto = {
+      ...this.informacionProspecto,
+      bandera: this.prospectoForm.get('bandera')?.value,
+      idProspecto: this.prospectoForm.get('idProspecto')?.value,
+      nombre: this.prospectoForm.get('nombre')?.value,
+      ubicacionFisica: this.prospectoForm.get('ubicacionFisica')?.value,
+      idSector: this.prospectoForm.get('idSector')?.value,
+      estatus: this.prospectoForm.get('estatus')?.value,
+      idEmpresa: this.prospectoForm.get('idEmpresa')?.value
+    }
+   
+
+    this.prospectoService.postInsertProspecto(this.informacionProspecto).subscribe({
       next: (result: baseOut) => {
         this.result.emit(result);
         this.close();

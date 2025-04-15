@@ -150,6 +150,8 @@
                       def.key === 'abreviatura' ? 'center' : 
                       def.key === 'entrega' ? 'center' : 
                       def.key === 'stage' ? 'center' :
+                      def.key === 'iniciales' ? 'center' :
+                      def.key === 'nombreContacto' ? 'center' :
                       (def.valor.includes('%')) ? 'center' :
                       def.tipoFormato === 'currency' ? 'right' :
                       (def.tipoFormato === 'number' || def.tipoFormato === 'date') ? 'center' : 'left'
@@ -165,7 +167,10 @@
                     <span *ngIf="def.key === 'abreviatura'" pTooltip="{{rowData['descripcion']}}" tooltipPosition="top">
                       {{ rowData[def.key] }}
                     </span>
-                    <span *ngIf="def.key === 'entrega'" pTooltip="{{rowData['descripcionEntrega'] || rowData['descripcion']}}" tooltipPosition="top">
+                    <span *ngIf="def.key === 'entrega'" pTooltip="{{rowData['entregaDescripcion'] || rowData['entregaDescripcion']}}" tooltipPosition="top">
+                      {{ rowData[def.key] }}
+                    </span>
+                    <span *ngIf="def.key === 'nombreOportunidad'" pTooltip="{{rowData['nombreOportunidad']}}" tooltipPosition="top">
                       {{ rowData[def.key] }}
                     </span>
                     <span *ngIf="def.key !== 'nombreContacto' && def.key !== 'iniciales' && def.key !== 'abreviatura' && def.key !== 'entrega'" >

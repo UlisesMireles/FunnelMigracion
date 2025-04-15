@@ -65,7 +65,7 @@ export class OportunidadesComponent {
     { key: 'probabilidad', isCheck: true, valor: '% Actual', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'textNFilter' },
     { key: 'montoNormalizado', isCheck: true, valor: 'Vta Esperada', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
     { key: 'fechaRegistro', isCheck: false, valor: 'Fecha Alta', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
-    { key: 'diasFunnel', isCheck: false, valor: 'Días Funnel', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
+    { key: 'diasFunnel', isCheck: true, valor: 'Días Funnel', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
     { key: 'fechaEstimadaCierreOriginal', isCheck: true, valor: 'Cierre Est', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
     { key: 'fechaModificacion', isCheck: false, valor: 'Días S/Act', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' }
   ];
@@ -86,8 +86,12 @@ export class OportunidadesComponent {
   getOportunidades() {
     this.oportunidadService.getOportunidades(this.loginService.obtenerIdEmpresa(), this.loginService.obtenerIdUsuario(), this.idEstatus).subscribe({
       next: (result: Oportunidad[]) => {
-        this.oportunidades = [...result];
-        this.oportunidadesOriginal = result;
+        const oportunidadesOrdenadas = sortBy(result, (o) =>
+          o.fechaEstimadaCierreOriginal ? new Date(o.fechaEstimadaCierreOriginal) : new Date('2100-01-01')
+        );
+
+        this.oportunidades = [...oportunidadesOrdenadas];
+        this.oportunidadesOriginal = oportunidadesOrdenadas;
         this.cdr.detectChanges();
         this.loading = false;
       },

@@ -34,4 +34,12 @@ export class ProspectoService {
       params: { idEmpresa: idEmpresa.toString() }
     });
   }
+
+  descargarReporteProspectos(data: any): Observable<Blob> {
+    return this.http.post(`${this.baseUrl}api/Prospectos/DescargarReporteProspectos`, data, { responseType: 'blob' });
+  }
+
+  descargarReporteTop20(data: any): Observable<Blob> {
+    return this.http.post(`${this.baseUrl}api/Prospectos/DescargarReporteTop20`, data, { responseType: 'blob' });
+  }
 }

@@ -27,7 +27,7 @@ export class ProspectosComponent {
   prospectos: Prospectos[] = [];
   prospectosOriginal: Prospectos[] = [];
   prospectoSeleccionado!: Prospectos;
-
+  prospectoEdicion: Prospectos | null = null;
 
   loading: boolean = true;
   insertar: boolean = false;
@@ -45,12 +45,12 @@ EstatusDropdown = [
     {key:'nombre', isCheck: true, valor: 'Nombre', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text'},
     {key: 'nombreSector', isCheck: true, valor: 'Sector de la industria', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
     {key: 'ubicacionFisica', isCheck: true, valor: 'Ubicación Física', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
-    {key: 'totalOportunidades', isCheck: true, valor: 'Todas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
-    {key: 'proceso', isCheck: true, valor: 'En Proceso', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
-    {key: 'ganadas', isCheck: true, valor: 'Ganadas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
-    {key: 'perdidas', isCheck: true, valor: 'Perdidas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
-    {key: 'canceladas', isCheck: true, valor: 'Canceladas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
-    {key: 'eliminadas', isCheck: true, valor: 'Eliminadas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
+    {key: 'totalOportunidades', isCheck: true, valor: 'Todas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
+    {key: 'proceso', isCheck: true, valor: 'En Proceso', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
+    {key: 'ganadas', isCheck: true, valor: 'Ganadas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
+    {key: 'perdidas', isCheck: true, valor: 'Perdidas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
+    {key: 'canceladas', isCheck: true, valor: 'Canceladas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
+    {key: 'eliminadas', isCheck: true, valor: 'Eliminadas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
     {key: 'desEstatus', isCheck: true, valor: 'Estatus', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'estatus'}
   ];
 
@@ -117,6 +117,7 @@ inserta() {
 }
 actualiza(licencia: Prospectos) {
   this.prospectoSeleccionado = licencia;
+  this.prospectoEdicion = { ...licencia };
   this.insertar = false;
   this.modalVisible = true;
 }
@@ -124,6 +125,7 @@ actualiza(licencia: Prospectos) {
 // metodos moda
 onModalClose() {
   this.modalVisible = false;
+  this.prospectoEdicion = null;
 }
 manejarResultado(result: baseOut) {
   if (result.result) {
@@ -201,6 +203,47 @@ clear(table: Table) {
         xlsx.utils.book_append_sheet(libro, hojadeCalculo, "Prospectos");
         xlsx.writeFile(libro, "Prospectos.xlsx");
       });
+    }
+
+    exportPdf(table: Table) {
+      let lsColumnasAMostrar = this.lsColumnasAMostrar.filter(col => col.isCheck);
+      let columnasAMostrarKeys = lsColumnasAMostrar.map(col => col.key);
+  
+      let dataExport = (table.filteredValue || table.value || []).map(row => {
+        return columnasAMostrarKeys.reduce((acc, key) => {
+          acc[key] = row[key];
+          return acc;
+        }, {} as { [key: string]: any });
+      });
+  
+      let data = {
+        columnas: lsColumnasAMostrar,
+        datos: dataExport
+      }
+  
+      if (dataExport.length == 0)
+        return
+  
+  
+      this.prospectoService.descargarReporteProspectos(data).subscribe({
+        next: (result: Blob) => {
+          const url = window.URL.createObjectURL(result);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = 'Prospectos.pdf';
+          link.click();
+          URL.revokeObjectURL(url);
+  
+        },
+        error: (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Se ha producido un error al generar reporte',
+            detail: error.errorMessage,
+          });
+        },
+      });
+  
     }
   
     getTotalCostPrimeNg(table: Table, def: any) {

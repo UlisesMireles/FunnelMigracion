@@ -27,6 +27,7 @@ export class ContactosComponent {
   contactos: Contacto[] = [];
   contactosOriginal: Contacto[] = [];
   contactoSeleccionado!: Contacto;
+  contactoEdicion: Contacto | null = null;
 
   selectedEstatus: string = 'Activo';
   loading: boolean = true;
@@ -43,10 +44,10 @@ export class ContactosComponent {
 
   lsColumnasAMostrar: any[] = [];
   lsTodasColumnas: any[] = [
-    { key: 'nombreCompleto', isCheck: true, valor: 'Nombre', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
+    { key: 'nombreCompleto', isCheck: true, valor: 'Nombre del Contacto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
+    { key: 'correoElectronico', isCheck: true, valor: 'Correo', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'prospecto', isCheck: true, valor: 'Empresa', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'telefono', isCheck: true, valor: 'Teléfono', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'correoElectronico', isCheck: true, valor: 'Correo Electrónico', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'prospecto', isCheck: true, valor: 'Prospecto', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'desEstatus', isCheck: true, valor: 'Estatus', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'estatus' },
   ];
 
@@ -99,7 +100,8 @@ export class ContactosComponent {
       idProspecto: 0,
       estatus: 0,
       desEstatus: '',
-      nombreCompleto: ''
+      nombreCompleto: '',
+      bandera: ''
     };
     this.insertar = true;
     this.modalVisible = true;
@@ -107,12 +109,14 @@ export class ContactosComponent {
 
   actualiza(licencia: Contacto) {
     this.contactoSeleccionado = licencia;
+    this.contactoEdicion = { ...licencia };
     this.insertar = false;
     this.modalVisible = true;
   }
 
   onModalClose() {
     this.modalVisible = false;
+    this.contactoEdicion = null;
   }
 
   manejarResultado(result: baseOut) {
@@ -204,6 +208,47 @@ export class ContactosComponent {
       xlsx.utils.book_append_sheet(libro, hojadeCalculo, "Contactos");
       xlsx.writeFile(libro, "Contactos.xlsx");
     });
+  }
+
+  exportPdf(table: Table) {
+    let lsColumnasAMostrar = this.lsColumnasAMostrar.filter(col => col.isCheck);
+    let columnasAMostrarKeys = lsColumnasAMostrar.map(col => col.key);
+
+    let dataExport = (table.filteredValue || table.value || []).map(row => {
+      return columnasAMostrarKeys.reduce((acc, key) => {
+        acc[key] = row[key];
+        return acc;
+      }, {} as { [key: string]: any });
+    });
+
+    let data = {
+      columnas: lsColumnasAMostrar,
+      datos: dataExport
+    }
+
+    if (dataExport.length == 0)
+      return
+
+
+    this.contactosService.descargarReporteContactos(data).subscribe({
+      next: (result: Blob) => {
+        const url = window.URL.createObjectURL(result);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'Contactos.pdf';
+        link.click();
+        URL.revokeObjectURL(url);
+
+      },
+      error: (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Se ha producido un error al generar reporte',
+          detail: error.errorMessage,
+        });
+      },
+    });
+
   }
 
   getTotalCostPrimeNg(table: Table, def: any) {

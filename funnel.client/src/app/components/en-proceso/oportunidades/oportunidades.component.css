@@ -381,3 +381,8 @@ th.sort-active p-sortIcon {
 ::ng-deep .p-fluid {
   width: 100% !important;
 }
+
+.fila-activa {
+  background: rgba(147, 136, 121, 0.75) !important;
+  color: #272722 !important;
+}

@@ -27,6 +27,7 @@ export class ContactosComponent {
   contactos: Contacto[] = [];
   contactosOriginal: Contacto[] = [];
   contactoSeleccionado!: Contacto;
+  contactoEdicion: Contacto | null = null;
 
   selectedEstatus: string = 'Activo';
   loading: boolean = true;
@@ -43,10 +44,10 @@ export class ContactosComponent {
 
   lsColumnasAMostrar: any[] = [];
   lsTodasColumnas: any[] = [
-    { key: 'nombreCompleto', isCheck: true, valor: 'Nombre', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
+    { key: 'nombreCompleto', isCheck: true, valor: 'Nombre del Contacto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
+    { key: 'correoElectronico', isCheck: true, valor: 'Correo', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'prospecto', isCheck: true, valor: 'Empresa', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'telefono', isCheck: true, valor: 'Teléfono', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'correoElectronico', isCheck: true, valor: 'Correo Electrónico', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'prospecto', isCheck: true, valor: 'Prospecto', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'desEstatus', isCheck: true, valor: 'Estatus', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'estatus' },
   ];
 
@@ -99,7 +100,8 @@ export class ContactosComponent {
       idProspecto: 0,
       estatus: 0,
       desEstatus: '',
-      nombreCompleto: ''
+      nombreCompleto: '',
+      bandera: ''
     };
     this.insertar = true;
     this.modalVisible = true;
@@ -107,12 +109,14 @@ export class ContactosComponent {
 
   actualiza(licencia: Contacto) {
     this.contactoSeleccionado = licencia;
+    this.contactoEdicion = { ...licencia };
     this.insertar = false;
     this.modalVisible = true;
   }
 
   onModalClose() {
     this.modalVisible = false;
+    this.contactoEdicion = null;
   }
 
   manejarResultado(result: baseOut) {

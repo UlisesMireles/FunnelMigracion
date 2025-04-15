@@ -10,6 +10,7 @@ export interface Contacto {
     prospecto: string;
     idProspecto: number;
     idEmpresa: number;
+    bandera: string;
 }
 
 export interface RequestPContacto {

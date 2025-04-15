@@ -66,13 +66,14 @@
         </div>
         <div class="col-sm-8 inptSpace">
           <p-checkbox formControlName="estatus" [binary]="true"></p-checkbox>
+          <span style="padding-left: 6px !important;">Activo</span>
         </div>
       </div>
 </form>
 </ng-template>
 <ng-template pTemplate="footer">
-  <button *ngIf="!insertar" pButton label="Actualizar" (click)="guardarProspecto()" severity="secondary"></button>
-  <button *ngIf="insertar" pButton label="Agregar" (click)="guardarProspecto()" severity="secondary"></button>
+  <button *ngIf="!insertar" pButton label="Actualizar" (click)="guardarProspecto()" severity="secondary" [disabled]="!validaGuadar"></button>
+  <button *ngIf="insertar" pButton label="Agregar" (click)="guardarProspecto()" severity="secondary" [disabled]="!validaGuadar"></button>
   <button pButton label="Cancelar" (click)="close()" severity="secondary"></button>
 </ng-template>
 </p-dialog>

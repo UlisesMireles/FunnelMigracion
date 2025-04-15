@@ -28,6 +28,7 @@ export class OportunidadesComponent {
   oportunidades: Oportunidad[] = [];
   oportunidadesOriginal: Oportunidad[] = [];
   oportunidadSeleccionada!: Oportunidad;
+  oportunidadEdicion: Oportunidad | null = null;
 
   idEstatus: number = 1;
 
@@ -117,6 +118,7 @@ export class OportunidadesComponent {
 
   actualiza(licencia: Oportunidad) {
     this.oportunidadSeleccionada = licencia;
+    this.oportunidadEdicion = { ...licencia };
     this.insertar = false;
     this.modalVisible = true;
   }
@@ -129,6 +131,7 @@ export class OportunidadesComponent {
 
   onModalClose() {
     this.modalVisible = false;
+    this.oportunidadEdicion = null;
   }
 
   manejarResultado(result: baseOut) {

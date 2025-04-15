@@ -39,7 +39,7 @@ namespace Funnel.Server.Controllers
         [HttpPost("[action]/")]
         public async Task<ActionResult<BaseOut>> GuardarProspecto(ProspectoDTO request)
         {
-            request.IdEmpresa = 1; //<--------de donde sale este parametro
+            //request.IdEmpresa = 1; //<--------de donde sale este parametro
             var respuesta = await _prospectosService.GuardarProspecto(request);
             return Ok(respuesta);
         }

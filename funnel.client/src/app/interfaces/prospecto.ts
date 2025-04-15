@@ -1,5 +1,5 @@
 export interface Prospectos {
-    //bandera: string;
+    bandera?: string;
     idProspecto: number;
     nombre: string;
     ubicacionFisica: string;

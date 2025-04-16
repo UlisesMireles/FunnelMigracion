@@ -91,7 +91,7 @@ export class ModalOportunidadesComponent {
           fechaEstimadaCierreOriginal: [this.oportunidad.fechaEstimadaCierreOriginal ? new Date(this.oportunidad.fechaEstimadaCierreOriginal) : '', Validators.required],
           idEjecutivo: [this.oportunidad.idEjecutivo, Validators.required],
           idContactoProspecto: [this.oportunidad.idContactoProspecto, Validators.required],
-          comentario: [''],
+          comentario: ['', Validators.required],
           idEmpresa: [this.loginService.obtenerIdEmpresa()],
           probabilidad: [this.oportunidad.probabilidad],
           idEstatus: [this.oportunidad.idEstatusOportunidad]
@@ -181,6 +181,8 @@ export class ModalOportunidadesComponent {
     }
 
     guardarOportunidad(){
+      this.markAllAsTouched(this.oportunidadForm);
+
       if (this.oportunidadForm.invalid) {
         this.mostrarToastError("Es necesario llenar los campos indicados.");
         return;
@@ -242,6 +244,17 @@ export class ModalOportunidadesComponent {
             this.oportunidadForm.get('probabilidad')?.setValue(probabilidad);
         }
     }
+
+    markAllAsTouched(formGroup: FormGroup) {
+      Object.values(formGroup.controls).forEach(control => {
+        control.markAsTouched();
+    
+        if ((control as any).controls) {
+          this.markAllAsTouched(control as FormGroup);
+        }
+      });
+    }
+    
 }
       
     

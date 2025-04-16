@@ -173,7 +173,7 @@
                     <span *ngIf="def.key === 'nombreOportunidad'" pTooltip="{{rowData['nombreOportunidad']}}" tooltipPosition="top">
                       {{ rowData[def.key] }}
                     </span>
-                    <span *ngIf="def.key !== 'nombreContacto' && def.key !== 'iniciales' && def.key !== 'abreviatura' && def.key !== 'entrega'" >
+                    <span *ngIf="def.key !== 'nombreContacto' && def.key !== 'iniciales' && def.key !== 'abreviatura' && def.key !== 'entrega' && def.key !== 'nombreOportunidad'" >
                       {{ rowData[def.key] }}
                     </span>
                   </span>

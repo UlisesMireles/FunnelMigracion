@@ -30,6 +30,8 @@ export class SeguimientoOportunidadesComponent {
   isDescargando = false;
   anchoTabla = 100;
   validacionActiva = false;
+  wordCount: number = 0;
+
 
   historialOportunidad: Oportunidad[] = [];
 
@@ -58,6 +60,14 @@ export class SeguimientoOportunidadesComponent {
     if (this.oportunidad.idOportunidad) {
       this.getHistorial(this.oportunidad.idOportunidad);
     }
+    this.oportunidadForm.get('comentario')?.valueChanges.subscribe(value => {
+      this.wordCount = this.contarPalabras(value);
+    });
+  }
+
+  contarPalabras(texto: string): number {
+    if (!texto) return 0;
+    return texto.trim().split(/\s+/).filter(p => p.length > 0).length;
   }
 
   validarComentario(control: AbstractControl) {
@@ -83,6 +93,7 @@ export class SeguimientoOportunidadesComponent {
     this.visible = false;
     this.visibleChange.emit(this.visible);
     this.closeModal.emit();
+    this.wordCount = 0;
   }
 
   guardarHistorial() {
@@ -97,6 +108,7 @@ export class SeguimientoOportunidadesComponent {
       next: (result: baseOut) => {
         this.result.emit(result);
         this.getHistorial(this.oportunidadForm.value.idOportunidad);
+        this.close();
       },
       error: (error: baseOut) => {
         this.messageService.add({

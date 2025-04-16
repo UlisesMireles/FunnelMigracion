@@ -187,6 +187,47 @@ clear(table: Table) {
         xlsx.writeFile(libro, "Tipos Entrega.xlsx");
       });
     }
+
+    exportPdf(table: Table) {
+      let lsColumnasAMostrar = this.lsColumnasAMostrar.filter(col => col.isCheck);
+      let columnasAMostrarKeys = lsColumnasAMostrar.map(col => col.key);
+  
+      let dataExport = (table.filteredValue || table.value || []).map(row => {
+        return columnasAMostrarKeys.reduce((acc, key) => {
+          acc[key] = row[key];
+          return acc;
+        }, {} as { [key: string]: any });
+      });
+  
+      let data = {
+        columnas: lsColumnasAMostrar,
+        datos: dataExport
+      }
+  
+      if (dataExport.length == 0)
+        return
+  
+  
+      this.tipoEntregaService.descargarReporteTiposEntregas(data).subscribe({
+        next: (result: Blob) => {
+          const url = window.URL.createObjectURL(result);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = 'Tipos_de_Entregas.pdf';
+          link.click();
+          URL.revokeObjectURL(url);
+  
+        },
+        error: (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Se ha producido un error al generar reporte',
+            detail: error.errorMessage,
+          });
+        },
+      });
+  
+    }
   
     getTotalCostPrimeNg(table: Table, def: any) {
       if (!def.isTotal) {

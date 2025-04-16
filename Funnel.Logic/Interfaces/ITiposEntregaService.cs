@@ -1,4 +1,5 @@
-﻿using Funnel.Data;
+﻿using DinkToPdf;
+using Funnel.Data;
 using Funnel.Models.Base;
 using Funnel.Models.Dto;
 using System;
@@ -13,5 +14,6 @@ namespace Funnel.Logic.Interfaces
     {
         Task<List<TipoEntregaDto>> ConsultarTiposEntrega(int IdEmpresa);
         Task<BaseOut> GuardarTipoEntrega(TipoEntregaDto tipoEntrega);
+        Task<HtmlToPdfDocument> GenerarReporteTiposEntregas(TiposEntregasReporteDTO TiposEntregas, string RutaBase, string titulo);
     }
 }

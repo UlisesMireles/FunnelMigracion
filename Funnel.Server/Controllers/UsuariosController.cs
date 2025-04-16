@@ -1,9 +1,11 @@
-﻿using Funnel.Data;
+﻿using DinkToPdf.Contracts;
+using Funnel.Data;
 using Funnel.Logic;
 using Funnel.Logic.Interfaces;
 using Funnel.Models.Base;
 using Funnel.Models.Dto;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
@@ -16,10 +18,12 @@ namespace Funnel.Server.Controllers
     public class UsuariosController : Controller
     {
         private readonly IUsuariosService _usuariosService;
+        private readonly IConverter _converter;
 
-        public UsuariosController(IUsuariosService usuariosService)
+        public UsuariosController(IUsuariosService usuariosService, IConverter converter)
         {
             _usuariosService = usuariosService;
+            _converter = converter;
         }
 
         [HttpGet("[action]/{IdEmpresa}")]
@@ -56,6 +60,14 @@ namespace Funnel.Server.Controllers
         {
             var existenIniciales = await _usuariosService.ValidarInicialesExistente(iniciales, idEmpresa);
             return Ok(existenIniciales);
+        }
+
+        [HttpPost("[action]/")]
+        public async Task<ActionResult> DescargarReporteUsuarios([FromBody] UsuariosReporteDTO usuarios)
+        {
+            var doc = await _usuariosService.GenerarReporteUsuarios(usuarios, Directory.GetCurrentDirectory(), "Reporte de Usuarios");
+            var pdf = _converter.Convert(doc);
+            return File(pdf, "application/pdf", "Usuarios.pdf");
         }
 
 

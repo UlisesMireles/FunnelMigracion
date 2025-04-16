@@ -179,6 +179,11 @@
           </div>
           <div class="col-sm-8 inptSpace">
             <textarea pInputText class="inptSize estiloComentario" formControlName="comentario" placeholder="Agrega un comentario" rows="4"></textarea>
+            <span *ngIf="oportunidadForm.get('comentario')?.invalid && oportunidadForm.get('comentario')?.touched"
+              class="text-danger"><br>
+              <ng-container *ngIf="oportunidadForm.get('comentario')?.errors?.['required']">Debe ingresar un
+                comentario.</ng-container>
+            </span>
           </div>
         </div>
   

@@ -105,27 +105,31 @@
           <ng-template pTemplate="body" let-rowData let-columns="columns">
             <tr>
               <td *ngFor="let def of lsColumnasAMostrar"
-                  [ngStyle]="{
-                    'text-align':
-                      def.key === 'abreviatura' ? 'center' :
-                      (def.valor.includes('%')) ? 'center' :
-                      def.tipoFormato === 'currency' ? 'right' :
-                      def.key === 'stage' ? 'center' :
-                      (def.tipoFormato === 'number' || def.tipoFormato === 'date' || def.tipoFormato === 'numberFilter') ? 'center' : 'left'
-                  }">
+                [ngStyle]="{
+                  'text-align': 
+                    def.key === 'abreviatura' ? 'center' :
+                    def.valor.includes('%') ? 'center' :
+                    def.key === 'iniciales' ? 'center' :
+                    def.tipoFormato === 'currency' ? 'right' :
+                    def.key === 'stage' ? 'center' :
+                    (def.tipoFormato === 'number' || def.tipoFormato === 'date' || def.tipoFormato === 'numberFilter') ? 'center' : 'left',
+                    'width': def.key === 'stage' || def.key === 'abreviatura' || def.key === 'entrega' || def.key === 'iniciales' || def.key === 'nombreContacto' ? '80px' : ''
+                }">
                 <ng-container [ngSwitch]="def.tipoFormato">
                   <span *ngSwitchCase="'text'">
                     <span *ngIf="def.key === 'nombreContacto'" pTooltip="{{rowData[def.key]}}" tooltipPosition="top">
                       {{ rowData[def.key]?.split(' ')[0] }}
                     </span>
-                    
+                    <span *ngIf="def.key === 'nombreOportunidad'" pTooltip="{{rowData['nombreOportunidad']}}" tooltipPosition="top">
+                      {{ rowData[def.key] }}
+                    </span>
                     <span *ngIf="def.key === 'iniciales'" pTooltip="{{rowData['nombreEjecutivo']}}" tooltipPosition="top">
                       {{ rowData[def.key] }}
                     </span>
                     <span *ngIf="def.key === 'abreviatura'" pTooltip="{{rowData['descripcion']}}" tooltipPosition="top">
                       {{ rowData[def.key] }}
                     </span>
-                    <span *ngIf="def.key !== 'nombreContacto' && def.key !== 'iniciales' && def.key !== 'abreviatura'" >
+                    <span *ngIf="def.key !== 'nombreContacto' && def.key !== 'iniciales' && def.key !== 'abreviatura' && def.key !== 'nombreOportunidad'" >
                       {{ rowData[def.key] }}
                     </span>
                   </span>

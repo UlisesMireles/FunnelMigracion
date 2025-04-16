@@ -37,7 +37,7 @@ export class EstadisticasPorEtapaComponent {@ViewChild('dt') dt!: Table;
   ];
 
   lsTodasColumnas: any[] = [
-    { key: 'idOportunidad', isCheck: true, valor: 'Id', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
+    { key: 'idOportunidad', isCheck: true, valor: 'Id', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'number' },
     { key: 'nombre', isCheck: true, valor: 'Prospecto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreSector', isCheck: true, valor: 'Sector', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreOportunidad', isCheck: true, valor: 'Oportunidad', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
@@ -277,6 +277,7 @@ export class EstadisticasPorEtapaComponent {@ViewChild('dt') dt!: Table;
           nombreOportunidad: '100%',
           abreviatura: '100%',
           stage: '100%',
+          iniciales: '100%',
           nombreEjecutivo: '100%',
           nombreContacto: '100%',
           fechaRegistro: '100%',

@@ -8,22 +8,22 @@
        <!-- Pestañas  -->
     <ul class="nav nav-tabs custom-tabs">
       <li class="nav-item">
-        <a class="nav-link active" data-bs-toggle="tab" href="#lista" (click)="camTitulo(0)">
+        <a class="nav-link active" data-bs-toggle="tab" href="#lista" (click)="camTitulo(0)" pTooltip="Oportunidades" tooltipPosition="top" >
           <i class="bi bi-list"></i>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="tab" href="#porMes" (click)="camTitulo(1)">
+        <a class="nav-link" data-bs-toggle="tab" href="#porMes" (click)="camTitulo(1)" pTooltip="Oportunidades por Mes" tooltipPosition="top">
           <i class="bi bi-calendar"></i>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="tab" href="#porEtapa" (click)="camTitulo(2)">
+        <a class="nav-link" data-bs-toggle="tab" href="#porEtapa" (click)="camTitulo(2)" pTooltip="Oportunidades por Etapa" tooltipPosition="top">
           <i class="bi bi-calendar-check"></i>  
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="tab" href="#estadisticas" (click)="camTitulo(3)">
+        <a class="nav-link" data-bs-toggle="tab" href="#estadisticas" (click)="camTitulo(3)" pTooltip="Estadisticas" tooltipPosition="top">
           <i class="bi bi-bar-chart"></i>
         </a>
       </li>
@@ -154,7 +154,8 @@
                       def.key === 'nombreContacto' ? 'center' :
                       (def.valor.includes('%')) ? 'center' :
                       def.tipoFormato === 'currency' ? 'right' :
-                      (def.tipoFormato === 'number' || def.tipoFormato === 'date') ? 'center' : 'left'
+                      (def.tipoFormato === 'number' || def.tipoFormato === 'date') ? 'center' : 'left',
+                      'width': def.key === 'stage' || def.key === 'abreviatura' || def.key === 'entrega' || def.key === 'iniciales' || def.key === 'nombreContacto' ? '80px' : ''
                   }">
                 <ng-container [ngSwitch]="def.tipoFormato">
                   <span *ngSwitchCase="'text'">
@@ -173,7 +174,7 @@
                     <span *ngIf="def.key === 'nombreOportunidad'" pTooltip="{{rowData['nombreOportunidad']}}" tooltipPosition="top">
                       {{ rowData[def.key] }}
                     </span>
-                    <span *ngIf="def.key !== 'nombreContacto' && def.key !== 'iniciales' && def.key !== 'abreviatura' && def.key !== 'entrega'" >
+                    <span *ngIf="def.key !== 'nombreContacto' && def.key !== 'iniciales' && def.key !== 'abreviatura' && def.key !== 'entrega' && def.key !== 'nombreOportunidad'" >
                       {{ rowData[def.key] }}
                     </span>
                   </span>

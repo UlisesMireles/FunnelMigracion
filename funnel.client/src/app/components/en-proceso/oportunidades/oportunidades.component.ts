@@ -67,7 +67,7 @@ export class OportunidadesComponent {
     { key: 'fechaRegistro', isCheck: false, valor: 'Fecha Alta', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
     { key: 'diasFunnel', isCheck: true, valor: 'Días Funnel', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
     { key: 'fechaEstimadaCierreOriginal', isCheck: true, valor: 'Cierre Est', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
-    { key: 'fechaModificacion', isCheck: false, valor: 'Días S/Act', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' }
+    { key: 'fechaModificacion', isCheck: true, valor: 'Días S/Act', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' }
   ];
 
   columnsAMostrarResp: string = JSON.stringify(this.lsColumnasAMostrar);

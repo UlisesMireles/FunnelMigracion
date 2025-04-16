@@ -20,4 +20,8 @@ export class TipoServicioService {
       return this.http.post(`${this.baseUrl}api/Servicios/GuardarServicio`, request);
     }
 
+    descargarReporteServicios(data: any): Observable<Blob> {
+      return this.http.post(`${this.baseUrl}api/Servicios/DescargarReporteServicios`, data, { responseType: 'blob' });
+    }
+
 }

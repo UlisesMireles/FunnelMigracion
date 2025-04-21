@@ -8,17 +8,17 @@
        <!-- Pestañas  -->
     <ul class="nav nav-tabs custom-tabs">
       <li class="nav-item">
-        <a class="nav-link active" data-bs-toggle="tab" href="#lista" (click)="camTitulo(0)" pTooltip="Oportunidades" tooltipPosition="top" >
+        <a class="nav-link active" data-bs-toggle="tab" href="#lista" (click)="camTitulo(0)" pTooltip="Lista" tooltipPosition="top" >
           <i class="bi bi-list"></i>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="tab" href="#porMes" (click)="camTitulo(1)" pTooltip="Oportunidades por Mes" tooltipPosition="top">
+        <a class="nav-link" data-bs-toggle="tab" href="#porMes" (click)="camTitulo(1)" pTooltip="Candelarización" tooltipPosition="top">
           <i class="bi bi-calendar"></i>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="tab" href="#porEtapa" (click)="camTitulo(2)" pTooltip="Oportunidades por Etapa" tooltipPosition="top">
+        <a class="nav-link" data-bs-toggle="tab" href="#porEtapa" (click)="camTitulo(2)" pTooltip="Etapa" tooltipPosition="top">
           <i class="bi bi-calendar-check"></i>  
         </a>
       </li>
@@ -51,7 +51,7 @@
                 pTooltip="Refrescar" tooltipPosition="top" styleClass="custom-button refresh-button"
                 [ngStyle]="{'margin-right': '5px'}" />
                 <p-button label="" icon="bi bi-download" severity="secondary" (click)="exportPdf(dt)"
-                pTooltip="Descargar Excel" tooltipPosition="top" styleClass="custom-button download-button"
+                pTooltip="Descargar PDF" tooltipPosition="top" styleClass="custom-button download-button"
                 [ngStyle]="{'margin-right': '5px'}"/>
                 <p-button label="" icon="bi-list" (click)="agregarColumna($event)" severity="secondary"  
                 pTooltip="Agregar columna" tooltipPosition="top" styleClass="custom-button column-button"

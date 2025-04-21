@@ -145,18 +145,19 @@
           <ng-template pTemplate="body" let-rowData let-columns="columns">
             <tr  [ngClass]="{'fila-activa': rowData.idOportunidad == oportunidadEdicion?.idOportunidad}">
               <td *ngFor="let def of lsColumnasAMostrar"
-                  [ngStyle]="{
-                    'text-align':
-                      def.key === 'abreviatura' ? 'center' : 
-                      def.key === 'entrega' ? 'center' : 
-                      def.key === 'stage' ? 'center' :
-                      def.key === 'iniciales' ? 'center' :
-                      def.key === 'nombreContacto' ? 'center' :
-                      (def.valor.includes('%')) ? 'center' :
-                      def.tipoFormato === 'currency' ? 'right' :
-                      (def.tipoFormato === 'number' || def.tipoFormato === 'date') ? 'center' : 'left',
-                      'width': def.key === 'stage' || def.key === 'abreviatura' || def.key === 'entrega' || def.key === 'iniciales' || def.key === 'nombreContacto' ? '80px' : ''
-                  }">
+                [ngClass]="{'fixed-width-oportunidad': def.key === 'nombreOportunidad'}"
+                [ngStyle]="{
+                  'text-align':
+                    def.key === 'abreviatura' ? 'center' : 
+                    def.key === 'entrega' ? 'center' : 
+                    def.key === 'stage' ? 'center' :
+                    def.key === 'iniciales' ? 'center' :
+                    def.key === 'nombreContacto' ? 'center' :
+                    (def.valor.includes('%')) ? 'center' :
+                    def.tipoFormato === 'currency' ? 'right' :
+                    (def.tipoFormato === 'number' || def.tipoFormato === 'date') ? 'center' : 'left',
+                    'width': def.key === 'stage' || def.key === 'abreviatura' || def.key === 'entrega' || def.key === 'iniciales' || def.key === 'nombreContacto' ? '80px' : ''
+                }">
                 <ng-container [ngSwitch]="def.tipoFormato">
                   <span *ngSwitchCase="'text'">
                     <span *ngIf="def.key === 'nombreContacto'" pTooltip="{{rowData[def.key]}}" tooltipPosition="top">

@@ -343,3 +343,9 @@ input[type="file"] {
 .p-button-success {
   color: #28a745 !important;
 }
+.botones-accion {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-left: -40px;
+}

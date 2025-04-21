@@ -98,7 +98,6 @@ export class DocumentosOportunidadesComponent {
       
           this.documentoService.guardarDocumento(formData).subscribe({
             next: (result: any) => {
-              // Manejo de resultados igual que antes
               if (result && result.length > 0) {
                 const successCount = result.filter((r: any) => r.result).length;
                 const errorCount = result.length - successCount;
@@ -106,16 +105,24 @@ export class DocumentosOportunidadesComponent {
                 
                 if (successCount > 0) {
                   this.archivosSeleccionados = [];
-                  this.fileInput.nativeElement.value = '';
+                  if (this.fileInput?.nativeElement) {
+                    this.fileInput.nativeElement.value = '';
+                  }
                   this.getDocumentos(this.oportunidad.idOportunidad!);
+                  this.result.emit({
+                    result: true,
+                    errorMessage: '',
+                    id: this.oportunidad.idOportunidad || 0
+                  });
                 }
               }
             },
-            error: (error) => {
-              this.messageService.add({
-                severity: 'error',
-                summary: 'Error',
-                detail: 'Error al subir los archivos: ' + error.message
+            error: (error: any) => {
+              this.result.emit({
+                result: false,
+                errorMessage: 'Error al subir los archivos.',
+                id: this.oportunidad.idOportunidad || 0
+            
               });
             }
           });
@@ -227,16 +234,20 @@ export class DocumentosOportunidadesComponent {
       this.documentoService.eliminarDocumento(item.idArchivo).subscribe({
         next: () => {
           item.diasParaEliminacion = "2"; 
-          
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Éxito',
-            detail: 'Archivo movido a la papelera. Tienes 2 días para recuperarlo.'
+          this.result.emit({
+            result: true,
+            errorMessage: 'Archivo movido a la papelera. Tienes 2 días para recuperarlo.',
+            id: item.idArchivo
           });
+         
           this.loading = false;
         },
         error: (error) => {
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo eliminar el archivo.' });
+          this.result.emit({
+            result: false,
+            errorMessage: error.message || 'Error al eliminar archivo',
+            id: item.idArchivo
+          });
           this.loading = false;
         }
       });
@@ -265,18 +276,26 @@ export class DocumentosOportunidadesComponent {
               next: (result) => {
                 if (result.result) {
                   item.diasParaEliminacion = '';
-                  this.messageService.add({
-                    severity: 'success',
-                    summary: 'Éxito',
-                    detail: 'Archivo recuperado correctamente.'
+                  this.result.emit({
+                    result: true,
+                    errorMessage: 'Archivo recuperado correctamente',
+                    id: item.idArchivo
                   });
                 } else {
-                  this.messageService.add({ severity: 'error', summary: 'Error', detail: result.errorMessage });
+                  this.result.emit({
+                    result: false,
+                    errorMessage: result.errorMessage || 'Error al recuperar archivo',
+                    id: item.idArchivo
+                  });
                 }
                 this.loading = false;
               },
               error: (error) => {
-                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo recuperar el archivo.' });
+                this.result.emit({
+                  result: false,
+                  errorMessage: error.message || 'No se pudo recuperar el archivo',
+                  id: item.idArchivo
+                });
                 this.loading = false;
               }
             });

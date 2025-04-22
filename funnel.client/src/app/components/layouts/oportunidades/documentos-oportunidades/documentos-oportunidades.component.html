@@ -32,37 +32,52 @@
     
     <br />
     <form [formGroup]="oportunidadForm">
-      <div class="row">
-        <div class="col-sm-4">
-          <label for="Comentario" class="margen text-left">Agregar Documento:</label>
-        </div>
-        <div class="col-sm-6 inptSpace">
-          <input #fileInput type="file" class="form-control" accept=  ".doc, .docx, .pdf, .xls, .xlsx, .ppt, .pptx, .rar, .zip"
-                 (change)="onFileChange($event)" multiple>
-        </div>
-        <div class="col-sm-2 inptSpace botones-accion">
-          <button pButton label="Guardar" (click)="guardarDocumento()" 
-                  severity="secondary" [disabled]="!archivosSeleccionados || archivosSeleccionados.length === 0"></button>
-          <button pButton label="Salir" (click)="close()" severity="secondary"></button>
-        </div>
-      </div>
-      <div class="row mt-3" *ngIf="archivosSeleccionados && archivosSeleccionados.length > 0">
-        <div class="col-sm-12">
-          <div class="selected-files-container">
-            <h5>Archivos seleccionados:</h5>
-            <div class="file-list">
-              <div class="file-item" *ngFor="let file of archivosSeleccionados; let i = index">
-                <span class="file-name">{{ file.name }}</span>
-                <button type="button" class="remove-file-btn" (click)="eliminarArchivoSeleccionado(i)">
-                  <i class="bi bi-x"></i>
-                </button>
+      <div class="row align-items-center">
+        <div class="col-sm-12 d-flex align-items-center">
+          <div class="col-sm-2" style="padding-left: 0;">
+            <label for="Comentario" class="margen text-left">Agregar Documento:</label>
+          </div>
+          
+          <!-- Contenedor de archivos seleccionados -->
+          <div class="col-sm-6" style="padding-left: 0;">
+            <div class="selected-files-container">
+              <div class="file-list">
+                <ng-container *ngIf="archivosSeleccionados && archivosSeleccionados.length > 0; else noFiles">
+                  <div class="file-item" *ngFor="let file of archivosSeleccionados; let i = index">
+                    <span class="file-name">{{ file.name }}</span>
+                    <button type="button" class="remove-file-btn" (click)="eliminarArchivoSeleccionado(i)">
+                      <i class="bi bi-x"></i>
+                    </button>
+                  </div>
+                </ng-container>
+                <ng-template #noFiles>
+                  <div class="file-item" style="color: #6c757d;">
+                    No hay archivos seleccionados
+                  </div>
+                </ng-template>
               </div>
+            </div>
+          </div>
+          
+          <div class="col-sm-2" style="padding-left: 0;">
+            <input #fileInput type="file" class="d-none" 
+                   (change)="onFileChange($event)" multiple
+                   accept=".doc, .docx, .pdf, .xls, .xlsx, .ppt, .pptx, .rar, .zip">
+            <button pButton label="Elegir archivos" 
+                    class="p-button-secondary"
+                    (click)="fileInput.click()"></button>
+          </div>
+          
+          <div class="col-sm-2 inptSpace" style="padding-left: 0;">
+            <div class="botones-accion">
+              <button pButton label="Guardar" (click)="guardarDocumento()" 
+                      severity="secondary" [disabled]="!archivosSeleccionados || archivosSeleccionados.length === 0"></button>
+              <button pButton label="Salir" (click)="close()" severity="secondary"></button>
             </div>
           </div>
         </div>
       </div>
     </form>
-    
     <div class="row mt-3">
       <div class="col-sm-12" *ngIf="historialOportunidad.length > 0; else noComments">
         <table class="table table-bordered">

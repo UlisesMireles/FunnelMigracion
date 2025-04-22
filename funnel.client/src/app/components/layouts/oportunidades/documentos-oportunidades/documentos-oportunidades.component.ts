@@ -74,6 +74,10 @@ export class DocumentosOportunidadesComponent {
       }
   
       close() {
+        this.archivosSeleccionados = []; 
+        if (this.fileInput?.nativeElement) {
+          this.fileInput.nativeElement.value = ''; 
+        }
         this.visible = false;
         this.visibleChange.emit(this.visible);
         this.closeModal.emit();
@@ -101,7 +105,7 @@ export class DocumentosOportunidadesComponent {
               if (result && result.length > 0) {
                 const successCount = result.filter((r: any) => r.result).length;
                 const errorCount = result.length - successCount;
-                this.mostrarResultadoSubida(successCount, errorCount);
+                /*this.mostrarResultadoSubida(successCount, errorCount);*/
                 
                 if (successCount > 0) {
                   this.archivosSeleccionados = [];

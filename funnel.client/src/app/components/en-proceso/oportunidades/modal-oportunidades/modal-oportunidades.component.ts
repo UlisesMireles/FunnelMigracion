@@ -52,7 +52,7 @@ export class ModalOportunidadesComponent {
         this.oportunidadForm = this.fb.group({
           idOportunidad: [0],
           idProspecto: [0, Validators.required],
-          descripcion: ['', [Validators.required, Validators.minLength(5)]],
+          descripcion: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
           monto: [0, [Validators.required, Validators.min(1)]],
           idTipoProyecto: ['', Validators.required],
           idStage: ['', Validators.required],
@@ -253,6 +253,18 @@ export class ModalOportunidadesComponent {
           this.markAllAsTouched(control as FormGroup);
         }
       });
+    }
+
+    limitarCaracteres() {
+      const descripcionControl = this.oportunidadForm.get('descripcion');
+      if (descripcionControl?.value.length >= 100) {
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Límite alcanzado',
+          detail: 'Has alcanzado el límite máximo de 100 caracteres',
+          life: 3000
+        });
+      }
     }
     
 }

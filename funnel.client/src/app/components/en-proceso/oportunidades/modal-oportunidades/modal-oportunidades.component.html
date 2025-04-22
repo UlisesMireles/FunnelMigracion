@@ -29,13 +29,19 @@
             <label for="descripcion">Descripción: </label>
           </div>
           <div class="col-sm-8 inptSpace">
-            <input pInputText class="inptSize" formControlName="descripcion" />
+            <input pInputText class="inptSize" formControlName="descripcion" 
+                   maxlength="100" (input)="limitarCaracteres()" />
+            <div style="font-size: 0.8rem; color: #6c757d; text-align: right; margin-top: 0.25rem;">
+              {{ oportunidadForm.get('descripcion')?.value?.length || 0 }}/100
+            </div>
             <span *ngIf="oportunidadForm.get('descripcion')?.invalid && oportunidadForm.get('descripcion')?.touched"
               class="text-danger"><br>
               <ng-container *ngIf="oportunidadForm.get('descripcion')?.errors?.['required']">Debe agregar una
-                descripcion.</ng-container>
-              <ng-container *ngIf="oportunidadForm.get('descripcion')?.errors?.['maxLength']">La descripcion no puede ser
-                mayor a 50 caracteres.</ng-container>
+                descripción.</ng-container>
+              <ng-container *ngIf="oportunidadForm.get('descripcion')?.errors?.['minlength']">La descripción debe tener al menos
+                5 caracteres.</ng-container>
+              <ng-container *ngIf="oportunidadForm.get('descripcion')?.errors?.['maxlength']">La descripción no puede exceder
+                los 100 caracteres.</ng-container>
             </span>
           </div>
         </div>

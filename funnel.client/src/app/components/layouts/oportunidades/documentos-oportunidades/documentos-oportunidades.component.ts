@@ -90,7 +90,27 @@ export class DocumentosOportunidadesComponent {
       get archivosDisponibles(): number {
         return this.maxArchivos - (this.oportunidad?.totalArchivos || 0);
       }
-      guardarDocumento() {
+      get archivosActivos(): Archivos[] {
+        return this.historialOportunidad.filter(d => !d.diasParaEliminacion);
+      }
+      
+      get archivosInactivos(): Archivos[] {
+        return this.historialOportunidad
+          .filter(d => d.diasParaEliminacion)
+          .sort((a, b) => new Date(b.fechaRegistro).getTime() - new Date(a.fechaRegistro).getTime());
+      }
+      isInactivoBloqueado(item: Archivos): boolean {
+        if (!item.diasParaEliminacion) {
+            return false;
+        }
+    
+        if (this.archivosActivos.length >= this.maxArchivos) {
+            return true;
+        }
+        const archivosActivosRecuperados = this.archivosActivos.length + 1;
+        return archivosActivosRecuperados > this.maxArchivos;
+    }     
+        guardarDocumento() {
         if (this.archivosDisponibles <= 0) {
           this.messageService.add({
             severity: 'error',

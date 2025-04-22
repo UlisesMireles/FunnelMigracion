@@ -70,7 +70,7 @@
               </div>
             </ng-container>
           </div>
-              <div class="col-sm-2 d-flex flex-nowrap gap-2" style="margin-left:-40px;"> 
+              <div class="col-sm-2 d-flex flex-nowrap gap-2" style="margin-left:-50px;"> 
             <button pButton label="Guardar" (click)="guardarDocumento()" 
                     severity="secondary" [disabled]="!archivosSeleccionados.length"></button>
             <button pButton label="Salir" (click)="close()" severity="secondary"></button>
@@ -98,33 +98,30 @@
               <td class="text-left">{{ item.fechaRegistro | date:'dd/MM/yyyy' }}</td>
               <td class="text-left">{{ item.nombreArchivoFormateado }}</td>
               <td>
-                <p-button type="button" icon="bi bi-download" text (click)="descargarArchivo(item)"/>
+                <ng-container *ngIf="!isInactivoBloqueado(item)">
+                  <p-button type="button" icon="bi bi-download" text 
+                            (click)="descargarArchivo(item)"/>
+                </ng-container>
               </td>
               <td>
-                <ng-container *ngIf="!item.diasParaEliminacion">
-                  <p-button 
-                    type="button" 
-                    icon="bi bi-trash" 
-                    text  
-                    (click)="eliminarArchivo(item)"
-                    pTooltip="Eliminar archivo"
-                    tooltipPosition="top"
-                  />
-                </ng-container>
-                
-                <ng-container *ngIf="item.diasParaEliminacion && item.diasParaEliminacion !== '0'">
-                  <div class="restore-button-container">
-                    <p-button 
-                      type="button" 
-                      icon="bi bi-arrow-counterclockwise" 
-                      text  
-                      (click)="recuperarArchivo(item)"
-                      [pTooltip]="'Recuperar archivo (se eliminará en ' + item.diasParaEliminacion + ' días)'"
-                      tooltipPosition="top"
-                      styleClass="p-button-success"
-                    />
-                    <span class="days-badge">{{item.diasParaEliminacion}}</span>
-                  </div>
+                <ng-container *ngIf="!isInactivoBloqueado(item)">
+                  <ng-container *ngIf="!item.diasParaEliminacion">
+                    <p-button type="button" icon="bi bi-trash" text  
+                              (click)="eliminarArchivo(item)"
+                              pTooltip="Eliminar archivo"
+                              tooltipPosition="top"/>
+                  </ng-container>
+                  
+                  <ng-container *ngIf="item.diasParaEliminacion && item.diasParaEliminacion !== '0'">
+                    <div class="restore-button-container">
+                      <p-button type="button" icon="bi bi-arrow-counterclockwise" text  
+                                (click)="recuperarArchivo(item)"
+                                pTooltip="Recuperar archivo (se eliminará en {{item.diasParaEliminacion}} día(s))"
+                                tooltipPosition="top"
+                                styleClass="p-button-success"/>
+                      <span class="days-badge">{{item.diasParaEliminacion}}</span>
+                    </div>
+                  </ng-container>
                 </ng-container>
               </td>
             </tr>

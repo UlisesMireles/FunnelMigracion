@@ -37,6 +37,7 @@ export class DocumentosOportunidadesComponent {
     historialOportunidad: Archivos[] = [];
     archivosSeleccionados: File[] = [];
     nombreOportunidad: string = '';
+    maxArchivos = 5;
 
     @ViewChild('fileInput') fileInput!: ElementRef;
 
@@ -82,8 +83,22 @@ export class DocumentosOportunidadesComponent {
         this.visibleChange.emit(this.visible);
         this.closeModal.emit();
       }
-  
+      // En tu componente
+      get subirArchivos(): boolean {
+        return (this.oportunidad?.totalArchivos || 0) < this.maxArchivos;
+      }
+      get archivosDisponibles(): number {
+        return this.maxArchivos - (this.oportunidad?.totalArchivos || 0);
+      }
       guardarDocumento() {
+        if (this.archivosDisponibles <= 0) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Límite alcanzado',
+            detail: 'No puedes subir más archivos. El límite es de ' + this.maxArchivos
+          });
+          return;
+        }
         if (this.archivosSeleccionados && this.archivosSeleccionados.length > 0) {
           const formData = new FormData();
           
@@ -103,6 +118,7 @@ export class DocumentosOportunidadesComponent {
           this.documentoService.guardarDocumento(formData).subscribe({
             next: (result: any) => {
               if (result && result.length > 0) {
+                this.oportunidad.totalArchivos += result.filter((r: any) => r.result).length;
                 const successCount = result.filter((r: any) => r.result).length;
                 const errorCount = result.length - successCount;
                 /*this.mostrarResultadoSubida(successCount, errorCount);*/
@@ -243,7 +259,7 @@ export class DocumentosOportunidadesComponent {
             errorMessage: 'Archivo movido a la papelera. Tienes 2 días para recuperarlo.',
             id: item.idArchivo
           });
-         
+          this.oportunidad.totalArchivos!--;
           this.loading = false;
         },
         error: (error) => {
@@ -261,6 +277,14 @@ export class DocumentosOportunidadesComponent {
       if (input.files && input.files.length > 0) {
         // Convertir FileList a array y agregar a la lista existente
         const newFiles = Array.from(input.files) as File[];
+        if (newFiles.length > this.maxArchivos) {
+          this.messageService.add({
+            severity: 'warn',
+            summary:'Límite de archivos',
+            detail: `Solo puedes subir ${this.archivosDisponibles} archivo(s) más.`
+          });
+          return;
+        }
         this.archivosSeleccionados = [...this.archivosSeleccionados, ...newFiles];
         
         // Limpiar el input file después de seleccionar
@@ -285,6 +309,7 @@ export class DocumentosOportunidadesComponent {
                     errorMessage: 'Archivo recuperado correctamente',
                     id: item.idArchivo
                   });
+                  this.oportunidad.totalArchivos!++;
                 } else {
                   this.result.emit({
                     result: false,

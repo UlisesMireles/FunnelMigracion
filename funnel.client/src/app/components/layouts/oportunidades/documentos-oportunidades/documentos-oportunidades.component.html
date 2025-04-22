@@ -32,52 +32,53 @@
     
     <br />
     <form [formGroup]="oportunidadForm">
-      <div class="row align-items-center">
-        <div class="col-sm-12 d-flex align-items-center">
-          <div class="col-sm-2" style="padding-left: 0;">
-            <label for="Comentario" class="margen text-left">Agregar Documento:</label>
-          </div>
-          
-          <!-- Contenedor de archivos seleccionados -->
-          <div class="col-sm-6" style="padding-left: 0;">
-            <div class="selected-files-container">
-              <div class="file-list">
-                <ng-container *ngIf="archivosSeleccionados && archivosSeleccionados.length > 0; else noFiles">
-                  <div class="file-item" *ngFor="let file of archivosSeleccionados; let i = index">
-                    <span class="file-name">{{ file.name }}</span>
-                    <button type="button" class="remove-file-btn" (click)="eliminarArchivoSeleccionado(i)">
-                      <i class="bi bi-x"></i>
-                    </button>
+      <div class="row align-items-center g-0">
+        <div class="col-sm-12 d-flex flex-nowrap align-items-center"> 
+          <div class="col-sm-10 pe-2 d-flex flex-nowrap align-items-center"> 
+            <ng-container *ngIf="subirArchivos">
+              <div class="d-flex flex-nowrap w-100 align-items-center">
+                <div class="col-sm-3 pe-2">
+                  <label class="margen text-nowrap">Agregar Documento:</label>
+                </div>
+                
+                <div class="col-sm-6 pe-2">
+                  <div class="selected-files-container text-truncate"> 
+                    <div class="file-list">
+                      <ng-container *ngIf="archivosSeleccionados?.length; else noFiles">
+                        <div class="file-item" *ngFor="let file of archivosSeleccionados; let i = index">
+                          <span class="file-name text-truncate">{{ file.name }}</span>
+                          <button type="button" class="remove-file-btn" (click)="eliminarArchivoSeleccionado(i)">
+                            <i class="bi bi-x"></i>
+                          </button>
+                        </div>
+                      </ng-container>
+                      <ng-template #noFiles>
+                        <div class="file-item text-muted">No hay archivos seleccionados</div>
+                      </ng-template>
+                    </div>
                   </div>
-                </ng-container>
-                <ng-template #noFiles>
-                  <div class="file-item" style="color: #6c757d;">
-                    No hay archivos seleccionados
-                  </div>
-                </ng-template>
+                </div>
+                
+               <div class="col-sm-2">
+                  <input #fileInput type="file" class="d-none" 
+                         (change)="onFileChange($event)" multiple
+                         accept=".doc, .docx, .pdf, .xls, .xlsx, .ppt, .pptx, .rar, .zip">
+                  <button pButton label="Elegir archivos" 
+                          class="p-button-secondary text-nowrap"
+                          (click)="fileInput.click()"></button>
+                </div>
               </div>
-            </div>
+            </ng-container>
           </div>
-          
-          <div class="col-sm-2" style="padding-left: 0;">
-            <input #fileInput type="file" class="d-none" 
-                   (change)="onFileChange($event)" multiple
-                   accept=".doc, .docx, .pdf, .xls, .xlsx, .ppt, .pptx, .rar, .zip">
-            <button pButton label="Elegir archivos" 
-                    class="p-button-secondary"
-                    (click)="fileInput.click()"></button>
-          </div>
-          
-          <div class="col-sm-2 inptSpace" style="padding-left: 0;">
-            <div class="botones-accion">
-              <button pButton label="Guardar" (click)="guardarDocumento()" 
-                      severity="secondary" [disabled]="!archivosSeleccionados || archivosSeleccionados.length === 0"></button>
-              <button pButton label="Salir" (click)="close()" severity="secondary"></button>
-            </div>
+              <div class="col-sm-2 d-flex flex-nowrap gap-2" style="margin-left:-40px;"> 
+            <button pButton label="Guardar" (click)="guardarDocumento()" 
+                    severity="secondary" [disabled]="!archivosSeleccionados.length"></button>
+            <button pButton label="Salir" (click)="close()" severity="secondary"></button>
           </div>
         </div>
       </div>
     </form>
+
     <div class="row mt-3">
       <div class="col-sm-12" *ngIf="historialOportunidad.length > 0; else noComments">
         <table class="table table-bordered">
@@ -111,7 +112,7 @@
                   />
                 </ng-container>
                 
-                <ng-container *ngIf="item.diasParaEliminacion">
+                <ng-container *ngIf="item.diasParaEliminacion && item.diasParaEliminacion !== '0'">
                   <div class="restore-button-container">
                     <p-button 
                       type="button" 

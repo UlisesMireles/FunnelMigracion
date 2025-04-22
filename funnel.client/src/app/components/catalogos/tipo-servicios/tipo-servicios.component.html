@@ -43,7 +43,7 @@
           </ng-template>
           <ng-template pTemplate="header" let-columns>
             <tr class="custom-header">
-                <th *ngFor="let def of lsColumnasAMostrar" pSortableColumn="{{def.key}}" pReorderableColumn [class.sort-active]="isSorted(def.key)">
+                <th *ngFor="let def of lsColumnasAMostrar" pSortableColumn="{{def.key}}" pReorderableColumn [class.sort-active]="isSorted(def.key)" style="text-align: center;">
                     {{def.valor}}
                   <p-sortIcon field="{{def.key}}"></p-sortIcon>
                 </th>

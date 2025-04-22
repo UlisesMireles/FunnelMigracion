@@ -30,7 +30,7 @@
                 pTooltip="Refrescar" tooltipPosition="top" styleClass="custom-button refresh-button"
                 [ngStyle]="{'margin-right': '5px'}" />
                 <p-button label="" icon="bi bi-download" severity="secondary" (click)="exportPdf(dt)" 
-                pTooltip="Descargar Excel" tooltipPosition="top" styleClass="custom-button download-button"
+                pTooltip="Descargar PDF" tooltipPosition="top" styleClass="custom-button download-button"
                 [ngStyle]="{'margin-right': '5px'}"/>
                 <p-button label="" icon="bi-list" (click)="agregarColumna($event)" severity="secondary"  
                 pTooltip="Agregar columna" tooltipPosition="top" styleClass="custom-button column-button"
@@ -43,7 +43,7 @@
           </ng-template>
           <ng-template pTemplate="header" let-columns>
             <tr class="custom-header">
-                <th *ngFor="let def of lsColumnasAMostrar" pSortableColumn="{{def.key}}" pReorderableColumn [class.sort-active]="isSorted(def.key)">
+                <th *ngFor="let def of lsColumnasAMostrar" pSortableColumn="{{def.key}}" pReorderableColumn [class.sort-active]="isSorted(def.key)" style="text-align: center;">
                     {{def.valor}}
                   <p-sortIcon field="{{def.key}}"></p-sortIcon>
                 </th>
@@ -115,7 +115,16 @@
               <tr>
                 
                 
-                <td *ngFor="let def of lsColumnasAMostrar">
+                <td *ngFor="let def of lsColumnasAMostrar" 
+                [ngStyle]="{
+                  'text-align': 
+                    def.tipoFormato === 'estatus' ? 'center' : 
+                    (def.tipoFormato === 'number') ? 'center' : 
+                    def.key === 'iniciales' ? 'center' : 'left',
+                    'width': def.key === 'stage' || def.key === 'iniciales' ? '80px' :
+                    def.tipoFormato === 'estatus' ? '30px' : ''
+
+                }">
                   <ng-container [ngSwitch]="def.tipoFormato">
                     <span *ngSwitchCase="'text'">{{ rowData[def.key] }}</span>
             

@@ -18,8 +18,8 @@ import { baseOut } from '../../../interfaces/utils/utils/baseOut';
 })
 export class LoginComponent implements OnInit {
   aFormGroup!: FormGroup;
-  // siteKey: string = '6LdlBicqAAAAABMCqyAjZOTSKrbdshNyKxwRiGL9';
-  siteKey: string = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
+  siteKey: string = '6LdlBicqAAAAABMCqyAjZOTSKrbdshNyKxwRiGL9';
+  // siteKey: string = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'; //Prueba
   baseUrl: string = environment.baseURLAssets;
   username: string = '';
   password: string = '';

@@ -28,6 +28,10 @@ namespace Funnel.Models.Dto
         public DateTime? FechaInicio { get; set; }
         public DateTime? FechaFin { get; set; }
         public string? Iniciales { get; set; }
+        public int? IdAdministrador { get; set; }
+        public string? Clave { get; set; }
+        public bool? Activo { get; set; }
+        public int SuperAdministrador { get; set; }
 
 
     }

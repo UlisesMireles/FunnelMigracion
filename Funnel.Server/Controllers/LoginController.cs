@@ -51,5 +51,12 @@ namespace Funnel.Server.Controllers
             var respuesta = await _loginService.VerificarCodigoDobleAutenticacion(usuario);
             return Ok(respuesta);
         }
+
+        [HttpPost("GuardarSolicitudRegistro/")]
+        public async Task<ActionResult<BaseOut>> GuardarSolicitudRegistro(SolicitudRegistroSistemaDto datos)
+        {
+            var respuesta = await _loginService.GuardarSolicitudRegistro(datos);
+            return Ok(respuesta);
+        }
     }
 }

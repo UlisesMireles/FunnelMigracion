@@ -708,3 +708,36 @@ label {
     }
   }
 
+
+  .is-invalid {
+    border-color: red !important;
+  }
+  
+  .text-danger {
+    font-size: 0.9em;
+  }
+
+  select {
+    appearance: none; 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-right: 25px;
+    background-color: white;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    color: #333;
+  }
+  
+  select:hover {
+    background-color: #f8f8f8;
+    cursor: pointer;
+  }
+  
+  select:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  select option {
+    color: #333;
+  }

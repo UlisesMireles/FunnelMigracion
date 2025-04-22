@@ -8,5 +8,6 @@ namespace Funnel.Logic.Interfaces
         public Task<DobleAutenticacionDto> VerificarCodigoDobleAutenticacion(CodigoDosPasosDto usuario);
         public Task<BaseOut> ObtenerVersion();
         public Task<BaseOut> ResetPassword(string usuario);
+        public Task<BaseOut> GuardarSolicitudRegistro(SolicitudRegistroSistemaDto datos);
     }
 }

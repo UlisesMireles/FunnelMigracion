@@ -5,6 +5,8 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Usuario, DobleAutenticacion, LoginUser } from '../interfaces/usuario';
 import { CatalogoService } from './catalogo.service';
+import { SolicitudRegistroSistema } from '../interfaces/solicitud-registro';
+import { baseOut } from '../interfaces/utils/utils/baseOut';
 
 @Injectable({
   providedIn: 'root'
@@ -165,5 +167,9 @@ export class LoginService {
   DobleAutenticacion(usuariodosPasos: DobleAutenticacion) {
     return this.http.post<any>(this.baseUrl + "api/Login/VerificarCodigoDobleAutenticacion", usuariodosPasos);
   }
+
+  postSolicitudRegistro(data: SolicitudRegistroSistema): Observable<baseOut> {
+      return this.http.post<baseOut>(this.baseUrl + 'api/Login/GuardarSolicitudRegistro', data);
+    }
 }
 

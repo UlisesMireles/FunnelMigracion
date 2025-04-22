@@ -46,35 +46,86 @@
                       </div>
                       <div class="text-center border border-light">
                         <div class="demo-container no-bg">
-                          <form class="form-signin register-form" name="formRegistrar" id="formRegistrar">
+                          <form class="form-signin register-form" name="formRegistrar" id="formRegistrar" [formGroup]="aFormGroup">
                             <div class="row">
                               <div class="col-md-6 mb-2" style="text-align: left;">
                                 <label for="txtNombre" class="control-label">Nombre*</label>
-                                <input type="text" id="txtNombre" class="form-control register-input" />
+                                <input type="text" id="txtNombre" formControlName="nombre" 
+                                  [ngClass]="{'is-invalid': aFormGroup.get('nombre')?.invalid && aFormGroup.get('nombre')?.touched}"
+                                 class="form-control register-input" maxlength="100" />
+                                 <span *ngIf="aFormGroup.get('nombre')?.invalid && aFormGroup.get('nombre')?.touched"
+                                      class="text-danger">
+                                  <ng-container *ngIf="aFormGroup.get('nombre')?.errors?.['required']">
+                                    El nombre es requerido.
+                                  </ng-container>
+                                </span>
                               </div>
                               <div class="col-md-6 mb-2" style="text-align: left;">
                                 <label for="txtApellidos" class="control-label">Apellido*</label>
-                                <input type="text" id="txtApellidos" class="form-control register-input" />
+                                <input type="text" id="txtApellidos" formControlName="apellido"
+                                [ngClass]="{'is-invalid': aFormGroup.get('apellido')?.invalid && aFormGroup.get('apellido')?.touched}"
+                                 class="form-control register-input"  maxlength="200" />
+                                 <span *ngIf="aFormGroup.get('apellido')?.invalid && aFormGroup.get('apellido')?.touched" class="text-danger">
+                                  <ng-container *ngIf="aFormGroup.get('apellido')?.errors?.['required']">
+                                    El apellido es requerido.
+                                  </ng-container>
+                                </span>
                               </div>
                               <div class="col-md-6 mb-2" style="text-align: left;">
                                 <label for="txtCorreo" class="control-label">Correo*</label>
-                                <input type="email" id="txtCorreo" class="form-control register-input" />
+                                <input type="email" id="txtCorreo" formControlName="correo" 
+                                [ngClass]="{'is-invalid': aFormGroup.get('correo')?.invalid && aFormGroup.get('correo')?.touched}"
+                                class="form-control register-input"  maxlength="500" />
+                                <span *ngIf="aFormGroup.get('correo')?.invalid && aFormGroup.get('correo')?.touched" class="text-danger">
+                                  <ng-container *ngIf="aFormGroup.get('correo')?.errors?.['required']">
+                                    El correo es requerido.
+                                  </ng-container>
+                                  <ng-container *ngIf="aFormGroup.get('correo')?.errors?.['email']">
+                                    Ingrese un correo valido.
+                                  </ng-container>
+                                </span>
                               </div>
                               <div class="col-md-6 mb-2" style="text-align: left;">
                                 <label for="txtTelefono" class="control-label">Teléfono*</label>
-                                <input type="text" id="txtTelefono" class="form-control register-input" />
+                                <input type="text" id="txtTelefono" formControlName="telefono" 
+                                [ngClass]="{'is-invalid': aFormGroup.get('telefono')?.invalid && aFormGroup.get('telefono')?.touched}"
+                                class="form-control register-input" (input)="soloNumeros($event)" maxlength="11" />
+                                <span *ngIf="aFormGroup.get('telefono')?.invalid && aFormGroup.get('telefono')?.touched" class="text-danger">
+                                  <ng-container *ngIf="aFormGroup.get('telefono')?.errors?.['required']">
+                                    El teléfono es requerido.
+                                  </ng-container>
+                                </span>
                               </div>
                               <div class="col-md-6 mb-2" style="text-align: left;">
                                 <label for="txtEmpresa" class="control-label">Empresa*</label>
-                                <input type="text" id="txtEmpresa" class="form-control register-input" />
+                                <input type="text" id="txtEmpresa" formControlName="empresa" 
+                                [ngClass]="{'is-invalid': aFormGroup.get('empresa')?.invalid && aFormGroup.get('empresa')?.touched}"
+                                class="form-control register-input"  maxlength="200"/>
+                                <span *ngIf="aFormGroup.get('empresa')?.invalid && aFormGroup.get('empresa')?.touched" class="text-danger">
+                                  <ng-container *ngIf="aFormGroup.get('empresa')?.errors?.['required']">
+                                    La empresa es requerida.
+                                  </ng-container>
+                                </span>
                               </div>
                               <div class="col-md-6 mb-2" style="text-align: left;">
                                 <label for="txtSitio" class="control-label">URL del sitio web*</label>
-                                <input type="text" id="txtSitio" class="form-control register-input" />
+                                <input type="text" id="txtSitio" formControlName="urlSitio" 
+                                [ngClass]="{'is-invalid': aFormGroup.get('urlSitio')?.invalid && aFormGroup.get('urlSitio')?.touched}"
+                                class="form-control register-input" maxlength="200" />
+                                <span *ngIf="aFormGroup.get('urlSitio')?.invalid && aFormGroup.get('urlSitio')?.touched" class="text-danger">
+                                  <ng-container *ngIf="aFormGroup.get('urlSitio')?.errors?.['required']">
+                                    El sitio web es requerido.
+                                  </ng-container>
+                                  <ng-container *ngIf="aFormGroup.get('urlSitio')?.errors?.['pattern']">
+                                    Por favor, ingrese una URL válida.
+                                  </ng-container>
+                                </span>
                               </div>
                               <div class="col-md-6 mb-2" style="text-align: left;">
                                 <label for="cmbxNumEmpleado" class="control-label">Número de empleados*</label>
-                                <select id="cmbxNumEmpleado" class="form-control register-input" style="display: block; width: 202%;">
+                                <select id="cmbxNumEmpleado" class="form-control register-input" 
+                                [ngClass]="{'is-invalid': aFormGroup.get('noEmpleados')?.invalid && aFormGroup.get('noEmpleados')?.touched}"
+                                style="display: block; width: 202%;" formControlName="noEmpleados">
                                   <option value="">Selecciona una opción</option>
                                   <option value="1-10">1-10</option>
                                   <option value="11-50">11-50</option>
@@ -82,9 +133,15 @@
                                   <option value="101-500">101-500</option>
                                   <option value="500+">500+</option>
                                 </select>
+                                <span *ngIf="aFormGroup.get('noEmpleados')?.invalid && aFormGroup.get('noEmpleados')?.touched" class="text-danger">
+                                  <ng-container *ngIf="aFormGroup.get('noEmpleados')?.errors?.['required']">
+                                    El núm. de empleados es requerido.
+                                  </ng-container>
+                                </span>
                               </div>
                               <div class="privacy-terms-container mb-2">
-                                <input type="checkbox" id="chkPrivacyTerms">
+                                <input type="checkbox" id="chkPrivacyTerms" formControlName="privacidadTerminos" 
+                                [ngClass]="{'is-invalid': aFormGroup.get('privacidadTerminos')?.invalid && aFormGroup.get('privacidadTerminos')?.touched}">
                                 <label for="chkPrivacyTerms">
                                   Declaro que he leído y acepto la
                                   <span class="link">Política de privacidad</span>
@@ -92,8 +149,13 @@
                                   <span class="link">Términos y Condiciones</span>
                                   de Sales Funnel System.
                                 </label>
+                                <span *ngIf="aFormGroup.get('privacidadTerminos')?.invalid && aFormGroup.get('privacidadTerminos')?.touched" class="text-danger">
+                                  <ng-container *ngIf="aFormGroup.get('privacidadTerminos')?.errors?.['required'] || aFormGroup.get('privacidadTerminos')?.errors?.['requiredTrue']">
+                                    Debe aceptar la política de privacidad y términos.
+                                  </ng-container>
+                                </span>
                               </div>
-                              <form [formGroup]="aFormGroup">
+                              <!-- <form [formGroup]="aFormGroup"> -->
                                 <ngx-recaptcha2 #captchaElem
                                                 [siteKey]="siteKey"
                                                 (reset)="handleReset()"
@@ -101,13 +163,19 @@
                                                 (load)="handleLoad()"
                                                 (success)="handleSuccess($event)"
                                                 [useGlobalDomain]="false"
-                                                formControlName="recaptcha">
+                                                formControlName="recaptcha"
+                                                [ngClass]="{'is-invalid': aFormGroup.get('recaptcha')?.invalid && aFormGroup.get('recaptcha')?.touched}">
                                 </ngx-recaptcha2>
-                              </form>
+                                <span *ngIf="aFormGroup.get('recaptcha')?.invalid && aFormGroup.get('recaptcha')?.touched" class="text-danger">
+                                  <ng-container *ngIf="aFormGroup.get('recaptcha')?.errors?.['required']">
+                                    Verificación de captcha obligatoria.
+                                  </ng-container>
+                                </span>
+                              <!-- </form> -->
                             </div>
                             <br />
                             <div class="input-group btn-rg">
-                              <button type="submit" class="btn btn-login btn-lg " style="font-family: Raleway; height: 30px; font-size: 12px; font-weight: 500; width: 75%; margin-left: 150px;">Registrar</button>
+                              <button type="submit" class="btn btn-login btn-lg " style="font-family: Raleway; height: 30px; font-size: 12px; font-weight: 500; width: 75%; margin-left: 150px;" (click)="guardarInformacion($event)">Registrar</button>
                             </div>
                           </form>
                         </div>
@@ -120,6 +188,7 @@
           </section>
         </div>
       </div>
+      <p-toast position="center"></p-toast>
     </div>
 
     <div *ngIf="isLoginModalOpen" class="modal-overlay" (click)="closeLoginModal()"></div>

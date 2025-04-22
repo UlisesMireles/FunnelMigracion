@@ -23,12 +23,13 @@ namespace Funnel.Server.Controllers
                 HttpContext.Session.SetString("User", usr.Usuario);
             return Ok(respuesta);
         }
-        //[HttpGet("[action]/")]
-        //public async Task<ActionResult<BaseOut>> RecuperarContrasena(string usuario)
-        //{
-        //    var respuesta = await _loginService.ResetPassword(usuario);
-        //    return Ok(respuesta);
-        //}
+
+        [HttpGet("[action]/")]
+        public async Task<ActionResult<BaseOut>> RecuperarContrasena(string usuario)
+        {
+            var respuesta = await _loginService.ResetPassword(usuario);
+            return Ok(respuesta);
+        }
 
         [HttpPost("[action]/")]
         public IActionResult Logout()
@@ -48,6 +49,13 @@ namespace Funnel.Server.Controllers
         public async Task<ActionResult<DobleAutenticacionDto>> VerificarCodigoDobleAutenticacion(CodigoDosPasosDto usuario)
         {
             var respuesta = await _loginService.VerificarCodigoDobleAutenticacion(usuario);
+            return Ok(respuesta);
+        }
+
+        [HttpPost("GuardarSolicitudRegistro/")]
+        public async Task<ActionResult<BaseOut>> GuardarSolicitudRegistro(SolicitudRegistroSistemaDto datos)
+        {
+            var respuesta = await _loginService.GuardarSolicitudRegistro(datos);
             return Ok(respuesta);
         }
     }

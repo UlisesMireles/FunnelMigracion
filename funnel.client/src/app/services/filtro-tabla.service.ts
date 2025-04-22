@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { groupBy, sortBy, keys as getKeys } from "lodash-es";
 import { MatTableDataSource } from "@angular/material/table";
-import { CONDITIONS_FUNCTIONS } from "../components/shared/column-filter/filterFunction";
+import { CONDITIONS_FUNCTIONS } from "../components/utils/tablas/column-filter/filterFunction";
 @Injectable({
     providedIn: 'root'
 })

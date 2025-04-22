@@ -50,6 +50,7 @@ export interface Oportunidad {
     idContactoProspecto?: number;
     primerNombreContacto?: string;
     nombreContactoCompleto?: string;
+    bandera?: string;
 }
 
 export interface RequestOportunidad {
@@ -80,6 +81,7 @@ export interface Archivos {
     nombreArchivoFormateado: string;
     iniciales: string;
     numArchivos: number;
+    diasParaEliminacion: string;
 }
 export interface Tarjeta {
   idOportunidad: number;

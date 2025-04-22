@@ -1,0 +1,44 @@
+
+<div class="navbar">
+  <nav class="text-center m-auto">
+    <img width="80" [src]="baseUrl + '/assets/img/SFS blanco.png'" alt="logo SFS" class="m-auto">
+  </nav>
+</div>
+
+<div class="container-fluid container-all imagenFondo" [attr.style]="backgroundImg" style="padding: 0px; overflow-x: hidden; height: 89vh;">
+  <div class="contenedor">
+    <div class="cuadro">
+      <div class="texto-izquierda">
+        <i class="bi bi-x-lg float-end" (click)="cerrarModal()" style="cursor:pointer;"></i>
+        <h2>Doble Autenticación</h2>
+        <p>Se te ha enviado un código de autorización a tu correo electrónico. Para acceder, favor de ingresar el código de 6 dígitos.</p>
+      </div>
+      <form [formGroup]="twoFactorForm" class="text-center border border-light formLogin">
+        <input type="text" class="codigo-input col-10 large-placeholder" maxlength="6" placeholder="------" formControlName="codigo" autofocus>
+
+        <p class="tiempo-restante" *ngIf="!timeExpired" >Tiempo restante: <span id="tiempo">{{ formattedTime }}</span></p>
+        <p *ngIf="timeExpired" style="color: red; text-align: center; margin-top: 10px;">
+          El tiempo se ha agotado. Solicite un nuevo código.
+        </p>
+        <p-toast position="center"></p-toast>
+        <div class="acciones">
+          <button class="enviar col-10" (click)="EnviarCodigo()" style="cursor:pointer;">Enviar</button>
+        </div>
+        <div class="acciones text-center">
+          <a class="reenviar" (click)="enviarCorreoTwoFactor();" style="cursor:pointer;">Reenviar correo electrónico</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,137 @@
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [closable]="true"
+  [style]="{
+    width: '65rem',
+    height: historialOportunidad.length > 0 ? '50rem' : '30rem'
+  }"
+  (onHide)="close()"
+  (onShow)="onDialogShow()"
+  class="bodyDialog"
+>
+  <ng-template pTemplate="header">
+    <label class="margen">
+      {{ '' }}
+    </label>
+  </ng-template>
+
+  <ng-template pTemplate="content">
+    <div class="row">
+      <div>
+        <label class="margen text-left nombre-destacado">
+          {{ oportunidadForm.get('nombre')?.value }}
+        </label>
+      </div>
+    </div>
+    <div>
+        <label class="margen ">
+          <h2>{{ 'Documentos de: ' + nombreOportunidad }}</h2>
+        </label>
+    </div>
+    
+    <br />
+    <form [formGroup]="oportunidadForm">
+      <div class="row align-items-center g-0">
+        <div class="col-sm-12 d-flex flex-nowrap align-items-center"> 
+          <div class="col-sm-10 pe-2 d-flex flex-nowrap align-items-center"> 
+            <ng-container *ngIf="subirArchivos">
+              <div class="d-flex flex-nowrap w-100 align-items-center">
+                <div class="col-sm-3 pe-2">
+                  <label class="margen text-nowrap">Agregar Documento:</label>
+                </div>
+                
+                <div class="col-sm-6 pe-2">
+                  <div class="selected-files-container text-truncate"> 
+                    <div class="file-list">
+                      <ng-container *ngIf="archivosSeleccionados?.length; else noFiles">
+                        <div class="file-item" *ngFor="let file of archivosSeleccionados; let i = index">
+                          <span class="file-name text-truncate">{{ file.name }}</span>
+                          <button type="button" class="remove-file-btn" (click)="eliminarArchivoSeleccionado(i)">
+                            <i class="bi bi-x"></i>
+                          </button>
+                        </div>
+                      </ng-container>
+                      <ng-template #noFiles>
+                        <div class="file-item text-muted" style="width: 270px;">No hay archivos seleccionados</div>
+                      </ng-template>
+                    </div>
+                  </div>
+                </div>
+                
+               <div class="col-sm-2">
+                  <input #fileInput type="file" class="d-none" 
+                         (change)="onFileChange($event)" multiple
+                         accept=".doc, .docx, .pdf, .xls, .xlsx, .ppt, .pptx, .rar, .zip">
+                  <button pButton label="Elegir archivos" 
+                          class="p-button-secondary text-nowrap"
+                          (click)="fileInput.click()"></button>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+              <div class="col-sm-2 d-flex flex-nowrap gap-2" style="margin-left:-50px;"> 
+            <button pButton label="Guardar" (click)="guardarDocumento()" 
+                    severity="secondary" [disabled]="!archivosSeleccionados.length"></button>
+            <button pButton label="Salir" (click)="close()" severity="secondary"></button>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div class="row mt-3">
+      <div class="col-sm-12" *ngIf="historialOportunidad.length > 0; else noComments">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Usuario</th>
+              <th>Fecha</th>
+              <th>Nombre Documento</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of historialOportunidad" 
+                [class.archivo-eliminado]="item.diasParaEliminacion">
+              <td class="text-left">{{ item.iniciales }}</td>
+              <td class="text-left">{{ item.fechaRegistro | date:'dd/MM/yyyy' }}</td>
+              <td class="text-left">{{ item.nombreArchivoFormateado }}</td>
+              <td>
+                <ng-container *ngIf="!isInactivoBloqueado(item)">
+                  <p-button type="button" icon="bi bi-download" text 
+                            (click)="descargarArchivo(item)"/>
+                </ng-container>
+              </td>
+              <td>
+                <ng-container *ngIf="!isInactivoBloqueado(item)">
+                  <ng-container *ngIf="!item.diasParaEliminacion">
+                    <p-button type="button" icon="bi bi-trash" text  
+                              (click)="eliminarArchivo(item)"
+                              pTooltip="Eliminar archivo"
+                              tooltipPosition="top"/>
+                  </ng-container>
+                  
+                  <ng-container *ngIf="item.diasParaEliminacion && item.diasParaEliminacion !== '0'">
+                    <div class="restore-button-container">
+                      <p-button type="button" icon="bi bi-arrow-counterclockwise" text  
+                                (click)="recuperarArchivo(item)"
+                                pTooltip="Recuperar archivo (se eliminará en {{item.diasParaEliminacion}} día(s))"
+                                tooltipPosition="top"
+                                styleClass="p-button-success"/>
+                      <span class="days-badge">{{item.diasParaEliminacion}}</span>
+                    </div>
+                  </ng-container>
+                </ng-container>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </ng-template>    
+
+  <ng-template #noComments>
+    <p class="text-center">Sin Archivos</p>
+  </ng-template>
+</p-dialog>

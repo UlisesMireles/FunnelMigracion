@@ -1,0 +1,221 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12" style="text-align: left; margin-top: 25px; margin-left: 10px; padding-left: 0">
+      <h3></h3>
+    </div>
+    
+    <div class="col-12">
+      <div class="row contenedorTabla">
+        <div *ngIf="loading" class="loading-message" style="padding-top: 50px;">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
+          </div>
+          <p>Cargando...</p>
+        </div>
+        <p-table *ngIf="!loading" #dt [stripedRows]="true" [value]="oportunidadesPerdidas" dataKey="id" [rows]="10"
+          [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 20, 50]" [paginator]="true" paginatorPosition="both"
+          currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros"
+          [columns]="lsColumnasAMostrar"
+          [resizableColumns]="true" [reorderableColumns]="true"
+          [globalFilterFields]="['nombre','nombreSector','nombreOportunidad','abreviatura','stage','iniciales','nombreContacto','entrega','monto','probabilidadOriginal','probabilidad','montoNormalizado','fechaRegistro','diasFunnelOriginal','fechaEstimadaCierreOriginal','fechaModificacion']"
+          [tableStyle]="{'min-width': anchoTabla + '%'}">
+          
+          <ng-template class="divAccionesTabla" #caption>
+            <div class="col-12" style="text-align: left; font-weight: bold; margin-top: 20px">
+              <h3>Oportunidades Perdidas</h3>
+            </div>
+            <div class="row">
+              <div class="col inDivDatatableHeader" style="text-align:right; margin-right:5px">
+                <p-dropdown [options]="years" [(ngModel)]="selectedYear" (onChange)="filterByYear()" placeholder="Selecciona un año"
+                  [ngStyle]="{'margin-right': '5px'}">
+                </p-dropdown>
+                <p-button label="" icon="bi bi-arrow-clockwise" (click)="clear(dt)" severity="secondary"
+                pTooltip="Refrescar" tooltipPosition="top" styleClass="custom-button refresh-button"
+                [ngStyle]="{'margin-right': '5px'}" />
+                <p-button label="" icon="bi bi-download" severity="secondary" (click)="exportPdf(dt)" 
+                pTooltip="Descargar PDF" tooltipPosition="top" styleClass="custom-button download-button"
+                [ngStyle]="{'margin-right': '5px'}"/>
+                <p-button label="" icon="bi-list" (click)="agregarColumna($event)" severity="secondary"  
+                pTooltip="Agregar columna" tooltipPosition="top" styleClass="custom-button column-button"
+                [ngStyle]="{'margin-right': '5px'}"/>
+              </div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header" let-columns>
+            <tr class="custom-header">
+                <th *ngFor="let def of lsColumnasAMostrar" pSortableColumn="{{def.key}}" pReorderableColumn [class.sort-active]="isSorted(def.key)">
+                    {{def.valor}}
+                  <p-sortIcon field="{{def.key}}"></p-sortIcon>
+                </th>
+                <th></th> 
+            </tr>
+            <tr>
+              <th *ngFor="let def of lsColumnasAMostrar" style="min-width: 30%;">
+                <ng-container *ngIf="def.key !== 'idOportunidad' && def.key !== 'comentario'">
+                  <ng-container *ngIf="def.groupColumn">
+                    <p-columnFilter field="{{def.key}}" matchMode="in" [showMenu]="false">
+                      <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                        <p-multiSelect [ngModel]="value" [options]="obtenerArregloFiltros(oportunidadesPerdidas, def.key)" placeholder=""
+                          (onChange)="filter($event.value)">
+                          <ng-template let-option pTemplate="item">
+                            <div class="p-multiselect-representative-option">
+                              <span class="ml-1">{{option}}</span>
+                            </div>
+                          </ng-template>
+                        </p-multiSelect>
+                      </ng-template>
+                    </p-columnFilter>
+                  </ng-container>
+                  <ng-container *ngIf="!def.groupColumn">
+                    <div [ngSwitch]="def.tipoFormato">
+                      <div *ngSwitchCase="'text'">
+                        <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false">
+                          <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                            <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
+                              (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
+                          </ng-template>
+                        </p-columnFilter>
+                      </div>
+                      <div *ngSwitchCase="'currency'">
+                        <p-columnFilter type="numeric" field="{{def.key}}" [showButtons]="false" [maxFractionDigits]="7">
+                          <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                            <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
+                                (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
+                          </ng-template>
+                        </p-columnFilter>
+                      </div>
+                      <div *ngSwitchCase="'date'">
+                        <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false">
+                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
+                                    (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
+                            </ng-template>
+                        </p-columnFilter>
+                    </div>
+                      <div *ngSwitchDefault>
+                        <p-columnFilter *ngIf="def.tipoFormato !== 'text' && def.tipoFormato !== 'currency' && def.tipoFormato !== 'date'"
+                          type="{{def.tipoFormato}}" field="{{def.key}}" [showButtons]="false" [showMenu]="false">
+                        </p-columnFilter>
+                      </div>
+                    </div>
+                  </ng-container>
+                </ng-container>
+              </th>
+              <th></th> 
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr>
+              <td *ngFor="let def of lsColumnasAMostrar" 
+              [ngStyle]="{
+                'text-align':
+                  def.key === 'abreviatura' ? 'center' : 
+                  def.key === 'entrega' ? 'center' : 
+                  def.key === 'stage' ? 'center' :
+                  def.key === 'iniciales' ? 'center' :
+                  def.key === 'nombreContacto' ? 'center' :
+                  (def.valor.includes('%')) ? 'center' :
+                  def.tipoFormato === 'currency' ? 'right' :
+                  (def.tipoFormato === 'number' || def.tipoFormato === 'date') ? 'center' : 'left',
+                  'width': def.key === 'stage' || def.key === 'abreviatura' || def.key === 'entrega' || def.key === 'iniciales' || def.key === 'nombreContacto' ? '80px' : ''
+              }">
+                <ng-container [ngSwitch]="def.tipoFormato">
+                  <span *ngSwitchCase="'text'">
+                    <span *ngIf="def.key === 'abreviatura'" pTooltip="{{rowData['descripcion']}}" tooltipPosition="top">
+                      {{ rowData[def.key] }}
+                    </span>
+                    <span *ngIf="def.key === 'nombreContacto'" pTooltip="{{rowData[def.key]}}" tooltipPosition="top">
+                      {{ rowData[def.key]?.split(' ')[0] }}
+                    </span>
+                    <span *ngIf="def.key === 'iniciales'" pTooltip="{{rowData['nombreEjecutivo']}}" tooltipPosition="top">
+                      {{ rowData[def.key] }}
+                    </span>
+                    <span *ngIf="def.key !== 'nombreContacto' && def.key !== 'iniciales' && def.key !== 'abreviatura'">
+                      {{ rowData[def.key] }}
+                    </span>
+                  </span>
+                  
+                  <span *ngSwitchCase="'currency'">
+                    {{ rowData[def.key] | currency:'$':'symbol':'1.2-2' }}
+                  </span>
+                  
+                  <span *ngSwitchCase="'number'">
+                    <span *ngIf="def.key === 'fechaModificacion'">
+                      {{ rowData[def.key] }}
+                    </span>
+                    <span *ngIf="def.key !== 'fechaModificacion'">
+                      {{ rowData[def.key] | number:'1.0-2' }}
+                    </span>
+                  </span>
+                  
+                  <span *ngSwitchCase="'date'" >
+                    {{ rowData[def.key] | date:'dd/MM/yyyy' }}
+                  </span>
+                </ng-container>
+              </td>
+              <td style="position: relative;">
+                <div style="position: relative; display: inline-block;">
+                  <p-button type="button" icon="bi bi-file-earmark-text fs-3" text (click)="seguimiento(rowData)"
+                  pTooltip="Seguimiento" tooltipPosition="top" styleClass="blue-icon" >
+                  </p-button>
+                  <span class="badge">{{ rowData.totalComentarios || 0 }}</span>
+                </div>
+                <div style="position: relative; display: inline-block; padding-left: 6px; padding-right: 6px;">
+                  <p-button type="button" icon="bi bi-folder2 fs-3" text (click)="documento(rowData)"
+                  pTooltip="Documentos" tooltipPosition="top" styleClass="black-icon">
+                  </p-button>
+                  <span class="badge">{{ rowData.totalArchivos || 0}}</span>
+                </div>
+                <p-button styleClass="coloreditar-icon" (click)="actualiza(rowData)" pTooltip="Editar registro" tooltipPosition="top">
+                  <span class="custom-pencil">✏️</span> 
+                </p-button>
+              </td>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="footer" let-columns #footer>
+            <tr class="custom-footer">
+              <td *ngFor="let def of lsColumnasAMostrar" 
+                  [ngStyle]="{
+                    'text-align': 
+                      def.tipoFormato === 'currency' ? 'right' : 
+                      (def.tipoFormato === 'number' || def.tipoFormato === 'date') ? 'center' : 'left'
+                  }">
+                <ng-container *ngIf="def.key === 'idOportunidad'">
+                  Total de registros: {{ getTotalCostPrimeNg(dt, def) }}
+                </ng-container>
+                <ng-container *ngIf="def.tipoFormato === 'currency'">
+                  {{ getTotalCostPrimeNg(dt, def) | currency:'$':'symbol':'1.2-2' }}
+                </ng-container>
+                <ng-container *ngIf="def.tipoFormato !== 'currency' && def.key !== 'nombre' && def.key !== 'idOportunidad'">
+                  {{ getTotalCostPrimeNg(dt, def) | number: '1.0-2' }}
+                </ng-container>
+              </td>
+              <td></td>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="5">No preguntas encontradas.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+      <p-toast position="center"></p-toast>
+    </div>
+  </div>
+</div>
+
+<app-modal-oportunidades-perdidas [(visible)]="modalVisible" [title]="'Editar Datos de '" (closeModal)="onModalClose()"
+  (result)="manejarResultado($event)" [oportunidades]="oportunidadesPerdidas" [oportunidad]="oportunidadSeleccionadaPerdidas">
+</app-modal-oportunidades-perdidas>
+
+<app-seguimiento-oportunidades [(visible)]="modalSeguimientoVisible" [title]="'Seguimiento de '" (closeModal)="onModalClose()"
+  (result)="manejarResultado($event)" [insertar]="insertar" [oportunidades]="oportunidadesPerdidas" [oportunidad]="oportunidadSeleccionadaPerdidas">
+</app-seguimiento-oportunidades>
+
+<app-documentos-oportunidades [(visible)]="modalDocumentosVisible" [title]="'Documentos de '" (closeModal)="onModalClose()"
+  (result)="manejarResultado($event)" [insertar]="insertar" [oportunidades]="oportunidadesPerdidas" [oportunidad]="oportunidadSeleccionadaPerdidas">
+</app-documentos-oportunidades>

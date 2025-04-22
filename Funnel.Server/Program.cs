@@ -1,5 +1,8 @@
+using DinkToPdf.Contracts;
+using DinkToPdf;
 using Funnel.Server.Extensions;
 using Microsoft.Extensions.Configuration;
+using Funnel.Server.PdfTools;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +25,10 @@ builder.Services.AddCors();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+var context = new CustomAssemblyLoadContext();
+context.LoadUnmanagedLibrary(Path.Combine(Directory.GetCurrentDirectory(), "PdfTools", "libwkhtmltox.dll"));
+builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 //builder.Services.AddOpenApi();
 

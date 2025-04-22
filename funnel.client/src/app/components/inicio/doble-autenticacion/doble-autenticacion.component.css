@@ -1,0 +1,143 @@
+/* Estilos base */
+.navbar {
+  background-color: #103D66;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 65px;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+  .navbar nav {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+  }
+
+  .navbar img {
+    max-width: 100%;
+    height: auto;
+    margin-right: 20px;
+    justify-content: center;
+    align-items: center;
+  }
+
+body {
+    font-family: Arial, sans-serif;
+    background-image: url('/assets/img/PMAGRISES.png');
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    margin: 0;
+    padding: 0;
+    min-height: 100vh; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.imagenFondo {
+   
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    z-index: -1; 
+}
+
+.contenedor {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh; 
+    z-index: 2; 
+}
+
+.cuadro {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 350px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center; 
+    z-index: 3; 
+}
+
+
+.texto-izquierda {
+    text-align: left;
+}
+
+h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+p {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.codigo-input {
+    padding: 10px;
+    font-size: 18px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.tiempo-restante {
+    font-size: 14px;
+    color: #888; 
+    font-weight: bold; 
+}
+
+.tiempo-restante span {
+    font-weight: bold; 
+}
+
+.acciones {
+    justify-content: space-between; 
+    align-items: center;
+    width: 100%;
+    margin-top: 15px;
+    gap: 10px; 
+}
+
+.reenviar {
+    color: #888; 
+    text-decoration: underline; 
+    font-weight: normal; 
+    text-align: left; 
+    white-space: nowrap;
+}
+
+.enviar {
+    background-color: #103D66;
+    color: white;
+    border: none;
+    padding: 10px 40px; 
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.enviar:hover {
+    background-color: #0230617e;
+}
+
+.large-placeholder::placeholder {
+    font-size: 1.5rem; 
+    letter-spacing: 0.2rem; 
+    color: #999; 
+    text-align: center; 
+  }

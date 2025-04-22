@@ -34,3 +34,8 @@
     border: 0.1px solid #872B07;
     font-size: 12px;
 }
+
+.col-12 h3 {
+    position: relative;
+    top: -20px;  
+  }

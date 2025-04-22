@@ -92,5 +92,137 @@ namespace Funnel.Data
             }
             return version;
         }
+
+        public async Task<UsuarioDto> ObtenerInformacionUsuario(string usuario)
+        {
+            UsuarioDto informacionUsuario = new UsuarioDto();
+            try
+            {
+                IList<ParameterSQl> list = new List<ParameterSQl>
+                {
+
+                    DataBase.CreateParameterSql("@pBandera", SqlDbType.NVarChar, 200, ParameterDirection.Input, false, null, DataRowVersion.Default, "USUARIO-BY-USERNAME"),
+                    DataBase.CreateParameterSql("@Usuario", SqlDbType.NVarChar, 20, ParameterDirection.Input, false, null, DataRowVersion.Default, usuario)
+                };
+                using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoUsuarios", CommandType.StoredProcedure, list, _connectionString))
+                {
+                    while (reader.Read())
+                    {
+                        informacionUsuario.Password = ComprobarNulos.CheckStringNull(reader["Password"]);
+                        informacionUsuario.Correo = ComprobarNulos.CheckStringNull(reader["CorreoElectronico"]);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                informacionUsuario.Result = false;
+                informacionUsuario.ErrorMessage = "Ocurrio un Error de Base de datos:" + ex.Message;
+            }
+            return informacionUsuario;
+        }
+
+        public async Task<string> ObtenerInformacionNotificacionCorreo(string bandera, string usuario, string nombre, string apellidoPat, string apellidoMat)
+        {
+            string cuerpoCorreo = "";
+            try
+            {
+                IList<ParameterSQl> list = new List<ParameterSQl>
+                {
+
+                    DataBase.CreateParameterSql("@pBandera", SqlDbType.NVarChar, 200, ParameterDirection.Input, false, null, DataRowVersion.Default, bandera),
+                    DataBase.CreateParameterSql("@pUsuario", SqlDbType.NVarChar, 20, ParameterDirection.Input, false, null, DataRowVersion.Default, usuario),
+                    DataBase.CreateParameterSql("@pNombre", SqlDbType.NVarChar, 100, ParameterDirection.Input, false, null, DataRowVersion.Default, nombre),
+                    DataBase.CreateParameterSql("@pApellidoPat", SqlDbType.NVarChar, 100, ParameterDirection.Input, false, null, DataRowVersion.Default, apellidoPat),
+                    DataBase.CreateParameterSql("@pApellidoMat", SqlDbType.NVarChar, 100, ParameterDirection.Input, false, null, DataRowVersion.Default, apellidoMat)
+                };
+                using (IDataReader reader = await DataBase.GetReaderSql("F_NotificacionCorreo", CommandType.StoredProcedure, list, _connectionString))
+                {
+                    while (reader.Read())
+                    {
+                        cuerpoCorreo = ComprobarNulos.CheckStringNull(reader["CuerpoCorreo"]);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+            return cuerpoCorreo;
+        }
+
+        public async Task<UsuarioDto> AdministradorEmpresas()
+        {
+            UsuarioDto informacionUsuario = new UsuarioDto();
+            try
+            {
+                IList<ParameterSQl> list = new List<ParameterSQl>
+                {
+
+                    DataBase.CreateParameterSql("@pBandera", SqlDbType.NVarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "CONSULTA-ADMINISTRADOR"),
+                };
+                using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoSuperAdmin", CommandType.StoredProcedure, list, _connectionString))
+                {
+                    while (reader.Read())
+                    {
+                        informacionUsuario.IdAdministrador = ComprobarNulos.CheckIntNull(reader["IdAdministrador"]);
+                        informacionUsuario.Nombre = ComprobarNulos.CheckStringNull(reader["Nombre"]);
+                        informacionUsuario.Usuario = ComprobarNulos.CheckStringNull(reader["Usuario"]);
+                        informacionUsuario.Correo = ComprobarNulos.CheckStringNull(reader["CorreoElectronico"]);
+                        informacionUsuario.Clave = ComprobarNulos.CheckStringNull(reader["Clave"]);
+                        informacionUsuario.FechaRegistro = ComprobarNulos.CheckDateTimeNull(reader["FechaCreacion"]);
+                        informacionUsuario.FechaModificacion = ComprobarNulos.CheckDateTimeNull(reader["FechaModificacion"]);
+                        informacionUsuario.Activo = ComprobarNulos.CheckBooleanNull(reader["Activo"]);
+                        informacionUsuario.SuperAdministrador = ComprobarNulos.CheckIntNull(reader["SuperAdministrador"]);
+                        informacionUsuario.CodigoAutenticacion = ComprobarNulos.CheckStringNull(reader["CodigoAutenticacion"]);
+                        informacionUsuario.FechaInicio = ComprobarNulos.CheckDateTimeNull(reader["FechaInicio"]);
+                        informacionUsuario.FechaFin = ComprobarNulos.CheckDateTimeNull(reader["FechaFin"]);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                informacionUsuario.Result = false;
+                informacionUsuario.ErrorMessage = "Ocurrio un Error de Base de datos:" + ex.Message;
+            }
+            return informacionUsuario;
+        }
+
+        public async Task<BaseOut> SolicitudesUsuarios(SolicitudRegistroSistemaDto datos)
+        {
+            BaseOut result = new BaseOut();
+            try
+            {
+                IList<ParameterSQl> list = new List<ParameterSQl>
+                {
+                    DataBase.CreateParameterSql("@pNombre", SqlDbType.VarChar, 100, ParameterDirection.Input, false, null, DataRowVersion.Default, datos.Nombre),
+                    DataBase.CreateParameterSql("@pApellidos", SqlDbType.VarChar, 200, ParameterDirection.Input, false, null, DataRowVersion.Default, datos.Apellido),
+                    DataBase.CreateParameterSql("@pCorreo", SqlDbType.VarChar, 500, ParameterDirection.Input, false, null, DataRowVersion.Default, datos.Correo),
+                    DataBase.CreateParameterSql("@pTelefono", SqlDbType.VarChar, 30, ParameterDirection.Input, false,null, DataRowVersion.Default, datos.Telefono),
+                    DataBase.CreateParameterSql("@pEmpresa", SqlDbType.VarChar, 200, ParameterDirection.Input, false,null, DataRowVersion.Default, datos.Empresa),
+                    DataBase.CreateParameterSql("@pSitioWeb", SqlDbType.VarChar, 200, ParameterDirection.Input, false,null, DataRowVersion.Default, datos.UrlSitio),
+                    DataBase.CreateParameterSql("@pNumEmpleados", SqlDbType.VarChar, 50, ParameterDirection.Input, false,null, DataRowVersion.Default, datos.NoEmpleados)
+                };
+
+                // Ejecutar el SP sin leer datos
+                using (IDataReader reader = await DataBase.GetReaderSql("F_SolicitudesUsuarios", CommandType.StoredProcedure, list, _connectionString))
+                {
+                    while (reader.Read())
+                    {
+
+                    }
+                }
+                result.ErrorMessage = "";
+                result.Id = 1;
+                result.Result = true;
+
+            }
+            catch (Exception ex)
+            {
+                result.ErrorMessage = "Error al guardar la solicitud de usuario: " + ex.Message;
+                result.Id = 0;
+                result.Result = false;
+            }
+            return result;
+        }
     }
 }

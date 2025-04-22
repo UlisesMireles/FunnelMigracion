@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import{ Observable } from 'rxjs';
 
-import { RequestProspecto } from '../interfaces/prospecto';
+import { Prospectos, RequestProspecto } from '../interfaces/prospecto';
 import { baseOut } from '../interfaces/utils/utils/baseOut';
 @Injectable({
   providedIn: 'root'
@@ -24,7 +24,7 @@ export class ProspectoService {
     });
   }
 
-  postInsertProspecto(data: RequestProspecto): Observable <baseOut>{
+  postInsertProspecto(data: Prospectos): Observable <baseOut>{
     console.log(data);
     return this.http.post<baseOut>(this.baseUrl+'api/Prospectos/GuardarProspecto', data);
   }
@@ -33,5 +33,13 @@ export class ProspectoService {
     return this.http.get(`${this.baseUrl}api/Prospectos/ConsultarTopVeinte`, {
       params: { idEmpresa: idEmpresa.toString() }
     });
+  }
+
+  descargarReporteProspectos(data: any): Observable<Blob> {
+    return this.http.post(`${this.baseUrl}api/Prospectos/DescargarReporteProspectos`, data, { responseType: 'blob' });
+  }
+
+  descargarReporteTop20(data: any): Observable<Blob> {
+    return this.http.post(`${this.baseUrl}api/Prospectos/DescargarReporteTop20`, data, { responseType: 'blob' });
   }
 }

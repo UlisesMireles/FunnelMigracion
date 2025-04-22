@@ -10,7 +10,7 @@ namespace Funnel.Data.Interfaces
 
         public Task<ArchivoDto> GuardarArchivo(ArchivoDto request);
 
-        public Task<ArchivoDto> GuardarArchivo(IFormFile archivo, ArchivoDto request);
+        public  Task<List<ArchivoDto>> GuardarArchivos(List<IFormFile> archivos, ArchivoDto request);
 
         public Task<BaseOut> EliminarArchivo(int idArchivo);
         public Task<BaseOut> RecuperarArchivo(int idArchivo);

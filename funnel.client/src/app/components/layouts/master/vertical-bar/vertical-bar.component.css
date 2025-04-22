@@ -1,0 +1,375 @@
+.sidebar {
+  width: 60px;
+  height: 100vh;
+  background-color:  #103D66;
+  color: white; /* Color de la letra */
+  transition: width 0.3s ease;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-bottom: 20px;
+  left: 0;
+  top: 40px;
+  padding-top: 50px;
+}
+
+.sidebar.expanded {
+  width: 160px;
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+}
+
+.menu-item {
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  position: relative;
+}
+
+.menu-item:hover {
+  background-color: rgba(16, 61, 102, 0.5);
+}
+
+
+.expand-btn-container {
+  position: absolute;
+  bottom: 200px;
+  right: 10px;
+  width: auto;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 5px; 
+  overflow: visible; 
+}
+
+.expand-btn {
+  cursor: pointer;
+  padding: 5px;       
+  border-radius: 50%;
+  background-color: #103D66;
+  transition: background 0.3s ease;
+  margin-left: 0;     
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.expand-btn:hover {
+  background-color: #6c757d;
+}
+
+
+.sidebar.expanded .tooltip-box {
+  display: block;
+}
+
+
+/* Estilos del submenú con tema oscuro y separación */
+.submenu {
+  position: absolute;
+  top: 0;
+  left: 100%; /* Desplaza el submenú fuera de la barra lateral */
+ /* Espacio entre la barra y el submenú */
+  background-color: #103D66;
+  color: white; /* Color de la letra */
+  border-radius: 8px;
+  padding: 10px 0;
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.5);
+  min-width: 180px;
+  display: none;
+  border: none; /* Asegura que no haya bordes */
+  text-align: left;
+  list-style-type: none;
+  border-left: 1px solid #fff;
+}
+
+/* Bordes y separación de los elementos del submenú */
+.submenu li {
+  padding: 6px 7px;
+  list-style: none;
+  cursor: pointer;
+  transition: background 0.3s;
+  border-bottom: none
+
+}
+
+/* Último elemento sin borde */
+.submenu li:last-child {
+  border-bottom: none;
+}
+
+/* Efecto hover en los elementos del submenú */
+.submenu li:hover {
+  background-color: rgba(16, 61, 102, 0.5);  /* C cambio de color */
+  color: white; /* Color de la letra */
+}
+
+/* Mostrar el submenú cuando el usuario pasa el mouse */
+.menu-item:hover .submenu {
+  display: block;
+}
+
+.sidebar,
+.submenu,
+.expand-button {
+  background-color: #103D66; /* Color unificado */
+  color: white; /* Color de la letra */
+}
+
+/* 📌 Separador antes del botón "Ampliar navegación" */
+.sidebar .separator {
+  width: 50%; /* No ocupa todo el ancho */
+  height: 1px;
+  background-color: white; /* Color de la línea */
+  margin: 15px auto; /* Espaciado arriba/abajo y centrado */
+  opacity: 0.5; /* Un poco tenue */
+}
+
+/* 📌 Botón de "Ampliar navegación" */
+.expand-button {
+  position: absolute;
+  bottom: 20px; /* Lo deja separado del borde inferior */
+  right: 10px; /* Alineado a la derecha */
+  padding: 6px 10px; /* Botón más pequeño */
+  font-size: 14px; /* Letra más pequeña */
+  border: none;
+  border-radius: 6px;
+  text-align: center;
+  cursor: pointer;
+  background-color: #103D66; /* Fondo igual que el navbar */
+  color: white; /* Color de la letra */
+}
+
+/* 📌 Tooltip (el cuadro tipo bocadillo) */
+.expand-button:hover::after {
+  content: "Ampliar la navegación";
+  position: absolute;
+  bottom: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: black;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* El contenedor de los botones de flecha */
+.scroll-buttons {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+/* Evitar que los botones de flecha estén demasiado pegados */
+.scroll-btn.up {
+  margin-bottom: 10px;
+}
+
+.scroll-btn.down {
+  margin-top: 10px;
+}
+
+.up-btn {
+  top: 0;
+  transform: translateY(-50%);
+}
+
+.down-btn {
+  bottom: 0;
+  transform: translateY(50%);
+}
+
+.scroll-btn i {
+  font-size: 14px;
+  color: #fff;
+}
+
+.scroll-btn {
+  background-color: #2d3e50;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  margin: 5px auto;
+  padding: 4px 8px; /* Reduce ligeramente el padding */
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;  /* Asegura que el ícono esté centrado */
+  justify-content: center;
+  align-items: center;
+  height: 10;  /* Ajusta la altura */
+  width: 10;   /* Ajusta el ancho */
+}
+
+.scroll-btn:hover {
+  background-color: #1a2533;
+}
+
+
+/* Estilo para los elementos del submenú */
+.submenu li a {
+  color: white; /* Cambia el color de texto a negro (o el que prefieras) */
+  text-decoration: none; /* Elimina el subrayado predeterminado de los enlaces */
+  padding: 5px;
+  display: block; /* Hace que el enlace ocupe todo el ancho del li */
+
+}
+
+/* Si quieres cambiar el color de texto cuando el submenú esté en hover */
+.submenu li a:hover {
+  color: white; /* Cambia el color al pasar el mouse (puedes usar otro color) */
+  text-decoration: none; /* Asegura que no haya subrayado */
+}
+/* Estilo para el encabezado del submenú */
+.submenu-header {
+  font-weight: bold;
+  font-size: 1.1em;
+  padding: 5px;
+  background-color: #103D66;
+  border-bottom: 1px solid #ddd;
+  color: white;
+  cursor: default !important; /* Cambia el cursor a una flecha normal */
+}
+
+.submenu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Distribuye el texto y el icono */
+  gap: 8px; /* Espaciado entre el nombre y el icono */
+}
+
+
+.icono-naranja {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.tooltip {
+  visibility: hidden;
+  background-color:  #103D66;
+  color: white; /* Color de la letra */
+  text-align: center;
+  padding: 8px 12px;
+  border-radius: 5px;
+  position: absolute;
+  left: 100%; /* A la derecha del icono */
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.2s ease;
+  margin-left: 27px; /* Espacio entre el icono y el tooltip */
+}
+
+/* Agregamos el pico al tooltip (triángulo) */
+.tooltip::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+
+  transform: translateY(-50%);
+  border-style: solid;
+  border-color: transparent #103D66 transparent transparent; /* Pico naranja */
+  border-width: 15px; /* Aumenta el tamaño del triángulo */
+  left: -20px; /* Ajusta la posición del pico */
+}
+
+.icono-naranja:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(-50%) translateX(5px); /* Desplazamiento del tooltip */
+}
+
+.icono-naranja i {
+  color: #ff7b00;  /* Asegura que el icono sea naranja */
+}
+.tooltip-box {
+  position: absolute;
+  top: 50%;
+  left: calc(100% + 15px); 
+  transform: translateY(-50%);
+  background-color: #103D66;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s;
+  z-index: 1000;
+  pointer-events: none;
+  margin-left: 0;
+}
+
+
+.expand-btn-container:hover .tooltip-box {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Agregar el pico apuntando a la izquierda */
+.tooltip-box::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 100%; 
+  transform: translateY(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: transparent #103D66 transparent transparent;
+}
+
+
+/* Estilo de los botones cuando están en hover */
+.scroll-btn:hover i {
+  color: #103D66;
+}
+
+/* Espaciado entre los botones de scroll */
+.scroll-btn.up-btn {
+  margin-bottom: 5px;
+}
+
+.scroll-btn.down-btn {
+  margin-top: 5px;
+}
+
+
+/*tamaño de los menus*/
+
+.menu-item i {
+  font-size: 20px; /* Ajusta el tamaño según lo necesites */
+}
+
+.expand-btn i {
+  font-size: 20px; /* Para el botón de expandir */
+  padding-left: 0px;
+}
+
+/*
+
+.menu-container {
+  max-height: 400px;
+  overflow: hidden;
+  position: relative;
+}*/
+.submenu,
+.expand-button {
+  background-color: rgba(16, 61, 102, 0.6);
+  color: #FFFFFF;
+}

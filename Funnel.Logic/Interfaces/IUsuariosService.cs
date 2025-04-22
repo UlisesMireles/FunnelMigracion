@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Funnel.Logic.Interfaces;
+using Microsoft.AspNetCore.Http;
+using DinkToPdf;
 
 
 namespace Funnel.Logic.Interfaces
@@ -17,6 +19,7 @@ namespace Funnel.Logic.Interfaces
         Task<BaseOut> GuardarUsuarios(UsuarioDto request);
         public Task<List<ComboTiposUsuariosDto>> ComboTiposUsuarios();
         Task<bool> ValidarInicialesExistente(string iniciales, int idEmpresa);
-
+        Task<BaseOut> GuardarImagen(List<IFormFile> imagen, UsuarioDto request);
+        public Task<HtmlToPdfDocument> GenerarReporteUsuarios(UsuariosReporteDTO usuarios, string RutaBase, string titulo);
     }
 }

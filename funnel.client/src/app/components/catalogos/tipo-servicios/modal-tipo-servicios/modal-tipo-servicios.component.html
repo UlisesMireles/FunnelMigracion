@@ -2,7 +2,7 @@
   [(visible)]="visible"
   [modal]="true"
   [closable]="true"
-  [style]="{ width: '35rem', height: '20rem' }"
+  [style]="{ width: '35rem', height: 'auto' }"
   (onHide)="close()"
   (onShow)="onDialogShow()"
   class="bodyDialog"
@@ -15,15 +15,16 @@
     
     <label *ngIf="insertar" class="margen">Nuevo Servicio</label>
   </ng-template>
+  <br>
 
   <ng-template pTemplate="content">
     <form [formGroup]="servicioForm">
 
-      <div class="row inptSpace">
+      <div class="row ">
         <div class="col-sm-4 lbl">
           <label for="descripcion">Descripción: </label>
         </div>
-        <div class="col-sm-8 inptSpace">
+        <div class="col-sm-8 ">
           <input pInputText class="inptSize" formControlName="descripcion" />
           <span *ngIf="servicioForm.get('descripcion')?.invalid && servicioForm.get('descripcion')?.touched" class="text-danger"><br>
             <ng-container *ngIf="servicioForm.get('descripcion')?.errors?.['required']">El nombre del servicio es obligatorio.</ng-container>
@@ -31,27 +32,32 @@
         </div>
       </div>
       
-      <div class="row inptSpace">
+      <div class="row ">
         <div class="col-sm-4 lbl">
           <label for="abreviatura">Abreviatura: </label>
         </div>
-        <div class="col-sm-8 inptSpace">
+        <div class="col-sm-8 ">
           <input pInputText class="inptSize" formControlName="abreviatura" />
           <span *ngIf="servicioForm.get('abreviatura')?.invalid && servicioForm.get('abreviatura')?.touched" class="text-danger"><br>
             <ng-container *ngIf="servicioForm.get('abreviatura')?.errors?.['required']">La abreviatura del servicio es obligatoria.</ng-container>
           </span>
         </div>
       </div>
-
-      
-      
+      <div class="row " *ngIf="!insertar">
+        <div class="col-sm-4 lbl">
+          <label for="estatus">Estatus: </label>
+        </div>
+        <div class="col-sm-8 ">
+          <p-checkbox formControlName="estatus" class="inptSize" [binary]="true"></p-checkbox><label> Activo</label>
+        </div>
+      </div>
   </form>
 
   </ng-template>
 
   <ng-template pTemplate="footer">
-    <button *ngIf="!insertar" pButton label="Actualizar" (click)="guardarServicio()" severity="secondary"></button>
-    <button *ngIf="insertar" pButton label="Agregar" (click)="guardarServicio()" severity="secondary"></button>
+    <button *ngIf="!insertar" pButton label="Actualizar" (click)="guardarServicio()" [disabled]="servicioForm.pristine || servicioForm.invalid" severity="secondary"></button>
+    <button *ngIf="insertar" pButton label="Agregar" (click)="guardarServicio()" [disabled]="servicioForm.pristine || servicioForm.invalid" severity="secondary"></button>
     <button pButton label="Cancelar" (click)="close()" severity="secondary"></button>
   </ng-template>
 </p-dialog>

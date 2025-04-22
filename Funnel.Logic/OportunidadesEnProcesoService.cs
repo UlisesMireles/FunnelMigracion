@@ -1,9 +1,14 @@
-﻿using Funnel.Data;
+﻿using DinkToPdf;
+using Funnel.Data;
 using Funnel.Data.Interfaces;
 using Funnel.Logic.Interfaces;
 using Funnel.Models.Base;
 using Funnel.Models.Dto;
+using Microsoft.Identity.Client;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Reflection;
+using System.Text;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Funnel.Logic
@@ -86,7 +91,7 @@ namespace Funnel.Logic
             DateTimeFormatInfo formatoFecha = CultureInfo.CurrentCulture.DateTimeFormat;
             for (int i = 0, j = primerMes; i < 4; i++, j++)
             {
-                
+
                 if (j > 12)
                 {
                     meses[i] = j - 12;
@@ -103,7 +108,7 @@ namespace Funnel.Logic
                 }
             }
 
-            for(int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
                 lista.Add(new OportunidadesTarjetasDto
                 {
@@ -155,7 +160,7 @@ namespace Funnel.Logic
             List<ComboEtapasDto> etapas = await _oportunidadesData.ComboEtapas(IdEmpresa);
             List<OportunidadesEnProcesoDto> oportunidades = await _oportunidadesData.ConsultarOportunidadesEnProceso(IdUsuario, IdEmpresa, 1);
 
-            foreach(var item in etapas)
+            foreach (var item in etapas)
             {
                 lista.Add(new OportunidadesTarjetasDto
                 {
@@ -191,7 +196,7 @@ namespace Funnel.Logic
                     }).ToList()
                 });
             }
-            
+
 
             lista = lista.Where(x => x.Nombre != "Sin etapa" && x.Anio > 0).OrderBy(x => x.Anio).ToList();
             return lista;
@@ -200,6 +205,140 @@ namespace Funnel.Logic
         {
             request.Bandera = "UPD-FECHAESTIMADA";
             return await _oportunidadesData.ActualizarFechaEstimada(request);
+        }
+
+        public async Task<HtmlToPdfDocument> GenerarReporteSeguimientoOportunidades(int IdEmpresa, int IdOportunidad, string RutaBase)
+        {
+            var datos = await _oportunidadesData.ConsultarHistoricoOportunidades(IdEmpresa, IdOportunidad);
+
+            var rutaPlantillaHeader = Path.Combine(RutaBase, "PlantillasReporteHtml", "PlantillaReporteFunnelHeader.html");
+            var rutaPlantillaBody = Path.Combine(RutaBase, "PlantillasReporteHtml", "PlantillaReporteFunnel.html");
+            var htmlTemplateBody = System.IO.File.ReadAllText(rutaPlantillaBody);
+
+            // Generar tabla HTML dinámica
+            var sb = new StringBuilder();
+            sb.Append("<table>");
+            sb.Append("" +
+                "<thead>" +
+                    "<tr>" +
+                        "<th class='center'  style=\"width: 250px;\">Usuario</th>" +
+                        "<th class='center' style=\"width: 100px;\">Fecha</th>" +
+                        "<th class='center'>Comentario</th>" +
+                   "</tr>" +
+                "</thead>");
+            sb.Append("<tbody>");
+            foreach (var item in datos)
+            {
+                sb.Append("<tr>");
+                sb.Append($"<td>{item.NombreEjecutivo}</td>");
+                sb.Append($"<td class='center'>{item.FechaRegistro?.ToString("dd-MM-yyyy")}</td>");
+                sb.Append($"<td class='justify'>{item.Comentario}</td>");
+                sb.Append("</tr>");
+            }
+            sb.Append("</tbody></table>");
+
+            // Reemplazar la tabla en la plantilla
+            htmlTemplateBody = htmlTemplateBody.Replace("{{TITULO}}", "Reporte Seguimiento Oportunidades en Proceso");
+            htmlTemplateBody = htmlTemplateBody.Replace("{{TABLA}}", sb.ToString());
+
+            var doc = new HtmlToPdfDocument()
+            {
+                GlobalSettings = {
+                    PaperSize = PaperKind.A4,
+                    Orientation = Orientation.Portrait,
+                    Margins = new MarginSettings { Top = 45 },
+                    DocumentTitle = "Seguimiento Oportunidades",
+                },
+                Objects = {
+                    new ObjectSettings() {
+                        PagesCount = true,
+                        HtmlContent = htmlTemplateBody,
+                        WebSettings = { DefaultEncoding = "utf-8" },
+                        HeaderSettings = new HeaderSettings
+                        {
+                            HtmUrl = rutaPlantillaHeader,
+                            Spacing = 5
+                        }
+                    }
+                }
+            };
+
+            return doc;
+        }
+
+        public async Task<HtmlToPdfDocument> GenerarReporteOportunidades(OportunidadesReporteDto oportunidades, string RutaBase, string titulo)
+        {
+            var rutaPlantillaHeader = Path.Combine(RutaBase, "PlantillasReporteHtml", "PlantillaReporteFunnelHeader.html");
+            var rutaPlantillaBody = Path.Combine(RutaBase, "PlantillasReporteHtml", "PlantillaReporteFunnel.html");
+            var htmlTemplateBody = System.IO.File.ReadAllText(rutaPlantillaBody);
+
+            var propiedadesTexto = typeof(OportunidadesEnProcesoDto).GetProperties(BindingFlags.Public | BindingFlags.Instance).Select(v => v.Name.ToLower()).ToList();
+            var propiedades = oportunidades.Datos.First().GetType().GetProperties();
+            var keysColumnas = oportunidades.Columnas.Where(v => propiedadesTexto.Contains(v.key.ToLower())).Select(v => v.key.ToLower()).ToList();
+            var nombresColumnas = oportunidades.Columnas.Where(v => propiedadesTexto.Contains(v.key.ToLower())).Select(v => v.valor).ToList();
+            PropertyInfo propiedad;
+            DateTime? fecha;
+
+            // Generar tabla HTML dinámica
+            var sb = new StringBuilder();
+            sb.Append("<table>");
+            sb.Append("" + "<thead><tr>");
+
+            //Titulos Columnas
+            foreach (var columna in nombresColumnas)
+            {
+                sb.Append("<th>" + columna + "</th>");
+            }
+            sb.Append("</tr></thead><tbody>");
+
+            //Datos
+            foreach (var item in oportunidades.Datos)
+            {
+                sb.Append("<tr>");
+
+                foreach (var columna in keysColumnas)
+                {
+                    propiedad = propiedades.First(v => v.Name.ToLower() == columna);
+                    if (propiedad.PropertyType == typeof(DateTime?))
+                    {
+                        fecha = propiedad.GetValue(item) as DateTime?;
+                        sb.Append($"<td style=\"width: 100px;\">{fecha?.ToString("dd-MM-yyyy")}</td>");
+                    }
+                    else
+                        sb.Append($"<td>{propiedad.GetValue(item)}</td>");
+
+                }
+                sb.Append("</tr>");
+            }
+            sb.Append("</tbody></table>");
+
+            // Reemplazar la tabla en la plantilla
+            htmlTemplateBody = htmlTemplateBody.Replace("{{TITULO}}", titulo);
+            htmlTemplateBody = htmlTemplateBody.Replace("{{TABLA}}", sb.ToString());
+
+            var doc = new HtmlToPdfDocument()
+            {
+                GlobalSettings = {
+                    PaperSize = PaperKind.Legal,
+                    Orientation = Orientation.Landscape,
+                    Margins = new MarginSettings { Top = 45 },
+                    DocumentTitle = titulo,
+                },
+                Objects = {
+                    new ObjectSettings() {
+                        PagesCount = true,
+                        HtmlContent = htmlTemplateBody,
+                        WebSettings = { DefaultEncoding = "utf-8" },
+                        HeaderSettings = new HeaderSettings
+                        {
+                            HtmUrl = rutaPlantillaHeader,
+                            Spacing = 5
+                        }
+                    }
+                }
+            };
+
+            return doc;
         }
     }
 }

@@ -37,6 +37,7 @@ export class DocumentosOportunidadesComponent {
     historialOportunidad: Archivos[] = [];
     archivosSeleccionados: File[] = [];
     nombreOportunidad: string = '';
+    maxArchivos = 5;
 
     @ViewChild('fileInput') fileInput!: ElementRef;
 
@@ -74,12 +75,50 @@ export class DocumentosOportunidadesComponent {
       }
   
       close() {
+        this.archivosSeleccionados = []; 
+        if (this.fileInput?.nativeElement) {
+          this.fileInput.nativeElement.value = ''; 
+        }
         this.visible = false;
         this.visibleChange.emit(this.visible);
         this.closeModal.emit();
       }
-  
-      guardarDocumento() {
+      // En tu componente
+      get subirArchivos(): boolean {
+        return (this.oportunidad?.totalArchivos || 0) < this.maxArchivos;
+      }
+      get archivosDisponibles(): number {
+        return this.maxArchivos - (this.oportunidad?.totalArchivos || 0);
+      }
+      get archivosActivos(): Archivos[] {
+        return this.historialOportunidad.filter(d => !d.diasParaEliminacion);
+      }
+      
+      get archivosInactivos(): Archivos[] {
+        return this.historialOportunidad
+          .filter(d => d.diasParaEliminacion)
+          .sort((a, b) => new Date(b.fechaRegistro).getTime() - new Date(a.fechaRegistro).getTime());
+      }
+      isInactivoBloqueado(item: Archivos): boolean {
+        if (!item.diasParaEliminacion) {
+            return false;
+        }
+    
+        if (this.archivosActivos.length >= this.maxArchivos) {
+            return true;
+        }
+        const archivosActivosRecuperados = this.archivosActivos.length + 1;
+        return archivosActivosRecuperados > this.maxArchivos;
+    }     
+        guardarDocumento() {
+        if (this.archivosDisponibles <= 0) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Límite alcanzado',
+            detail: 'No puedes subir más archivos. El límite es de ' + this.maxArchivos
+          });
+          return;
+        }
         if (this.archivosSeleccionados && this.archivosSeleccionados.length > 0) {
           const formData = new FormData();
           
@@ -98,24 +137,32 @@ export class DocumentosOportunidadesComponent {
       
           this.documentoService.guardarDocumento(formData).subscribe({
             next: (result: any) => {
-              // Manejo de resultados igual que antes
               if (result && result.length > 0) {
+                this.oportunidad.totalArchivos += result.filter((r: any) => r.result).length;
                 const successCount = result.filter((r: any) => r.result).length;
                 const errorCount = result.length - successCount;
-                this.mostrarResultadoSubida(successCount, errorCount);
+                /*this.mostrarResultadoSubida(successCount, errorCount);*/
                 
                 if (successCount > 0) {
                   this.archivosSeleccionados = [];
-                  this.fileInput.nativeElement.value = '';
+                  if (this.fileInput?.nativeElement) {
+                    this.fileInput.nativeElement.value = '';
+                  }
                   this.getDocumentos(this.oportunidad.idOportunidad!);
+                  this.result.emit({
+                    result: true,
+                    errorMessage: '',
+                    id: this.oportunidad.idOportunidad || 0
+                  });
                 }
               }
             },
-            error: (error) => {
-              this.messageService.add({
-                severity: 'error',
-                summary: 'Error',
-                detail: 'Error al subir los archivos: ' + error.message
+            error: (error: any) => {
+              this.result.emit({
+                result: false,
+                errorMessage: 'Error al subir los archivos.',
+                id: this.oportunidad.idOportunidad || 0
+            
               });
             }
           });
@@ -227,16 +274,20 @@ export class DocumentosOportunidadesComponent {
       this.documentoService.eliminarDocumento(item.idArchivo).subscribe({
         next: () => {
           item.diasParaEliminacion = "2"; 
-          
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Éxito',
-            detail: 'Archivo movido a la papelera. Tienes 2 días para recuperarlo.'
+          this.result.emit({
+            result: true,
+            errorMessage: 'Archivo movido a la papelera. Tienes 2 días para recuperarlo.',
+            id: item.idArchivo
           });
+          this.oportunidad.totalArchivos!--;
           this.loading = false;
         },
         error: (error) => {
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo eliminar el archivo.' });
+          this.result.emit({
+            result: false,
+            errorMessage: error.message || 'Error al eliminar archivo',
+            id: item.idArchivo
+          });
           this.loading = false;
         }
       });
@@ -246,6 +297,14 @@ export class DocumentosOportunidadesComponent {
       if (input.files && input.files.length > 0) {
         // Convertir FileList a array y agregar a la lista existente
         const newFiles = Array.from(input.files) as File[];
+        if (newFiles.length > this.maxArchivos) {
+          this.messageService.add({
+            severity: 'warn',
+            summary:'Límite de archivos',
+            detail: `Solo puedes subir ${this.archivosDisponibles} archivo(s) más.`
+          });
+          return;
+        }
         this.archivosSeleccionados = [...this.archivosSeleccionados, ...newFiles];
         
         // Limpiar el input file después de seleccionar
@@ -265,18 +324,27 @@ export class DocumentosOportunidadesComponent {
               next: (result) => {
                 if (result.result) {
                   item.diasParaEliminacion = '';
-                  this.messageService.add({
-                    severity: 'success',
-                    summary: 'Éxito',
-                    detail: 'Archivo recuperado correctamente.'
+                  this.result.emit({
+                    result: true,
+                    errorMessage: 'Archivo recuperado correctamente',
+                    id: item.idArchivo
                   });
+                  this.oportunidad.totalArchivos!++;
                 } else {
-                  this.messageService.add({ severity: 'error', summary: 'Error', detail: result.errorMessage });
+                  this.result.emit({
+                    result: false,
+                    errorMessage: result.errorMessage || 'Error al recuperar archivo',
+                    id: item.idArchivo
+                  });
                 }
                 this.loading = false;
               },
               error: (error) => {
-                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo recuperar el archivo.' });
+                this.result.emit({
+                  result: false,
+                  errorMessage: error.message || 'No se pudo recuperar el archivo',
+                  id: item.idArchivo
+                });
                 this.loading = false;
               }
             });

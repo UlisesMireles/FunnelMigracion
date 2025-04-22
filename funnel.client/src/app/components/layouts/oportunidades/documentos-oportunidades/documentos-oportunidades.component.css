@@ -343,3 +343,33 @@ input[type="file"] {
 .p-button-success {
   color: #28a745 !important;
 }
+.row.align-items-center {
+  display: flex;
+  align-items: center;
+}
+
+.selected-files-container {
+  min-height: 20px;
+  max-width: 120%;
+  display: flex;
+  align-items: center;
+  margin-top: 23px;
+}
+
+.col-sm-2, .col-sm-6 {
+  padding-right: 10px;
+}
+
+.botones-accion {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-start; 
+}
+
+.file-list {
+  min-height: 38px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+}

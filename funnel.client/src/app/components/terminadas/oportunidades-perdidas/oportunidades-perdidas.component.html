@@ -107,7 +107,8 @@
 
           <ng-template pTemplate="body" let-rowData let-columns="columns">
             <tr>
-              <td *ngFor="let def of lsColumnasAMostrar" 
+              <td *ngFor="let def of lsColumnasAMostrar"
+              [ngClass]="{'fixed-width-oportunidad': def.key === 'nombreOportunidad'}" 
               [ngStyle]="{
                 'text-align':
                   def.key === 'abreviatura' ? 'center' : 

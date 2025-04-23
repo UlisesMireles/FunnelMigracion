@@ -206,6 +206,11 @@ namespace Funnel.Logic
             request.Bandera = "UPD-FECHAESTIMADA";
             return await _oportunidadesData.ActualizarFechaEstimada(request);
         }
+        public async Task<BaseOut> ActualizarEtapa(OportunidadesEnProcesoDto request)
+        {
+            request.Bandera = "UPD-STAGE";
+            return await _oportunidadesData.ActualizarEtapa(request);
+        }
 
         public async Task<HtmlToPdfDocument> GenerarReporteSeguimientoOportunidades(int IdEmpresa, int IdOportunidad, string RutaBase)
         {

@@ -22,5 +22,6 @@ namespace Funnel.Logic.Interfaces
         public Task<BaseOut> ActualizarFechaEstimada(OportunidadesEnProcesoDto request);
         public Task<HtmlToPdfDocument> GenerarReporteSeguimientoOportunidades(int IdEmpresa, int IdOportunidad, string RutaBase);
         public Task<HtmlToPdfDocument> GenerarReporteOportunidades(OportunidadesReporteDto oportunidades, string RutaBase, string titulo);
+        public Task<BaseOut> ActualizarEtapa(OportunidadesEnProcesoDto request);
     }
 }

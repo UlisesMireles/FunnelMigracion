@@ -436,5 +436,32 @@ namespace Funnel.Data
             }
             return result;
         }
+        public async Task<BaseOut> ActualizarEtapa(OportunidadesEnProcesoDto request)
+        {
+            BaseOut result = new BaseOut();
+            try
+            {
+                IList<ParameterSQl> list = new List<ParameterSQl>
+        {
+            DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Bandera),
+            DataBase.CreateParameterSql("@pIdOportunidad", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdOportunidad),
+            DataBase.CreateParameterSql("@pStage", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdStage),
+            DataBase.CreateParameterSql("@pIdUsuario", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdUsuario),
+            DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdEmpresa)
+        };
+
+                using (var reader = await DataBase.GetReaderSql("F_CatalogoOportunidades", CommandType.StoredProcedure, list, _connectionString))
+                {
+                }
+
+                result.Result = true;
+                result.ErrorMessage = "Etapa actualizada correctamente.";
+            }
+            catch (Exception ex)
+            {
+                result.ErrorMessage = $"Error al actualizar la etapa: {ex.Message}";
+            }
+            return result;
+        }
     }
 }

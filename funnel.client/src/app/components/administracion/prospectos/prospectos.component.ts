@@ -45,7 +45,7 @@ EstatusDropdown = [
     {key:'nombre', isCheck: true, valor: 'Nombre', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text'},
     {key: 'nombreSector', isCheck: true, valor: 'Sector de la industria', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
     {key: 'ubicacionFisica', isCheck: true, valor: 'Ubicación Física', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
-    {key: 'totalOportunidades', isCheck: true, valor: 'Todas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
+    {key: 'totalOportunidades', isCheck: true, valor: 'Op/todas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
     {key: 'proceso', isCheck: true, valor: 'En Proceso', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
     {key: 'ganadas', isCheck: true, valor: 'Ganadas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
     {key: 'perdidas', isCheck: true, valor: 'Perdidas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
@@ -68,7 +68,7 @@ document.documentElement.style.fontSize = 12 + 'px';
 getProspectos() {
   this.prospectoService.getProspectos(this.loginService.obtenerIdEmpresa()).subscribe({
     next: (result: Prospectos[]) => {
-      this.prospectosOriginal = result;
+      this.prospectosOriginal = result.sort((a, b) => b.totalOportunidades - a.totalOportunidades);
       this.selectedEstatus = 'Activo';
       this.cdr.detectChanges();
       this.loading = false;
@@ -89,8 +89,14 @@ FiltrarPorEstatus() {
   this.prospectos = this.selectedEstatus === null
     ? [...this.prospectosOriginal]
     : [...this.prospectosOriginal.filter((x) => x.desEstatus === this.selectedEstatus)];
+  
+  this.prospectos.sort((a, b) => b.totalOportunidades - a.totalOportunidades);
+  
   if (this.dt) {
     this.dt.first = 0;
+    this.dt.sortField = 'totalOportunidades';
+    this.dt.sortOrder = -1; 
+    this.dt.reset(); 
   }
 }
 // eventosBotones

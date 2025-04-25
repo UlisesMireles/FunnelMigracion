@@ -104,6 +104,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 
 
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { AcordeonOportunidadesEtapaComponent } from './components/utils/acordeon-oportunidades-etapa/acordeon-oportunidades-etapa.component';
 
 export function configurationProviderFactory(provider: PrimeNgConfiguracionService) {
   return () => provider.load();
@@ -152,6 +153,7 @@ registerLocaleData(localeEs, 'es-MX');
     OortunidadesMesAcordeonComponent,
     EstadisticasPorEtapaComponent,
     PermisosComponent,
+    AcordeonOportunidadesEtapaComponent,
   ],
   imports: [
     BrowserModule,

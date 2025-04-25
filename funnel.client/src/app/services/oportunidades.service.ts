@@ -89,6 +89,12 @@ export class OportunidadesService {
     return this.http.post<baseOut>(this.baseUrl + 'api/Oportunidades/ActualizarFechaEstimada', data);
   }
 
+  getOportunidadesPorEtapa(idEmpresa: number, idUsuario: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}api/Oportunidades/ConsultarOportunidadesPorEtapa`, {
+      params: { idUsuario: idUsuario.toString(), idEmpresa: idEmpresa.toString() }
+    });
+  }
+
   descargarReporteSeguimientoOportunidades(idOportunidad: number, idEmpresa: number): Observable<Blob> {
     return this.http.get(`${this.baseUrl}api/Oportunidades/DescargarReporteSeguimientoOportunidades`, {
       params: { idOportunidad: idOportunidad.toString(), idEmpresa: idEmpresa.toString() }, responseType: 'blob'

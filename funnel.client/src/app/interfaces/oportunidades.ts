@@ -130,3 +130,11 @@ export interface RequestActualizarFechaEstimadaCierre {
   fechaEstimadaCierre?: Date;
   idUsuario?: number;
 }
+
+export  interface OportunidadesPorEtapa {
+  nombre: string;
+  expandido: boolean;
+  mes?: number;
+  anio: number;
+  tarjetas: Tarjeta[];
+}

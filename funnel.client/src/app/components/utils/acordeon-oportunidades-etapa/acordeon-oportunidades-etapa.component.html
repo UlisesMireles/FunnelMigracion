@@ -1,0 +1,84 @@
+<div class="acordeon-horizontal d-flex"
+     [class.todos-expandidos]="cantidadExpandidos >= 5"
+     [class.cuatro-expandidos]="cantidadExpandidos === 4">
+     
+    <div *ngFor="let etapa of etapas; let i = index" class="item-acordeon" [class.expandido]="etapa.expandido">
+      <div class="encabezado-acordeon">
+        <!-- Botón a la izquierda del nombre del mes -->
+        <button class="boton-toggle" (click)="alternarItem(etapa, $event)">
+          <i [ngClass]="etapa.expandido ? 'bi bi-chevron-left' : 'bi bi-chevron-right'"></i>
+        </button>
+
+        <!-- Nombre del mes y contador -->
+        <span class="nombre-mes">
+          {{ etapa.nombre.substring(0,1).toUpperCase() + etapa.nombre.substring(1).toLowerCase() }}
+          <span class="contador-tarjetas">({{ etapa.tarjetas.length }})</span>
+        </span>
+      </div>
+
+      <!-- Solo se muestra cuando el mes está expandido -->
+      <div class="total-row" *ngIf="etapa.expandido">
+        <span id="lblTotalMes{{i}}" class="lblTotalMeses">
+          {{ getTotalMonto(etapa) | currency:'MXN':'symbol':'1.0-0' }}
+        </span>
+        <span id="lblNormalizadoMes{{i}}" class="lblNormalizadoMeses">
+          {{ getTotalNormalizado(etapa) | currency:'MXN':'symbol':'1.0-0' }}
+        </span>
+      </div>
+
+      <div *ngIf="etapa.expandido"
+        cdkDropList
+        #todoList="cdkDropList"
+        [cdkDropListData]="etapa.tarjetas"
+        [cdkDropListConnectedTo]="connectedDropLists"
+        class="contenido-acordeon"
+        [id]="'todoList' + i">
+        <div class="contenedor-tarjetas">
+          <div *ngFor="let tarjeta of etapa.tarjetas" cdkDrag [cdkDragData]="tarjeta" class="tarjeta">
+            <div class="row">
+              <!-- Encabezado con título e ícono de edición -->
+              <div class="card-header">
+                <div class="fila-monto">
+                  <label class="probabilidad">{{ tarjeta.probabilidad }}</label>
+                  <label class="monto-normalizado">{{ tarjeta.montoNormalizado | currency:'MXN':'symbol':'1.0-0' }}</label>
+                </div>
+                <p-button type="button" icon="bi bi-file-earmark-text fs-3" text (click)="seguimiento(tarjeta)"
+                  pTooltip="Seguimiento" tooltipPosition="top" styleClass="blue-icon">
+                </p-button>
+                <p-button styleClass="coloreditar-icon" (click)="actualiza(tarjeta)" pTooltip="Editar registro" tooltipPosition="top">
+                  <span class="custom-pencil">✏️</span> 
+                </p-button>
+              </div>
+              <div class="col-9 tarjeta-row" id="Div + {{idOportunidadTarjeta}}">
+                <div class="row justify-content-between">
+                  <div class="col-8 col-8-tarjeta">
+                    <label id="cliente" class="nombre-empresa" [ngClass]="getClaseNombreEmpresa(tarjeta.nombreEmpresa, tarjeta.nombreAbrev)">
+                      {{ tarjeta.nombreEmpresa }}
+                    </label>
+                  </div>
+                  <div class="col-3 abrev">
+                    <label id='Abrev' class="nombre-abrev" title="{{ tarjeta.descripcion }}">{{ tarjeta.nombreAbrev }}</label>
+                  </div>
+                </div>
+                <label id="NombreOportunidad" class="nombre-oportunidad">{{ tarjeta.nombreOportunidad }}</label>
+              </div>
+              <div class="col-3" style='padding-top:10px'>
+                <div class="fotoTarjeta" [ngStyle]="{'background-image': 'url(assets/Fotografia/' + (tarjeta.imagen) + ')', 'margin': 'auto'}" [title]="tarjeta.nombreEjecutivo"></div>
+                <p class="iniciales" title="{{ tarjeta.nombreEjecutivo }}">
+                  {{ tarjeta.iniciales }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<app-modal-oportunidades [(visible)]="modalEditarVisible" [title]="'Editar Datos de '" (closeModal)="onModalClose()"
+  (result)="manejarResultado($event)" [insertar]="insertar" [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">
+</app-modal-oportunidades>
+
+<app-seguimiento-oportunidades [(visible)]="modalSeguimientoVisible" [title]="'Seguimiento de '" (closeModal)="onModalClose()"
+  (result)="manejarResultado($event)" [insertar]="insertar" [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">
+</app-seguimiento-oportunidades>

@@ -1,0 +1,176 @@
+import { transferArrayItem } from '@angular/cdk/drag-drop';
+import { ChangeDetectorRef, Component, EventEmitter, Output } from '@angular/core';
+import { MessageService } from 'primeng/api';
+import { Oportunidad, OportunidadesPorEtapa, Tarjeta } from '../../../interfaces/oportunidades';
+import { OportunidadesService } from '../../../services/oportunidades.service';
+import { baseOut } from '../../../interfaces/utils/utils/baseOut';
+import { LoginService } from '../../../services/login.service';
+
+
+@Component({
+  selector: 'app-acordeon-oportunidades-etapa',
+  standalone: false,
+  templateUrl: './acordeon-oportunidades-etapa.component.html',
+  styleUrl: './acordeon-oportunidades-etapa.component.css'
+})
+export class AcordeonOportunidadesEtapaComponent {
+  
+    etapas: OportunidadesPorEtapa[] = []; // Array que contendrá los meses con sus oportunidades (tarjetas)
+    loading: boolean = true;// Bandera para mostrar el spinner de carga
+    errorMessage: string = '';// Variable para almacenar mensaje de error en caso de fallo
+    connectedDropLists: string[] = [];// Lista de identificadores para los dropLists de cada mes (usado por cdkDragDrop)
+    tarjetaMovida: any;// Objeto que almacena la tarjeta que se movió y datos relacionados (origen, destino, etc.)
+    idOportunidadTarjeta: number = 0;  // Variable para almacenar el ID de la oportunidad (tarjeta) que se está moviendo
+    tarjetaEnEspera: any;  // Variable para almacenar temporalmente la tarjeta arrastrada (para poder obtener su idOportunidad)
+    modalEditarVisible: boolean = false;
+    modalSeguimientoVisible: boolean = false;
+    insertar: boolean = false;
+    oportunidadSeleccionada!: Oportunidad;
+    oportunidades: Oportunidad[] = [];
+    seguimientoOportunidad: boolean = false;
+    cantidadExpandidos: number = 0;
+
+    // Output para emitir resultados de la petición post (por ejemplo, para notificar a un padre)
+    @Output() result: EventEmitter<baseOut> = new EventEmitter();
+
+    constructor(
+      private oportunidadService: OportunidadesService,private readonly loginService: LoginService,private messageService: MessageService,private cdr: ChangeDetectorRef
+    ) { }
+  
+    ngOnInit() {
+      this.getOportunidadesPorEtapa();
+    }
+  
+    getOportunidadesPorEtapa() {
+      this.loading = true;
+      
+      const idUsuario = this.loginService.obtenerIdUsuario();
+      const idEmpresa = this.loginService.obtenerIdEmpresa();
+    
+      console.log('Consultando oportunidades para:', {idUsuario, idEmpresa});
+    
+      this.oportunidadService.getOportunidadesPorEtapa(idEmpresa, idUsuario).subscribe({
+        next: (result: OportunidadesPorEtapa[]) => {
+          console.log('Datos transformados:', result);
+          
+          this.etapas = result.map(etapa => ({
+            ...etapa,
+            expandido: true, // Expandir todas las etapas por defecto
+            tarjetas: etapa.tarjetas || [] // Asegurar array vacío si es null/undefined
+          }));
+    
+          this.connectedDropLists = this.etapas.map((_, i) => `todoList${i}`);
+          this.cantidadExpandidos = this.etapas.filter(etapa => etapa.expandido).length;
+          this.loading = false;
+          this.cdr.detectChanges();
+        },
+        error: (error) => {
+          console.error('Error:', error);
+          this.loading = false;
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Error al cargar oportunidades por etapa'
+          });
+        }
+      });
+    }
+
+    alternarItem(item: any, event: Event) {
+      event.stopPropagation(); // Evita propagación del evento
+      item.expandido = !item.expandido; // Invierte el valor de 'expandido'
+
+      this.cantidadExpandidos = this.etapas.filter(etapa => etapa.expandido).length;
+      this.cdr.detectChanges();
+    }
+    
+
+    getTotalMonto(mes: OportunidadesPorEtapa): number {
+      return mes.tarjetas.reduce((acc, tarjeta) => acc + (tarjeta.monto || 0), 0);
+    }
+    
+    // Suma todos los montos normalizados de las tarjetas del mes
+    getTotalNormalizado(mes: OportunidadesPorEtapa): number {
+      return mes.tarjetas.reduce((acc, tarjeta) => acc + (tarjeta.montoNormalizado || 0), 0);
+    }
+
+    onModalClose() {
+      this.modalEditarVisible = false;
+    }
+
+    manejarResultado(result: baseOut) {
+      if (result.result) {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'La operación se realizó con éxito.',
+          detail: result.errorMessage,
+        });
+        this.getOportunidadesPorEtapa();
+      } else {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Se ha producido un error.',
+          detail: result.errorMessage,
+        });
+      }
+    }
+
+  getClaseNombreEmpresa(nombreEmpresa: string, nombreAbrev: string): string {
+    const cantNombre = nombreEmpresa.length;
+    const cantAbrev = nombreAbrev.length;
+    if (cantNombre >= 30 && cantAbrev >= 4) {
+      return 'clsNomEmpresa116';
+    } else if (cantNombre >= 30 && cantAbrev < 4) {
+      return 'clsNomEmpresa125';
+    } else {
+      return 'clsNomEmpresa';
+    }
+  }
+
+  private crearNuevaLicencia(licencia: Tarjeta) {
+    return {
+      idOportunidad: licencia.idOportunidad,
+      nombreEmpresa: licencia.nombreEmpresa,
+      nombreAbrev: licencia.nombreAbrev,
+      nombreOportunidad: licencia.nombreOportunidad,
+      monto: licencia.monto,
+      probabilidad: licencia.probabilidad,
+      montoNormalizado: licencia.montoNormalizado,
+      imagen: licencia.imagen,
+      nombreEjecutivo: licencia.nombreEjecutivo,
+      iniciales: licencia.iniciales,
+      descripcion: licencia.descripcion,
+      fechaEstimadaCierre: licencia.fechaEstimadaCierre,
+      idTipoProyecto: licencia.idTipoProyecto,
+      nombreContacto: licencia.nombreContacto,
+      entrega: licencia.entrega,
+      fechaEstimadaCierreOriginal: licencia.fechaEstimadaCierreOriginal,
+      idEstatusOportunidad: licencia.idEstatusOportunidad,
+      comentario: licencia.comentario,
+      idProspecto: licencia.idProspecto,
+      idStage: licencia.idStage,
+      idTipoEntrega: licencia.idTipoEntrega,
+      idEjecutivo: licencia.idEjecutivo,
+      idContactoProspecto: licencia.idContactoProspecto,
+      totalComentarios: licencia.totalComentarios,
+      idEmpresa: this.loginService.obtenerIdEmpresa(),
+      idUsuario: this.loginService.obtenerIdUsuario(),
+      stage: licencia.stage,
+      nombre: licencia.nombre
+    };
+  }
+
+  actualiza(licencia: Tarjeta) {
+
+    this.oportunidadSeleccionada = this.crearNuevaLicencia(licencia);
+    this.insertar = false;
+    this.modalEditarVisible = true;
+  }
+  
+  seguimiento(licencia: Tarjeta) {
+  
+    this.oportunidadSeleccionada = this.crearNuevaLicencia(licencia);;
+    this.seguimientoOportunidad = true;
+    this.modalSeguimientoVisible = true;
+  }
+}

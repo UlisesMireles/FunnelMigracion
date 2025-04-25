@@ -51,6 +51,7 @@ EstatusDropdown = [
     {key: 'perdidas', isCheck: true, valor: 'Perdidas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
     {key: 'canceladas', isCheck: true, valor: 'Canceladas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
     {key: 'eliminadas', isCheck: true, valor: 'Eliminadas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
+    {key: 'porcEfectividad', isCheck: true, valor: '% Efectividad', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'decimal'},
     {key: 'desEstatus', isCheck: true, valor: 'Estatus', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'estatus'}
   ];
 
@@ -117,7 +118,7 @@ inserta() {
     canceladas: 0,
     eliminadas: 0,
     idEmpresa: 0,
-    };
+    porcEfectividad: 0,};
   this.insertar = true;
   this.modalVisible = true;
 }

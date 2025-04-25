@@ -116,7 +116,7 @@
                   [ngStyle]="{
                     'text-align': 
                       def.tipoFormato === 'currency' ? 'right' : 
-                      (def.tipoFormato === 'number' || def.tipoFormato === 'estatus') ? 'center' : 'left'
+                      (def.tipoFormato === 'number' || def.tipoFormato === 'estatus' || def.key === 'porcEfectividad') ? 'center' : 'left'
                       
                   }">
                 <ng-container [ngSwitch]="def.tipoFormato">

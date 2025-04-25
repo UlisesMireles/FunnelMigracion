@@ -46,7 +46,8 @@ export class ModalProspectosComponent {
     canceladas: 0,
     eliminadas: 0,
     idEmpresa: 0,
-    bandera: ""
+    bandera: "",
+    porcEfectividad: 0
   };
 
   // ngOnInit() {
@@ -75,7 +76,8 @@ export class ModalProspectosComponent {
         canceladas: 0,
         eliminadas: 0,
         idEmpresa: 0,
-        bandera: ""
+        bandera: "",
+        porcEfectividad: 0
       };
 
       this.prospectoForm = this.fb.group({

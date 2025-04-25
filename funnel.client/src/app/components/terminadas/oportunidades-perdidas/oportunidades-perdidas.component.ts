@@ -46,8 +46,8 @@ export class OportunidadesPerdidasComponent {
   ];
 
   lsTodasColumnas: any[] = [
-    { key: 'idOportunidad', isCheck: true, valor: 'Id', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
-    { key: 'nombre', isCheck: true, valor: 'Prospecto', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'idOportunidad', isCheck: false, valor: 'Id', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
+    { key: 'nombre', isCheck: true, valor: 'Prospecto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreSector', isCheck: false, valor: 'Sector', isIgnore: true, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreOportunidad', isCheck: true, valor: 'Oportunidad', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'abreviatura', isCheck: true, valor: 'Tipo', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
@@ -56,12 +56,12 @@ export class OportunidadesPerdidasComponent {
     { key: 'nombreContacto', isCheck: false, valor: 'Contacto', isIgnore: true, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'monto', isCheck: true, valor: 'Monto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
     { key: 'probabilidad', isCheck: false, valor: 'Prob', isIgnore: true, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'montoNormalizado', isCheck: false, valor: 'Monto', isIgnore: true, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
+   // { key: 'montoNormalizado', isCheck: false, valor: 'Monto', isIgnore: true, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
     { key: 'fechaRegistro', isCheck: true, valor: 'Fecha Inicio', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
     { key: 'fechaEstimadaCierre', isCheck: true, valor: 'Cierre Est', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
-    { key: 'fechaEstimadaCierreOriginal', isCheck: true, valor: 'Fecha Cierre', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
+    { key: 'fechaEstimadaCierreOriginal', isCheck: false, valor: 'Fecha Cierre', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
     { key: 'diasFunnelOriginal', isCheck: true, valor: 'Días Funnel', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
-    {key: 'comentario', isCheck: true, valor: 'Último Comentario', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
+    {key: 'comentario', isCheck: false, valor: 'Último Comentario', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
 
   ];
 
@@ -87,8 +87,8 @@ export class OportunidadesPerdidasComponent {
   filterByYear() {
     if (this.oportunidadesOriginalPerdidas) {
       this.oportunidadesPerdidas = this.oportunidadesOriginalPerdidas.filter(oportunidad => {
-        if (oportunidad.fechaRegistro) {
-          const fechaRegistro = new Date(oportunidad.fechaRegistro);
+        if (oportunidad.fechaEstimadaCierre) {
+          const fechaRegistro = new Date(oportunidad.fechaEstimadaCierre);
           return fechaRegistro.getFullYear() === this.selectedYear;
         }
         return false;
@@ -99,8 +99,13 @@ export class OportunidadesPerdidasComponent {
   getOportunidades() {
     this.oportunidadService.getOportunidades(this.loginService.obtenerIdEmpresa(), this.loginService.obtenerIdUsuario(), this.idEstatus).subscribe({
       next: (result: Oportunidad[]) => {
-        this.oportunidadesPerdidas = [...result];
-        this.oportunidadesOriginalPerdidas = result;
+
+        const oportunidadesOrdenadas = sortBy(result, (o) =>
+          o.fechaEstimadaCierre ? new Date(o.fechaEstimadaCierre) : new Date('2100-01-01')
+        ).reverse();
+        
+        this.oportunidadesPerdidas = [...oportunidadesOrdenadas];
+        this.oportunidadesOriginalPerdidas = oportunidadesOrdenadas;
         this.filterByYear();
         this.cdr.detectChanges(); 
         this.loading = false;
@@ -316,6 +321,8 @@ export class OportunidadesPerdidasComponent {
   getColumnWidth(key: string): object {
     const widths: { [key: string]: string } = {
         idOportunidad: '100%',
+        nombre: '100%',
+        nombreOportunidad: '100%',
         nombreSector: '100%',
         abreviatura: '100%',
         stage: '100%',
@@ -327,6 +334,7 @@ export class OportunidadesPerdidasComponent {
         fechaRegistro: '100%',
         diasFunnel: '100%',
         fechaEstimadaCierreOriginal: '100%',
+        fechaEstimadaCierre: '100%',
         comentario: '100%', 
     };
     return { width: widths[key] || 'auto' };

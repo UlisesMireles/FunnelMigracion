@@ -84,7 +84,8 @@
                       <p-columnFilter field="{{def.key}}" matchMode="equals" [showMenu]="false">
                         <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                           <p-dropdown [options]="EstatusDropdown" [(ngModel)]="selectedEstatus" [appendTo]="'body'"
-                          (onChange)="FiltrarPorEstatus()" optionLabel="label" optionValue="value">
+                            (onChange)="FiltrarPorEstatus()" optionLabel="label" optionValue="value"
+                            [style]="{'width': '100%', 'text-align': 'center'}">
                           </p-dropdown>
                         </ng-template>
                       </p-columnFilter>
@@ -112,7 +113,14 @@
 
           <ng-template pTemplate="body" let-rowData let-columns="columns">
             <tr [ngClass]="{'fila-activa': rowData.idContactoProspecto == contactoEdicion?.idContactoProspecto}">
-              <td *ngFor="let def of lsColumnasAMostrar">
+              <td *ngFor="let def of lsColumnasAMostrar" [ngStyle]="{
+                'text-align': 
+                  def.tipoFormato === 'number' ? 'center' : 
+                  def.tipoFormato === 'currency' ? 'center' : 
+                  def.tipoFormato === 'estatus' ? 'center' :
+                  def.key === 'telefono' ? 'center' : 'left'
+              }">
+                
                 <ng-container [ngSwitch]="def.tipoFormato">
                   <span *ngSwitchCase="'text'">{{ rowData[def.key] }}</span>
                   <div *ngSwitchCase="'currency'">
@@ -124,9 +132,9 @@
                   <span *ngSwitchDefault>{{ rowData[def.key] }}</span>
                 </ng-container>
               </td>
-              <td>
+              <td [ngStyle]="{'width': '20px', 'text-align': 'center'}">
                 <p-button styleClass="coloreditar-icon" (click)="actualiza(rowData)" pTooltip="Editar registro" tooltipPosition="top">
-                  <span class="custom-pencil">✏️</span> 
+                  <span class="custom-pencil">✏️</span>
                 </p-button>
               </td>
             </tr>
@@ -134,7 +142,15 @@
 
           <ng-template pTemplate="footer" let-columns #footer>
             <tr class="custom-footer">
-              <td *ngFor="let def of lsColumnasAMostrar">
+              <td *ngFor="let def of lsColumnasAMostrar"
+              [ngStyle]="{
+                'text-align': def.key ===  'desEstatus' ? 'center' : 'left',
+                'width': def.key === 'estatus' ? '50px' :
+                      def.key === 'telefono' ? '200px' : 
+                      def.key === 'nombreCompleto' ? '350px' : 
+                      def.key === 'correoElectronico' ? '350px' :
+                      def.key === 'prospecto' ? '350px' : ''
+              }">
                 <ng-container *ngIf="def.key === 'nombreCompleto'">
                   total de registros: {{ getTotalCostPrimeNg(dt, def) }}
                 </ng-container>

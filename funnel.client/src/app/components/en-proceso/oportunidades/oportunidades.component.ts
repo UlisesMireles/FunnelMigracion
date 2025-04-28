@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, OnInit, ViewChild, } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit, ViewChild, ViewEncapsulation, } from '@angular/core';
 import { LazyLoadEvent } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { MessageService } from 'primeng/api';
@@ -15,7 +15,7 @@ import { sumBy, map as mapping, omit, sortBy, groupBy, keys as getKeys } from "l
   selector: 'app-oportunidades',
   standalone: false,
   templateUrl: './oportunidades.component.html',
-  styleUrl: './oportunidades.component.css',
+  styleUrl: './oportunidades.component.css'
 })
 export class OportunidadesComponent {
 

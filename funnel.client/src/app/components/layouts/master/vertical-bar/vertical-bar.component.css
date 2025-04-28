@@ -149,7 +149,7 @@
 }
 
 /* 📌 Tooltip (el cuadro tipo bocadillo) */
-.expand-button:hover::after {
+:host .expand-button:hover::after {
   content: "Ampliar la navegación";
   position: absolute;
   bottom: 110%;

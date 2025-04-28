@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, SimpleChanges, ChangeDetectorRef} from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges, ChangeDetectorRef, ViewEncapsulation} from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { OportunidadesService } from '../../../../services/oportunidades.service';
@@ -10,7 +10,8 @@ import { baseOut } from '../../../../interfaces/utils/utils/baseOut';
   selector: 'app-seguimiento-oportunidades',
   standalone: false,
   templateUrl: './seguimiento-oportunidades.component.html',
-  styleUrl: './seguimiento-oportunidades.component.css'
+  styleUrl: './seguimiento-oportunidades.component.css',
+  encapsulation: ViewEncapsulation.None
 })
 export class SeguimientoOportunidadesComponent {
 

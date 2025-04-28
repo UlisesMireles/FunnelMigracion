@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, SimpleChanges, ChangeDetectorRef, ElementRef, ViewChild} from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges, ChangeDetectorRef, ElementRef, ViewChild, ViewEncapsulation} from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { OportunidadesService } from '../../../../services/oportunidades.service';

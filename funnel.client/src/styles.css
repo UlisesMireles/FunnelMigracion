@@ -58,3 +58,177 @@
 .p-datepicker-buttonbar {
   display: none !important;
 }
+
+/* Oportunidades */
+.titulo {
+  text-align: left;
+  font-size: 1.75rem;
+  font-weight: bold;
+}
+
+.error-label {
+  color: red;
+  font-weight: bold;
+}
+
+.margen {
+  margin-top: 10px
+}
+
+.coloreditar-icon {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.coloreditar-icon .p-button {
+  background: transparent !important;
+  border: none !important;
+}
+
+.custom-pencil {
+  color: #000;
+  font-size: 1.5rem;
+  display: inline-block;
+  background: transparent !important;
+}
+
+.blue-icon .p-button-icon {
+  color: blue !important;
+  font-size: 1.5rem;
+  background: transparent;
+  border-color: transparent;
+}
+
+.blue-icon:hover {
+  background: transparent !important;
+}
+
+.black-icon .p-button-icon {
+  color: black !important;
+  font-size: 1.5rem !important;
+  background: transparent !important;
+  border-color: transparent !important;
+}
+
+.black-icon:hover {
+  background: transparent !important;
+}
+
+.p-datatable-header {
+  border: 0 !important;
+  padding: 0 !important;
+  height: 35px !important;
+}
+
+div.inDivDatatableHeader>p-button>button.p-button {
+  width: 36px !important;
+  height: 35px !important;
+}
+
+
+.custom-header th {
+  background: rgb(247, 106, 19) !important;
+  background: linear-gradient(0deg, rgba(247, 106, 19, 1) 0%, rgba(200, 87, 24, 1) 35%, rgba(231, 91, 42, 1) 100%) !important;
+  color: white !important;
+  border: 0.1px solid #872B07 !important;
+  text-align: center !important;
+  font-size: 15px !important;
+}
+
+
+.custom-header2 th {
+  background: #E1DAC7;
+
+}
+
+.custom-header3 td {
+  height: 20px;
+  width: 20px;
+}
+
+.p-paginator .p-component {
+  text-align: left !important;
+}
+
+.p-toast {
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+}
+
+.p-datatable-thead>tr>th {
+  padding: 0px !important;
+}
+
+.p-datatable-tbody>tr>td {
+
+  padding: 1px !important;
+}
+
+.custom-width input {
+  width: 100px !important;
+}
+
+.custom-width2 input {
+  width: 150px !important;
+}
+
+.custom-width3 input {
+  width: 100px !important;
+}
+
+.custom-width4 input {
+  width: 200px !important;
+}
+
+.p-datatable {
+  table-layout: fixed;
+  width: 100%;
+
+}
+
+.fixed-width-oportunidad {
+  width: 300px !important;
+  max-width: 300px !important;
+  min-width: 300px !important;
+  white-space: normal !important;
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+  text-overflow: unset !important;
+  line-height: 1.4 !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+  vertical-align: top !important;
+}
+
+
+body .p-datatable-wrapper {
+  max-height: 400px;
+  height: 400px !important;
+  overflow-y: auto;
+  overflow-x: auto;
+  display: block;
+  position: relative;
+}
+
+body .p-datatable-tbody>tr {
+  display: table-row !important;
+}
+
+/*Estilos modal*/
+body .p-dialog .p-dialog-header {
+  background: rgb(247, 106, 19);
+  background: linear-gradient(0deg, rgba(247, 106, 19, 1) 0%, rgba(200, 87, 24, 1) 35%, rgba(231, 91, 42, 1) 100%);
+  color: white;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  height: 50px;
+
+}
+
+body .p-dialog .p-dialog-header .p-icon {
+  background-color: transparent !important;
+  color: #103D70;
+}
+

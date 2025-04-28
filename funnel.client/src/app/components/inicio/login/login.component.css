@@ -1,3 +1,6 @@
+:host ::ng-deep html {
+  font-size: 1.125rem !important;
+}
 .navbar {
     display: flex;
     justify-content: space-between;

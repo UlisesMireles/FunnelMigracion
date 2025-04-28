@@ -1,5 +1,5 @@
 import { transferArrayItem } from '@angular/cdk/drag-drop';
-import { ChangeDetectorRef, Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Output, ViewEncapsulation } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { Oportunidad, OportunidadesPorMes, RequestActualizarFechaEstimadaCierre, Tarjeta } from '../../../interfaces/oportunidades';
 import { OportunidadesService } from '../../../services/oportunidades.service';
@@ -10,7 +10,7 @@ import { LoginService } from '../../../services/login.service';
   selector: 'app-oportunidadesMes-acordeon',
   standalone: false,
   templateUrl: './app-oportunidadesMes-acordeon.component.html',
-  styleUrls: ['./app-oportunidadesMes-acordeon.component.css'] // Uso de styleUrls en plural
+  styleUrls: ['./app-oportunidadesMes-acordeon.component.css']
 })
 export class OortunidadesMesAcordeonComponent {
 

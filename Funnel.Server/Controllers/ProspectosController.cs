@@ -22,9 +22,8 @@ namespace Funnel.Server.Controllers
         }
 
         [HttpGet("[action]/")]
-        public async Task<ActionResult<List<ProspectoDTO>>> ConsultarProspectos()
+        public async Task<ActionResult<List<ProspectoDTO>>> ConsultarProspectos(int idEmpresa)
         {
-            int idEmpresa = 1; //<--------de donde sale este parametro
             var respuesta = await _prospectosService.ConsultarProspectos(idEmpresa);
             return Ok(respuesta);
         }

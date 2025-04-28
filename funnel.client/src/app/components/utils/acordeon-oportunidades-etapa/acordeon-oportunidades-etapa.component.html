@@ -32,7 +32,8 @@
         [cdkDropListData]="etapa.tarjetas"
         [cdkDropListConnectedTo]="connectedDropLists"
         class="contenido-acordeon"
-        [id]="'todoList' + i">
+        [id]="'todoList' + i"
+        (cdkDropListDropped)="drop($event, etapa)">
         <div class="contenedor-tarjetas">
           <div *ngFor="let tarjeta of etapa.tarjetas" cdkDrag [cdkDragData]="tarjeta" class="tarjeta">
             <div class="row">

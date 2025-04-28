@@ -1,7 +1,7 @@
 import { transferArrayItem } from '@angular/cdk/drag-drop';
 import { ChangeDetectorRef, Component, EventEmitter, Output } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { Oportunidad, OportunidadesPorEtapa, Tarjeta } from '../../../interfaces/oportunidades';
+import { Oportunidad, OportunidadesPorEtapa, Tarjeta, RequestActualizarEtapa } from '../../../interfaces/oportunidades';
 import { OportunidadesService } from '../../../services/oportunidades.service';
 import { baseOut } from '../../../interfaces/utils/utils/baseOut';
 import { LoginService } from '../../../services/login.service';
@@ -83,6 +83,114 @@ export class AcordeonOportunidadesEtapaComponent {
       this.cantidadExpandidos = this.etapas.filter(etapa => etapa.expandido).length;
       this.cdr.detectChanges();
     }
+
+    drop(event: any, etapaDestino: OportunidadesPorEtapa) {
+      // 1. Validar si el movimiento es dentro del mismo contenedor
+      if (event.previousContainer === event.container) {
+          return;
+      }
+  
+      // 2. Identificar la etapa de origen
+      const etapaOrigenObj = this.etapas.find(e => e.tarjetas === event.previousContainer.data);
+      if (!etapaOrigenObj) {
+          console.error('No se encontró la etapa de origen');
+          return;
+      }
+  
+      // 3. Preparar datos del movimiento
+      this.tarjetaMovida = {
+          tarjeta: event.item.data,
+          etapaOrigen: event.previousContainer.data,
+          etapaDestino: etapaDestino,
+          indexOrigen: event.previousIndex,
+          indexDestino: event.currentIndex,
+          etapaOrigenObj: etapaOrigenObj
+      };
+  
+      // 4. Mover visualmente la tarjeta (actualización optimista)
+      transferArrayItem(
+          this.tarjetaMovida.etapaOrigen,
+          this.tarjetaMovida.etapaDestino.tarjetas,
+          this.tarjetaMovida.indexOrigen,
+          this.tarjetaMovida.indexDestino
+      );
+  
+      // 5. Asignar el ID para la actualización
+      this.idOportunidadTarjeta = this.tarjetaMovida.tarjeta.idOportunidad;
+      console.log(`Movimiento iniciado - Oportunidad: ${this.idOportunidadTarjeta}, Nueva etapa: ${etapaDestino.idStage}`);
+  
+      // 6. Actualizar en el backend
+      this.actualizarEtapaEnBackend();
+  }
+  
+  private actualizarEtapaEnBackend() {
+      if (!this.idOportunidadTarjeta || !this.tarjetaMovida) {
+          console.error('Datos incompletos para actualización');
+          return;
+      }
+  
+      const request: RequestActualizarEtapa = {
+          bandera: "UPD-STAGE",
+          idOportunidad: this.idOportunidadTarjeta,
+          idStage: this.tarjetaMovida.etapaDestino.idStage,
+          idUsuario: this.loginService.obtenerIdUsuario(),
+          idEmpresa: this.loginService.obtenerIdEmpresa()
+      };
+  
+      this.oportunidadService.actualizarEtapa(request).subscribe({
+          next: (result: baseOut) => {
+              if (result.result) {
+                  this.messageService.add({
+                      severity: 'success',
+                      summary: 'Éxito',
+                      detail: 'Etapa actualizada correctamente',
+                      life: 3000
+                  });
+                  
+                  // Actualizar datos adicionales si es necesario
+                  this.actualizarDatosLocales();
+              } else {
+                  this.revertirMovimiento();
+                  this.messageService.add({
+                      severity: 'warn',
+                      summary: 'Advertencia',
+                      detail: result.errorMessage || 'La etapa no se actualizó completamente',
+                      life: 5000
+                  });
+              }
+          },
+          error: (error) => {
+              console.error('Error en la solicitud:', error);
+              this.revertirMovimiento();
+              this.messageService.add({
+                  severity: 'error',
+                  summary: 'Error',
+                  detail: 'Error al comunicarse con el servidor',
+                  life: 5000
+              });
+          }
+      });
+  }
+  
+  private actualizarDatosLocales() {
+      // Aquí puedes actualizar cualquier dato local adicional
+      // Por ejemplo: recálculo de totales, estadísticas, etc.
+      this.cdr.detectChanges(); // Forzar detección de cambios
+  }
+  
+  private revertirMovimiento() {
+      if (!this.tarjetaMovida) return;
+  
+      transferArrayItem(
+          this.tarjetaMovida.etapaDestino.tarjetas,
+          this.tarjetaMovida.etapaOrigen,
+          this.tarjetaMovida.indexDestino,
+          this.tarjetaMovida.indexOrigen
+      );
+      
+      console.log('Movimiento revertido');
+      this.cdr.detectChanges();
+  }
     
 
     getTotalMonto(mes: OportunidadesPorEtapa): number {

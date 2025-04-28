@@ -132,9 +132,18 @@ export interface RequestActualizarFechaEstimadaCierre {
 }
 
 export  interface OportunidadesPorEtapa {
+  idStage: number; 
   nombre: string;
   expandido: boolean;
   mes?: number;
   anio: number;
   tarjetas: Tarjeta[];
+}
+
+export interface RequestActualizarEtapa {
+  bandera: string;        
+  idOportunidad: number;  
+  idStage: number;         
+  idUsuario: number;       
+  idEmpresa: number;    
 }

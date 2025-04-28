@@ -73,6 +73,7 @@ namespace Funnel.Data
                     dto.Perdidas = ComprobarNulos.CheckIntNull(reader["Perdidas"]);
                     dto.Canceladas = ComprobarNulos.CheckIntNull(reader["Canceladas"]);
                     dto.Eliminadas = ComprobarNulos.CheckIntNull(reader["Eliminadas"]);
+                    dto.PorcEfectividad = ComprobarNulos.CheckDecimalNull(reader["PorcEfectividad"]);
 
                     result.Add(dto);
                 }

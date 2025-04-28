@@ -83,7 +83,8 @@
                       <p-columnFilter field="{{def.key}}" matchMode="equals" [showMenu]="false">
                         <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                           <p-dropdown [options]="EstatusDropdown" [(ngModel)]="selectedEstatus" [appendTo]="'body'"
-                          (onChange)="FiltrarPorEstatus()" optionLabel="label" optionValue="value">
+                            (onChange)="FiltrarPorEstatus()" optionLabel="label" optionValue="value"
+                            [style]="{'width': '100%', 'text-align': 'center'}">
                           </p-dropdown>
                         </ng-template>
                       </p-columnFilter>
@@ -115,7 +116,8 @@
                   [ngStyle]="{
                     'text-align': 
                       def.tipoFormato === 'currency' ? 'right' : 
-                      (def.tipoFormato === 'number') ? 'center' : 'left'
+                      (def.tipoFormato === 'number' || def.tipoFormato === 'estatus' || def.key === 'porcEfectividad') ? 'center' : 'left'
+                      
                   }">
                 <ng-container [ngSwitch]="def.tipoFormato">
                   <span *ngSwitchCase="'text'">{{ rowData[def.key] }}</span>
@@ -135,7 +137,7 @@
                   <span *ngSwitchDefault>{{ rowData[def.key] }}</span>
                 </ng-container>
               </td>
-              <td>
+              <td [ngStyle]="{'width': '20px', 'text-align': 'center'}">
                 <p-button styleClass="coloreditar-icon" (click)="actualiza(rowData)" pTooltip="Editar registro" tooltipPosition="top">
                   <span class="custom-pencil">✏️</span> 
                 </p-button>
@@ -149,7 +151,10 @@
                   [ngStyle]="{
                     'text-align': 
                       def.tipoFormato === 'currency' ? 'right' : 
-                      (def.tipoFormato === 'number') ? 'center' : 'left'
+                      (def.tipoFormato === 'number') ? 'center' : 'left',
+                      'width': def.key === 'nombre' || def.key === 'nombreSector'|| def.key === 'desEstatus' ? '80px' : 
+                      def.key === 'ubicacionFisica' ? '125px' : ''
+
                   }">
                 <ng-container *ngIf="def.key === 'nombre'">
                   Total de registros: {{ getTotalCostPrimeNg(dt, def) }}

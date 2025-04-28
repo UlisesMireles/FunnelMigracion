@@ -20,6 +20,7 @@
   </ItemGroup>
 
     <ItemGroup>
+		<Folder Include="Scripts\25-04-2025 AjustesProspectos\" />
 		<Folder Include="Utils\" />
 	</ItemGroup>
 	

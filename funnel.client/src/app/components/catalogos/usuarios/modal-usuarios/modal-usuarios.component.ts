@@ -1,7 +1,7 @@
 import { Component, EventEmitter,Input, Output, SimpleChanges } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { baseOut } from '../../../../interfaces/utils/utils/baseOut';
-import { Usuario } from '../../../../interfaces/usuarios';
+import { Usuarios } from '../../../../interfaces/usuarios';
 import { UsuariosService } from '../../../../services/usuarios.service';
 import { LoginService } from '../../../../services/login.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -19,8 +19,8 @@ export class ModalUsuariosComponent {
 
   
   constructor(private UsuariosService: UsuariosService, private messageService: MessageService, private loginService: LoginService, private fb: FormBuilder) { }
-    @Input() usuario!: Usuario;
-    @Input() usuarios: Usuario[] = [];
+    @Input() usuario!: Usuarios;
+    @Input() usuarios: Usuarios[] = [];
     @Input() title: string = 'Modal';
     @Input() visible: boolean = false;
     @Input() insertar: boolean = false;

@@ -21,8 +21,9 @@ export class UsuarioPerfilComponent {
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   isUserPanelVisible = false;
-  baseUrl: string = environment.baseURLAssets;
-  rutaImgen: string = this.baseUrl + '/assets/img/persona_icono_principal.png';
+  baseUrl: string = environment.baseURL;
+  rutaImgenDefault: string = this.baseUrl + 'Fotografia/persona_icono_principal.png';
+  rutaImgen: string = this.baseUrl + '/Fotografia/';
   nombreUsuario: string = '';
   nombre: string = '';
   rol: string = '';
@@ -44,6 +45,14 @@ export class UsuarioPerfilComponent {
       this.nombreUsuario = localStorage.getItem('username')!;
       this.nombre = localStorage.getItem('nombre')!;
       this.rol = localStorage.getItem('tipoUsuario')!;
+      let nombreImagen = localStorage.getItem('imagenPerfil')!;
+      if(nombreImagen !== null || nombreImagen !== ''){
+        this.rutaImgen = this.rutaImgen + nombreImagen;
+      }
+      else {
+        this.rutaImgen = this.rutaImgenDefault;
+      }
+      
       if (this.rol == "Tenant") {
         this.tipoUsuario = "Usuario Master";
       }
@@ -57,6 +66,11 @@ export class UsuarioPerfilComponent {
     this.visibleChange.emit(this.visible);
     this.authService.logout();
     this.router.navigate(['/login']);
+  }
+
+  goToMiCuenta() {
+    this.visible = false;
+    this.router.navigate(['/cambiar-contrasena']);
   }
 
   toggleUserPanel(event: Event): void {

@@ -38,7 +38,7 @@ export class VerticalBarComponent {
     this.permisosService.getPermisosPorRol(this.loginService.obtenerRolUsuario(), this.loginService.obtenerIdEmpresa()).subscribe({
       next: (result: Permiso[]) => {
         const perfil = {
-          nombre: 'Perfil',
+          nombre: localStorage.getItem('username')!,//'Perfil',
           ruta: '/perfil',
           icono: 'bi bi-person-circle',
           tooltip: 'Perfil',
@@ -69,10 +69,14 @@ export class VerticalBarComponent {
 
   navigateTo(path: string) {
     if (path === '/perfil') {
-      console.log('Perfil');
-     this.modalVisible = true;
-     console.log('this.modalVisible ' + this.modalVisible);
+      if(this.modalVisible)
+        this.modalVisible = false;
+      else
+         this.modalVisible = true;
+        
+    //  console.log('this.modalVisible ' + this.modalVisible);
     } else {
+      this.modalVisible = false;
       this.router.navigate([path]);
     }
   }

@@ -3,6 +3,7 @@ using DinkToPdf;
 using Funnel.Server.Extensions;
 using Microsoft.Extensions.Configuration;
 using Funnel.Server.PdfTools;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,6 +45,13 @@ var app = builder.Build();
 
 app.UseDefaultFiles();
 app.MapStaticAssets();
+app.UseStaticFiles();
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Fotografia")),
+    RequestPath = "/Fotografia"
+});
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

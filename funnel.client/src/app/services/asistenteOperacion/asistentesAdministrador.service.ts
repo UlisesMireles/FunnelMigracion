@@ -8,7 +8,7 @@ import { ListaAsistentes } from '../../interfaces/asistenteOperacion/asistente';
     providedIn: 'root'
 })
 export class AsistentesAdministradorService {
-    private urlBotOperacion = 'https://sfs-funnel.com/adminchats-qa';
+    private urlBotOperacion = 'https://sfs-funnel.com/adminchats';
 
     constructor(private http: HttpClient) { }
 

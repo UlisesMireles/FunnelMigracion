@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
-import { Usuario } from '../../../interfaces/usuarios';
+import { Usuarios } from '../../../interfaces/usuarios';
 import { UsuariosService } from '../../../services/usuarios.service';
 import { Table } from 'primeng/table';
 import { LazyLoadEvent, MessageService } from 'primeng/api';
@@ -22,9 +22,9 @@ export class UsuariosComponent {
   isDescargando = false;
   anchoTabla = 100;
 
-  usuarios: Usuario[] = [];
-  usuariosOriginal: Usuario[] = [];
-  usuarioSeleccionado!: Usuario;
+  usuarios: Usuarios[] = [];
+  usuariosOriginal: Usuarios[] = [];
+  usuarioSeleccionado!: Usuarios;
 
   selectedEstatus: string = 'Activo';
   loading: boolean = true;
@@ -67,7 +67,7 @@ export class UsuariosComponent {
   getUsuarios(idEmpresa: number = 1) {
       this.UsuariosService.getUsuarios(this.loginService.obtenerIdEmpresa()).subscribe({
       
-        next: (result: Usuario[]) => {
+        next: (result: Usuarios[]) => {
 
           if (!result || result.length === 0) {
             console.warn("No hay usuarios en la respuesta.");}
@@ -151,7 +151,7 @@ export class UsuariosComponent {
           
         }
        
-        actualiza(licencia: Usuario) {
+        actualiza(licencia: Usuarios) {
           this.usuarioSeleccionado = licencia;
           this.insertar = false;
           this.modalVisible = true;
@@ -273,8 +273,8 @@ clear(table: Table) {
   
       return (
         registrosVisibles.reduce(
-          (acc: number, empresa: Usuario) =>
-            acc + (Number(empresa[def.key as keyof Usuario]) || 0),
+          (acc: number, empresa: Usuarios) =>
+            acc + (Number(empresa[def.key as keyof Usuarios]) || 0),
           0
         ) / registrosVisibles.length
       );
@@ -288,8 +288,8 @@ clear(table: Table) {
       }
     
       return registrosVisibles.reduce(
-        (acc: number, empresa: Usuario) =>
-          acc + (Number(empresa[campo as keyof Usuario] || 0)),
+        (acc: number, empresa: Usuarios) =>
+          acc + (Number(empresa[campo as keyof Usuarios] || 0)),
         0
       );
     }

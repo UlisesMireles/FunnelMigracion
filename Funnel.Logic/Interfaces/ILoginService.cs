@@ -9,5 +9,7 @@ namespace Funnel.Logic.Interfaces
         public Task<BaseOut> ObtenerVersion();
         public Task<BaseOut> ResetPassword(string usuario);
         public Task<BaseOut> GuardarSolicitudRegistro(SolicitudRegistroSistemaDto datos);
+        public Task<BaseOut> CambioPassword(UsuarioDto datos);
+        public Task<BaseOut> GuardarImagen(int idUsuario, string nombreArchivo);
     }
 }

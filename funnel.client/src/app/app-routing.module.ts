@@ -23,9 +23,10 @@ import { ModalOportunidadesCanceladasComponent } from './components/terminadas/o
 import { ModalOportunidadesPerdidasComponent } from './components/terminadas/oportunidades-perdidas/modal-oportunidades-perdidas/modal-oportunidades-perdidas.component';
 
 
-import { TiposEntregaComponent } from './components/catalogos/tipos-entrega/tipos-entrega.component';
-import { ModalTiposEntregaComponent } from './components/catalogos/tipos-entrega/modal-tipos-entrega/modal-tipos-entrega.component';
 import { PermisosComponent } from './components/catalogos/permisos/permisos.component';
+import { ModalTiposEntregaComponent } from './components/catalogos/tipos-entrega/modal-tipos-entrega/modal-tipos-entrega.component';
+import { TiposEntregaComponent } from './components/catalogos/tipos-entrega/tipos-entrega.component';
+import { UsuarioPerfilComponent } from './components/usuario-perfil/usuario-perfil.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent, title: 'Login' },
@@ -60,6 +61,7 @@ const routes: Routes = [
   { path: 'oportunidades-perdidas-modal', component: ModalOportunidadesPerdidasComponent, title: 'Oportunidades Perdidas', canActivate: [AuthGuard] },
   { path: 'permisos', component: PermisosComponent, title: 'Permisos', canActivate: [AuthGuard] },
   { path: 'top-veinte', component: TopVeinteComponent, title: 'Top Veinte', canActivate: [AuthGuard] },
+  { path: 'perfil', component: UsuarioPerfilComponent,title: 'Perfil', canActivate: [AuthGuard]  },
   { path: 'app-oportunidadesMes-acordeon', component: OortunidadesMesAcordeonComponent, title: 'Oportunidades Mes', canActivate: [AuthGuard] },
 ];
 

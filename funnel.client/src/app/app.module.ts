@@ -96,14 +96,11 @@ export function getBaseUrl() {
 import { PrimeNgConfiguracionService } from './services/primeNgConfiguracion.service';
 import { CommonModule, DatePipe, registerLocaleData } from '@angular/common';
 import { TipoCurrencyPipe } from './pipes/tipoCurrency.pipe';
-
-
 import localeEs from '@angular/common/locales/es-MX';
 import { APP_INITIALIZER, LOCALE_ID } from '@angular/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
-
-
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { UsuarioPerfilComponent } from './components/usuario-perfil/usuario-perfil.component';
 import { AcordeonOportunidadesEtapaComponent } from './components/utils/acordeon-oportunidades-etapa/acordeon-oportunidades-etapa.component';
 
 export function configurationProviderFactory(provider: PrimeNgConfiguracionService) {
@@ -153,6 +150,7 @@ registerLocaleData(localeEs, 'es-MX');
     OortunidadesMesAcordeonComponent,
     EstadisticasPorEtapaComponent,
     PermisosComponent,
+    UsuarioPerfilComponent,
     AcordeonOportunidadesEtapaComponent,
   ],
   imports: [

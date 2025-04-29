@@ -1,1 +1,116 @@
-<p>cambiar-contrasena works!</p>
+<div class="cambiar-password-header">
+    <div class="header">
+        <h2 class="titulo">Mi Cuenta</h2>
+    </div>
+</div>
+
+<div class="cambiar-password-container">
+    <div class="contenido">
+        <div *ngIf="formCambiarPassword" [formGroup]="formCambiarPassword">
+            <div class="row inptSpace">
+                <div class="col-sm-4 lbl">
+                    <label for="usuario" class="control-label">Usuario</label>
+                </div>
+                <div class="col-sm-8 inptSpace">
+                    <input type="text" pInputText class="form-control register-input inptSize"
+                        formControlName="usuario" />
+                </div>
+            </div>
+            <div class="row inptSpace">
+                <div class="col-sm-4 lbl">
+                    <label for="correo">Correo Electrónico</label>
+                </div>
+                <div class="col-sm-8 inptSpace">
+                    <input pInputText class="inptSize" formControlName="correo" />
+                </div>
+            </div>
+            <div class="row inptSpace">
+                <div class="col-sm-4 lbl">
+                    <label for="tipoUsuario">Tipo de Usuario</label>
+                </div>
+                <div class="col-sm-8 inptSpace">
+                    <input pInputText class="inptSize" formControlName="tipoUsuario" />
+                </div>
+            </div>
+            <div class="row inptSpace">
+                <div class="col-sm-4 lbl">
+                    <label for="txtContrasena" class="control-label">Cambiar Contraseña *</label>
+                </div>
+                <div class="col-sm-8 inptSpace">
+                    <input type="password" id="txtContrasena" formControlName="contrasena"
+                        [ngClass]="{'is-invalid': formCambiarPassword.get('contrasena')?.invalid && formCambiarPassword.get('contrasena')?.touched}"
+                        class="form-control register-input" maxlength="100" />
+                    <span
+                        *ngIf="formCambiarPassword.get('contrasena')?.invalid && formCambiarPassword.get('contrasena')?.touched"
+                        class="text-danger">
+                        <ng-container *ngIf="formCambiarPassword.get('contrasena')?.errors?.['required']">
+                            La contraseña es requerida.
+                        </ng-container>
+                        <ng-container *ngIf="formCambiarPassword.errors?.['contrasenaEsRequerida']">
+                            La contraseña es obligatoria si no se ha seleccionado una foto.
+                          </ng-container>
+                    </span>
+                </div>
+            </div>
+            <div class="row inptSpace">
+                <div class="col-sm-4 lbl">
+                    <label for="txtContrasenaConfirm" class="control-label">Confirmar Contraseña*</label>
+                </div>
+                <div class="col-sm-8 inptSpace">
+                    <input type="password" id="txtContrasenaConfirm" formControlName="contrasenaConfirm" [ngClass]="{'is-invalid': (formCambiarPassword.get('contrasenaConfirm')?.invalid && formCambiarPassword.get('contrasenaConfirm')?.touched)
+                            ||
+                            (formCambiarPassword.errors?.['contrasenasNoCoinciden'] && 
+                            formCambiarPassword.get('contrasenaConfirm')?.touched)
+                        }" class="form-control register-input" maxlength="100" />
+                    <span
+                        *ngIf="formCambiarPassword.get('contrasenaConfirm')?.invalid && formCambiarPassword.get('contrasenaConfirm')?.touched"
+                        class="text-danger">
+                        <ng-container *ngIf="formCambiarPassword.get('contrasenaConfirm')?.errors?.['required']">
+                            Es necesario que confirmes tu contraseña.
+                        </ng-container>
+                    </span>
+                    <span *ngIf="formCambiarPassword.errors?.['contrasenasNoCoinciden'] &&
+             formCambiarPassword.get('contrasenaConfirm')?.touched" class="text-danger">
+                        Las contraseñas no coinciden.
+                    </span>
+                </div>
+            </div>
+            <div class="row inptSpace align-items-center">
+                <div class="col-sm-4 lbl">
+                    <label for="fotoPerfil" class="control-label">Foto de Perfil</label>
+                </div>
+
+                <div class="col-sm-8 inptSpace">
+
+                    <div *ngIf="!fotoSeleccionada" class="d-flex align-items-center">
+                        <input type="text" class="form-control me-2" placeholder="" disabled />
+
+                        <button class="btn btn-seleccionar" (click)="abrirInput()">Seleccionar</button>
+
+                        <input #inputFoto type="file" (change)="onFotoSeleccionada($event)" accept="image/*" hidden
+                            *ngIf="!fotoSeleccionada" />
+                    </div>
+
+                    <div *ngIf="fotoSeleccionada" class="d-flex align-items-center">
+                        <div class="rounded-circle bg-success" style="width: 20px; height: 20px; margin-right: 10px;">
+                        </div>
+                        <span class="me-3">{{ fotoSeleccionada.name }}</span>
+                        <button class="btn btn-link text-danger p-0" (click)="removerFoto()">
+                            <span class="me-1">❌</span> Remover
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="formCambiarPassword.errors?.['alMenosUnoDebeLlenarse']" class="text-danger">
+            Debes seleccionar al menos una opción: cambiar contraseña o subir una foto de perfil.
+        </div>
+    </div>
+</div>
+
+<div class="cambiar-password-footer">
+    <div class="contenido col-12" style="text-align: right;">
+        <button pButton label="Guardar" severity="secondary" (click)="guardar()" style="margin-right: 10px;"></button>
+        <button pButton label="Salir" severity="secondary" (click)="cancelar()"></button>
+    </div>
+</div>

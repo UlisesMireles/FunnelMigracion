@@ -328,24 +328,6 @@
     white-space: pre-wrap;
 }
 
-.colorChipTemaAsistenteAyuda {
-    background-color: white !important;
-    border: #377493 1px !important;
-    border-style: solid !important;
-    color: #377493 !important;
-}
-
-.colorChipTemaAsistenteAyuda:hover {
-    background-color: #377493 !important;
-    color: #fff !important;
-}
-
-.opcionesIconTrashTemaAsistenteAyuda {
-    font-size: 18px;
-    cursor: pointer;
-    color: #377493 !important;
-}
-
 .iconoChatBotTemaAsistenteOperacion {
     color: #256F45 !important;
 }

@@ -93,12 +93,11 @@
 }
 
 .filtroFaqClass {
-    width: 98%;
-
-    .mat-chip-list-wrapper {
-        justify-content: end;
-        align-items: end;
-    }
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Esto alinea los chips a la derecha */
+    gap: 8px; /* Espacio entre chips */
 }
 
 .mostrarTemasClass {
@@ -368,4 +367,22 @@
     font-size: 18px;
     cursor: pointer;
     color: #256F45 !important;
+}
+
+.custom-chip {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    margin: 0; /* Quitamos el margin ya que usamos gap en el contenedor */
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px;
+    max-width: 280px;
+    min-width: 120px;
+    width: fit-content; /* Ajusta el ancho al contenido */
+    white-space: normal;
+    word-break: break-word;
+    text-align: left; /* Texto alineado a la izquierda */
+    font-size: 0.8rem;
+    line-height: 1.2;
 }

@@ -165,7 +165,7 @@ namespace Funnel.Logic
                 lista.Add(new OportunidadesTarjetasDto
                 {
                     Nombre = item.Concepto ?? "Sin etapa",
-                    Anio = item.Id,
+                    Anio = Convert.ToInt32(item.Stage),
                     Tarjetas = oportunidades.Where(x => x.IdStage == item.Id).Select(y => new TarjetasDto
                     {
                         IdOportunidad = y.IdOportunidad,

@@ -51,7 +51,6 @@ export class AcordeonOportunidadesEtapaComponent {
     
       this.oportunidadService.getOportunidadesPorEtapa(idEmpresa, idUsuario).subscribe({
         next: (result: OportunidadesPorEtapa[]) => {
-          console.log('Datos transformados:', result);
           
           this.etapas = result.map(etapa => ({
             ...etapa,
@@ -59,7 +58,7 @@ export class AcordeonOportunidadesEtapaComponent {
             tarjetas: etapa.tarjetas || [] // Asegurar array vacío si es null/undefined
           }));
     
-          this.connectedDropLists = this.etapas.map((_, i) => `todoList${i}`);
+          this.connectedDropLists = this.etapas.map((_, i) => `ListEtapa${i}`);
           this.cantidadExpandidos = this.etapas.filter(etapa => etapa.expandido).length;
           this.loading = false;
           this.cdr.detectChanges();
@@ -86,9 +85,7 @@ export class AcordeonOportunidadesEtapaComponent {
 
     drop(event: any, etapaDestino: OportunidadesPorEtapa) {
       // 1. Validar si el movimiento es dentro del mismo contenedor
-      if (event.previousContainer === event.container) {
-          return;
-      }
+      
   
       // 2. Identificar la etapa de origen
       const etapaOrigenObj = this.etapas.find(e => e.tarjetas === event.previousContainer.data);
@@ -96,7 +93,6 @@ export class AcordeonOportunidadesEtapaComponent {
           console.error('No se encontró la etapa de origen');
           return;
       }
-  
       // 3. Preparar datos del movimiento
       this.tarjetaMovida = {
           tarjeta: event.item.data,
@@ -106,13 +102,15 @@ export class AcordeonOportunidadesEtapaComponent {
           indexDestino: event.currentIndex,
           etapaOrigenObj: etapaOrigenObj
       };
-  
+      if (event.previousContainer === event.container) {
+        return;
+      } 
       // 4. Mover visualmente la tarjeta (actualización optimista)
       transferArrayItem(
-          this.tarjetaMovida.etapaOrigen,
-          this.tarjetaMovida.etapaDestino.tarjetas,
-          this.tarjetaMovida.indexOrigen,
-          this.tarjetaMovida.indexDestino
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
       );
   
       // 5. Asignar el ID para la actualización
@@ -132,7 +130,7 @@ export class AcordeonOportunidadesEtapaComponent {
       const request: RequestActualizarEtapa = {
           bandera: "UPD-STAGE",
           idOportunidad: this.idOportunidadTarjeta,
-          idStage: this.tarjetaMovida.etapaDestino.idStage,
+          idStage: this.tarjetaMovida.etapaDestino.anio,
           idUsuario: this.loginService.obtenerIdUsuario(),
           idEmpresa: this.loginService.obtenerIdEmpresa()
       };
@@ -238,7 +236,7 @@ export class AcordeonOportunidadesEtapaComponent {
   private crearNuevaLicencia(licencia: Tarjeta) {
     return {
       idOportunidad: licencia.idOportunidad,
-      nombreEmpresa: licencia.nombreEmpresa,
+      nombre: licencia.nombreEmpresa,
       nombreAbrev: licencia.nombreAbrev,
       nombreOportunidad: licencia.nombreOportunidad,
       monto: licencia.monto,
@@ -263,8 +261,7 @@ export class AcordeonOportunidadesEtapaComponent {
       totalComentarios: licencia.totalComentarios,
       idEmpresa: this.loginService.obtenerIdEmpresa(),
       idUsuario: this.loginService.obtenerIdUsuario(),
-      stage: licencia.stage,
-      nombre: licencia.nombre
+      stage: licencia.stage
     };
   }
 

@@ -165,7 +165,7 @@ namespace Funnel.Logic
                 lista.Add(new OportunidadesTarjetasDto
                 {
                     Nombre = item.Concepto ?? "Sin etapa",
-                    Anio = item.Id,
+                    Anio = Convert.ToInt32(item.Stage),
                     Tarjetas = oportunidades.Where(x => x.IdStage == item.Id).Select(y => new TarjetasDto
                     {
                         IdOportunidad = y.IdOportunidad,
@@ -205,6 +205,11 @@ namespace Funnel.Logic
         {
             request.Bandera = "UPD-FECHAESTIMADA";
             return await _oportunidadesData.ActualizarFechaEstimada(request);
+        }
+        public async Task<BaseOut> ActualizarEtapa(OportunidadesEnProcesoDto request)
+        {
+            request.Bandera = "UPD-STAGE";
+            return await _oportunidadesData.ActualizarEtapa(request);
         }
 
         public async Task<HtmlToPdfDocument> GenerarReporteSeguimientoOportunidades(int IdEmpresa, int IdOportunidad, string RutaBase)

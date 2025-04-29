@@ -101,6 +101,7 @@ import { APP_INITIALIZER, LOCALE_ID } from '@angular/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { UsuarioPerfilComponent } from './components/usuario-perfil/usuario-perfil.component';
+import { AcordeonOportunidadesEtapaComponent } from './components/utils/acordeon-oportunidades-etapa/acordeon-oportunidades-etapa.component';
 
 export function configurationProviderFactory(provider: PrimeNgConfiguracionService) {
   return () => provider.load();
@@ -150,6 +151,7 @@ registerLocaleData(localeEs, 'es-MX');
     EstadisticasPorEtapaComponent,
     PermisosComponent,
     UsuarioPerfilComponent,
+    AcordeonOportunidadesEtapaComponent,
   ],
   imports: [
     BrowserModule,

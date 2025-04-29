@@ -46,7 +46,7 @@ export class OportunidadesEliminadasComponent {
   ];
 
   lsTodasColumnas: any[] = [
-    { key: 'idOportunidad', isCheck: true, valor: 'Id', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
+    { key: 'idOportunidad', isCheck: false, valor: 'Id', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombre', isCheck: true, valor: 'Prospecto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreSector', isCheck: false, valor: 'Sector', isIgnore: true, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreOportunidad', isCheck: true, valor: 'Oportunidad', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
@@ -58,9 +58,9 @@ export class OportunidadesEliminadasComponent {
     { key: 'probabilidad', isCheck: false, valor: 'Probabilidad', isIgnore: true, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'fechaRegistro', isCheck: true, valor: 'Fecha Inicio', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
     { key: 'fechaEstimadaCierre', isCheck: true, valor: 'Fecha Cierre', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
-    { key: 'fechaEstimadaCierreOriginal', isCheck: true, valor: 'Cierre Estimado', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
+    { key: 'fechaEstimadaCierreOriginal', isCheck: false, valor: 'Cierre Estimado', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
     { key: 'diasFunnelOriginal', isCheck: true, valor: 'Días Funnel', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
-    { key: 'comentario', isCheck: true, valor: 'Último Comentario', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'comentario', isCheck: false, valor: 'Último Comentario', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'diasEtapa1', isCheck: true, valor: 'Etapa 1', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'number' },
     { key: 'diasEtapa2', isCheck: true, valor: 'Etapa 2', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'number' },
     { key: 'diasEtapa3', isCheck: true, valor: 'Etapa 3', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'number' },
@@ -91,8 +91,8 @@ export class OportunidadesEliminadasComponent {
     filterByYear() {
       if (this.oportunidadesOriginal) {
         this.oportunidades = this.oportunidadesOriginal.filter(oportunidad => {
-          if (oportunidad.fechaRegistro) {
-            const fechaRegistro = new Date(oportunidad.fechaRegistro);
+          if (oportunidad.fechaEstimadaCierre) {
+            const fechaRegistro = new Date(oportunidad.fechaEstimadaCierre);
             return fechaRegistro.getFullYear() === this.selectedYear;
           }
           return false;

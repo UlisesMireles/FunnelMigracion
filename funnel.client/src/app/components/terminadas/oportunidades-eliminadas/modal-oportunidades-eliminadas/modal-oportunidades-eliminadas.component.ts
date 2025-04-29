@@ -36,13 +36,13 @@ export class ModalOportunidadesEliminadasComponent {
 
   inicializarFormulario() {
       this.oportunidadForm = this.fb.group({
-        bandera: ['UPD-OPORTUNIDAD'],
+        bandera: ['UPD-ESTATUS'],
         idOportunidad: [this.oportunidad.idOportunidad],
-        descripcion: [this.oportunidad.nombreOportunidad],
+        comentario: [''],
         idEstatusOportunidad: [this.oportunidad.idEstatusOportunidad],
-        probabilidad: [this.oportunidad.probabilidad]
+        idUsuario: [this.loginService.obtenerIdUsuario()],
+        stage: [this.oportunidad.stage],
       });
-      this.limpiarProbabilidad();
   }
 
   onDialogShow() {
@@ -76,6 +76,32 @@ export class ModalOportunidadesEliminadasComponent {
   }
 
   guardarOportunidad(){
+    const idEstatus = this.oportunidadForm.get('idEstatusOportunidad')?.value;
+    let descripcion = '';
+  
+    switch (idEstatus) {
+      case 1: 
+        descripcion = 'En Proceso';
+        break;
+      case 2: 
+        descripcion = 'Ganada';
+        break;
+      case 3: 
+        descripcion = 'Perdida';
+        break;
+      case 4:
+        descripcion = 'Cancelada';
+        break;
+      case 5: 
+        descripcion = 'Eliminada';
+        break;
+      default:
+        descripcion = 'actualizada';
+    }
+  
+    this.oportunidadForm.patchValue({
+      comentario: `Modificación de estatus de oportunidad a '${descripcion}'`
+    });
     this.oportunidadService.postOportunidad(this.oportunidadForm.value).subscribe({
         next: (result: baseOut) => {
           this.result.emit(result);
@@ -90,12 +116,4 @@ export class ModalOportunidadesEliminadasComponent {
         },
       });
     }
-    limpiarProbabilidad() {
-      let probabilidad = this.oportunidadForm.get('probabilidad')?.value;
-  
-      if (typeof probabilidad === 'string' && probabilidad.includes('%')) {
-          probabilidad = probabilidad.replace('%', '').trim();
-          this.oportunidadForm.get('probabilidad')?.setValue(probabilidad);
-      }
-  }
 }

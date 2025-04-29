@@ -5,7 +5,6 @@
       {{ insertar ? 'Nueva Oportunidad' : title + ' ' + nombreProspecto }}
     </label>
   </ng-template>
-
   <ng-template pTemplate="content">
     <div *ngIf="oportunidadForm" [formGroup]="oportunidadForm">
         <div class="row inptSpace" [ngStyle]="{ visibility: insertar ? 'visible' : 'hidden', 'margin-top': insertar ? '0px' : '-30px'}">
@@ -31,7 +30,7 @@
           <div class="col-sm-8 inptSpace">
             <input pInputText class="inptSize" formControlName="descripcion" 
                    maxlength="100" (input)="limitarCaracteres()" />
-            <div style="font-size: 0.8rem; color: #6c757d; text-align: right; margin-top: 0.25rem;">
+            <div style="font-size: 0.8rem; color: #6c757d; text-align: right; position: absolute; right: 30px;">
               {{ oportunidadForm.get('descripcion')?.value?.length || 0 }}/100
             </div>
             <span *ngIf="oportunidadForm.get('descripcion')?.invalid && oportunidadForm.get('descripcion')?.touched"
@@ -45,6 +44,7 @@
             </span>
           </div>
         </div>
+        <br>
         <div class="row inptSpace">
           <div class="col-sm-4 lbl">
             <label for="monto">Monto: </label>
@@ -185,6 +185,9 @@
           </div>
           <div class="col-sm-8 inptSpace">
             <textarea pInputText class="inptSize estiloComentario" formControlName="comentario" placeholder="Agrega un comentario" rows="4"></textarea>
+            <div style="font-size: 0.8rem; color: #6c757d; text-align: right; position: absolute; right: 30px;">
+              {{ oportunidadForm.get('comentario')?.value?.length || 0 }}/100
+            </div>
             <span *ngIf="oportunidadForm.get('comentario')?.invalid && oportunidadForm.get('comentario')?.touched"
               class="text-danger"><br>
               <ng-container *ngIf="oportunidadForm.get('comentario')?.errors?.['required']">Debe ingresar un

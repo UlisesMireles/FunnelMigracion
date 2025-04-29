@@ -28,5 +28,6 @@ namespace Funnel.Models.Dto
         public decimal PorcCanceladas { get; set; }
         public decimal PorcEliminadas { get; set; }
 
+        public decimal PorcEfectividad { get; set; }
     }
 }

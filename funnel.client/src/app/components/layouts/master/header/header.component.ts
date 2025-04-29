@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { environment } from '../../../../../environments/environment';
+import { AsistenteService } from '../../../../services/asistenteOperacion/asistente.service';
 @Component({
   selector: 'app-header',
   standalone: false,
@@ -8,9 +9,13 @@ import { environment } from '../../../../../environments/environment';
 })
 export class HeaderComponent {
   baseUrl: string = environment.baseURLAssets;
-  isChatOpen = false; // Inicia oculto
+  enableAsistenteOperacion = false; // Inicia oculto
 
-  toggleChat() {
-    this.isChatOpen = !this.isChatOpen; // Cambia el estado al hacer clic
+  constructor(private asistenteService: AsistenteService) {}
+
+  toggleChat(): void {
+    this.enableAsistenteOperacion = !this.enableAsistenteOperacion;
+    // Si necesitas notificar al servicio
+    this.asistenteService.asistenteSubject.next(this.enableAsistenteOperacion ? 1 : -1);
   }
 }

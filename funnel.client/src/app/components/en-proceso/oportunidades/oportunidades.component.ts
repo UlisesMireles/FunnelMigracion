@@ -9,7 +9,6 @@ import { Oportunidad } from '../../../interfaces/oportunidades';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ColumnasDisponiblesComponent } from '../../utils/tablas/columnas-disponibles/columnas-disponibles.component';
 import { sumBy, map as mapping, omit, sortBy, groupBy, keys as getKeys } from "lodash-es";
-import { AsistenteOperacionComponent } from '../../asistente-operacion/asistente-operacion.component';
 
 @Component({
   selector: 'app-oportunidades',
@@ -18,10 +17,6 @@ import { AsistenteOperacionComponent } from '../../asistente-operacion/asistente
   styleUrl: './oportunidades.component.css',
 })
 export class OportunidadesComponent {
-  idAsistente = 0
-  enableAsistenteOperacion = false;
- 
-  @ViewChild(AsistenteOperacionComponent) asistenteOperacion!: AsistenteOperacionComponent;
   
   @ViewChild('dt') dt!: Table;
 
@@ -407,9 +402,6 @@ export class OportunidadesComponent {
     };
     return etapas[numeroEtapa] || 'Etapa desconocida';
   }
-  abrirCerrarAsistenteOperacion(): void {
-      this.enableAsistenteOperacion = !this.enableAsistenteOperacion;
-    }
     
 }
 

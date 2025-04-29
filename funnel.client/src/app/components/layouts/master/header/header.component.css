@@ -1,89 +1,198 @@
+/* ESTILOS GENERALES DEL HEADER */
 #header {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background-color: #103D66;
-  color: white;
-  text-align: center;
-  padding: 4px 0;
-  z-index: 1000;
-  font-family: sans-serif;
-  height: 40px;
-}
-
-header h6 {
-  font-size: 1rem;
-  margin-top: 0.5rem;
-}
-
-/* Media Queries para diferentes tamaños de pantalla */
-@media (max-width: 768px) {
-  header h6 {
-    font-size: 0.875rem; /* Ajusta el tamaño de la fuente para pantallas más pequeñas */
-  }
-}
-
-@media (max-width: 480px) {
-  header h6 {
-    font-size: 0.75rem; /* Ajusta el tamaño de la fuente para pantallas muy pequeñas */
-  }
-}
-
-
-.navbar {
-  background: linear-gradient(to right, #103d66, #1a4e80, #2a6fa9, #3e90d1, #5ab1f2);
-  padding: 0 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 40px;
-  width: 100%;
   position: fixed;
   top: 0;
   left: 0;
+  width: 100%;
+  background: linear-gradient(to right, #103d66, #1a4e80, #2a6fa9, #3e90d1, #5ab1f2);
+  color: white;
   z-index: 1000;
+  height: 50px;
 }
 
-/* Contenedor del logo */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  padding: 0 20px;
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
 .logo-container {
-  display: flex;
-  align-items: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
-/* Imagen del logo */
-.navbar img {
-  max-width: 80px;
-  height: auto;
-  margin-right: 20px;
-}
-
-/* Ajuste del texto dentro de la navbar */
-.navbar nav {
-  flex-grow: 1;
-  text-align: center;
-}
-
-/* Contenedor del botón de chat */
-.button-chat-container {
-  display: flex;
-  align-items: center;
-  margin-right: 10px; /* Deja un espacio de 1 cm (~10px) del borde derecho */
-}
-
-/* Ícono de chat */
-.notification-icon {
-  background-color: #007bff;
+.btn-chat {
+  position: absolute;
+  right: 20px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  background: #103D66;
+  color: #ffffff;
+  border: 2px solid white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  z-index: 1001;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
 }
 
-.notification-icon i {
-  font-size: 23px;
+.btn-chat i {
+  font-size: 20px;
+}
+
+.btn-chat:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 15px rgba(255, 255, 255, 0.25);
+  background: #0a2b4a;
+}
+
+/* VENTANA DEL CHATBOT (CON TEXTO NEGRO GARANTIZADO) */
+.chatbot-window {
+  width: 350px;
+  height: 500px;
+  background: white !important;
+  color: #000000 !important; /* Texto negro forzado */
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  position: fixed;
+  top: 70px;
+  right: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+::ng-deep .chatbot-window,
+::ng-deep .chatbot-window *:not(button):not(.mat-icon) {
+  color: #000000 !important;
+}
+
+::ng-deep .chatbot-window app-asistente-operacion {
+  --texto-color: #000000;
+  --fondo-color: #ffffff;
+  
+  *:not(button):not(.mat-icon) {
+    color: var(--texto-color) !important;
+    background-color: var(--fondo-color) !important;
+  }
+}
+
+/* ESTILOS ESPECÍFICOS PARA ELEMENTOS DEL CHAT */
+::ng-deep .chatbot-window .mensaje,
+::ng-deep .chatbot-window .message,
+::ng-deep .chatbot-window .contenedor-mensajes,
+::ng-deep .chatbot-window .welcome-text,
+::ng-deep .chatbot-window .options-list {
+  color: #000000 !important;
+  background-color: #ffffff !important;
+}
+
+::ng-deep .chatbot-window .burbuja-mensaje {
+  background-color: #f8f9fa !important;
+  border: 1px solid #e0e0e0 !important;
+}
+
+::ng-deep .chatbot-window input,
+::ng-deep .chatbot-window textarea {
+  color: #000000 !important;
+  background-color: #ffffff !important;
+  border: 1px solid #cccccc !important;
+}
+
+@media only screen and (max-width: 600px) {
+  .chatbot-window {
+    width: 90%;
+    height: 70%;
+    top: 60px;
+    right: 5%;
+  }
+  
+  .btn-chat {
+    width: 45px;
+    height: 45px;
+    right: 10px;
+  }
+
+  .logo-container {
+    left: 20px;
+    transform: none;
+  }
+}
+
+.chatbot-window[hidden] {
+  display: none !important;
+}
+
+.chatbot-window-preguntas {
+  position: fixed;
+  height: 480px;
+  width: 253px;
+  margin-left: -260px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  overflow-y: hidden;
+  overflow-x: hidden;
+  padding: 10px 0px;
+}
+
+.faq-button-container {
+  position: fixed;
+  z-index: 1000000;
+  margin-top: 72px !important;
+  margin-left: -32px;
+}
+
+.faq-button {
+  position: absolute;
+  background-color: #4682b4;
+  border-top-left-radius: 27%;
+  border-top-right-radius: 0%;
+  border-bottom-right-radius: 0%;
+  border-bottom-left-radius: 27%;
+  width: 31px;
+  height: 37px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+}
+
+.faq-button mat-icon {
   color: white;
+  font-size: 24px;
+}
+
+.faq-button:hover {
+  background-color: #00509e;
+  cursor: pointer;
+}
+
+/* CLASES AUXILIARES */
+.mat-standard-chip.mat-chip-with-trailing-icon {
+  padding: 7px 6px 7px 0;
+}
+
+.cerrar-preguntas {
+  margin: -25px -10px;
+  position: relative;
+  top: 12px;
+  left: 220px;
+}
+
+.a-small {
+  font-weight: 600;
+  padding: 10px 0;
+}
+
+.a-small:hover {
+  color: var(--bs-navbar-brand-hover-color);
 }

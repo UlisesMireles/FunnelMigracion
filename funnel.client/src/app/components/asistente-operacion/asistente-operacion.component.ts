@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
 import { SideNavChatFunnelService } from '../../services/asistenteOperacion/sidenavChatFunnel.service';
 import { ChatBotAsistenteOperacionComponent } from './chatBot/chatBotAsistenteOperacion.component';
 import { environment } from '../../../environments/environment';
@@ -12,6 +12,7 @@ import { AsistentesAdministradorService } from '../../services/asistenteOperacio
 })
 export class AsistenteOperacionComponent implements OnInit{
   @ViewChild(ChatBotAsistenteOperacionComponent) chatBotAsistenteOperacion!: ChatBotAsistenteOperacionComponent;
+  @Output() OncerrarChat = new EventEmitter<void>();
   baseUrlAssets = environment.baseUrlAssetsChatbot;
   isProd = environment.production;
   asistenteSeleccionado: any = { asistente: '', idBot: 0 };
@@ -46,5 +47,11 @@ export class AsistenteOperacionComponent implements OnInit{
       },
       error: (err) => console.error('Error al obtener la versión:', err)
     });
+  }
+  onCerrarChat() {
+    const chatContainer = document.getElementById("chat-container");
+    if (chatContainer) {
+      chatContainer.classList.add("d-none");
+    }
   }
 }

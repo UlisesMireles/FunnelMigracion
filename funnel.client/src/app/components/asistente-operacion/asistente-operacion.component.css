@@ -53,7 +53,8 @@
 .app-online-icon {
     width: 29px;
     height: 30px;
-    margin-top: 7px;
+    margin-top: 4px;
+    margin-left: -10px;
 }
 
 .app-sr-only {
@@ -78,10 +79,12 @@
     cursor: pointer;
     font-size: 35px !important;
 }
-
+.text-online{
+    margin-top:-5px;
+}
 .app-online-dot {
     color: rgb(10, 199, 10);
-    font-size: 8px;
+    font-size: 5px;
     padding-left: .25rem !important;
     padding-top: .25rem !important;
 }

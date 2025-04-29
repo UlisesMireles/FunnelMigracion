@@ -9,7 +9,7 @@ import { PreguntasFrecuentesClassDto } from '../../app/clases/PreguntasFrecuente
   providedIn: 'root'
 })
 export class PreguntasFrecuentesService {
-  private urlBotOperacion = 'https://sfs-funnel.com/adminchats-qa/';
+  private urlBotOperacion = 'https://sfs-funnel.com/adminchats-qa';
   constructor(private http: HttpClient) { }
 
   obtenPreguntasFrecuentes(): Observable<ListaPreguntasFrecuentesDto> {

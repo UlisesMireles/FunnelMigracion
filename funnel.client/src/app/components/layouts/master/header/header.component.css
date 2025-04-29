@@ -30,8 +30,8 @@
 .btn-chat {
   position: absolute;
   right: 20px;
-  width: 50px;
-  height: 50px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background: #103D66;
   color: #ffffff;
@@ -58,7 +58,7 @@
 
 .chatbot-window {
   width: 350px;
-  height: 500px;
+  height: 450px;
   background: white !important;
   position: fixed;
   top: 70px;

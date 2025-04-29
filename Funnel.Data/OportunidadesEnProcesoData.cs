@@ -317,6 +317,17 @@ namespace Funnel.Data
 
                 if (request.Bandera == "INS-OPORTUNIDAD" || request.Bandera == "UPD-OPORTUNIDAD")
                 {
+                    var historicoRequest = new OportunidadesEnProcesoDto
+                    {
+                        Bandera = "INS-HISTORICO",
+                        IdOportunidad = request.IdOportunidad,
+                        Comentario = request.Comentario,
+                        IdUsuario = request.IdUsuario,
+                        Stage = request.IdStage.ToString(),
+                    };
+
+                    var historicoResult = await GuardarHistorico(historicoRequest);
+
                     list = new List<ParameterSQl>
                     {
                         DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Bandera),

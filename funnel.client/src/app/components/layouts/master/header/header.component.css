@@ -55,13 +55,11 @@
   background: #0a2b4a;
 }
 
-/* VENTANA DEL CHATBOT (CON TEXTO NEGRO GARANTIZADO) */
+
 .chatbot-window {
   width: 350px;
   height: 500px;
   background: white !important;
-  color: #000000 !important; /* Texto negro forzado */
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   position: fixed;
   top: 70px;
   right: 20px;
@@ -69,29 +67,37 @@
   overflow: hidden;
   z-index: 1000;
   transition: all 0.3s ease;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
 
-::ng-deep .chatbot-window,
-::ng-deep .chatbot-window *:not(button):not(.mat-icon) {
+
+::ng-deep .chatbot-window .app-chat-header {
+  background: linear-gradient(to right, #103d66, #1a4e80) !important;
+  color: white !important;
+  padding: 10px 15px;
+  margin: 0;
+}
+
+::ng-deep .chatbot-window .app-chat-header *,
+::ng-deep .chatbot-window .app-chat-header h2,
+::ng-deep .chatbot-window .app-chat-header h6,
+::ng-deep .chatbot-window .app-chat-header small,
+::ng-deep .chatbot-window .app-chat-header i,
+::ng-deep .chatbot-window .app-chat-version {
+  color: white !important;
+}
+
+::ng-deep .chatbot-window .containerAsistente {
   color: #000000 !important;
 }
 
-::ng-deep .chatbot-window app-asistente-operacion {
-  --texto-color: #000000;
-  --fondo-color: #ffffff;
-  
-  *:not(button):not(.mat-icon) {
-    color: var(--texto-color) !important;
-    background-color: var(--fondo-color) !important;
-  }
-}
-
-/* ESTILOS ESPECÍFICOS PARA ELEMENTOS DEL CHAT */
+::ng-deep .chatbot-window .app-chatBotAsistenteOperacion,
 ::ng-deep .chatbot-window .mensaje,
 ::ng-deep .chatbot-window .message,
 ::ng-deep .chatbot-window .contenedor-mensajes,
 ::ng-deep .chatbot-window .welcome-text,
-::ng-deep .chatbot-window .options-list {
+::ng-deep .chatbot-window .options-list,
+::ng-deep .chatbot-window .input-container {
   color: #000000 !important;
   background-color: #ffffff !important;
 }
@@ -99,6 +105,7 @@
 ::ng-deep .chatbot-window .burbuja-mensaje {
   background-color: #f8f9fa !important;
   border: 1px solid #e0e0e0 !important;
+  color: #000000 !important;
 }
 
 ::ng-deep .chatbot-window input,
@@ -131,6 +138,7 @@
 .chatbot-window[hidden] {
   display: none !important;
 }
+
 
 .chatbot-window-preguntas {
   position: fixed;
@@ -176,7 +184,6 @@
   cursor: pointer;
 }
 
-/* CLASES AUXILIARES */
 .mat-standard-chip.mat-chip-with-trailing-icon {
   padding: 7px 6px 7px 0;
 }

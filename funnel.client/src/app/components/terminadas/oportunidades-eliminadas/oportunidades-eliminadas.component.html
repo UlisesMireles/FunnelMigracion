@@ -108,7 +108,8 @@
 
           <ng-template pTemplate="body" let-rowData let-columns="columns">
             <tr>
-              <td *ngFor="let def of lsColumnasAMostrar" 
+              <td *ngFor="let def of lsColumnasAMostrar"
+              [ngClass]="{'fixed-width-oportunidad': def.key === 'nombreOportunidad'}" 
               [ngStyle]="{
                 'text-align':
                   def.key === 'abreviatura' ? 'center' : 
@@ -119,8 +120,10 @@
                   (def.valor.includes('%')) ? 'center' :
                   def.tipoFormato === 'currency' ? 'right' :
                   (def.tipoFormato === 'number' || def.tipoFormato === 'date') ? 'center' : 'left',
-                  'width': def.key === 'stage' || def.key === 'abreviatura' || def.key === 'entrega' || def.key === 'iniciales' || def.key === 'nombreContacto' ? '80px' : ''
-              }">
+                'width': 
+                  def.key === 'monto' ? '120px' : 
+                  (def.key === 'stage' || def.key === 'abreviatura' || def.key === 'entrega' || def.key === 'iniciales' || def.key === 'nombreContacto') ? '80px' : ''
+              }">         
                 <ng-container [ngSwitch]="def.tipoFormato">
                   <span *ngSwitchCase="'text'">
                     <span *ngIf="def.key === 'abreviatura'" pTooltip="{{rowData['descripcion']}}" tooltipPosition="top">
@@ -177,7 +180,7 @@
                       def.tipoFormato === 'currency' ? 'right' : 
                       (def.tipoFormato === 'number' || def.tipoFormato === 'date') ? 'center' : 'left'
                   }">
-                <ng-container *ngIf="def.key === 'idOportunidad'">
+                <ng-container *ngIf="def.key === 'nombre'">
                   Total de registros: {{ getTotalCostPrimeNg(dt, def) }}
                 </ng-container>
                 <ng-container *ngIf="def.tipoFormato === 'currency'">

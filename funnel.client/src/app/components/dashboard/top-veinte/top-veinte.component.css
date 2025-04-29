@@ -274,3 +274,10 @@
 .bold-row {
   font-weight: bold;
 }
+
+::ng-deep .custom-button .bi {
+  text-shadow: 0.5px 0 0 currentColor, 
+              -0.5px 0 0 currentColor, 
+              0 0.5px 0 currentColor, 
+              0 -0.5px 0 currentColor;
+}

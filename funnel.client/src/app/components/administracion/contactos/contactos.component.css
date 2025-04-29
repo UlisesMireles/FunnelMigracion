@@ -29,6 +29,7 @@
   font-size: 1.5rem;
   display: inline-block;
   background: transparent !important;
+
 }
 
 ::ng-deep .p-datatable-header {
@@ -305,3 +306,11 @@ th.sort-active p-sortIcon {
   background: rgba(147, 136, 121, 0.75) !important;
   color: #272722 !important;
 }
+
+::ng-deep .custom-button .bi {
+  text-shadow: 0.5px 0 0 currentColor,
+              -0.5px 0 0 currentColor,
+              0 0.5px 0 currentColor,
+              0 -0.5px 0 currentColor;
+}
+

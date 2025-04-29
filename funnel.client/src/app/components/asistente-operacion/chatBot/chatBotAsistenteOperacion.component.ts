@@ -11,8 +11,8 @@ import { OpenIaService } from '../../../services/asistenteOperacion/openIA.servi
 import { PreguntasFrecuentesService } from '../../../services/asistenteOperacion/preguntasFrecuentes.service';
 import { environment } from '../../../../environments/environment';
 
-
 @Component({
+  standalone: false,
   selector: 'app-chatBotAsistenteOperacion',
   templateUrl: './chatBotAsistenteOperacion.component.html',
   styleUrls: ['./chatBotAsistenteOperacion.component.css'],

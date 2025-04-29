@@ -306,3 +306,17 @@
 <app-documentos-oportunidades [(visible)]="modalDocumentosVisible" [title]="'Documentos de '" (closeModal)="onModalClose()"
   (result)="manejarResultado($event)" [insertar]="insertar" [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">
 </app-documentos-oportunidades>
+  <!-- Botón flotante del chatbot -->
+  <button class="btn-chat" (click)="abrirCerrarAsistenteOperacion()">
+    <i class="bi bi-chat-dots-fill"></i> 
+  </button>
+  
+  <!-- Contenedor del chatbot -->
+  <ng-container *ngIf="enableAsistenteOperacion">
+    <div id="chat-container" class="chatbot-window">
+      <app-asistente-operacion></app-asistente-operacion>
+    </div>
+  </ng-container>
+      </div>
+    </div>
+   

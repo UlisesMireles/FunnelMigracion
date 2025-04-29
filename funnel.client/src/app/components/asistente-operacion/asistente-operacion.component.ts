@@ -5,6 +5,7 @@ import { environment } from '../../../environments/environment';
 import { AsistentesAdministradorService } from '../../services/asistenteOperacion/asistentesAdministrador.service';
 
 @Component({
+  standalone: false,
   selector: 'app-asistente-operacion',
   templateUrl: './asistente-operacion.component.html',
   styleUrls: ['./asistente-operacion.component.css']

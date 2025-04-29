@@ -1,5 +1,4 @@
-@import "cargandoMensaje";
-
+@import "./cargandoMensaje.css";
 /*scrollable-div es el historial de mensajes*/
 .scrollable-div {
     height: 94%;

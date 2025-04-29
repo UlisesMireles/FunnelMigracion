@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Oportunidad, RequestActualizarFechaEstimadaCierre, RequestOportunidad } from '../interfaces/oportunidades';
+import { Oportunidad, RequestActualizarFechaEstimadaCierre,RequestActualizarEtapa, RequestOportunidad } from '../interfaces/oportunidades';
 import { baseOut } from '../interfaces/utils/utils/baseOut';
 
 @Injectable({
@@ -87,6 +87,16 @@ export class OportunidadesService {
 
   postOportunidadPorMesTarjeta(data: RequestActualizarFechaEstimadaCierre): Observable<baseOut> {
     return this.http.post<baseOut>(this.baseUrl + 'api/Oportunidades/ActualizarFechaEstimada', data);
+  }
+
+  getOportunidadesPorEtapa(idEmpresa: number, idUsuario: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}api/Oportunidades/ConsultarOportunidadesPorEtapa`, {
+      params: { idUsuario: idUsuario.toString(), idEmpresa: idEmpresa.toString() }
+    });
+  }
+
+  actualizarEtapa(data: RequestActualizarEtapa): Observable<baseOut> {
+    return this.http.post<baseOut>(this.baseUrl + 'api/Oportunidades/ActualizarEtapa', data);
   }
 
   descargarReporteSeguimientoOportunidades(idOportunidad: number, idEmpresa: number): Observable<Blob> {

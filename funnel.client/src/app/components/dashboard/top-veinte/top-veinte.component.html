@@ -132,8 +132,7 @@
                   <td *ngFor="let def of lsColumnasAMostrar" [ngStyle]="{
                     'text-align': 
                       def.tipoFormato === 'percent' ? 'center' : 
-                      (def.tipoFormato === 'number') ? 'center' : 'left'
-  
+                      (def.tipoFormato === 'number' || def.tipoFormato === 'estatus') ? 'center' : 'left'
                   }">
                     <ng-container [ngSwitch]="def.tipoFormato">
                       <span *ngSwitchCase="'text'">{{ rowData[def.key] }}</span>

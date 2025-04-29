@@ -139,9 +139,9 @@
                     <span *ngSwitchDefault>{{ rowData[def.key] }}</span>
                   </ng-container>
                 </td>
-                <td>
+                <td [ngStyle]="{'width': '20px', 'text-align': 'center'}">
                   <p-button styleClass="coloreditar-icon" (click)="actualiza(rowData)" pTooltip="Editar registro" tooltipPosition="top">
-                    <span class="custom-pencil">✏️</span> 
+                    <span class="custom-pencil">✏️</span>
                   </p-button>
                 </td>
               </tr>

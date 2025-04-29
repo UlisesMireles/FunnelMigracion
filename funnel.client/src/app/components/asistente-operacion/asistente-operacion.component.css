@@ -100,20 +100,6 @@
     align-items: normal;
 } */
 
-.app-chat-headerTemaAsistenteAyuda {
-    background-color: #099EE8;
-    color: #fff;
-
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-        color: #fff;
-        margin: 0;
-    }
-}
-
 .app-chat-headerTemaAsistenteOperacion {
     background-color: #00C455;
     color: #fff;

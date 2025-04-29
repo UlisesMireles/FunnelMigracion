@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class OpenIaService {
-  private urlBotOperacion = 'https://sfs-funnel.com/adminchats-qa';
+  private urlBotOperacion = 'https://sfs-funnel.com/adminchats';
   private urlPython = environment.baseUrlPython;
 
   constructor(private http: HttpClient) {

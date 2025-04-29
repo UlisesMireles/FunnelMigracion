@@ -29,6 +29,7 @@
     "bootstrap-icons": "^1.11.3",
     "jest-editor-support": "*",
     "lodash-es": "^4.17.21",
+    "material-icons": "^1.13.14",
     "ngx-captcha": "^13.0.0",
     "primeicons": "^7.0.0",
     "primeng": "^19.0.9",

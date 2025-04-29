@@ -38,15 +38,15 @@
 <div class="chatbot-message-box" data-role="chatbot">
   <input type="text" class="chatbot-input" [(ngModel)]="pregunta" placeholder="¿Cómo puedo ayudarte el día de hoy?"
     (keydown.enter)="consultaMensajeOpenIa()"
-    [disabled]="asistenteSeleccionado.idBot == 0 || asistenteSeleccionado.idBot == -1 || lsPreguntasPorCategoria === undefined">
+    [disabled]="asistenteSeleccionado.idBot <= 0">
   <mat-icon matSuffix class="iconoChatBot"
     [ngClass]="{'iconoChatBotTemaAsistenteOperacion': asistenteSeleccionado.idBot == 4}"
     (click)="loadOpciones = !loadOpciones">more_horiz</mat-icon>
   <button class="enviarMensaje"
-    [disabled]="asistenteSeleccionado.idBot <= 0 || lsPreguntasPorCategoria === undefined || !this.pregunta">
-    <mat-icon matSuffix class="ms-2 iconoChatBot"
-      [ngClass]="{'iconoChatBotTemaAsistenteOperacion': asistenteSeleccionado.idBot == 4}"
-      (click)="consultaMensajeOpenIa()">send</mat-icon>
+  [disabled]="!this.pregunta.trim()">
+  <mat-icon matSuffix class="ms-2 iconoChatBot"
+  [ngClass]="{'iconoChatBotTemaAsistenteOperacion': asistenteSeleccionado.idBot == 4}"
+  (click)="consultaMensajeOpenIa()">send</mat-icon>
   </button>
 </div>
 
@@ -131,7 +131,7 @@
 <ng-template #revisarTemas>
   <div class="row m-0 ps-4 justify-content-end">
     <mat-chip-listbox class="col-auto m-0 pb-2 ps-0 pe-0" aria-label="Seleccion" *ngFor="let rt of lsRevisarTemas">
-      <mat-chip cass="colorChip"
+      <mat-chip class="colorChip"
         [ngClass]="{'colorChipTemaAsistenteOperacion': asistenteSeleccionado.idBot == 4}"
         (click)="seleccionRevisarTemas(rt)">
         <small>

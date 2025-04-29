@@ -338,6 +338,54 @@ th.sort-active p-sortIcon {
   color: white !important;
 }
 
+::ng-deep .add-button.p-button:hover {
+  background-color: #4682b4 !important; 
+  border-color: #4682b4 !important;
+  color: white !important;
+}
+
+.container-fluid .row > .col-12:first-child h3 {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  line-height: 1.2;
+  position: relative;
+  top: -20px; 
+}
+
+::ng-deep .coloreditar-icon {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+::ng-deep .coloreditar-icon .p-button {
+  background: transparent !important;
+  border: none !important;
+}
+
+::ng-deep .custom-pencil {
+  color: #000; 
+  font-size: 1.5rem;
+  display: inline-block;
+  background: transparent !important;
+}
+
+::ng-deep .p-fluid {
+  width: 100% !important;
+}
+
+.fila-activa {
+  background: rgba(147, 136, 121, 0.75) !important;
+  color: #272722 !important;
+}
+
+::ng-deep .custom-button .bi {
+  text-shadow: 0.5px 0 0 currentColor, 
+              -0.5px 0 0 currentColor, 
+              0 0.5px 0 currentColor, 
+              0 -0.5px 0 currentColor;
+}
+
 ::ng-deep .fixed-width-oportunidad {
   width: 300px !important;
   max-width: 300px !important;
@@ -357,4 +405,25 @@ th.sort-active p-sortIcon {
   min-height: 26px !important;   /* Altura mínima pero puede expandirse */
   white-space: normal !important;
   padding: 8px 5px !important;   /* Espacio interno */
+}
+
+::ng-deep .add-button.p-button:hover {
+  background-color: #4682b4 !important;
+  border-color: #4682b4 !important;
+  color: white !important;
+}
+
+::ng-deep .p-fluid {
+  width: 100% !important;
+}
+
+::ng-deep .inptSpaceEstatus {
+  text-align: left !important;
+  padding: 0px;
+  padding-top: 10px;
+}
+
+.fila-activa {
+  background: rgba(147, 136, 121, 0.75) !important;
+  color: #272722 !important;
 }

@@ -173,6 +173,22 @@ namespace Funnel.Logic
 
         }
 
+        public async Task<BaseOut> CambioPassword(UsuarioDto datos)
+        {
+            BaseOut resultado = new BaseOut();
+            string passEncrypt = Encrypt.Encriptar(datos.Password);
+            resultado =  await _loginData.CambioPassword("UPDATE-PASS", "","", "", "", "", null, 0, datos.IdUsuario, 1, passEncrypt, 0);
+
+            return resultado;
+
+
+        }
+
+        public async Task<BaseOut> GuardarImagen(int idUsuario, string nombreArchivo)
+        {
+            return await _loginData.GuardarImagen(idUsuario, nombreArchivo);
+        }
+
 
 
     }

@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, finalize, Observable, map } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Usuario, DobleAutenticacion, LoginUser } from '../interfaces/usuario';
 import { CatalogoService } from './catalogo.service';
 import { SolicitudRegistroSistema } from '../interfaces/solicitud-registro';
 import { baseOut } from '../interfaces/utils/utils/baseOut';
+import { Usuarios } from '../interfaces/usuarios';
 
 @Injectable({
   providedIn: 'root'
@@ -49,6 +50,7 @@ export class LoginService {
           localStorage.setItem('username', datos.usuario);
           localStorage.setItem('nombre', user.nombre);
           localStorage.setItem('correo', user.correo);
+          localStorage.setItem('imagenPerfil', user.archivoImagen);
           localStorage.setItem('lastActivity', Date.now().toString());
           this.currentUserSubject.next(user);
           sessionStorage.setItem('sesion', window.btoa(JSON.stringify(user)));
@@ -171,5 +173,11 @@ export class LoginService {
   postSolicitudRegistro(data: SolicitudRegistroSistema): Observable<baseOut> {
       return this.http.post<baseOut>(this.baseUrl + 'api/Login/GuardarSolicitudRegistro', data);
     }
+
+  cambiarPassword(formData: FormData): Observable<baseOut> {
+    const headers = new HttpHeaders();
+    return this.http.post<baseOut>(this.baseUrl + 'api/Login/CambioPassword', formData, { headers });
+  }
+  
 }
 

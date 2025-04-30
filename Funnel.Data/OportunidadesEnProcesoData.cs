@@ -277,8 +277,6 @@ namespace Funnel.Data
                     DataBase.CreateParameterSql("@pComentario", SqlDbType.VarChar, -1, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Comentario),
                     DataBase.CreateParameterSql("@pIdUsuario", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdUsuario),
                     DataBase.CreateParameterSql("@pStage", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Stage),
-
-
                 };
 
                 using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoOportunidades", CommandType.StoredProcedure, list, _connectionString))
@@ -292,7 +290,7 @@ namespace Funnel.Data
                 switch (request.Bandera)
                 {
                     case "INS-HISTORICO":
-                        result.ErrorMessage = "Oportunidad insertada correctamente.";
+                        result.ErrorMessage = "Seguimiento insertada correctamente.";
                         result.Id = 1;
                         result.Result = true;
                         break;
@@ -301,7 +299,7 @@ namespace Funnel.Data
             }
             catch (Exception ex)
             {
-                result.ErrorMessage = "Seguimiento insertada correctamente.";
+                result.ErrorMessage = "Ocurrio un error al registrar el Seguimiento.";
                 result.Id = 1;
                 result.Result = true;
             }
@@ -311,72 +309,101 @@ namespace Funnel.Data
         public async Task<BaseOut> GuardarOportunidad(OportunidadesEnProcesoDto request)
         {
             BaseOut result = new BaseOut();
+
             try
             {
-                decimal probabilidadDecimal = 0; 
+                IList<ParameterSQl> list = new List<ParameterSQl>();
+                string storedProcedure = "F_CatalogoOportunidades";
 
-                IList<ParameterSQl> list = new List<ParameterSQl>
+                if (request.Bandera == "INS-OPORTUNIDAD" || request.Bandera == "UPD-OPORTUNIDAD")
                 {
-                    DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Bandera),
-                    DataBase.CreateParameterSql("@pIdProspecto", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdProspecto),
-                    DataBase.CreateParameterSql("@pIdOportunidad", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdOportunidad),
-                    DataBase.CreateParameterSql("@pNombreOportunidad", SqlDbType.VarChar, 100, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Descripcion),
-                    DataBase.CreateParameterSql("@pMonto", SqlDbType.Decimal, 18, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Monto),
-                    DataBase.CreateParameterSql("@pFechaEstimadaCierre", SqlDbType.Date, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.FechaEstimadaCierre),
-                    DataBase.CreateParameterSql("@pIdEjecutivo", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdEjecutivo),
-                    DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdEmpresa),
-                    DataBase.CreateParameterSql("@pIdTipoEntrega", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdTipoEntrega),
-                    DataBase.CreateParameterSql("@pStage", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdStage),
-                    DataBase.CreateParameterSql("@pIdContacto", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdContactoProspecto),
-                    DataBase.CreateParameterSql("@pComentario", SqlDbType.VarChar, -1, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Comentario),
-                    DataBase.CreateParameterSql("@pIdTipoOportunidad", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdTipoProyecto),
-                    DataBase.CreateParameterSql("@pIdEstatusOportunidad", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdEstatusOportunidad),
-                    DataBase.CreateParameterSql("@pProbabilidad", SqlDbType.VarChar, 100, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Probabilidad),
-                    DataBase.CreateParameterSql("@pIdUsuario", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdUsuario),
+                    var historicoRequest = new OportunidadesEnProcesoDto
+                    {
+                        Bandera = "INS-HISTORICO",
+                        IdOportunidad = request.IdOportunidad,
+                        Comentario = request.Comentario,
+                        IdUsuario = request.IdUsuario,
+                        Stage = request.IdStage.ToString(),
+                    };
 
-                };
+                    var historicoResult = await GuardarHistorico(historicoRequest);
 
-                using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoOportunidades", CommandType.StoredProcedure, list, _connectionString))
+                    list = new List<ParameterSQl>
+                    {
+                        DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Bandera),
+                        DataBase.CreateParameterSql("@pIdProspecto", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdProspecto),
+                        DataBase.CreateParameterSql("@pIdOportunidad", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdOportunidad),
+                        DataBase.CreateParameterSql("@pNombreOportunidad", SqlDbType.VarChar, 100, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Descripcion),
+                        DataBase.CreateParameterSql("@pMonto", SqlDbType.Decimal, 18, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Monto),
+                        DataBase.CreateParameterSql("@pFechaEstimadaCierre", SqlDbType.Date, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.FechaEstimadaCierre),
+                        DataBase.CreateParameterSql("@pIdEjecutivo", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdEjecutivo),
+                        DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdEmpresa),
+                        DataBase.CreateParameterSql("@pIdTipoEntrega", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdTipoEntrega),
+                        DataBase.CreateParameterSql("@pStage", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdStage),
+                        DataBase.CreateParameterSql("@pIdContacto", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdContactoProspecto),
+                        DataBase.CreateParameterSql("@pComentario", SqlDbType.VarChar, -1, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Comentario),
+                        DataBase.CreateParameterSql("@pIdTipoOportunidad", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdTipoProyecto),
+                        DataBase.CreateParameterSql("@pIdEstatusOportunidad", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdEstatusOportunidad),
+                        DataBase.CreateParameterSql("@pProbabilidad", SqlDbType.VarChar, 100, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Probabilidad),
+                        DataBase.CreateParameterSql("@pIdUsuario", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdUsuario),
+                    };
+                }
+                else if (request.Bandera == "UPD-ESTATUS")
+                {
+                    var historicoRequest = new OportunidadesEnProcesoDto
+                    {
+                        Bandera = "INS-HISTORICO",
+                        IdOportunidad = request.IdOportunidad,
+                        Comentario = request.Comentario,
+                        IdUsuario = request.IdUsuario,
+                        Stage = request.Stage,
+                    };
+
+                    var historicoResult = await GuardarHistorico(historicoRequest);
+
+                    list = new List<ParameterSQl>
+                    {
+                        DataBase.CreateParameterSql("@pIdOportunidad", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdOportunidad),
+                        DataBase.CreateParameterSql("@pIdEstatusOportunidad", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdEstatusOportunidad),
+                        DataBase.CreateParameterSql("@pIdUsuario", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdUsuario),
+                    };
+                    storedProcedure = "spOportunidades_ActualizarEstatusOportunidad"; 
+                }
+
+                using (IDataReader reader = await DataBase.GetReaderSql(storedProcedure, CommandType.StoredProcedure, list, _connectionString))
                 {
                     while (reader.Read())
                     {
-
+                        
                     }
-
                 }
+
+                result.Id = 1;
+                result.Result = true;
+
                 switch (request.Bandera)
                 {
                     case "INS-OPORTUNIDAD":
                         result.ErrorMessage = "Oportunidad insertada correctamente.";
-                        result.Id = 1;
-                        result.Result = true;
                         break;
                     case "UPD-OPORTUNIDAD":
                         result.ErrorMessage = "Oportunidad actualizada correctamente.";
-                        result.Id = 1;
-                        result.Result = true;
+                        break;
+                    case "UPD-ESTATUS":
+                        result.ErrorMessage = "Estatus actualizado correctamente.";
                         break;
                 }
-
             }
             catch (Exception ex)
             {
-                switch (request.Bandera)
-                {
-                    case "INS-OPORTUNIDAD":
-                        result.ErrorMessage = "Oportunidad insertada correctamente.";
-                        result.Id = 1;
-                        result.Result = true;
-                        break;
-                    case "UPD-OPORTUNIDAD":
-                        result.ErrorMessage = "Oportunidad actualizada correctamente.";
-                        result.Id = 1;
-                        result.Result = true;
-                        break;
-                }
+                result.ErrorMessage = "Ocurrió un error al procesar la oportunidad.";
+                result.Id = 0;
+                result.Result = false;
             }
+
             return result;
         }
+
 
         public async Task<BaseOut> ActualizarFechaEstimada(OportunidadesEnProcesoDto request)
         {
@@ -423,16 +450,43 @@ namespace Funnel.Data
                 switch (request.Bandera)
                 {
                     case "INS-OPORTUNIDAD":
-                        result.ErrorMessage = "Oportunidad insertada correctamente.";
-                        result.Id = 1;
+                        result.ErrorMessage = "Ocurrió un error al guardar la oportunidad.";
+                        result.Id = 0;
                         result.Result = true;
                         break;
                     case "UPD-OPORTUNIDAD":
-                        result.ErrorMessage = "Oportunidad actualizada correctamente.";
-                        result.Id = 1;
+                        result.ErrorMessage = "Ocurrió un error al actualizar la oportunidad.";
+                        result.Id = 0;
                         result.Result = true;
                         break;
                 }
+            }
+            return result;
+        }
+        public async Task<BaseOut> ActualizarEtapa(OportunidadesEnProcesoDto request)
+        {
+            BaseOut result = new BaseOut();
+            try
+            {
+                IList<ParameterSQl> list = new List<ParameterSQl>
+        {
+            DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Bandera),
+            DataBase.CreateParameterSql("@pIdOportunidad", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdOportunidad),
+            DataBase.CreateParameterSql("@pStage", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdStage),
+            DataBase.CreateParameterSql("@pIdUsuario", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdUsuario),
+            DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdEmpresa)
+        };
+
+                using (var reader = await DataBase.GetReaderSql("F_CatalogoOportunidades", CommandType.StoredProcedure, list, _connectionString))
+                {
+                }
+
+                result.Result = true;
+                result.ErrorMessage = "Etapa actualizada correctamente.";
+            }
+            catch (Exception ex)
+            {
+                result.ErrorMessage = $"Error al actualizar la etapa: {ex.Message}";
             }
             return result;
         }

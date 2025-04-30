@@ -1,0 +1,22 @@
+<div class="user-panel-modal" >
+  <div class="menu-end d-flex align-items-center" (document:click)="onDocumentClick($event)">
+    <!-- <span class="user-name" (click)="toggleUserPanel($event)" style="cursor: pointer;">
+      <i class="bi bi-person-circle"></i> {{nombreUsuario}}
+    </span> -->
+
+    <div class="user-panel" [class.show]="visible">
+      <div class="user-header">
+        <img [src]="rutaImgen" alt="Usuario" class="user-image" />
+        <h5>{{nombre}}</h5>
+      </div>
+      <div class="user-actions">
+        <button type="button" (click)="goToMiCuenta()" class="btn btn-cancel btnmenuuser">
+          Mi Cuenta
+         </button>
+        <button (click)="logout()" type="button" class="btn btn-cancel btnmenuuser">
+          Cerrar Sesión
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

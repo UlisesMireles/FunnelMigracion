@@ -18,5 +18,6 @@ namespace Funnel.Data.Interfaces
         public Task<List<OportunidadesEnProcesoDto>> ConsultarHistoricoOportunidades(int IdEmpresa, int IdOportunidad);
         public Task<BaseOut> GuardarHistorico(OportunidadesEnProcesoDto request);
         public Task<BaseOut> ActualizarFechaEstimada(OportunidadesEnProcesoDto request);
+        public Task<BaseOut> ActualizarEtapa(OportunidadesEnProcesoDto request);
     }
 }

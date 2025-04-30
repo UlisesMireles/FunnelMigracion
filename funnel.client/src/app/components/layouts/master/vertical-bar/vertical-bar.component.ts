@@ -4,6 +4,7 @@ import { MessageService } from 'primeng/api';
 import { PermisosService } from '../../../../services/permisos.service';
 import { LoginService } from '../../../../services/login.service';
 import { Permiso } from '../../../../interfaces/permisos';
+import { ModalService } from '../../../../services/modal-perfil.service';
 
 @Component({
   selector: 'app-vertical-bar',
@@ -22,11 +23,12 @@ export class VerticalBarComponent {
   isScrollable: boolean = false;
   scrollInterval: any = null;
   ListaMenu: any[] = [];
+  isClickInsideModal: boolean = false;
 
   constructor(private router: Router,
     private messageService: MessageService,
     private permisosService: PermisosService,
-    private readonly loginService: LoginService) { }
+    private readonly loginService: LoginService, private modalService: ModalService) { }
 
 
   ngOnInit(): void {
@@ -66,25 +68,28 @@ export class VerticalBarComponent {
     });
   }
 
-
   navigateTo(path: string) {
     if (path === '/perfil') {
       if(this.modalVisible)
-        this.modalVisible = false;
+        this.modalService.closeModal();
       else
-         this.modalVisible = true;
+      this.modalService.toggleModal();
         
     //  console.log('this.modalVisible ' + this.modalVisible);
     } else {
-      this.modalVisible = false;
+      this.modalService.closeModal();
       this.router.navigate([path]);
     }
   }
-  // navigateTo(path: string) {
-  //   if (path) {
-  //     this.router.navigate([path]);
-  //   }
-  // }
+
+  // Método para cuando el clic es dentro de la modal
+  onModalClick(event: MouseEvent) {
+    this.isClickInsideModal = true;
+    setTimeout(() => {
+      this.isClickInsideModal = false;
+    });
+  }
+  
   showSubmenu(menuIndex: number) {
     this.hoveredMenu = menuIndex;
   }

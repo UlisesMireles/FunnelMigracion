@@ -54,6 +54,10 @@ export class LoginService {
           localStorage.setItem('lastActivity', Date.now().toString());
           this.currentUserSubject.next(user);
           sessionStorage.setItem('sesion', window.btoa(JSON.stringify(user)));
+          sessionStorage.setItem('Usuario', user.nombre);
+          sessionStorage.setItem('IdUsuario', user.idUsuario);
+          sessionStorage.setItem('IdTipoUsuario', user.idRol);
+          sessionStorage.setItem('IdEmpresa', user.idEmpresa);
           this.catalogoService.cargarCatalogos(user.idEmpresa);
           this.startSessionTimer();
         }

@@ -16,7 +16,7 @@
   /* Cada item del acordeón (cada mes) */
   .item-acordeon {
     width: 70px; /* Ancho inicial del item (colapsado) */
-    height: 600px; /* Altura fija de 550px para el acordeón */
+    height: 73vh; /* Altura fija de 550px para el acordeón */
     background: #f8f9fa; /* Color de fondo claro */
     border: 1px solid #ccc; /* Borde gris claro */
     display: flex; /* Usa flexbox para organizar el contenido internamente */
@@ -32,7 +32,7 @@
   
   /* Cuando el item está expandido */
   .item-acordeon.expandido {
-    width: 320px; /* Ancho mayor para el estado expandido (ajusta según lo necesites) */
+    width: 20%; /* Ancho mayor para el estado expandido (ajusta según lo necesites) */
   }
   
   /* Encabezado del item (nombre del mes y botón) */

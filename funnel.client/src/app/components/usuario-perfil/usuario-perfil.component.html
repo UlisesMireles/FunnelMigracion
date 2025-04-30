@@ -1,5 +1,5 @@
-<div class="user-panel-modal" >
-  <div class="menu-end d-flex align-items-center" (document:click)="onDocumentClick($event)">
+<div class="user-panel-modal" id="modalPerfil" *ngIf="visible" (click)="onModalClick($event)">
+  <div class="menu-end d-flex align-items-center">
     <!-- <span class="user-name" (click)="toggleUserPanel($event)" style="cursor: pointer;">
       <i class="bi bi-person-circle"></i> {{nombreUsuario}}
     </span> -->

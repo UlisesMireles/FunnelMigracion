@@ -32,6 +32,9 @@ import { TableModule } from 'primeng/table';
 import { Tag, TagModule } from 'primeng/tag';
 import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
+
 
 //Login
 
@@ -94,6 +97,11 @@ import { OortunidadesMesAcordeonComponent } from './components/utils/acordion-ho
 import { ColumnasDisponiblesComponent } from './components/utils/tablas/columnas-disponibles/columnas-disponibles.component';
 import { HeaderOpcionesComponent } from './components/utils/tablas/header-opciones/header-opciones.component';
 
+
+//Asistente
+import { AsistenteOperacionComponent } from './components/asistente-operacion/asistente-operacion.component';
+import { ChatBotAsistenteOperacionComponent } from './components/asistente-operacion/chatBot/chatBotAsistenteOperacion.component';
+
 export function getBaseUrl() {
   return 'https://localhost:49834/'
 }
@@ -105,6 +113,7 @@ import localeEs from '@angular/common/locales/es-MX';
 import { APP_INITIALIZER, LOCALE_ID } from '@angular/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { YaSePreguntoPipe } from "./pipes/asistenteOperacion/yaSePregunto";
 import { UsuarioPerfilComponent } from './components/usuario-perfil/usuario-perfil.component';
 import { AcordeonOportunidadesEtapaComponent } from './components/utils/acordeon-oportunidades-etapa/acordeon-oportunidades-etapa.component';
 
@@ -156,6 +165,9 @@ registerLocaleData(localeEs, 'es-MX');
     OortunidadesMesAcordeonComponent,
     EstadisticasPorEtapaComponent,
     PermisosComponent,
+    AsistenteOperacionComponent,
+    ChatBotAsistenteOperacionComponent,
+
     AdministracionHerramientasComponent,
     ReporteIngresosUsuariosComponent,
     EjecucionProcesosComponent,
@@ -200,8 +212,11 @@ registerLocaleData(localeEs, 'es-MX');
     MatSidenavModule,
     BrowserModule,
     DragDropModule,
-    TabViewModule
-  ],
+    TabViewModule,
+    MatChipsModule,
+    MatIconModule,
+    YaSePreguntoPipe
+],
   providers: [
     { provide: LOCALE_ID, useValue: 'es-MX' },
     {

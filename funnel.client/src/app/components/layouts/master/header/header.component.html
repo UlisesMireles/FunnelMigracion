@@ -4,10 +4,17 @@
       <img width="50" [src]="baseUrl + '/assets/img/SFS blanco.png'" alt="logo SFS">
     </div>
 
-    <!-- Botón de chat -->
-    <!-- <div class="button-chat-container" (click)="toggleChat()">
-      <i class="bi bi-chat-dots-fill" style="color:#fff;font-size:23px;" aria-hidden="true"></i>
-    </div> -->
+    <!-- Botón de chat en el header (conservando los mismos estilos) -->
+    <button class="btn-chat" (click)="toggleChat()">
+      <i class="bi bi-chat-dots-fill"></i> 
+    </button>
+    
+    <!-- Contenedor del chatbot -->
+    <ng-container *ngIf="enableAsistenteOperacion">
+      <div id="chat-container" class="chatbot-window">
+        <app-asistente-operacion></app-asistente-operacion>
+      </div>
+    </ng-container>
   </div>
 </header>
 

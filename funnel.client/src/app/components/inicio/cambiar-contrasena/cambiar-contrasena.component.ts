@@ -146,6 +146,7 @@ export class CambiarContrasenaComponent implements OnInit {
             detail: response.errorMessage,
           });
           this.formCambiarPassword.reset();
+          this.router.navigate(['/oportunidades']);
         } else {
           this.mostrarToastError(response.errorMessage);
         }

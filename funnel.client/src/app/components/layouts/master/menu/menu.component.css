@@ -74,7 +74,7 @@ html body #container {
 
 .containerSideNav {
   height: calc(100vh - 65px); /* Ajusta según la altura del header */
-  margin-top: 65px; /* Empuja el sidenav hacia abajo */
+  margin-top: 50px; /* Empuja el sidenav hacia abajo */
 }
 
 .content {

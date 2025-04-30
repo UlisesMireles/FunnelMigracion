@@ -16,4 +16,8 @@ export class HerramientasService {
             params: { idUsuario: idUsuario, idEmpresa: idEmpresa.toString() }
         });
     }
+
+    descargarReporteIngresos(data: any): Observable<Blob> {
+        return this.http.post(`${this.baseUrl}api/Herramientas/DescargarReporteIngresosUsuarios`, data, { responseType: 'blob' });
+    }
 }

@@ -36,8 +36,8 @@ export class OportunidadesEliminadasComponent {
   modalDocumentosVisible: boolean = false;
 
 
-  years: number[] = [];
-  selectedYear: number = new Date().getFullYear();
+  years: string[] = [];
+  selectedYear: string = new Date().getFullYear().toString();
 
   loading: boolean = true;
 
@@ -81,8 +81,9 @@ export class OportunidadesEliminadasComponent {
 
       const currentYear = new Date().getFullYear();
       for (let year = currentYear; year >= 2020; year--) {
-        this.years.push(year);
+        this.years.push(year.toString());
       }
+      this.years.unshift("Todos los Años");
 
       document.documentElement.style.fontSize = 12 + 'px';
     }
@@ -91,11 +92,14 @@ export class OportunidadesEliminadasComponent {
     filterByYear() {
       if (this.oportunidadesOriginal) {
         this.oportunidades = this.oportunidadesOriginal.filter(oportunidad => {
-          if (oportunidad.fechaEstimadaCierre) {
+          if(!this.esNumero(this.selectedYear))
+            return true
+          else if (oportunidad.fechaEstimadaCierre) {
             const fechaRegistro = new Date(oportunidad.fechaEstimadaCierre);
-            return fechaRegistro.getFullYear() === this.selectedYear;
+            return fechaRegistro.getFullYear().toString() === this.selectedYear;
           }
-          return false;
+          else
+            return false;
         });
       }
     }
@@ -172,7 +176,7 @@ export class OportunidadesEliminadasComponent {
       this.lsTodasColumnas = JSON.parse(this.columnsTodasResp);
       this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
       this.anchoTabla = 100;
-      this.selectedYear = new Date().getFullYear();
+      this.selectedYear = new Date().getFullYear().toString();
     }
   
     agregarColumna(event: any) {
@@ -241,14 +245,15 @@ export class OportunidadesEliminadasComponent {
   
       let data = {
         columnas: lsColumnasAMostrar,
-        datos: dataExport
+        datos: dataExport,
+        anio: this.selectedYear
       }
   
       if (dataExport.length == 0)
         return
   
   
-      this.oportunidadService.descargarReporteOportunidadesEliminadas(data, this.selectedYear).subscribe({
+      this.oportunidadService.descargarReporteOportunidadesEliminadas(data).subscribe({
         next: (result: Blob) => {
           const url = window.URL.createObjectURL(result);
           const link = document.createElement('a');
@@ -343,4 +348,7 @@ export class OportunidadesEliminadasComponent {
     
     return this.dt?.sortField === columnKey;
 }
+  esNumero(cadena: string): boolean {
+    return !isNaN(Number(cadena)) && cadena.trim() !== '';
+  }
 }

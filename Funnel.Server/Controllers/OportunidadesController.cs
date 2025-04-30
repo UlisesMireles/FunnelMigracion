@@ -132,33 +132,41 @@ namespace Funnel.Server.Controllers
         }
 
         [HttpPost("[action]/")]
-        public async Task<ActionResult> DescargarReporteOportunidadesGanadas([FromBody]OportunidadesReporteDto oportunidades, int anio)
+        public async Task<ActionResult> DescargarReporteOportunidadesGanadas([FromBody]OportunidadesReporteDto oportunidades)
         {
-            var doc = await _oportunidadesService.GenerarReporteOportunidades(oportunidades, Directory.GetCurrentDirectory(), "Reporte de Oportunidades Ganadas del Año "+anio);
+            var titulo = oportunidades.Anio.Contains("Todos") ? "Reporte de Oportunidades Ganadas de Todos los Años" :
+                "Reporte de Oportunidades Ganadas del Año " + oportunidades.Anio;
+            var doc = await _oportunidadesService.GenerarReporteOportunidades(oportunidades, Directory.GetCurrentDirectory(), titulo);
             var pdf = _converter.Convert(doc);
             return File(pdf, "application/pdf", "OportunidadesGanadas.pdf");
         }
 
         [HttpPost("[action]/")]
-        public async Task<ActionResult> DescargarReporteOportunidadesPerdidas([FromBody] OportunidadesReporteDto oportunidades, int anio)
+        public async Task<ActionResult> DescargarReporteOportunidadesPerdidas([FromBody] OportunidadesReporteDto oportunidades)
         {
-            var doc = await _oportunidadesService.GenerarReporteOportunidades(oportunidades, Directory.GetCurrentDirectory(), "Reporte de Oportunidades Perdidas del Año " + anio);
+            var titulo = oportunidades.Anio.Contains("Todos") ? "Reporte de Oportunidades Perdidas de Todos los Años" :
+                "Reporte de Oportunidades Perdidas del Año " + oportunidades.Anio;
+            var doc = await _oportunidadesService.GenerarReporteOportunidades(oportunidades, Directory.GetCurrentDirectory(), titulo);
             var pdf = _converter.Convert(doc);
             return File(pdf, "application/pdf", "OportunidadesPerdidas.pdf");
         }
 
         [HttpPost("[action]/")]
-        public async Task<ActionResult> DescargarReporteOportunidadesCanceladas([FromBody] OportunidadesReporteDto oportunidades, int anio)
+        public async Task<ActionResult> DescargarReporteOportunidadesCanceladas([FromBody] OportunidadesReporteDto oportunidades)
         {
-            var doc = await _oportunidadesService.GenerarReporteOportunidades(oportunidades, Directory.GetCurrentDirectory(), "Reporte de Oportunidades Canceladas del Año " + anio);
+            var titulo = oportunidades.Anio.Contains("Todos") ? "Reporte de Oportunidades Canceladas de Todos los Años" :
+               "Reporte de Oportunidades Canceladas del Año " + oportunidades.Anio;
+            var doc = await _oportunidadesService.GenerarReporteOportunidades(oportunidades, Directory.GetCurrentDirectory(), titulo);
             var pdf = _converter.Convert(doc);
             return File(pdf, "application/pdf", "OportunidadesCanceladas.pdf");
         }
 
         [HttpPost("[action]/")]
-        public async Task<ActionResult> DescargarReporteOportunidadesEliminadas([FromBody] OportunidadesReporteDto oportunidades, int anio)
+        public async Task<ActionResult> DescargarReporteOportunidadesEliminadas([FromBody] OportunidadesReporteDto oportunidades)
         {
-            var doc = await _oportunidadesService.GenerarReporteOportunidades(oportunidades, Directory.GetCurrentDirectory(), "Reporte de Oportunidades Eliminadas del Año " + anio);
+            var titulo = oportunidades.Anio.Contains("Todos") ? "Reporte de Oportunidades Eliminadas de Todos los Años" :
+               "Reporte de Oportunidades Eliminadas del Año " + oportunidades.Anio;
+            var doc = await _oportunidadesService.GenerarReporteOportunidades(oportunidades, Directory.GetCurrentDirectory(), titulo);
             var pdf = _converter.Convert(doc);
             return File(pdf, "application/pdf", "OportunidadesEliminadas.pdf");
         }

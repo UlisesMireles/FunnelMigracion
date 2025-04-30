@@ -269,17 +269,8 @@ namespace Funnel.Data
                 IList<ParameterSQl> list = new List<ParameterSQl>
                 {
                     DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 100, ParameterDirection.Input, false, null, DataRowVersion.Default, bandera),
-                    DataBase.CreateParameterSql("@Nombre", SqlDbType.VarChar, 200, ParameterDirection.Input, false, null, DataRowVersion.Default, Nombre),
-                    DataBase.CreateParameterSql("@ApellidoPaterno", SqlDbType.VarChar, 500, ParameterDirection.Input, false, null, DataRowVersion.Default, ApellidoPaterno),
-                    DataBase.CreateParameterSql("@ApellidoMaterno", SqlDbType.VarChar, 200, ParameterDirection.Input, false, null, DataRowVersion.Default, ApellidoMaterno),
-                    DataBase.CreateParameterSql("@Usuario", SqlDbType.VarChar, 500, ParameterDirection.Input, false, null, DataRowVersion.Default, Usuario),
                     DataBase.CreateParameterSql("@Password", SqlDbType.VarChar, 200, ParameterDirection.Input, false, null, DataRowVersion.Default, password),
-                    DataBase.CreateParameterSql("@Iniciales", SqlDbType.VarChar, 500, ParameterDirection.Input, false, null, DataRowVersion.Default, Inicales),
-                    DataBase.CreateParameterSql("@CorreoElectronico", SqlDbType.VarChar, 200, ParameterDirection.Input, false, null, DataRowVersion.Default, CorreoElectronico),
-                    DataBase.CreateParameterSql("@IdTipoUsuario", SqlDbType.VarChar, 500, ParameterDirection.Input, false, null, DataRowVersion.Default, IdTipoUsuario),
                     DataBase.CreateParameterSql("@IdUsuario", SqlDbType.VarChar, 200, ParameterDirection.Input, false, null, DataRowVersion.Default, IdUsuario),
-                    DataBase.CreateParameterSql("@Estatus", SqlDbType.VarChar, 500, ParameterDirection.Input, false, null, DataRowVersion.Default, Estatus),
-                    DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.VarChar, 200, ParameterDirection.Input, false, null, DataRowVersion.Default, idEmpresa)
                 };
 
                 // Ejecutar el SP sin leer datos

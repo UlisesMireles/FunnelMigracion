@@ -39,7 +39,7 @@
                 <div class="col-sm-8 inptSpace">
                     <input type="password" id="txtContrasena" formControlName="contrasena"
                         [ngClass]="{'is-invalid': formCambiarPassword.get('contrasena')?.invalid && formCambiarPassword.get('contrasena')?.touched}"
-                        class="form-control register-input" maxlength="100" />
+                        class="form-control register-input" maxlength="100" autocomplete="new-password" />
                     <span
                         *ngIf="formCambiarPassword.get('contrasena')?.invalid && formCambiarPassword.get('contrasena')?.touched"
                         class="text-danger">

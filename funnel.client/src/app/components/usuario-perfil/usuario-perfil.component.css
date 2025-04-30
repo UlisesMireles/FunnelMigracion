@@ -278,7 +278,7 @@ ul.subm>li>a {
 
 @media (min-width: 992px) {
   .user-panel {
-      top: 50px;
+      top: 0px;
       right: 0;
       width: 280px;
       margin: 12px 3px;

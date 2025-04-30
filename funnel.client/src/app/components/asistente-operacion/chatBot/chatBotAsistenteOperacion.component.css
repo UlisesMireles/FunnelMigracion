@@ -266,7 +266,8 @@
 }
 
 .chatbot-message-box {
-    padding: 10px 16px;
+    padding: 2px 12px !important;       /* Reducción radical (antes 8px 16px) */
+    min-height: 32px !important; 
     border-width: 1px 0 0;
     border-style: solid;
     flex: 0 0 auto;
@@ -276,18 +277,38 @@
     border-color: #ccc;
     color: #333;
     background-color: #fff !important;
+    position: relative; /* Añadido para posicionar opciones */
+    transition: padding 0.3s ease; /* Transición suave */
+    padding-top: 4px !important;     /* antes 8px */
+    padding-bottom: 4px !important;  /* antes 8px */
+    min-height: 36px !important;
+    
 
     .chatbot-input {
         font-size: .9rem !important;
         margin: 0;
         padding: 0;
-        border: 0;
+        border: none !important;
         font: inherit;
         background: 0;
         flex: 1 1 auto;
-        outline: 0;
+        outline: none !important;
 
     }
+}
+
+.chatbot-options {
+    position: absolute;
+    bottom: 8px;
+    left: 16px;
+    right: 16px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.chatbot-message-box.has-options {
+    padding-bottom: 40px; /* Espacio extra solo cuando se necesite */
 }
 
 .labelAsistente {

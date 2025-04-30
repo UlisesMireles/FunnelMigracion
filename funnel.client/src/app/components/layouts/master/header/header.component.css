@@ -142,13 +142,18 @@
 
 .chatbot-window-preguntas {
   position: fixed;
-  height: 480px;
-  width: 253px;
-  margin-left: -260px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  overflow-y: hidden;
-  overflow-x: hidden;
-  padding: 10px 0px;
+  width: 280px; /* Ancho un poco mayor */
+  height: auto; /* Altura automática */
+  max-height: 500px; /* Altura máxima con scroll */
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  top: 70px;
+  right: 300px; /* Posición relativa al chatbot */
+  z-index: 1001;
+  padding: 15px;
+  overflow-y: auto;
+  border: 1px solid #e0e0e0;
 }
 
 .faq-button-container {

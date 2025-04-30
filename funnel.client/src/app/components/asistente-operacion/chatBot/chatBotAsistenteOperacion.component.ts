@@ -77,7 +77,6 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
     if (nombreUsuario) {
       NombreUsuarioString = nombreUsuario;
     }
-    console.log('Nombre Usuario desde storage:', sessionStorage.getItem('Usuario'));
     return NombreUsuarioString;
   }
 
@@ -87,7 +86,6 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
     if (idUsuario) {
       idUsuarioNumber = +idUsuario;
     }
-    console.log('ID Usuario desde storage:', sessionStorage.getItem('IdUsuario'));
     return idUsuarioNumber;
   }
 
@@ -97,7 +95,6 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
     if (IdTipoUsuario) {
       IdTipoUsuarioNumber = +IdTipoUsuario;
     }
-    console.log('ID Tipo Usuario desde storage:', sessionStorage.getItem('IdTipoUsuario'));
     return IdTipoUsuarioNumber;
   }
 
@@ -107,7 +104,6 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
     if (IdEmpresa) {
       IdEmpresaNumber = +IdEmpresa;
     }
-    console.log('ID Empresa desde storage:', sessionStorage.getItem('IdEmpresa'));
     return IdEmpresaNumber;
   }
   //#endregion
@@ -193,7 +189,6 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
       this.chatHistorial.push({ rol: "cargando", mensaje: "..." });
       this.oaService.obtenOpenIaConsultaAsistente(this.consultaAsistente).subscribe({
         next: (data: ConsultaAsistenteDto) => {
-          console.log(data);
           if (data.exitoso) {
             this.chatHistorial.pop();
             this.chatHistorial.push({ rol: "asistente", mensaje: data.respuesta });

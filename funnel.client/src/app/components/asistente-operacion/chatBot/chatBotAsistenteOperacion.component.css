@@ -1,7 +1,7 @@
 @import "./cargandoMensaje.css";
 /*scrollable-div es el historial de mensajes*/
 .scrollable-div {
-    height: 70%;
+    height: 80%;
     padding-top: 10px;
     padding-bottom: 10px;
     padding-left: 10px;
@@ -74,6 +74,7 @@
     border: #1976d2 1px !important;
     border-style: solid !important;
     color: #1976d2 !important;
+    border: none !important;
 }
 
 .colorChip:hover {
@@ -332,21 +333,6 @@
 }
 
 
-.iconoChatBotTemaAsistenteAyuda {
-    color: #377493 !important;
-}
-
-.human-bubbleTemaAsistenteAyuda {
-    background: #377493 !important;
-    color: white !important;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    border-bottom-left-radius: 10px;
-    padding: 5px 10px;
-    margin: 0px 7px;
-    box-shadow: rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px;
-    white-space: pre-wrap;
-}
 
 .iconoChatBotTemaAsistenteOperacion {
     color: #256F45 !important;
@@ -406,4 +392,5 @@
     text-align: left; /* Texto alineado a la izquierda */
     font-size: 0.8rem;
     line-height: 1.2;
+    
 }

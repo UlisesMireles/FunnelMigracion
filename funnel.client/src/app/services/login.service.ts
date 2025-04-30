@@ -146,6 +146,15 @@ export class LoginService {
     }
     return 0;
   }
+
+  obtenerAlias(): string {
+    const sesion = this.desencriptaSesion();
+    if (sesion?.alias) {
+        return sesion?.alias;
+    }
+    return '';
+  }
+
   obtenerRolUsuario(): number {
     const sesion = this.desencriptaSesion();
     if (sesion?.idRol) {

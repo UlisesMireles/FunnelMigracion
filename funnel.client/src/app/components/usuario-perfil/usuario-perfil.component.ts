@@ -1,10 +1,12 @@
 
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { LoginService } from '../../services/login.service';
 import { SideNavService } from '../../services/sidenav.service';
+import { ModalService } from '../../services/modal-perfil.service';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-usuario-perfil',
   standalone: false,
@@ -13,8 +15,8 @@ import { SideNavService } from '../../services/sidenav.service';
 })
 
 
-export class UsuarioPerfilComponent {
-  constructor(private readonly router: Router, private readonly breakpointObserver: BreakpointObserver, private readonly authService: LoginService, public sideNavService: SideNavService) {
+export class UsuarioPerfilComponent implements OnInit, OnDestroy {
+  constructor(private readonly router: Router, private readonly breakpointObserver: BreakpointObserver, private readonly authService: LoginService, public sideNavService: SideNavService, private modalService: ModalService) {
 
   }
   @Input() visible: boolean = false;
@@ -30,6 +32,7 @@ export class UsuarioPerfilComponent {
   tipoUsuario: string = '';
   isMobile: boolean = false;
   isExpanded = false;
+  private modalSubscription: Subscription | null = null;
 
   onSidebarToggle(expanded: boolean) {
     this.isExpanded = expanded;
@@ -60,7 +63,31 @@ export class UsuarioPerfilComponent {
         this.tipoUsuario = this.rol;
       }
     }
+
+    this.modalSubscription = this.modalService.modalVisible$.subscribe((visible) => {
+      this.visible = visible;
+    });
   }
+
+  ngOnDestroy() {
+    // Desuscribirnos para evitar fugas de memoria
+    if (this.modalSubscription) {
+      this.modalSubscription.unsubscribe();
+    }
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    const modalElement = document.getElementById('modalPerfil');
+    if (this.visible && modalElement && !modalElement.contains(event.target as Node)) {
+      this.modalService.closeModal(); // Cerrar la modal si el clic es fuera de ella
+    }
+  }
+
+  onModalClick(event: MouseEvent) {
+    event.stopPropagation(); // Evita que el clic se propague y cierre la modal
+  }
+
   logout() {
     this.visible = false;
     this.visibleChange.emit(this.visible);
@@ -78,10 +105,10 @@ export class UsuarioPerfilComponent {
     this.isUserPanelVisible = !this.isUserPanelVisible;
   }
 
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: Event): void {
-    this.isUserPanelVisible = false;
-  }
+  // @HostListener('document:click', ['$event'])
+  // onDocumentClick(event: Event): void {
+  //   this.isUserPanelVisible = false;
+  // }
 
   toggleSideNav(): void {
     this.sideNavService.toggle();

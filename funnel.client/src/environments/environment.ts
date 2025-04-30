@@ -3,7 +3,7 @@ export const environment = {
   baseURLAssets:'',
   baseURL: "https://localhost:7107/",
   baseUrlPython: 'http://127.0.0.1:5000/WebApiBotFunnel/api',
-  baseUrlBotBotOperacion: 'https://sfs-funnel.com/adminchats-qa',
+  baseUrlBotOperacion: 'https://sfs-funnel.com/adminchats',
   baseUrlAssetsChatbot: '',
   usuarioData: {
     nombreUsuario: '',

@@ -10,6 +10,7 @@ import { AsistenteService } from '../../../services/asistenteOperacion/asistente
 import { OpenIaService } from '../../../services/asistenteOperacion/openIA.service';
 import { PreguntasFrecuentesService } from '../../../services/asistenteOperacion/preguntasFrecuentes.service';
 import { environment } from '../../../../environments/environment';
+import { LoginService } from '../../../services/login.service';
 
 @Component({
   standalone: false,
@@ -58,7 +59,8 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
     private oaService: OpenIaService,
     public asistenteService: AsistenteService,
     private cdRef: ChangeDetectorRef,
-    private preguntasFAQService: PreguntasFrecuentesService
+    private preguntasFAQService: PreguntasFrecuentesService,
+    private loginService: LoginService
   ) {
   }
 
@@ -75,6 +77,7 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
     if (nombreUsuario) {
       NombreUsuarioString = nombreUsuario;
     }
+    console.log('Nombre Usuario desde storage:', sessionStorage.getItem('Usuario'));
     return NombreUsuarioString;
   }
 
@@ -84,6 +87,7 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
     if (idUsuario) {
       idUsuarioNumber = +idUsuario;
     }
+    console.log('ID Usuario desde storage:', sessionStorage.getItem('IdUsuario'));
     return idUsuarioNumber;
   }
 
@@ -93,6 +97,7 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
     if (IdTipoUsuario) {
       IdTipoUsuarioNumber = +IdTipoUsuario;
     }
+    console.log('ID Tipo Usuario desde storage:', sessionStorage.getItem('IdTipoUsuario'));
     return IdTipoUsuarioNumber;
   }
 
@@ -102,6 +107,7 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
     if (IdEmpresa) {
       IdEmpresaNumber = +IdEmpresa;
     }
+    console.log('ID Empresa desde storage:', sessionStorage.getItem('IdEmpresa'));
     return IdEmpresaNumber;
   }
   //#endregion
@@ -163,12 +169,10 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
     let findIndexFiltroFaq = this.chatHistorial.findIndex(f => f.rol === 'filtroFaq');
     this.chatHistorial.splice(findIndexFiltroFaq, 1);
     this.chatHistorial.push({ rol: "usuario", mensaje: preguntaFaq.pregunta });
+    preguntaFaq.yaSePregunto = true;
     if (this.asistenteSeleccionado.documento) {
       this.chatHistorial.push({ rol: "asistente", mensaje: preguntaFaq.respuesta });
-      preguntaFaq.yaSePregunto = true;
-
       let findPreguntasUsadas = this.lsPreguntasPorCategoria.filter(f => f.yaSePregunto == false);
-
       if (findPreguntasUsadas.length == 0) {
         this.chatHistorial.push(
           { rol: "asistente", mensaje: "En cualquier momento puedes hacer una pregunta abierta o ¿quisieras revisar por asistente?😊" },
@@ -189,6 +193,7 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
       this.chatHistorial.push({ rol: "cargando", mensaje: "..." });
       this.oaService.obtenOpenIaConsultaAsistente(this.consultaAsistente).subscribe({
         next: (data: ConsultaAsistenteDto) => {
+          console.log(data);
           if (data.exitoso) {
             this.chatHistorial.pop();
             this.chatHistorial.push({ rol: "asistente", mensaje: data.respuesta });

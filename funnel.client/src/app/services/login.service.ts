@@ -40,6 +40,7 @@ export class LoginService {
     const datos = { usuario: user, password: pass };
     return this.http.post<any>(this.baseUrl + "api/Login/Autenticacion", datos)
       .pipe(map(usuario => {
+        console.log("Respuesta completa del servidor:", usuario);
         let user = usuario;
         if (user.idUsuario > 0) {
           localStorage.setItem('currentUser', JSON.stringify(user.idUsuario));
@@ -52,6 +53,10 @@ export class LoginService {
           localStorage.setItem('lastActivity', Date.now().toString());
           this.currentUserSubject.next(user);
           sessionStorage.setItem('sesion', window.btoa(JSON.stringify(user)));
+          sessionStorage.setItem('Usuario', user.usuario);
+          sessionStorage.setItem('IdUsuario', user.idUsuario);
+          sessionStorage.setItem('IdTipoUsuario', user.idTipoUsuario);
+          sessionStorage.setItem('IdEmpresa', user.idEmpresa);
           this.catalogoService.cargarCatalogos(user.idEmpresa);
           this.startSessionTimer();
         }

@@ -7,6 +7,7 @@ import {Pregunta} from "../../interfaces/asistenteOperacion/pregunta";
   
 export class AsistenteService {
   private baseUrlBotOperacion = 'https://sfs-funnel.com/adminchats';
+
   public asistenteSubject: BehaviorSubject<number> = new BehaviorSubject<number>(-1);
   public asistenteObservable: Observable<number>;
 
@@ -17,5 +18,8 @@ export class AsistenteService {
   constructor() { 
     this.asistenteObservable = this.asistenteSubject.asObservable();
     this.preguntaSeleccionadaObservable = this.preguntaSeleccionadaSubject.asObservable();
+  }
+  getBaseUrl() {
+    return this.baseUrlBotOperacion;
   }
 }

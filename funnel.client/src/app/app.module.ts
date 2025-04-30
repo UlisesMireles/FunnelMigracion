@@ -58,6 +58,11 @@ import { OportunidadesGanadasComponent } from './components/terminadas/oportunid
 import { ModalOportunidadesPerdidasComponent } from './components/terminadas/oportunidades-perdidas/modal-oportunidades-perdidas/modal-oportunidades-perdidas.component';
 import { OportunidadesPerdidasComponent } from './components/terminadas/oportunidades-perdidas/oportunidades-perdidas.component';
 
+//Herramientas
+import { AdministracionHerramientasComponent } from './components/herramientas/administracion-herramientas/administracion-herramientas.component';
+import { ReporteIngresosUsuariosComponent } from './components/herramientas/reporte-ingresos-usuarios/reporte-ingresos-usuarios.component';
+import { EjecucionProcesosComponent } from './components/herramientas/ejecucion-procesos/ejecucion-procesos.component';
+
 
 // Adminsitracion
 import { ModalProspectosComponent } from './components/administracion/prospectos/modal-prospectos/modal-prospectos.component';
@@ -104,15 +109,14 @@ export function getBaseUrl() {
 import { PrimeNgConfiguracionService } from './services/primeNgConfiguracion.service';
 import { CommonModule, DatePipe, registerLocaleData } from '@angular/common';
 import { TipoCurrencyPipe } from './pipes/tipoCurrency.pipe';
-
-
 import localeEs from '@angular/common/locales/es-MX';
 import { APP_INITIALIZER, LOCALE_ID } from '@angular/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
-
-
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { YaSePreguntoPipe } from "./pipes/asistenteOperacion/yaSePregunto";
+import { UsuarioPerfilComponent } from './components/usuario-perfil/usuario-perfil.component';
+import { AcordeonOportunidadesEtapaComponent } from './components/utils/acordeon-oportunidades-etapa/acordeon-oportunidades-etapa.component';
+
 
 export function configurationProviderFactory(provider: PrimeNgConfiguracionService) {
   return () => provider.load();
@@ -164,6 +168,11 @@ registerLocaleData(localeEs, 'es-MX');
     AsistenteOperacionComponent,
     ChatBotAsistenteOperacionComponent,
 
+    AdministracionHerramientasComponent,
+    ReporteIngresosUsuariosComponent,
+    EjecucionProcesosComponent,
+    UsuarioPerfilComponent,
+    AcordeonOportunidadesEtapaComponent,
   ],
   imports: [
     BrowserModule,

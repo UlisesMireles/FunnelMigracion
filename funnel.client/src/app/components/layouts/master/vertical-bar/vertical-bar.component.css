@@ -373,3 +373,48 @@
   background-color: rgba(16, 61, 102, 0.6);
   color: #FFFFFF;
 }
+
+.estiloPerfilMenu {
+  position: fixed;
+  margin-left: 17vw;
+  margin-top: -7vh;
+}
+
+.estiloPerfilMenuOpen {
+  margin-left: 20vw !important;
+}
+
+.estiloPerfilMenuClose {
+  margin-left: 17vw;
+}
+
+@media screen and (max-width: 1366px) {
+  .estiloPerfilMenu {
+    margin-left: 15vw;
+    margin-top: -12vh;
+  }
+
+  .estiloPerfilMenuOpen {
+    margin-left: 29vw !important
+  }
+
+  .estiloPerfilMenuClose {
+    margin-left: 25vw;
+  }
+}
+
+/* Para tablets (por ejemplo, <= 1024px) */
+@media screen and (max-width: 1024px) {
+  .estiloPerfilMenu {
+    margin-left: 10vw;
+    margin-top: -4vh;
+  }
+
+  .estiloPerfilMenuOpen {
+    margin-left: 12vw !important;
+  }
+
+  .estiloPerfilMenuClose {
+    margin-left: 10vw;
+  }
+}

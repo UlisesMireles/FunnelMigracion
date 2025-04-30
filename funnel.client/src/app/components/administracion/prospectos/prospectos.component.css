@@ -31,6 +31,7 @@
   background: transparent !important;
 }
 
+
 ::ng-deep .p-datatable-header {
   border:0 !important;
   padding: 0 !important;
@@ -286,6 +287,12 @@ th.sort-active p-sortIcon {
   background-color: #4682b4 !important; 
   border-color: #4682b4 !important;
   color: white !important;
+}
+::ng-deep .custom-button .bi {
+  text-shadow: 0.5px 0 0 currentColor,
+              -0.5px 0 0 currentColor,
+              0 0.5px 0 currentColor,
+              0 -0.5px 0 currentColor;
 }
 
 ::ng-deep .p-fluid {

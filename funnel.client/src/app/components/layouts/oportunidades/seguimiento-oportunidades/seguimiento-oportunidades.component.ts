@@ -48,13 +48,12 @@ export class SeguimientoOportunidadesComponent {
       monto: [this.oportunidad.monto],
       idEjecutivo: [this.oportunidad.idEjecutivo],
       comentario: ['', [Validators.required, this.validarComentario]],
-      idEmpresa: [this.loginService.obtenerIdEmpresa()],
+      idEmpresa: [this.loginService.obtenerIdEmpresa(), Validators.required],
       probabilidad: [this.oportunidad.probabilidad],
       idEstatusOportunidad: [this.oportunidad.idEstatusOportunidad],
       tooltipStage: [this.oportunidad.tooltipStage],
       montoNormalizado: [this.oportunidad.montoNormalizado],
       idUsuario: [this.loginService.obtenerIdUsuario()],
-      stage: [this.oportunidad.stage, Validators.required],
       bandera: ['INS-HISTORICO'],
     });
     if (this.oportunidad.idOportunidad) {

@@ -85,12 +85,13 @@ export class OportunidadesComponent {
   getOportunidades() {
     this.oportunidadService.getOportunidades(this.loginService.obtenerIdEmpresa(), this.loginService.obtenerIdUsuario(), this.idEstatus).subscribe({
       next: (result: Oportunidad[]) => {
-        const oportunidadesOrdenadas = sortBy(result, (o) =>
-          o.fechaEstimadaCierreOriginal ? new Date(o.fechaEstimadaCierreOriginal) : new Date('2100-01-01')
-        );
-
+        // Ordenar por fechaEstimadaCierreOriginal (de más reciente a más antigua)
+        const oportunidadesOrdenadas = sortBy(result, (o) => 
+          o.fechaEstimadaCierreOriginal ? new Date(o.fechaEstimadaCierreOriginal).getTime() : 0
+        ).reverse(); // reverse para orden descendente
+  
         this.oportunidades = [...oportunidadesOrdenadas];
-        this.oportunidadesOriginal = oportunidadesOrdenadas;
+        this.oportunidadesOriginal = [...oportunidadesOrdenadas];
         this.cdr.detectChanges();
         this.loading = false;
       },

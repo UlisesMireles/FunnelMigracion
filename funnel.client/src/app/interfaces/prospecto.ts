@@ -14,6 +14,7 @@ export interface Prospectos {
     canceladas: number;
     eliminadas: number;
     idEmpresa: number;
+    porcEfectividad: number;
 }
 
 export interface ClientesTopVeinte {

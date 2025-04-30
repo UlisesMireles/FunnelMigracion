@@ -1,4 +1,4 @@
-export interface Usuario {
+export interface Usuarios {
     result?: boolean;
     errorMessage?: string;
 
@@ -24,6 +24,7 @@ export interface Usuario {
     fechaFin: string;
     iniciales: string;
     id?: number;
+    imagen?: File;
   }
   
   export interface RequestUsuario {

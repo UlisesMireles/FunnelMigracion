@@ -44,8 +44,8 @@ export class OportunidadesCanceladasComponent {  @ViewChild('dt') dt!: Table;
   ];
 
   lsTodasColumnas: any[] = [
-    { key: 'idOportunidad', isCheck: true, valor: 'Id', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
-    { key: 'nombre', isCheck: true, valor: 'Prospecto', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'idOportunidad', isCheck: false, valor: 'Id', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
+    { key: 'nombre', isCheck: true, valor: 'Prospecto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreSector', isCheck: false, valor: 'Sector', isIgnore: true, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreOportunidad', isCheck: true, valor: 'Oportunidad', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'abreviatura', isCheck: true, valor: 'Tipo', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
@@ -54,12 +54,17 @@ export class OportunidadesCanceladasComponent {  @ViewChild('dt') dt!: Table;
     { key: 'nombreContacto', isCheck: false, valor: 'Contacto', isIgnore: true, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'monto', isCheck: true, valor: 'Monto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
     { key: 'probabilidad', isCheck: false, valor: 'Prob', isIgnore: true, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'montoNormalizado', isCheck: false, valor: 'Monto Normalizado', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
+   // { key: 'montoNormalizado', isCheck: false, valor: 'Monto Normalizado', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
     { key: 'fechaRegistro', isCheck: true, valor: 'Fecha Inicio', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
     { key: 'fechaEstimadaCierre', isCheck: true, valor: 'Fecha Cierre', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
     { key: 'fechaEstimadaCierreOriginal', isCheck: false, valor: 'Cierre Estimado', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
     { key: 'diasFunnelOriginal', isCheck: true, valor: 'Días Funnel', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
-    {key: 'comentario', isCheck: true, valor: 'Último Comentario', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
+    {key: 'comentario', isCheck: false, valor: 'Último Comentario', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
+    { key: 'diasEtapa1', isCheck: true, valor: 'Etapa 1', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'number' },
+    { key: 'diasEtapa2', isCheck: true, valor: 'Etapa 2', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'number' },
+    { key: 'diasEtapa3', isCheck: true, valor: 'Etapa 3', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'number' },
+    { key: 'diasEtapa4', isCheck: true, valor: 'Etapa 4', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'number' },
+    { key: 'diasEtapa5', isCheck: true, valor: 'Etapa 5', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'number' },
 
   ];
 
@@ -85,8 +90,8 @@ export class OportunidadesCanceladasComponent {  @ViewChild('dt') dt!: Table;
     filterByYear() {
       if (this.oportunidadesCanceladasOriginal) {
         this.oportunidadesCanceladas = this.oportunidadesCanceladasOriginal.filter(oportunidad => {
-          if (oportunidad.fechaRegistro) {
-            const fechaRegistro = new Date(oportunidad.fechaRegistro);
+          if (oportunidad.fechaEstimadaCierre) {
+            const fechaRegistro = new Date(oportunidad.fechaEstimadaCierre);
             return fechaRegistro.getFullYear() === this.selectedYear;
           }
           return false;
@@ -98,8 +103,13 @@ export class OportunidadesCanceladasComponent {  @ViewChild('dt') dt!: Table;
     getOportunidades() {
       this.oportunidadService.getOportunidades(this.loginService.obtenerIdEmpresa(), this.loginService.obtenerIdUsuario(), this.idEstatus).subscribe({
         next: (result: Oportunidad[]) => {
-          this.oportunidadesCanceladas = [...result];
-          this.oportunidadesCanceladasOriginal = result;
+
+          const oportunidadesOrdenadas = sortBy(result, (o) =>
+            o.fechaEstimadaCierre ? new Date(o.fechaEstimadaCierre) : new Date('2100-01-01')
+          ).reverse();
+          
+          this.oportunidadesCanceladas = [...oportunidadesOrdenadas];
+          this.oportunidadesCanceladasOriginal = oportunidadesOrdenadas;
           this.filterByYear();
           this.cdr.detectChanges(); 
           this.loading = false;
@@ -320,6 +330,7 @@ export class OportunidadesCanceladasComponent {  @ViewChild('dt') dt!: Table;
           montoNormalizado: '100%',
           fechaRegistro: '100%',
           diasFunnel: '100%',
+          fechaEstimadaCierre: '100%',
           fechaEstimadaCierreOriginal: '100%',
           comentario: '100%',
       };

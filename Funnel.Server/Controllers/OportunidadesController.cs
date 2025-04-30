@@ -101,6 +101,12 @@ namespace Funnel.Server.Controllers
             var result = await _oportunidadesService.ActualizarFechaEstimada(request);
             return Ok(result);
         }
+        [HttpPost("[action]/")]
+        public async Task<ActionResult> ActualizarEtapa(OportunidadesEnProcesoDto request)
+        {
+            var result = await _oportunidadesService.ActualizarEtapa(request);
+            return Ok(result);
+        }
         [HttpGet("[action]/")]
         public async Task<ActionResult> DescargarReporteSeguimientoOportunidades(int idEmpresa, int idOportunidad)
         {

@@ -69,9 +69,19 @@ export class EstadisticasPorEtapaComponent {@ViewChild('dt') dt!: Table;
     getOportunidades() {
       this.oportunidadService.getOportunidades(this.loginService.obtenerIdEmpresa(), this.loginService.obtenerIdUsuario(), this.idEstatus).subscribe({
         next: (result: Oportunidad[]) => {
-          this.oportunidades = [...result];
-          this.oportunidadesOriginal = result;
-          this.cdr.detectChanges(); 
+          // Ordenar por fechaRegistro (de más reciente a más antigua)
+          const oportunidadesOrdenadas = result.sort((a, b) => {
+            // Manejar casos donde las fechas podrían ser null/undefined
+            const fechaA = a.fechaRegistro ? new Date(a.fechaRegistro).getTime() : 0;
+            const fechaB = b.fechaRegistro ? new Date(b.fechaRegistro).getTime() : 0;
+            
+            // Orden descendente (más reciente primero)
+            return fechaB - fechaA;
+          });
+    
+          this.oportunidades = [...oportunidadesOrdenadas];
+          this.oportunidadesOriginal = [...oportunidadesOrdenadas];
+          this.cdr.detectChanges();
           this.loading = false;
         },
         error: (error) => {

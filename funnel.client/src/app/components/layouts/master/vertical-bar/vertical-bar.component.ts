@@ -13,7 +13,7 @@ import { Permiso } from '../../../../interfaces/permisos';
 })
 export class VerticalBarComponent {
 
-
+  modalVisible: boolean = false;
   isExpanded: boolean = false;
   hoveredMenu: number | null = null;
   showTooltip: boolean = false;
@@ -37,16 +37,24 @@ export class VerticalBarComponent {
 
     this.permisosService.getPermisosPorRol(this.loginService.obtenerRolUsuario(), this.loginService.obtenerIdEmpresa()).subscribe({
       next: (result: Permiso[]) => {
-        this.ListaMenu = result;
-        this.ListaMenu.push(
-          {
-            nombre: 'SALIR',
-            ruta: '/login',
-            icono: 'bi-box-arrow-right',
-            tooltip: 'CERRAR SESIÓN',
-            subMenu: []
-          }
-        );
+        const perfil = {
+          nombre: localStorage.getItem('username')!,//'Perfil',
+          ruta: '/perfil',
+          icono: 'bi bi-person-circle',
+          tooltip: 'Perfil',
+          subMenu: []
+        };
+
+        const salir = {
+          nombre: 'SALIR',
+          ruta: '/login',
+          icono: 'bi-box-arrow-right',
+          tooltip: 'Cerrar sesión',
+          subMenu: []
+        };
+
+        // Combinar: primero "Perfil", luego los permisos, luego "SALIR"
+        this.ListaMenu = [perfil, ...result, salir];
       },
       error: (error) => {
         this.messageService.add({
@@ -58,11 +66,25 @@ export class VerticalBarComponent {
     });
   }
 
+
   navigateTo(path: string) {
-    if (path) {
+    if (path === '/perfil') {
+      if(this.modalVisible)
+        this.modalVisible = false;
+      else
+         this.modalVisible = true;
+        
+    //  console.log('this.modalVisible ' + this.modalVisible);
+    } else {
+      this.modalVisible = false;
       this.router.navigate([path]);
     }
   }
+  // navigateTo(path: string) {
+  //   if (path) {
+  //     this.router.navigate([path]);
+  //   }
+  // }
   showSubmenu(menuIndex: number) {
     this.hoveredMenu = menuIndex;
   }

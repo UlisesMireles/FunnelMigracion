@@ -1,4 +1,5 @@
-﻿using Funnel.Logic.Interfaces;
+﻿using Funnel.Logic;
+using Funnel.Logic.Interfaces;
 using Funnel.Models.Base;
 using Funnel.Models.Dto;
 using Microsoft.AspNetCore.Mvc;
@@ -57,6 +58,48 @@ namespace Funnel.Server.Controllers
         {
             var respuesta = await _loginService.GuardarSolicitudRegistro(datos);
             return Ok(respuesta);
+        }
+
+        [HttpPost("CambioPassword")]
+        public async Task<ActionResult<BaseOut>> CambioPassword([FromForm] UsuarioDto datos)
+        {
+            if (datos.Imagen != null)
+            {
+                var fileName = Path.GetFileName(datos.Imagen.FileName);
+
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Fotografia", fileName);
+
+                var directory = Path.GetDirectoryName(filePath);
+                if (!Directory.Exists(directory))
+                {
+                    Directory.CreateDirectory(directory);
+                }
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await datos.Imagen.CopyToAsync(fileStream);
+                }
+
+                datos.ArchivoImagen = fileName;
+                var respuestaImagen = await _loginService.GuardarImagen(datos.IdUsuario, datos.ArchivoImagen);
+                if (respuestaImagen.Result == false)
+                {
+                    return Ok(respuestaImagen);
+                }
+                else if(respuestaImagen.Result == true && (datos.Password == "" || datos.Password is null))
+                {
+                    return Ok(respuestaImagen);
+                }
+                else
+                {
+                    var respuestaPassword = await _loginService.CambioPassword(datos);
+                    return Ok(respuestaPassword);
+                }
+            }
+            else
+            {
+                return Ok(await _loginService.CambioPassword(datos));
+            }
         }
     }
 }

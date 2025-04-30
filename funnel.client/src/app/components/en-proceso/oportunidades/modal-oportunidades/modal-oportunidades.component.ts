@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ChangeDetectorRef} from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectorRef } from '@angular/core';
 
 import { MessageService } from 'primeng/api';
 
@@ -18,197 +18,209 @@ import { CatalogoService } from '../../../../services/catalogo.service';
 })
 export class ModalOportunidadesComponent {
 
-  constructor(private readonly catalogoService: CatalogoService, private oportunidadService : OportunidadesService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder, private cdr: ChangeDetectorRef) { }
-    @Input() oportunidad!: Oportunidad;
-    @Input() oportunidades: Oportunidad[]=[];
-    @Input() title: string = 'Modal';
-    @Input() visible: boolean = false;
-    @Input() insertar: boolean = false;
-    request!: RequestOportunidad;
+  constructor(private readonly catalogoService: CatalogoService, private oportunidadService: OportunidadesService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder, private cdr: ChangeDetectorRef) { }
+  @Input() oportunidad!: Oportunidad;
+  @Input() oportunidades: Oportunidad[] = [];
+  @Input() title: string = 'Modal';
+  @Input() visible: boolean = false;
+  @Input() insertar: boolean = false;
+  request!: RequestOportunidad;
 
-    oportunidadForm!: FormGroup;
-    prospectos: any[] = [];
-    servicios: any[] = [];  
-    etapas: any[] = [];
-    ejecutivos: any[] = [];
-    contactos: any[] = [];
-    entregas: any[] = [];
-    estatusOportunidad: any[] = [];
+  oportunidadForm!: FormGroup;
+  prospectos: any[] = [];
+  servicios: any[] = [];
+  etapas: any[] = [];
+  ejecutivos: any[] = [];
+  contactos: any[] = [];
+  entregas: any[] = [];
+  estatusOportunidad: any[] = [];
 
-    @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
-    @Output() closeModal: EventEmitter<void> = new EventEmitter();
-    @Output() result: EventEmitter<baseOut> = new EventEmitter();
+  @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() closeModal: EventEmitter<void> = new EventEmitter();
+  @Output() result: EventEmitter<baseOut> = new EventEmitter();
 
-    nombreProspecto: string = '';
-    validaGuadar: boolean = false;
-    banderaContacto: boolean = true;
-    informacionOportunidad: Oportunidad = {};
+  nombreProspecto: string = '';
+  validaGuadar: boolean = false;
+  banderaContacto: boolean = true;
+  informacionOportunidad: Oportunidad = {};
 
-    inicializarFormulario() {
-      let valoresIniciales: Record<string, any>;
-      if (this.insertar) {
-        this.informacionOportunidad = {probabilidad: '0', idEstatus: 1};
-        this.banderaContacto = true;
-        this.oportunidadForm = this.fb.group({
-          idOportunidad: [0],
-          idProspecto: [0, Validators.required],
-          descripcion: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
-          monto: [0, [Validators.required, Validators.min(1)]],
-          idTipoProyecto: ['', Validators.required],
-          idStage: ['', Validators.required],
-          idTipoEntrega: ['', Validators.required],
-          fechaEstimadaCierreOriginal: ['', Validators.required],
-          idEjecutivo: ['', Validators.required],
-          idContactoProspecto: ['', Validators.required],
-          comentario: [''],
-          idEmpresa: [this.loginService.obtenerIdEmpresa()],
-          probabilidad: ['0'],
-          bandera: ['INS-OPORTUNIDAD'],
-          idEstatus: [1]
-        });
-        
-        valoresIniciales = this.oportunidadForm.getRawValue();
-
-        this.oportunidadForm.valueChanges.subscribe((changes) => {
-          this.validarCambios(valoresIniciales, changes);
-        });
-        this.validaGuadar = false;
-        this.cdr.detectChanges(); 
-
-      } else {
-        this.informacionOportunidad = this.oportunidad;
-        this.banderaContacto = false;
-        this.nombreProspecto = this.oportunidad.nombre??'';
-        this.oportunidadForm = this.fb.group({
-          bandera: ['UPD-OPORTUNIDAD'],
-          idOportunidad: [this.oportunidad.idOportunidad],
-          idProspecto: [this.oportunidad.idProspecto, Validators.required],
-          descripcion: [this.oportunidad.nombreOportunidad, [Validators.required, Validators.minLength(5)]],
-          monto: [this.oportunidad.monto, [Validators.required, Validators.min(1)]],
-          idTipoProyecto: [this.oportunidad.idTipoProyecto, Validators.required],
-          idStage: [this.oportunidad.idStage, Validators.required],
-          idTipoEntrega: [this.oportunidad.idTipoEntrega, Validators.required],
-          fechaEstimadaCierreOriginal: [this.oportunidad.fechaEstimadaCierreOriginal ? new Date(this.oportunidad.fechaEstimadaCierreOriginal) : '', Validators.required],
-          idEjecutivo: [this.oportunidad.idEjecutivo, Validators.required],
-          idContactoProspecto: [this.oportunidad.idContactoProspecto, Validators.required],
-          comentario: ['', Validators.required],
-          idEmpresa: [this.loginService.obtenerIdEmpresa()],
-          probabilidad: [this.oportunidad.probabilidad],
-          idEstatus: [this.oportunidad.idEstatusOportunidad]
-        });
-
-        valoresIniciales = this.oportunidadForm.getRawValue();
-        
-        
-
-        this.oportunidadForm.valueChanges.subscribe((changes) => {
-          this.validarCambios(valoresIniciales, changes);
-        });
-        this.validaGuadar = false;
-        this.cdr.detectChanges(); 
-
-      }
-      
-    }
-
-    validarCambios(valoresIniciales: any, cambios: any) {
-      const valoresActuales = cambios;
-
-      if (this.oportunidadForm.dirty) {
-        this.validaGuadar = true;
-      }
-      const valoresRegresaron = this.compararValores(valoresIniciales, valoresActuales);
-      if (valoresRegresaron) {
-        this.validaGuadar = false;
-      }
-    }
-
-    compararValores(valoresIniciales: any, valoresActuales: any) {
-      let valoresInicialesJson = JSON.stringify(valoresIniciales);
-      let valoresActualesJson = JSON.stringify(valoresActuales);
-      return valoresInicialesJson === valoresActualesJson;
-    }
-    
-    onChangeProspecto() {
-      const idProspecto = this.oportunidadForm.get('idProspecto')?.value;
-        if (idProspecto > 0) {
-          this.contactos = this.catalogoService.obtenerContactos(idProspecto);
-          this.banderaContacto = false;
-        }
-        else {
-          this.banderaContacto = true;
-        }
-        this.cdr.detectChanges();
-    }
-
-    onChangeProbabilidad() {
-      const idStage = this.oportunidadForm.get('idStage')?.value;
-      if(idStage > 0) {
-        this.obtenerProbabilidadPorEtapa(idStage);
-      }
-      if(!this.insertar)
-        this.limpiarProbabilidad();
-    }
-
-    onDialogShow() {
-       this.cargarDatos(); 
-    }
-    
-    cargarDatos() {
+  inicializarFormulario() {
+    let valoresIniciales: Record<string, any>;
+    if (this.insertar) {
+      this.informacionOportunidad = { probabilidad: '0', idEstatus: 1 };
       this.banderaContacto = true;
-      this.prospectos = this.catalogoService.obtenerProspectos();
-      this.servicios = this.catalogoService.obtenerServicios();
-      this.etapas = this.catalogoService.obtenerEtapas();
-      this.ejecutivos = this.catalogoService.obtenerEjecutivos();
-      if (this.oportunidad.idProspecto) {
-        this.contactos = this.catalogoService.obtenerContactos(this.oportunidad.idProspecto);
-      }
-      this.entregas = this.catalogoService.obtenerEntregas();
-      this.estatusOportunidad = this.catalogoService.obtenerEstatusOportunidad();
-      this.inicializarFormulario(); 
+      this.oportunidadForm = this.fb.group({
+        idOportunidad: [0],
+        idProspecto: [0, Validators.required],
+        descripcion: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
+        monto: [0, [Validators.required, Validators.min(1)]],
+        idTipoProyecto: ['', Validators.required],
+        idStage: ['', Validators.required],
+        idTipoEntrega: ['', Validators.required],
+        fechaEstimadaCierreOriginal: ['', Validators.required],
+        idEjecutivo: ['', Validators.required],
+        idContactoProspecto: ['', Validators.required],
+        comentario: [''],
+        idEmpresa: [this.loginService.obtenerIdEmpresa()],
+        probabilidad: ['0'],
+        bandera: ['INS-OPORTUNIDAD'],
+        idEstatus: [1]
+      });
+
+      valoresIniciales = this.oportunidadForm.getRawValue();
+
+      this.oportunidadForm.valueChanges.subscribe((changes) => {
+        this.validarCambios(valoresIniciales, changes);
+      });
+      this.validaGuadar = false;
       this.cdr.detectChanges();
+
+    } else {
+      this.informacionOportunidad = this.oportunidad;
+      this.banderaContacto = false;
+      this.nombreProspecto = this.oportunidad.nombre ?? '';
+      this.oportunidadForm = this.fb.group({
+        bandera: ['UPD-OPORTUNIDAD'],
+        idOportunidad: [this.oportunidad.idOportunidad],
+        idProspecto: [this.oportunidad.idProspecto, Validators.required],
+        descripcion: [this.oportunidad.nombreOportunidad, [Validators.required, Validators.minLength(5)]],
+        monto: [this.oportunidad.monto, [Validators.required, Validators.min(1)]],
+        idTipoProyecto: [this.oportunidad.idTipoProyecto, Validators.required],
+        idStage: [this.oportunidad.idStage, Validators.required],
+        idTipoEntrega: [this.oportunidad.idTipoEntrega, Validators.required],
+        fechaEstimadaCierreOriginal: [this.oportunidad.fechaEstimadaCierreOriginal ? new Date(this.oportunidad.fechaEstimadaCierreOriginal) : '', Validators.required],
+        idEjecutivo: [this.oportunidad.idEjecutivo, Validators.required],
+        idContactoProspecto: [this.oportunidad.idContactoProspecto, Validators.required],
+        comentario: ['', Validators.required],
+        idEmpresa: [this.loginService.obtenerIdEmpresa()],
+        probabilidad: [this.oportunidad.probabilidad],
+        idEstatus: [this.oportunidad.idEstatusOportunidad]
+      });
+
+      valoresIniciales = this.oportunidadForm.getRawValue();
+
+
+
+      this.oportunidadForm.valueChanges.subscribe((changes) => {
+        this.validarCambios(valoresIniciales, changes);
+      });
+      this.validaGuadar = false;
+      this.cdr.detectChanges();
+
     }
 
-  
-    close() {
-      this.visible = false;
-      this.visibleChange.emit(this.visible);
-      this.closeModal.emit();
+  }
+
+  validarCambios(valoresIniciales: any, cambios: any) {
+    const valoresActuales = cambios;
+
+    if (this.oportunidadForm.dirty) {
+      this.validaGuadar = true;
     }
-
-    mostrarToastError(mensaje: string) {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: mensaje });
+    const valoresRegresaron = this.compararValores(valoresIniciales, valoresActuales);
+    if (valoresRegresaron) {
+      this.validaGuadar = false;
     }
+  }
 
-    guardarOportunidad(){
-      this.markAllAsTouched(this.oportunidadForm);
+  compararValores(valoresIniciales: any, valoresActuales: any) {
+    let valoresInicialesJson = JSON.stringify(valoresIniciales);
+    let valoresActualesJson = JSON.stringify(valoresActuales);
+    return valoresInicialesJson === valoresActualesJson;
+  }
 
-      if (this.oportunidadForm.invalid) {
-        this.mostrarToastError("Es necesario llenar los campos indicados.");
-        return;
-      }
-      this.informacionOportunidad = {
-        ...this.informacionOportunidad,
-        bandera: this.oportunidadForm.get('bandera')?.value,
-        idOportunidad: this.oportunidadForm.get('idOportunidad')?.value,
-        idEstatusOportunidad: this.oportunidadForm.get('idEstatus')?.value,
-        idEjecutivo: this.oportunidadForm.get('idEjecutivo')?.value,
-        idContactoProspecto: this.oportunidadForm.get('idContactoProspecto')?.value,
-        idStage: this.oportunidadForm.get('idStage')?.value,
-        idEmpresa: this.oportunidadForm.get('idEmpresa')?.value,
-        idTipoProyecto: this.oportunidadForm.get('idTipoProyecto')?.value,
-        idTipoEntrega: this.oportunidadForm.get('idTipoEntrega')?.value,
-        descripcion: this.oportunidadForm.get('descripcion')?.value,
-        monto: this.oportunidadForm.get('monto')?.value,
-        fechaEstimadaCierre: this.oportunidadForm.get('fechaEstimadaCierreOriginal')?.value || new Date(),
-        comentario: this.oportunidadForm.get('comentario')?.value,
-        idProspecto: this.oportunidadForm.get('idProspecto')?.value,
-        probabilidad: this.oportunidadForm.get('probabilidad')?.value
-      };
-      this.informacionOportunidad.probabilidad = this.informacionOportunidad.probabilidad?.replace('%', '').trim();
-      this.informacionOportunidad.idUsuario = this.loginService.obtenerIdUsuario();
-      
-      this.oportunidadService.postOportunidad(this.informacionOportunidad).subscribe({
+  onChangeProspecto() {
+    const idProspecto = this.oportunidadForm.get('idProspecto')?.value;
+    if (idProspecto > 0) {
+      this.contactos = this.catalogoService.obtenerContactos(idProspecto);
+      this.banderaContacto = false;
+    }
+    else {
+      this.banderaContacto = true;
+    }
+    this.cdr.detectChanges();
+  }
+
+  onChangeProbabilidad() {
+    const idStage = this.oportunidadForm.get('idStage')?.value;
+    if (idStage > 0) {
+      this.obtenerProbabilidadPorEtapa(idStage);
+    }
+    if (!this.insertar)
+      this.limpiarProbabilidad();
+  }
+
+  onDialogShow() {
+    this.cargarDatos();
+  }
+
+  cargarDatos() {
+    this.banderaContacto = true;
+    this.prospectos = this.catalogoService.obtenerProspectos();
+    this.servicios = this.catalogoService.obtenerServicios();
+    this.etapas = this.catalogoService.obtenerEtapas();
+    this.ejecutivos = this.catalogoService.obtenerEjecutivos();
+    if (this.oportunidad.idProspecto) {
+      this.contactos = this.catalogoService.obtenerContactos(this.oportunidad.idProspecto);
+    }
+    this.entregas = this.catalogoService.obtenerEntregas();
+    this.estatusOportunidad = this.catalogoService.obtenerEstatusOportunidad();
+    this.inicializarFormulario();
+    this.cdr.detectChanges();
+  }
+
+
+  close() {
+    this.visible = false;
+    this.visibleChange.emit(this.visible);
+    this.closeModal.emit();
+  }
+
+  mostrarToastError(mensaje: string) {
+    this.messageService.add({ severity: 'error', summary: 'Error', detail: mensaje });
+  }
+
+  guardarOportunidad() {
+    this.markAllAsTouched(this.oportunidadForm);
+
+    if (this.oportunidadForm.invalid) {
+      this.mostrarToastError("Es necesario llenar los campos indicados.");
+      return;
+    }
+    this.informacionOportunidad = {
+      ...this.informacionOportunidad,
+      bandera: this.oportunidadForm.get('bandera')?.value,
+      idOportunidad: this.oportunidadForm.get('idOportunidad')?.value,
+      idEstatusOportunidad: this.oportunidadForm.get('idEstatus')?.value,
+      idEjecutivo: this.oportunidadForm.get('idEjecutivo')?.value,
+      idContactoProspecto: this.oportunidadForm.get('idContactoProspecto')?.value,
+      idStage: this.oportunidadForm.get('idStage')?.value,
+      idEmpresa: this.oportunidadForm.get('idEmpresa')?.value,
+      idTipoProyecto: this.oportunidadForm.get('idTipoProyecto')?.value,
+      idTipoEntrega: this.oportunidadForm.get('idTipoEntrega')?.value,
+      descripcion: this.oportunidadForm.get('descripcion')?.value,
+      monto: this.oportunidadForm.get('monto')?.value,
+      fechaEstimadaCierre: this.oportunidadForm.get('fechaEstimadaCierreOriginal')?.value || new Date(),
+      comentario: this.oportunidadForm.get('comentario')?.value,
+      idProspecto: this.oportunidadForm.get('idProspecto')?.value,
+      probabilidad: this.oportunidadForm.get('probabilidad')?.value
+    };
+    this.informacionOportunidad.probabilidad = this.informacionOportunidad.probabilidad?.replace('%', '').trim();
+    this.informacionOportunidad.idUsuario = this.loginService.obtenerIdUsuario();
+
+    // Guardar historial primero
+    const historicoOportunidad = {
+      bandera: 'INS-HISTORICO',
+      idOportunidad: this.oportunidadForm.get('idOportunidad')?.value,
+      idStage: this.oportunidadForm.get('idStage')?.value,
+      idUsuario: this.loginService.obtenerIdUsuario(),
+      comentario: this.oportunidadForm.get('comentario')?.value,
+    };
+
+    this.oportunidadService.postHistorial(historicoOportunidad).subscribe({
+      next: () => {
+        // Si el historial se guarda correctamente, guardar la oportunidad
+        this.oportunidadService.postOportunidad(this.informacionOportunidad).subscribe({
           next: (result: baseOut) => {
             this.result.emit(result);
             this.close();
@@ -216,58 +228,86 @@ export class ModalOportunidadesComponent {
           error: (error: baseOut) => {
             this.messageService.add({
               severity: 'error',
-              summary: 'Se ha producido un error.',
+              summary: 'Se ha producido un error al guardar la oportunidad.',
               detail: error.errorMessage,
             });
           },
         });
+      },
+      error: (error: baseOut) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Se ha producido un error al guardar el historial.',
+          detail: error.errorMessage,
+        });
+      },
+    });
+  }
+  obtenerProbabilidadPorEtapa(idStage: number) {
+    const etapaSeleccionada = this.etapas.find(etapa => etapa.id === idStage);
+
+    if (etapaSeleccionada) {
+      let probabilidad = etapaSeleccionada.probabilidad;
+
+      if (typeof probabilidad === 'string' && probabilidad.includes('%')) {
+        probabilidad = parseFloat(probabilidad.replace('%', '').trim());
       }
 
-      obtenerProbabilidadPorEtapa(idStage: number) {
-        const etapaSeleccionada = this.etapas.find(etapa => etapa.id === idStage);
-    
-        if (etapaSeleccionada) {
-            let probabilidad = etapaSeleccionada.probabilidad;
-  
-            if (typeof probabilidad === 'string' && probabilidad.includes('%')) {
-                probabilidad = parseFloat(probabilidad.replace('%', '').trim());
-            }
-    
-            this.oportunidadForm.get('probabilidad')?.setValue(probabilidad);
-        }
-      }
-      limpiarProbabilidad() {
-        let probabilidad = this.oportunidadForm.get('probabilidad')?.value;
-    
-        if (typeof probabilidad === 'string' && probabilidad.includes('%')) {
-            probabilidad = probabilidad.replace('%', '').trim();
-            this.oportunidadForm.get('probabilidad')?.setValue(probabilidad);
-        }
+      this.oportunidadForm.get('probabilidad')?.setValue(probabilidad);
     }
+  }
+  limpiarProbabilidad() {
+    let probabilidad = this.oportunidadForm.get('probabilidad')?.value;
 
-    markAllAsTouched(formGroup: FormGroup) {
-      Object.values(formGroup.controls).forEach(control => {
-        control.markAsTouched();
-    
-        if ((control as any).controls) {
-          this.markAllAsTouched(control as FormGroup);
-        }
+    if (typeof probabilidad === 'string' && probabilidad.includes('%')) {
+      probabilidad = probabilidad.replace('%', '').trim();
+      this.oportunidadForm.get('probabilidad')?.setValue(probabilidad);
+    }
+  }
+
+  markAllAsTouched(formGroup: FormGroup) {
+    Object.values(formGroup.controls).forEach(control => {
+      control.markAsTouched();
+
+      if ((control as any).controls) {
+        this.markAllAsTouched(control as FormGroup);
+      }
+    });
+  }
+
+  limitarCaracteres() {
+    const descripcionControl = this.oportunidadForm.get('descripcion');
+    if (descripcionControl?.value.length >= 100) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Límite alcanzado',
+        detail: 'Has alcanzado el límite máximo de 100 caracteres',
+        life: 3000
       });
     }
-
-    limitarCaracteres() {
-      const descripcionControl = this.oportunidadForm.get('descripcion');
-      if (descripcionControl?.value.length >= 100) {
+  }
+  guardarHistorial() {
+    let historicoOportunidad = {
+      bandera: 'INS-HISTORICO',
+      idOportunidad: this.oportunidadForm.get('idOportunidad')?.value,
+      idStage: this.oportunidadForm.get('idStage')?.value,
+      idUsuario: this.loginService.obtenerIdUsuario(),
+      comentario: this.oportunidadForm.get('comentario')?.value,
+    };
+    this.oportunidadService.postHistorial(historicoOportunidad).subscribe({
+      next: (result: baseOut) => {
+        this.result.emit(result);
+      },
+      error: (error: baseOut) => {
         this.messageService.add({
-          severity: 'warn',
-          summary: 'Límite alcanzado',
-          detail: 'Has alcanzado el límite máximo de 100 caracteres',
-          life: 3000
+          severity: 'error',
+          summary: 'Se ha producido un error al guardar el comentario.',
+          detail: error.errorMessage,
         });
-      }
-    }
-    
+      },
+    });
+  }
 }
-      
-    
-    
+
+
+

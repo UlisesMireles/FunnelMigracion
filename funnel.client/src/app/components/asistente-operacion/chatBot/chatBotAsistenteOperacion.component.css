@@ -390,7 +390,7 @@
     white-space: normal;
     word-break: break-word;
     text-align: left; /* Texto alineado a la izquierda */
-    font-size: 0.8rem;
+    font-size: small;
     line-height: 1.2;
     
 }

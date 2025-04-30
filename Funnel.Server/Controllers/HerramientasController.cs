@@ -14,6 +14,7 @@ namespace Funnel.Server.Controllers
         {
             _herramientasService = herramientasService;
         }
+
         [HttpGet("[action]/")]
         public async Task<ActionResult<List<ProspectoDTO>>> ConsultarIngresos(int IdUsuario, int IdEmpresa)
         {

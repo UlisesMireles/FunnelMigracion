@@ -451,7 +451,7 @@
 
 .menu-container {
   max-height: 100vh;
-  direction:rtl; 
+  /* direction:rtl;  */
   overflow:auto; 
   flex-grow: 1;
   overflow-x: hidden;
@@ -494,3 +494,6 @@
   background-color: #555;
 }
 
+.subMenuExpanded {
+  left: 162px;
+}

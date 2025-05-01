@@ -19,7 +19,7 @@
         <span *ngIf="isExpanded">{{ item.nombre }}</span>
 
         <!-- Solo mostrar submenú si existe y tiene elementos -->
-        <ul class="submenu" *ngIf="item.subMenu && item.subMenu.length > 0" [ngClass]="{'visible': hoveredMenu === i}">
+        <ul class="submenu visible" *ngIf="item.subMenu && item.subMenu.length > 0 && hoveredMenu === i">
           <!-- Encabezado con el nombre del menú como título -->
           <!-- <li class="submenu-header">{{ item.pagina }}</li> -->
 

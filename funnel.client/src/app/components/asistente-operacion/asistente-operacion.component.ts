@@ -15,7 +15,7 @@ export class AsistenteOperacionComponent implements OnInit{
   @Output() OncerrarChat = new EventEmitter<void>();
   baseUrlAssets = environment.baseUrlAssetsChatbot;
   isProd = environment.production;
-  asistenteSeleccionado: any = { asistente: '', idBot: 0 };
+  asistenteSeleccionado: any = { asistente: '', idBot: 4 };
   version: string = '';
 
 
@@ -30,8 +30,8 @@ export class AsistenteOperacionComponent implements OnInit{
     this.sideNavService.toggleIconState();
   }
 
-  mostrarTemas() {
-    this.chatBotAsistenteOperacion.mostrarTemas();
+  mostrarCategorias() {
+    this.chatBotAsistenteOperacion.mostrarCategorias();
   }
 
   nombreAsistenteSeleccionado(asistente: any): void {

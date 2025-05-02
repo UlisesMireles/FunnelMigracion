@@ -33,7 +33,7 @@ namespace Funnel.Models.Dto
         public string? Clave { get; set; }
         public bool? Activo { get; set; }
         public int SuperAdministrador { get; set; }
-        public int? Id { get; set; }
+        public int Id { get; set; }
         public IFormFile? Imagen { get; set; }
 
 

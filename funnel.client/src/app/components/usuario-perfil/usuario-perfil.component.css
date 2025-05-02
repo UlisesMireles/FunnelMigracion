@@ -278,8 +278,44 @@ ul.subm>li>a {
 
 @media (min-width: 992px) {
   .user-panel {
-      top: 50px;
-      right: 0;
+      top: 20px;
+      right: 10px;
+      width: 280px;
+      margin: 12px 3px;
+      border-radius: 5px;
+      padding: 0;
+  }
+
+  .user-header {
+      padding: 15px;
+  }
+
+  .user-image {
+      width: 100px;
+      height: 100px;
+      margin-bottom: 10px;
+  }
+
+  .user-actions {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+  }
+
+  .btnmenuuser {
+      min-width: 80px !important;
+      width: 100% !important;
+      height: 32px !important;
+      font-size: 12px !important;
+      margin: 10px 5px;
+      padding: 0 !important;
+  }
+}
+
+@media (max-height: 600px) {
+  .user-panel {
+      top: 20px;
+      right: 2px;
       width: 280px;
       margin: 12px 3px;
       border-radius: 5px;

@@ -54,6 +54,7 @@ export class ModalUsuariosComponent {
 
   inicializarFormulario() {
     if (this.insertar) {
+      const passwordGenerada = this.generarPassword(); 
       this.usuarioForm = this.fb.group({
         nombre: ['', [
             Validators.required,
@@ -79,12 +80,12 @@ export class ModalUsuariosComponent {
             Validators.pattern('^[a-zA-Z0-9_.-]+$')
           ]
         ],
-        password: ['', [
+        password: [passwordGenerada, [
           Validators.minLength(8),
           Validators.maxLength(50),
           Validators.pattern('^[a-zA-Z0-9_.-]+$')
         ]],
-        confirmPassword: [''],
+        confirmPassword: [passwordGenerada],
         iniciales: [{ value: '', disabled: true }, [
           Validators.required,
           Validators.maxLength(5),
@@ -151,6 +152,20 @@ export class ModalUsuariosComponent {
       
     }
   }
+
+  generarPassword(): string {
+    const alias = this.loginService.obtenerAlias();
+    const añoActual = new Date().getFullYear();
+    const passwordGenerada = `${alias.toLowerCase()}${añoActual}`; 
+  
+    console.log('Contraseña generada:', passwordGenerada);
+    console.log('Alias obtenido (original):', alias);
+    console.log('Alias en minúsculas:', alias.toLowerCase());
+    console.log('Año actual:', añoActual);
+    
+    return passwordGenerada;
+  }
+
 
   onDialogShow() {
     this.cargarTipoUsuario();

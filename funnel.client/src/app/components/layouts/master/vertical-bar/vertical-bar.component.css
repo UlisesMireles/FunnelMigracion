@@ -1,5 +1,6 @@
 .sidebar {
-  width: 60px;
+  width: 58px;
+  /* height: 100vh; */
   height: 100vh;
   background-color:  #103D66;
   color: white; /* Color de la letra */
@@ -8,14 +9,18 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding-bottom: 20px;
+  padding-bottom: 100px;
   left: 0;
   top: 40px;
-  padding-top: 50px;
+  /* padding-top: 50px; */
+  /* overflow: scroll; */
+  /* overflow-x: hidden; */
+  align-items: anchor-center;
 }
 
 .sidebar.expanded {
-  width: 160px;
+  /* width: 160px; */
+  width: auto;
 }
 
 .menu {
@@ -40,13 +45,15 @@
 
 
 .expand-btn-container {
-  position: absolute;
+  /* position: absolute; */
+  position: static;
   bottom: 200px;
   right: 10px;
   width: auto;
   display: flex;
   justify-content: flex-end;
-  padding-right: 5px; 
+  /* padding-right: 5px;  */
+  padding-right: 14px;
   overflow: visible; 
 }
 
@@ -71,24 +78,28 @@
   display: block;
 }
 
+.sidebar.expanded .menu-container {
+  max-height: 80vh; /* En el estado expandido, también se limita la altura */
+  /* overflow-x: hidden; */
+}
+
 
 /* Estilos del submenú con tema oscuro y separación */
 .submenu {
-  position: absolute;
-  top: 0;
-  left: 100%; /* Desplaza el submenú fuera de la barra lateral */
- /* Espacio entre la barra y el submenú */
+  position: fixed;
+  left: 58px;
   background-color: #103D66;
-  color: white; /* Color de la letra */
+  color: white;
   border-radius: 8px;
   padding: 10px 0;
   box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.5);
   min-width: 180px;
-  display: none;
-  border: none; /* Asegura que no haya bordes */
+  border: none;
   text-align: left;
   list-style-type: none;
   border-left: 1px solid #fff;
+  max-height: 200px;
+  z-index: 9999;
 }
 
 /* Bordes y separación de los elementos del submenú */
@@ -97,8 +108,8 @@
   list-style: none;
   cursor: pointer;
   transition: background 0.3s;
-  border-bottom: none
-
+  border-bottom: none;
+  text-align: left !important;
 }
 
 /* Último elemento sin borde */
@@ -361,13 +372,8 @@
   padding-left: 0px;
 }
 
-/*
 
-.menu-container {
-  max-height: 400px;
-  overflow: hidden;
-  position: relative;
-}*/
+
 .submenu,
 .expand-button {
   background-color: rgba(16, 61, 102, 0.6);
@@ -417,4 +423,77 @@
   .estiloPerfilMenuClose {
     margin-left: 10vw;
   }
+}
+
+.large-icon {
+  font-size: 1.5rem; /* Ajusta el tamaño como prefieras */
+  margin-right: 4px; /* Espaciado al lado del nombre */
+  color: white; /* Color opcional para el icono */
+}
+
+/* Si estás usando una estructura diferenciada para el perfil */
+.menu-item:first-child {
+  padding-top: 10px; /* Ajusta el padding según sea necesario */
+  background-color: #103d66; /* Color de fondo opcional */
+  border-radius: 5px; /* Borde redondeado */
+}
+
+.menu-item-perfil i {
+  font-size: 44px; /* Ajusta el tamaño según lo necesites */
+  padding-left: 5px;
+  
+}
+
+.menu-item-perfil {
+  padding-bottom: 15px !important
+  
+}
+
+.menu-container {
+  max-height: 100vh;
+  /* direction:rtl;  */
+  overflow:auto; 
+  flex-grow: 1;
+  overflow-x: hidden;
+}
+
+.menu-container::-webkit-scrollbar {
+  width: 2px; /* Ancho del scrollbar */
+}
+
+.menu-container::-webkit-scrollbar-track {
+  background-color: #103D66; /* Color del fondo del track */
+  border-radius: 10px;
+}
+
+.menu-container::-webkit-scrollbar-thumb {
+  background-color: #888; /* Color del thumb */
+  border-radius: 10px;
+}
+
+.menu-container::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* Color del thumb al pasar el mouse */
+}
+
+/* También puedes personalizar el scrollbar de los submenús */
+.submenu::-webkit-scrollbar {
+  width: 6px;
+}
+
+.submenu::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+  border-radius: 5px;
+}
+
+.submenu::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 5px;
+}
+
+.submenu::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+.subMenuExpanded {
+  left: 162px;
 }

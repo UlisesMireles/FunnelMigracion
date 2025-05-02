@@ -5,6 +5,7 @@ export interface Usuario extends BaseOut {
   idRol: number;
   idEmpresa: number;
   tipoUsuario: string;
+  idTipoUsuario: number;
   nombre: string;
   alias: string;
 }
@@ -19,4 +20,5 @@ export interface LoginUser {
   idEmpresa: number;
   idUsuario: number;
   idRol: number;
+  alias: string;
 }

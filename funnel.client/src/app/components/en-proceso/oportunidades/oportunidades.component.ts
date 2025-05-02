@@ -10,7 +10,6 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ColumnasDisponiblesComponent } from '../../utils/tablas/columnas-disponibles/columnas-disponibles.component';
 import { sumBy, map as mapping, omit, sortBy, groupBy, keys as getKeys } from "lodash-es";
 
-
 @Component({
   selector: 'app-oportunidades',
   standalone: false,
@@ -18,7 +17,7 @@ import { sumBy, map as mapping, omit, sortBy, groupBy, keys as getKeys } from "l
   styleUrl: './oportunidades.component.css',
 })
 export class OportunidadesComponent {
-
+  
   @ViewChild('dt') dt!: Table;
 
   disableOportunidades = true;
@@ -404,6 +403,7 @@ export class OportunidadesComponent {
     };
     return etapas[numeroEtapa] || 'Etapa desconocida';
   }
+    
 }
 
 

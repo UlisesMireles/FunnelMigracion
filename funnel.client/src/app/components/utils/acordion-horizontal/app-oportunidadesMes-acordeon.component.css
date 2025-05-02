@@ -16,7 +16,7 @@
 /* Cada item del acordeón (cada mes) */
 .item-acordeon {
   width: 70px; /* Ancho inicial del item (colapsado) */
-  height: 600px; /* Altura fija de 550px para el acordeón */
+  height: 73vh; /* Altura fija de 550px para el acordeón */
   background: #f8f9fa; /* Color de fondo claro */
   border: 1px solid #ccc; /* Borde gris claro */
   display: flex; /* Usa flexbox para organizar el contenido internamente */
@@ -32,7 +32,7 @@
 
 /* Cuando el item está expandido */
 .item-acordeon.expandido {
-  width: 320px; /* Ancho mayor para el estado expandido (ajusta según lo necesites) */
+  width: 25%; /* Ancho mayor para el estado expandido (ajusta según lo necesites) */
 }
 
 /* Encabezado del item (nombre del mes y botón) */
@@ -151,13 +151,12 @@
   display: flex;                /* Usa flexbox */
   justify-content: space-between; /* Separa el nombre y el contador a los extremos */
   align-items: center;          /* Centra verticalmente */
-  width: 100%;                  /* Ocupa todo el ancho del contenedor */
   order: 2;
 }
 
 /* En estado expandido, el contador se alinea a la derecha con margen */
 .item-acordeon.expandido .contador-tarjetas {
-  margin: 0 8px 0 auto; /* Margen: 0 arriba, 8px a la derecha, 0 abajo y automático a la izquierda para empujar al final */
+  margin: 0 8px 0 5px; /* Margen: 0 arriba, 8px a la derecha, 0 abajo y automático a la izquierda para empujar al final */
 }
 
 /* Posicionamiento y estilos de la modal */
@@ -356,6 +355,7 @@ div.fotoTarjeta {
   font-weight: 600;
   font-size: 1em;
   color: #103D66;
+
 }
 .lblNormalizadoMeses {
   font-weight: 600;
@@ -363,8 +363,9 @@ div.fotoTarjeta {
   color: #08a742;
 }
 .total-row {
-  display: flex;                /* Convierto la fila en un contenedor flex */
-  justify-content: flex-end;    /* Alinea los elementos al final (derecha) */
+  position: absolute;                /* Convierto la fila en un contenedor flex */
+  text-align: right;
+  margin-right: 25px;
   align-items: center;          /* Centra verticalmente los elementos */
   width: 100%;                  /* Ocupa todo el ancho del contenedor */
   margin-top: 5px;              /* Opcional: espacio superior */

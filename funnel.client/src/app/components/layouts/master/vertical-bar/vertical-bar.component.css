@@ -11,10 +11,10 @@
   justify-content: space-between;
   padding-bottom: 100px;
   left: 0;
-  top: 27px;
+  top: 40px;
   /* padding-top: 50px; */
   /* overflow: scroll; */
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
   align-items: anchor-center;
 }
 
@@ -80,30 +80,26 @@
 
 .sidebar.expanded .menu-container {
   max-height: 80vh; /* En el estado expandido, también se limita la altura */
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
 }
 
 
 /* Estilos del submenú con tema oscuro y separación */
 .submenu {
-  position: absolute;
-  top: 0;
-  left: 100%; /* Desplaza el submenú fuera de la barra lateral */
- /* Espacio entre la barra y el submenú */
+  position: fixed;
+  left: 58px;
   background-color: #103D66;
-  color: white; /* Color de la letra */
+  color: white;
   border-radius: 8px;
   padding: 10px 0;
   box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.5);
   min-width: 180px;
-  display: none;
-  border: none; /* Asegura que no haya bordes */
+  border: none;
   text-align: left;
   list-style-type: none;
   border-left: 1px solid #fff;
-  max-height: 200px; /* O la altura que necesites para el submenú */
-  overflow-y: auto;
-  overflow-x: hidden;
+  max-height: 200px;
+  z-index: 9999;
 }
 
 /* Bordes y separación de los elementos del submenú */
@@ -112,8 +108,8 @@
   list-style: none;
   cursor: pointer;
   transition: background 0.3s;
-  border-bottom: none
-
+  border-bottom: none;
+  text-align: left !important;
 }
 
 /* Último elemento sin borde */
@@ -377,12 +373,6 @@
 }
 
 
-.menu-container {
-  max-height: 100vh;
-  overflow-y: auto;
-  flex-grow: 1;
-  overflow-x: hidden;
-}
 
 .submenu,
 .expand-button {
@@ -459,6 +449,13 @@
   
 }
 
+.menu-container {
+  max-height: 100vh;
+  /* direction:rtl;  */
+  overflow:auto; 
+  flex-grow: 1;
+  overflow-x: hidden;
+}
 
 .menu-container::-webkit-scrollbar {
   width: 2px; /* Ancho del scrollbar */
@@ -497,3 +494,6 @@
   background-color: #555;
 }
 
+.subMenuExpanded {
+  left: 162px;
+}

@@ -151,7 +151,9 @@
     text-align: left !important;
     padding: 0px;
     padding-top: 5px;
+    padding-right: 50px;
   }
+  
   
   ::ng-deep .bodyDialog {
     background: #F0F0F0 !important;

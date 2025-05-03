@@ -27,7 +27,7 @@
         </label>
       </div>
       <div class="col-sm-6" style="margin-left: -20px;">
-        <label class="margen text-left" style="margin-left: -55px;">
+        <label class="margen text-left" style="margin-left: -3px;">
           {{ 'Probabilidad ' + oportunidadForm.get('probabilidad')?.value }}
         </label>
         <br />
@@ -54,7 +54,8 @@
         <div class="col-sm-2" *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value === 1">
           <label class="margen text-left" style="margin-top: 35px;">Seguimiento:</label>
         </div>
-        <div class="col-sm-10 inptSpace pl-0" [class.col-sm-12]="oportunidadForm.get('idEstatusOportunidad')?.value !== 1">
+        <div class="col-sm-10 inptSpace pl-0" [class.col-sm-12]="oportunidadForm.get('idEstatusOportunidad')?.value !== 1"
+        [class.maximized-padding]="maximized">
           <div class="row" [class.justify-content-end]="oportunidadForm.get('idEstatusOportunidad')?.value !== 1">
             <div class="col-sm-8" *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value === 1">
               <textarea pInputText class="seguimiento-textarea" formControlName="comentario"></textarea>

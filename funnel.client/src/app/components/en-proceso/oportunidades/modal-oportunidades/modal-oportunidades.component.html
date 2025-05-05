@@ -12,7 +12,7 @@
             <label for="prospecto">Prospecto:</label>
           </div>
           <div class="col-sm-8 inptSpace">
-            <p-dropdown class="inptSize1" [options]="prospectos" formControlName="idProspecto" optionLabel="nombre"
+            <p-dropdown class="inptSize1" [options]="prospectos" [filter]="true" formControlName="idProspecto" optionLabel="nombre"
               optionValue="id" placeholder="Selecciona un prospecto" (onChange)="onChangeProspecto()"
               >
             </p-dropdown>
@@ -151,9 +151,12 @@
             <label for="fecha">	F. Est. Cierre: </label>
           </div>
           <div class="col-sm-8 inptSpace">
-            <p-calendar class="inptSize" formControlName="fechaEstimadaCierreOriginal" dateFormat="dd/mm/yy"
+            <p-datepicker formControlName="fechaEstimadaCierreOriginal" dateFormat="dd/mm/yy"
+            appendTo="body" #calendar [showIcon]="true" [showButtonBar]="true" [dataType]="'date'" placeholder="dd/mm/aaaa" />
+
+            <!-- <p-calendar class="inptSize" formControlName="fechaEstimadaCierreOriginal" dateFormat="dd/mm/yy"
               appendTo="body" #calendar [showIcon]="true" [showButtonBar]="true" [dataType]="'date'" placeholder="dd/mm/aaaa">
-            </p-calendar>
+            </p-calendar> -->
             <span
               *ngIf="oportunidadForm.get('fechaEstimadaCierreOriginal')?.invalid && oportunidadForm.get('fechaEstimadaCierreOriginal')?.touched"
               class="text-danger"><br>

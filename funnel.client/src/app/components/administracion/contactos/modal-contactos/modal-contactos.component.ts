@@ -49,9 +49,9 @@ export class ModalContactosComponent {
   @Output() closeModal: EventEmitter<void> = new EventEmitter();
   @Output() result: EventEmitter<baseOut> = new EventEmitter();
 
-  // ngOnInit() {
-  //   this.inicializarFormulario();
-  // }
+  ngOnInit() {
+    this.inicializarFormulario();
+  }
 
   // ngOnChanges(changes: SimpleChanges) {
   //   if (changes['contacto'] && this.contacto) {

@@ -21,7 +21,11 @@ namespace Funnel.Server.Controllers
         {
             var respuesta = await _loginService.Autenticar(usr.Usuario, usr.Password);
             if (respuesta.IdUsuario > 0)
+            {
                 HttpContext.Session.SetString("User", usr.Usuario);
+                if(respuesta.Result == true && respuesta.IdEmpresa != null)                
+                    await _loginService.RegistrarIngresoUsuario(respuesta.IdUsuario, (int)respuesta.IdEmpresa);
+            }
             return Ok(respuesta);
         }
 

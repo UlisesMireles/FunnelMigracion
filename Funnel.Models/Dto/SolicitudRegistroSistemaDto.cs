@@ -14,7 +14,7 @@ namespace Funnel.Models.Dto
         public string Correo { get; set; }
         public string Telefono { get; set; }
         public string Empresa { get; set; }
-        public string UrlSitio { get; set; }
+        public string? UrlSitio { get; set; }
         public string NoEmpleados { get; set; }
         public bool PrivacidadTerminos { get; set; }
         public string Recaptcha { get; set; }

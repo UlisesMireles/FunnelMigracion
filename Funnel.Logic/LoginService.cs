@@ -189,7 +189,9 @@ namespace Funnel.Logic
             return await _loginData.GuardarImagen(idUsuario, nombreArchivo);
         }
 
-
-
+        public async Task<BaseOut> RegistrarIngresoUsuario(int IdUsuario, int IdEmpresa)
+        {
+            return await _loginData.RegistrarIngresoUsuario(IdUsuario, IdEmpresa);
+        }
     }
 }

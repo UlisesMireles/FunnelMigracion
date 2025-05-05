@@ -322,12 +322,16 @@
 }
 
 
-.button-group {
+.bodyDialog:not(.maximized) .button-group {
   display: flex;
   justify-content: flex-end;
   gap: 8px;
 }
 
+.bodyDialog.maximized .button-group {
+  position: absolute;
+  right: 20px;
+}
 
 .p-button {
   flex-shrink: 0;
@@ -376,3 +380,4 @@
   width: 68rem;
   height: auto; /* O el valor por defecto que necesites */
 }
+

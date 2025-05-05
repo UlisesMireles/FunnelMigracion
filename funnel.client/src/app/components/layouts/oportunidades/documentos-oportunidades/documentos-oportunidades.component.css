@@ -413,3 +413,15 @@ input[type="file"] {
 .bodyDialog:not(.maximized) .p-dialog-content {
   max-height: calc(100vh - 180px) !important;
 }
+
+.bodyDialog:not(.maximized) .botones-accion {
+  justify-content: flex-start;
+  margin-left: 300px;
+  gap: 10px;
+}
+
+.bodyDialog.maximized .botones-accion {
+  position: fixed !important; 
+  right: 20px;
+  margin-left: 0 !important;
+}

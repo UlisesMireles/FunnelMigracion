@@ -74,7 +74,7 @@
               </div>
             </ng-container>
           </div>
-              <div class="col-sm-2 d-flex flex-nowrap gap-2" style="margin-left:-50px;"> 
+          <div #buttonGroup class="button-group botones-accion" style="margin-left:-50px;">
             <button pButton label="Guardar" (click)="guardarDocumento()" 
                     severity="secondary" [disabled]="!archivosSeleccionados.length"></button>
             <button pButton label="Salir" (click)="close()" severity="secondary"></button>

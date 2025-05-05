@@ -1,15 +1,19 @@
-<p-dialog
-  [(visible)]="visible"
-  [modal]="true"
-  [closable]="true"
+<p-dialog 
+  appendTo="body"
+  [(visible)]="visible" 
+  [modal]="true" 
+  [closable]="true" 
+  [maximizable]="true"
   [style]="{
-    width: '65rem',
-    height: historialOportunidad.length > 0 ? '50rem' : '30rem'
-  }"
-  (onHide)="close()"
-  (onShow)="onDialogShow()"
+    width: maximized ? '100vw' : '68rem',
+    height: maximized ? '100vh' : (historialOportunidad.length > 0 ? '50rem' : '30rem')
+  }" 
+  [ngClass]="{'maximized': maximized}"
+  (onHide)="close()" 
+  (onShow)="onDialogShow()" 
   class="bodyDialog"
->
+  >
+
   <ng-template pTemplate="header">
     <label class="margen">
       {{ '' }}

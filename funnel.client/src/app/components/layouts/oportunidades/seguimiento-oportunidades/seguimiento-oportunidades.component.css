@@ -376,8 +376,3 @@
   width: 68rem;
   height: auto; /* O el valor por defecto que necesites */
 }
-
-/* Estilos para el contenido cuando está minimizado */
-.bodyDialog:not(.maximized) .p-dialog-content {
-  max-height: calc(100vh - 180px) !important;
-}

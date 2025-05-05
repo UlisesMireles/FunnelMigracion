@@ -159,7 +159,10 @@ export class ModalOportunidadesComponent {
     this.prospectos = this.catalogoService.obtenerProspectos();
     this.servicios = this.catalogoService.obtenerServicios();
     this.etapas = this.catalogoService.obtenerEtapas();
-    this.ejecutivos = this.catalogoService.obtenerEjecutivos();
+    //Ordenar y asignar ejecutivos
+    this.ejecutivos = this.catalogoService.obtenerEjecutivos().sort((a, b) =>
+      a.nombreCompleto.localeCompare(b.nombreCompleto, 'es', { sensitivity: 'base' })
+    );
     if (this.oportunidad.idProspecto) {
       this.contactos = this.catalogoService.obtenerContactos(this.oportunidad.idProspecto);
     }
@@ -306,6 +309,10 @@ export class ModalOportunidadesComponent {
         });
       },
     });
+  }
+
+  seleccionarHoy() {
+    this.oportunidadForm.get('fechaEstimadaCierreOriginal')?.setValue(new Date());
   }
 }
 

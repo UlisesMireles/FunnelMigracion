@@ -416,3 +416,23 @@ th.sort-active p-sortIcon {
   white-space: normal !important;
   padding: 8px 5px !important;   /* Espacio interno */
 }
+
+
+::ng-deep .p-button-icon-only.p-button-rounded{
+  color: #2f78b3!important;
+}
+
+::ng-deep .p-datepicker-day-selected {
+  background: #2f78b3!important;
+}
+
+
+::ng-deep .p-datepicker-buttonbar .p-button {
+  background-color: #2f78b3!important; /* tu color deseado */
+  color: white;
+  border: none;
+}
+
+::ng-deep .p-datepicker-buttonbar .p-button:hover {
+  background-color: #2f78b3!important;
+}

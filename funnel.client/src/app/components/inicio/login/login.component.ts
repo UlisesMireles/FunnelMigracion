@@ -204,9 +204,9 @@ export class LoginComponent implements OnInit {
                       severity: 'success',
                       summary: 'La operación se realizó con éxito.',
                       detail: result.errorMessage,
-                    });*/
-                    this.aFormGroup.reset();
+                    });*/  
                     this.router.navigate(['/two-factor']);
+                    this.aFormGroup.reset();
                   }
                   else {
                     this.messageService.add({

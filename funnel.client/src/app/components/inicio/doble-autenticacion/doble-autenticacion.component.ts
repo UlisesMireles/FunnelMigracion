@@ -44,7 +44,7 @@ export class DobleAutenticacionComponent {
       this.baseUrl +
       '/assets/img/PMAGRISES.png' +
       ')';
-    this.usuario = localStorage.getItem('username') as string;
+    this.usuario = localStorage.getItem('correo') as string;
     this.codigo = null;
     this.disabled = true;
     this.datosUsuario = this.authService.desencriptaSesion();
@@ -112,11 +112,13 @@ export class DobleAutenticacionComponent {
       return;
     }
     let TwoFactor: DobleAutenticacion = { codigo: this.twoFactorForm.get('codigo')?.value, usuario: this.usuario };
+    console.log(TwoFactor);
     this.authenticationService.DobleAutenticacion(TwoFactor).subscribe({
       next: (data) => {
         if (data.tipoMensaje == 1) {
-          this.router.navigate(['/oportunidades']);
+          this.router.navigate(['/login']);
         } else {
+          console.log(data);
           this.messageService.add({
             severity: 'error',
             summary: 'Error',

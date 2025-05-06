@@ -59,14 +59,14 @@ namespace Funnel.Data
             {
                 IList<Parameter> listaParametros = new List<Parameter>
                 {
-                    DataBase.CreateParameter("@pUsuario", DbType.String, 20, ParameterDirection.Input, false, null, DataRowVersion.Default, usuario.Usuario),
+                    DataBase.CreateParameter("@pCorreo", DbType.String, 200, ParameterDirection.Input, false, null, DataRowVersion.Default, usuario.Usuario),
                     DataBase.CreateParameter("@pCodigo", DbType.String, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, usuario.Codigo),
                 };
-                using (IDataReader reader = await DataBase.GetReader("F_CodigoAutentificacionFunnel", CommandType.StoredProcedure, listaParametros, _connectionString))
+                using (IDataReader reader = await DataBase.GetReader("F_CodigoValidacionCorreoFunnel", CommandType.StoredProcedure, listaParametros, _connectionString))
                 {
                     while (reader.Read())
                     {
-                        dobleAutenticacion.Result = ComprobarNulos.CheckBooleanNull(reader["Result"]);
+                        dobleAutenticacion.Result = ComprobarNulos.CheckBooleanNull(reader["Result"]); 
                         dobleAutenticacion.ErrorMessage = ComprobarNulos.CheckStringNull(reader["ErrorMessage"]);
                         dobleAutenticacion.TipoMensaje = ComprobarNulos.CheckIntNull(reader["TipoMensaje"]);
                     }

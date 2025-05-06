@@ -205,6 +205,8 @@ export class LoginComponent implements OnInit {
                       summary: 'La operación se realizó con éxito.',
                       detail: result.errorMessage,
                     });*/  
+                    localStorage.setItem('correo', this.aFormGroup.get('correo')?.value);
+                    this.closeLoginModal();
                     this.router.navigate(['/two-factor']);
                     this.aFormGroup.reset();
                   }

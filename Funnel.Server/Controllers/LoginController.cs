@@ -60,6 +60,13 @@ namespace Funnel.Server.Controllers
             return Ok(respuesta);
         }
 
+        [HttpPost("ReenviarCodigo/")]
+        public async Task<ActionResult<BaseOut>> ReenviarCodigo(string correo)
+        {
+            var respuesta = await _loginService.ReenviarCodigo(correo);
+            return Ok(respuesta);
+        }
+
         [HttpPost("CambioPassword")]
         public async Task<ActionResult<BaseOut>> CambioPassword([FromForm] UsuarioDto datos)
         {

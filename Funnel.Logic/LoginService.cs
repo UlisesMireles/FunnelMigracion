@@ -189,7 +189,9 @@ namespace Funnel.Logic
             return await _loginData.GuardarImagen(idUsuario, nombreArchivo);
         }
 
-
-
+        public async Task<BaseOut> ReenviarCodigo(string correo)
+        {
+            return await _loginData.ReenviarCodigo(correo);
+        }
     }
 }

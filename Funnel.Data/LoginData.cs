@@ -195,6 +195,7 @@ namespace Funnel.Data
             {
                 IList<ParameterSQl> list = new List<ParameterSQl>
                 {
+                    DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 100, ParameterDirection.Input, false, null, DataRowVersion.Default, "INSERTAR"),
                     DataBase.CreateParameterSql("@pNombre", SqlDbType.VarChar, 100, ParameterDirection.Input, false, null, DataRowVersion.Default, datos.Nombre),
                     DataBase.CreateParameterSql("@pApellidos", SqlDbType.VarChar, 200, ParameterDirection.Input, false, null, DataRowVersion.Default, datos.Apellido),
                     DataBase.CreateParameterSql("@pCorreo", SqlDbType.VarChar, 500, ParameterDirection.Input, false, null, DataRowVersion.Default, datos.Correo),
@@ -210,6 +211,40 @@ namespace Funnel.Data
                     while (reader.Read())
                     {
 
+                    }
+                }
+                result.ErrorMessage = "";
+                result.Id = 1;
+                result.Result = true;
+
+            }
+            catch (Exception ex)
+            {
+                result.ErrorMessage = "Error al guardar la solicitud de usuario: " + ex.Message;
+                result.Id = 0;
+                result.Result = false;
+            }
+            return result;
+        }
+
+        public async Task<BaseOut> ReenviarCodigo(string correo)
+        {
+            BaseOut result = new BaseOut();
+            try
+            {
+                IList<ParameterSQl> list = new List<ParameterSQl>
+                {
+                    DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 100, ParameterDirection.Input, false, null, DataRowVersion.Default, "REENVIAR-CODIGO"),
+                    DataBase.CreateParameterSql("@pCorreo", SqlDbType.VarChar, 500, ParameterDirection.Input, false, null, DataRowVersion.Default, correo),
+                };
+
+                using (IDataReader reader = await DataBase.GetReaderSql("F_SolicitudesUsuarios", CommandType.StoredProcedure, list, _connectionString))
+                {
+                    while (reader.Read())
+                    {
+                        result.ErrorMessage = ComprobarNulos.CheckStringNull(reader["Error"]);
+                        result.Result = ComprobarNulos.CheckBooleanNull(reader["Result"]);
+          
                     }
                 }
                 result.ErrorMessage = "";

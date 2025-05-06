@@ -63,7 +63,7 @@ export class DobleAutenticacionComponent {
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   }
   enviarCorreoTwoFactor() {
-    this.authService.reenviarTwoFactor(this.datosUsuario.usuario, this.datosUsuario.password).subscribe({
+    this.authService.postReenviarCodigo(this.usuario).subscribe({
       next: () => {
         this.startTimer();
         this.messageService.add({
@@ -112,7 +112,6 @@ export class DobleAutenticacionComponent {
       return;
     }
     let TwoFactor: DobleAutenticacion = { codigo: this.twoFactorForm.get('codigo')?.value, usuario: this.usuario };
-    console.log(TwoFactor);
     this.authenticationService.DobleAutenticacion(TwoFactor).subscribe({
       next: (data) => {
         if (data.tipoMensaje == 1) {

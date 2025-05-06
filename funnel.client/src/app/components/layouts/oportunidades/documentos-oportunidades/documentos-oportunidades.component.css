@@ -373,3 +373,55 @@ input[type="file"] {
   justify-content: center;
 
 }
+
+/* Estilos para el modal maximizado */
+.bodyDialog.maximized .p-dialog {
+  width: 100vw !important;
+  height: 100vh !important;
+  top: 0 !important;
+  left: 0 !important;
+  margin: 0 !important;
+  transform: none !important;
+  max-width: none !important;
+  max-height: none !important;
+  z-index: 9999 !important; /* Mayor que el menú lateral */
+  position: fixed !important;
+}
+
+.bodyDialog.maximized .p-dialog-content {
+  height: calc(100vh - 60px) !important; /* Ajusta según el header */
+  overflow: auto;
+}
+
+/* Asegura que el modal no tenga márgenes ni paddings conflictivos */
+.bodyDialog.maximized .p-dialog .p-dialog-header,
+.bodyDialog.maximized .p-dialog .p-dialog-content {
+  padding: 0 !important;
+  border-radius: 0 !important;
+}
+
+/* Estilos para modal MINIMIZADO (estado normal) */
+.bodyDialog:not(.maximized) .p-dialog {
+  max-height: calc(100vh - 115px) !important;
+  margin-top: 70px;
+  margin-bottom: 45px;
+  width: 68rem;
+  height: auto; /* O el valor por defecto que necesites */
+}
+
+/* Estilos para el contenido cuando está minimizado */
+.bodyDialog:not(.maximized) .p-dialog-content {
+  max-height: calc(100vh - 180px) !important;
+}
+
+.bodyDialog:not(.maximized) .botones-accion {
+  justify-content: flex-start;
+  margin-left: 300px;
+  gap: 10px;
+}
+
+.bodyDialog.maximized .botones-accion {
+  position: fixed !important; 
+  right: 20px;
+  margin-left: 0 !important;
+}

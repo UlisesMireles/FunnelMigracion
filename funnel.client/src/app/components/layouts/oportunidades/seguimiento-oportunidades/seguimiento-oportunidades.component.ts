@@ -21,6 +21,8 @@ export class SeguimientoOportunidadesComponent {
   @Input() title: string = 'Modal';
   @Input() visible: boolean = false;
   @Input() insertar: boolean = false;
+
+  maximized: boolean = false;
   request!: RequestOportunidad;
 
   oportunidadForm!: FormGroup;
@@ -76,6 +78,7 @@ export class SeguimientoOportunidadesComponent {
   }
 
   onDialogShow() {
+    this.maximized = false;
     this.cdr.detectChanges();
     this.inicializarFormulario();
 
@@ -171,6 +174,11 @@ export class SeguimientoOportunidadesComponent {
       },
     });
 
+  }
+
+  toggleMaximize() {
+    this.maximized = !this.maximized;
+    this.cdr.detectChanges();
   }
 
 }

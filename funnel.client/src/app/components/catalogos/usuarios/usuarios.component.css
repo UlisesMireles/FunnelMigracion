@@ -312,3 +312,13 @@ th.sort-active p-sortIcon {
               0 0.5px 0 currentColor,
               0 -0.5px 0 currentColor;
 }
+
+.toggle-password {
+  cursor: pointer;
+  background-color: white;
+  border-left: none !important;
+}
+
+.toggle-password:hover {
+  background-color: #f5f5f5;
+}

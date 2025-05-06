@@ -96,8 +96,15 @@ namespace Funnel.Server.Controllers
                 }
                 else
                 {
-                    var respuestaPassword = await _loginService.CambioPassword(datos);
-                    return Ok(respuestaPassword);
+                    if (datos.Password == "" || datos.Password is null)
+                    {
+                        var respuestaPassword = await _loginService.GuardarImagen(datos.IdUsuario, datos.ArchivoImagen);
+                        return Ok(respuestaPassword);
+                    }
+                    else
+                    {
+                        return Ok(await _loginService.CambioPassword(datos));
+                    }
                 }
             }
             else

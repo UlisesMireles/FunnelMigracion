@@ -33,6 +33,7 @@ export class DocumentosOportunidadesComponent {
     isDescargando = false;
     anchoTabla = 100;
     validacionActiva = false;
+    maximized: boolean = false;
   
     historialOportunidad: Archivos[] = [];
     archivosSeleccionados: File[] = [];
@@ -62,6 +63,7 @@ export class DocumentosOportunidadesComponent {
       }
   
       onDialogShow() {
+        this.maximized = false;
         this.cdr.detectChanges();
         this.inicializarFormulario(); 
         
@@ -362,5 +364,10 @@ export class DocumentosOportunidadesComponent {
           return this.estaEliminado(item) 
             ? `Recuperar archivo (eliminación definitiva en ${item.diasParaEliminacion} días)`
             : 'Eliminar archivo';
+        }
+
+        toggleMaximize() {
+          this.maximized = !this.maximized;
+          this.cdr.detectChanges();
         }
 }

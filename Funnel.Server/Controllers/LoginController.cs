@@ -21,7 +21,11 @@ namespace Funnel.Server.Controllers
         {
             var respuesta = await _loginService.Autenticar(usr.Usuario, usr.Password);
             if (respuesta.IdUsuario > 0)
+            {
                 HttpContext.Session.SetString("User", usr.Usuario);
+                if(respuesta.Result == true && respuesta.IdEmpresa != null)                
+                    await _loginService.RegistrarIngresoUsuario(respuesta.IdUsuario, (int)respuesta.IdEmpresa);
+            }
             return Ok(respuesta);
         }
 
@@ -92,8 +96,15 @@ namespace Funnel.Server.Controllers
                 }
                 else
                 {
-                    var respuestaPassword = await _loginService.CambioPassword(datos);
-                    return Ok(respuestaPassword);
+                    if (datos.Password == "" || datos.Password is null)
+                    {
+                        var respuestaPassword = await _loginService.GuardarImagen(datos.IdUsuario, datos.ArchivoImagen);
+                        return Ok(respuestaPassword);
+                    }
+                    else
+                    {
+                        return Ok(await _loginService.CambioPassword(datos));
+                    }
                 }
             }
             else

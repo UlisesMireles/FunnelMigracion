@@ -36,10 +36,19 @@
                 <div class="col-sm-4 lbl">
                     <label for="txtContrasena" class="control-label">Cambiar Contraseña *</label>
                 </div>
-                <div class="col-sm-8 inptSpace">
-                    <input type="password" id="txtContrasena" formControlName="contrasena"
-                        [ngClass]="{'is-invalid': formCambiarPassword.get('contrasena')?.invalid && formCambiarPassword.get('contrasena')?.touched}"
-                        class="form-control register-input" maxlength="100" autocomplete="new-password" />
+                <div class="col-sm-8 inptSpace row">
+                    <div class="col-11" style="padding-right: 0px;">
+                        <input [type]="showPassword ? 'text' : 'password'" id="txtContrasena"
+                            formControlName="contrasena"
+                            [ngClass]="{'is-invalid': formCambiarPassword.get('contrasena')?.invalid && formCambiarPassword.get('contrasena')?.touched}"
+                            class="form-control register-input" maxlength="100" autocomplete="new-password" />
+                    </div>
+                    <div class="col-1" style="padding-right: 0px; padding-left: 0px;">
+                        <span class="input-group-text toggle-password" (click)="togglePasswordVisibility()"
+                            style="width: fit-content;">
+                            <i class="bi" [class.bi-eye-slash]="!showPassword" [class.bi-eye]="showPassword"></i>
+                        </span>
+                    </div>
                     <span
                         *ngIf="formCambiarPassword.get('contrasena')?.invalid && formCambiarPassword.get('contrasena')?.touched"
                         class="text-danger">
@@ -48,20 +57,31 @@
                         </ng-container>
                         <ng-container *ngIf="formCambiarPassword.errors?.['contrasenaEsRequerida']">
                             La contraseña es obligatoria si no se ha seleccionado una foto.
-                          </ng-container>
+                        </ng-container>
                     </span>
                 </div>
+
             </div>
             <div class="row inptSpace">
                 <div class="col-sm-4 lbl">
-                    <label for="txtContrasenaConfirm" class="control-label">Confirmar Contraseña*</label>
+                    <label for="txtContrasenaConfirm" class="control-label" (input)="contrasenasIgualesValidator(formCambiarPassword)">Confirmar Contraseña*</label>
                 </div>
-                <div class="col-sm-8 inptSpace">
-                    <input type="password" id="txtContrasenaConfirm" formControlName="contrasenaConfirm" [ngClass]="{'is-invalid': (formCambiarPassword.get('contrasenaConfirm')?.invalid && formCambiarPassword.get('contrasenaConfirm')?.touched)
-                            ||
-                            (formCambiarPassword.errors?.['contrasenasNoCoinciden'] && 
-                            formCambiarPassword.get('contrasenaConfirm')?.touched)
-                        }" class="form-control register-input" maxlength="100" />
+                <div class="col-sm-8 inptSpace row">
+                    <div class="col-11" style="padding-right: 0px;">
+                        <input [type]="showPasswordConfirm ? 'text' : 'password'" id="txtContrasenaConfirm"
+                            formControlName="contrasenaConfirm" [ngClass]="{'is-invalid': (formCambiarPassword.get('contrasenaConfirm')?.invalid && formCambiarPassword.get('contrasenaConfirm')?.touched)
+                        ||
+                        (formCambiarPassword.errors?.['contrasenasNoCoinciden'] && 
+                        formCambiarPassword.get('contrasenaConfirm')?.touched)
+                    }" class="form-control register-input" maxlength="100" />
+                    </div>
+                    <div class="col-1" style="padding-right: 0px; padding-left: 0px;">
+                        <span class="input-group-text toggle-password" (click)="togglePasswordVisibilityConfirm()"
+                            style="width: fit-content;">
+                            <i class="bi" [class.bi-eye-slash]="!showPasswordConfirm" [class.bi-eye]="showPasswordConfirm"></i>
+                        </span>
+                    </div>
+
                     <span
                         *ngIf="formCambiarPassword.get('contrasenaConfirm')?.invalid && formCambiarPassword.get('contrasenaConfirm')?.touched"
                         class="text-danger">
@@ -69,8 +89,7 @@
                             Es necesario que confirmes tu contraseña.
                         </ng-container>
                     </span>
-                    <span *ngIf="formCambiarPassword.errors?.['contrasenasNoCoinciden'] &&
-             formCambiarPassword.get('contrasenaConfirm')?.touched" class="text-danger">
+                    <span *ngIf="contrasenaNoCoinciden" class="text-danger">
                         Las contraseñas no coinciden.
                     </span>
                 </div>
@@ -102,15 +121,13 @@
                 </div>
             </div>
         </div>
-        <div *ngIf="formCambiarPassword.errors?.['alMenosUnoDebeLlenarse']" class="text-danger">
-            Debes seleccionar al menos una opción: cambiar contraseña o subir una foto de perfil.
-        </div>
     </div>
 </div>
 
 <div class="cambiar-password-footer">
     <div class="contenido col-12" style="text-align: right;">
-        <button pButton label="Guardar" severity="secondary" (click)="guardar()" style="margin-right: 10px;"></button>
+        <button pButton label="Guardar" severity="secondary" (click)="guardar()" style="margin-right: 10px;"
+        [disabled]="!validarGuardar || formCambiarPassword.invalid"></button>
         <button pButton label="Salir" severity="secondary" (click)="cancelar()"></button>
     </div>
 </div>

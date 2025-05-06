@@ -7,6 +7,7 @@ import { LoginService } from '../../services/login.service';
 import { SideNavService } from '../../services/sidenav.service';
 import { ModalService } from '../../services/modal-perfil.service';
 import { Subscription } from 'rxjs';
+import { ImagenActualizadaService } from '../../services/imagen-actualizada.service';
 @Component({
   selector: 'app-usuario-perfil',
   standalone: false,
@@ -16,7 +17,11 @@ import { Subscription } from 'rxjs';
 
 
 export class UsuarioPerfilComponent implements OnInit, OnDestroy {
-  constructor(private readonly router: Router, private readonly breakpointObserver: BreakpointObserver, private readonly authService: LoginService, public sideNavService: SideNavService, private modalService: ModalService) {
+  constructor(private readonly router: Router, private readonly breakpointObserver: BreakpointObserver, 
+              private readonly authService: LoginService, 
+              public sideNavService: SideNavService, 
+              private modalService: ModalService,
+              private imagenActualizada: ImagenActualizadaService) {
 
   }
   @Input() visible: boolean = false;
@@ -39,22 +44,34 @@ export class UsuarioPerfilComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
     this.breakpointObserver
       .observe(['(max-width: 991.98px)'])
       .subscribe((result: any) => {
         this.isMobile = result.matches;
       });
+
+      this.imagenActualizada.actualizarImagenPerfil(localStorage.getItem('imagenPerfil')!);
+
+      this.imagenActualizada.imagenPerfil$.subscribe(nombreImagen => {
+        if (nombreImagen) {
+          this.rutaImgen = this.baseUrl + '/Fotografia/' + nombreImagen;
+        }
+        else {
+          this.rutaImgen = this.rutaImgenDefault;
+        }
+    });
     if (this.authService.currentUser) {
       this.nombreUsuario = localStorage.getItem('username')!;
       this.nombre = localStorage.getItem('nombre')!;
       this.rol = localStorage.getItem('tipoUsuario')!;
-      let nombreImagen = localStorage.getItem('imagenPerfil')!;
-      if(nombreImagen !== null || nombreImagen !== ''){
-        this.rutaImgen = this.rutaImgen + nombreImagen;
-      }
-      else {
-        this.rutaImgen = this.rutaImgenDefault;
-      }
+      //let nombreImagen = localStorage.getItem('imagenPerfil')!;
+      // if(nombreImagen !== null || nombreImagen !== ''){
+      //   this.rutaImgen = this.rutaImgen + nombreImagen;
+      // }
+      // else {
+      //   this.rutaImgen = this.rutaImgenDefault;
+      // }
       
       if (this.rol == "Tenant") {
         this.tipoUsuario = "Usuario Master";
@@ -70,7 +87,6 @@ export class UsuarioPerfilComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // Desuscribirnos para evitar fugas de memoria
     if (this.modalSubscription) {
       this.modalSubscription.unsubscribe();
     }
@@ -80,12 +96,12 @@ export class UsuarioPerfilComponent implements OnInit, OnDestroy {
   onDocumentClick(event: MouseEvent) {
     const modalElement = document.getElementById('modalPerfil');
     if (this.visible && modalElement && !modalElement.contains(event.target as Node)) {
-      this.modalService.closeModal(); // Cerrar la modal si el clic es fuera de ella
+      this.modalService.closeModal(); 
     }
   }
 
   onModalClick(event: MouseEvent) {
-    event.stopPropagation(); // Evita que el clic se propague y cierre la modal
+    event.stopPropagation(); 
   }
 
   logout() {

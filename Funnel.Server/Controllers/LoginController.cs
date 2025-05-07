@@ -94,6 +94,10 @@ namespace Funnel.Server.Controllers
                 {
                     return Ok(respuestaImagen);
                 }
+                else
+                {
+                    return Ok(await _loginService.CambioPassword(datos));
+                }
             }
             else
             {

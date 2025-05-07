@@ -15,6 +15,7 @@ namespace Funnel.Data.Interfaces
         public Task<BaseOut> GuardarImagen(int idUsuario, string nombreArchivo);
         public Task<BaseOut> CambioPassword(string bandera, string Nombre, string ApellidoPaterno, string ApellidoMaterno,
             string Usuario, string Inicales, string CorreoElectronico, int IdTipoUsuario, int IdUsuario, int Estatus, string password, int idEmpresa);
+        public Task<BaseOut> RegistrarIngresoUsuario(int IdUsuario, int IdEmpresa);
 
     }
 }

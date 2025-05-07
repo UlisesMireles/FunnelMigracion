@@ -12,5 +12,6 @@ namespace Funnel.Logic.Interfaces
         public Task<BaseOut> CambioPassword(UsuarioDto datos);
         public Task<BaseOut> GuardarImagen(int idUsuario, string nombreArchivo);
         public Task<BaseOut> ReenviarCodigo(string correo);
+        public Task<BaseOut> RegistrarIngresoUsuario(int IdUsuario, int IdEmpresa);
     }
 }

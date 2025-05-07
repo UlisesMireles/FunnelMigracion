@@ -9,6 +9,7 @@ import { LoginService } from '../../../services/login.service';
 import { MessageService } from 'primeng/api';
 import { SolicitudRegistroSistema } from '../../../interfaces/solicitud-registro';
 import { baseOut } from '../../../interfaces/utils/utils/baseOut';
+import { ModalService } from '../../../services/modal-perfil.service';
 
 @Component({
   selector: 'app-login',
@@ -46,7 +47,9 @@ export class LoginComponent implements OnInit {
     recaptcha: ''
   };
 
-  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private authService: LoginService, private sanitizer: DomSanitizer, private snackBar: MatSnackBar, private messageService: MessageService) {}
+  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private authService: LoginService, private sanitizer: DomSanitizer, private snackBar: MatSnackBar, private messageService: MessageService,
+              private modalService: ModalService
+  ) {}
 
   ngOnInit() {
     this.backgroundImg = this.sanitizer.bypassSecurityTrustStyle('url(' + this.baseUrl + '/assets/img/PMAGRISES.png' + ')');
@@ -137,6 +140,7 @@ export class LoginComponent implements OnInit {
           //   this.router.navigate(['/two-factor']);
           // } else {
             this.closeLoginModal();
+            this.modalService.closeModal(); 
             this.router.navigate(['/oportunidades']);
           // }
         } else {

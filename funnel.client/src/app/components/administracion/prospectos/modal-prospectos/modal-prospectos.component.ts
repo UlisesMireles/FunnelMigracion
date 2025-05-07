@@ -50,9 +50,9 @@ export class ModalProspectosComponent {
     porcEfectividad: 0
   };
 
-  // ngOnInit() {
-  //   this.inicializarFormulario
-  // }
+  ngOnInit() {
+    this.inicializarFormulario()
+  }
   // ngOnChanges(changes: SimpleChanges) {
   //   if (changes['prospecto'] && this.prospecto) {
   //     this.inicializarFormulario();
@@ -110,20 +110,20 @@ export class ModalProspectosComponent {
     }else{
       this.informacionProspecto = this.prospecto;
       this.prospectoForm = this.fb.group({
-        idProspecto: [this.prospecto.idProspecto],
-        nombre: [this.prospecto.nombre, [
+        idProspecto: [this.prospecto?.idProspecto],
+        nombre: [this.prospecto?.nombre, [
             Validators.required,
             Validators.maxLength(50),
             // Validators.pattern('^[a-zA-ZÀ-ÿ\\s]+$')
           ]
         ],
-        ubicacionFisica: [this.prospecto.ubicacionFisica, [
+        ubicacionFisica: [this.prospecto?.ubicacionFisica, [
             Validators.required,
             Validators.maxLength(50),
             Validators.pattern('^[a-zA-ZÀ-ÿ\\s]+$')
           ]
         ],
-        idSector: [this.prospecto.idSector, Validators.required],
+        idSector: [this.prospecto?.idSector, Validators.required],
         estatus: [this.prospecto?.estatus === 1 ? true : false],
         idEmpresa: [idEmpresa],
         bandera: ['UPDATE']

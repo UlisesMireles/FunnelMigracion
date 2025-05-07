@@ -23,8 +23,8 @@
           <!-- Encabezado con el nombre del menú como título -->
           <!-- <li class="submenu-header">{{ item.pagina }}</li> -->
 
-          <li *ngFor="let subItem of item.subMenu" class="submenu-item">
-            <a [routerLink]="subItem.ruta">{{ subItem.pagina }}</a>
+          <li *ngFor="let subItem of item.subMenu" class="submenu-item" [routerLink]="subItem.ruta">
+            <a>{{ subItem.pagina }}</a>
 
             <!-- 🟠 Icono y tooltip si hasIcon es true -->
             <span *ngIf="subItem.hasIcon" class="icono-naranja">

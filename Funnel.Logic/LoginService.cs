@@ -169,6 +169,9 @@ namespace Funnel.Logic
         public async Task<BaseOut> ReenviarCodigo(string correo)
         {
             return await _loginData.ReenviarCodigo(correo);
+        public async Task<BaseOut> RegistrarIngresoUsuario(int IdUsuario, int IdEmpresa)
+        {
+            return await _loginData.RegistrarIngresoUsuario(IdUsuario, IdEmpresa);
         }
     }
 }

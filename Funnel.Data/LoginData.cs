@@ -1,4 +1,5 @@
-﻿using Funnel.Data.Interfaces;
+﻿using Azure.Core;
+using Funnel.Data.Interfaces;
 using Funnel.Data.Utils;
 using Funnel.Models.Base;
 using Funnel.Models.Dto;
@@ -329,6 +330,34 @@ namespace Funnel.Data
             catch (Exception ex)
             {
                 result.ErrorMessage = "Ha ocurrido un error al actualizar la contraseña. " + ex.Message;
+                result.Id = 0;
+                result.Result = false;
+            }
+            return result;
+        }
+
+        public async Task<BaseOut> RegistrarIngresoUsuario(int IdUsuario, int IdEmpresa)
+        {
+            BaseOut result = new BaseOut();
+            try
+            {
+                IList<ParameterSQl> list = new List<ParameterSQl>
+                {
+                    DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "INSERT" ),
+                    DataBase.CreateParameterSql("@pIdUsuario", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, IdUsuario ),
+                    DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, IdEmpresa ),
+                };
+
+                // Ejecutar el SP sin leer datos
+                using (IDataReader reader = await DataBase.GetReaderSql("F_IngresosFunnel", CommandType.StoredProcedure, list, _connectionString))
+                result.ErrorMessage = "Prospecto insertado correctamente.";
+                result.Id = 1;
+                result.Result = true;
+
+            }
+            catch (Exception ex)
+            {
+                result.ErrorMessage = "Error al registrar ingreso de usuario: " + ex.Message;
                 result.Id = 0;
                 result.Result = false;
             }

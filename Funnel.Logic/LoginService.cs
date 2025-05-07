@@ -33,7 +33,7 @@ namespace Funnel.Logic
 
                 if (consultaCorreo != null)
                 {
-                  /*  string cuerpoCorreoAdmin = $@"
+                    string cuerpoCorreoAdmin = $@"
                     <div style='font-family: Arial, sans-serif; padding: 20px;'>
                         <div style='max-width: 600px; margin: auto; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); padding: 20px;'>
                             <p>Estimado/a <strong>{consultaCorreo.Nombre}</strong>,</p>
@@ -53,7 +53,7 @@ namespace Funnel.Logic
                         </div>
                     </div>";
 
-                    _correo.EnviarCorreo(consultaCorreo.Correo, "Nueva Solicitud de Registro a Sales Funnel System", cuerpoCorreoAdmin);*/
+                    _correo.EnviarCorreo(consultaCorreo.Correo, "Nueva Solicitud de Registro a Sales Funnel System", cuerpoCorreoAdmin);
 
                     string cuerpoCorreoUsuario = $@"
                     <div style='font-family: Arial, sans-serif; padding: 20px;'>

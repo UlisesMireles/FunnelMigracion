@@ -115,9 +115,15 @@ export class DobleAutenticacionComponent {
     this.authenticationService.DobleAutenticacion(TwoFactor).subscribe({
       next: (data) => {
         if (data.tipoMensaje == 1) {
-          this.router.navigate(['/login']);
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Éxito',
+            detail: 'Tu solicitud de registro ha sido enviada. Será respondida en un máximo de 24 horas.',
+          });
+          setTimeout(() => {
+            this.router.navigate(['/login']);
+          }, 2000);
         } else {
-          console.log(data);
           this.messageService.add({
             severity: 'error',
             summary: 'Error',

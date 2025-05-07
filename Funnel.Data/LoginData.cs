@@ -217,13 +217,11 @@ namespace Funnel.Data
                 {
                     while (reader.Read())
                     {
+                        result.ErrorMessage = ComprobarNulos.CheckStringNull(reader["Error"]);
+                        result.Result = ComprobarNulos.CheckBooleanNull(reader["Result"]);
 
                     }
                 }
-                result.ErrorMessage = "";
-                result.Id = 1;
-                result.Result = true;
-
             }
             catch (Exception ex)
             {
@@ -251,7 +249,7 @@ namespace Funnel.Data
                     {
                         result.ErrorMessage = ComprobarNulos.CheckStringNull(reader["Error"]);
                         result.Result = ComprobarNulos.CheckBooleanNull(reader["Result"]);
-          
+
                     }
                 }
                 result.ErrorMessage = "";

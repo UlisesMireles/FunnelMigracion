@@ -199,7 +199,7 @@ export class LoginComponent implements OnInit {
       };
       this.authService.postSolicitudRegistro(this.informacionRegistro).subscribe({
                 next: (result: baseOut) => {
-                  if(result.result) {
+                  if(result.result == true) {
                   /*  this.messageService.add({
                       severity: 'success',
                       summary: 'La operación se realizó con éxito.',

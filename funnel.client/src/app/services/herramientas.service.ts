@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { Ingresos } from '../interfaces/ingresos';
+import { EjecucionProcesosReportes } from '../interfaces/ejecucion-procesos-reportes';
 @Injectable({
     providedIn: 'root'
 })
@@ -14,6 +15,18 @@ export class HerramientasService {
     getIngresos(idUsuario: number, idEmpresa: number): Observable<Ingresos[]> {
         return this.http.get<Ingresos[]>(`${this.baseUrl}api/Herramientas/ConsultarIngresos`, {
             params: { idUsuario: idUsuario, idEmpresa: idEmpresa.toString() }
+        });
+    }
+
+    getCorreosUsuariosActivos(idEmpresa: number): Observable<any>{
+        return this.http.get(`${this.baseUrl}api/Herramientas/ConsultarComboCorreosUsuariosActivos`, {
+          params: { idEmpresa: idEmpresa.toString() }
+        });
+      }
+
+    getEjecucionProcesos(idEmpresa: number): Observable<EjecucionProcesosReportes[]> {
+        return this.http.get<EjecucionProcesosReportes[]>(`${this.baseUrl}api/Herramientas/ConsultarEjecucionProcesosPorEmpresa`, {
+            params: { idEmpresa: idEmpresa }
         });
     }
 

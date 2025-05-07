@@ -1,5 +1,7 @@
 ﻿using DinkToPdf.Contracts;
+using Funnel.Logic;
 using Funnel.Logic.Interfaces;
+using Funnel.Models.Base;
 using Funnel.Models.Dto;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -23,6 +25,34 @@ namespace Funnel.Server.Controllers
         public async Task<ActionResult<List<ProspectoDTO>>> ConsultarIngresos(int IdUsuario, int IdEmpresa)
         {
             var respuesta = await _herramientasService.ConsultarIngresos(IdUsuario,IdEmpresa);
+            return Ok(respuesta);
+        }
+
+        [HttpGet("[action]/")]
+        public async Task<ActionResult<List<ComboCorreosUsuariosDTO>>> ConsultarComboCorreosUsuariosActivos(int IdEmpresa)
+        {
+            var respuesta = await _herramientasService.ComboCorreosUsuariosActivos(IdEmpresa);
+            return Ok(respuesta);
+        }
+
+        [HttpGet("[action]/")]
+        public async Task<ActionResult<List<EjecucionProcesosReportesDTO>>> ConsultarEjecucionProcesosPorEmpresa(int IdEmpresa)
+        {
+            var respuesta = await _herramientasService.ConsultarEjecucionProcesosPorEmpresa(IdEmpresa);
+            return Ok(respuesta);
+        }
+
+        [HttpPost("[action]/")]
+        public async Task<ActionResult<BaseOut>> EnvioCorreosReporteSeguimiento([FromBody]List<string> correos, int IdEmpresa, int IdReporte)
+        {
+            var respuesta = await _herramientasService.EnvioCorreosReporteSeguimiento(IdEmpresa, IdReporte, correos);
+            return Ok(respuesta);
+        }
+
+        [HttpPost("[action]/")]
+        public async Task<ActionResult<BaseOut>> GuardarDiasReportesEstatus([FromBody]EjecucionProcesosReportesDTO request, bool estatus)
+        {
+            var respuesta = await _herramientasService.GuardarDiasReportesEstatus(request, estatus);
             return Ok(respuesta);
         }
 

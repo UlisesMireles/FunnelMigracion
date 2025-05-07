@@ -1,6 +1,8 @@
-﻿using DinkToPdf;
+﻿using Azure.Core;
+using DinkToPdf;
 using Funnel.Data.Interfaces;
 using Funnel.Logic.Interfaces;
+using Funnel.Models.Base;
 using Funnel.Models.Dto;
 using System;
 using System.Collections.Generic;
@@ -46,7 +48,7 @@ namespace Funnel.Logic
             //Titulos Columnas
             foreach (var columna in nombresColumnas)
             {
-                if(columna == "Fecha de Ingreso")
+                if (columna == "Fecha de Ingreso")
                     sb.Append("<th style=\"text-align: center;\">" + columna + "</th>");
                 else
                     sb.Append("<th>" + columna + "</th>");
@@ -101,6 +103,42 @@ namespace Funnel.Logic
             };
 
             return doc;
+        }
+
+        public async Task<List<ComboCorreosUsuariosDTO>> ComboCorreosUsuariosActivos(int IdEmpresa)
+        {
+            return await _herramientasData.ComboCorreosUsuariosActivos(IdEmpresa);
+        }
+
+        public async Task<List<EjecucionProcesosReportesDTO>> ConsultarEjecucionProcesosPorEmpresa(int IdEmpresa)
+        {
+            return await _herramientasData.ConsultarEjecucionProcesosPorEmpresa(IdEmpresa);
+        }
+
+        public async Task<BaseOut> EnvioCorreosReporteSeguimiento(int IdEmpresa, int IdReporte, List<string> Correos)
+        {
+            BaseOut result = new BaseOut();
+            if (Correos.Count > 0)
+            {
+                string correos = String.Join(",", Correos);
+                return await _herramientasData.EnvioCorreosReporteSeguimiento(IdEmpresa, IdReporte, correos);
+            }
+            result.ErrorMessage = "Error al enviar correos: No se selecciono ningun correo electrónico.";
+            result.Result = false;
+            return result;
+        }
+
+        public async Task<BaseOut> GuardarDiasReportesEstatus(EjecucionProcesosReportesDTO request, bool estatus)
+        {
+            if (estatus)
+            {
+                var listaEjecucionProceso = await _herramientasData.ConsultarEjecucionProcesosPorEmpresa((int)request.IdEmpresa);
+                var ejecucion = listaEjecucionProceso.First(v => v.IdReporte == request.IdReporte);
+                ejecucion.EjecucionJob = request.EjecucionJob;
+                return await _herramientasData.GuardarDiasReportesEstatus(ejecucion, estatus);
+            }
+            else
+                return await _herramientasData.GuardarDiasReportesEstatus(request, estatus);
         }
     }
 }

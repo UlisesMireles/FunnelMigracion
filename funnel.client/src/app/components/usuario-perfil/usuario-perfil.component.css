@@ -279,11 +279,12 @@ ul.subm>li>a {
 @media (min-width: 992px) {
   .user-panel {
       top: 20px;
-      right: 10px;
+      /* right: 10px; */
       width: 280px;
       margin: 12px 3px;
       border-radius: 5px;
       padding: 0;
+      left: 847px;
   }
 
   .user-header {
@@ -359,13 +360,16 @@ ul.subm>li>a {
   }
 }
 
-/* Supongamos que el modal tiene la clase .user-panel-modal */
 .user-panel-modal {
-  position: absolute;
-  /* Ajusta left para que quede justo al lado del menú */
-  left: calc(100% + 10px); /* 10px de separación, ajustar según necesidad */
-  /* Posición vertical: si quieres que se alinee con el primer elemento del menú,
-     puedes obtener el offset-top del primer li o definir un valor fijo */
-  top: 20px; /* Ajusta según la posición del primer elemento */
-  z-index: 1000; /* Asegúrate de que esté por encima de otros elementos */
+  position: fixed;
+  /* left: calc(40% + 10px); */
+  top: 26px;
+  z-index: 1000;
+  left: 40vw;
+}
+
+@media (max-width: 1280px) {
+  .user-panel-modal {
+    left: 10vw !important;
+  }
 }

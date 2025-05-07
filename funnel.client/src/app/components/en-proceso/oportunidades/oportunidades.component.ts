@@ -9,6 +9,8 @@ import { Oportunidad } from '../../../interfaces/oportunidades';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ColumnasDisponiblesComponent } from '../../utils/tablas/columnas-disponibles/columnas-disponibles.component';
 import { sumBy, map as mapping, omit, sortBy, groupBy, keys as getKeys } from "lodash-es";
+import { Subscription } from 'rxjs';
+import { ModalOportunidadesService } from '../../../services/modalOportunidades.service';
 
 @Component({
   selector: 'app-oportunidades',
@@ -36,7 +38,7 @@ export class OportunidadesComponent {
   modalVisible: boolean = false;
   modalSeguimientoVisible: boolean = false;
   modalDocumentosVisible: boolean = false;
-
+  private modalSubscription!: Subscription;
 
   loading: boolean = true;
 
@@ -73,13 +75,23 @@ export class OportunidadesComponent {
   columnsTodasResp: string = JSON.stringify(this.lsTodasColumnas);
 
   constructor(private oportunidadService: OportunidadesService, private messageService: MessageService, private cdr: ChangeDetectorRef,
-    private readonly loginService: LoginService, public dialog: MatDialog
+    private readonly loginService: LoginService, public dialog: MatDialog, private modalOportunidadesService: ModalOportunidadesService
   ) { }
 
   ngOnInit(): void {
     this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
     this.getOportunidades();
     document.documentElement.style.fontSize = 12 + 'px';
+    this.modalSubscription = this.modalOportunidadesService.modalState$.subscribe((state) => {
+      this.modalVisible = state.showModal;
+      this.insertar = state.insertar;
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.modalSubscription) {
+      this.modalSubscription.unsubscribe();  // Desuscribimos al destruir el componente
+    }
   }
 
   getOportunidades() {
@@ -107,6 +119,7 @@ export class OportunidadesComponent {
   }
 
   inserta() {
+    this.modalOportunidadesService.openModal(true);
     this.oportunidadSeleccionada = {
 
     };
@@ -121,6 +134,7 @@ export class OportunidadesComponent {
   }
 
   actualiza(licencia: Oportunidad) {
+    this.modalOportunidadesService.openModal(false);
     this.oportunidadSeleccionada = licencia;
     this.oportunidadEdicion = { ...licencia };
     this.insertar = false;
@@ -136,6 +150,7 @@ export class OportunidadesComponent {
   onModalClose() {
     this.modalVisible = false;
     this.oportunidadEdicion = null;
+    this.modalOportunidadesService.closeModal();
   }
 
   manejarResultado(result: baseOut) {

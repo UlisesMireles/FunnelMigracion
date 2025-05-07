@@ -1,20 +1,39 @@
 <header class="page-header font-small blue" id="header">
-  <div class="navbar">
-    <div class="logo-container">
-      <img width="50" [src]="baseUrl + '/assets/img/SFS blanco.png'" alt="logo SFS">
+  <div class="navbar col-12">
+    <!-- Perfil (el primero de derecha a izquierda) -->
+    <div class="col-3 perfil" style="justify-content: end;">
+      <button class="menu-item-perfil" (click)="navigateTo('/perfil')">
+        <i class="bi bi-person-circle large-icon" [title]="'Perfil'"></i>
+        <span class="spanNombre">{{ nombreUsuario }}</span>
+      </button>
     </div>
 
-    <!-- Botón de chat en el header (conservando los mismos estilos) -->
-    <button class="btn-chat" (click)="toggleChat()">
-      <i class="bi bi-chat-dots-fill"></i> 
-    </button>
-    
-    <!-- Contenedor del chatbot -->
-    <ng-container *ngIf="enableAsistenteOperacion">
-      <div id="chat-container" class="chatbot-window">
-        <app-asistente-operacion></app-asistente-operacion>
+    <div class="col-3 chatbot">
+      <button class="btn-chat" (click)="toggleChat()">
+        <i class="bi bi-chat-dots-fill"></i>
+      </button>
+      <ng-container *ngIf="enableAsistenteOperacion">
+        <div id="chat-container" class="chatbot-window">
+          <app-asistente-operacion></app-asistente-operacion>
+        </div>
+      </ng-container>
+    </div>
+
+    <!-- Botón Agregar (el tercero de derecha a izquierda) -->
+    <div class="col-3 agregar">
+      <button class="btnAgregar float-end" (click)="toggleOptions()">Agregar</button>
+      <div *ngIf="optionsVisible" class="options-container">
+        <button class="option-btn" (click)="agregarOportunidad()">Oportunidad</button>
+        <button class="option-btn" (click)="agregarProspecto()">Prospecto</button>
+        <button class="option-btn" (click)="agregarContacto()">Contacto</button>
       </div>
-    </ng-container>
+    </div>
+
+    <!-- Logo (el último de derecha a izquierda) -->
+    <div class="col-3 logo-container" style="left: 334px;">
+      <img width="50" [src]="baseUrl + '/assets/img/SFS blanco.png'" alt="logo SFS">
+      <span class="spanNombre">{{ licencia }}</span>
+    </div>
   </div>
 </header>
 

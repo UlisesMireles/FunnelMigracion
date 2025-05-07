@@ -43,6 +43,7 @@ namespace Funnel.Data
                         usuario.ArchivoImagen = ComprobarNulos.CheckStringNull(reader["ArchivoImagen"]);
                         usuario.ErrorMessage = ComprobarNulos.CheckStringNull(reader["Error"]);
                         usuario.Result = ComprobarNulos.CheckBooleanNull(reader["Result"]);
+                        usuario.Licencia = ComprobarNulos.CheckStringNull(reader["Licencia"]);
                     }
                 }
             }

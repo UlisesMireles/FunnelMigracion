@@ -19,7 +19,7 @@ import { ModalOportunidadesService } from '../../../services/modalOportunidades.
   styleUrl: './oportunidades.component.css',
 })
 export class OportunidadesComponent {
-  
+
   @ViewChild('dt') dt!: Table;
 
   disableOportunidades = true;
@@ -83,8 +83,13 @@ export class OportunidadesComponent {
     this.getOportunidades();
     document.documentElement.style.fontSize = 12 + 'px';
     this.modalSubscription = this.modalOportunidadesService.modalState$.subscribe((state) => {
-      this.modalVisible = state.showModal;
-      this.insertar = state.insertar;
+      if (!state.showModal) {
+        this.oportunidadEdicion = null;
+      }
+      //Valida si se emite un result Exitoso desde modal
+      if (state.result.id != -1 && state.result.result) {
+        this.getOportunidades();
+      }
     });
   }
 
@@ -98,10 +103,10 @@ export class OportunidadesComponent {
     this.oportunidadService.getOportunidades(this.loginService.obtenerIdEmpresa(), this.loginService.obtenerIdUsuario(), this.idEstatus).subscribe({
       next: (result: Oportunidad[]) => {
         // Ordenar por fechaEstimadaCierreOriginal (de más reciente a más antigua)
-        const oportunidadesOrdenadas = sortBy(result, (o) => 
+        const oportunidadesOrdenadas = sortBy(result, (o) =>
           o.fechaEstimadaCierreOriginal ? new Date(o.fechaEstimadaCierreOriginal).getTime() : 0
         ).reverse(); // reverse para orden descendente
-  
+
         this.oportunidades = [...oportunidadesOrdenadas];
         this.oportunidadesOriginal = [...oportunidadesOrdenadas];
         this.cdr.detectChanges();
@@ -119,7 +124,7 @@ export class OportunidadesComponent {
   }
 
   inserta() {
-    this.modalOportunidadesService.openModal(true);
+    this.modalOportunidadesService.openModal(true, true, [], {})
     this.oportunidadSeleccionada = {
 
     };
@@ -134,7 +139,7 @@ export class OportunidadesComponent {
   }
 
   actualiza(licencia: Oportunidad) {
-    this.modalOportunidadesService.openModal(false);
+    this.modalOportunidadesService.openModal(true, false, [], licencia);
     this.oportunidadSeleccionada = licencia;
     this.oportunidadEdicion = { ...licencia };
     this.insertar = false;
@@ -418,7 +423,7 @@ export class OportunidadesComponent {
     };
     return etapas[numeroEtapa] || 'Etapa desconocida';
   }
-    
+
 }
 
 

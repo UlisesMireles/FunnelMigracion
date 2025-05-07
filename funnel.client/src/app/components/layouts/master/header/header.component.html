@@ -39,3 +39,18 @@
 
 <!-- Componente de chat -->
 <!-- <app-chat *ngIf="isChatOpen"></app-chat> -->
+
+<!-- Modal de oportunidades -->
+<app-modal-oportunidades [(visible)]="modalVisibleOportunidades" [title]="'Editar Datos de '" (closeModal)="onModalCloseOportunidades()"
+(result)="manejarResultadoOportunidades($event)" [insertar]="insertar" [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">
+</app-modal-oportunidades>
+
+<!-- Modal de prospectos -->
+<app-modal-prospectos [(visible)]="modalVisibleProspectos" [title]="'Editar Datos de '" (closeModal)="onModalCloseProspectos()"
+  (result)="manejarResultadoProspectos($event)" [insertar]="insertar" [prospectos]="prospectos" [prospecto]="prospectoSeleccionado">
+</app-modal-prospectos>
+
+<!-- Modal de contactos -->
+<app-modal-contactos [(visible)]="modalVisibleContactos" [title]="'Editar Datos de '" (closeModal)="onModalCloseContactos()"
+  (result)="manejarResultadoContactos($event)" [insertar]="insertar" [contactos]="contactos" [contacto]="contactoSeleccionado">
+</app-modal-contactos>

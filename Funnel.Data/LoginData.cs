@@ -60,16 +60,23 @@ namespace Funnel.Data
             {
                 IList<Parameter> listaParametros = new List<Parameter>
                 {
-                    DataBase.CreateParameter("@pUsuario", DbType.String, 20, ParameterDirection.Input, false, null, DataRowVersion.Default, usuario.Usuario),
+                    DataBase.CreateParameter("@pCorreo", DbType.String, 200, ParameterDirection.Input, false, null, DataRowVersion.Default, usuario.Usuario),
                     DataBase.CreateParameter("@pCodigo", DbType.String, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, usuario.Codigo),
                 };
-                using (IDataReader reader = await DataBase.GetReader("F_CodigoAutentificacionFunnel", CommandType.StoredProcedure, listaParametros, _connectionString))
+                using (IDataReader reader = await DataBase.GetReader("F_CodigoValidacionCorreoFunnel", CommandType.StoredProcedure, listaParametros, _connectionString))
                 {
                     while (reader.Read())
                     {
                         dobleAutenticacion.Result = ComprobarNulos.CheckBooleanNull(reader["Result"]);
                         dobleAutenticacion.ErrorMessage = ComprobarNulos.CheckStringNull(reader["ErrorMessage"]);
                         dobleAutenticacion.TipoMensaje = ComprobarNulos.CheckIntNull(reader["TipoMensaje"]);
+                        dobleAutenticacion.Nombre = ComprobarNulos.CheckStringNull(reader["Nombre"]);
+                        dobleAutenticacion.Apellidos = ComprobarNulos.CheckStringNull(reader["Apellidos"]);
+                        dobleAutenticacion.Correo = ComprobarNulos.CheckStringNull(reader["Correo"]);
+                        dobleAutenticacion.Telefono = ComprobarNulos.CheckStringNull(reader["Telefono"]);
+                        dobleAutenticacion.Empresa = ComprobarNulos.CheckStringNull(reader["Empresa"]);
+                        dobleAutenticacion.SitioWeb = ComprobarNulos.CheckStringNull(reader["SitioWeb"]);
+                        dobleAutenticacion.NumEmpleados = ComprobarNulos.CheckStringNull(reader["NumEmpleados"]);
                     }
                 }
             }
@@ -196,6 +203,7 @@ namespace Funnel.Data
             {
                 IList<ParameterSQl> list = new List<ParameterSQl>
                 {
+                    DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 100, ParameterDirection.Input, false, null, DataRowVersion.Default, "INSERTAR"),
                     DataBase.CreateParameterSql("@pNombre", SqlDbType.VarChar, 100, ParameterDirection.Input, false, null, DataRowVersion.Default, datos.Nombre),
                     DataBase.CreateParameterSql("@pApellidos", SqlDbType.VarChar, 200, ParameterDirection.Input, false, null, DataRowVersion.Default, datos.Apellido),
                     DataBase.CreateParameterSql("@pCorreo", SqlDbType.VarChar, 500, ParameterDirection.Input, false, null, DataRowVersion.Default, datos.Correo),
@@ -210,6 +218,38 @@ namespace Funnel.Data
                 {
                     while (reader.Read())
                     {
+                        result.ErrorMessage = ComprobarNulos.CheckStringNull(reader["Error"]);
+                        result.Result = ComprobarNulos.CheckBooleanNull(reader["Result"]);
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result.ErrorMessage = "Error al guardar la solicitud de usuario: " + ex.Message;
+                result.Id = 0;
+                result.Result = false;
+            }
+            return result;
+        }
+
+        public async Task<BaseOut> ReenviarCodigo(string correo)
+        {
+            BaseOut result = new BaseOut();
+            try
+            {
+                IList<ParameterSQl> list = new List<ParameterSQl>
+                {
+                    DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 100, ParameterDirection.Input, false, null, DataRowVersion.Default, "REENVIAR-CODIGO"),
+                    DataBase.CreateParameterSql("@pCorreo", SqlDbType.VarChar, 500, ParameterDirection.Input, false, null, DataRowVersion.Default, correo),
+                };
+
+                using (IDataReader reader = await DataBase.GetReaderSql("F_SolicitudesUsuarios", CommandType.StoredProcedure, list, _connectionString))
+                {
+                    while (reader.Read())
+                    {
+                        result.ErrorMessage = ComprobarNulos.CheckStringNull(reader["Error"]);
+                        result.Result = ComprobarNulos.CheckBooleanNull(reader["Result"]);
 
                     }
                 }

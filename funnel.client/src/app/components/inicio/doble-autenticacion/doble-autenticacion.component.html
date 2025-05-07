@@ -10,8 +10,8 @@
     <div class="cuadro">
       <div class="texto-izquierda">
         <i class="bi bi-x-lg float-end" (click)="cerrarModal()" style="cursor:pointer;"></i>
-        <h2>Doble Autenticación</h2>
-        <p>Se te ha enviado un código de autorización a tu correo electrónico. Para acceder, favor de ingresar el código de 6 dígitos.</p>
+        <h2>Validacionn de Correo</h2>
+        <p>Se te ha enviado un código para validar que tu correo electrónico sea real. Por favor ingresar el código de 6 dígitos.</p>
       </div>
       <form [formGroup]="twoFactorForm" class="text-center border border-light formLogin">
         <input type="text" class="codigo-input col-10 large-placeholder" maxlength="6" placeholder="------" formControlName="codigo" autofocus>

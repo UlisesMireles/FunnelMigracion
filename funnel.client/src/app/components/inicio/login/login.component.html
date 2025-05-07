@@ -108,14 +108,11 @@
                                 </span>
                               </div>
                               <div class="col-md-6 mb-2" style="text-align: left;">
-                                <label for="txtSitio" class="control-label">URL del sitio web*</label>
+                                <label for="txtSitio" class="control-label">URL del sitio web</label>
                                 <input type="text" id="txtSitio" formControlName="urlSitio" 
                                 [ngClass]="{'is-invalid': aFormGroup.get('urlSitio')?.invalid && aFormGroup.get('urlSitio')?.touched}"
                                 class="form-control register-input" maxlength="200" />
                                 <span *ngIf="aFormGroup.get('urlSitio')?.invalid && aFormGroup.get('urlSitio')?.touched" class="text-danger">
-                                  <ng-container *ngIf="aFormGroup.get('urlSitio')?.errors?.['required']">
-                                    El sitio web es requerido.
-                                  </ng-container>
                                   <ng-container *ngIf="aFormGroup.get('urlSitio')?.errors?.['pattern']">
                                     Por favor, ingrese una URL válida.
                                   </ng-container>

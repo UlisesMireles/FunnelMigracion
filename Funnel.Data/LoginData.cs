@@ -66,9 +66,16 @@ namespace Funnel.Data
                 {
                     while (reader.Read())
                     {
-                        dobleAutenticacion.Result = ComprobarNulos.CheckBooleanNull(reader["Result"]); 
+                        dobleAutenticacion.Result = ComprobarNulos.CheckBooleanNull(reader["Result"]);
                         dobleAutenticacion.ErrorMessage = ComprobarNulos.CheckStringNull(reader["ErrorMessage"]);
                         dobleAutenticacion.TipoMensaje = ComprobarNulos.CheckIntNull(reader["TipoMensaje"]);
+                        dobleAutenticacion.Nombre = ComprobarNulos.CheckStringNull(reader["Nombre"]);
+                        dobleAutenticacion.Apellidos = ComprobarNulos.CheckStringNull(reader["Apellidos"]);
+                        dobleAutenticacion.Correo = ComprobarNulos.CheckStringNull(reader["Correo"]);
+                        dobleAutenticacion.Telefono = ComprobarNulos.CheckStringNull(reader["Telefono"]);
+                        dobleAutenticacion.Empresa = ComprobarNulos.CheckStringNull(reader["Empresa"]);
+                        dobleAutenticacion.SitioWeb = ComprobarNulos.CheckStringNull(reader["SitioWeb"]);
+                        dobleAutenticacion.NumEmpleados = ComprobarNulos.CheckStringNull(reader["NumEmpleados"]);
                     }
                 }
             }

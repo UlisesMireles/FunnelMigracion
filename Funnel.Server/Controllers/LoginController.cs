@@ -103,21 +103,22 @@ namespace Funnel.Server.Controllers
                 }
                 else
                 {
-                    if (datos.Password == "" || datos.Password is null)
-                    {
-                        var respuestaPassword = await _loginService.GuardarImagen(datos.IdUsuario, datos.ArchivoImagen);
-                        return Ok(respuestaPassword);
-                    }
-                    else
-                    {
-                        return Ok(await _loginService.CambioPassword(datos));
-                    }
+                    return Ok(await _loginService.CambioPassword(datos));
                 }
             }
             else
             {
-                return Ok(await _loginService.CambioPassword(datos));
+                if (datos.Password == "" || datos.Password is null)
+                {
+                    var respuestaPassword = await _loginService.GuardarImagen(datos.IdUsuario, datos.ArchivoImagen);
+                    return Ok(respuestaPassword);
+                }
+                else
+                {
+                    return Ok(await _loginService.CambioPassword(datos));
+                }
             }
+            return Ok(new BaseOut { Result = false, ErrorMessage = "No se pudo realizar la operación." });
         }
     }
 }

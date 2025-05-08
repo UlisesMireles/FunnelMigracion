@@ -92,7 +92,6 @@ export class CambiarContrasenaComponent implements OnInit {
     const imagenPerfil = localStorage.getItem('imagenPerfil');
     if (imagenPerfil) {
       this.fotoSeleccionada = { name: imagenPerfil } as File;
-      console.log('[ngOnInit] Nombre de la foto desde localStorage:', imagenPerfil);
       this.formCambiarPassword.patchValue({ fotoSeleccionada: this.fotoSeleccionada });
     }
       this.valoresIniciales = this.formCambiarPassword.getRawValue();
@@ -114,6 +113,7 @@ export class CambiarContrasenaComponent implements OnInit {
     
       this.formCambiarPassword.updateValueAndValidity({ onlySelf: false, emitEvent: false });
     });
+    
 
   }
 
@@ -167,15 +167,13 @@ export class CambiarContrasenaComponent implements OnInit {
       this.validarGuardar = true;
     }
   }
+  
 
   removerFoto() {
     this.fotoSeleccionada = null;
     this.formCambiarPassword.get('fotoSeleccionada')?.setValue(null);
     this.validarGuardar = true;
-  
-    /*localStorage.removeItem('imagenPerfil');
-  
-    this.fotoSeleccionadaOriginal = null;*/
+    
   }
   
 
@@ -188,7 +186,6 @@ export class CambiarContrasenaComponent implements OnInit {
   }
 
   guardar() {
-    console.log('Información del usuario:', this.informacionUsuario);
     if (this.formCambiarPassword.invalid || this.contrasenaNoCoinciden) {
       this.markAllAsTouched(this.formCambiarPassword);
       this.mostrarToastError("Es necesario llenar los campos indicados.");

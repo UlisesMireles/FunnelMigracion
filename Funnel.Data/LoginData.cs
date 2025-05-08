@@ -342,11 +342,6 @@ namespace Funnel.Data
                     result.Result = false;
                 }
             }
-            else
-            {
-                result.ErrorMessage = "No se proporcionó imagen para guardar.";
-                result.Result = false;
-            }
 
             return result;
         }

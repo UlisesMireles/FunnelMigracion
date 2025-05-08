@@ -399,11 +399,6 @@ export class ModalUsuariosComponent {
     this.usuarioForm.get('selectedFile')?.setValue(null);
     this.formModificado = true;
   
-    /*// Eliminar la imagen del localStorage
-    localStorage.removeItem('imagenPerfil');
-  
-    // También resetea la original
-    this.selectedFileOriginal = null;*/
   }
   
 

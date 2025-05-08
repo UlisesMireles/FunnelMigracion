@@ -81,19 +81,16 @@ namespace Funnel.Server.Controllers
                 {
                     return Ok(respuestaImagen);
                 }
-
-                if (respuestaImagen.Result == true && string.IsNullOrEmpty(datos.Password))
-                {
-                    return Ok(respuestaImagen);
-                }
-
-                if (!string.IsNullOrEmpty(datos.Password))
-                {
-                    return Ok(await _loginService.CambioPassword(datos));
-                }
             }
 
-            return Ok(new BaseOut { Result = false, ErrorMessage = "No se proporcionó una imagen." });
+            if (string.IsNullOrEmpty(datos.Password))
+            {
+                return Ok(datos.Imagen == null
+                    ? await _loginService.GuardarImagen(datos.IdUsuario, null, datos)
+                    : new BaseOut { Result = true });
+            }
+
+            return Ok(await _loginService.CambioPassword(datos));
         }
     }
 }

@@ -116,7 +116,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { YaSePreguntoPipe } from "./pipes/asistenteOperacion/yaSePregunto";
 import { UsuarioPerfilComponent } from './components/usuario-perfil/usuario-perfil.component';
 import { AcordeonOportunidadesEtapaComponent } from './components/utils/acordeon-oportunidades-etapa/acordeon-oportunidades-etapa.component';
-
+import { InicioComponent } from './components/inicio/inicio/inicio.component';
 
 export function configurationProviderFactory(provider: PrimeNgConfiguracionService) {
   return () => provider.load();
@@ -173,6 +173,7 @@ registerLocaleData(localeEs, 'es-MX');
     EjecucionProcesosComponent,
     UsuarioPerfilComponent,
     AcordeonOportunidadesEtapaComponent,
+    InicioComponent
   ],
   imports: [
     BrowserModule,

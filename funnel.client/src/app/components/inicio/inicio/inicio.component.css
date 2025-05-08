@@ -1,0 +1,214 @@
+/* :host {
+  display: block;
+  background: radial-gradient(circle at top, #e1f0ff, #d9edff, #b2dcff);
+  min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+  color: #0b2349;
+} */
+
+.sales-funnel {
+  padding: 9rem 2rem 1rem 2rem;
+  background-color: #fff5ee;
+  font-family: 'Helvetica Neue', sans-serif;
+}
+
+.content {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.text {
+  flex: 1;
+  min-width: 300px;
+  max-width: 600px;
+}
+
+.category {
+  display: inline-block;
+  background-color: #005cb9;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.3rem 0.8rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #032d60;
+  margin-bottom: 1rem;
+}
+
+.description {
+  font-size: 1.1rem;
+  color: #4f4f4f;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.author-info {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #6b6b6b;
+}
+
+.author-logo {
+  width: 24px;
+  height: 24px;
+  margin-right: 0.5rem;
+}
+
+.author-name {
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+
+.image-container {
+  flex: 1;
+  min-width: 300px;
+  text-align: center;
+  padding: 1rem;
+}
+
+.image-container img {
+  max-width: 100%;
+  border-radius: 16px;
+}
+.header {
+  background-color: #fff;
+  border-bottom: 1px solid #eaeaea;
+  /* padding: 1rem 0; */
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: rgb(247, 106, 19);
+}
+
+.nav a {
+  margin: 0 1rem;
+  text-decoration: none;
+  color: #333;
+}
+
+.actions .btn {
+  margin-left: 1rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  cursor: pointer;
+}
+
+.btn.login {
+  background: none;
+  color: rgb(247, 106, 19);
+}
+
+.btn.signup {
+  background: rgb(247, 106, 19);
+  color: #fff;
+  border-radius: 4px;
+}
+
+.chatbot-button {
+  position: fixed;
+  bottom: 3rem;
+  right: 2rem;
+  background: rgb(247, 106, 19);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.funnel-stage:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #33475b;
+  color: white;
+  padding: 8px;
+  border-radius: 5px;
+  white-space: normal;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  width: 200px;
+  font-size: 0.85em;
+}
+.funnel-stage :hover::after {
+  opacity: 1;
+}
+
+
+.funnel-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 600px;
+}
+
+.funnel-stage {
+  color: white;
+  padding: 16px;
+  text-align: center;
+  margin-bottom: 12px;
+  font-weight: bold;
+  clip-path: polygon(4% 0%, 100% 0%, 94% 100%, 10% 100%);
+  width: 100%;
+}
+
+.stage1 {
+  width: 100%;
+  background-color: #2f77b9;
+}
+
+.stage2 {
+  width: 85%;
+  background-color: #3c96dd;
+}
+
+.stage3 {
+  width: 71%;
+  background-color: #4db2f6;
+}
+
+.stage4 {
+  width: 58%;
+  background-color: #f28705;
+}
+
+.stage5 {
+  width: 48%;
+  background-color: #d95c00;
+}
+.iamgen-funnel{
+  height: 500px;
+}

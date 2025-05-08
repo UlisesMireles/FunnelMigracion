@@ -2,7 +2,7 @@
   <app-header *ngIf="!login"></app-header>
   <app-menu *ngIf="!login"></app-menu>
 
-  <app-login *ngIf="login && !dobleAutenticacion"></app-login>
+  <app-inicio *ngIf="login && !dobleAutenticacion"></app-inicio>
   <app-doble-autenticacion *ngIf="dobleAutenticacion" ></app-doble-autenticacion>
   <!--<div *ngIf="dobleAutenticacion" class="container-fluid">
     <router-outlet></router-outlet>

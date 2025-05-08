@@ -11,6 +11,7 @@ namespace Funnel.Data.Interfaces
         public Task<string> ObtenerInformacionNotificacionCorreo(string bandera, string usuario, string nombre, string apellidoPat, string apellidoMat);
         public Task<UsuarioDto> AdministradorEmpresas();
         public Task<BaseOut> SolicitudesUsuarios(SolicitudRegistroSistemaDto datos);
+        public Task<BaseOut> ReenviarCodigo(string correo);
         public Task<BaseOut> GuardarImagen(int idUsuario, string nombreArchivo);
         public Task<BaseOut> CambioPassword(string bandera, string Nombre, string ApellidoPaterno, string ApellidoMaterno,
             string Usuario, string Inicales, string CorreoElectronico, int IdTipoUsuario, int IdUsuario, int Estatus, string password, int idEmpresa);

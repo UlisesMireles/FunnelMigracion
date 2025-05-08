@@ -64,6 +64,13 @@ namespace Funnel.Server.Controllers
             return Ok(respuesta);
         }
 
+        [HttpPost("ReenviarCodigo/")]
+        public async Task<ActionResult<BaseOut>> ReenviarCodigo(string correo)
+        {
+            var respuesta = await _loginService.ReenviarCodigo(correo);
+            return Ok(respuesta);
+        }
+
         [HttpPost("CambioPassword")]
         public async Task<ActionResult<BaseOut>> CambioPassword([FromForm] UsuarioDto datos)
         {
@@ -96,21 +103,22 @@ namespace Funnel.Server.Controllers
                 }
                 else
                 {
-                    if (datos.Password == "" || datos.Password is null)
-                    {
-                        var respuestaPassword = await _loginService.GuardarImagen(datos.IdUsuario, datos.ArchivoImagen);
-                        return Ok(respuestaPassword);
-                    }
-                    else
-                    {
-                        return Ok(await _loginService.CambioPassword(datos));
-                    }
+                    return Ok(await _loginService.CambioPassword(datos));
                 }
             }
             else
             {
-                return Ok(await _loginService.CambioPassword(datos));
+                if (datos.Password == "" || datos.Password is null)
+                {
+                    var respuestaPassword = await _loginService.GuardarImagen(datos.IdUsuario, datos.ArchivoImagen);
+                    return Ok(respuestaPassword);
+                }
+                else
+                {
+                    return Ok(await _loginService.CambioPassword(datos));
+                }
             }
+            return Ok(new BaseOut { Result = false, ErrorMessage = "No se pudo realizar la operación." });
         }
     }
 }

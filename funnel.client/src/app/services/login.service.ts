@@ -188,6 +188,11 @@ export class LoginService {
       return this.http.post<baseOut>(this.baseUrl + 'api/Login/GuardarSolicitudRegistro', data);
     }
 
+  postReenviarCodigo(correo: string): Observable<baseOut> {
+      return this.http.post<baseOut>(this.baseUrl + 'api/Login/ReenviarCodigo?correo=' + encodeURIComponent(correo), null);
+    }
+    
+
   cambiarPassword(formData: FormData): Observable<baseOut> {
     const headers = new HttpHeaders();
     return this.http.post<baseOut>(this.baseUrl + 'api/Login/CambioPassword', formData, { headers });

@@ -19,8 +19,8 @@ import { ModalService } from '../../../services/modal-perfil.service';
 })
 export class LoginComponent implements OnInit {
   aFormGroup!: FormGroup;
-  siteKey: string = '6LdlBicqAAAAABMCqyAjZOTSKrbdshNyKxwRiGL9';
-  // siteKey: string = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'; //Prueba
+ // siteKey: string = '6LdlBicqAAAAABMCqyAjZOTSKrbdshNyKxwRiGL9';
+ siteKey: string = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'; //Prueba
   baseUrl: string = environment.baseURLAssets;
   username: string = '';
   password: string = '';
@@ -60,11 +60,10 @@ export class LoginComponent implements OnInit {
       correo: ['', [Validators.required, Validators.email]],
       telefono: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
       empresa: ['', Validators.required],
-      urlSitio: ['', [Validators.required, 
-                      Validators.pattern(/^(https?:\/\/)?([\w\-]+\.)+[\w\-]+(\/[\w\-._~:/?#[\]@!$&'()*+,;=]*)?$/)]],
+      urlSitio: ['', Validators.pattern(/^(https?:\/\/)?([\w\-]+\.)+[\w\-]+(\/[\w\-._~:/?#[\]@!$&'()*+,;=]*)?$/)],
       noEmpleados: ['', Validators.required],
       privacidadTerminos: [false, Validators.requiredTrue],
-      recaptcha: ['', Validators.required]
+      recaptcha: ['']
     });
 
     this.showIniciarSesion = this.router.url === '/login' || this.router.url === '/' || this.router.url == '';
@@ -202,15 +201,17 @@ export class LoginComponent implements OnInit {
         privacidadTerminos: this.aFormGroup.get('privacidadTerminos')?.value,
         recaptcha: this.aFormGroup.get('recaptcha')?.value
       };
-
       this.authService.postSolicitudRegistro(this.informacionRegistro).subscribe({
                 next: (result: baseOut) => {
-                  if(result.result) {
-                    this.messageService.add({
+                  if(result.result == true) {
+                  /*  this.messageService.add({
                       severity: 'success',
                       summary: 'La operación se realizó con éxito.',
                       detail: result.errorMessage,
-                    });
+                    });*/  
+                    localStorage.setItem('correo', this.aFormGroup.get('correo')?.value);
+                    this.closeLoginModal();
+                    this.router.navigate(['/two-factor']);
                     this.aFormGroup.reset();
                   }
                   else {

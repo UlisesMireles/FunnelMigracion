@@ -9,9 +9,11 @@
     </div>
 
     <div class="col-3 chatbot">
+      <!-- Botón de chat en el header-->
       <button class="btn-chat" (click)="toggleChat()">
-        <i class="bi bi-chat-dots-fill"></i>
+        <i class="bi bi-chat-fill"></i> 
       </button>
+      <!-- Contenedor del chatbot -->
       <ng-container *ngIf="enableAsistenteOperacion">
         <div id="chat-container" class="chatbot-window">
           <app-asistente-operacion></app-asistente-operacion>
@@ -19,7 +21,6 @@
       </ng-container>
     </div>
 
-    <!-- Botón Agregar (el tercero de derecha a izquierda) -->
     <div class="col-3 agregar">
       <p-splitbutton label="Agregar" [model]="items" raised severity="secondary" #splitBtn />
       <!-- <button class="btnAgregar float-end" (click)="toggleOptions()">Agregar</button>

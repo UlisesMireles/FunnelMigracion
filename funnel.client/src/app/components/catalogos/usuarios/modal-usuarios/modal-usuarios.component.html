@@ -139,22 +139,28 @@
           <p-checkbox formControlName="estatus" class="inptSize" [binary]="true"></p-checkbox><label> Activo</label>
         </div>
       </div>
-
-      <div class="row">
-        <div class="col-sm-4 lbl">
-          <label for="foto">Foto:</label>
+      <div class="row align-items-center">
+        <div class="col-sm-2">
+          <label for="foto" class="form-label" style="margin-right: 50px;">Foto:</label>
         </div>
-        <div class="col-sm-8">
-          <input 
-            type="file" 
-            class="inptSize1 custom-file-input"
-            (change)="onFileSelected($event)" 
-            accept="image/*"
-            id="foto"
-          />
+       
+        <div class="col-sm-10 d-flex align-items-center justify-content-end">
+          <ng-container *ngIf="!selectedFile">
+            <input type="text" class="form-control form-control-sm me-2" placeholder="" disabled style="max-width: 200px;" />
+            <button class="btn btn-sm btn-seleccionar" (click)="abrirInput()">Seleccionar</button>
+            <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*" hidden />
+          </ng-container>
+          <ng-container *ngIf="selectedFile">
+            <div style="display: flex; align-items: center; margin-right: 50px;">
+              <div class="rounded-circle bg-success" style="width: 20px; height: 20px; margin-right: 10px;"></div>
+              <span class="me-3">{{ selectedFile.name }}</span>
+              <button class="btn btn-link text-danger p-0" (click)="removerFoto()">
+                <span class="me-1">❌</span> Remover
+              </button>
+            </div>
+          </ng-container>          
         </div>
       </div>
-      
     </form>
   </ng-template>
   

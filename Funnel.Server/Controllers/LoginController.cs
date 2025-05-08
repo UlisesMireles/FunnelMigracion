@@ -23,7 +23,7 @@ namespace Funnel.Server.Controllers
             if (respuesta.IdUsuario > 0)
             {
                 HttpContext.Session.SetString("User", usr.Usuario);
-                if(respuesta.Result == true && respuesta.IdEmpresa != null)                
+                if (respuesta.Result == true && respuesta.IdEmpresa != null)
                     await _loginService.RegistrarIngresoUsuario(respuesta.IdUsuario, (int)respuesta.IdEmpresa);
             }
             return Ok(respuesta);
@@ -70,54 +70,30 @@ namespace Funnel.Server.Controllers
             var respuesta = await _loginService.ReenviarCodigo(correo);
             return Ok(respuesta);
         }
-
         [HttpPost("CambioPassword")]
         public async Task<ActionResult<BaseOut>> CambioPassword([FromForm] UsuarioDto datos)
         {
             if (datos.Imagen != null)
             {
-                var fileName = Path.GetFileName(datos.Imagen.FileName);
+                var respuestaImagen = await _loginService.GuardarImagen(datos.IdUsuario, datos.Imagen, datos);
 
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Fotografia", fileName);
-
-                var directory = Path.GetDirectoryName(filePath);
-                if (!Directory.Exists(directory))
-                {
-                    Directory.CreateDirectory(directory);
-                }
-
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    await datos.Imagen.CopyToAsync(fileStream);
-                }
-
-                datos.ArchivoImagen = fileName;
-                var respuestaImagen = await _loginService.GuardarImagen(datos.IdUsuario, datos.ArchivoImagen);
                 if (respuestaImagen.Result == false)
                 {
                     return Ok(respuestaImagen);
                 }
-                else if(respuestaImagen.Result == true && (datos.Password == "" || datos.Password is null))
+
+                if (respuestaImagen.Result == true && string.IsNullOrEmpty(datos.Password))
                 {
                     return Ok(respuestaImagen);
                 }
-                else
+
+                if (!string.IsNullOrEmpty(datos.Password))
                 {
-                    if (datos.Password == "" || datos.Password is null)
-                    {
-                        var respuestaPassword = await _loginService.GuardarImagen(datos.IdUsuario, datos.ArchivoImagen);
-                        return Ok(respuestaPassword);
-                    }
-                    else
-                    {
-                        return Ok(await _loginService.CambioPassword(datos));
-                    }
+                    return Ok(await _loginService.CambioPassword(datos));
                 }
             }
-            else
-            {
-                return Ok(await _loginService.CambioPassword(datos));
-            }
+
+            return Ok(new BaseOut { Result = false, ErrorMessage = "No se proporcionó una imagen." });
         }
     }
 }

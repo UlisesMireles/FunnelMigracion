@@ -19,6 +19,9 @@ export class CambiarContrasenaComponent implements OnInit {
   correo: string = "";
   tipoUsuario: string = "";
   idUsuario: string = "";
+  nombre: string = "";
+  apellidoPaterno: string = "";
+  apellidoMaterno: string = "";
   fotoSeleccionada: File | null = null;
   @ViewChild('inputFoto') inputFoto!: ElementRef<HTMLInputElement>;
   informacionUsuario: Usuarios = {
@@ -67,10 +70,16 @@ export class CambiarContrasenaComponent implements OnInit {
     this.correo = localStorage.getItem('correo') as string;
     this.tipoUsuario = localStorage.getItem('tipoUsuario') as string;
     this.idUsuario = localStorage.getItem('currentUser') as string;
+    this.nombre = localStorage.getItem('nombre') as string;
+    this.apellidoPaterno = localStorage.getItem('apellidoPaterno') as string;
+    this.apellidoMaterno = localStorage.getItem('apellidoMaterno') as string;
     this.informacionUsuario.usuario = this.usuario;
     this.informacionUsuario.correo = this.correo;
     this.informacionUsuario.tipoUsuario = this.tipoUsuario;
     this.informacionUsuario.idUsuario = Number(this.idUsuario);
+    this.informacionUsuario.nombre = this.nombre;
+    this.informacionUsuario.apellidoPaterno = this.apellidoPaterno;
+    this.informacionUsuario.apellidoMaterno = this.apellidoMaterno;
 
     this.formCambiarPassword = this.fb.group({
       usuario: [{value:this.usuario, disabled: true}],
@@ -80,10 +89,10 @@ export class CambiarContrasenaComponent implements OnInit {
       contrasenaConfirm: ['', []],
       fotoSeleccionada: [this.fotoSeleccionada]
     }, { validators: this.contrasenasIgualesValidator });
-
     const imagenPerfil = localStorage.getItem('imagenPerfil');
     if (imagenPerfil) {
       this.fotoSeleccionada = { name: imagenPerfil } as File;
+      console.log('[ngOnInit] Nombre de la foto desde localStorage:', imagenPerfil);
       this.formCambiarPassword.patchValue({ fotoSeleccionada: this.fotoSeleccionada });
     }
       this.valoresIniciales = this.formCambiarPassword.getRawValue();
@@ -155,6 +164,7 @@ export class CambiarContrasenaComponent implements OnInit {
     if (input?.files?.[0]) {
       this.fotoSeleccionada = input.files[0];
       this.formCambiarPassword.patchValue({ fotoSeleccionada: input.files[0] });
+      this.validarGuardar = true;
     }
   }
 
@@ -162,7 +172,12 @@ export class CambiarContrasenaComponent implements OnInit {
     this.fotoSeleccionada = null;
     this.formCambiarPassword.get('fotoSeleccionada')?.setValue(null);
     this.validarGuardar = true;
+  
+    /*localStorage.removeItem('imagenPerfil');
+  
+    this.fotoSeleccionadaOriginal = null;*/
   }
+  
 
   abrirInput(): void {
     this.inputFoto.nativeElement.click();
@@ -173,6 +188,7 @@ export class CambiarContrasenaComponent implements OnInit {
   }
 
   guardar() {
+    console.log('Información del usuario:', this.informacionUsuario);
     if (this.formCambiarPassword.invalid || this.contrasenaNoCoinciden) {
       this.markAllAsTouched(this.formCambiarPassword);
       this.mostrarToastError("Es necesario llenar los campos indicados.");
@@ -205,6 +221,9 @@ export class CambiarContrasenaComponent implements OnInit {
     }
 
     formData.append('idUsuario', this.informacionUsuario.idUsuario.toString());
+    formData.append('Nombre', this.nombre); 
+    formData.append('ApellidoPaterno', this.apellidoPaterno); 
+    formData.append('ApellidoMaterno', this.apellidoMaterno); 
 
     this.authService.cambiarPassword(formData).subscribe({
       next: (response: any) => {

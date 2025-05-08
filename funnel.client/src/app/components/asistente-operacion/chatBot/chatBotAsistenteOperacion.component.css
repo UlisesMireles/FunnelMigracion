@@ -101,7 +101,7 @@
     gap: 8px; /* Espacio entre chips */
 }
 
-.mostrarTemasClass {
+.mostrarCategoriasClass {
     margin: 3px 10px !important;
     width: auto !important;
     height: auto !important;
@@ -317,13 +317,6 @@
     font-weight: bold;
 }
 
-.chat-icon {
-    margin-top: 0px;
-    border-radius: 100%;
-    width: 32px;
-    height: 32px;
-    color: #1976d2;
-}
 
 .hstack {
     display: flex;

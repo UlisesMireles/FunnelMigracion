@@ -26,33 +26,24 @@
   left: 50%;
   transform: translateX(-50%);
 }
-
 .btn-chat {
   position: absolute;
   right: 20px;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: #103D66;
-  color: #ffffff;
-  border: 2px solid white;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: transparent;
+  border: none;
+  box-shadow: none;
   z-index: 1001;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  padding: 0;
 }
 
 .btn-chat i {
-  font-size: 20px;
-}
-
-.btn-chat:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 15px rgba(255, 255, 255, 0.25);
-  background: #0a2b4a;
+  font-size: 25px;
+  color: white;            
+  border: none;
 }
 
 

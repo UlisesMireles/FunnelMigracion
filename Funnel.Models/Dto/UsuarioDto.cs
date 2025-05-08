@@ -35,6 +35,7 @@ namespace Funnel.Models.Dto
         public int SuperAdministrador { get; set; }
         public int Id { get; set; }
         public IFormFile? Imagen { get; set; }
+        public string? Licencia { get; set; }
 
 
     }

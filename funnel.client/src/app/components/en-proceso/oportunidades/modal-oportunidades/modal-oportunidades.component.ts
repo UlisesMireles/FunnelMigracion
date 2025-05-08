@@ -10,6 +10,8 @@ import { LoginService } from '../../../../services/login.service';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CatalogoService } from '../../../../services/catalogo.service';
+import { ModalOportunidadesService } from '../../../../services/modalOportunidades.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-modal-oportunidades',
@@ -18,7 +20,9 @@ import { CatalogoService } from '../../../../services/catalogo.service';
 })
 export class ModalOportunidadesComponent {
 
-  constructor(private readonly catalogoService: CatalogoService, private oportunidadService: OportunidadesService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder, private cdr: ChangeDetectorRef) { }
+  constructor(private readonly catalogoService: CatalogoService, private oportunidadService: OportunidadesService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder, private cdr: ChangeDetectorRef,
+    private modalOportunidadesService: ModalOportunidadesService
+  ) { }
   @Input() oportunidad!: Oportunidad;
   @Input() oportunidades: Oportunidad[] = [];
   @Input() title: string = 'Modal';
@@ -43,8 +47,13 @@ export class ModalOportunidadesComponent {
   validaGuadar: boolean = false;
   banderaContacto: boolean = true;
   informacionOportunidad: Oportunidad = {};
-
+  private modalSubscription!: Subscription;
+  
   inicializarFormulario() {
+    this.modalSubscription = this.modalOportunidadesService.modalState$.subscribe((state) => {
+      this.visible = state.showModal;
+      this.insertar = state.insertar;
+    });
     let valoresIniciales: Record<string, any>;
     if (this.insertar) {
       this.informacionOportunidad = { probabilidad: '0', idEstatus: 1 };
@@ -111,6 +120,12 @@ export class ModalOportunidadesComponent {
 
   }
 
+  ngOnDestroy(): void {
+    if (this.modalSubscription) {
+      this.modalSubscription.unsubscribe(); 
+    }
+  }
+
   validarCambios(valoresIniciales: any, cambios: any) {
     const valoresActuales = cambios;
 
@@ -163,8 +178,11 @@ export class ModalOportunidadesComponent {
     this.ejecutivos = this.catalogoService.obtenerEjecutivos().sort((a, b) =>
       a.nombreCompleto.localeCompare(b.nombreCompleto, 'es', { sensitivity: 'base' })
     );
-    if (this.oportunidad.idProspecto) {
-      this.contactos = this.catalogoService.obtenerContactos(this.oportunidad.idProspecto);
+    if (this.oportunidad)
+    {
+      if (this.oportunidad.idProspecto) {
+        this.contactos = this.catalogoService.obtenerContactos(this.oportunidad.idProspecto);
+      }
     }
     this.entregas = this.catalogoService.obtenerEntregas();
     this.estatusOportunidad = this.catalogoService.obtenerEstatusOportunidad();
@@ -175,6 +193,7 @@ export class ModalOportunidadesComponent {
 
   close() {
     this.visible = false;
+    this.modalOportunidadesService.closeModal();
     this.visibleChange.emit(this.visible);
     this.closeModal.emit();
   }

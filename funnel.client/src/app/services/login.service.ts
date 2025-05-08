@@ -52,6 +52,7 @@ export class LoginService {
           localStorage.setItem('correo', user.correo);
           localStorage.setItem('imagenPerfil', user.archivoImagen);
           localStorage.setItem('lastActivity', Date.now().toString());
+          localStorage.setItem('licencia', user.licencia);
           this.currentUserSubject.next(user);
           sessionStorage.setItem('sesion', window.btoa(JSON.stringify(user)));
           sessionStorage.setItem('Usuario', user.nombre);

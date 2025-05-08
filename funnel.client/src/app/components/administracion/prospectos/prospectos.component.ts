@@ -10,6 +10,8 @@ import{ ProspectoService } from '../../../services/prospecto.service';
 import { baseOut } from '../../../interfaces/utils/utils/baseOut';
 import { Prospectos } from '../../../interfaces/prospecto';
 import { LoginService } from '../../../services/login.service';
+import { ModalOportunidadesService } from '../../../services/modalOportunidades.service';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-prospectos',
   standalone: false,
@@ -57,13 +59,29 @@ EstatusDropdown = [
 
   columnsAMostrarResp = JSON.stringify(this.lsColumnasAMostrar);
   columnsTodasResp = JSON.stringify(this.lsTodasColumnas);
+  private modalSubscription!: Subscription;
 
-  constructor( private messageService: MessageService, private cdr: ChangeDetectorRef, private prospectoService: ProspectoService, private loginService: LoginService, public dialog: MatDialog) { }
+  constructor( private messageService: MessageService, private cdr: ChangeDetectorRef, private prospectoService: ProspectoService, private loginService: LoginService, public dialog: MatDialog, private modalOportunidadesService: ModalOportunidadesService) { }
 
 ngOnInit(): void {
-this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
-this.getProspectos();
-document.documentElement.style.fontSize = 12 + 'px';
+  this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
+  this.getProspectos();
+  document.documentElement.style.fontSize = 12 + 'px';
+  this.modalSubscription = this.modalOportunidadesService.modalProspectoState$.subscribe((state) => {
+    if (!state.showModal) {
+      this.prospectoEdicion = null;
+    }
+    //Valida si se emite un result Exitoso desde modal
+    if (state.result.id != -1 && state.result.result) {
+      this.getProspectos();
+    }
+  });
+}
+
+ngOnDestroy(): void {
+  if (this.modalSubscription) {
+    this.modalSubscription.unsubscribe();  // Desuscribimos al destruir el componente
+  }
 }
   
 getProspectos() {
@@ -119,10 +137,12 @@ inserta() {
     eliminadas: 0,
     idEmpresa: 0,
     porcEfectividad: 0,};
+  this.modalOportunidadesService.openModalProspecto(true, true, [], this.prospectoSeleccionado)
   this.insertar = true;
   this.modalVisible = true;
 }
 actualiza(licencia: Prospectos) {
+  this.modalOportunidadesService.openModalProspecto(true, false, [], licencia);
   this.prospectoSeleccionado = licencia;
   this.prospectoEdicion = { ...licencia };
   this.insertar = false;

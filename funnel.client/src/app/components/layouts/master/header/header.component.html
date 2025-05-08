@@ -21,12 +21,13 @@
 
     <!-- Botón Agregar (el tercero de derecha a izquierda) -->
     <div class="col-3 agregar">
-      <button class="btnAgregar float-end" (click)="toggleOptions()">Agregar</button>
+      <p-splitbutton label="Agregar" [model]="items" raised severity="secondary" #splitBtn />
+      <!-- <button class="btnAgregar float-end" (click)="toggleOptions()">Agregar</button>
       <div *ngIf="optionsVisible" class="options-container">
         <button class="option-btn" (click)="agregarOportunidad()">Oportunidad</button>
         <button class="option-btn" (click)="agregarProspecto()">Prospecto</button>
         <button class="option-btn" (click)="agregarContacto()">Contacto</button>
-      </div>
+      </div> -->
     </div>
 
     <!-- Logo (el último de derecha a izquierda) -->

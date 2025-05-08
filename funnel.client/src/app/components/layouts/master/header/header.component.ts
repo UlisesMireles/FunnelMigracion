@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { environment } from '../../../../../environments/environment';
 import { AsistenteService } from '../../../../services/asistenteOperacion/asistente.service';
 import { ModalService } from '../../../../services/modal-perfil.service';
@@ -7,9 +7,10 @@ import { ModalOportunidadesService } from '../../../../services/modalOportunidad
 import { Oportunidad } from '../../../../interfaces/oportunidades';
 import { baseOut } from '../../../../interfaces/utils/utils/baseOut';
 import { Subscription } from 'rxjs';
-import { MessageService } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 import { Prospectos } from '../../../../interfaces/prospecto';
 import { Contacto } from '../../../../interfaces/contactos';
+import { SplitButton } from 'primeng/splitbutton';
 @Component({
   selector: 'app-header',
   standalone: false,
@@ -46,8 +47,32 @@ export class HeaderComponent implements OnInit {
   contactos: Contacto[] = [];
   contactoSeleccionado!: Contacto;
 
+  items: MenuItem[];
+  @ViewChild('splitBtn') splitButton!: SplitButton;
+
   constructor(private asistenteService: AsistenteService, private modalService: ModalService, private router: Router,
-    private messageService: MessageService, private modalOportunidadesService: ModalOportunidadesService) { }
+    private messageService: MessageService, private modalOportunidadesService: ModalOportunidadesService) {
+    this.items = [
+      {
+        label: 'Oportunidades',
+        command: () => {
+          this.agregarOportunidad();
+        }
+      },
+      {
+        label: 'Prospectos',
+        command: () => {
+          this.agregarProspecto();
+        }
+      },
+      {
+        label: 'Contactos',
+        command: () => {
+          this.agregarContacto();
+        }
+      },
+    ];
+  }
 
   toggleChat(): void {
     this.enableAsistenteOperacion = !this.enableAsistenteOperacion;
@@ -94,6 +119,15 @@ export class HeaderComponent implements OnInit {
       this.contactos = state.contactos;
       this.contactoSeleccionado = state.contactoSeleccionado;
     });
+  }
+
+  ngAfterViewInit() {
+    const mainButton = this.splitButton.containerViewChild?.nativeElement.querySelector('.p-button-secondary');
+    if (mainButton) {
+      mainButton.addEventListener('click', (event: MouseEvent) => {
+        this.splitButton.onDropdownButtonClick(event);
+      });
+    }
   }
 
   agregarOportunidad() {
@@ -149,7 +183,6 @@ export class HeaderComponent implements OnInit {
       // else
       this.modalService.toggleModal();
 
-      //  console.log('this.modalVisible ' + this.modalVisible);
     } else {
       this.modalService.closeModal();
       this.router.navigate([path]);

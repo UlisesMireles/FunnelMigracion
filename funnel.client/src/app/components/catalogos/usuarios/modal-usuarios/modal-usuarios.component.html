@@ -151,7 +151,7 @@
             <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*" hidden />
           </ng-container>
           <ng-container *ngIf="selectedFile">
-            <div style="display: flex; align-items: center; margin-right: 50px;">
+            <div style="display: flex; align-items: center; margin-right: 5px;">
               <div class="rounded-circle bg-success" style="width: 20px; height: 20px; margin-right: 10px;"></div>
               <span class="me-3">{{ selectedFile.name }}</span>
               <button class="btn btn-link text-danger p-0" (click)="removerFoto()">

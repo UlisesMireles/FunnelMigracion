@@ -241,12 +241,16 @@ export class ModalUsuariosComponent {
         delete formValue.password;
       }
   
-    const formData = new FormData();
-    for (const key in formValue) {
-      formData.append(key, formValue[key]);
-    }
+      const formData = new FormData();
+      for (const key in formValue) {
+        if (key === 'selectedFile') continue; 
+        const value = formValue[key];
+        if (value !== null && value !== undefined) {
+          formData.append(key, value.toString());
+        }
+      }
 
-    if (this.selectedFile) {
+    if (this.selectedFile instanceof File) {
       formData.append('imagen', this.selectedFile, this.selectedFile.name);
     }
 

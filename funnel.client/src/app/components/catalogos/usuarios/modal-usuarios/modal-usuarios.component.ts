@@ -1,4 +1,4 @@
-import { Component, EventEmitter,Input, Output, SimpleChanges, ElementRef, ViewChild  } from '@angular/core';
+import { Component, EventEmitter,Input, Output, SimpleChanges, ElementRef, ViewChild } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { baseOut } from '../../../../interfaces/utils/utils/baseOut';
 import { Usuarios } from '../../../../interfaces/usuarios';
@@ -27,7 +27,6 @@ export class ModalUsuariosComponent {
     request!: RequestUsuario;
   
     usuarioForm!: FormGroup;
-
     tiposUsuario: any[] = [];
 
     selectedFile: File | null = null;
@@ -92,6 +91,7 @@ export class ModalUsuariosComponent {
         iniciales: [{ value: '', disabled: true }, [
           Validators.required,
           Validators.maxLength(5),
+          Validators.minLength(3),
           Validators.pattern('^[A-Z]+$')
           ]
         ],  
@@ -204,6 +204,12 @@ export class ModalUsuariosComponent {
     this.visible = false;
     this.visibleChange.emit(this.visible);
     this.closeModal.emit();
+
+    if (this.fileInput){
+      this.fileInput.nativeElement.value = '';
+    }
+    this.selectedFile = null;
+    this.selectedFileName = '';
   }
 
   guardarUsuario() {
@@ -313,6 +319,7 @@ export class ModalUsuariosComponent {
     });
   }
 
+  
   private escucharCambiosEnCampos() {
     this.usuarioForm.get('nombre')?.valueChanges.subscribe(() => this.actualizarIniciales());
     this.usuarioForm.get('apellidoPaterno')?.valueChanges.subscribe(() => this.actualizarIniciales());
@@ -347,7 +354,7 @@ export class ModalUsuariosComponent {
       const existenIniciales = await this.validarInicialesExistente(iniciales, idEmpresa);
   
       if (existenIniciales) {
-        iniciales = this.generarInicialesAlternativas(nombre, apellidoPaterno, apellidoMaterno, iniciales);
+        iniciales = this.generarInicialesAlternativas(nombre, apellidoPaterno, apellidoMaterno);
       }
   
       this.usuarioForm.get('iniciales')?.setValue(iniciales, { emitEvent: false });
@@ -370,15 +377,18 @@ export class ModalUsuariosComponent {
     return iniciales;
   }
   
-  private generarInicialesAlternativas(nombre: string, apellidoPaterno: string, apellidoMaterno: string, iniciales: string): string {
-    const nombres = nombre.split(' ');
+  private generarInicialesAlternativas(nombre: string, apellidoPaterno: string, apellidoMaterno: string): string {
+    const nombreLimpio = nombre.replace(/\s+/g, '').toUpperCase();
+    const paternoLimpio = apellidoPaterno.trim().toUpperCase();
+    const maternoLimpio = apellidoMaterno.trim().toUpperCase();
   
-    const segundaLetraNombre = nombres[0].substring(1, 2).toUpperCase();
+    const letrasNombre = nombreLimpio.substring(0, 3).padEnd(3, 'X'); 
+    const letraPaterno = paternoLimpio.charAt(0) || 'X';
+    const letraMaterno = maternoLimpio.charAt(0) || 'X';
   
-    iniciales = iniciales.slice(0, 1) + segundaLetraNombre + iniciales.slice(1);
-  
-    return iniciales;
+    return letrasNombre + letraPaterno + letraMaterno;
   }
+  
   
   private async validarInicialesExistente(iniciales: string, idEmpresa: number): Promise<boolean> {
     try {
@@ -419,6 +429,7 @@ export class ModalUsuariosComponent {
   abrirInput(): void {
     this.fileInput.nativeElement.click();
   }
+
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }

@@ -12,24 +12,33 @@
 
 .navbar {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start; 
   align-items: center;
   height: 100%;
   padding: 0 20px;
   position: relative;
   max-width: 1200px;
   margin: 0 auto;
+  gap: 10px; 
+  flex-direction: row-reverse;
+  margin-right: 10px;
+}
+
+.navbar > div {
+  display: flex;
+  align-items: center;
 }
 
 .logo-container {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+  order: 4;
 }
-
 .btn-chat {
   position: absolute;
-  right: 20px;
+  /* right: 20px; */
+  right: 240px;
   width: 5px;
   height: 5px;
   border-radius: 50%;
@@ -46,13 +55,9 @@
 }
 
 .btn-chat i {
-  font-size: 20px;
-}
-
-.btn-chat:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 15px rgba(255, 255, 255, 0.25);
-  background: #0a2b4a;
+  font-size: 25px;
+  color: white;            
+  border: none;
 }
 
 
@@ -122,7 +127,7 @@
     top: 60px;
     right: 5%;
   }
-  
+
   .btn-chat {
     width: 45px;
     height: 45px;
@@ -142,14 +147,18 @@
 
 .chatbot-window-preguntas {
   position: fixed;
-  width: 280px; /* Ancho un poco mayor */
-  height: auto; /* Altura automática */
-  max-height: 500px; /* Altura máxima con scroll */
+  width: 280px;
+  /* Ancho un poco mayor */
+  height: auto;
+  /* Altura automática */
+  max-height: 500px;
+  /* Altura máxima con scroll */
   background: white;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   top: 70px;
-  right: 300px; /* Posición relativa al chatbot */
+  right: 300px;
+  /* Posición relativa al chatbot */
   z-index: 1001;
   padding: 15px;
   overflow-y: visible !important;
@@ -208,4 +217,79 @@
 
 .a-small:hover {
   color: var(--bs-navbar-brand-hover-color);
+}
+
+.large-icon {
+  font-size: 40px;
+  margin-right: 4px;
+  color: white;
+  position: absolute;
+  display: contents;
+}
+
+.menu-item-perfil {
+  background: none;
+  border: none;
+}
+
+.spanNombre {
+  color: white;
+  padding-left: 6px;
+}
+
+.btnAgregar {
+  background-color: white;
+  color: #06143dd7;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 12px;
+  margin-right: 30px;
+}
+
+.btnAgregar:hover {
+  background-color: #e4e4e4;
+}
+
+.agregar {
+  order: 3;
+  right: 300px;
+  justify-content: end;
+  position: absolute;
+}
+
+.estiloPerfilMenu {
+  position: fixed;
+  margin-left: 17vw;
+  margin-top: -7vh;
+}
+
+.options-container {
+  position: absolute;
+  top: 122%;
+  left: 173px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  z-index: 100;
+}
+
+.option-btn {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  margin: 5px 0;
+  text-align: left;
+  background-color: #f4f4f4;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.option-btn:hover {
+  background-color: #e0e0e0;
 }

@@ -34,6 +34,7 @@ import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
+import { SplitButtonModule } from 'primeng/splitbutton';
 
 
 //Login
@@ -215,7 +216,8 @@ registerLocaleData(localeEs, 'es-MX');
     TabViewModule,
     MatChipsModule,
     MatIconModule,
-    YaSePreguntoPipe
+    YaSePreguntoPipe,
+    SplitButtonModule
 ],
   providers: [
     { provide: LOCALE_ID, useValue: 'es-MX' },

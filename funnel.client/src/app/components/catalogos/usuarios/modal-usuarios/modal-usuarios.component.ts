@@ -249,16 +249,30 @@ export class ModalUsuariosComponent {
           formData.append(key, value.toString());
         }
       }
+      let nombreArchivo = '';
+      if (this.selectedFile instanceof File) {
+      const extension = this.selectedFile.name.split('.').pop();
 
-    if (this.selectedFile instanceof File) {
-      formData.append('imagen', this.selectedFile, this.selectedFile.name);
-    }
+      const apellidoPaterno = formValue.apellidoPaterno || '';
+      const apellidoMaterno = formValue.apellidoMaterno || '';
+      const nombre = formValue.nombre || '';
+
+      nombreArchivo = `${apellidoPaterno}_${apellidoMaterno}_${nombre}`;
+
+
+      nombreArchivo = `${nombreArchivo}.${extension}`;
+
+
+        // Agrega la imagen con el nuevo nombre
+        formData.append('imagen', this.selectedFile, nombreArchivo);
+      }
+
 
   
       this.UsuariosService.postGuardarUsuario(formData).subscribe({
         next: (result: any) => {
           if (result.result && this.selectedFile instanceof File) {
-            this.imagenService.actualizarImagenPerfil(this.selectedFile.name);
+            this.imagenService.actualizarImagenPerfil(nombreArchivo);
           }
           this.result.emit(result);
           this.close();

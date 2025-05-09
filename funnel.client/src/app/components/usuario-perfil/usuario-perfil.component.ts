@@ -55,7 +55,8 @@ export class UsuarioPerfilComponent implements OnInit, OnDestroy {
 
       this.imagenActualizada.imagenPerfil$.subscribe(nombreImagen => {
         if (nombreImagen) {
-          this.rutaImgen = this.baseUrl + '/Fotografia/' + nombreImagen;
+          this.rutaImgen = this.baseUrl + '/Fotografia/' + nombreImagen + '?t=' + new Date().getTime();
+          console.log('Componente: Nueva imagen recibida ->', nombreImagen);
         }
         else {
           this.rutaImgen = this.rutaImgenDefault;

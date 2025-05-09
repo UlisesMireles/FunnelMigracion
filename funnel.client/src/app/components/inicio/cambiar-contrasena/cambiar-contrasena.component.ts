@@ -195,8 +195,15 @@ export class CambiarContrasenaComponent implements OnInit {
       ...this.informacionUsuario,
       password: this.formCambiarPassword.get('contrasena')?.value,
     }
-    this.informacionUsuario.archivoImagen = this.fotoSeleccionada?.name;
-    this.informacionUsuario.imagen = this.fotoSeleccionada ?? undefined;
+     if (this.fotoSeleccionada) {
+    const extension = this.fotoSeleccionada.name.split('.').pop();
+    const nombreFormateado = `${this.informacionUsuario.apellidoPaterno}_${this.informacionUsuario.apellidoMaterno}_${this.informacionUsuario.nombre}`;
+    this.informacionUsuario.archivoImagen = `${nombreFormateado}.${extension}`;
+    this.informacionUsuario.imagen = this.fotoSeleccionada;
+    } else {
+    this.informacionUsuario.archivoImagen = '';
+    this.informacionUsuario.imagen = undefined;
+    }
 
     if (this.informacionUsuario.password != '')
     {
@@ -214,7 +221,7 @@ export class CambiarContrasenaComponent implements OnInit {
     formData.append('Password', this.formCambiarPassword.get('contrasena')?.value);
     if (this.fotoSeleccionada) {
       formData.append('Imagen', this.fotoSeleccionada);
-      formData.append('ArchivoImagen', this.fotoSeleccionada?.name);
+      formData.append('ArchivoImagen', this.informacionUsuario.archivoImagen);
     }
 
     formData.append('idUsuario', this.informacionUsuario.idUsuario.toString());
@@ -230,8 +237,11 @@ export class CambiarContrasenaComponent implements OnInit {
             summary: 'La operación se realizó con éxito.',
             detail: response.errorMessage,
           });
+          console.log(response);
           if(this.fotoSeleccionada) {
-            this.imagenService.actualizarImagenPerfil(this.fotoSeleccionada?.name);
+           console.log('Antes de llamar al servicio de imagen');
+            this.imagenService.actualizarImagenPerfil(this.informacionUsuario.archivoImagen!);
+            console.log('Después de llamar al servicio de imagen');
           }
           else if (this.fotoSeleccionada == null && response.errorMessage == "Se ha actualizado la fotografía correctamente.") {
             this.imagenService.actualizarImagenPerfil('')

@@ -9,6 +9,7 @@ export class ImagenActualizadaService {
   imagenPerfil$ = this.imagenPerfilSource.asObservable();
 
   actualizarImagenPerfil(nombreImagen: string) {
+    console.log('Servicio: Imagen recibida ->', nombreImagen);
     localStorage.setItem('imagenPerfil', nombreImagen);
     this.imagenPerfilSource.next(nombreImagen);  // Notifica a todos los que escuchan
   }

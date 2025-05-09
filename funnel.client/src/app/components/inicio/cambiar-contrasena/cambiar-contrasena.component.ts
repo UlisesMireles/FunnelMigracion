@@ -237,11 +237,8 @@ export class CambiarContrasenaComponent implements OnInit {
             summary: 'La operación se realizó con éxito.',
             detail: response.errorMessage,
           });
-          console.log(response);
           if(this.fotoSeleccionada) {
-           console.log('Antes de llamar al servicio de imagen');
             this.imagenService.actualizarImagenPerfil(this.informacionUsuario.archivoImagen!);
-            console.log('Después de llamar al servicio de imagen');
           }
           else if (this.fotoSeleccionada == null && response.errorMessage == "Se ha actualizado la fotografía correctamente.") {
             this.imagenService.actualizarImagenPerfil('')

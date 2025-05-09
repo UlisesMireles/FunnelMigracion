@@ -19,8 +19,8 @@ import { ModalService } from '../../../services/modal-perfil.service';
 })
 export class LoginComponent implements OnInit {
   aFormGroup!: FormGroup;
- // siteKey: string = '6LdlBicqAAAAABMCqyAjZOTSKrbdshNyKxwRiGL9';
- siteKey: string = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'; //Prueba
+  siteKey: string = '6LdlBicqAAAAABMCqyAjZOTSKrbdshNyKxwRiGL9';
+  //siteKey: string = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'; //Prueba
   baseUrl: string = environment.baseURLAssets;
   username: string = '';
   password: string = '';

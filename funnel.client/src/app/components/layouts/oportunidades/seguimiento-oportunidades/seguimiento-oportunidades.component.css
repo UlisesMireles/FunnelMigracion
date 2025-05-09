@@ -377,7 +377,7 @@
   max-height: calc(100vh - 115px) !important;
   margin-top: 70px;
   margin-bottom: 45px;
-  width: 68rem;
+  width: 70rem;
   height: auto; /* O el valor por defecto que necesites */
 }
 

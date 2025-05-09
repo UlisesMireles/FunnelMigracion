@@ -65,6 +65,7 @@ namespace Funnel.Data
                         DesEstatus = ComprobarNulos.CheckStringNull(reader["DesEstatus"]),
                         TipoUsuario = ComprobarNulos.CheckStringNull(reader["TipoUsuario"]),
                         Usuario = ComprobarNulos.CheckStringNull(reader["Usuario"]),
+                        ArchivoImagen = ComprobarNulos.CheckStringNull(reader["ArchivoImagen"])
                     };
                     result.Add(dto);
                 }
@@ -76,7 +77,7 @@ namespace Funnel.Data
         {
             BaseOut result = new BaseOut();
             var formatosPermitidos = new List<string> { ".jpg", ".png", ".jpeg" };
-            string carpetaDestino = Path.Combine(Directory.GetCurrentDirectory(), "ImagenPerfil");
+            string carpetaDestino = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Fotografia");
 
             if (!Directory.Exists(carpetaDestino))
             {
@@ -160,21 +161,21 @@ namespace Funnel.Data
             try
             {
                 IList<ParameterSQl> list = new List<ParameterSQl>
-                {
-                    DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Bandera ?? (object)DBNull.Value),
-                    DataBase.CreateParameterSql("@Nombre", SqlDbType.VarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Nombre ?? (object)DBNull.Value),
-                    DataBase.CreateParameterSql("@ApellidoPaterno", SqlDbType.VarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, request.ApellidoPaterno ?? (object)DBNull.Value),
-                    DataBase.CreateParameterSql("@ApellidoMaterno", SqlDbType.VarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, request.ApellidoMaterno ?? (object)DBNull.Value),
-                    DataBase.CreateParameterSql("@Usuario", SqlDbType.VarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Usuario ?? (object)DBNull.Value),
-                    DataBase.CreateParameterSql("@Password", SqlDbType.VarChar, 200, ParameterDirection.Input, false, null, DataRowVersion.Default, Encrypt.Encriptar(request.Password)),
-                    DataBase.CreateParameterSql("@Iniciales", SqlDbType.VarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Iniciales ?? (object)DBNull.Value),
-                    DataBase.CreateParameterSql("@CorreoElectronico", SqlDbType.VarChar, 300, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Correo ?? (object)DBNull.Value),
-                    DataBase.CreateParameterSql("@IdTipoUsuario", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdTipoUsuario),
-                    DataBase.CreateParameterSql("@IdUsuario", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdUsuario),
-                    DataBase.CreateParameterSql("@Estatus", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Estatus),
-                    DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdEmpresa ?? (object)DBNull.Value),
+        {
+            DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Bandera ?? (object)DBNull.Value),
+            DataBase.CreateParameterSql("@Nombre", SqlDbType.VarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Nombre ?? (object)DBNull.Value),
+            DataBase.CreateParameterSql("@ApellidoPaterno", SqlDbType.VarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, request.ApellidoPaterno ?? (object)DBNull.Value),
+            DataBase.CreateParameterSql("@ApellidoMaterno", SqlDbType.VarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, request.ApellidoMaterno ?? (object)DBNull.Value),
+            DataBase.CreateParameterSql("@Usuario", SqlDbType.VarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Usuario ?? (object)DBNull.Value),
+            DataBase.CreateParameterSql("@Password", SqlDbType.VarChar, 200, ParameterDirection.Input, false, null, DataRowVersion.Default, Encrypt.Encriptar(request.Password)),
+            DataBase.CreateParameterSql("@Iniciales", SqlDbType.VarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Iniciales ?? (object)DBNull.Value),
+            DataBase.CreateParameterSql("@CorreoElectronico", SqlDbType.VarChar, 300, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Correo ?? (object)DBNull.Value),
+            DataBase.CreateParameterSql("@IdTipoUsuario", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdTipoUsuario),
+            DataBase.CreateParameterSql("@IdUsuario", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdUsuario),
+            DataBase.CreateParameterSql("@Estatus", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Estatus),
+            DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdEmpresa ?? (object)DBNull.Value),
+        };
 
-                };
                 using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoUsuarios", CommandType.StoredProcedure, list, _connectionString))
                 {
                     while (reader.Read())
@@ -182,7 +183,6 @@ namespace Funnel.Data
                         if (request.Bandera == "INSERT")
                         {
                             result.Id = reader["IdUsuario"] != DBNull.Value ? Convert.ToInt32(reader["IdUsuario"]) : 0;
-                            var imagenGuardada = await ActualizarFotoUsuario(result.Id, request.ArchivoImagen);
                         }
                     }
                 }
@@ -190,33 +190,36 @@ namespace Funnel.Data
                 switch (request.Bandera)
                 {
                     case "INSERT":
-                        result.ErrorMessage = "Usuario insertado correctamente.";
-                        result.Result = true;
+                        if (result.Id > 0)
+                        {
+                            await ActualizarFotoUsuario(result.Id, request.ArchivoImagen);
+                            result.ErrorMessage = "Usuario insertado correctamente.";
+                            result.Result = true;
+                        }
+                        else
+                        {
+                            result.ErrorMessage = "No se pudo obtener el Id del nuevo usuario.";
+                            result.Result = false;
+                        }
                         break;
+
                     case "UPDATE":
-                        var imagenGuardada = await ActualizarFotoUsuario(result.Id, request.ArchivoImagen);
+                        await ActualizarFotoUsuario(request.IdUsuario, request.ArchivoImagen);
                         result.ErrorMessage = "Usuario actualizado correctamente.";
                         result.Id = request.IdUsuario;
                         result.Result = true;
                         break;
                 }
-
             }
             catch (Exception ex)
             {
-
-                switch (request.Bandera)
-                {
-                    case "INSERT":
-                        result.ErrorMessage = "Error al agregar usuario: " + ex.Message;
-                        break;
-                    case "UPDATE":
-                        result.ErrorMessage = "Error al actualizar usuario: " + ex.Message;
-                        break;
-                }
-                result.Id = 0;
                 result.Result = false;
+                result.Id = 0;
+                result.ErrorMessage = (request.Bandera == "INSERT")
+                    ? "Error al agregar usuario: " + ex.Message
+                    : "Error al actualizar usuario: " + ex.Message;
             }
+
             return result;
         }
 
@@ -258,7 +261,7 @@ namespace Funnel.Data
             return existenIniciales;
         }
 
-        public async Task<BaseOut> ActualizarFotoUsuario(int id, string nombreArchivo)
+        public async Task<BaseOut> ActualizarFotoUsuario(int id, string nombreArchivoNuevo)
             {
             BaseOut result = new BaseOut();
 
@@ -268,7 +271,7 @@ namespace Funnel.Data
                 {
                     DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "UPDATE-FOTO"),
                     DataBase.CreateParameterSql("@IdUsuario", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, id),
-                    DataBase.CreateParameterSql("@NombreArchivo", SqlDbType.VarChar, 300, ParameterDirection.Input, false, null, DataRowVersion.Default, nombreArchivo)
+                    DataBase.CreateParameterSql("@NombreArchivo", SqlDbType.VarChar, 300, ParameterDirection.Input, false, null, DataRowVersion.Default, nombreArchivoNuevo)
                 };
 
                 using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoUsuarios", CommandType.StoredProcedure, parametros, _connectionString))

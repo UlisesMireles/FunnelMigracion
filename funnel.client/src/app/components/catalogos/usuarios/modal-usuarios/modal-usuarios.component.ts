@@ -34,6 +34,7 @@ export class ModalUsuariosComponent {
     selectedFileOriginal: File | null = null;
     formModificado: boolean = false;
     showPassword = false;
+    showConfirmPassword = false;
 
     @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() closeModal: EventEmitter<void> = new EventEmitter();
@@ -279,6 +280,8 @@ export class ModalUsuariosComponent {
         next: (result: any) => {
           if (result.result && this.selectedFile instanceof File) {
             this.imagenService.actualizarImagenPerfil(nombreArchivo);
+          }else if (this.selectedFile == null || this.selectedFile == undefined) {
+            this.imagenService.actualizarImagenPerfil('')
           }
           this.result.emit(result);
           this.close();
@@ -433,5 +436,7 @@ export class ModalUsuariosComponent {
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
-  
+  toggleConfirmPasswordVisibility() {
+  this.showConfirmPassword = !this.showConfirmPassword;
+}  
 }

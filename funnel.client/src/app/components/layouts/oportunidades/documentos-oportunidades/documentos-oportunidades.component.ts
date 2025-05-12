@@ -95,7 +95,7 @@ export class DocumentosOportunidadesComponent {
           const fechaTemporal = new Date(this.fecha);
           fechaTemporal.setDate(fechaTemporal.getDate() + 30);
           this.fechaLimite = fechaTemporal;
-          this.mensaje = 'Estos archivos estaran disponibles hasta el día ' + this.fechaLimite.toLocaleDateString();
+          this.mensaje = 'Estos archivos estarán disponibles hasta el día ' + this.fechaLimite.toLocaleDateString();
         }
       }
 

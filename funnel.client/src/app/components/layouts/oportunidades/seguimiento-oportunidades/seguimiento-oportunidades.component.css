@@ -388,3 +388,16 @@
   height: auto; /* O el valor por defecto que necesites */
 }
 
+/* Estilo para alinear el botón a la derecha en la orilla */
+.button-pdf.align-right {
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin-top: 100px; /* Ajusta según sea necesario */
+  margin-right: 35px;
+}
+
+.button-pdf.default-position {
+  position: static;
+  margin-left: 0px;
+}

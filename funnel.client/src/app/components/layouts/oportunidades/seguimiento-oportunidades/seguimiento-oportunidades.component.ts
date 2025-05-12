@@ -15,7 +15,7 @@ import { baseOut } from '../../../../interfaces/utils/utils/baseOut';
 export class SeguimientoOportunidadesComponent {
 
   get isTerminado(): boolean {
-    return this.oportunidadForm.get('idEstatusOportunidad')?.value === 2; 
+    return this.oportunidadForm.get('idEstatusOportunidad')?.value !== 1; 
   }
 
   constructor(private oportunidadService: OportunidadesService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder, private cdr: ChangeDetectorRef) { }

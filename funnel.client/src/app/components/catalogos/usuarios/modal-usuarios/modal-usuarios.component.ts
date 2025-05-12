@@ -280,6 +280,8 @@ export class ModalUsuariosComponent {
         next: (result: any) => {
           if (result.result && this.selectedFile instanceof File) {
             this.imagenService.actualizarImagenPerfil(nombreArchivo);
+          }else if (this.selectedFile == null || this.selectedFile == undefined) {
+            this.imagenService.actualizarImagenPerfil('')
           }
           this.result.emit(result);
           this.close();

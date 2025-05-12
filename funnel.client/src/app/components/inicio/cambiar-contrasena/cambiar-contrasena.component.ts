@@ -240,7 +240,7 @@ export class CambiarContrasenaComponent implements OnInit {
           if(this.fotoSeleccionada) {
             this.imagenService.actualizarImagenPerfil(this.informacionUsuario.archivoImagen!);
           }
-          else if (this.fotoSeleccionada == null && response.errorMessage == "Se ha actualizado la fotografía correctamente.") {
+          else if (this.fotoSeleccionada == null && response.errorMessage == "La imagen se eliminó correctamente.") {
             this.imagenService.actualizarImagenPerfil('')
           }
           this.formCambiarPassword.reset();

@@ -37,7 +37,14 @@ export class DocumentosOportunidadesComponent {
   
     historialOportunidad: Archivos[] = [];
     archivosSeleccionados: File[] = [];
+  
+    nombre: string = '';
     nombreOportunidad: string = '';
+    fecha: Date | null = null;
+    fechaLimite: Date | null = null;
+    numeroArchivos: number = 0;
+    mensaje: string = '';
+    idOportunidad = 0;
     maxArchivos = 5;
 
     @ViewChild('fileInput') fileInput!: ElementRef;
@@ -58,8 +65,15 @@ export class DocumentosOportunidadesComponent {
         if (this.oportunidad.idOportunidad) {
           this.getDocumentos(this.oportunidad.idOportunidad);
         }
-          this.nombreOportunidad = this.oportunidad.nombre || 'Sin nombre';
-        
+          this.nombre = this.oportunidad.nombre || 'Sin nombre';
+          this.nombreOportunidad = this.oportunidad.nombreOportunidad || 'Sin nombre';
+          this.fecha = this.oportunidad.fechaEstimadaCierre || null;
+          this.idOportunidad = this.oportunidad.idEstatusOportunidad || 0;
+          this.numeroArchivos = this.oportunidad.totalArchivos || 0;
+          this.mensaje = '';
+          if (this.idOportunidad > 1 && this.numeroArchivos > 0) {
+            this.calcularFechaLimite();
+          }
       }
   
       onDialogShow() {
@@ -75,6 +89,16 @@ export class DocumentosOportunidadesComponent {
           this.cdr.detectChanges();
         }
       }
+
+      calcularFechaLimite(): void {
+        if (this.fecha) {
+          const fechaTemporal = new Date(this.fecha);
+          fechaTemporal.setDate(fechaTemporal.getDate() + 30);
+          this.fechaLimite = fechaTemporal;
+          this.mensaje = 'Estos archivos estarán disponibles hasta el día ' + this.fechaLimite.toLocaleDateString();
+        }
+      }
+
   
       close() {
         this.archivosSeleccionados = []; 

@@ -14,6 +14,10 @@ import { baseOut } from '../../../../interfaces/utils/utils/baseOut';
 })
 export class SeguimientoOportunidadesComponent {
 
+  get isTerminado(): boolean {
+    return this.oportunidadForm.get('idEstatusOportunidad')?.value === 2; 
+  }
+
   constructor(private oportunidadService: OportunidadesService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder, private cdr: ChangeDetectorRef) { }
   @Input() oportunidad!: Oportunidad;
   @Input() oportunidades: Oportunidad[] = [];

@@ -185,5 +185,12 @@ export class SeguimientoOportunidadesComponent {
     this.cdr.detectChanges();
   }
 
+  onComentarioInput() {
+    const comentarioControl = this.oportunidadForm.get('comentario');
+    if (comentarioControl?.touched && comentarioControl?.invalid) {
+      comentarioControl.markAsUntouched(); // Quita el estado "touched" para ocultar errores
+    }
+  }
+
 }
 

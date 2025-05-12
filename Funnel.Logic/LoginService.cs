@@ -3,6 +3,7 @@ using Funnel.Logic.Interfaces;
 using Funnel.Logic.Utils;
 using Funnel.Models.Base;
 using Funnel.Models.Dto;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -161,9 +162,9 @@ namespace Funnel.Logic
 
         }
 
-        public async Task<BaseOut> GuardarImagen(int idUsuario, string nombreArchivo)
+        public async Task<BaseOut> GuardarImagen(int idUsuario, IFormFile imagen, UsuarioDto request)
         {
-            return await _loginData.GuardarImagen(idUsuario, nombreArchivo);
+            return await _loginData.GuardarImagen(idUsuario, imagen, request);
         }
 
         public async Task<BaseOut> ReenviarCodigo(string correo)

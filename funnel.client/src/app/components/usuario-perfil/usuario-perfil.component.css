@@ -152,6 +152,8 @@ ul.subm>li>a {
   text-align: center;
   width: 280px;
   border-radius: 5px;
+  top:50px;
+  left: 64vw;
 }
 
 .user-panel.show {
@@ -184,7 +186,16 @@ ul.subm>li>a {
   border-radius: 0;
 }
 
-
+@media (max-width: 1528px) {
+  .user-panel {
+    left: 60vw; 
+  }
+}
+@media (max-width: 1328px) {
+  .user-panel {
+    left: 57vw; 
+  }
+}
 @media (max-width: 991.98px) {
   .navbar-collapse {
       position: absolute;
@@ -195,7 +206,7 @@ ul.subm>li>a {
       padding: 1rem;
       z-index: 1000;
   }
-
+  
   .menu-center {
       width: 100%;
   }
@@ -235,13 +246,7 @@ ul.subm>li>a {
       justify-content: center;
   }
 
-  .user-panel {
-      position: absolute;
-      top: calc(95% + 1rem);
-      width: 100%;
-      margin: 0;
-      padding: 0;
-  }
+  
 
   .user-header {
       padding: 20px 15px;
@@ -277,15 +282,7 @@ ul.subm>li>a {
 }
 
 @media (min-width: 992px) {
-  .user-panel {
-      top: 20px;
-      /* right: 10px; */
-      width: 280px;
-      margin: 12px 3px;
-      border-radius: 5px;
-      padding: 0;
-      left: 847px;
-  }
+  
 
   .user-header {
       padding: 15px;
@@ -314,15 +311,7 @@ ul.subm>li>a {
 }
 
 @media (max-height: 600px) {
-  .user-panel {
-      top: 20px;
-      right: 2px;
-      width: 280px;
-      margin: 12px 3px;
-      border-radius: 5px;
-      padding: 0;
-  }
-
+  
   .user-header {
       padding: 15px;
   }
@@ -365,11 +354,11 @@ ul.subm>li>a {
   /* left: calc(40% + 10px); */
   top: 26px;
   z-index: 1000;
-  left: 40vw;
+  left: 82vw;
 }
 
-@media (max-width: 1280px) {
+/* @media (max-width: 1280px) {
   .user-panel-modal {
     left: 10vw !important;
   }
-}
+} */

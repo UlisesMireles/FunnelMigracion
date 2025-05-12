@@ -58,18 +58,23 @@
         [class.maximized-padding]="maximized">
           <div class="row" [class.justify-content-end]="oportunidadForm.get('idEstatusOportunidad')?.value !== 1">
             <div class="col-sm-8" *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value === 1">
-              <textarea pInputText class="seguimiento-textarea" formControlName="comentario"></textarea>
+              <textarea pInputText class="seguimiento-textarea" formControlName="comentario" (input)="onComentarioInput()" ></textarea>
               <div class="d-flex justify-content-between mt-1">
                 <div>
-                  <div *ngIf="oportunidadForm.get('comentario')?.invalid && oportunidadForm.get('comentario')?.touched"
-                  class="text-danger mt-1">
-                  <small *ngIf="oportunidadForm.get('comentario')?.errors?.['required']">
-                    El comentario es obligatorio.
+                  <small *ngIf="wordCount < 10 && !(oportunidadForm.get('comentario')?.invalid && oportunidadForm.get('comentario')?.touched)" 
+                    class="text-muted">
+                    Escribe un comentario de al menos 10 palabras
                   </small>
-                  <small *ngIf="oportunidadForm.get('comentario')?.errors?.['minWords']">
-                    El comentario debe tener al menos 10 palabras.
-                  </small>
-                </div>
+                  <div 
+                    *ngIf="oportunidadForm.get('comentario')?.invalid && oportunidadForm.get('comentario')?.touched"
+                    class="text-danger mt-1">
+                    <small *ngIf="oportunidadForm.get('comentario')?.errors?.['required']">
+                      El comentario es obligatorio.
+                    </small>
+                    <small *ngIf="oportunidadForm.get('comentario')?.errors?.['minWords']">
+                      El comentario debe tener al menos 10 palabras.
+                    </small>
+                  </div>
                 </div>
                 <small class="text-muted">
                   Palabras: {{ wordCount }}

@@ -5,8 +5,8 @@
   [closable]="true" 
   [maximizable]="true"
   [style]="{
-    width: maximized ? '100vw' : '68rem',
-    height: maximized ? '100vh' : (historialOportunidad.length > 0 ? '50rem' : '30rem')
+    width: maximized ? '100vw' : '70rem',
+    height: maximized ? '100vh' :  '45rem'
   }" 
   [ngClass]="{'maximized': maximized}"
   (onHide)="close()" 
@@ -24,7 +24,7 @@
     <div class="row">
       <div>
         <label class="margen text-left nombre-destacado">
-          {{ oportunidadForm.get('nombre')?.value }}
+          {{ nombre }}
         </label>
       </div>
     </div>
@@ -82,7 +82,11 @@
         </div>
       </div>
     </form>
-
+              <div class="d-flex justify-content-between mt-1">
+                <small class="text-muted">
+                  {{ mensaje }}
+                </small>
+              </div>
     <div class="row mt-3">
       <div class="col-sm-12" *ngIf="historialOportunidad.length > 0; else noComments">
         <table class="table table-bordered">

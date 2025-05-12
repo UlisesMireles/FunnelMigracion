@@ -56,3 +56,9 @@
   resize: none;
   height: 60px !important;
 }
+
+.p-dialog-content {
+  overflow-x: hidden !important;
+  overflow-y: auto !important;     
+}
+ 

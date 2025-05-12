@@ -152,7 +152,8 @@ ul.subm>li>a {
   text-align: center;
   width: 280px;
   border-radius: 5px;
-  top:30px;
+  top:50px;
+  left: 67vw;
 }
 
 .user-panel.show {
@@ -185,6 +186,11 @@ ul.subm>li>a {
   border-radius: 0;
 }
 
+@media (max-width: 1528px) {
+  .user-panel {
+    left: 62vw; 
+  }
+}
 
 @media (max-width: 991.98px) {
   .navbar-collapse {
@@ -196,7 +202,7 @@ ul.subm>li>a {
       padding: 1rem;
       z-index: 1000;
   }
-
+  
   .menu-center {
       width: 100%;
   }

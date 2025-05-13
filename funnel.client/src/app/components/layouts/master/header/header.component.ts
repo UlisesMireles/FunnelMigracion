@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { environment } from '../../../../../environments/environment';
-import { AsistenteService } from '../../../../services/asistenteOperacion/asistente.service';
+import { AsistenteService } from '../../../../services/asistentes/asistente.service';
 import { ModalService } from '../../../../services/modal-perfil.service';
 import { Router } from '@angular/router';
 import { ModalOportunidadesService } from '../../../../services/modalOportunidades.service';

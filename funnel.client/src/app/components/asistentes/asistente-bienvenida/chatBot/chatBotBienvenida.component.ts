@@ -16,6 +16,7 @@ import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-chatBotBienvenida',
+  standalone: false,
   templateUrl: './chatBotBienvenida.component.html',
   styleUrls: ['./chatBotBienvenida.component.css']
 })

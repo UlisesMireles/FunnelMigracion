@@ -99,9 +99,11 @@ import { ColumnasDisponiblesComponent } from './components/utils/tablas/columnas
 import { HeaderOpcionesComponent } from './components/utils/tablas/header-opciones/header-opciones.component';
 
 
-//Asistente
+//Asistentes
 import { AsistenteOperacionComponent } from './components/asistentes/asistente-operacion/asistente-operacion.component';
 import { ChatBotAsistenteOperacionComponent } from './components/asistentes/asistente-operacion/chatBot/chatBotAsistenteOperacion.component';
+import { AsistenteBienvenidaComponent } from './components/asistentes/asistente-bienvenida/asistente-bienvenida.component';
+import { ChatBotBienvenidaComponent } from './components/asistentes/asistente-bienvenida/chatBot/chatBotBienvenida.component';
 
 export function getBaseUrl() {
   return 'https://localhost:49834/'
@@ -168,7 +170,8 @@ registerLocaleData(localeEs, 'es-MX');
     PermisosComponent,
     AsistenteOperacionComponent,
     ChatBotAsistenteOperacionComponent,
-
+    AsistenteBienvenidaComponent,
+    ChatBotBienvenidaComponent,
     AdministracionHerramientasComponent,
     ReporteIngresosUsuariosComponent,
     EjecucionProcesosComponent,

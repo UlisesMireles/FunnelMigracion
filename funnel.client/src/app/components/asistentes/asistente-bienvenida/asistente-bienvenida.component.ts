@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { SideNavChatFunnelService } from '../../../services/asistentes/sidenavChatFunnel.service';
 import { environment } from '../../../../environments/environment';
 import { ChatBotBienvenidaComponent } from './chatBot/chatBotBienvenida.component';
@@ -13,6 +13,7 @@ export class AsistenteBienvenidaComponent implements OnInit {
   @ViewChild(ChatBotBienvenidaComponent) chatBotAsistente!: ChatBotBienvenidaComponent;
   isProd = environment.production;
   baseUrlAssets = environment.baseUrlAssetsChatbot;
+  @Output() OncerrarChat = new EventEmitter<void>();
   version: string = '';
 
   constructor(public sideNavService: SideNavChatFunnelService,private cdRef: ChangeDetectorRef, private asistentesService: AsistentesAdministradorService) {
@@ -43,4 +44,11 @@ export class AsistenteBienvenidaComponent implements OnInit {
       error: (err) => console.error('Error al obtener la versión:', err)
     });
   }
+  onCerrarChat() {
+    const chatContainer = document.getElementById("chat-container");
+    if (chatContainer) {
+      chatContainer.classList.add("d-none");
+    }
+  }
+
 }

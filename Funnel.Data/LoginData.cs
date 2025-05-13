@@ -332,7 +332,7 @@ namespace Funnel.Data
                     }
                 }
 
-                result.ErrorMessage = "La imagen se eliminó correctamente.";
+                result.ErrorMessage = "La imagen se actualizó correctamente.";
                 result.Id = 1;
                 result.Result = true;
             }

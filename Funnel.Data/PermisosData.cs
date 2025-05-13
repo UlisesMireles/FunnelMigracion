@@ -138,6 +138,7 @@ namespace Funnel.Data
                     dto.Pagina = ComprobarNulos.CheckStringNull(reader["Pagina"]);
                     dto.Ruta = ComprobarNulos.CheckStringNull(reader["Ruta"]);
                     dto.Icono = ComprobarNulos.CheckStringNull(reader["Icono"]);
+                    dto.ColorIcono = ComprobarNulos.CheckStringNull(reader["ColorIcono"]);
 
                     result.Add(dto);
                 }

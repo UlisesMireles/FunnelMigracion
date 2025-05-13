@@ -36,8 +36,7 @@
 <div class="chatbot-message-box" [class.active]="loadOpciones"  
   [class.has-options]="loadOpciones"  data-role="chatbot">
   <input type="text" class="chatbot-input" [(ngModel)]="pregunta" placeholder="¿Cómo puedo ayudarte el día de hoy?"
-    (keydown.enter)="consultaMensajeOpenIa()"
-    [disabled]="asistenteSeleccionado.idBot <= 0">
+    (keydown.enter)="consultaMensajeOpenIa()">
   <mat-icon matSuffix class="iconoChatBot"
     [ngClass]="{'iconoChatBotTemaAsistenteOperacion': asistenteSeleccionado.idBot == 4}"
     (click)="loadOpciones = !loadOpciones">more_horiz</mat-icon>

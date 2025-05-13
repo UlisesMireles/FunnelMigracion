@@ -239,8 +239,7 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
   //#endregion
 
   consultaMensajeOpenIa() {
-    if (this.asistenteSeleccionado.idBot == 0 || this.asistenteSeleccionado.idBot == -1 || this.lsPreguntasPorCategoria === undefined || !this.pregunta)
-      return;
+    if (!this.pregunta?.trim()) return;
     if (!this.isConsultandoOpenIa) {
       let findIndexFiltroFaq = this.chatHistorial.findIndex(f => f.rol === 'preguntasPorCat');
       if (findIndexFiltroFaq !== -1) {

@@ -69,7 +69,7 @@ export class ModalOportunidadesComponent {
         fechaEstimadaCierreOriginal: ['', Validators.required],
         idEjecutivo: ['', Validators.required],
         idContactoProspecto: ['', Validators.required],
-        comentario: [''],
+        comentario: ['', [Validators.required, Validators.minLength(10)]],
         idEmpresa: [this.loginService.obtenerIdEmpresa()],
         probabilidad: ['0'],
         bandera: ['INS-OPORTUNIDAD'],
@@ -100,7 +100,7 @@ export class ModalOportunidadesComponent {
         fechaEstimadaCierreOriginal: [this.oportunidad.fechaEstimadaCierreOriginal ? new Date(this.oportunidad.fechaEstimadaCierreOriginal) : '', Validators.required],
         idEjecutivo: [this.oportunidad.idEjecutivo, Validators.required],
         idContactoProspecto: [this.oportunidad.idContactoProspecto, Validators.required],
-        comentario: ['', Validators.required],
+        comentario: ['', [Validators.required, Validators.minLength(10)]],
         idEmpresa: [this.loginService.obtenerIdEmpresa()],
         probabilidad: [this.oportunidad.probabilidad],
         idEstatus: [this.oportunidad.idEstatusOportunidad]
@@ -204,6 +204,12 @@ export class ModalOportunidadesComponent {
 
   guardarOportunidad() {
     this.markAllAsTouched(this.oportunidadForm);
+
+    const comentario = this.oportunidadForm.get('comentario')?.value;
+    if (!comentario || comentario.length < 10) {
+      this.mostrarToastError("El comentario debe tener al menos 10 caracteres");
+      return;
+    }
 
     if (this.oportunidadForm.invalid) {
       this.mostrarToastError("Es necesario llenar los campos indicados.");

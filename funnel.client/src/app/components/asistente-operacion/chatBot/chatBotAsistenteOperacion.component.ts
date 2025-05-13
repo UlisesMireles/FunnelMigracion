@@ -40,7 +40,7 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
 
   chatHistorial: ChatHistorial[] = [
     { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨" },
-    { rol: "asistente", mensaje: "Bienvenido(a) al asistente virtual del sistema de ventas Funnel. Estoy aquí para ayudarte a optimizar tu proceso de ventas. Por favor, selecciona una de las siguientes opciones para comenzar: ¿En qué puedo asistirte hoy?:" }
+    { rol: "asistente", mensaje: "Bienvenido(a) al asistente virtual del sistema de ventas Funnel. Estoy aquí para ayudarte. Puedes escribir tu pregunta directamente o explorar por categorías si lo prefieres." }
   ];
 
   lsRevisarCategorias: any[] = ['Sí', 'No'];
@@ -239,8 +239,7 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
   //#endregion
 
   consultaMensajeOpenIa() {
-    if (this.asistenteSeleccionado.idBot == 0 || this.asistenteSeleccionado.idBot == -1 || this.lsPreguntasPorCategoria === undefined || !this.pregunta)
-      return;
+    if (!this.pregunta?.trim()) return;
     if (!this.isConsultandoOpenIa) {
       let findIndexFiltroFaq = this.chatHistorial.findIndex(f => f.rol === 'preguntasPorCat');
       if (findIndexFiltroFaq !== -1) {
@@ -266,7 +265,7 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
           this.chatHistorial.push({ rol: "preguntasPorCat", mensaje: "" });
         }
       } else {
-        const preguntaEncontrada = this.lsPreguntasPorCategoria.find(f => f.pregunta.toLocaleLowerCase().indexOf(this.consultaAsistente.pregunta.toLocaleLowerCase()) !== -1)
+        const preguntaEncontrada = this.lsPreguntasPorCategoria?.find?.(f => f.pregunta.toLocaleLowerCase().includes(this.consultaAsistente.pregunta.toLocaleLowerCase()));
         if (preguntaEncontrada) {
           if (this.asistenteSeleccionado.documento) {
             this.chatHistorial.push({ rol: "asistente", mensaje: preguntaEncontrada.respuesta });

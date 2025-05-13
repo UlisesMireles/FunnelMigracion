@@ -43,6 +43,7 @@ namespace Funnel.Logic
                 IdMenu = x.Key,
                 Nombre = x.First().Menu,
                 Icono = x.First().Icono,
+                ColorIcono = x.First().ColorIcono,
                 Tooltip = x.First().Menu,
                 SubMenu = x.Select(y => new PaginasDto
                 {

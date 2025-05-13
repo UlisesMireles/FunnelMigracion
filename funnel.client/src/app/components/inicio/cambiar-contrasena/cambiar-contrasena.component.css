@@ -128,3 +128,9 @@
     border-color: #d4d4d4; 
     color: black; 
   }
+
+
+.btn-close-white {
+    filter: invert(1) grayscale(100%) brightness(200%);
+    opacity: 1;
+}

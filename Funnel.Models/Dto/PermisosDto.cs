@@ -17,6 +17,7 @@
         public bool? Invitado { get; set; }
         public string? Ruta { get; set; }
         public string? Icono { get; set; }
+        public string? ColorIcono { get; set; }
 
     }
     public class MenuPermisos
@@ -26,6 +27,7 @@
         public string Ruta { get; set; }
         public string Tooltip { get; set; }
         public string Icono { get; set; }
+        public string ColorIcono { get; set; }
         public List<PaginasDto> SubMenu { get; set; }
     }
     public class PaginasDto

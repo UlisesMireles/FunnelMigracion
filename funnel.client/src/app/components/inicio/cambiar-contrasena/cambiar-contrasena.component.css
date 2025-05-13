@@ -133,4 +133,7 @@
 .btn-close-white {
     filter: invert(1) grayscale(100%) brightness(200%);
     opacity: 1;
+    right: -42rem; 
+    top: 50%; 
+    transform: translateY(-50%);
 }

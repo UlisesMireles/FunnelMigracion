@@ -61,4 +61,11 @@
   overflow-x: hidden !important;
   overflow-y: auto !important;     
 }
+
+.p-splitbutton-button.p-button {
+  width: 66px!important;
+}
+.p-tieredmenu {
+  min-width: 100px !important;
+}
  

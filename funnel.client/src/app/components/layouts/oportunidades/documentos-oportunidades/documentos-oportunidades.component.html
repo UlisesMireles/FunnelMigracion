@@ -35,6 +35,8 @@
     </div>
     
     <br />
+    <br />
+    <br />
     <form [formGroup]="oportunidadForm">
       <div class="row align-items-center g-0" *ngIf="!isTerminado">
         <div class="col-sm-12 d-flex flex-nowrap align-items-center"> 
@@ -84,13 +86,13 @@
       </div>
     </form>
     <div class="d-flex justify-content-between mt-1">
-      <small class="text-muted">
-        {{ mensaje }}
+      <small class="text-muted font-size-md" [innerHTML]="'Estos archivos estarán disponibles hasta el día <strong>' 
+        + (fechaLimite | date:'dd/MM/yyyy') + '</strong>'">
       </small>
-      <small class="text-muted" *ngIf="diasRestantes !== null">
+      <small class="text-muted font-size-md" *ngIf="diasRestantes !== null">
         Días Restantes: {{ diasRestantes }}
       </small>
-    </div>      
+    </div>   
     <div class="row mt-3">
       <div class="col-sm-12" *ngIf="historialOportunidad.length > 0; else noComments">
         <table class="table table-bordered">

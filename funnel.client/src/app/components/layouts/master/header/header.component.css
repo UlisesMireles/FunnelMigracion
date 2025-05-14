@@ -38,8 +38,8 @@
 
 .btn-chat{
   position: absolute;
-  right: 230px;
-  width: 60px;
+  right: 150px;
+  width: 100px;
   height: 26px;
   background: rgb(20, 176, 15);
   color: #ffffff;
@@ -306,3 +306,4 @@
   font-size: 12px;
   height: 26px;
 }
+

@@ -1,14 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { ConsultaAsistente, ConsultaAsistenteDto } from '../../interfaces/asistenteOperacion/consultaAsistente';
+import { ConsultaAsistente, ConsultaAsistenteDto } from '../../interfaces/asistentes/consultaAsistente';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OpenIaService {
-  public urlBotOperacion = environment.baseUrlBotOperacion;
+  public urlBotsFunnel = environment.baseUrlBotsFunnel;
   private urlPython = environment.baseUrlPython;
 
   constructor(private http: HttpClient) {
@@ -16,11 +16,11 @@ export class OpenIaService {
   }
 
   obtenOpenIaConsultaAsistente(data : ConsultaAsistenteDto): Observable<ConsultaAsistenteDto>{
-    return this.http.post<ConsultaAsistenteDto>(this.urlBotOperacion + '/api/WebApiBotFunnel/OpenIA',data);
+    return this.http.post<ConsultaAsistenteDto>(this.urlBotsFunnel + '/api/WebApiBotFunnel/OpenIA',data);
   }
 
   getOpenIaConsultaAsistente(data : ConsultaAsistente): Observable<ConsultaAsistente>{
-    return this.http.post<ConsultaAsistente>(this.urlBotOperacion + '/api/WebApiBotWP/OpenIAWP',data);
+    return this.http.post<ConsultaAsistente>(this.urlBotsFunnel + '/api/WebApiBotWP/OpenIAWP',data);
   }
 
   asistentePython(data : ConsultaAsistente): Observable<ConsultaAsistente>{
@@ -28,6 +28,6 @@ export class OpenIaService {
   }
 
   obtenerPreguntas() {
-    return this.http.get(this.urlBotOperacion + '/api/WebApiBotWP/ObtenerPreguntasWP');
+    return this.http.get(this.urlBotsFunnel + '/api/WebApiBotWP/ObtenerPreguntasWP');
   }
 }

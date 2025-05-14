@@ -291,7 +291,19 @@
         </div>
       </div>
     </div>
-
+    
+    <div class="col-3 chatbot">
+      <!-- Botón de chat-->
+      <button class="btn-chat" (click)="toggleChat()">
+        <i class="bi bi-chat-fill"></i> 
+      </button>
+      <!-- Contenedor del chatbot -->
+      <ng-container *ngIf="enableAsistenteBienvenida">
+        <div id="chat-container" class="chatbot-window"  #chatContainer>
+          <app-asistente-bienvenida></app-asistente-bienvenida>
+        </div>
+      </ng-container>
+    </div>
   </main>
 </body>
 

@@ -73,20 +73,18 @@
 .app-chat-close-icon {
     cursor: pointer;
     font-size: 35px !important;
+    margin-top: -10px;
 }
 
 .app-chat-reset-icon {
     cursor: pointer;
     font-size: 35px !important;
+    margin-top: -10px;
+    margin-left: 40px;
 }
-.text-online{
-    margin-top:-5px;
-}
-.app-online-dot {
-    color: rgb(10, 199, 10);
-    font-size: 5px;
-    padding-left: .25rem !important;
-    padding-top: .25rem !important;
+.bi-list::before {
+    content: "\f479";
+    color: #28a745;
 }
 
 /* mobiles (landscape and portrait) */
@@ -115,9 +113,9 @@
 }
 
 .app-chat-version {
-    font-size: 12px;
+    font-size: 10px;
     color: #ccc;
     position: absolute;
-    right: 10px;
-    top: 0px;
+    margin-right: 3px;
+    top: 6px;
 }

@@ -64,15 +64,15 @@
 }
 
 .chatbot-window {
-  width: 500px;
-  height: 490px;
+  width: 490px;
+  height: 515px;
   background: white !important;
   position: fixed;
   top: 50px;
   right: 20px;
   border-radius: 10px;
   overflow: visible !important;
-  z-index: 1000;
+  z-index: 5000;
   transition: all 0.3s ease;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }

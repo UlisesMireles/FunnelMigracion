@@ -1,8 +1,8 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
-import { SideNavChatFunnelService } from '../../services/asistenteOperacion/sidenavChatFunnel.service';
+import { SideNavChatFunnelService } from '../../../services/asistentes/sidenavChatFunnel.service';
 import { ChatBotAsistenteOperacionComponent } from './chatBot/chatBotAsistenteOperacion.component';
-import { environment } from '../../../environments/environment';
-import { AsistentesAdministradorService } from '../../services/asistenteOperacion/asistentesAdministrador.service';
+import { environment } from '../../../../environments/environment';
+import { AsistentesAdministradorService } from '../../../services/asistentes/asistentesAdministrador.service';
 
 @Component({
   standalone: false,

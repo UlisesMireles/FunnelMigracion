@@ -110,9 +110,8 @@
   <div class="row m-0 opcionesClass">
     <div class="col-6 offset-6" [ngClass]="loadOpciones ? 'conditionalOpen' : 'conditionalClose'">
       <div class="row align-items-center">
-        <small class="col-6"><b>Opciones:</b></small>
         <div class="col-6 text-end">
-          <i class="bi bi-trash opcionesIconTrash"
+          <i class="bi bi-trash opcionesIconTrash " style="margin-left: 200px;"
              (click)="resetConversation()" 
              matTooltip="Eliminar historial">
           </i>

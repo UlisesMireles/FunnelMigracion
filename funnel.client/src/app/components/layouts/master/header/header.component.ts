@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { environment } from '../../../../../environments/environment';
 import { AsistenteService } from '../../../../services/asistentes/asistente.service';
 import { ModalService } from '../../../../services/modal-perfil.service';
@@ -49,7 +49,7 @@ export class HeaderComponent implements OnInit {
 
   items: MenuItem[];
   @ViewChild('splitBtn') splitButton!: SplitButton;
-
+  @ViewChild('chatContainer') chatContainer!: ElementRef;
   constructor(private asistenteService: AsistenteService, private modalService: ModalService, private router: Router,
     private messageService: MessageService, private modalOportunidadesService: ModalOportunidadesService) {
     this.items = [
@@ -79,7 +79,17 @@ export class HeaderComponent implements OnInit {
     // Si necesitas notificar al servicio
     this.asistenteService.asistenteSubject.next(this.enableAsistenteOperacion ? 1 : -1);
   }
+  
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (!this.enableAsistenteOperacion) return;
 
+    const targetElement = event.target as HTMLElement;
+
+    if (this.chatContainer && !this.chatContainer.nativeElement.contains(targetElement)) {
+      this.enableAsistenteOperacion = false;
+    }
+  }
   toggleOptions() {
     this.optionsVisible = !this.optionsVisible;
   }

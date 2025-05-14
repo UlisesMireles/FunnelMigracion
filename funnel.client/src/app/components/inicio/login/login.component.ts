@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer, SafeHtml, SafeStyle } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -49,7 +48,7 @@ export class LoginComponent implements OnInit {
     privacidadTerminos: false,
     recaptcha: ''
   };
-
+  @ViewChild('chatContainer') chatContainer!: ElementRef;
   constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private authService: LoginService, private sanitizer: DomSanitizer, private snackBar: MatSnackBar, private messageService: MessageService,
               private modalService: ModalService, private asistenteService: AsistenteService
   ) {}
@@ -275,5 +274,14 @@ export class LoginComponent implements OnInit {
     // Si necesitas notificar al servicio
     this.asistenteService.asistenteSubject.next(this.enableAsistenteBienvenida ? 1 : -1);
   }
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (!this.enableAsistenteBienvenida) return;
 
+    const targetElement = event.target as HTMLElement;
+
+    if (this.chatContainer && !this.chatContainer.nativeElement.contains(targetElement)) {
+      this.enableAsistenteBienvenida = false;
+    }
+  }
 }

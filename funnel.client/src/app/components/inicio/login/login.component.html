@@ -299,7 +299,7 @@
       </button>
       <!-- Contenedor del chatbot -->
       <ng-container *ngIf="enableAsistenteBienvenida">
-        <div id="chat-container" class="chatbot-window">
+        <div id="chat-container" class="chatbot-window"  #chatContainer>
           <app-asistente-bienvenida></app-asistente-bienvenida>
         </div>
       </ng-container>

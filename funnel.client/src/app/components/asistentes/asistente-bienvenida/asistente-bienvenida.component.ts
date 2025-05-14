@@ -3,6 +3,7 @@ import { SideNavChatFunnelService } from '../../../services/asistentes/sidenavCh
 import { environment } from '../../../../environments/environment';
 import { ChatBotBienvenidaComponent } from './chatBot/chatBotBienvenida.component';
 import { AsistentesAdministradorService } from '../../../services/asistentes/asistentesAdministrador.service';
+import { AsistenteService } from '../../../services/asistentes/asistente.service';
 @Component({
   selector: 'app-asistente-bienvenida',
   standalone: false,
@@ -16,7 +17,9 @@ export class AsistenteBienvenidaComponent implements OnInit {
   @Output() OncerrarChat = new EventEmitter<void>();
   version: string = '';
 
-  constructor(public sideNavService: SideNavChatFunnelService,private cdRef: ChangeDetectorRef, private asistentesService: AsistentesAdministradorService) {
+  constructor(public sideNavService: SideNavChatFunnelService,private cdRef: ChangeDetectorRef, private asistentesService: AsistentesAdministradorService, 
+    private asistenteSubjectService: AsistenteService
+  ) {
   }
 
   ngOnInit() {
@@ -45,6 +48,7 @@ export class AsistenteBienvenidaComponent implements OnInit {
     });
   }
   onCerrarChat() {
+    this.asistenteSubjectService.asistenteBienvenidaSubject.next(-1);
     const chatContainer = document.getElementById("chat-container");
     if (chatContainer) {
       chatContainer.classList.add("d-none");

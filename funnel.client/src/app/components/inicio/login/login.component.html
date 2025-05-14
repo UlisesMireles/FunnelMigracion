@@ -299,7 +299,7 @@
       </button>
       <!-- Contenedor del chatbot -->
       <ng-container *ngIf="(asistenteService.asistenteBienvenidaObservable | async) === 1">
-        <div id="chat-container" class="chatbot-window"  #chatContainer>
+        <div id="chat-container" class="chatbot-window" #chatContainer>
           <app-asistente-bienvenida></app-asistente-bienvenida>
         </div>
       </ng-container>

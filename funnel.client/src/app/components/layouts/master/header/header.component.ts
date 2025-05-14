@@ -46,11 +46,13 @@ export class HeaderComponent implements OnInit {
   modalVisibleContactos: boolean = false;
   contactos: Contacto[] = [];
   contactoSeleccionado!: Contacto;
-
+  private asistenteSubscription!: Subscription;
+  asistenteObservableValue: number = -1;
   items: MenuItem[];
   @ViewChild('splitBtn') splitButton!: SplitButton;
   @ViewChild('chatContainer') chatContainer!: ElementRef;
-  constructor(private asistenteService: AsistenteService, private modalService: ModalService, private router: Router,
+
+  constructor(public asistenteService: AsistenteService, private modalService: ModalService, private router: Router,
     private messageService: MessageService, private modalOportunidadesService: ModalOportunidadesService) {
     this.items = [
       {
@@ -73,11 +75,17 @@ export class HeaderComponent implements OnInit {
       },
     ];
   }
-
+  ngOnDestroy(): void {
+    if (this.asistenteSubscription) {
+      this.asistenteSubscription.unsubscribe();
+    }
+  }
   toggleChat(): void {
-    this.enableAsistenteOperacion = !this.enableAsistenteOperacion;
-    // Si necesitas notificar al servicio
-    this.asistenteService.asistenteSubject.next(this.enableAsistenteOperacion ? 1 : -1);
+    this.asistenteSubscription = this.asistenteService.asistenteObservable.subscribe(value => {
+      this.asistenteObservableValue = value;
+    });
+  
+    this.asistenteService.asistenteSubject.next(this.asistenteObservableValue * (-1));
   }
   
   @HostListener('document:click', ['$event'])
@@ -95,6 +103,7 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    
     const perfil = {
       nombre: localStorage.getItem('username')!,//'Perfil',
       ruta: '/perfil',

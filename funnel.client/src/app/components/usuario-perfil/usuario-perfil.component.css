@@ -145,7 +145,7 @@ ul.subm>li>a {
 .user-panel {
   display: none;
   position: absolute;
-  background-color: #D2D6DE;
+  background-color: #DDE1E7;
   color: black;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 1000;
@@ -161,7 +161,7 @@ ul.subm>li>a {
 }
 
 .user-header {
-  background-color: #3C8DBC;
+  background-color: #F0F2F5;
   color: white;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
@@ -175,6 +175,7 @@ ul.subm>li>a {
   margin: 10px 0;
   font-size: 16px;
   font-weight: bold;
+  color: #000;
 }
 
 .btnmenuuser {

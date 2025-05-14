@@ -19,7 +19,8 @@
         <span *ngIf="isExpanded">{{ item.nombre }}</span>
 
         <!-- Solo mostrar submenú si existe y tiene elementos -->
-        <ul class="submenu visible" [ngStyle]="item.subMenu.length > 2 ? {'transform': 'translateY(40%)'}: {'transform': 'translateY(33%)'}" [ngClass]="isExpanded ? 'subMenuExpanded' : ''" *ngIf="item.subMenu && item.subMenu.length > 0 && hoveredMenu === i" >
+        <ul class="submenu visible" [ngStyle]="item.subMenu.length > 2 ? {'transform': 'translateY(40%)'}: {'transform': 'translateY(33%)'}" 
+          [ngClass]="isExpanded ? 'subMenuExpanded' : ''" *ngIf="item.subMenu && item.subMenu.length > 0 && hoveredMenu === i" >
           <!-- Encabezado con el nombre del menú como título -->
           <!-- <li class="submenu-header">{{ item.pagina }}</li> -->
 

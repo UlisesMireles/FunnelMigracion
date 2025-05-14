@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer, SafeHtml, SafeStyle } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -10,6 +10,7 @@ import { SolicitudRegistroSistema } from '../../../interfaces/solicitud-registro
 import { baseOut } from '../../../interfaces/utils/utils/baseOut';
 import { ModalService } from '../../../services/modal-perfil.service';
 import { AsistenteService } from '../../../services/asistentes/asistente.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -48,9 +49,13 @@ export class LoginComponent implements OnInit {
     privacidadTerminos: false,
     recaptcha: ''
   };
+  
+  private asistenteSubscription!: Subscription;
+  asistenteObservableValue: number = -1;
+
   @ViewChild('chatContainer') chatContainer!: ElementRef;
   constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private authService: LoginService, private sanitizer: DomSanitizer, private snackBar: MatSnackBar, private messageService: MessageService,
-              private modalService: ModalService, private asistenteService: AsistenteService
+              private modalService: ModalService, public asistenteService: AsistenteService, private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -88,6 +93,11 @@ export class LoginComponent implements OnInit {
         this.errorMessage = '';
       }
     });
+  }
+  ngOnDestroy(): void {
+    if (this.asistenteSubscription) {
+      this.asistenteSubscription.unsubscribe();
+    }
   }
   openLoginModal() {
     this.isLoginModalOpen = true;
@@ -270,18 +280,25 @@ export class LoginComponent implements OnInit {
     this.showPassword = !this.showPassword;
   }
   toggleChat(): void {
-    this.enableAsistenteBienvenida = !this.enableAsistenteBienvenida;
-    // Si necesitas notificar al servicio
-    this.asistenteService.asistenteSubject.next(this.enableAsistenteBienvenida ? 1 : -1);
+    this.asistenteSubscription = this.asistenteService.asistenteBienvenidaObservable.subscribe(value => {
+      this.asistenteObservableValue = value;
+    });
+  
+    this.asistenteService.asistenteBienvenidaSubject.next(this.asistenteObservableValue * (-1));
+   
+  
   }
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
-    if (!this.enableAsistenteBienvenida) return;
 
     const targetElement = event.target as HTMLElement;
-
+    console.log(this.chatContainer, targetElement);
     if (this.chatContainer && !this.chatContainer.nativeElement.contains(targetElement)) {
       this.enableAsistenteBienvenida = false;
+      this.asistenteService.asistenteBienvenidaSubject.next(-1);
+      this.asistenteService.asistenteBienvenidaObservable.subscribe(value => {
+        console.log('Valor emitido por el observable:', value);
+      });
     }
   }
 }

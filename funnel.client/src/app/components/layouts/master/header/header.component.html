@@ -15,7 +15,7 @@
         <span class="ia-button-text"> IA</span>
       </button>
       <!-- Contenedor del chatbot -->
-      <ng-container *ngIf="enableAsistenteOperacion">
+      <ng-container *ngIf="(asistenteService.asistenteObservable | async) === 1">
         <div id="chat-container" class="chatbot-window" #chatContainer>
           <app-asistente-operacion></app-asistente-operacion>
         </div>

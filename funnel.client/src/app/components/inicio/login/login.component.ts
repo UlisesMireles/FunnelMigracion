@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
   };
   @ViewChild('chatContainer') chatContainer!: ElementRef;
   constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private authService: LoginService, private sanitizer: DomSanitizer, private snackBar: MatSnackBar, private messageService: MessageService,
-              private modalService: ModalService, private asistenteService: AsistenteService
+              private modalService: ModalService, public asistenteService: AsistenteService
   ) {}
 
   ngOnInit() {
@@ -270,9 +270,7 @@ export class LoginComponent implements OnInit {
     this.showPassword = !this.showPassword;
   }
   toggleChat(): void {
-    this.enableAsistenteBienvenida = !this.enableAsistenteBienvenida;
-    // Si necesitas notificar al servicio
-    this.asistenteService.asistenteSubject.next(this.enableAsistenteBienvenida ? 1 : -1);
+    this.asistenteService.asistenteBienvenidaSubject.next(1);
   }
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {

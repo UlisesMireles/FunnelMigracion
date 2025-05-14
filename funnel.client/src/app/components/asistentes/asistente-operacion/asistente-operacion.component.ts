@@ -3,6 +3,7 @@ import { SideNavChatFunnelService } from '../../../services/asistentes/sidenavCh
 import { ChatBotAsistenteOperacionComponent } from './chatBot/chatBotAsistenteOperacion.component';
 import { environment } from '../../../../environments/environment';
 import { AsistentesAdministradorService } from '../../../services/asistentes/asistentesAdministrador.service';
+import { AsistenteService } from '../../../services/asistentes/asistente.service';
 
 @Component({
   standalone: false,
@@ -19,7 +20,8 @@ export class AsistenteOperacionComponent implements OnInit{
   version: string = '';
 
 
-  constructor(public sideNavService: SideNavChatFunnelService, private cdRef: ChangeDetectorRef, private asistentesService: AsistentesAdministradorService) {
+  constructor(public sideNavService: SideNavChatFunnelService, private cdRef: ChangeDetectorRef, private asistentesAdministracionService: AsistentesAdministradorService,
+    private asistenteService: AsistenteService) {
   }
 
   ngOnInit() {
@@ -40,7 +42,7 @@ export class AsistenteOperacionComponent implements OnInit{
   }
 
   obtenerVersion(): void {
-    this.asistentesService.obtenerVersionAsistentes().subscribe({
+    this.asistentesAdministracionService.obtenerVersionAsistentes().subscribe({
       next: (data) => {
         this.version = data.version;
         this.cdRef.detectChanges();
@@ -49,6 +51,7 @@ export class AsistenteOperacionComponent implements OnInit{
     });
   }
   onCerrarChat() {
+    this.asistenteService.asistenteSubject.next(-1);
     const chatContainer = document.getElementById("chat-container");
     if (chatContainer) {
       chatContainer.classList.add("d-none");

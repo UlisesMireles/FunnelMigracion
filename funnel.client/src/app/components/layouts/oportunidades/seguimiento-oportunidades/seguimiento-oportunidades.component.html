@@ -15,7 +15,7 @@
 
   <ng-template pTemplate="header">
     <label class="margen">
-      {{ title + ' ' + oportunidadForm.get('descripcion')?.value }}
+      {{ 'HISTÓRICO DE SEGUIMIENTO ' }}
     </label>
   </ng-template>
 
@@ -23,22 +23,22 @@
     <div class="row">
       <div class="col-sm-2">
         <label class="margen text-left nombre-destacado">
-          {{ oportunidadForm.get('nombre')?.value }}
+          {{ 'Prospecto: ' + oportunidadForm.get('nombre')?.value }}
         </label>
       </div>
-      <div class="col-sm-6" style="margin-left: -20px;">
-        <label class="margen text-left" style="margin-left: -3px;">
-          {{ 'Probabilidad ' + oportunidadForm.get('probabilidad')?.value }}
+      <div class="col-sm-6" style="margin-left: 15px;">
+        <label class="margen text-left">
+          {{ 'Oportunidad: ' + oportunidadForm.get('nombreOportunidad')?.value  }}
         </label>
         <br />
-        <label class="margen text-left">
-          {{ oportunidadForm.get('tooltipStage')?.value }}
+        <label class="margen text-left" style="margin-left: -3px;">
+          {{ 'Probabilidad ' + oportunidadForm.get('probabilidad')?.value }}
         </label>
         <small *ngIf="validacionActiva && oportunidadForm.get('stage')?.errors?.['required']" class="text-danger">
           Necesita asignar una etapa para registrar un seguimiento
         </small>
       </div>
-      <div class="col-sm-4">
+      <div class="col-sm-4" style="margin-left: -40px;">
         <label class="margen text-left">
           {{ oportunidadForm.get('monto')?.value | currency:'MXN':'symbol':'1.2-2' }}
         </label>
@@ -62,7 +62,7 @@
               <div class="d-flex justify-content-between mt-1">
                 <div>
                   <small *ngIf="wordCount < 10 && !(oportunidadForm.get('comentario')?.invalid && oportunidadForm.get('comentario')?.touched)" 
-                    class="text-muted">
+                    class="text-muted" style="margin-left: 20px;">
                     Escribe un comentario de al menos 10 palabras
                   </small>
                   <div 

@@ -85,5 +85,7 @@
 }
 
 .p-tieredmenu-item-content {
-  color: #ffffff !important;
+  content: none !important;
+  background: none !important;
+  box-shadow: none !important;
 }

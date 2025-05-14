@@ -298,7 +298,7 @@
         <i class="bi bi-chat-fill"></i> 
       </button>
       <!-- Contenedor del chatbot -->
-      <ng-container *ngIf="enableAsistenteBienvenida">
+      <ng-container *ngIf="(asistenteService.asistenteBienvenidaObservable | async) === 1">
         <div id="chat-container" class="chatbot-window"  #chatContainer>
           <app-asistente-bienvenida></app-asistente-bienvenida>
         </div>

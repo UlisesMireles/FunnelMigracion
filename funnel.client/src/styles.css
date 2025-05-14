@@ -89,3 +89,16 @@
   background: none !important;
   box-shadow: none !important;
 }
+.mat-mdc-chip-set .mdc-evolution-chip-set__chips {
+    min-width: 100%;
+    margin-left: -8px;
+    margin-right: 0;
+    border: #1976d2 1px;
+    color: #1976d2;
+    cursor: pointer;
+}
+
+.mat-mdc-chip:hover {
+  background-color: #1976d2 !important;
+  color: #ffffff !important;
+}

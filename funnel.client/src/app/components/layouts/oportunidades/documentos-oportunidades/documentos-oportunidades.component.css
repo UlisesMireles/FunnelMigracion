@@ -425,3 +425,11 @@ input[type="file"] {
   right: 20px;
   margin-left: 0 !important;
 }
+
+strong {
+  font-weight: bold;
+}
+
+.font-size-md {
+  font-size: 12px !important;
+}

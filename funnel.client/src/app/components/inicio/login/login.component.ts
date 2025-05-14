@@ -10,6 +10,8 @@ import { MessageService } from 'primeng/api';
 import { SolicitudRegistroSistema } from '../../../interfaces/solicitud-registro';
 import { baseOut } from '../../../interfaces/utils/utils/baseOut';
 import { ModalService } from '../../../services/modal-perfil.service';
+import { AsistenteService } from '../../../services/asistentes/asistente.service';
+
 
 @Component({
   selector: 'app-login',
@@ -22,6 +24,7 @@ export class LoginComponent implements OnInit {
   siteKey: string = '6LdlBicqAAAAABMCqyAjZOTSKrbdshNyKxwRiGL9';
   //siteKey: string = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'; //Prueba
   baseUrl: string = environment.baseURLAssets;
+  enableAsistenteBienvenida = false; // Inicia oculto
   username: string = '';
   password: string = '';
   resetUsername: string = '';
@@ -48,7 +51,7 @@ export class LoginComponent implements OnInit {
   };
 
   constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private authService: LoginService, private sanitizer: DomSanitizer, private snackBar: MatSnackBar, private messageService: MessageService,
-              private modalService: ModalService
+              private modalService: ModalService, private asistenteService: AsistenteService
   ) {}
 
   ngOnInit() {
@@ -266,6 +269,11 @@ export class LoginComponent implements OnInit {
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
+  }
+  toggleChat(): void {
+    this.enableAsistenteBienvenida = !this.enableAsistenteBienvenida;
+    // Si necesitas notificar al servicio
+    this.asistenteService.asistenteSubject.next(this.enableAsistenteBienvenida ? 1 : -1);
   }
 
 }

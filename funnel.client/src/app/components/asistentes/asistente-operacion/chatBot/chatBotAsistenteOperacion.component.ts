@@ -1,16 +1,16 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
-import { AsitenteCategoriasDto } from '../../../interfaces/asistenteOperacion/asistente';
-import { CategoriaPreguntasDto } from '../../../interfaces/asistenteOperacion/categoriaPreguntas';
-import { ChatHistorial } from '../../../interfaces/asistenteOperacion/chatHistorial';
-import { ConsultaAsistenteDto } from '../../../interfaces/asistenteOperacion/consultaAsistente';
-import { PreguntasPorCategoriaDto } from '../../../interfaces/asistenteOperacion/preguntasPorCategoria';
-import { EmojiPipe } from '../../../pipes/asistenteOperacion/emoji.pipe';
-import { AsistenteService } from '../../../services/asistenteOperacion/asistente.service';
-import { OpenIaService } from '../../../services/asistenteOperacion/openIA.service';
-import { PreguntasFrecuentesService } from '../../../services/asistenteOperacion/preguntasFrecuentes.service';
-import { environment } from '../../../../environments/environment';
-import { LoginService } from '../../../services/login.service';
+import { AsitenteCategoriasDto } from './../../../../interfaces/asistentes/asistente';
+import { CategoriaPreguntasDto } from './../../../../interfaces/asistentes/categoriaPreguntas';
+import { ChatHistorial } from './../../../../interfaces/asistentes//chatHistorial';
+import { ConsultaAsistenteDto } from './../../../../interfaces/asistentes/consultaAsistente';
+import { PreguntasPorCategoriaDto } from'./../../../../interfaces/asistentes/preguntasPorCategoria';
+import { EmojiPipe } from '../../../../pipes/asistentes/emoji.pipe';
+import { AsistenteService } from '../../../../services/asistentes/asistente.service';
+import { OpenIaService } from '../../../../services/asistentes/openIA.service';
+import { PreguntasFrecuentesService } from '../../../../services/asistentes/preguntasFrecuentes.service';
+import { environment } from '../../../../../environments/environment';
+import { LoginService } from '../../../../services/login.service';
 
 @Component({
   standalone: false,

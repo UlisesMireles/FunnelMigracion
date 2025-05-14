@@ -1,0 +1,111 @@
+<div class="scrollable-div" #scrollMe>
+  <div class="chat-historial" *ngFor="let chat of chatHistorial">
+    <div class="chat-row" [ngClass]="{'preguntasPorCat' : 'row-reverse', 'revisarTemas' : 'row-reverse'}[chat.rol]">
+      <ng-container [ngSwitch]="chat.rol">
+        <ng-container *ngSwitchCase="'cargando'">
+          <img [src]="baseUrlAssets+ '/assets/img/ai.png'" alt="Icon" class="chat-icon">
+        </ng-container>
+      </ng-container>
+      <ng-container [ngSwitch]="chat.rol">
+        <ng-container *ngSwitchCase="'asistente'" style="vertical-align: middle;">
+          <div class="hstack">
+            <div class="vstack">
+              <label class="labelAsistente ps-2" *ngIf="chat.rol === 'asistente'">Asistente Funnel</label>
+              <div class="chat-bubble formatoMensajes"
+                [ngClass]="chat.rol == 'asistente' ? 'ai-bubble' : 'human-bubble'" [innerHTML]="chat.mensaje">
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngSwitchCase="'usuario'">
+          <div class="vstack row-reverse">
+            <label class="labelAsistente ps-2" *ngIf="chat.rol === 'asistente'">Asistente Funnel</label>
+            <div class="chat-bubble formatoMensajes" [ngClass]="chat.rol == 'asistente' ? 'ai-bubble' : 'human-bubble'"
+              [innerHTML]="chat.mensaje">
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngSwitchCase="'categorias'" [ngTemplateOutlet]="categorias"></ng-container>
+        <ng-container *ngSwitchCase="'preguntasPorCat'" [ngTemplateOutlet]="preguntasPorCat"></ng-container>
+        <ng-container *ngSwitchCase="'revisarTemas'" [ngTemplateOutlet]="revisarTemas"></ng-container>
+        <ng-container *ngSwitchDefault [ngTemplateOutlet]="cargando"></ng-container>
+      </ng-container>
+    </div>
+  </div>
+</div>
+<div class="chatbot-message-box" [class.active]="loadOpciones" [class.has-options]="loadOpciones"  data-role="chatbot">
+  <input type="text" class="chatbot-input" [(ngModel)]="pregunta" placeholder="¿Cómo puedo ayudarte el día de hoy?"
+    (keydown.enter)="consultaMensajeOpenIa($event)">
+  <mat-icon matSuffix (click)="loadOpciones = !loadOpciones">more_horiz</mat-icon>
+  <mat-icon matSuffix class="ms-2" (click)="!pregunta || isConsultandoOpenIa ? null : consultaMensajeOpenIa()"
+    [ngClass]="{'disabled-icon': !pregunta || isConsultandoOpenIa}">send</mat-icon>
+
+</div>
+<ng-container *ngIf="loadOpciones" [ngTemplateOutlet]="opciones"></ng-container>
+
+<ng-template #cargando>
+  <div class="chat-bubble ai-bubble">
+    <div class="lds-ellipsis ">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #categorias>
+  <div class="row m-0 ps-0">
+    <mat-chip-listbox class="col-auto m-0 pb-2 ps-0 pe-0" aria-label="Seleccion Categoria"
+      *ngFor="let categoriaPreguntas of lsCategoriaPreguntas">
+      <mat-chip (click)="seleccionCategoria(categoriaPreguntas)" class="matchipClass">
+        <small>
+          <b>
+            {{categoriaPreguntas.descripcion}}
+          </b>
+        </small>
+      </mat-chip>
+    </mat-chip-listbox>
+  </div>
+</ng-template>
+
+<ng-template #preguntasPorCat>
+  <div class="row m-0 justify-content-end">
+    <mat-chip-listbox class="col-auto m-0 pb-2 ps-0 pe-0" aria-label="Seleccion preguntas Faq"
+      *ngFor="let preguntaCat of lsPreguntasPorCategoria">
+      <mat-chip *ngIf="!preguntaCat.yaSePregunto" (click)="seleccionPregunta(preguntaCat)">
+        <small>
+          <b>
+            {{preguntaCat.pregunta}}
+          </b>
+        </small>
+      </mat-chip>
+    </mat-chip-listbox>
+  </div>
+</ng-template>
+
+<ng-template #opciones>
+  <div class="row m-0 opcionesClass">
+    <div class="col-4 offset-8" [ngClass]="loadOpciones ? 'conditionalOpen' : 'conditionalClose'">
+      <div class="row">
+        <div class="col-6 d-flex justify-content-end pt-1" style="margin-left: 80px;"> <i class="bi bi-trash opcionesIconTrash"
+            (click)="resetConversation()" matTooltip="Eliminar historial"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #revisarTemas>
+  <div class="row m-0 ps-4 justify-content-end">
+    <mat-chip-listbox class="col-auto m-0 pb-2 ps-0 pe-0" aria-label="Seleccion" *ngFor="let rt of lsRevisarTemas">
+      <mat-chip (click)="seleccionRevisarTemas(rt)" class="matchipClass">
+        <small>
+          <b>
+            {{rt}}
+          </b>
+        </small>
+      </mat-chip>
+    </mat-chip-listbox>
+  </div>
+</ng-template>

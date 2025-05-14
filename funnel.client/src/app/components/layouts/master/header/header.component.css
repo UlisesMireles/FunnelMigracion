@@ -38,10 +38,10 @@
 
 .btn-chat{
   position: absolute;
-  right: 175px;
-  width: 75px;
-  height: 34px;
-  background: rgb(247, 106, 19, 1);
+  right: 230px;
+  width: 60px;
+  height: 26px;
+  background: rgb(20, 176, 15);
   color: #ffffff;
   z-index: 1001;
   display: flex;
@@ -53,26 +53,26 @@
 }
 
 .btn-chat i {
-  font-size: 25px;
+  font-size: 18px;
   color: white;            
   border: none;
 }
 .ia-button-text{
-  font-size: 15px;
+  font-size: 12px;
   margin-left: 9px;
   font-weight: bold;
 }
 
 .chatbot-window {
-  width: 500px;
-  height: 490px;
+  width: 490px;
+  height: 515px;
   background: white !important;
   position: fixed;
   top: 50px;
   right: 20px;
   border-radius: 10px;
   overflow: visible !important;
-  z-index: 1000;
+  z-index: 5000;
   transition: all 0.3s ease;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
@@ -299,10 +299,10 @@
 ::ng-deep .btn-agregar-custom .p-splitbutton .p-button,
 ::ng-deep .btn-agregar-custom .p-splitbutton .p-splitbutton-menubutton {
   min-width: 40px !important;
-  background: rgb(247, 106, 19,1);
+  background: rgb(20, 176, 15);
   color: white;
   border: 0;
   text-align: left;
   font-size: 12px;
-  height: 34px;
+  height: 26px;
 }

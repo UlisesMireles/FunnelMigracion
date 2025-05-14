@@ -99,9 +99,11 @@ import { ColumnasDisponiblesComponent } from './components/utils/tablas/columnas
 import { HeaderOpcionesComponent } from './components/utils/tablas/header-opciones/header-opciones.component';
 
 
-//Asistente
-import { AsistenteOperacionComponent } from './components/asistente-operacion/asistente-operacion.component';
-import { ChatBotAsistenteOperacionComponent } from './components/asistente-operacion/chatBot/chatBotAsistenteOperacion.component';
+//Asistentes
+import { AsistenteOperacionComponent } from './components/asistentes/asistente-operacion/asistente-operacion.component';
+import { ChatBotAsistenteOperacionComponent } from './components/asistentes/asistente-operacion/chatBot/chatBotAsistenteOperacion.component';
+import { AsistenteBienvenidaComponent } from './components/asistentes/asistente-bienvenida/asistente-bienvenida.component';
+import { ChatBotBienvenidaComponent } from './components/asistentes/asistente-bienvenida/chatBot/chatBotBienvenida.component';
 
 export function getBaseUrl() {
   return 'https://localhost:49834/'
@@ -114,7 +116,7 @@ import localeEs from '@angular/common/locales/es-MX';
 import { APP_INITIALIZER, LOCALE_ID } from '@angular/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { YaSePreguntoPipe } from "./pipes/asistenteOperacion/yaSePregunto";
+import { YaSePreguntoPipe } from "./pipes/asistentes/yaSePregunto";
 import { UsuarioPerfilComponent } from './components/usuario-perfil/usuario-perfil.component';
 import { AcordeonOportunidadesEtapaComponent } from './components/utils/acordeon-oportunidades-etapa/acordeon-oportunidades-etapa.component';
 
@@ -168,7 +170,8 @@ registerLocaleData(localeEs, 'es-MX');
     PermisosComponent,
     AsistenteOperacionComponent,
     ChatBotAsistenteOperacionComponent,
-
+    AsistenteBienvenidaComponent,
+    ChatBotBienvenidaComponent,
     AdministracionHerramientasComponent,
     ReporteIngresosUsuariosComponent,
     EjecucionProcesosComponent,

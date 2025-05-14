@@ -28,6 +28,7 @@ export class ModalOportunidadesGanadasComponent {
 
     oportunidadForm!: FormGroup;
     estatus: any[] = [];
+    initialStatus: number | null = null;
 
     @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() closeModal: EventEmitter<void> = new EventEmitter();
@@ -48,6 +49,12 @@ export class ModalOportunidadesGanadasComponent {
       this.cargarEstatus();
       this.cdr.detectChanges();
       this.inicializarFormulario(); 
+      this.initialStatus = this.oportunidadForm.get('idEstatusOportunidad')?.value;
+    }
+
+    hasStatusChanged(): boolean {
+      const currentStatus = this.oportunidadForm.get('idEstatusOportunidad')?.value;
+      return currentStatus !== this.initialStatus;
     }
 
     ngOnChanges(changes: SimpleChanges) {

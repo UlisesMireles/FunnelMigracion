@@ -108,6 +108,9 @@ export class DocumentosOportunidadesComponent {
         }
       }
 
+      get isEnProceso(): boolean {
+        return this.oportunidad?.idEstatusOportunidad === 1; 
+      }
   
       close() {
         this.archivosSeleccionados = []; 

@@ -46,6 +46,7 @@ export class DocumentosOportunidadesComponent {
     mensaje: string = '';
     idOportunidad = 0;
     maxArchivos = 5;
+    diasRestantes: number | null = null;
 
     @ViewChild('fileInput') fileInput!: ElementRef;
 
@@ -96,6 +97,14 @@ export class DocumentosOportunidadesComponent {
           fechaTemporal.setDate(fechaTemporal.getDate() + 30);
           this.fechaLimite = fechaTemporal;
           this.mensaje = 'Estos archivos estarán disponibles hasta el día ' + this.fechaLimite.toLocaleDateString();
+          
+
+          const hoy = new Date();
+          hoy.setHours(0, 0, 0, 0); 
+          const diffTime = this.fechaLimite.getTime() - hoy.getTime();
+          this.diasRestantes = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        } else {
+          this.diasRestantes = null;
         }
       }
 

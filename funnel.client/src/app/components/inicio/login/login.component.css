@@ -775,7 +775,7 @@ label {
   right: 20px;
   border-radius: 10px;
   overflow: visible !important;
-  z-index: 1000;
+  z-index: 3000;
   transition: all 0.3s ease;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }

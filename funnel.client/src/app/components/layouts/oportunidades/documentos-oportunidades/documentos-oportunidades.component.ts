@@ -394,4 +394,8 @@ export class DocumentosOportunidadesComponent {
           this.maximized = !this.maximized;
           this.cdr.detectChanges();
         }
+
+        get isTerminado(): boolean {
+          return this.oportunidad?.idEstatusOportunidad !== 1; 
+        }
 }

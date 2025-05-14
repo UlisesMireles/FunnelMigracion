@@ -63,9 +63,27 @@
 }
 
 .p-splitbutton-button.p-button {
-  width: 66px!important;
+  width: 63px!important;
 }
+
 .p-tieredmenu {
-  min-width: 100px !important;
+  min-width: 101px !important;
+  background-color: rgba(16, 61, 102, 0.5) !important;
+  border: 0 !important;
+  transition: background-color 0.3s;
 }
- 
+
+.p-tieredmenu,
+.p-tieredmenu * {
+  color: #fff !important;
+}
+
+.p-tieredmenu-item-link:hover {
+  background: rgb(38, 89, 137, 0.8) !important;
+  color: #ffffff !important;
+  border-radius: 2.5px;
+}
+
+.p-tieredmenu-item-content {
+  color: #ffffff !important;
+}

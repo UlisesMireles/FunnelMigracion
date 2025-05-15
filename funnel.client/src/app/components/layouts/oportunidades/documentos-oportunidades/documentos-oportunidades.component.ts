@@ -92,21 +92,24 @@ export class DocumentosOportunidadesComponent {
       }
 
       calcularFechaLimite(): void {
-        if (this.fecha) {
-          const fechaTemporal = new Date(this.fecha);
-          fechaTemporal.setDate(fechaTemporal.getDate() + 30);
-          this.fechaLimite = fechaTemporal;
-          this.mensaje = 'Estos archivos estarán disponibles hasta el día ' + this.fechaLimite.toLocaleDateString();
+          if (!this.fecha) {
+            this.fechaLimite = null;
+            this.diasRestantes = null;
+            return;
+          }
+          const fechaCierre = new Date(this.fecha);
+          fechaCierre.setHours(0, 0, 0, 0);
           
+          this.fechaLimite = new Date(fechaCierre);
+          this.fechaLimite.setDate(fechaCierre.getDate() + 30);
 
           const hoy = new Date();
           hoy.setHours(0, 0, 0, 0); 
-          const diffTime = this.fechaLimite.getTime() - hoy.getTime();
-          this.diasRestantes = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        } else {
-          this.diasRestantes = null;
+          const diffMs = this.fechaLimite.getTime() - hoy.getTime();
+          this.diasRestantes = Math.floor(diffMs / (1000 * 60 * 60 * 24)); 
+
+          this.mensaje = `Estos archivos estarán disponibles hasta el día ${this.fechaLimite.toLocaleDateString()}`;
         }
-      }
 
       get isEnProceso(): boolean {
         return this.oportunidad?.idEstatusOportunidad === 1; 

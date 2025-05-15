@@ -767,11 +767,11 @@ label {
 }
 
 .chatbot-window {
-  width: 500px;
-  height: 490px;
+  width: 480px;
+  height: 480px;
   background: white !important;
-  position: fixed;
-  top: 65px;
+  position: absolute;
+  bottom: 9.5vh;
   right: 20px;
   border-radius: 10px;
   overflow: visible !important;
@@ -779,6 +779,8 @@ label {
   transition: all 0.3s ease;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
+
+
 
 
 ::ng-deep .chatbot-window .app-chat-header {

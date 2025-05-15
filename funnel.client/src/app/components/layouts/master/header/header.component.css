@@ -15,7 +15,7 @@
   justify-content: flex-start; 
   align-items: center;
   height: 100%;
-  padding: 0 20px;
+  padding: 0px;
   position: relative;
   max-width: 1200px;
   margin: 0 auto;
@@ -31,17 +31,15 @@
 
 .logo-container {
   position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-20%);
   order: 4;
 }
 
 .btn-chat {
-  position: absolute;
-  right: 150px;
   width: 100px;
-  height: 26px;
-  background: rgb(20, 176, 15);
+  height: 30px;
+  background: rgb(247, 106, 19);
+  background: linear-gradient(0deg, rgba(247, 106, 19, 1) 0%, rgba(200, 87, 24, 1) 35%, rgba(231, 91, 42, 1) 100%);
   color: #ffffff;
   z-index: 1001;
   display: flex;
@@ -54,13 +52,12 @@
 }
 
 .btn-chat:hover {
-  background: #ececec; /* gris claro */
-  color: #000000;      /* texto negro */
+  background: rgb(186, 114, 69);
 }
 
-.btn-chat:hover i {
-  color: #000000;      /* ícono negro también */
-}
+/* .btn-chat:hover i {
+  color: #000000;      
+} */
 
 .btn-chat i {
   font-size: 18px;
@@ -233,7 +230,7 @@
 }
 
 .large-icon {
-  font-size: 40px;
+  font-size: 20px;
   margin-right: 4px;
   color: white;
   position: absolute;
@@ -241,8 +238,22 @@
 }
 
 .menu-item-perfil {
-  background: none;
-  border: none;
+  width: auto;
+  min-width: 100px;
+  height: 30px;
+  background: rgb(247, 106, 19);
+  background: linear-gradient(0deg, rgba(247, 106, 19, 1) 0%, rgba(200, 87, 24, 1) 35%, rgba(231, 91, 42, 1) 100%);
+  color: #ffffff;
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 5px;
+  border: 0;
+}
+.menu-item-perfil:hover {
+  background: rgb(186, 114, 69);
 }
 
 .spanNombre {
@@ -266,12 +277,6 @@
   background-color: #e4e4e4;
 }
 
-.agregar {
-  order: 3;
-  right: 300px;
-  justify-content: end;
-  position: absolute;
-}
 
 .estiloPerfilMenu {
   position: fixed;
@@ -310,11 +315,16 @@
 ::ng-deep .btn-agregar-custom .p-splitbutton .p-button,
 ::ng-deep .btn-agregar-custom .p-splitbutton .p-splitbutton-menubutton {
   min-width: 40px !important;
-  background: rgb(20, 176, 15);
+  background: rgb(247, 106, 19);
+  background: linear-gradient(0deg, rgba(247, 106, 19, 1) 0%, rgba(200, 87, 24, 1) 35%, rgba(231, 91, 42, 1) 100%);
   color: white;
   border: 0;
   text-align: left;
   font-size: 12px;
-  height: 26px;
+  height: 30px;
 }
-
+.menu-header-container{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}

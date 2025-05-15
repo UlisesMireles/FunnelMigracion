@@ -119,7 +119,10 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { YaSePreguntoPipe } from "./pipes/asistentes/yaSePregunto";
 import { UsuarioPerfilComponent } from './components/usuario-perfil/usuario-perfil.component';
 import { AcordeonOportunidadesEtapaComponent } from './components/utils/acordeon-oportunidades-etapa/acordeon-oportunidades-etapa.component';
+import * as PlotlyJS from 'plotly.js-dist-min';
+import { PlotlyModule } from 'angular-plotly.js';
 
+PlotlyModule.plotlyjs = PlotlyJS;
 
 export function configurationProviderFactory(provider: PrimeNgConfiguracionService) {
   return () => provider.load();
@@ -176,7 +179,7 @@ registerLocaleData(localeEs, 'es-MX');
     ReporteIngresosUsuariosComponent,
     EjecucionProcesosComponent,
     UsuarioPerfilComponent,
-    AcordeonOportunidadesEtapaComponent,
+    AcordeonOportunidadesEtapaComponent
   ],
   imports: [
     BrowserModule,
@@ -220,7 +223,8 @@ registerLocaleData(localeEs, 'es-MX');
     MatChipsModule,
     MatIconModule,
     YaSePreguntoPipe,
-    SplitButtonModule
+    SplitButtonModule,
+    PlotlyModule
 ],
   providers: [
     { provide: LOCALE_ID, useValue: 'es-MX' },

@@ -20,6 +20,7 @@ export class PermisosComponent {
 
   agrupadosPermisos: any[] = [];
   loading: boolean = true;
+  hayCambios: boolean = false; 
 
   constructor(
     private permisosService: PermisosService,
@@ -125,6 +126,7 @@ export class PermisosComponent {
           summary: 'Guardado exitoso.',
           detail: result.errorMessage,
         });
+         this.hayCambios = false;
       },
       error: (error) => {
         this.messageService.add({
@@ -135,5 +137,9 @@ export class PermisosComponent {
       },
     });
   
+  }
+
+  onPermisoChange() {
+    this.hayCambios = true;
   }
 }

@@ -35,8 +35,6 @@
     </div>
     
     <br />
-    <br />
-    <br />
     <form [formGroup]="oportunidadForm">
       <div class="row align-items-center g-0" *ngIf="!isTerminado">
         <div class="col-sm-12 d-flex flex-nowrap align-items-center"> 
@@ -85,7 +83,8 @@
         </div>
       </div>
     </form>
-    <div class="d-flex justify-content-between mt-1">
+    <div class="d-flex justify-content-between mt-1 " *ngIf="!isEnProceso && 
+    (!isTerminado || (isTerminado && historialOportunidad.length > 0))">
       <small class="text-muted font-size-md" [innerHTML]="'Estos archivos estarán disponibles hasta el día <strong>' 
         + (fechaLimite | date:'dd/MM/yyyy') + '</strong>'">
       </small>

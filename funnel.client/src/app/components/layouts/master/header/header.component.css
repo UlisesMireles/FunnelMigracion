@@ -36,10 +36,10 @@
   order: 4;
 }
 
-.btn-chat{
+.btn-chat {
   position: absolute;
-  right: 230px;
-  width: 60px;
+  right: 150px;
+  width: 100px;
   height: 26px;
   background: rgb(20, 176, 15);
   color: #ffffff;
@@ -50,6 +50,16 @@
   cursor: pointer;
   border-radius: 5px;
   border: 0;
+  transition: background 0.3s, color 0.3s; /* transición suave */
+}
+
+.btn-chat:hover {
+  background: #ececec; /* gris claro */
+  color: #000000;      /* texto negro */
+}
+
+.btn-chat:hover i {
+  color: #000000;      /* ícono negro también */
 }
 
 .btn-chat i {
@@ -57,6 +67,7 @@
   color: white;            
   border: none;
 }
+
 .ia-button-text{
   font-size: 12px;
   margin-left: 9px;
@@ -306,3 +317,4 @@
   font-size: 12px;
   height: 26px;
 }
+

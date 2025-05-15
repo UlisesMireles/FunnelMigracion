@@ -51,7 +51,8 @@
   font-size: 20px;
   margin: 0;               /* Elimina margen inferior */
   padding: 0;              /* Elimina padding */
-  order: 1;                /* Posición izquierda (primero) */
+  order: 1;                /* Posición izquierda (primero) */ 
+  z-index: 1000;
 }
 
 /* Contenedor del contenido del item (donde se muestran las tarjetas) */

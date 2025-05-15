@@ -71,6 +71,7 @@
   background-color: rgba(16, 61, 102, 0.5) !important;
   border: 0 !important;
   transition: background-color 0.3s;
+  
 }
 
 .p-tieredmenu,
@@ -87,6 +88,11 @@
 .p-tieredmenu-item-content {
   content: none !important;
   background: none !important;
+  box-shadow: none !important;
+}
+
+.p-splitbutton {
+  left: 45px;
   box-shadow: none !important;
 }
 .mat-mdc-chip-set .mdc-evolution-chip-set__chips {

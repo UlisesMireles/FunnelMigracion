@@ -1,21 +1,24 @@
 <header class="page-header font-small blue" id="header">
   <div class="navbar col-12">
     <div class="col-4 menu-header-container">
-      <div class="agregar btn-agregar-custom ms-2">
-        <p-splitbutton label="Agregar" [model]="items" raised severity="secondary" #splitBtn />
-        <!-- <button class="btnAgregar float-end" (click)="toggleOptions()">Agregar</button>
-        <div *ngIf="optionsVisible" class="options-container">
-          <button class="option-btn" (click)="agregarOportunidad()">Oportunidad</button>
-          <button class="option-btn" (click)="agregarProspecto()">Prospecto</button>
-          <button class="option-btn" (click)="agregarContacto()">Contacto</button>
-        </div> -->
+      <div class="agregar btn-agregar-custom ms-2" (click)="toggleOptions()" (mouseenter)="showSubmenu()" (mouseleave)="hideSubmenu()">
+        <!-- <p-splitbutton label="Agregar" [model]="items" raised severity="secondary" #splitBtn /> -->
+        <button class="btnAgregar float-end cursor-pointer"  > 
+          <i class="bi bi-plus" style="margin-left: -6px;"></i> 
+          <span class="ia-button-text"> ALTA</span>
+        </button>
+        <ul *ngIf="optionsVisible" class="options-container" (click)="showSubmenu()" (mouseleave)="hideSubmenu()">
+          <li class="option-btn" (click)="agregarOportunidad()">Oportunidad</li>
+          <li class="option-btn" (click)="agregarProspecto()">Prospecto</li>
+          <li class="option-btn" (click)="agregarContacto()">Contacto</li>
+        </ul> 
       </div>
   
       <div class="chatbot ms-2">
         <!-- Botón de chat en el header-->
         <button class="btn-chat" (click)="toggleChat()">
-          <i class="bi bi-stars"></i> 
-          <span class="ia-button-text"> IA</span>
+          <i class="bi bi-stars color-amarillo"></i> 
+          <span class="ia-button-text color-amarillo"> IA</span>
         </button>
         <!-- Contenedor del chatbot -->
         <ng-container *ngIf="(asistenteService.asistenteObservable | async) === 1">
@@ -37,7 +40,7 @@
     
 
     <!-- Logo (el último de derecha a izquierda) -->
-    <div class="col-8 logo-container" >
+    <div class="col-3 logo-container" >
       <img width="50" [src]="baseUrl + '/assets/img/SFS blanco.png'" alt="logo SFS">
       <span class="spanNombre">{{ licencia }}</span>
     </div>

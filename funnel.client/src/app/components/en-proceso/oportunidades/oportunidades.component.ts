@@ -4,6 +4,7 @@ import { Table } from 'primeng/table';
 import { MessageService } from 'primeng/api';
 import { baseOut } from '../../../interfaces/utils/utils/baseOut';
 import { LoginService } from '../../../services/login.service';
+import { LicenciasService } from '../../../services/licencias.service';
 import { OportunidadesService } from '../../../services/oportunidades.service';
 import { Oportunidad } from '../../../interfaces/oportunidades';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
@@ -11,6 +12,7 @@ import { ColumnasDisponiblesComponent } from '../../utils/tablas/columnas-dispon
 import { sumBy, map as mapping, omit, sortBy, groupBy, keys as getKeys } from "lodash-es";
 import { Subscription } from 'rxjs';
 import { ModalOportunidadesService } from '../../../services/modalOportunidades.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-oportunidades',
@@ -76,7 +78,8 @@ export class OportunidadesComponent {
   columnsTodasResp: string = JSON.stringify(this.lsTodasColumnas);
 
   constructor(private oportunidadService: OportunidadesService, private messageService: MessageService, private cdr: ChangeDetectorRef,
-    private readonly loginService: LoginService, public dialog: MatDialog, private modalOportunidadesService: ModalOportunidadesService
+    private readonly loginService: LoginService, public dialog: MatDialog, private modalOportunidadesService: ModalOportunidadesService,
+    private licenciasService: LicenciasService
   ) { }
 
   ngOnInit(): void {
@@ -126,23 +129,23 @@ export class OportunidadesComponent {
   }
 
   inserta() {
-    const limite = this.obtenerLimitePorLicencia();
-    const totalOportunidades = this.oportunidades.length;
-    if (totalOportunidades >= limite) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Límite de oportunidades alcanzado',
-        detail: `El límite de ${limite} oportunidades de la licencia ${this.licencia} ha sido alcanzado. Para agregar más oportunidades, considere actualizar su licencia.`,
-      })
-      return;
-    }
+      this.obtenerLimitePorLicencia().subscribe(limite => {
+      const totalOportunidades = this.oportunidades.length;
+      if (totalOportunidades >= limite) {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Límite de oportunidades alcanzado',
+          detail: `El límite de ${limite} oportunidades de la licencia ${this.licencia} ha sido alcanzado. Para agregar más oportunidades, considere actualizar su licencia.`,
+        });
+        return;
+      }
+      this.modalOportunidadesService.openModal(true, true, [], {})
+      this.oportunidadSeleccionada = {
 
-    this.modalOportunidadesService.openModal(true, true, [], {})
-    this.oportunidadSeleccionada = {
-
-    };
-    this.insertar = true;
-    this.modalVisible = true;
+      };
+      this.insertar = true;
+      this.modalVisible = true;
+    });
   }
 
   seguimiento(licencia: Oportunidad) {
@@ -437,17 +440,13 @@ export class OportunidadesComponent {
     return etapas[numeroEtapa] || 'Etapa desconocida';
   }
 
-  obtenerLimitePorLicencia(): number {
-    switch (this.licencia) {
-      case 'Free':
-        return 50;
-      case 'Premium':
-        return 100;
-      case 'Platino':
-        return 200;
-      default:
-        return 0;
-    }
+ obtenerLimitePorLicencia() {
+    return this.licenciasService.getLicencias().pipe(
+      map((result: any[]) => {
+        const licencia = result.find((lic: any) => lic.nombreLicencia === this.licencia);
+        return licencia ? licencia.cantidadOportunidades : 0;
+      })
+    );
   }
 }
 

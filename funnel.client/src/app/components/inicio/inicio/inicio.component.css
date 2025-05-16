@@ -7,8 +7,8 @@
 } */
 
 .sales-funnel {
-  padding: 9rem 2rem 1rem 2rem;
-  background-color: #fff5ee;
+  padding: 7rem 2rem 4rem 2rem;
+  background: #fff;
   font-family: 'Helvetica Neue', sans-serif;
 }
 
@@ -38,18 +38,20 @@
   margin-bottom: 1rem;
 }
 
-.title {
-  font-size: 2.5rem;
+.title {    
+  font-family: 'Satisfy', cursive;
+  font-size: 3rem;
   font-weight: bold;
-  color: #032d60;
   margin-bottom: 1rem;
+  color: #003d66;
 }
 
 .description {
   font-size: 1.1rem;
-  color: #4f4f4f;
   margin-bottom: 2rem;
   line-height: 1.6;
+  font-weight: bold;
+  color: #003d66;
 }
 
 .author-info {
@@ -68,6 +70,9 @@
 .author-name {
   font-weight: 600;
   margin-right: 0.5rem;
+  font-size: 1.5rem;
+  color: #d83712;
+  font-family: 'Satisfy', cursive;
 }
 
 .image-container {
@@ -103,13 +108,13 @@
 .logo {
   font-size: 1.5rem;
   font-weight: bold;
-  color: rgb(247, 106, 19);
+  color: #003d66
 }
 
 .nav a {
   margin: 0 1rem;
   text-decoration: none;
-  color: #333;
+  color: #003d66;
 }
 
 .actions .btn {
@@ -121,20 +126,21 @@
 
 .btn.login {
   background: none;
-  color: rgb(247, 106, 19);
+  color: #003d66;
 }
 
 .btn.signup {
-  background: rgb(247, 106, 19);
+  background: #00d6a0;
   color: #fff;
   border-radius: 4px;
+  font-weight: bold;
 }
 
 .chatbot-button {
   position: fixed;
   bottom: 3rem;
   right: 2rem;
-  background: rgb(247, 106, 19);
+  background: #003d66;
   color: #fff;
   border: none;
   border-radius: 50%;
@@ -144,7 +150,6 @@
   cursor: pointer;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-
 .funnel-stage:hover::after {
   content: attr(data-tooltip);
   position: absolute;
@@ -167,6 +172,7 @@
 }
 
 
+
 .funnel-container {
   display: flex;
   flex-direction: column;
@@ -176,7 +182,7 @@
 }
 
 .funnel-stage {
-  color: white;
+  color: #003d66;
   padding: 16px;
   text-align: center;
   margin-bottom: 12px;
@@ -187,7 +193,7 @@
 
 .stage1 {
   width: 100%;
-  background-color: #2f77b9;
+  background-color: #f57c00;
 }
 
 .stage2 {
@@ -197,18 +203,187 @@
 
 .stage3 {
   width: 71%;
-  background-color: #4db2f6;
+  background-color: #fff176;
 }
 
 .stage4 {
   width: 58%;
-  background-color: #f28705;
+  background-color: #aed581;
 }
 
 .stage5 {
   width: 48%;
-  background-color: #d95c00;
+  background-color: #63cb68;
 }
-.iamgen-funnel{
-  height: 500px;
+.ventas-exitosa {
+  font-family: 'Satisfy', cursive;
+  color: #d83712;
+  font-size: 50px;
+}
+.section {
+  padding: 60px 20px;
+  max-width: 1200px;
+  margin: auto;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 40px;
+  color: #103d66;
+}
+
+.features {
+  display: grid;
+  gap: 30px;
+}
+
+.feature {
+  background-color: #f8f9fa;
+  padding: 20px 25px;
+  border-left: 5px solid #103d66;
+  border-radius: 8px;
+  transition: transform 0.2s ease;
+}
+
+.feature:hover {
+  transform: translateY(-5px);
+}
+
+.feature h3 {
+  color: #103d66;
+  margin-bottom: 10px;
+}
+
+.bg-light {
+  background: #f0f4f8;
+}
+
+.pricing {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.plan {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  padding: 30px;
+  max-width: 300px;
+  flex: 1;
+  text-align: center;
+}
+
+.plan.popular {
+  border: 2px solid #103d66;
+}
+
+.plan h3 {
+  color: #103d66;
+}
+
+.price {
+  font-size: 2rem;
+  margin: 15px 0;
+  color: #e63946;
+}
+
+.plan ul {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  text-align: left;
+}
+
+.plan ul li {
+  margin-bottom: 10px;
+}
+
+.btn {
+  background-color: #103d66;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s;
+}
+
+.btn:hover {
+  background-color: #0a2c4d;
+}
+
+.contact-form {
+  max-width: 600px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.contact-form input,
+.contact-form textarea {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  width: 100%;
+}
+
+.contact-form textarea {
+  resize: vertical;
+  height: 120px;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.hero-banner {
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), #103d66;
+  color: #fff;
+  padding: 100px 20px;
+  text-align: center;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.hero-subtitle {
+  font-size: 1rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  color: #ccc;
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.hero-button {
+  background-color: #00d6a0;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.hero-button:hover {
+  background-color: #00c28f;
 }

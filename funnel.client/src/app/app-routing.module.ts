@@ -28,10 +28,11 @@ import { AdministracionHerramientasComponent } from './components/herramientas/a
 import { ModalTiposEntregaComponent } from './components/catalogos/tipos-entrega/modal-tipos-entrega/modal-tipos-entrega.component';
 import { TiposEntregaComponent } from './components/catalogos/tipos-entrega/tipos-entrega.component';
 import { UsuarioPerfilComponent } from './components/usuario-perfil/usuario-perfil.component';
+import { InicioComponent } from './components/inicio/inicio/inicio.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent, title: 'Login' },
-  { path: 'login', component: LoginComponent, title: 'Login' },
+  { path: 'login', component: InicioComponent, title: 'Login' },
   { path: 'cambiar-contrasena', component: CambiarContrasenaComponent, title: 'Cambiar Contraseña', canActivate: [AuthGuard] },
   { path: 'two-factor', component: DobleAutenticacionComponent, title: 'Autenticación' },
   { path: 'recuperar-contrasena', component: OlvidasteContrasenaComponent, title: 'Recuperar contraseña' },

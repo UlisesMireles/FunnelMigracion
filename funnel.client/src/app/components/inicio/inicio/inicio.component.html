@@ -42,53 +42,151 @@
       </div>
     </div>
   </header> -->
+<link
+  href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Great+Vibes&family=Pacifico&family=Satisfy&display=swap"
+  rel="stylesheet">
+<header class="header">
+  <div class="container">
+    <div class="logo cursor-pointer" (click)="scrollTo('inicio')">
+       <img [src]="baseUrl + '/assets/img/logotipo glupoint.png'" alt="Sales Funnel" width="70px" height="70px" />
+    </div>
+    <nav class="nav">
+      <a (click)="scrollTo('caracteristicas')" class="cursor-pointer">Características</a>
+      <a (click)="scrollTo('precios')" class="cursor-pointer">Precios</a>
+      <a (click)="scrollTo('contacto')" class="cursor-pointer">Contacto</a>
+    </nav>
+    <div class="actions">
+      <button class="btn login">Iniciar Sesión</button>
+      <button class="btn signup">Regístrate Gratis</button>
+    </div>
+  </div>
+</header>
+<div class="container">
+  
+</div>
+<section class="hero-banner" id="inicio">
+  <div class="hero-content">
+    <p class="hero-subtitle">Explora lo que Glupoint puede hacer por ti</p>
+    <h1 class="hero-title">Glupoint</h1>
+    <button class="hero-button">Solicita tu Demo</button>
+  </div>
+</section>
+<section class="sales-funnel">
+  <div class="content">
+    <div class="text">
+      <!-- <span class="category">Marketing Automation</span> -->
+      <h1 class="title">
+        Aumenta y despega tus ventas con un <span style="color: red;">CRM</span> eficiente !!
+      </h1>
+      <p class="description">
+        Rompe las barreras que te impiden conseguir más clientes y aumenta tus ventas. Nuestro sistema te proporciona
+        las herramientas necesarias para que identifiques oportunidades clave y maximices el crecimiento de tus
+        ingresos.
 
-  <header class="header">
-    <div class="container">
-      <div class="logo"> <img [src]="baseUrl + '/assets/img/logotipo.png'" alt="Sales Funnel" width="70px" height="70px"/></div>
-      <nav class="nav">
-        <a>Características</a>
-        <a>Precios</a>
-        <a>Contacto</a>
-      </nav>
-      <div class="actions">
-        <button class="btn login">Iniciar Sesión</button>
-        <button class="btn signup">Prueba Gratis</button>
+      </p>
+      <div class="author-info">
+        <!-- <span class="author-logo">🌀</span> -->
+        <span class="author-name">Regístrate hoy y empieza a vender con estrategia, no con suerte.</span>
       </div>
     </div>
-  </header>
-  
-  <section class="sales-funnel">
-    <div class="content">
-      <div class="text">
-        <!-- <span class="category">Marketing Automation</span> -->
-        <h1 class="title">
-          Aumenta tus ventas con un proceso eficiente.
-        </h1>
-        <p class="description">
-          Rompe las barreras que te impiden conseguir más clientes y aumenta tus ventas. Nuestro sistema te proporciona las herramientas necesarias para que identifiques oportunidades clave y maximices el crecimiento de tus ingresos.
-              
-        </p>
-        <div class="author-info">
-          <span class="author-logo">🌀</span>
-          <span class="author-name">Sigue nuestra metodología propia, diseñada para guiarte paso a paso hacia tu éxito asegurado en el crecimiento de tus ventas.</span>
-        </div>
-      </div>
-  
-      <div class="funnel-container">
-        <div class="funnel-stage stage1">Calificación de prospectos</div>
-        <div class="funnel-stage stage2">Investigación de necesidades</div>
-        <div class="funnel-stage stage3">Elaboración de Propuestas</div>
-        <div class="funnel-stage stage4">Presentación de propuestas</div>
-        <div class="funnel-stage stage5">Negociación</div>
-      </div>
-      <!-- <div class="funnel-container">
-        <img [src]="baseUrl + '/assets/img/funnel.jpg'" class="iamgen-funnel" alt="Sales Funnel" />
-      </div> -->
+
+    <div class="funnel-container">
+      <div class="funnel-stage stage1">Calificación de prospectos</div>
+      <div class="funnel-stage stage2">Investigación de necesidades</div>
+      <div class="funnel-stage stage3">Elaboración de Propuestas</div>
+      <div class="funnel-stage stage4">Presentación de propuestas</div>
+      <div class="funnel-stage stage5">Negociación</div>
+      <p class="ventas-exitosa">Ventas Exitosas</p>
     </div>
-  </section>
-  
-  <button class="chatbot-button" (click)="openChatbot()">
-    💬
-  </button>
-  
+
+    <!-- <img src="https://www.salesforce.com/in/blog/wp-content/uploads/sites/9/ 2023/06/sales-funnel-main-image.png" alt="Sales Funnel" /> -->
+
+  </div>
+</section>
+<div class="w-100" style="height: 70px;"></div>
+<!-- Sección: Características -->
+<section id="caracteristicas" class="section pt-5">
+  <h2 class="section-title">Características del Funnel de Ventas</h2>
+  <div class="features">
+    <div class="feature">
+      <h3>Calificación de prospectos</h3>
+      <p>Primero, nos aseguramos de que la persona o empresa interesada encaje con lo que ofrecemos. Evaluamos si tiene
+        una necesidad real, el presupuesto adecuado y la capacidad de tomar decisiones. Esto nos ayuda a enfocar
+        esfuerzos en quienes realmente pueden convertirse en clientes. Filtrar bien desde el inicio ahorra tiempo y
+        mejora resultados.</p>
+    </div>
+    <div class="feature">
+      <h3>Investigación de necesidades</h3>
+      <p>Aquí escuchamos con atención. Hablamos con el prospecto para entender qué necesita, qué problemas enfrenta y
+        qué busca lograr. Entre más claro tengamos su situación, mejor podremos ofrecerle una solución útil y relevante.
+      </p>
+    </div>
+    <div class="feature">
+      <h3>Elaboración de propuestas</h3>
+      <p>Con toda la información recopilada, diseñamos una propuesta clara y personalizada. Explicamos cómo nuestro
+        producto o servicio resuelve su problema, qué incluye, tiempos, precios y beneficios. Nada genérico, todo hecho
+        a la medida.</p>
+    </div>
+    <div class="feature">
+      <h3>Presentación de propuestas</h3>
+      <p>No basta con enviar la propuesta, hay que explicarla. Agendamos una presentación para mostrarla y responder
+        cualquier duda. Queremos que el prospecto entienda todo y se sienta seguro de avanzar con nosotros.</p>
+    </div>
+    <div class="feature">
+      <h3>Negociación</h3>
+      <p>Después de presentar, llega el momento de afinar detalles. Puede que el cliente quiera ajustar precios, plazos
+        o condiciones. Estamos abiertos a negociar, siempre buscando un acuerdo justo para ambos.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Sección: Precios -->
+<section id="precios" class="section bg-light">
+  <h2 class="section-title">Planes de Precios</h2>
+  <div class="pricing">
+    <div class="plan">
+      <h3>Free</h3>
+      <p class="price">$0 / mes</p>
+      <ul>
+        <li>Acceso limitado al CRM</li>
+        <li>1 usuario</li>
+        <li>Soporte por correo</li>
+      </ul>
+      <button class="btn">Comenzar</button>
+    </div>
+    <div class="plan popular">
+      <h3>Premium</h3>
+      <p class="price">$19 / mes</p>
+      <ul>
+        <li>Acceso completo al CRM</li>
+        <li>Hasta 5 usuarios</li>
+        <li>Soporte prioritario</li>
+      </ul>
+      <button class="btn">Probar Gratis</button>
+    </div>
+    <div class="plan">
+      <h3>Platino</h3>
+      <p class="price">Personalizado</p>
+      <ul>
+        <li>CRM a la medida</li>
+        <li>Usuarios ilimitados</li>
+        <li>Soporte dedicado</li>
+      </ul>
+      <button class="btn">Contáctanos</button>
+    </div>
+  </div>
+</section>
+
+<!-- Sección: Contacto -->
+<section id="contacto" class="section">
+  <h2 class="section-title">Contacto</h2>
+  <form class="contact-form">
+    <input type="text" placeholder="Tu nombre" required>
+    <input type="email" placeholder="Tu correo electrónico" required>
+    <textarea placeholder="Escribe tu mensaje aquí..." required></textarea>
+    <button type="submit" class="btn">Enviar Mensaje</button>
+  </form>
+</section>
+<button class="chatbot-button" (click)="openChatbot()">
+  💬
+</button>

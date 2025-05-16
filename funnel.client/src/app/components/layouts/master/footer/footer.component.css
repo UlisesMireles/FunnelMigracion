@@ -1,15 +1,12 @@
 #footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
+  
   width: 100%;
   background: linear-gradient(to right, #103d66, #1a4e80, #2a6fa9, #3e90d1, #5ab1f2);
   color: white;
-  text-align: center;
+  text-align: left;
   padding: 4px 0;
   z-index: 10;
   font-family: sans-serif;
-  height: 40px;
 }
 
 #footer h6 {
@@ -28,4 +25,65 @@
   #footer h6 {
     font-size: 0.75rem; /* Ajusta el tamaño de la fuente para pantallas muy pequeñas */
   }
+}
+.page-footer {
+  position: relative;
+  display: block;
+  padding-top: 80px;
+  padding-bottom: 16px;
+  background-color: #2D3B38;
+  color: #fff;
+}
+
+.page-footer h5 {
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.page-footer hr {
+  border-color: #4F5E5B;
+} 
+
+.footer-menu {
+  position: relative;
+  list-style: none;
+  padding-left: 0;
+}
+
+.footer-menu a,
+.footer-link {
+  display: inline-block;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  color: rgba(255, 255, 255, 0.6);
+  transition: all .2s ease;
+}
+
+.footer-menu a:hover,
+.footer-link:hover {
+  text-decoration: none;
+  color: #fff;
+}
+
+.footer-link {
+  padding: 0;
+  margin-bottom: 16px;
+}
+
+.footer-sosmed a {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  line-height: 42px;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 18px;
+  background-color: #26312F;
+  color: #ffff;
+  transition: all .2s ease;
+}
+
+.footer-sosmed a:hover {
+  background-color: #00D9A5;
+  text-decoration: none;
 }

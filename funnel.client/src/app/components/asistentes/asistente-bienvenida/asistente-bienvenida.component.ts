@@ -13,7 +13,8 @@ import { AsistenteService } from '../../../services/asistentes/asistente.service
 export class AsistenteBienvenidaComponent implements OnInit {
   @ViewChild(ChatBotBienvenidaComponent) chatBotAsistente!: ChatBotBienvenidaComponent;
   isProd = environment.production;
-  baseUrl = environment.baseUrlAssetsChatbot;
+  baseUrl: string = environment.baseURLAssets;
+
   @Output() OncerrarChat = new EventEmitter<void>();
   version: string = '';
 

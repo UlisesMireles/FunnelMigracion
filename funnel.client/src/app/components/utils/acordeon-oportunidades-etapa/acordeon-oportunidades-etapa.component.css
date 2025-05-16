@@ -147,6 +147,7 @@
     align-items: center;       /* Centra verticalmente los elementos dentro */
     justify-content: space-between; /* Distribuye el espacio entre el nombre y el contador */
     order: 2;
+    margin-left: -10px;
   }
   
   /* Estilo para el contador de tarjetas (número entre paréntesis) */
@@ -263,14 +264,27 @@
   
   /* Estilos para la foto (círculo) de la tarjeta */
   div.fotoTarjeta {
-    height: 55px;            /* Altura del círculo: 55px */
-    width: 55px;             /* Ancho del círculo: 55px */
+    height: 41px;            /* Altura del círculo*/
+    width: 41px;             /* Ancho del círculo*/
     background-repeat: no-repeat; /* No repetir la imagen de fondo */
     background-position: 50%;     /* Centrar la imagen de fondo */
     border-radius: 50%;      /* Hacer el contenedor circular */
     background-size: 100% auto;  /* Ajustar el tamaño de la imagen de fondo */
   }
-  
+  .acordeon-horizontal.todos-expandidos .fotoTarjeta {
+   height: 37px;            /* Altura del círculo: 55px */
+   width: 37px;             /* Ancho del círculo: 55px */
+   max-height: 100%;
+   object-fit: cover;
+   overflow: hidden;
+}
+.acordeon-horizontal.cuatro-expandidos .fotoTarjeta {
+  height: 40px;
+  width: 40px;
+  max-height: 100%;
+  object-fit: cover;
+  overflow: hidden;
+}
   /* Estilos para pantallas grandes (min-width: 1900px) */
   @media (min-width: 1900px) {
     .clsNomEmpresa {
@@ -309,10 +323,13 @@
     display: flex;                /* Usa flexbox para organizar en fila */
     justify-content: flex-start;  /* Alinea los elementos a la izquierda */
     gap: 8px;                     /* Espacio de 8px entre cada elemento */
-    width: 20% !important;
+    min-width: 0;
     margin-right: 110px;        /* Fuerza el ancho a 20% (ajusta según lo necesites) */
+    flex:1;
+    
   }
-  
+
+
   /* Reglas para filas con justificación entre elementos */
   .row.justify-content-between {
     display: flex;            /* Usa flexbox */
@@ -464,7 +481,23 @@
 .todos-expandidos ::ng-deep .custom-pencil {
   font-size: 1.2rem !important;
 }
+/* Aplica estos estilos cuando el item está expandido (individualmente) */
+.item-acordeon.expandido .fila-monto {
+  display: flex;
+  justify-content: space-between;
+  width: 100% !important;
+  margin-right: 0 !important;
+  padding: 20px 0px;
+}
 
+.item-acordeon.expandido .probabilidad,
+.item-acordeon.expandido .monto-normalizado {
+  font-size: 12px;
+  margin-right: 0px;
+  text-align: left;
+  flex: 1;
+  min-width: 30px;
+}
 .todos-expandidos .fila-monto {
   display: flex;
   justify-content: space-between;

@@ -5,7 +5,7 @@
     <div *ngFor="let etapa of etapas; let i = index" class="item-acordeon" [class.expandido]="etapa.expandido">
       <div class="encabezado-acordeon">
         <!-- Botón a la izquierda del nombre del mes -->
-        <button class="boton-toggle" (click)="alternarItem(etapa, $event)">
+        <button class="boton-toggle"  [ngClass]="etapa.expandido ? 'expandido' : 'colapsado'" (click)="alternarItem(etapa, $event)">
           <i [ngClass]="etapa.expandido ? 'bi bi-chevron-left' : 'bi bi-chevron-right'"></i>
         </button>
 

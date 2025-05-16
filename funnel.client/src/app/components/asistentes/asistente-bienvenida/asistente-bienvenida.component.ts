@@ -14,6 +14,7 @@ export class AsistenteBienvenidaComponent implements OnInit {
   @ViewChild(ChatBotBienvenidaComponent) chatBotAsistente!: ChatBotBienvenidaComponent;
   isProd = environment.production;
   baseUrl: string = environment.baseURLAssets;
+
   @Output() OncerrarChat = new EventEmitter<void>();
   version: string = '';
 

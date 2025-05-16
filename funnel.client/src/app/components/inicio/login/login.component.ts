@@ -292,13 +292,9 @@ export class LoginComponent implements OnInit {
   onDocumentClick(event: MouseEvent): void {
 
     const targetElement = event.target as HTMLElement;
-    console.log(this.chatContainer, targetElement);
     if (this.chatContainer && !this.chatContainer.nativeElement.contains(targetElement)) {
       this.enableAsistenteBienvenida = false;
       this.asistenteService.asistenteBienvenidaSubject.next(-1);
-      this.asistenteService.asistenteBienvenidaObservable.subscribe(value => {
-        console.log('Valor emitido por el observable:', value);
-      });
     }
   }
 }

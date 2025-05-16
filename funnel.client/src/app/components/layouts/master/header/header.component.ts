@@ -90,20 +90,24 @@ export class HeaderComponent implements OnInit {
   
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
-    if (!this.enableAsistenteOperacion) return;
-
     const targetElement = event.target as HTMLElement;
 
     if (this.chatContainer && !this.chatContainer.nativeElement.contains(targetElement)) {
       this.enableAsistenteOperacion = false;
+      this.asistenteService.asistenteSubject.next(-1);
     }
   }
-  toggleOptions() {
+  toggleOptions(): void {
     this.optionsVisible = !this.optionsVisible;
   }
-
+  hideSubmenu(): void{
+    this.optionsVisible = false;
+  }
+  showSubmenu(): void{
+    this.optionsVisible = true;
+  }
   ngOnInit(): void {
-    
+    this.asistenteService.asistenteSubject.next(-1);
     const perfil = {
       nombre: localStorage.getItem('username')!,//'Perfil',
       ruta: '/perfil',

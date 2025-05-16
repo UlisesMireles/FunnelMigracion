@@ -306,13 +306,14 @@ div.fotoTarjeta {
 
 /* Contenedor para los datos de monto, probabilidad y monto-normalizado en una sola fila */
 .fila-monto {
-  display: flex;                /* Usa flexbox para organizar en fila */
-  justify-content: flex-start;  /* Alinea los elementos a la izquierda */
-  gap: 8px;                     /* Espacio de 8px entre cada elemento */
-  width: 20% !important;
-  margin-right: 110px;        /* Fuerza el ancho a 20% (ajusta según lo necesites) */
+  display: flex;
+  justify-content: flex-start;
+  gap: 8px;
+  flex: 1; /* Ocupa todo el espacio disponible */
+  min-width: 20px; /* Ancho mínimo para evitar que se comprima demasiado */
+  margin-right: 0;
+  padding-right: 10px;
 }
-
 /* Reglas para filas con justificación entre elementos */
 .row.justify-content-between {
   display: flex;            /* Usa flexbox */

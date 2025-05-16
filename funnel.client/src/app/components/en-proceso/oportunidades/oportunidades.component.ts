@@ -4,7 +4,6 @@ import { Table } from 'primeng/table';
 import { MessageService } from 'primeng/api';
 import { baseOut } from '../../../interfaces/utils/utils/baseOut';
 import { LoginService } from '../../../services/login.service';
-import { LicenciasService } from '../../../services/licencias.service';
 import { OportunidadesService } from '../../../services/oportunidades.service';
 import { Oportunidad } from '../../../interfaces/oportunidades';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
@@ -41,6 +40,7 @@ export class OportunidadesComponent {
   modalSeguimientoVisible: boolean = false;
   modalDocumentosVisible: boolean = false;
   licencia: string = '';
+  cantidadOportunidades: number = 0;
   private modalSubscription!: Subscription;
 
   loading: boolean = true;
@@ -78,12 +78,12 @@ export class OportunidadesComponent {
   columnsTodasResp: string = JSON.stringify(this.lsTodasColumnas);
 
   constructor(private oportunidadService: OportunidadesService, private messageService: MessageService, private cdr: ChangeDetectorRef,
-    private readonly loginService: LoginService, public dialog: MatDialog, private modalOportunidadesService: ModalOportunidadesService,
-    private licenciasService: LicenciasService
+    private readonly loginService: LoginService, public dialog: MatDialog, private modalOportunidadesService: ModalOportunidadesService
   ) { }
 
   ngOnInit(): void {
     this.licencia = localStorage.getItem('licencia')!;
+    this.cantidadOportunidades = Number(localStorage.getItem('cantidadOportunidades'));
     this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
     this.getOportunidades();
     document.documentElement.style.fontSize = 12 + 'px';
@@ -129,14 +129,14 @@ export class OportunidadesComponent {
   }
 
   inserta() {
-      this.obtenerLimitePorLicencia().subscribe(limite => {
+      const limite = this.cantidadOportunidades;
       const totalOportunidades = this.oportunidades.length;
       if (totalOportunidades >= limite) {
         this.messageService.add({
           severity: 'error',
           summary: 'Límite de oportunidades alcanzado',
           detail: `El límite de ${limite} oportunidades de la licencia ${this.licencia} ha sido alcanzado. Para agregar más oportunidades, considere actualizar su licencia.`,
-        });
+        })
         return;
       }
       this.modalOportunidadesService.openModal(true, true, [], {})
@@ -145,7 +145,6 @@ export class OportunidadesComponent {
       };
       this.insertar = true;
       this.modalVisible = true;
-    });
   }
 
   seguimiento(licencia: Oportunidad) {
@@ -438,15 +437,6 @@ export class OportunidadesComponent {
       5: 'Negociación'
     };
     return etapas[numeroEtapa] || 'Etapa desconocida';
-  }
-
- obtenerLimitePorLicencia() {
-    return this.licenciasService.getLicencias().pipe(
-      map((result: any[]) => {
-        const licencia = result.find((lic: any) => lic.nombreLicencia === this.licencia);
-        return licencia ? licencia.cantidadOportunidades : 0;
-      })
-    );
   }
 }
 

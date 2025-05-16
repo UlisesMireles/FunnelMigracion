@@ -5,12 +5,9 @@ import { Table } from 'primeng/table';
 import { LazyLoadEvent, MessageService } from 'primeng/api';
 import { baseOut } from '../../../interfaces/utils/utils/baseOut';
 import { LoginService } from '../../../services/login.service';
-import { LicenciasService } from '../../../services/licencias.service';
 import { ColumnasDisponiblesComponent } from '../../utils/tablas/columnas-disponibles/columnas-disponibles.component';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { sumBy, map as mapping, omit, sortBy, groupBy, keys as getKeys } from 'lodash-es';
-import { map } from 'rxjs/operators';
-
 
 @Component({
   selector: 'app-usuarios',
@@ -32,7 +29,7 @@ export class UsuariosComponent {
   selectedEstatus: string = 'Activo';
   loading: boolean = true;
   licencia: string = '';
-
+  cantidadUsuarios: number = 0;
   insertar: boolean = true;
   modalVisible: boolean = false;
 
@@ -58,10 +55,11 @@ export class UsuariosComponent {
   columnsAMostrarResp = JSON.stringify(this.lsColumnasAMostrar);
   columnsTodasResp = JSON.stringify(this.lsTodasColumnas);
 
-  constructor(private UsuariosService: UsuariosService, private messageService: MessageService, private cdr: ChangeDetectorRef, private loginService:LoginService, public dialog: MatDialog, private licenciasService: LicenciasService) { }
+  constructor(private UsuariosService: UsuariosService, private messageService: MessageService, private cdr: ChangeDetectorRef, private loginService:LoginService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.licencia = localStorage.getItem('licencia')!;
+    this.cantidadUsuarios = Number(localStorage.getItem('cantidadUsuarios')!);
     this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
     this.getUsuarios();
     document.documentElement.style.fontSize = 12 + 'px';
@@ -122,46 +120,47 @@ export class UsuariosComponent {
       }
 
   inserta() {
-    this.obtenerLimitePorLicencia().subscribe(limite => {
-      const totalUsuarios = this.usuarios.length;
-      if (totalUsuarios >= limite) {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Límite de usuarios alcanzado',
-          detail: `El límite de ${limite} usuarios de la licencia ${this.licencia} ha sido alcanzado. Para agregar más usuarios, considere actualizar su licencia.`,
-        });
-        return;
-      }
-              this.usuarioSeleccionado = {
-              result: true,
-              errorMessage: ' ',  
-              idUsuario: 0, 
-              usuario: '',
-              password: '',
-              tipoUsuario: '',
-              nombre: '',
-              correo: '',
-              idEmpresa: 0,
-              idTipoUsuario: 0,
-              descripcion: '',
-              apellidoPaterno: '',
-              apellidoMaterno: '',
-              fechaRegistro: '',  
-              fechaModificacion: '',  
-              estatus: 1,  
-              desEstatus: 'Activo',
-              archivoImagen: '',
-              usuarioCreador: 0,  
-              codigoAutenticacion: '',
-              fechaInicio: '',
-              fechaFin: '',
-              iniciales: '',
-              id: 0
-            };
-            this.insertar = true;
-            this.modalVisible = true;
-    });
-  }
+    const limite = this.cantidadUsuarios;
+    const totalUsuarios = this.usuarios.length;
+    if (totalUsuarios >= limite) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Límite de usuarios alcanzado',
+        detail: `El límite de ${limite} usuarios de la licencia ${this.licencia} ha sido alcanzado. Para agregar más usuarios, considere actualizar su licencia.`,
+      })
+      return;
+    }
+
+          this.usuarioSeleccionado = {
+            result: true,
+            errorMessage: ' ',  
+            idUsuario: 0, 
+            usuario: '',
+            password: '',
+            tipoUsuario: '',
+            nombre: '',
+            correo: '',
+            idEmpresa: 0,
+            idTipoUsuario: 0,
+            descripcion: '',
+            apellidoPaterno: '',
+            apellidoMaterno: '',
+            fechaRegistro: '',  
+            fechaModificacion: '',  
+            estatus: 1,  
+            desEstatus: 'Activo',
+            archivoImagen: '',
+            usuarioCreador: 0,  
+            codigoAutenticacion: '',
+            fechaInicio: '',
+            fechaFin: '',
+            iniciales: '',
+            id: 0
+          };
+          this.insertar = true;
+          this.modalVisible = true;
+          
+        }
        
         actualiza(licencia: Usuarios) {
           this.usuarioSeleccionado = licencia;
@@ -326,15 +325,6 @@ clear(table: Table) {
   }
   isSorted(columnKey: string): boolean {
     
-    return this.dt?.sortField === columnKey;
-}
-
- obtenerLimitePorLicencia() {
-    return this.licenciasService.getLicencias().pipe(
-      map((result: any[]) => {
-        const licencia = result.find((lic: any) => lic.nombreLicencia === this.licencia);
-        return licencia ? licencia.cantidadUsuarios : 0;
-      })
-    );
+    return this.dt?.sortField === columnKey;  
   }
 }

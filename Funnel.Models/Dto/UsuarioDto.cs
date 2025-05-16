@@ -36,7 +36,7 @@ namespace Funnel.Models.Dto
         public int Id { get; set; }
         public IFormFile? Imagen { get; set; }
         public string? Licencia { get; set; }
-
-
+        public int? CantidadUsuarios { get; set; }
+        public int? CantidadOportunidades { get; set; }
     }
 }

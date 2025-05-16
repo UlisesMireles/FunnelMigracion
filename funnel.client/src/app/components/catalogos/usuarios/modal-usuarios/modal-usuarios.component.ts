@@ -1,4 +1,4 @@
-import { Component, EventEmitter,Input, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter,Input, Output, SimpleChanges, ElementRef, ViewChild } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { baseOut } from '../../../../interfaces/utils/utils/baseOut';
 import { Usuarios } from '../../../../interfaces/usuarios';
@@ -6,7 +6,7 @@ import { UsuariosService } from '../../../../services/usuarios.service';
 import { LoginService } from '../../../../services/login.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RequestUsuario } from '../../../../interfaces/usuarios';
-
+import { ImagenActualizadaService } from '../../../../services/imagen-actualizada.service';
 
 
 @Component({
@@ -18,7 +18,7 @@ import { RequestUsuario } from '../../../../interfaces/usuarios';
 export class ModalUsuariosComponent {
 
   
-  constructor(private UsuariosService: UsuariosService, private messageService: MessageService, private loginService: LoginService, private fb: FormBuilder) { }
+  constructor(private UsuariosService: UsuariosService, private messageService: MessageService, private loginService: LoginService, private fb: FormBuilder, private readonly imagenService: ImagenActualizadaService) { }
     @Input() usuario!: Usuarios;
     @Input() usuarios: Usuarios[] = [];
     @Input() title: string = 'Modal';
@@ -27,17 +27,20 @@ export class ModalUsuariosComponent {
     request!: RequestUsuario;
   
     usuarioForm!: FormGroup;
-
     tiposUsuario: any[] = [];
 
     selectedFile: File | null = null;
     selectedFileName: string = '';
+    selectedFileOriginal: File | null = null;
     formModificado: boolean = false;
-
+    showPassword = false;
+    showConfirmPassword = false;
 
     @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() closeModal: EventEmitter<void> = new EventEmitter();
     @Output() result: EventEmitter<baseOut> = new EventEmitter();
+
+    @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
   ngOnInit() {
     this.inicializarFormulario ();
@@ -89,9 +92,11 @@ export class ModalUsuariosComponent {
         iniciales: [{ value: '', disabled: true }, [
           Validators.required,
           Validators.maxLength(5),
+          Validators.minLength(3),
           Validators.pattern('^[A-Z]+$')
           ]
-        ],    
+        ],  
+        selectedFile:[this.selectedFile],
         idTipoUsuario: [null, Validators.required],
         estatus: [true],
         correo: ['', [Validators.required, Validators.email]],
@@ -103,6 +108,14 @@ export class ModalUsuariosComponent {
     }
 
     else {
+      if (this.usuario.archivoImagen) { 
+        this.selectedFile = { name: this.usuario.archivoImagen } as File;
+        this.selectedFileName = this.usuario.archivoImagen;
+      }
+        /*if (this.usuario.archivoImagen) { 
+          this.selectedFileName = this.usuario.archivoImagen;
+         
+        }*/
       this.usuarioForm = this.fb.group({
         idUsuario: [this.usuario.idUsuario],
         nombre: [this.usuario.nombre, [
@@ -137,6 +150,7 @@ export class ModalUsuariosComponent {
           Validators.pattern('^[A-Z]+$')
           ]
         ],      
+        selectedFile:[this.selectedFile],
         idTipoUsuario: [this.usuario.idTipoUsuario, Validators.required],
         estatus: [this.usuario.estatus === 1],
         correo: [this.usuario.correo, [
@@ -148,8 +162,9 @@ export class ModalUsuariosComponent {
         idEmpresa: [this.loginService.obtenerIdEmpresa()],
         bandera: ['UPDATE']
       }, { validator: this.passwordMatchValidator });
+      this.selectedFileOriginal = this.selectedFile;
       this.actualizarIniciales(); 
-      
+    
     }
   }
 
@@ -157,7 +172,6 @@ export class ModalUsuariosComponent {
     const alias = this.loginService.obtenerAlias();
     const añoActual = new Date().getFullYear();
     const passwordGenerada = `${alias.toLowerCase()}${añoActual}`; 
-  
     console.log('Contraseña generada:', passwordGenerada);
     console.log('Alias obtenido (original):', alias);
     console.log('Alias en minúsculas:', alias.toLowerCase());
@@ -191,68 +205,107 @@ export class ModalUsuariosComponent {
     this.visible = false;
     this.visibleChange.emit(this.visible);
     this.closeModal.emit();
+
+    if (this.fileInput){
+      this.fileInput.nativeElement.value = '';
+    }
+    this.selectedFile = null;
+    this.selectedFileName = '';
   }
 
   guardarUsuario() {
-    if (this.usuarioForm.invalid) {
-      this.mostrarToastError();
-      return;
-    }
-    const formValue = { ...this.usuarioForm.getRawValue() }; // incluye los deshabilitados
-    const usuarioIngresado = formValue.usuario?.trim()?.toLowerCase();
-  
-    const usuarioYaExiste = this.usuarios.some(u =>
-      u.usuario.toLowerCase() === usuarioIngresado &&
-      (
-        this.insertar || (!this.insertar && u.idUsuario !== this.usuario.idUsuario)
-      )
-    );
-  
-    if (usuarioYaExiste) {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Usuario duplicado',
-        detail: `El nombre de usuario '${usuarioIngresado}' ya está en uso.`,
-      });
-      return;
-    }
-
-    this.usuarioForm.get('iniciales')?.enable();
-    delete formValue.confirmPassword;
-  
-    formValue.estatus = formValue.estatus ? 1 : 0;
-    formValue.idEmpresa = this.loginService.obtenerIdEmpresa();
-    formValue.bandera = this.insertar ? 'INSERT' : 'UPDATE';
-
-    if (!this.insertar && !formValue.password) {
-      delete formValue.password;
-    }  
-    
-    const formData = new FormData();
-    for (const key in formValue) {
-      formData.append(key, formValue[key]);
-    }
-
-    if (this.selectedFile) {
-      formData.append('imagen', this.selectedFile, this.selectedFile.name);
-    }
-
-    this.UsuariosService.postGuardarUsuario(formData).subscribe({
-      next: (result: any) => {
-        this.result.emit(result); 
-        this.close();
-        this.formModificado = false;
-      },
-      error: (error) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Se ha producido un error.',
-          detail: error.errorMessage,
-        });
+    try {
+      if (this.usuarioForm.invalid) {
+        this.mostrarToastError();
+        return;
       }
-    });
-  }
+  
+      const formValue = { ...this.usuarioForm.getRawValue() };
+      const usuarioIngresado = formValue.usuario?.trim()?.toLowerCase();
+  
+      const usuarioYaExiste = this.usuarios.some(u =>
+        u.usuario.toLowerCase() === usuarioIngresado &&
+        (this.insertar || (!this.insertar && u.idUsuario !== this.usuario.idUsuario))
+      );
+  
+      if (usuarioYaExiste) {
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Usuario duplicado',
+          detail: `El nombre de usuario '${usuarioIngresado}' ya está en uso.`,
+        });
+        return;
+      }
+  
+      this.usuarioForm.get('iniciales')?.enable();
+      delete formValue.confirmPassword;
+  
+      formValue.estatus = formValue.estatus ? 1 : 0;
+      formValue.idEmpresa = this.loginService.obtenerIdEmpresa();
+      formValue.bandera = this.insertar ? 'INSERT' : 'UPDATE';
+  
+      if (!this.insertar && !formValue.password) {
+        delete formValue.password;
+      }
+  
+      const formData = new FormData();
+      for (const key in formValue) {
+        if (key === 'selectedFile') continue; 
+        const value = formValue[key];
+        if (value !== null && value !== undefined) {
+          formData.append(key, value.toString());
+        }
+      }
+      let nombreArchivo = '';
+      if (this.selectedFile instanceof File) {
+      const extension = this.selectedFile.name.split('.').pop();
 
+      const apellidoPaterno = formValue.apellidoPaterno || '';
+      const apellidoMaterno = formValue.apellidoMaterno || '';
+      const nombre = formValue.nombre || '';
+
+      nombreArchivo = `${apellidoPaterno}_${apellidoMaterno}_${nombre}`;
+
+
+      nombreArchivo = `${nombreArchivo}.${extension}`;
+
+
+        // Agrega la imagen con el nuevo nombre
+        formData.append('imagen', this.selectedFile, nombreArchivo);
+      }
+
+
+  
+      this.UsuariosService.postGuardarUsuario(formData).subscribe({
+        next: (result: any) => {
+          if (result.result && this.selectedFile instanceof File) {
+            this.imagenService.actualizarImagenPerfil(nombreArchivo);
+          }else if (this.selectedFile == null || this.selectedFile == undefined) {
+            this.imagenService.actualizarImagenPerfil('')
+          }
+          this.result.emit(result);
+          this.close();
+          this.formModificado = false;
+        },
+        error: (error) => {
+          console.error('Error al guardar usuario:', error);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Se ha producido un error.',
+            detail: error.error?.errorMessage || 'Error desconocido al guardar usuario',
+          });
+        }
+      });
+    } catch (error) {
+      console.error('Error inesperado:', error);
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error inesperado',
+        detail: 'Ocurrió un error inesperado al procesar la solicitud',
+      });
+    }
+  }
+  
   mostrarToastError() {
     let detail = 'Es necesario llenar los campos indicados.';
     
@@ -269,6 +322,7 @@ export class ModalUsuariosComponent {
     });
   }
 
+  
   private escucharCambiosEnCampos() {
     this.usuarioForm.get('nombre')?.valueChanges.subscribe(() => this.actualizarIniciales());
     this.usuarioForm.get('apellidoPaterno')?.valueChanges.subscribe(() => this.actualizarIniciales());
@@ -276,13 +330,13 @@ export class ModalUsuariosComponent {
     
     this.usuarioForm.get('password')?.valueChanges.subscribe(() => {
       if (this.usuarioForm.get('confirmPassword')?.value) {
-        this.usuarioForm.get('confirmPassword')?.updateValueAndValidity();
+        this.usuarioForm.get('confirmPassword')?.updateValueAndValidity({emitEvent: false});
       }
     });
     
     this.usuarioForm.get('confirmPassword')?.valueChanges.subscribe(() => {
       if (this.usuarioForm.get('password')?.value) {
-        this.usuarioForm.get('password')?.updateValueAndValidity();
+        this.usuarioForm.get('password')?.updateValueAndValidity({emitEvent: false});
       }
     });
 
@@ -303,7 +357,7 @@ export class ModalUsuariosComponent {
       const existenIniciales = await this.validarInicialesExistente(iniciales, idEmpresa);
   
       if (existenIniciales) {
-        iniciales = this.generarInicialesAlternativas(nombre, apellidoPaterno, apellidoMaterno, iniciales);
+        iniciales = this.generarInicialesAlternativas(nombre, apellidoPaterno, apellidoMaterno);
       }
   
       this.usuarioForm.get('iniciales')?.setValue(iniciales, { emitEvent: false });
@@ -326,15 +380,18 @@ export class ModalUsuariosComponent {
     return iniciales;
   }
   
-  private generarInicialesAlternativas(nombre: string, apellidoPaterno: string, apellidoMaterno: string, iniciales: string): string {
-    const nombres = nombre.split(' ');
+  private generarInicialesAlternativas(nombre: string, apellidoPaterno: string, apellidoMaterno: string): string {
+    const nombreLimpio = nombre.replace(/\s+/g, '').toUpperCase();
+    const paternoLimpio = apellidoPaterno.trim().toUpperCase();
+    const maternoLimpio = apellidoMaterno.trim().toUpperCase();
   
-    const segundaLetraNombre = nombres[0].substring(1, 2).toUpperCase();
+    const letrasNombre = nombreLimpio.substring(0, 3).padEnd(3, 'X'); 
+    const letraPaterno = paternoLimpio.charAt(0) || 'X';
+    const letraMaterno = maternoLimpio.charAt(0) || 'X';
   
-    iniciales = iniciales.slice(0, 1) + segundaLetraNombre + iniciales.slice(1);
-  
-    return iniciales;
+    return letrasNombre + letraPaterno + letraMaterno;
   }
+  
   
   private async validarInicialesExistente(iniciales: string, idEmpresa: number): Promise<boolean> {
     try {
@@ -363,5 +420,23 @@ export class ModalUsuariosComponent {
       this.formModificado = true;
     }
   }
+
+  removerFoto() {
+    this.selectedFile = null;
+    this.usuarioForm.get('selectedFile')?.setValue(null);
+    this.formModificado = true;
   
+  }
+  
+
+  abrirInput(): void {
+    this.fileInput.nativeElement.click();
+  }
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+  toggleConfirmPasswordVisibility() {
+  this.showConfirmPassword = !this.showConfirmPassword;
+}  
 }

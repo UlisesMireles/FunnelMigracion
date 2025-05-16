@@ -3,8 +3,10 @@ using Funnel.Data.Interfaces;
 using Funnel.Data.Utils;
 using Funnel.Models.Base;
 using Funnel.Models.Dto;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System.Data;
+using System.Linq;
 
 namespace Funnel.Data
 {
@@ -35,6 +37,8 @@ namespace Funnel.Data
                         usuario.TipoUsuario = ComprobarNulos.CheckStringNull(reader["TipoUsuario"]);
                         usuario.Password = contrasena;
                         usuario.Nombre = ComprobarNulos.CheckStringNull(reader["Nombre"]);
+                        usuario.ApellidoPaterno = ComprobarNulos.CheckStringNull(reader["ApellidoPaterno"]);
+                        usuario.ApellidoMaterno = ComprobarNulos.CheckStringNull(reader["ApellidoMaterno"]);
                         usuario.Correo = ComprobarNulos.CheckStringNull(reader["Correo"]);
                         usuario.IdEmpresa = ComprobarNulos.CheckIntNull(reader["IdEmpresa"]);
                         usuario.IdRol = ComprobarNulos.CheckIntNull(reader["IdTipoUsuario"]);
@@ -43,6 +47,7 @@ namespace Funnel.Data
                         usuario.ArchivoImagen = ComprobarNulos.CheckStringNull(reader["ArchivoImagen"]);
                         usuario.ErrorMessage = ComprobarNulos.CheckStringNull(reader["Error"]);
                         usuario.Result = ComprobarNulos.CheckBooleanNull(reader["Result"]);
+                        usuario.Licencia = ComprobarNulos.CheckStringNull(reader["Licencia"]);
                     }
                 }
             }
@@ -267,30 +272,69 @@ namespace Funnel.Data
             return result;
         }
 
-        public async Task<BaseOut> GuardarImagen(int idUsuario, string nombreArchivo)
+        public async Task<BaseOut> GuardarImagen(int idUsuario, IFormFile imagen, UsuarioDto request)
         {
             BaseOut result = new BaseOut();
+            var formatosPermitidos = new List<string> { ".jpg", ".png", ".jpeg" };
+            string carpetaDestino = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Fotografia");
+            string nombreArchivoNuevo = null;
+
+            if (!Directory.Exists(carpetaDestino))
+            {
+                Directory.CreateDirectory(carpetaDestino);
+            }
+
+            if (imagen != null)
+            {
+                var extension = Path.GetExtension(imagen.FileName).ToLower();
+
+                if (!formatosPermitidos.Contains(extension))
+                {
+                    result.ErrorMessage = $"Formato de archivo {extension} no permitido.";
+                    result.Result = false;
+                    return result;
+                }
+
+                var nombreBase = $"{request.ApellidoPaterno}_{request.ApellidoMaterno}_{request.Nombre}";
+                nombreArchivoNuevo = $"{nombreBase}{extension}";
+                var rutaArchivoNuevo = Path.Combine(carpetaDestino, nombreArchivoNuevo);
+
+                // Eliminar imágenes anteriores
+                foreach (var formato in formatosPermitidos)
+                {
+                    var rutaAnterior = Path.Combine(carpetaDestino, $"{nombreBase}{formato}");
+                    if (File.Exists(rutaAnterior))
+                    {
+                        File.Delete(rutaAnterior);
+                    }
+                }
+
+                // Guardar la nueva imagen
+                using (var stream = new FileStream(rutaArchivoNuevo, FileMode.Create))
+                {
+                    await imagen.CopyToAsync(stream);
+                }
+            }
+
             try
             {
                 IList<ParameterSQl> list = new List<ParameterSQl>
-                {
-                    DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 100, ParameterDirection.Input, false, null, DataRowVersion.Default, "UPDATE-FOTO"),
-                    DataBase.CreateParameterSql("@IdUsuario", SqlDbType.VarChar, 200, ParameterDirection.Input, false, null, DataRowVersion.Default, idUsuario),
-                    DataBase.CreateParameterSql("@NombreArchivo", SqlDbType.VarChar, 500, ParameterDirection.Input, false, null, DataRowVersion.Default, nombreArchivo)
-                };
+        {
+            DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 100, ParameterDirection.Input, false, null, DataRowVersion.Default, "UPDATE-FOTO"),
+            DataBase.CreateParameterSql("@IdUsuario", SqlDbType.VarChar, 200, ParameterDirection.Input, false, null, DataRowVersion.Default, idUsuario),
+            DataBase.CreateParameterSql("@NombreArchivo", SqlDbType.VarChar, 500, ParameterDirection.Input, false, null, DataRowVersion.Default, nombreArchivoNuevo)
+        };
 
-                // Ejecutar el SP sin leer datos
                 using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoUsuarios", CommandType.StoredProcedure, list, _connectionString))
                 {
                     while (reader.Read())
                     {
-
                     }
                 }
-                result.ErrorMessage = "Se ha actualizado la fotografía correctamente.";
+
+                result.ErrorMessage = "La imagen se actualizó correctamente.";
                 result.Id = 1;
                 result.Result = true;
-
             }
             catch (Exception ex)
             {
@@ -298,8 +342,10 @@ namespace Funnel.Data
                 result.Id = 0;
                 result.Result = false;
             }
+
             return result;
         }
+
 
         public async Task<BaseOut> CambioPassword(string bandera, string Nombre, string ApellidoPaterno, string ApellidoMaterno,
             string Usuario, string Inicales, string CorreoElectronico, int IdTipoUsuario, int IdUsuario, int Estatus, string password, int idEmpresa)

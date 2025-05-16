@@ -1,16 +1,16 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
-import { AsitenteCategoriasDto } from '../../../interfaces/asistenteOperacion/asistente';
-import { CategoriaPreguntasDto } from '../../../interfaces/asistenteOperacion/categoriaPreguntas';
-import { ChatHistorial } from '../../../interfaces/asistenteOperacion/chatHistorial';
-import { ConsultaAsistenteDto } from '../../../interfaces/asistenteOperacion/consultaAsistente';
-import { PreguntasPorCategoriaDto } from '../../../interfaces/asistenteOperacion/preguntasPorCategoria';
-import { EmojiPipe } from '../../../pipes/asistenteOperacion/emoji.pipe';
-import { AsistenteService } from '../../../services/asistenteOperacion/asistente.service';
-import { OpenIaService } from '../../../services/asistenteOperacion/openIA.service';
-import { PreguntasFrecuentesService } from '../../../services/asistenteOperacion/preguntasFrecuentes.service';
-import { environment } from '../../../../environments/environment';
-import { LoginService } from '../../../services/login.service';
+import { AsitenteCategoriasDto } from './../../../../interfaces/asistentes/asistente';
+import { CategoriaPreguntasDto } from './../../../../interfaces/asistentes/categoriaPreguntas';
+import { ChatHistorial } from './../../../../interfaces/asistentes//chatHistorial';
+import { ConsultaAsistenteDto } from './../../../../interfaces/asistentes/consultaAsistente';
+import { PreguntasPorCategoriaDto } from'./../../../../interfaces/asistentes/preguntasPorCategoria';
+import { EmojiPipe } from '../../../../pipes/asistentes/emoji.pipe';
+import { AsistenteService } from '../../../../services/asistentes/asistente.service';
+import { OpenIaService } from '../../../../services/asistentes/openIA.service';
+import { PreguntasFrecuentesService } from '../../../../services/asistentes/preguntasFrecuentes.service';
+import { environment } from '../../../../../environments/environment';
+import { LoginService } from '../../../../services/login.service';
 
 @Component({
   standalone: false,
@@ -25,7 +25,7 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
   consultaAsistente: ConsultaAsistenteDto = {
     exitoso: false,
     errorMensaje: "",
-    idBot: 0,
+    idBot: 4,
     pregunta: '',
     respuesta: '',
     idUsuario: this.idUsuario(),
@@ -40,13 +40,13 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
 
   chatHistorial: ChatHistorial[] = [
     { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨" },
-    { rol: "asistente", mensaje: "Bienvenido(a) al asistente virtual del sistema de ventas Funnel. Estoy aquí para ayudarte a optimizar tu proceso de ventas. Por favor, selecciona una de las siguientes opciones para comenzar: ¿En qué puedo asistirte hoy?:" }
+    { rol: "asistente", mensaje: "Bienvenido(a) al asistente virtual del sistema de ventas Funnel. Estoy aquí para ayudarte. Puedes escribir tu pregunta directamente o explorar por categorías si lo prefieres." }
   ];
 
-  lsRevisarTemas: any[] = ['Sí', 'No'];
+  lsRevisarCategorias: any[] = ['Sí', 'No'];
   chatHistorialResp!: string;
   pregunta = "";
-  asistenteSeleccionado = { idBot: 0, documento: false };
+  asistenteSeleccionado = { idBot: 4, documento: false };
   lsAsistentesPorCategoria!: AsitenteCategoriasDto[];
   lsCategoriaPreguntas!: CategoriaPreguntasDto[];
   lsPreguntasPorCategoria!: PreguntasPorCategoriaDto[];
@@ -66,7 +66,7 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
 
   ngOnInit() {
     this.chatHistorialResp = JSON.stringify(this.chatHistorial);
-    this.obtenListaPreguntasFrecuentesCategoria();
+    this.obtenListaPreguntasFrecuentesCategoriaOperaciones();
 
   }
 
@@ -109,7 +109,26 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
   //#endregion
 
   //#region oonsultas
-  obtenListaPreguntasFrecuentesCategoria() {
+  obtenListaPreguntasFrecuentesCategoriaOperaciones() {
+    this.preguntasFAQService.obtenListaPreguntasFrecuentesCategoria().subscribe({
+      next: (value) => {
+        if (value.result) {
+          this.lsAsistentesPorCategoria = value.asistentes;
+          const asistenteOperacion = this.lsAsistentesPorCategoria.find(a => a.idBot === 4);  
+          if (asistenteOperacion) {
+            this.obtenCategoriasPorAsistente(asistenteOperacion);
+          }
+        } else {
+          console.error(value.errorMessage);
+        }
+        },
+      error(err) {
+        console.error(err)
+      }
+      
+    });
+  }
+  /*obtenListaPreguntasFrecuentesCategoria() {
     this.preguntasFAQService.obtenListaPreguntasFrecuentesCategoria().subscribe({
       next: (value) => {
         if (value.result) {
@@ -127,14 +146,11 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
         this.cdRef.detectChanges();
       },
     });
-  }
+  }*/
 
   obtenCategoriasPorAsistente(asistente: AsitenteCategoriasDto) {
     this.nombreAsistenteSeleccionado.emit({ asistente: asistente.asistente, idBot: asistente.idBot });
     this.asistenteSeleccionado = { idBot: asistente.idBot, documento: asistente.documento };
-    let findIndexAsistentes = this.chatHistorial.findIndex(f => f.rol === 'asistentes');
-    this.chatHistorial.splice(findIndexAsistentes, 1);
-    this.chatHistorial.push({ rol: "usuario", mensaje: asistente.asistente });
 
     const asistenteSeleccionado = this.lsAsistentesPorCategoria.find(f => f.idBot == asistente.idBot);
     if (asistenteSeleccionado)
@@ -171,8 +187,8 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
       let findPreguntasUsadas = this.lsPreguntasPorCategoria.filter(f => f.yaSePregunto == false);
       if (findPreguntasUsadas.length == 0) {
         this.chatHistorial.push(
-          { rol: "asistente", mensaje: "En cualquier momento puedes hacer una pregunta abierta o ¿quisieras revisar por asistente?😊" },
-          { rol: "revisarTemas", mensaje: "" }
+          { rol: "asistente", mensaje: "En cualquier momento puedes hacer una pregunta abierta o ¿quisieras revisar por categoría?😊" },
+          { rol: "revisarCategorias", mensaje: "" }
         );
       } else {
         this.chatHistorial.push({ rol: "preguntasPorCat", mensaje: "" });
@@ -201,8 +217,8 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
 
           if (findPreguntasUsadas.length == 0) {
             this.chatHistorial.push(
-              { rol: "asistente", mensaje: "En cualquier momento puedes hacer una pregunta abierta o ¿quisieras revisar por asistente?😊" },
-              { rol: "revisarTemas", mensaje: "" }
+              { rol: "asistente", mensaje: "En cualquier momento puedes hacer una pregunta abierta o ¿quisieras revisar por categoría?😊" },
+              { rol: "revisarCategorias", mensaje: "" }
             );
           } else {
             this.chatHistorial.push({ rol: "preguntasPorCat", mensaje: "" });
@@ -223,17 +239,16 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
   //#endregion
 
   consultaMensajeOpenIa() {
-    if (this.asistenteSeleccionado.idBot == 0 || this.asistenteSeleccionado.idBot == -1 || this.lsPreguntasPorCategoria === undefined || !this.pregunta)
-      return;
+    if (!this.pregunta?.trim()) return;
     if (!this.isConsultandoOpenIa) {
       let findIndexFiltroFaq = this.chatHistorial.findIndex(f => f.rol === 'preguntasPorCat');
       if (findIndexFiltroFaq !== -1) {
         this.chatHistorial.splice(findIndexFiltroFaq, 1);
       }
 
-      const indexRevisarTemas = this.chatHistorial.findIndex(f => f.rol === 'revisarTemas');
-      if (indexRevisarTemas != -1) {
-        this.chatHistorial.splice(indexRevisarTemas, 1);
+      const indexRevisarCategorias = this.chatHistorial.findIndex(f => f.rol === 'revisarCategorias');
+      if (indexRevisarCategorias != -1) {
+        this.chatHistorial.splice(indexRevisarCategorias, 1);
       }
 
       this.consultaAsistente.idBot = this.asistenteSeleccionado.idBot;
@@ -250,7 +265,7 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
           this.chatHistorial.push({ rol: "preguntasPorCat", mensaje: "" });
         }
       } else {
-        const preguntaEncontrada = this.lsPreguntasPorCategoria.find(f => f.pregunta.toLocaleLowerCase().indexOf(this.consultaAsistente.pregunta.toLocaleLowerCase()) !== -1)
+        const preguntaEncontrada = this.lsPreguntasPorCategoria?.find?.(f => f.pregunta.toLocaleLowerCase().includes(this.consultaAsistente.pregunta.toLocaleLowerCase()));
         if (preguntaEncontrada) {
           if (this.asistenteSeleccionado.documento) {
             this.chatHistorial.push({ rol: "asistente", mensaje: preguntaEncontrada.respuesta });
@@ -276,8 +291,8 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
 
                 if (findPreguntasUsadas.length == 0) {
                   this.chatHistorial.push(
-                    { rol: "asistente", mensaje: "En cualquier momento puedes hacer una pregunta abierta o ¿quisieras revisar por asistente?😊" },
-                    { rol: "revisarTemas", mensaje: "" }
+                    { rol: "asistente", mensaje: "En cualquier momento puedes hacer una pregunta abierta o ¿quisieras revisar por categoría?😊" },
+                    { rol: "revisarCategorias", mensaje: "" }
                   );
                 } else {
                   this.chatHistorial.push({ rol: "preguntasPorCat", mensaje: "" });
@@ -330,57 +345,48 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
     this.nombreAsistenteSeleccionado.emit({ asistente: '', idBot: 0 });
     this.asistenteSeleccionado = { idBot: 0, documento: false };
     this.chatHistorial = JSON.parse(this.chatHistorialResp);
-    this.obtenListaPreguntasFrecuentesCategoria();
+    this.obtenListaPreguntasFrecuentesCategoriaOperaciones();
     this.cdRef.detectChanges();
   }
 
-  mostrarTemas() {
+  mostrarCategorias() {
+    this.asistenteSeleccionado = { idBot: 4, documento: false };
     
-    this.nombreAsistenteSeleccionado.emit({ asistente: '', idBot: 0 });
-    this.asistenteSeleccionado = { idBot: 0, documento: false };
-    const indexAsistentes = this.chatHistorial.findIndex(f => f.rol === 'asistentes');
-    if (indexAsistentes != -1) {
-      this.chatHistorial.splice(indexAsistentes, 1);
-    }
-
-    const indexCategorias = this.chatHistorial.findIndex(f => f.rol === 'categorias');
-    if (indexCategorias != -1) {
-      this.chatHistorial.splice(indexCategorias, 1);
-    }
-    
-    const indexFiltroFaq = this.chatHistorial.findIndex(f => f.rol === 'preguntasPorCat');
-    if (indexFiltroFaq != -1) {
-      this.chatHistorial.splice(indexFiltroFaq, 1);
-    }
-
-    const indexRevisarTemas = this.chatHistorial.findIndex(f => f.rol === 'revisarTemas');
-    if (indexRevisarTemas != -1) {
-      this.chatHistorial.splice(indexRevisarTemas, 1);
-    }
-
+    const componentes = ['asistentes', 'categorias', 'preguntasPorCat', 'revisarCategoris'];
+    componentes.forEach(componente => {
+      const index = this.chatHistorial.findIndex(m => m.rol === componente);
+      if (index !== -1) this.chatHistorial.splice(index, 1);
+    });
+  
+    // Mostrar categorías directamente
     this.chatHistorial.push(
-      { rol: "asistente", mensaje: "¡Hola! ¿En qué puedo ayudarte hoy?" });
-    this.obtenListaPreguntasFrecuentesCategoria();
-    this.cdRef.detectChanges();
+      { rol: "asistente", mensaje: "Estas son las categorías disponibles:" },
+      { rol: "categorias", mensaje: "" }
+    );
+    
     this.scrollToBottom();
+    this.cdRef.detectChanges();
   }
 
-  seleccionRevisarTemas(rt: string) {
-    this.chatHistorial.pop();
-    this.chatHistorial.push({ rol: "usuario", mensaje: rt });
-    if (rt !== "No") {
-      this.lsPreguntasPorCategoria.forEach(element => {
-        element.yaSePregunto = false;
+  seleccionRevisarCategorias(respuesta: string) {
+    this.chatHistorial.pop(); 
+    this.chatHistorial.push({ rol: "usuario", mensaje: respuesta });
+    
+    if (respuesta === "Sí") {
+      this.lsPreguntasPorCategoria?.forEach(pregunta => {
+        pregunta.yaSePregunto = false;
       });
-
+  
       this.chatHistorial.push(
-        { rol: "asistente", mensaje: "Selecciona el asistente de tu interés 😊:" },
-        { rol: "asistentes", mensaje: "" });
+        { rol: "asistente", mensaje: "Estas son las categorías disponibles:" },
+        { rol: "categorias", mensaje: "" } 
+      );
     } else {
       this.chatHistorial.push(
-        { rol: "asistente", mensaje: "¡Muy bien! Si tienes alguna pregunta, estaré encantado de ayudarte." });
-
+        { rol: "asistente", mensaje: "Perfecto. Si tienes otra duda, estaré aquí para ayudarte. 😊" }
+      );
     }
+    
     this.scrollToBottom();
   }
 

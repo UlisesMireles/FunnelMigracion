@@ -8,18 +8,19 @@
   <!-- Contenedor del Menú con Scroll -->
   <div class="menu-container" #menuList>
     <ul class="menu">
-      <li class="menu-item-perfil" *ngIf="ListaMenu[0]" (mouseenter)="showSubmenu(0)" (mouseleave)="hideSubmenu()" (click)="navigateTo(ListaMenu[0].ruta)">
+      <!-- <li class="menu-item-perfil" *ngIf="ListaMenu[0]" (mouseenter)="showSubmenu(0)" (mouseleave)="hideSubmenu()" (click)="navigateTo(ListaMenu[0].ruta)">
         <i [ngClass]="ListaMenu[0].icono" [title]="ListaMenu[0].tooltip" class="large-icon"></i>
         <span *ngIf="isExpanded">{{ ListaMenu[0].nombre }}</span>
-      </li>
+      </li> -->
 
       <li class="menu-item" *ngFor="let item of ListaMenu.slice(1); let i = index" (mouseenter)="showSubmenu(i)"
         (mouseleave)="hideSubmenu()" (click)="navigateTo(item.ruta)">
-        <i [ngClass]="item.icono" [title]="item.tooltip"></i>
+        <i [ngClass]="item.icono" [title]="item.tooltip" [ngStyle]="{'color': item.colorIcono}"></i>
         <span *ngIf="isExpanded">{{ item.nombre }}</span>
 
         <!-- Solo mostrar submenú si existe y tiene elementos -->
-        <ul class="submenu visible" [ngClass]="isExpanded ? 'subMenuExpanded' : ''" *ngIf="item.subMenu && item.subMenu.length > 0 && hoveredMenu === i">
+        <ul class="submenu visible" [ngStyle]="item.subMenu.length > 2 ? {'transform': 'translateY(40%)'}: {'transform': 'translateY(33%)'}" 
+          [ngClass]="isExpanded ? 'subMenuExpanded' : ''" *ngIf="item.subMenu && item.subMenu.length > 0 && hoveredMenu === i" >
           <!-- Encabezado con el nombre del menú como título -->
           <!-- <li class="submenu-header">{{ item.pagina }}</li> -->
 
@@ -60,6 +61,6 @@
 
 
 <p-toast position="center"></p-toast>
-
-<app-usuario-perfil [(visible)]="modalVisible" [title]="'Perfil'" class="estiloPerfilMenu"
-  [ngClass]="isExpanded ? 'estiloPerfilMenuOpen' : 'estiloPerfilMenuClose'"></app-usuario-perfil>
+<div class="w-100">
+  <app-usuario-perfil [(visible)]="modalVisible" [title]="'Perfil'" class="estiloPerfilMenu"></app-usuario-perfil>
+</div>

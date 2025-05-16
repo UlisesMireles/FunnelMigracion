@@ -1,8 +1,9 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
-import { SideNavChatFunnelService } from '../../services/asistenteOperacion/sidenavChatFunnel.service';
+import { SideNavChatFunnelService } from '../../../services/asistentes/sidenavChatFunnel.service';
 import { ChatBotAsistenteOperacionComponent } from './chatBot/chatBotAsistenteOperacion.component';
-import { environment } from '../../../environments/environment';
-import { AsistentesAdministradorService } from '../../services/asistenteOperacion/asistentesAdministrador.service';
+import { environment } from '../../../../environments/environment';
+import { AsistentesAdministradorService } from '../../../services/asistentes/asistentesAdministrador.service';
+import { AsistenteService } from '../../../services/asistentes/asistente.service';
 
 @Component({
   standalone: false,
@@ -15,11 +16,12 @@ export class AsistenteOperacionComponent implements OnInit{
   @Output() OncerrarChat = new EventEmitter<void>();
   baseUrlAssets = environment.baseUrlAssetsChatbot;
   isProd = environment.production;
-  asistenteSeleccionado: any = { asistente: '', idBot: 0 };
+  asistenteSeleccionado: any = { asistente: '', idBot: 4 };
   version: string = '';
 
 
-  constructor(public sideNavService: SideNavChatFunnelService, private cdRef: ChangeDetectorRef, private asistentesService: AsistentesAdministradorService) {
+  constructor(public sideNavService: SideNavChatFunnelService, private cdRef: ChangeDetectorRef, private asistentesAdministracionService: AsistentesAdministradorService,
+    private asistenteService: AsistenteService) {
   }
 
   ngOnInit() {
@@ -30,8 +32,8 @@ export class AsistenteOperacionComponent implements OnInit{
     this.sideNavService.toggleIconState();
   }
 
-  mostrarTemas() {
-    this.chatBotAsistenteOperacion.mostrarTemas();
+  mostrarCategorias() {
+    this.chatBotAsistenteOperacion.mostrarCategorias();
   }
 
   nombreAsistenteSeleccionado(asistente: any): void {
@@ -40,7 +42,7 @@ export class AsistenteOperacionComponent implements OnInit{
   }
 
   obtenerVersion(): void {
-    this.asistentesService.obtenerVersionAsistentes().subscribe({
+    this.asistentesAdministracionService.obtenerVersionAsistentes().subscribe({
       next: (data) => {
         this.version = data.version;
         this.cdRef.detectChanges();
@@ -49,6 +51,7 @@ export class AsistenteOperacionComponent implements OnInit{
     });
   }
   onCerrarChat() {
+    this.asistenteService.asistenteSubject.next(-1);
     const chatContainer = document.getElementById("chat-container");
     if (chatContainer) {
       chatContainer.classList.add("d-none");

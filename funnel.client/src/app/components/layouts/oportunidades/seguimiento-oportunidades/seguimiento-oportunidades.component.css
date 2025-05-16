@@ -235,13 +235,14 @@
 }
 
 .seguimiento-textarea {
-  width: 100%!important;
+  width: 97%!important;
   height: 80px; 
   resize: none; 
   padding: 8px; 
   border: 1px solid #ccc; 
   border-radius: 5px;
   width: 70%; 
+  margin-left: 20px;
 }
 
 .nombre-destacado {
@@ -326,11 +327,12 @@
   display: flex;
   justify-content: flex-end;
   gap: 8px;
+  padding-right: 30px;
 }
 
 .bodyDialog.maximized .button-group {
   position: absolute;
-  right: 20px;
+  right: 30px;
 }
 
 .p-button {
@@ -377,7 +379,20 @@
   max-height: calc(100vh - 115px) !important;
   margin-top: 70px;
   margin-bottom: 45px;
-  width: 68rem;
+  width: 70rem;
   height: auto; /* O el valor por defecto que necesites */
 }
 
+/* Estilo para alinear el botón a la derecha en la orilla */
+.button-pdf.align-right {
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin-top: 100px; /* Ajusta según sea necesario */
+  margin-right: 35px;
+}
+
+.button-pdf.default-position {
+  position: static;
+  margin-left: 0px;
+}

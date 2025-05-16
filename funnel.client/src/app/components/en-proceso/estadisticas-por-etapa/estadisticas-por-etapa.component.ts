@@ -37,7 +37,7 @@ export class EstadisticasPorEtapaComponent {@ViewChild('dt') dt!: Table;
   ];
 
   lsTodasColumnas: any[] = [
-    { key: 'idOportunidad', isCheck: true, valor: 'Id', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'number' },
+    { key: 'idOportunidad', isCheck: false, valor: 'Id', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'number' },
     { key: 'nombre', isCheck: true, valor: 'Prospecto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreSector', isCheck: true, valor: 'Sector', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreOportunidad', isCheck: true, valor: 'Oportunidad', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
@@ -50,7 +50,7 @@ export class EstadisticasPorEtapaComponent {@ViewChild('dt') dt!: Table;
     {key: 'diasEtapa2', isCheck: true, valor: 'Etapa 2', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
     {key: 'diasEtapa3', isCheck: true, valor: 'Etapa 3', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
     {key: 'diasEtapa4', isCheck: true, valor: 'Etapa 4', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
-    {key: 'diasEtapa5', isCheck: true, valor: ' Días Etapa 5', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
+    {key: 'diasEtapa5', isCheck: true, valor: 'Etapa 5', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
   ];
 
   columnsAMostrarResp: string = JSON.stringify(this.lsColumnasAMostrar);

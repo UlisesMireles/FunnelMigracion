@@ -17,7 +17,6 @@ import { identity } from 'rxjs';
   selector: 'app-modal-oportunidades-eliminadas',
   standalone: false,
   templateUrl: './modal-oportunidades-eliminadas.component.html',
-  styleUrl: './modal-oportunidades-eliminadas.component.css'
 })
 export class ModalOportunidadesEliminadasComponent {
   constructor(private oportunidadService : OportunidadesService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder, private cdr: ChangeDetectorRef) { }
@@ -29,6 +28,8 @@ export class ModalOportunidadesEliminadasComponent {
 
   oportunidadForm!: FormGroup;
   estatus: any[] = [];
+  initialStatus: number | null = null;
+
 
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() closeModal: EventEmitter<void> = new EventEmitter();
@@ -49,6 +50,12 @@ export class ModalOportunidadesEliminadasComponent {
     this.cargarEstatus();
     this.cdr.detectChanges();
     this.inicializarFormulario(); 
+    this.initialStatus = this.oportunidadForm.get('idEstatusOportunidad')?.value;
+  }
+
+  hasStatusChanged(): boolean {
+    const currentStatus = this.oportunidadForm.get('idEstatusOportunidad')?.value;
+    return currentStatus !== this.initialStatus;
   }
 
   ngOnChanges(changes: SimpleChanges) {

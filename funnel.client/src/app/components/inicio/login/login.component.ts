@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer, SafeHtml, SafeStyle } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -10,6 +9,9 @@ import { MessageService } from 'primeng/api';
 import { SolicitudRegistroSistema } from '../../../interfaces/solicitud-registro';
 import { baseOut } from '../../../interfaces/utils/utils/baseOut';
 import { ModalService } from '../../../services/modal-perfil.service';
+import { AsistenteService } from '../../../services/asistentes/asistente.service';
+import { Subscription } from 'rxjs';
+
 
 @Component({
   selector: 'app-login',
@@ -19,9 +21,10 @@ import { ModalService } from '../../../services/modal-perfil.service';
 })
 export class LoginComponent implements OnInit {
   aFormGroup!: FormGroup;
- // siteKey: string = '6LdlBicqAAAAABMCqyAjZOTSKrbdshNyKxwRiGL9';
- siteKey: string = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'; //Prueba
+  siteKey: string = '6LdlBicqAAAAABMCqyAjZOTSKrbdshNyKxwRiGL9';
+  //siteKey: string = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'; //Prueba
   baseUrl: string = environment.baseURLAssets;
+  enableAsistenteBienvenida = false; // Inicia oculto
   username: string = '';
   password: string = '';
   resetUsername: string = '';
@@ -46,9 +49,13 @@ export class LoginComponent implements OnInit {
     privacidadTerminos: false,
     recaptcha: ''
   };
+  
+  private asistenteSubscription!: Subscription;
+  asistenteObservableValue: number = -1;
 
+  @ViewChild('chatContainer') chatContainer!: ElementRef;
   constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private authService: LoginService, private sanitizer: DomSanitizer, private snackBar: MatSnackBar, private messageService: MessageService,
-              private modalService: ModalService
+              private modalService: ModalService, public asistenteService: AsistenteService, private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -86,6 +93,11 @@ export class LoginComponent implements OnInit {
         this.errorMessage = '';
       }
     });
+  }
+  ngOnDestroy(): void {
+    if (this.asistenteSubscription) {
+      this.asistenteSubscription.unsubscribe();
+    }
   }
   openLoginModal() {
     this.isLoginModalOpen = true;
@@ -267,5 +279,26 @@ export class LoginComponent implements OnInit {
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
+  toggleChat(): void {
+    this.asistenteSubscription = this.asistenteService.asistenteBienvenidaObservable.subscribe(value => {
+      this.asistenteObservableValue = value;
+    });
+  
+    this.asistenteService.asistenteBienvenidaSubject.next(this.asistenteObservableValue * (-1));
+   
+  
+  }
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
 
+    const targetElement = event.target as HTMLElement;
+    console.log(this.chatContainer, targetElement);
+    if (this.chatContainer && !this.chatContainer.nativeElement.contains(targetElement)) {
+      this.enableAsistenteBienvenida = false;
+      this.asistenteService.asistenteBienvenidaSubject.next(-1);
+      this.asistenteService.asistenteBienvenidaObservable.subscribe(value => {
+        console.log('Valor emitido por el observable:', value);
+      });
+    }
+  }
 }

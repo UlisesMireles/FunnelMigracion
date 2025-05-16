@@ -37,8 +37,16 @@ export class DocumentosOportunidadesComponent {
   
     historialOportunidad: Archivos[] = [];
     archivosSeleccionados: File[] = [];
+  
+    nombre: string = '';
     nombreOportunidad: string = '';
+    fecha: Date | null = null;
+    fechaLimite: Date | null = null;
+    numeroArchivos: number = 0;
+    mensaje: string = '';
+    idOportunidad = 0;
     maxArchivos = 5;
+    diasRestantes: number | null = null;
 
     @ViewChild('fileInput') fileInput!: ElementRef;
 
@@ -58,8 +66,15 @@ export class DocumentosOportunidadesComponent {
         if (this.oportunidad.idOportunidad) {
           this.getDocumentos(this.oportunidad.idOportunidad);
         }
-          this.nombreOportunidad = this.oportunidad.nombre || 'Sin nombre';
-        
+          this.nombre = this.oportunidad.nombre || 'Sin nombre';
+          this.nombreOportunidad = this.oportunidad.nombreOportunidad || 'Sin nombre';
+          this.fecha = this.oportunidad.fechaEstimadaCierre || null;
+          this.idOportunidad = this.oportunidad.idEstatusOportunidad || 0;
+          this.numeroArchivos = this.oportunidad.totalArchivos || 0;
+          this.mensaje = '';
+          if (this.idOportunidad > 1 && this.numeroArchivos > 0) {
+            this.calcularFechaLimite();
+          }
       }
   
       onDialogShow() {
@@ -74,6 +89,30 @@ export class DocumentosOportunidadesComponent {
           this.inicializarFormulario();
           this.cdr.detectChanges();
         }
+      }
+
+      calcularFechaLimite(): void {
+          if (!this.fecha) {
+            this.fechaLimite = null;
+            this.diasRestantes = null;
+            return;
+          }
+          const fechaCierre = new Date(this.fecha);
+          fechaCierre.setHours(0, 0, 0, 0);
+          
+          this.fechaLimite = new Date(fechaCierre);
+          this.fechaLimite.setDate(fechaCierre.getDate() + 30);
+
+          const hoy = new Date();
+          hoy.setHours(0, 0, 0, 0); 
+          const diffMs = this.fechaLimite.getTime() - hoy.getTime();
+          this.diasRestantes = Math.floor(diffMs / (1000 * 60 * 60 * 24)); 
+
+          this.mensaje = `Estos archivos estarán disponibles hasta el día ${this.fechaLimite.toLocaleDateString()}`;
+        }
+
+      get isEnProceso(): boolean {
+        return this.oportunidad?.idEstatusOportunidad === 1; 
       }
   
       close() {
@@ -369,5 +408,9 @@ export class DocumentosOportunidadesComponent {
         toggleMaximize() {
           this.maximized = !this.maximized;
           this.cdr.detectChanges();
+        }
+
+        get isTerminado(): boolean {
+          return this.oportunidad?.idEstatusOportunidad !== 1; 
         }
 }

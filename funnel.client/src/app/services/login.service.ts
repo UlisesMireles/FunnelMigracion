@@ -49,9 +49,12 @@ export class LoginService {
           localStorage.setItem('idEmpresa', user.idEmpresa);
           localStorage.setItem('username', datos.usuario);
           localStorage.setItem('nombre', user.nombre);
+          localStorage.setItem('apellidoPaterno', user.apellidoPaterno);
+          localStorage.setItem('apellidoMaterno', user.apellidoMaterno);
           localStorage.setItem('correo', user.correo);
           localStorage.setItem('imagenPerfil', user.archivoImagen);
           localStorage.setItem('lastActivity', Date.now().toString());
+          localStorage.setItem('licencia', user.licencia);
           this.currentUserSubject.next(user);
           sessionStorage.setItem('sesion', window.btoa(JSON.stringify(user)));
           sessionStorage.setItem('Usuario', user.nombre);

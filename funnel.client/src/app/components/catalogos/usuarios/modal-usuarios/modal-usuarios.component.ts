@@ -7,7 +7,7 @@ import { LoginService } from '../../../../services/login.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RequestUsuario } from '../../../../interfaces/usuarios';
 import { ImagenActualizadaService } from '../../../../services/imagen-actualizada.service';
-
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-modal-usuarios',
@@ -36,6 +36,9 @@ export class ModalUsuariosComponent {
     showPassword = false;
     showConfirmPassword = false;
     imagePreview: string | ArrayBuffer | null = null;
+    baseUrl: string = environment.baseURL;
+    rutaImgenDefault: string = this.baseUrl + 'Fotografia/persona_icono_principal.png';
+    rutaImgen: string = this.baseUrl + '/Fotografia/';
     
     @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() closeModal: EventEmitter<void> = new EventEmitter();
@@ -112,7 +115,11 @@ export class ModalUsuariosComponent {
       if (this.usuario.archivoImagen) { 
         this.selectedFile = { name: this.usuario.archivoImagen } as File;
         this.selectedFileName = this.usuario.archivoImagen;
-      }
+        this.imagePreview = this.baseUrl + '/Fotografia/' + this.usuario.archivoImagen;
+  } else {
+    this.imagePreview = this.rutaImgenDefault;
+  }
+        
         /*if (this.usuario.archivoImagen) { 
           this.selectedFileName = this.usuario.archivoImagen;
          
@@ -423,10 +430,14 @@ export class ModalUsuariosComponent {
     reader.readAsDataURL(this.selectedFile);
   }
 }
-
 removerFoto() {
   this.selectedFile = null;
-  this.imagePreview = null;
+  this.selectedFileName = '';
+  if (this.usuario?.archivoImagen) {
+    this.imagePreview = this.baseUrl + '/Fotografia/' + this.usuario.archivoImagen;
+  } else {
+    this.imagePreview = this.rutaImgenDefault;
+  }
   this.usuarioForm.get('selectedFile')?.setValue(null);
   this.formModificado = true;
 }

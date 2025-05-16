@@ -162,7 +162,7 @@
           <p-checkbox formControlName="estatus" class="inptSize" [binary]="true"></p-checkbox><label> Activo</label>
         </div>
       </div>
-      <div class="row align-items-center">
+     <div class="row align-items-center">
   <div class="col-sm-2">
     <label for="foto" class="form-label" style="margin-right: 50px;">Foto:</label>
   </div>
@@ -172,7 +172,7 @@
       <button class="btn btn-sm btn-seleccionar" (click)="abrirInput()">Seleccionar</button>
       <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*" hidden />
     </ng-container>
-    <ng-container *ngIf="selectedFile">
+    <ng-container *ngIf="selectedFile || imagePreview">
       <div style="display: flex; align-items: center; gap: 15px;">
         <!-- Vista previa de la imagen -->
         <div style="width: 90px; height: 90px; border-radius: 50%; overflow: hidden; margin-right: 30px;">

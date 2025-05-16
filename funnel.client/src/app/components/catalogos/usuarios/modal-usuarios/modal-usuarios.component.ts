@@ -35,7 +35,8 @@ export class ModalUsuariosComponent {
     formModificado: boolean = false;
     showPassword = false;
     showConfirmPassword = false;
-
+    imagePreview: string | ArrayBuffer | null = null;
+    
     @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() closeModal: EventEmitter<void> = new EventEmitter();
     @Output() result: EventEmitter<baseOut> = new EventEmitter();
@@ -408,20 +409,27 @@ export class ModalUsuariosComponent {
   }
 
   onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      this.selectedFile = input.files[0];
-      this.selectedFileName = this.selectedFile.name;
-      this.formModificado = true;
-    }
-  }
-
-  removerFoto() {
-    this.selectedFile = null;
-    this.usuarioForm.get('selectedFile')?.setValue(null);
+  const input = event.target as HTMLInputElement;
+  if (input.files && input.files.length > 0) {
+    this.selectedFile = input.files[0];
+    this.selectedFileName = this.selectedFile.name;
     this.formModificado = true;
-  
+
+    // Generar vista previa
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      this.imagePreview = e.target?.result as string;
+    };
+    reader.readAsDataURL(this.selectedFile);
   }
+}
+
+removerFoto() {
+  this.selectedFile = null;
+  this.imagePreview = null;
+  this.usuarioForm.get('selectedFile')?.setValue(null);
+  this.formModificado = true;
+}
   
 
   abrirInput(): void {

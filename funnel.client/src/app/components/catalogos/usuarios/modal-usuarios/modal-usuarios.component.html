@@ -154,12 +154,13 @@
     </span>
   </div>
 </div>
-      <div class="row "  *ngIf="!insertar">
-        <div class="col-sm-4 lbl">
-          <label for="estatus">Estatus:</label>
+      <div class="row" *ngIf="!insertar">
+        <div class="col-sm-4" style="margin-left: -50px">
+          <label for="estatus">Estatus: </label>
         </div>
-        <div class="col-sm-8 ">
-          <p-checkbox formControlName="estatus" class="inptSize" [binary]="true"></p-checkbox><label> Activo</label>
+        <div class="col-sm-8" style="width: 58%; margin-left: -29px">
+          <p-checkbox formControlName="estatus" [binary]="true"></p-checkbox>
+          <span style="padding-left: 6px !important;">Activo</span>
         </div>
       </div>
       <div class="row align-items-center">
@@ -167,7 +168,7 @@
           <label for="foto" class="form-label" style="margin-right: 50px;">Foto:</label>
         </div>
        
-        <div class="col-sm-10 d-flex align-items-center justify-content-end">
+        <div class="col-sm-10 d-flex align-items-center justify-content-end inptSize " style="margin-left: 98px">
           <ng-container *ngIf="!selectedFile">
             <input type="text" class="form-control form-control-sm me-2" placeholder="" disabled style="max-width: 200px;" />
             <button class="btn btn-sm btn-seleccionar" (click)="abrirInput()">Seleccionar</button>

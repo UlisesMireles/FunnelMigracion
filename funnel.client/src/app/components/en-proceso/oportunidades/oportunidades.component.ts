@@ -11,6 +11,7 @@ import { ColumnasDisponiblesComponent } from '../../utils/tablas/columnas-dispon
 import { sumBy, map as mapping, omit, sortBy, groupBy, keys as getKeys } from "lodash-es";
 import { Subscription } from 'rxjs';
 import { ModalOportunidadesService } from '../../../services/modalOportunidades.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-oportunidades',
@@ -38,6 +39,8 @@ export class OportunidadesComponent {
   modalVisible: boolean = false;
   modalSeguimientoVisible: boolean = false;
   modalDocumentosVisible: boolean = false;
+  licencia: string = '';
+  cantidadOportunidades: number = 0;
   private modalSubscription!: Subscription;
 
   loading: boolean = true;
@@ -79,6 +82,8 @@ export class OportunidadesComponent {
   ) { }
 
   ngOnInit(): void {
+    this.licencia = localStorage.getItem('licencia')!;
+    this.cantidadOportunidades = Number(localStorage.getItem('cantidadOportunidades'));
     this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
     this.getOportunidades();
     document.documentElement.style.fontSize = 12 + 'px';
@@ -124,12 +129,22 @@ export class OportunidadesComponent {
   }
 
   inserta() {
-    this.modalOportunidadesService.openModal(true, true, [], {})
-    this.oportunidadSeleccionada = {
+      const limite = this.cantidadOportunidades;
+      const totalOportunidades = this.oportunidades.length;
+      if (totalOportunidades >= limite) {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Límite de oportunidades alcanzado',
+          detail: `El límite de ${limite} oportunidades de la licencia ${this.licencia} ha sido alcanzado. Para agregar más oportunidades, considere actualizar su licencia.`,
+        })
+        return;
+      }
+      this.modalOportunidadesService.openModal(true, true, [], {})
+      this.oportunidadSeleccionada = {
 
-    };
-    this.insertar = true;
-    this.modalVisible = true;
+      };
+      this.insertar = true;
+      this.modalVisible = true;
   }
 
   seguimiento(licencia: Oportunidad) {
@@ -423,7 +438,6 @@ export class OportunidadesComponent {
     };
     return etapas[numeroEtapa] || 'Etapa desconocida';
   }
-
 }
 
 

@@ -172,11 +172,6 @@ export class ModalUsuariosComponent {
     const alias = this.loginService.obtenerAlias();
     const añoActual = new Date().getFullYear();
     const passwordGenerada = `${alias.toLowerCase()}${añoActual}`; 
-    console.log('Contraseña generada:', passwordGenerada);
-    console.log('Alias obtenido (original):', alias);
-    console.log('Alias en minúsculas:', alias.toLowerCase());
-    console.log('Año actual:', añoActual);
-    
     return passwordGenerada;
   }
 

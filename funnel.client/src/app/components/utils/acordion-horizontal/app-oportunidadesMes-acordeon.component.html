@@ -2,9 +2,10 @@
     <div *ngFor="let mes of elementos; let i = index" class="item-acordeon" [class.expandido]="mes.expandido">
       <div class="encabezado-acordeon">
     <!-- Botón a la izquierda del nombre del mes -->
-    <button class="boton-toggle" (click)="alternarItem(mes, $event)">
+    <button class="boton-toggle" [ngClass]="mes.expandido ? 'expandido' : 'colapsado'" (click)="alternarItem(mes, $event)">
       <i [ngClass]="mes.expandido ? 'bi bi-chevron-left' : 'bi bi-chevron-right'"></i>
     </button>
+
 
     <!-- Nombre del mes y contador -->
     <span class="nombre-mes">

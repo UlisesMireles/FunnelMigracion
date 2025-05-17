@@ -433,13 +433,14 @@ export class ModalUsuariosComponent {
 removerFoto() {
   this.selectedFile = null;
   this.selectedFileName = '';
-  if (this.usuario?.archivoImagen) {
-    this.imagePreview = this.baseUrl + '/Fotografia/' + this.usuario.archivoImagen;
-  } else {
-    this.imagePreview = this.rutaImgenDefault;
-  }
+  this.imagePreview = null; 
   this.usuarioForm.get('selectedFile')?.setValue(null);
   this.formModificado = true;
+  
+  // Limpiar el input de archivo para permitir seleccionar archivo 
+  if (this.fileInput) {
+    this.fileInput.nativeElement.value = '';
+  }
 }
   
 

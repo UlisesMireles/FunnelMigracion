@@ -161,18 +161,20 @@
         <div class="col-sm-8 ">
           <p-checkbox formControlName="estatus" class="inptSize" [binary]="true"></p-checkbox><label> Activo</label>
         </div>
-      </div>
-     <div class="row align-items-center">
+      </div><div class="row align-items-center">
   <div class="col-sm-2">
     <label for="foto" class="form-label" style="margin-right: 50px;">Foto:</label>
   </div>
   <div class="col-sm-10 d-flex align-items-center justify-content-end">
-    <ng-container *ngIf="!selectedFile">
+    <!-- Mostrar selector cuando no hay imagen seleccionada -->
+    <ng-container *ngIf="!imagePreview">
       <input type="text" class="form-control form-control-sm me-2" placeholder="" disabled style="max-width: 200px;" />
       <button class="btn btn-sm btn-seleccionar" (click)="abrirInput()">Seleccionar</button>
       <input #fileInput type="file" (change)="onFileSelected($event)" accept="image/*" hidden />
     </ng-container>
-    <ng-container *ngIf="selectedFile || imagePreview">
+    
+    <!-- Mostrar vista previa cuando hay imagen -->
+    <ng-container *ngIf="imagePreview">
       <div style="display: flex; align-items: center; gap: 15px;">
         <!-- Vista previa de la imagen -->
         <div style="width: 90px; height: 90px; border-radius: 50%; overflow: hidden; margin-right: 30px;">
@@ -187,8 +189,6 @@
 </div>
     </form>
   </ng-template>
-  
-
   <ng-template pTemplate="footer">
     <button *ngIf="!insertar" pButton label="Actualizar" (click)="guardarUsuario()" [disabled]="usuarioForm.invalid || !formModificado" severity="secondary"></button>
     <button *ngIf="insertar" pButton label="Agregar" (click)="guardarUsuario()" [disabled]="usuarioForm.pristine || usuarioForm.invalid" severity="secondary"></button>

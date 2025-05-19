@@ -5,6 +5,7 @@
       {{ insertar ? 'Nueva Oportunidad' : title + ' ' + nombreProspecto }}
     </label>
   </ng-template>
+  <br>
   <ng-template pTemplate="content">
     <div *ngIf="oportunidadForm" [formGroup]="oportunidadForm">
         <div class="row inptSpace" [ngStyle]="{ visibility: insertar ? 'visible' : 'hidden', 'margin-top': insertar ? '0px' : '-30px'}">

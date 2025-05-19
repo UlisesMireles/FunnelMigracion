@@ -390,9 +390,19 @@
   top: 0;
   margin-top: 100px; /* Ajusta según sea necesario */
   margin-right: 35px;
+  width: 40px;
+  height: 40px;
 }
 
 .button-pdf.default-position {
   position: static;
   margin-left: 0px;
+}
+
+.icon-btn {
+  min-width: 35px;
+  height: 35px;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  text-align: center;
 }

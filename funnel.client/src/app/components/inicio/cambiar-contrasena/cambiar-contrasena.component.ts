@@ -188,13 +188,12 @@ export class CambiarContrasenaComponent implements OnInit {
 
   removerFoto() {
     this.fotoSeleccionada = null;
-    if (this.fotoSeleccionadaOriginal) {
-      this.imagePreview = this.baseUrl + '/Fotografia/' + this.fotoSeleccionadaOriginal;
-    }else{
-      this.imagePreview = this.rutaImgenDefault;
-    }
+    this.imagePreview =null;
     this.formCambiarPassword.get('fotoSeleccionada')?.setValue(null);
     this.validarGuardar = true;
+    if (this.inputFoto) {
+      this.inputFoto.nativeElement.value = '';
+    }
     
   }
   

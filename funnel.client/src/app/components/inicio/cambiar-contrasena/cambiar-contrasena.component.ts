@@ -23,6 +23,7 @@ export class CambiarContrasenaComponent implements OnInit {
   apellidoPaterno: string = "";
   apellidoMaterno: string = "";
   fotoSeleccionada: File | null = null;
+  imagePreview: string | ArrayBuffer | null = null;
   @ViewChild('inputFoto') inputFoto!: ElementRef<HTMLInputElement>;
   informacionUsuario: Usuarios = {
     idUsuario: 0,
@@ -166,6 +167,13 @@ export class CambiarContrasenaComponent implements OnInit {
       this.formCambiarPassword.patchValue({ fotoSeleccionada: input.files[0] });
       this.validarGuardar = true;
     }
+    // Generar vista previa
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      this.imagePreview = e.target?.result as string;
+    };
+    reader.readAsDataURL(this.fotoSeleccionada!);
+  
   }
   
 

@@ -6,6 +6,7 @@ import { Usuarios } from '../../../interfaces/usuarios';
 import { LoginService } from '../../../services/login.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ImagenActualizadaService } from '../../../services/imagen-actualizada.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-cambiar-contrasena',
@@ -24,6 +25,9 @@ export class CambiarContrasenaComponent implements OnInit {
   apellidoMaterno: string = "";
   fotoSeleccionada: File | null = null;
   imagePreview: string | ArrayBuffer | null = null;
+  baseUrl: string = environment.baseURL;
+  rutaImgenDefault: string = this.baseUrl + 'Fotografia/persona_icono_principal.png';
+  rutaImgen: string = this.baseUrl + '/Fotografia/';
   @ViewChild('inputFoto') inputFoto!: ElementRef<HTMLInputElement>;
   informacionUsuario: Usuarios = {
     idUsuario: 0,
@@ -94,7 +98,12 @@ export class CambiarContrasenaComponent implements OnInit {
     if (imagenPerfil) {
       this.fotoSeleccionada = { name: imagenPerfil } as File;
       this.formCambiarPassword.patchValue({ fotoSeleccionada: this.fotoSeleccionada });
+      this.imagePreview =  this.baseUrl + '/Fotografia/' + imagenPerfil;
+    }else{
+    this.imagePreview = this.rutaImgenDefault;
+  
     }
+      
       this.valoresIniciales = this.formCambiarPassword.getRawValue();
 
     this.fotoSeleccionadaOriginal = this.fotoSeleccionada;
@@ -179,6 +188,11 @@ export class CambiarContrasenaComponent implements OnInit {
 
   removerFoto() {
     this.fotoSeleccionada = null;
+    if (this.fotoSeleccionadaOriginal) {
+      this.imagePreview = this.baseUrl + '/Fotografia/' + this.fotoSeleccionadaOriginal;
+    }else{
+      this.imagePreview = this.rutaImgenDefault;
+    }
     this.formCambiarPassword.get('fotoSeleccionada')?.setValue(null);
     this.validarGuardar = true;
     

@@ -14,6 +14,10 @@ import { baseOut } from '../../../../interfaces/utils/utils/baseOut';
 })
 export class SeguimientoOportunidadesComponent {
 
+  get isTerminado(): boolean {
+    return this.oportunidadForm.get('idEstatusOportunidad')?.value !== 1; 
+  }
+
   constructor(private oportunidadService: OportunidadesService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder, private cdr: ChangeDetectorRef) { }
   @Input() oportunidad!: Oportunidad;
   @Input() oportunidades: Oportunidad[] = [];
@@ -21,6 +25,8 @@ export class SeguimientoOportunidadesComponent {
   @Input() title: string = 'Modal';
   @Input() visible: boolean = false;
   @Input() insertar: boolean = false;
+
+  maximized: boolean = false;
   request!: RequestOportunidad;
 
   oportunidadForm!: FormGroup;
@@ -76,6 +82,7 @@ export class SeguimientoOportunidadesComponent {
   }
 
   onDialogShow() {
+    this.maximized = false;
     this.cdr.detectChanges();
     this.inicializarFormulario();
 
@@ -171,6 +178,18 @@ export class SeguimientoOportunidadesComponent {
       },
     });
 
+  }
+
+  toggleMaximize() {
+    this.maximized = !this.maximized;
+    this.cdr.detectChanges();
+  }
+
+  onComentarioInput() {
+    const comentarioControl = this.oportunidadForm.get('comentario');
+    if (comentarioControl?.touched && comentarioControl?.invalid) {
+      comentarioControl.markAsUntouched(); // Quita el estado "touched" para ocultar errores
+    }
   }
 
 }

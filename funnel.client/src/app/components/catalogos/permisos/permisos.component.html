@@ -1,4 +1,4 @@
-<div class="col-12" style="text-align: left; margin-top: 25px; padding-left: 10px">
+<div class="col-12" style="text-align: left; margin-top: 13px; padding-left: 10px">
   <h3>Administración de Permisos</h3>
 </div>
 <table class="table table-bordered table-striped table-sm" style="margin-left: 10px;"> 
@@ -28,10 +28,10 @@
         <ng-container *ngIf="menu.expanded">
             <tr *ngFor="let permiso of menu.paginas">
               <td>{{ permiso.pagina }}</td>
-              <td><input type="checkbox" [(ngModel)]="permiso.administrador" disabled /></td>
-              <td><input type="checkbox" [(ngModel)]="permiso.gerente" [disabled]="permiso.menu.includes('CATÁLOGOS')" /></td>
-              <td><input type="checkbox" [(ngModel)]="permiso.agente"  [disabled]="permiso.menu.includes('CATÁLOGOS')" /></td>
-              <td><input type="checkbox" [(ngModel)]="permiso.invitado"  [disabled]="permiso.menu.includes('CATÁLOGOS')" /></td>
+              <td><input type="checkbox" (change)="onPermisoChange()" [(ngModel)]="permiso.administrador" disabled /></td>
+              <td><input type="checkbox" (change)="onPermisoChange()" [(ngModel)]="permiso.gerente" [disabled]="permiso.menu.includes('CATÁLOGOS')" /></td>
+              <td><input type="checkbox" (change)="onPermisoChange()" [(ngModel)]="permiso.agente"  [disabled]="permiso.menu.includes('CATÁLOGOS')" /></td>
+              <td><input type="checkbox" (change)="onPermisoChange()" [(ngModel)]="permiso.invitado"  [disabled]="permiso.menu.includes('CATÁLOGOS')" /></td>
             </tr>
           </ng-container>
           
@@ -42,5 +42,5 @@
   <p-toast position="center"></p-toast>
   
 <div class="d-flex justify-content-end mt-3">
-  <button pButton label="Guardar" severity="secondary" (click)="guardarPermisos()"></button>
+  <button pButton label="Guardar" severity="secondary" (click)="guardarPermisos()" [disabled]="!hayCambios"></button>
 </div>

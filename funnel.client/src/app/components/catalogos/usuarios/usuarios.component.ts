@@ -28,9 +28,8 @@ export class UsuariosComponent {
 
   selectedEstatus: string = 'Activo';
   loading: boolean = true;
-
-  
-
+  licencia: string = '';
+  cantidadUsuarios: number = 0;
   insertar: boolean = true;
   modalVisible: boolean = false;
 
@@ -59,6 +58,8 @@ export class UsuariosComponent {
   constructor(private UsuariosService: UsuariosService, private messageService: MessageService, private cdr: ChangeDetectorRef, private loginService:LoginService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
+    this.licencia = localStorage.getItem('licencia')!;
+    this.cantidadUsuarios = Number(localStorage.getItem('cantidadUsuarios')!);
     this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
     this.getUsuarios();
     document.documentElement.style.fontSize = 12 + 'px';
@@ -118,8 +119,18 @@ export class UsuariosComponent {
         }
       }
 
-      inserta() {
-          
+  inserta() {
+    const limite = this.cantidadUsuarios;
+    const totalUsuarios = this.usuarios.length;
+    if (totalUsuarios >= limite) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Límite de usuarios alcanzado',
+        detail: `El límite de ${limite} usuarios de la licencia ${this.licencia} ha sido alcanzado. Para agregar más usuarios, considere actualizar su licencia.`,
+      })
+      return;
+    }
+
           this.usuarioSeleccionado = {
             result: true,
             errorMessage: ' ',  
@@ -314,7 +325,6 @@ clear(table: Table) {
   }
   isSorted(columnKey: string): boolean {
     
-    return this.dt?.sortField === columnKey;
-}
-
+    return this.dt?.sortField === columnKey;  
+  }
 }

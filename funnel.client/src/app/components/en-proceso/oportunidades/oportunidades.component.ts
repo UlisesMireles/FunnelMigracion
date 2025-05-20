@@ -9,6 +9,9 @@ import { Oportunidad } from '../../../interfaces/oportunidades';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ColumnasDisponiblesComponent } from '../../utils/tablas/columnas-disponibles/columnas-disponibles.component';
 import { sumBy, map as mapping, omit, sortBy, groupBy, keys as getKeys } from "lodash-es";
+import { Subscription } from 'rxjs';
+import { ModalOportunidadesService } from '../../../services/modalOportunidades.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-oportunidades',
@@ -17,7 +20,7 @@ import { sumBy, map as mapping, omit, sortBy, groupBy, keys as getKeys } from "l
   styleUrl: './oportunidades.component.css',
 })
 export class OportunidadesComponent {
-  
+
   @ViewChild('dt') dt!: Table;
 
   disableOportunidades = true;
@@ -36,7 +39,9 @@ export class OportunidadesComponent {
   modalVisible: boolean = false;
   modalSeguimientoVisible: boolean = false;
   modalDocumentosVisible: boolean = false;
-
+  licencia: string = '';
+  cantidadOportunidades: number = 0;
+  private modalSubscription!: Subscription;
 
   loading: boolean = true;
 
@@ -73,23 +78,40 @@ export class OportunidadesComponent {
   columnsTodasResp: string = JSON.stringify(this.lsTodasColumnas);
 
   constructor(private oportunidadService: OportunidadesService, private messageService: MessageService, private cdr: ChangeDetectorRef,
-    private readonly loginService: LoginService, public dialog: MatDialog
+    private readonly loginService: LoginService, public dialog: MatDialog, private modalOportunidadesService: ModalOportunidadesService
   ) { }
 
   ngOnInit(): void {
+    this.licencia = localStorage.getItem('licencia')!;
+    this.cantidadOportunidades = Number(localStorage.getItem('cantidadOportunidades'));
     this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
     this.getOportunidades();
     document.documentElement.style.fontSize = 12 + 'px';
+    this.modalSubscription = this.modalOportunidadesService.modalState$.subscribe((state) => {
+      if (!state.showModal) {
+        this.oportunidadEdicion = null;
+      }
+      //Valida si se emite un result Exitoso desde modal
+      if (state.result.id != -1 && state.result.result) {
+        this.getOportunidades();
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.modalSubscription) {
+      this.modalSubscription.unsubscribe();  // Desuscribimos al destruir el componente
+    }
   }
 
   getOportunidades() {
     this.oportunidadService.getOportunidades(this.loginService.obtenerIdEmpresa(), this.loginService.obtenerIdUsuario(), this.idEstatus).subscribe({
       next: (result: Oportunidad[]) => {
         // Ordenar por fechaEstimadaCierreOriginal (de más reciente a más antigua)
-        const oportunidadesOrdenadas = sortBy(result, (o) => 
+        const oportunidadesOrdenadas = sortBy(result, (o) =>
           o.fechaEstimadaCierreOriginal ? new Date(o.fechaEstimadaCierreOriginal).getTime() : 0
         ).reverse(); // reverse para orden descendente
-  
+
         this.oportunidades = [...oportunidadesOrdenadas];
         this.oportunidadesOriginal = [...oportunidadesOrdenadas];
         this.cdr.detectChanges();
@@ -107,11 +129,22 @@ export class OportunidadesComponent {
   }
 
   inserta() {
-    this.oportunidadSeleccionada = {
+      const limite = this.cantidadOportunidades;
+      const totalOportunidades = this.oportunidades.length;
+      if (totalOportunidades >= limite) {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Límite de oportunidades alcanzado',
+          detail: `El límite de ${limite} oportunidades de la licencia ${this.licencia} ha sido alcanzado. Para agregar más oportunidades, considere actualizar su licencia.`,
+        })
+        return;
+      }
+      this.modalOportunidadesService.openModal(true, true, [], {})
+      this.oportunidadSeleccionada = {
 
-    };
-    this.insertar = true;
-    this.modalVisible = true;
+      };
+      this.insertar = true;
+      this.modalVisible = true;
   }
 
   seguimiento(licencia: Oportunidad) {
@@ -121,6 +154,7 @@ export class OportunidadesComponent {
   }
 
   actualiza(licencia: Oportunidad) {
+    this.modalOportunidadesService.openModal(true, false, [], licencia);
     this.oportunidadSeleccionada = licencia;
     this.oportunidadEdicion = { ...licencia };
     this.insertar = false;
@@ -136,6 +170,7 @@ export class OportunidadesComponent {
   onModalClose() {
     this.modalVisible = false;
     this.oportunidadEdicion = null;
+    this.modalOportunidadesService.closeModal();
   }
 
   manejarResultado(result: baseOut) {
@@ -403,7 +438,6 @@ export class OportunidadesComponent {
     };
     return etapas[numeroEtapa] || 'Etapa desconocida';
   }
-    
 }
 
 

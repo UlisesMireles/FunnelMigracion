@@ -145,13 +145,15 @@ ul.subm>li>a {
 .user-panel {
   display: none;
   position: absolute;
-  background-color: #D2D6DE;
+  background-color: #DDE1E7;
   color: black;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   text-align: center;
   width: 280px;
   border-radius: 5px;
+  top:50px;
+  left: 64vw;
 }
 
 .user-panel.show {
@@ -159,7 +161,7 @@ ul.subm>li>a {
 }
 
 .user-header {
-  background-color: #3C8DBC;
+  background-color: #F0F2F5;
   color: white;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
@@ -173,6 +175,7 @@ ul.subm>li>a {
   margin: 10px 0;
   font-size: 16px;
   font-weight: bold;
+  color: #000;
 }
 
 .btnmenuuser {
@@ -182,9 +185,19 @@ ul.subm>li>a {
   color: rgb(255, 255, 255) !important;
   background-color: rgb(0, 166, 90) !important;
   border-radius: 0;
+  border-radius: 5px;
 }
 
-
+@media (max-width: 1528px) {
+  .user-panel {
+    left: 60vw; 
+  }
+}
+@media (max-width: 1328px) {
+  .user-panel {
+    left: 57vw; 
+  }
+}
 @media (max-width: 991.98px) {
   .navbar-collapse {
       position: absolute;
@@ -195,7 +208,7 @@ ul.subm>li>a {
       padding: 1rem;
       z-index: 1000;
   }
-
+  
   .menu-center {
       width: 100%;
   }
@@ -235,13 +248,7 @@ ul.subm>li>a {
       justify-content: center;
   }
 
-  .user-panel {
-      position: absolute;
-      top: calc(95% + 1rem);
-      width: 100%;
-      margin: 0;
-      padding: 0;
-  }
+  
 
   .user-header {
       padding: 20px 15px;
@@ -277,14 +284,7 @@ ul.subm>li>a {
 }
 
 @media (min-width: 992px) {
-  .user-panel {
-      top: 20px;
-      right: 10px;
-      width: 280px;
-      margin: 12px 3px;
-      border-radius: 5px;
-      padding: 0;
-  }
+  
 
   .user-header {
       padding: 15px;
@@ -313,15 +313,7 @@ ul.subm>li>a {
 }
 
 @media (max-height: 600px) {
-  .user-panel {
-      top: 20px;
-      right: 2px;
-      width: 280px;
-      margin: 12px 3px;
-      border-radius: 5px;
-      padding: 0;
-  }
-
+  
   .user-header {
       padding: 15px;
   }
@@ -359,13 +351,16 @@ ul.subm>li>a {
   }
 }
 
-/* Supongamos que el modal tiene la clase .user-panel-modal */
 .user-panel-modal {
-  position: absolute;
-  /* Ajusta left para que quede justo al lado del menú */
-  left: calc(100% + 10px); /* 10px de separación, ajustar según necesidad */
-  /* Posición vertical: si quieres que se alinee con el primer elemento del menú,
-     puedes obtener el offset-top del primer li o definir un valor fijo */
-  top: 20px; /* Ajusta según la posición del primer elemento */
-  z-index: 1000; /* Asegúrate de que esté por encima de otros elementos */
+  position: fixed;
+  /* left: calc(40% + 10px); */
+  top: 26px;
+  z-index: 1000;
+  left: 82vw;
 }
+
+/* @media (max-width: 1280px) {
+  .user-panel-modal {
+    left: 10vw !important;
+  }
+} */

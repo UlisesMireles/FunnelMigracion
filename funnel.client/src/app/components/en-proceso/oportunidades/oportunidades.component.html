@@ -50,8 +50,11 @@
                 <p-button label="" icon="bi bi-arrow-clockwise" (click)="clear(dt)" severity="secondary"
                 pTooltip="Refrescar" tooltipPosition="top" styleClass="custom-button refresh-button"
                 [ngStyle]="{'margin-right': '5px'}" />
-                <p-button label="" icon="bi bi-download" severity="secondary" (click)="exportPdf(dt)"
+                <p-button label="" icon="bi bi-filetype-pdf" severity="secondary" (click)="exportPdf(dt)"
                 pTooltip="Descargar PDF" tooltipPosition="top" styleClass="custom-button download-button"
+                [ngStyle]="{'margin-right': '5px'}"/>
+                <p-button label="" icon="bi bi-download" severity="secondary" (click)="exportExcel(dt)"  
+                pTooltip="Descargar Excel" tooltipPosition="top" styleClass="custom-button add-button"
                 [ngStyle]="{'margin-right': '5px'}"/>
                 <p-button label="" icon="bi-list" (click)="agregarColumna($event)" severity="secondary"  
                 pTooltip="Agregar columna" tooltipPosition="top" styleClass="custom-button column-button"
@@ -295,9 +298,9 @@
  
 <p-toast position="center"></p-toast>
  
-<app-modal-oportunidades [(visible)]="modalVisible" [title]="'Editar Datos de '" (closeModal)="onModalClose()"
+<!-- <app-modal-oportunidades [(visible)]="modalVisible" [title]="'Editar Datos de '" (closeModal)="onModalClose()"
   (result)="manejarResultado($event)" [insertar]="insertar" [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">
-</app-modal-oportunidades>
+</app-modal-oportunidades> -->
  
 <app-seguimiento-oportunidades [(visible)]="modalSeguimientoVisible" [title]="'Seguimiento de '" (closeModal)="onModalClose()"
   (result)="manejarResultado($event)" [insertar]="insertar" [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">

@@ -2,23 +2,23 @@
   [(visible)]="visible"
   [modal]="true"
   [closable]="true"
-  [contentStyle]="{ 'max-height': '500px', 'overflow': 'auto' }"
+  [contentStyle]="{ 'max-height': '500px', 'overflow': 'auto', 'width': '400px', 'padding': '1rem' }"
   (onHide)="close()"
   (onShow)="onDialogShow()"
   class="bodyDialog"
 >
-  <ng-template pTemplate="header">
-    <label class="margen">
-      {{ title + ' ' + oportunidadForm.get('descripcion')?.value }}
-    </label>
-  </ng-template>
+<ng-template pTemplate="header">
+  <label class="margen">
+    {{ 'Editar datos de Oportunidad ' + (oportunidad.nombreOportunidad || '') }}
+  </label>
+</ng-template>
 
   <ng-template pTemplate="content">
     <form [formGroup]="oportunidadForm">
 
         <div class="row inptSpace">
             <div class="col-sm-4 lbl">
-              <label for="Estatus Oportunidad">Estatus Oportunidad:</label>
+              <label for="Estatus Oportunidad">Estatus:</label>
             </div>
             <div class="col-sm-8 inptSpace">
               <p-dropdown 
@@ -37,7 +37,8 @@
   </ng-template>
 
   <ng-template pTemplate="footer">
-    <button pButton label="Actualizar" (click)="guardarOportunidad()" severity="secondary"></button>
+    <button pButton label="Actualizar" (click)="guardarOportunidad()" severity="secondary"
+            [disabled]="!hasStatusChanged()"></button>
     <button pButton label="Cancelar" (click)="close()" severity="secondary"></button>
   </ng-template>
 </p-dialog>

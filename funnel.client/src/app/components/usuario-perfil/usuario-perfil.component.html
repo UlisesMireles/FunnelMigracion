@@ -1,10 +1,10 @@
-<div class="user-panel-modal" id="modalPerfil" *ngIf="visible" (click)="onModalClick($event)">
-  <div class="menu-end d-flex align-items-center">
+<div class="float-end" id="modalPerfil" *ngIf="visible" (click)="onModalClick($event)">
+  
     <!-- <span class="user-name" (click)="toggleUserPanel($event)" style="cursor: pointer;">
       <i class="bi bi-person-circle"></i> {{nombreUsuario}}
     </span> -->
 
-    <div class="user-panel" [class.show]="visible">
+    <div class="user-panel float-end" [class.show]="visible">
       <div class="user-header">
         <img [src]="rutaImgen" alt="Usuario" class="user-image" />
         <h5>{{nombre}}</h5>
@@ -18,5 +18,4 @@
         </button>
       </div>
     </div>
-  </div>
 </div>

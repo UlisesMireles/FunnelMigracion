@@ -9,6 +9,8 @@ import { LoginService } from '../../../services/login.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ColumnasDisponiblesComponent } from '../../utils/tablas/columnas-disponibles/columnas-disponibles.component';
 import { sumBy, map as mapping, omit, sortBy, groupBy, keys as getKeys } from "lodash-es";
+import { ModalOportunidadesService } from '../../../services/modalOportunidades.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-contactos',
@@ -53,19 +55,30 @@ export class ContactosComponent {
 
   columnsAMostrarResp: string = JSON.stringify(this.lsColumnasAMostrar);
   columnsTodasResp: string = JSON.stringify(this.lsTodasColumnas);
+  private modalSubscription!: Subscription;
 
   constructor(
     private contactosService: ContactosService,
     private messageService: MessageService,
     private cdr: ChangeDetectorRef,
     private readonly loginService: LoginService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private modalOportunidadesService: ModalOportunidadesService
   ) { }
 
   ngOnInit(): void {
     this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
     this.getContactos();
     document.documentElement.style.fontSize = 12 + 'px';
+    this.modalSubscription = this.modalOportunidadesService.modalContactoState$.subscribe((state) => {
+      if (!state.showModal) {
+        this.contactoEdicion = null;
+      }
+      //Valida si se emite un result Exitoso desde modal
+      if (state.result.id != -1 && state.result.result) {
+        this.getContactos();
+      }
+    });
   }
 
   getContactos() {
@@ -103,11 +116,13 @@ export class ContactosComponent {
       nombreCompleto: '',
       bandera: ''
     };
+    this.modalOportunidadesService.openModalContacto(true, true, [], this.contactoSeleccionado)
     this.insertar = true;
     this.modalVisible = true;
   }
 
   actualiza(licencia: Contacto) {
+    this.modalOportunidadesService.openModalContacto(true, false, [], licencia);
     this.contactoSeleccionado = licencia;
     this.contactoEdicion = { ...licencia };
     this.insertar = false;

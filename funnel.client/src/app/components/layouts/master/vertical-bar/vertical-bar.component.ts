@@ -51,6 +51,7 @@ export class VerticalBarComponent {
           nombre: 'SALIR',
           ruta: '/login',
           icono: 'bi-box-arrow-right',
+          colorIcono: '#f44336',
           tooltip: 'Cerrar sesión',
           subMenu: []
         };
@@ -73,7 +74,7 @@ export class VerticalBarComponent {
       if(this.modalVisible)
         this.modalService.closeModal();
       else
-      this.modalService.toggleModal();
+        this.modalService.toggleModal();
         
     //  console.log('this.modalVisible ' + this.modalVisible);
     } else {

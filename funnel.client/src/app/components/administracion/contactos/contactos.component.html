@@ -1,8 +1,5 @@
 <div class="container-fluid">
-  <div class="row" style="margin-left: 0px;"><div class="col-12" style="text-align: left; margin-top: 25px; padding-left: 0"><div class="col-12" style="text-align: left; font-weight: bold;">
-      <h3></h3>
-    </div>
-
+  <div class="row" style="margin-left: 0px;">
     <div class="col-12">
       <div class="row contenedorTabla">
         <div *ngIf="loading" class="loading-message" 
@@ -21,7 +18,7 @@
           [tableStyle]="{'min-width': anchoTabla+ '%'}">
 
           <ng-template class="divAccionesTabla" #caption>
-            <div class="col-12" style="text-align: left; font-weight: bold; margin-top: 20px">
+            <div class="col-12" style="text-align: left; font-weight: bold; margin-top: 40px">
               <h3>Administración de Contactos</h3>
             </div>
             <div class="row">
@@ -29,8 +26,11 @@
                 <p-button label="" icon="bi bi-arrow-clockwise" (click)="clear(dt)" severity="secondary"
                 pTooltip="Refrescar" tooltipPosition="top" styleClass="custom-button refresh-button"
                 [ngStyle]="{'margin-right': '5px'}" />
-                <p-button label="" icon="bi bi-download" severity="secondary" (click)="exportPdf(dt)" 
+                <p-button label="" icon="bi bi-filetype-pdf" severity="secondary" (click)="exportPdf(dt)" 
                 pTooltip="Descargar PDF" tooltipPosition="top" styleClass="custom-button download-button"
+                [ngStyle]="{'margin-right': '5px'}"/>
+                <p-button label="" icon="bi bi-download" severity="secondary" (click)="exportExcel(dt)"  
+                pTooltip="Descargar Excel" tooltipPosition="top" styleClass="custom-button add-button"
                 [ngStyle]="{'margin-right': '5px'}"/>
                 <p-button label="" icon="bi-list" (click)="agregarColumna($event)" severity="secondary"  
                 pTooltip="Agregar columna" tooltipPosition="top" styleClass="custom-button column-button"
@@ -171,6 +171,6 @@
   </div>
 </div>
 
-<app-modal-contactos [(visible)]="modalVisible" [title]="'Editar Datos de '" (closeModal)="onModalClose()"
+<!-- <app-modal-contactos [(visible)]="modalVisible" [title]="'Editar Datos de '" (closeModal)="onModalClose()"
   (result)="manejarResultado($event)" [insertar]="insertar" [contactos]="contactos" [contacto]="contactoSeleccionado">
-</app-modal-contactos>
+</app-modal-contactos> -->

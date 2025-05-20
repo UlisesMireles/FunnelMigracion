@@ -1,18 +1,22 @@
-<p-dialog
-  [(visible)]="visible"
-  [modal]="true"
-  [closable]="true"
+<p-dialog 
+  appendTo="body"
+  [(visible)]="visible" 
+  [modal]="true" 
+  [closable]="true" 
+  [maximizable]="true"
   [style]="{
-    width: '65rem',
-    height: historialOportunidad.length > 0 ? '50rem' : '30rem'
-  }"
-  (onHide)="close()"
-  (onShow)="onDialogShow()"
+    width: maximized ? '100vw' : '70rem',
+    height: maximized ? '100vh' :  '45rem'
+  }" 
+  [ngClass]="{'maximized': maximized}"
+  (onHide)="close()" 
+  (onShow)="onDialogShow()" 
   class="bodyDialog"
->
+  >
+
   <ng-template pTemplate="header">
     <label class="margen">
-      {{ '' }}
+      {{ 'HISTÓRICO DE DOCUMENTOS' }}
     </label>
   </ng-template>
 
@@ -20,19 +24,19 @@
     <div class="row">
       <div>
         <label class="margen text-left nombre-destacado">
-          {{ oportunidadForm.get('nombre')?.value }}
+          <h2>{{ 'Prospecto: ' + nombre }}</h2>
         </label>
       </div>
     </div>
     <div>
         <label class="margen ">
-          <h2>{{ 'Documentos de: ' + nombreOportunidad }}</h2>
+          <h4>{{ 'Documentos de: ' + nombreOportunidad }}</h4>
         </label>
     </div>
     
     <br />
     <form [formGroup]="oportunidadForm">
-      <div class="row align-items-center g-0">
+      <div class="row align-items-center g-0" *ngIf="!isTerminado">
         <div class="col-sm-12 d-flex flex-nowrap align-items-center"> 
           <div class="col-sm-10 pe-2 d-flex flex-nowrap align-items-center"> 
             <ng-container *ngIf="subirArchivos">
@@ -70,7 +74,8 @@
               </div>
             </ng-container>
           </div>
-              <div class="col-sm-2 d-flex flex-nowrap gap-2" style="margin-left:-50px;"> 
+          <div #buttonGroup class="button-group botones-accion" style="margin-left:-50px;" 
+          *ngIf="!isTerminado && subirArchivos">
             <button pButton label="Guardar" (click)="guardarDocumento()" 
                     severity="secondary" [disabled]="!archivosSeleccionados.length"></button>
             <button pButton label="Salir" (click)="close()" severity="secondary"></button>
@@ -78,7 +83,15 @@
         </div>
       </div>
     </form>
-
+    <div class="d-flex justify-content-between mt-1 " *ngIf="!isEnProceso && 
+    (!isTerminado || (isTerminado && historialOportunidad.length > 0))">
+      <small class="text-muted font-size-md" [innerHTML]="'Estos archivos estarán disponibles hasta el día <strong>' 
+        + (fechaLimite | date:'dd/MM/yyyy') + '</strong>'">
+      </small>
+      <small class="text-muted font-size-md" *ngIf="diasRestantes !== null">
+        Días Restantes: {{ diasRestantes }}
+      </small>
+    </div>   
     <div class="row mt-3">
       <div class="col-sm-12" *ngIf="historialOportunidad.length > 0; else noComments">
         <table class="table table-bordered">

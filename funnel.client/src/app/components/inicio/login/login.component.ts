@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer, SafeHtml, SafeStyle } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -9,6 +8,10 @@ import { LoginService } from '../../../services/login.service';
 import { MessageService } from 'primeng/api';
 import { SolicitudRegistroSistema } from '../../../interfaces/solicitud-registro';
 import { baseOut } from '../../../interfaces/utils/utils/baseOut';
+import { ModalService } from '../../../services/modal-perfil.service';
+import { AsistenteService } from '../../../services/asistentes/asistente.service';
+import { Subscription } from 'rxjs';
+
 
 @Component({
   selector: 'app-login',
@@ -19,8 +22,9 @@ import { baseOut } from '../../../interfaces/utils/utils/baseOut';
 export class LoginComponent implements OnInit {
   aFormGroup!: FormGroup;
   siteKey: string = '6LdlBicqAAAAABMCqyAjZOTSKrbdshNyKxwRiGL9';
-  // siteKey: string = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'; //Prueba
+  //siteKey: string = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'; //Prueba
   baseUrl: string = environment.baseURLAssets;
+  enableAsistenteBienvenida = false; // Inicia oculto
   username: string = '';
   password: string = '';
   resetUsername: string = '';
@@ -45,8 +49,14 @@ export class LoginComponent implements OnInit {
     privacidadTerminos: false,
     recaptcha: ''
   };
+  
+  private asistenteSubscription!: Subscription;
+  asistenteObservableValue: number = -1;
 
-  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private authService: LoginService, private sanitizer: DomSanitizer, private snackBar: MatSnackBar, private messageService: MessageService) {}
+  @ViewChild('chatContainer') chatContainer!: ElementRef;
+  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private authService: LoginService, private sanitizer: DomSanitizer, private snackBar: MatSnackBar, private messageService: MessageService,
+              private modalService: ModalService, public asistenteService: AsistenteService, private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     this.backgroundImg = this.sanitizer.bypassSecurityTrustStyle('url(' + this.baseUrl + '/assets/img/PMAGRISES.png' + ')');
@@ -57,11 +67,10 @@ export class LoginComponent implements OnInit {
       correo: ['', [Validators.required, Validators.email]],
       telefono: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
       empresa: ['', Validators.required],
-      urlSitio: ['', [Validators.required, 
-                      Validators.pattern(/^(https?:\/\/)?([\w\-]+\.)+[\w\-]+(\/[\w\-._~:/?#[\]@!$&'()*+,;=]*)?$/)]],
+      urlSitio: ['', Validators.pattern(/^(https?:\/\/)?([\w\-]+\.)+[\w\-]+(\/[\w\-._~:/?#[\]@!$&'()*+,;=]*)?$/)],
       noEmpleados: ['', Validators.required],
       privacidadTerminos: [false, Validators.requiredTrue],
-      recaptcha: ['', Validators.required]
+      recaptcha: ['']
     });
 
     this.showIniciarSesion = this.router.url === '/login' || this.router.url === '/' || this.router.url == '';
@@ -84,6 +93,11 @@ export class LoginComponent implements OnInit {
         this.errorMessage = '';
       }
     });
+  }
+  ngOnDestroy(): void {
+    if (this.asistenteSubscription) {
+      this.asistenteSubscription.unsubscribe();
+    }
   }
   openLoginModal() {
     this.isLoginModalOpen = true;
@@ -138,6 +152,7 @@ export class LoginComponent implements OnInit {
           //   this.router.navigate(['/two-factor']);
           // } else {
             this.closeLoginModal();
+            this.modalService.closeModal(); 
             this.router.navigate(['/oportunidades']);
           // }
         } else {
@@ -198,15 +213,17 @@ export class LoginComponent implements OnInit {
         privacidadTerminos: this.aFormGroup.get('privacidadTerminos')?.value,
         recaptcha: this.aFormGroup.get('recaptcha')?.value
       };
-
       this.authService.postSolicitudRegistro(this.informacionRegistro).subscribe({
                 next: (result: baseOut) => {
-                  if(result.result) {
-                    this.messageService.add({
+                  if(result.result == true) {
+                  /*  this.messageService.add({
                       severity: 'success',
                       summary: 'La operación se realizó con éxito.',
                       detail: result.errorMessage,
-                    });
+                    });*/  
+                    localStorage.setItem('correo', this.aFormGroup.get('correo')?.value);
+                    this.closeLoginModal();
+                    this.router.navigate(['/two-factor']);
                     this.aFormGroup.reset();
                   }
                   else {
@@ -262,5 +279,22 @@ export class LoginComponent implements OnInit {
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
+  toggleChat(): void {
+    this.asistenteSubscription = this.asistenteService.asistenteBienvenidaObservable.subscribe(value => {
+      this.asistenteObservableValue = value;
+    });
+  
+    this.asistenteService.asistenteBienvenidaSubject.next(this.asistenteObservableValue * (-1));
+   
+  
+  }
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
 
+    const targetElement = event.target as HTMLElement;
+    if (this.chatContainer && !this.chatContainer.nativeElement.contains(targetElement)) {
+      this.enableAsistenteBienvenida = false;
+      this.asistenteService.asistenteBienvenidaSubject.next(-1);
+    }
+  }
 }

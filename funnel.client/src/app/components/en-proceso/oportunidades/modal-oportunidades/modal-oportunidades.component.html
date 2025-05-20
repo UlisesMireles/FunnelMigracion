@@ -5,6 +5,7 @@
       {{ insertar ? 'Nueva Oportunidad' : title + ' ' + nombreProspecto }}
     </label>
   </ng-template>
+  <br>
   <ng-template pTemplate="content">
     <div *ngIf="oportunidadForm" [formGroup]="oportunidadForm">
         <div class="row inptSpace" [ngStyle]="{ visibility: insertar ? 'visible' : 'hidden', 'margin-top': insertar ? '0px' : '-30px'}">
@@ -187,15 +188,24 @@
             <label for="comentario">Comentario: </label>
           </div>
           <div class="col-sm-8 inptSpace">
-            <textarea pInputText class="inptSize estiloComentario" formControlName="comentario" placeholder="Agrega un comentario" rows="4"></textarea>
+            <textarea pInputText class="inptSize estiloComentario" formControlName="comentario" 
+                      [placeholder]="insertar ? 'Agrega un comentario' : 'Agregar un comentario / modificaciones que se realizaron'"
+                      rows="4"></textarea>
             <div style="font-size: 0.8rem; color: #6c757d; text-align: right; position: absolute; right: 30px;">
               {{ oportunidadForm.get('comentario')?.value?.length || 0 }}/100
             </div>
-            <span *ngIf="oportunidadForm.get('comentario')?.invalid && oportunidadForm.get('comentario')?.touched"
-              class="text-danger"><br>
-              <ng-container *ngIf="oportunidadForm.get('comentario')?.errors?.['required']">Debe ingresar un
-                comentario.</ng-container>
-            </span>
+            <div style="margin-top: 4px; white-space: normal; line-height: 1.4; width: 100%;">
+              <span *ngIf="oportunidadForm.get('comentario')?.invalid && oportunidadForm.get('comentario')?.touched" 
+                    class="text-danger">
+                <ng-container *ngIf="oportunidadForm.get('comentario')?.errors?.['required']">
+                  {{ insertar ? 'Debe ingresar un comentario' : 'Debe describir las modificaciones' }}<br>
+                  {{ insertar ? '' : 'realizadas' }}
+                </ng-container>
+                <ng-container *ngIf="oportunidadForm.get('comentario')?.errors?.['minlength']">
+                  El comentario debe tener al menos <br>10 caracteres
+                </ng-container>
+              </span>
+            </div>
           </div>
         </div>
   

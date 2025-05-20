@@ -49,10 +49,25 @@
   border: none;
   cursor: pointer;
   font-size: 20px;
-  margin: 0;               /* Elimina margen inferior */
-  padding: 0;              /* Elimina padding */
-  order: 1;                /* Posición izquierda (primero) */
+  margin: 0;
+  padding: 0;
+  order: 1;
+  z-index: 1000;
+  transition: margin 0.3s ease, transform 0.3s ease;
+  align-self: flex-start;
 }
+
+.boton-toggle.colapsado {
+  margin-top: 0px;
+  transform: translateY(-15px); 
+  margin-left: -7px;
+}
+
+.boton-toggle.expandido {
+  margin-top: 8px;
+  transform: translateY(-3px); 
+}
+
 
 /* Contenedor del contenido del item (donde se muestran las tarjetas) */
 .contenido-acordeon {
@@ -291,13 +306,14 @@ div.fotoTarjeta {
 
 /* Contenedor para los datos de monto, probabilidad y monto-normalizado en una sola fila */
 .fila-monto {
-  display: flex;                /* Usa flexbox para organizar en fila */
-  justify-content: flex-start;  /* Alinea los elementos a la izquierda */
-  gap: 8px;                     /* Espacio de 8px entre cada elemento */
-  width: 20% !important;
-  margin-right: 110px;        /* Fuerza el ancho a 20% (ajusta según lo necesites) */
+  display: flex;
+  justify-content: flex-start;
+  gap: 8px;
+  flex: 1; /* Ocupa todo el espacio disponible */
+  min-width: 20px; /* Ancho mínimo para evitar que se comprima demasiado */
+  margin-right: 0;
+  padding-right: 10px;
 }
-
 /* Reglas para filas con justificación entre elementos */
 .row.justify-content-between {
   display: flex;            /* Usa flexbox */

@@ -3,7 +3,9 @@ using Funnel.Logic.Interfaces;
 using Funnel.Logic.Utils;
 using Funnel.Models.Base;
 using Funnel.Models.Dto;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Funnel.Logic
 {
@@ -24,8 +26,73 @@ namespace Funnel.Logic
         }
         public async Task<DobleAutenticacionDto> VerificarCodigoDobleAutenticacion(CodigoDosPasosDto usuario)
         {
-            return await _loginData.VerificarCodigoDobleAutenticacion(usuario);
+            DobleAutenticacionDto datos = await _loginData.VerificarCodigoDobleAutenticacion(usuario);
+
+            if (datos.TipoMensaje == 1)
+            {
+                UsuarioDto consultaCorreo = await _loginData.AdministradorEmpresas();
+
+                if (consultaCorreo != null)
+                {
+                    string cuerpoCorreoAdmin = $@"
+                    <div style='font-family: Arial, sans-serif; padding: 20px;'>
+                        <div style='max-width: 600px; margin: auto; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); padding: 20px;'>
+                            <p>Estimado/a <strong>{consultaCorreo.Nombre}</strong>,</p>
+                            <p>Le informamos que se ha recibido una nueva solicitud de registro en el sistema.</p>
+
+                            <p>El correo <strong>{datos.Correo}</strong> ha completado la verificación de su correo electrónico correctamente.</p>
+                            <p>A continuación, le enviamos los datos del usuario solicitante:</p>
+                            <ul style='list-style-type: none; padding-left: 0; margin: 0;'>
+                                <li><strong>Nombre completo:</strong> {datos.Nombre} {datos.Apellidos}</li>
+                                <li><strong>Correo electrónico:</strong> {datos.Correo}</li>
+                                <li><strong>Teléfono:</strong> {datos.Telefono}</li>
+                                <li><strong>Empresa:</strong> {datos.Empresa}</li>
+                                <li><strong>URL del sitio web:</strong> {datos.SitioWeb}</li>
+                                <li><strong>Número de empleados:</strong> {datos.NumEmpleados}</li>
+                            </ul>
+                            <p>Atentamente,<br/>Sales Funnel System</p>
+                        </div>
+                    </div>";
+
+                    _correo.EnviarCorreo(consultaCorreo.Correo, "Nueva Solicitud de Registro a Sales Funnel System", cuerpoCorreoAdmin);
+
+                    string cuerpoCorreoUsuario = $@"
+                    <div style='font-family: Arial, sans-serif; padding: 20px;'>
+                        <div style='max-width: 600px; margin: auto; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); padding: 20px;'>
+                            <p>Estimado/a <strong>{datos.Nombre} {datos.Apellidos}</strong>,</p>
+                            <p>Gracias por enviar su solicitud de registro.</p>
+                            <p>Tu solicitud de registro ha sido enviada. Será respondida en un máximo de 24 horas.. A continuación, el resumen de tú información:</p>
+
+                            <ul style='list-style-type: none; padding-left: 0; margin: 0;'>
+                                <li><strong>Nombre Completo:</strong> {datos.Nombre} {datos.Apellidos}</li>
+                                <li><strong>Correo Electrónico:</strong> {datos.Correo}</li>
+                                <li><strong>Teléfono:</strong> {datos.Telefono}</li>
+                                <li><strong>Empresa:</strong> {datos.Empresa}</li>
+                                <li><strong>URL del sitio web:</strong> {datos.SitioWeb}</li>
+                                <li><strong>Número de empleados:</strong> {datos.NumEmpleados}</li>
+                            </ul>
+                            <p>Atentamente,<br/>Sales Funnel System</p>
+                        </div>
+                    </div>";
+
+                    _correo.EnviarCorreo(datos.Correo, "Solicitud de Registro a Sales Funnel System", cuerpoCorreoUsuario);
+
+                    datos.ErrorMessage = "Tu solicitud de registro ha sido enviada. Será respondida en un máximo de 24 horas.";
+                }
+                else
+                {
+                    datos.Result = false;
+                    datos.ErrorMessage = "No se pudo obtener información del administrador.";
+                }
+            }
+            else
+            {
+                datos.ErrorMessage = "Código de verificación inválido o ya vencido.";
+            }
+
+            return datos;
         }
+
 
         public async Task<BaseOut> ObtenerVersion()
         {
@@ -81,96 +148,7 @@ namespace Funnel.Logic
 
         public async Task<BaseOut> GuardarSolicitudRegistro(SolicitudRegistroSistemaDto datos)
         {
-            BaseOut resultado = new BaseOut();
-            UsuarioDto consultaCorreo;
-            string nombreAdmin = "";
-
-            consultaCorreo = await _loginData.AdministradorEmpresas();
-
-            if (consultaCorreo != null)
-            {
-                nombreAdmin = consultaCorreo.Nombre.ToString();
-                string correoUser = datos.Correo;
-                BaseOut insertRegistro = await _loginData.SolicitudesUsuarios(datos);
-
-                if ((bool)insertRegistro.Result)
-                {
-                    try
-                    {
-                        string cuerpoCorreoAdmin = $@"
-                            <div style='font-family: Arial, sans-serif; padding: 20px;'>
-                                <div style='max-width: 600px; margin: auto; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); padding: 20px;'>
-                                    <p>Estimado/a <strong>{nombreAdmin}</strong>,</p>
-
-                                    <p>Le informamos que se ha recibido una nueva solicitud de registro en el sistema. A continuación, le proporcionamos los detalles del usuario que ha solicitado el registro:</p>
-            
-                                    <p><strong>Datos del usuario:</strong></p>
-                                    <ul style='list-style-type: none; padding-left: 0; margin: 0;'>
-                                        <li style='margin-bottom: 8px;'><strong>Nombre Completo:</strong> {datos.Nombre} {datos.Apellido}</li>
-                                        <li style='margin-bottom: 8px;'><strong>Correo Electrónico:</strong> {datos.Correo}</li>
-                                        <li style='margin-bottom: 8px;'><strong>Teléfono:</strong> {datos.Telefono}</li>
-                                        <li style='margin-bottom: 8px;'><strong>Empresa:</strong> {datos.Empresa}</li>
-                                        <li style='margin-bottom: 8px;'><strong>URL del sitio web:</strong> {datos.UrlSitio}</li>
-                                        <li style='margin-bottom: 8px;'><strong>Número de empleados:</strong> {datos.NoEmpleados}</li>
-                                    </ul>
-        
-                                    <p>Atentamente,<br/>Sales Funnel System</p>
-                                </div>
-                            </div>";
-
-                        bool respuestaEnvioCorreoAdmin = _correo.EnviarCorreo(consultaCorreo.Correo, "Nueva Solicitud de Registro a Sales Funnel System", cuerpoCorreoAdmin);
-
-                        string cuerpoCorreoUser = $@"
-                        <div style='font-family: Arial, sans-serif; padding: 20px;'>
-                            <div style='max-width: 600px; margin: auto;  border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); padding: 20px;'>
-
-                                <p>Estimado/a <strong>{datos.Nombre} {datos.Apellido}</strong>,</p>
-
-                                <p>Gracias por enviar su solicitud de registro al sistema. A continuación, le mostramos un resumen de los datos proporcionados:</p>
-
-                                <ul style='list-style-type: none; padding-left: 0; margin: 0;'>
-                                    <li style='margin-bottom: 8px;'><strong>Nombre Completo:</strong> {datos.Nombre} {datos.Apellido}</li>
-                                    <li style='margin-bottom: 8px;'><strong>Correo Electrónico:</strong> {datos.Correo}</li>
-                                    <li style='margin-bottom: 8px;'><strong>Teléfono:</strong> {datos.Telefono}</li>
-                                    <li style='margin-bottom: 8px;'><strong>Empresa:</strong> {datos.Empresa}</li>
-                                    <li style='margin-bottom: 8px;'><strong>URL del sitio web:</strong> {datos.UrlSitio}</li>
-                                    <li style='margin-bottom: 8px;'><strong>Número de empleados:</strong> {datos.NoEmpleados}</li>
-                                </ul>
-        
-                                <p>Atentamente,<br/>Sales Funnel System</p>
-                            </div>
-                        </div>";
-
-                        bool respuestaEnvioCorreoUsuario = _correo.EnviarCorreo(correoUser, "Solicitud de Registro a Sales Funnel System", cuerpoCorreoUser);
-
-                        resultado.ErrorMessage = "Tu solicitud de registro ha sido enviada al administrador del sitio. En un máximo de 24 horas tu solicitud será respondida.";
-                        resultado.Result = true;
-
-                    }
-                    catch (Exception ex)
-                    {
-                        resultado.ErrorMessage = "Se ha presentado un error al enviar el correo de Solicitud";
-                        resultado.Result = false;
-                        //return resultado;
-                    }
-
-                }
-                else
-                {
-                    resultado.ErrorMessage = "Ha ocurrido un error, inténtelo de nuevo.";
-                    resultado.Result = false;
-                }
-
-            }
-            else
-            {
-                resultado.ErrorMessage = "Ha ocurrido un error, inténtelo de nuevo.";
-                resultado.Result = false;
-
-            }
-            return resultado;
-
-
+            return await _loginData.SolicitudesUsuarios(datos);
         }
 
         public async Task<BaseOut> CambioPassword(UsuarioDto datos)
@@ -184,11 +162,15 @@ namespace Funnel.Logic
 
         }
 
-        public async Task<BaseOut> GuardarImagen(int idUsuario, string nombreArchivo)
+        public async Task<BaseOut> GuardarImagen(int idUsuario, IFormFile imagen, UsuarioDto request)
         {
-            return await _loginData.GuardarImagen(idUsuario, nombreArchivo);
+            return await _loginData.GuardarImagen(idUsuario, imagen, request);
         }
 
+        public async Task<BaseOut> ReenviarCodigo(string correo)
+        {
+            return await _loginData.ReenviarCodigo(correo);
+        }
         public async Task<BaseOut> RegistrarIngresoUsuario(int IdUsuario, int IdEmpresa)
         {
             return await _loginData.RegistrarIngresoUsuario(IdUsuario, IdEmpresa);

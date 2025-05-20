@@ -23,7 +23,7 @@ namespace Funnel.Server.Controllers
             if (respuesta.IdUsuario > 0)
             {
                 HttpContext.Session.SetString("User", usr.Usuario);
-                if(respuesta.Result == true && respuesta.IdEmpresa != null)                
+                if (respuesta.Result == true && respuesta.IdEmpresa != null)
                     await _loginService.RegistrarIngresoUsuario(respuesta.IdUsuario, (int)respuesta.IdEmpresa);
             }
             return Ok(respuesta);
@@ -64,46 +64,33 @@ namespace Funnel.Server.Controllers
             return Ok(respuesta);
         }
 
+        [HttpPost("ReenviarCodigo/")]
+        public async Task<ActionResult<BaseOut>> ReenviarCodigo(string correo)
+        {
+            var respuesta = await _loginService.ReenviarCodigo(correo);
+            return Ok(respuesta);
+        }
         [HttpPost("CambioPassword")]
         public async Task<ActionResult<BaseOut>> CambioPassword([FromForm] UsuarioDto datos)
         {
             if (datos.Imagen != null)
             {
-                var fileName = Path.GetFileName(datos.Imagen.FileName);
+                var respuestaImagen = await _loginService.GuardarImagen(datos.IdUsuario, datos.Imagen, datos);
 
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Fotografia", fileName);
-
-                var directory = Path.GetDirectoryName(filePath);
-                if (!Directory.Exists(directory))
-                {
-                    Directory.CreateDirectory(directory);
-                }
-
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    await datos.Imagen.CopyToAsync(fileStream);
-                }
-
-                datos.ArchivoImagen = fileName;
-                var respuestaImagen = await _loginService.GuardarImagen(datos.IdUsuario, datos.ArchivoImagen);
                 if (respuestaImagen.Result == false)
                 {
                     return Ok(respuestaImagen);
                 }
-                else if(respuestaImagen.Result == true && (datos.Password == "" || datos.Password is null))
-                {
-                    return Ok(respuestaImagen);
-                }
-                else
-                {
-                    var respuestaPassword = await _loginService.CambioPassword(datos);
-                    return Ok(respuestaPassword);
-                }
             }
-            else
+
+            if (string.IsNullOrEmpty(datos.Password))
             {
-                return Ok(await _loginService.CambioPassword(datos));
+                return Ok(datos.Imagen == null
+                    ? await _loginService.GuardarImagen(datos.IdUsuario, null, datos)
+                    : new BaseOut { Result = true });
             }
+
+            return Ok(await _loginService.CambioPassword(datos));
         }
     }
 }

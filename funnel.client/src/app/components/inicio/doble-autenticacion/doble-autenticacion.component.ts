@@ -44,7 +44,7 @@ export class DobleAutenticacionComponent {
       this.baseUrl +
       '/assets/img/PMAGRISES.png' +
       ')';
-    this.usuario = localStorage.getItem('username') as string;
+    this.usuario = localStorage.getItem('correo') as string;
     this.codigo = null;
     this.disabled = true;
     this.datosUsuario = this.authService.desencriptaSesion();
@@ -63,7 +63,7 @@ export class DobleAutenticacionComponent {
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   }
   enviarCorreoTwoFactor() {
-    this.authService.reenviarTwoFactor(this.datosUsuario.usuario, this.datosUsuario.password).subscribe({
+    this.authService.postReenviarCodigo(this.usuario).subscribe({
       next: () => {
         this.startTimer();
         this.messageService.add({
@@ -115,7 +115,14 @@ export class DobleAutenticacionComponent {
     this.authenticationService.DobleAutenticacion(TwoFactor).subscribe({
       next: (data) => {
         if (data.tipoMensaje == 1) {
-          this.router.navigate(['/oportunidades']);
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Éxito',
+            detail: 'Tu solicitud de registro ha sido enviada. Será respondida en un máximo de 24 horas.',
+          });
+          setTimeout(() => {
+            this.router.navigate(['/login']);
+          }, 2000);
         } else {
           this.messageService.add({
             severity: 'error',

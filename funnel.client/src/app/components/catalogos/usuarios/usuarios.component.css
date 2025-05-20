@@ -312,3 +312,32 @@ th.sort-active p-sortIcon {
               0 0.5px 0 currentColor,
               0 -0.5px 0 currentColor;
 }
+
+
+.toggle-password {
+  cursor: pointer;
+  background-color: white;
+  border-left: none !important;
+}
+
+.toggle-password:hover {
+  background-color: #f5f5f5;
+}
+
+
+.btn-seleccionar {
+  background: #ededed;
+  color: black;
+  border: 1px solid #ededed; 
+  padding: 5px 15px;
+  font-size: 14px; 
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease; 
+}
+
+/* Efecto hover */
+.btn-seleccionar:hover {
+  background: #d4d4d4; 
+  border-color: #d4d4d4; 
+  color: black; 
+}

@@ -49,9 +49,14 @@ export class LoginService {
           localStorage.setItem('idEmpresa', user.idEmpresa);
           localStorage.setItem('username', datos.usuario);
           localStorage.setItem('nombre', user.nombre);
+          localStorage.setItem('apellidoPaterno', user.apellidoPaterno);
+          localStorage.setItem('apellidoMaterno', user.apellidoMaterno);
           localStorage.setItem('correo', user.correo);
           localStorage.setItem('imagenPerfil', user.archivoImagen);
           localStorage.setItem('lastActivity', Date.now().toString());
+          localStorage.setItem('licencia', user.licencia);
+          localStorage.setItem('cantidadUsuarios', user.cantidadUsuarios);
+          localStorage.setItem('cantidadOportunidades', user.cantidadOportunidades);
           this.currentUserSubject.next(user);
           sessionStorage.setItem('sesion', window.btoa(JSON.stringify(user)));
           sessionStorage.setItem('Usuario', user.nombre);
@@ -186,6 +191,11 @@ export class LoginService {
   postSolicitudRegistro(data: SolicitudRegistroSistema): Observable<baseOut> {
       return this.http.post<baseOut>(this.baseUrl + 'api/Login/GuardarSolicitudRegistro', data);
     }
+
+  postReenviarCodigo(correo: string): Observable<baseOut> {
+      return this.http.post<baseOut>(this.baseUrl + 'api/Login/ReenviarCodigo?correo=' + encodeURIComponent(correo), null);
+    }
+    
 
   cambiarPassword(formData: FormData): Observable<baseOut> {
     const headers = new HttpHeaders();

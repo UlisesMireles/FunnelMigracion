@@ -5,6 +5,8 @@ import { MessageService } from 'primeng/api';
 import { Usuarios } from '../../../interfaces/usuarios';
 import { LoginService } from '../../../services/login.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ImagenActualizadaService } from '../../../services/imagen-actualizada.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-cambiar-contrasena',
@@ -18,7 +20,14 @@ export class CambiarContrasenaComponent implements OnInit {
   correo: string = "";
   tipoUsuario: string = "";
   idUsuario: string = "";
+  nombre: string = "";
+  apellidoPaterno: string = "";
+  apellidoMaterno: string = "";
   fotoSeleccionada: File | null = null;
+  imagePreview: string | ArrayBuffer | null = null;
+  baseUrl: string = environment.baseURL;
+  rutaImgenDefault: string = this.baseUrl + 'Fotografia/persona_icono_principal.png';
+  rutaImgen: string = this.baseUrl + '/Fotografia/';
   @ViewChild('inputFoto') inputFoto!: ElementRef<HTMLInputElement>;
   informacionUsuario: Usuarios = {
     idUsuario: 0,
@@ -49,19 +58,33 @@ export class CambiarContrasenaComponent implements OnInit {
   };
 
   fotoUrl: string | null = null;
-  
-  constructor(private fb: FormBuilder,  private router: Router, private messageService: MessageService, private authService: LoginService) {
+  validarGuardar: boolean = false;
+  valoresIniciales: Record<string, any> = {};
+  showPassword = false;
+  showPasswordConfirm = false;
+  contrasenaNoCoinciden: boolean = false;
+  fotoSeleccionadaOriginal: File | null = null;
+
+  constructor(private readonly fb: FormBuilder,  private readonly router: Router, private readonly messageService: MessageService, private readonly authService: LoginService, private readonly imagenService: ImagenActualizadaService) {
   }
 
   ngOnInit(): void {
+    this.validarGuardar = false;
+    this.contrasenaNoCoinciden = false;
     this.usuario = localStorage.getItem('username') as string;
     this.correo = localStorage.getItem('correo') as string;
     this.tipoUsuario = localStorage.getItem('tipoUsuario') as string;
     this.idUsuario = localStorage.getItem('currentUser') as string;
+    this.nombre = localStorage.getItem('nombre') as string;
+    this.apellidoPaterno = localStorage.getItem('apellidoPaterno') as string;
+    this.apellidoMaterno = localStorage.getItem('apellidoMaterno') as string;
     this.informacionUsuario.usuario = this.usuario;
     this.informacionUsuario.correo = this.correo;
     this.informacionUsuario.tipoUsuario = this.tipoUsuario;
     this.informacionUsuario.idUsuario = Number(this.idUsuario);
+    this.informacionUsuario.nombre = this.nombre;
+    this.informacionUsuario.apellidoPaterno = this.apellidoPaterno;
+    this.informacionUsuario.apellidoMaterno = this.apellidoMaterno;
 
     this.formCambiarPassword = this.fb.group({
       usuario: [{value:this.usuario, disabled: true}],
@@ -69,15 +92,67 @@ export class CambiarContrasenaComponent implements OnInit {
       tipoUsuario: [{value: this.tipoUsuario, disabled: true}],
       contrasena: ['', []],
       contrasenaConfirm: ['', []],
-      fotoSeleccionada: [null]
-    }, {validators: [this.contrasenasIgualesValidator, this.imagenOContrasenaValidator() ]});
-
-    this.formCambiarPassword.get('fotoSeleccionada')?.valueChanges.subscribe(() => {
-      this.actualizarValidadoresContrasena();
-    });
+      fotoSeleccionada: [this.fotoSeleccionada]
+    }, { validators: this.contrasenasIgualesValidator });
+    const imagenPerfil = localStorage.getItem('imagenPerfil');
+    if (imagenPerfil) {
+      this.fotoSeleccionada = { name: imagenPerfil } as File;
+      this.formCambiarPassword.patchValue({ fotoSeleccionada: this.fotoSeleccionada });
+      this.imagePreview =  this.baseUrl + '/Fotografia/' + imagenPerfil;
+    }else{
+    this.imagePreview = this.rutaImgenDefault;
   
-    // Inicializar los validadores en función de si hay foto seleccionada
-    this.actualizarValidadoresContrasena();
+    }
+      
+      this.valoresIniciales = this.formCambiarPassword.getRawValue();
+
+    this.fotoSeleccionadaOriginal = this.fotoSeleccionada;
+
+    this.formCambiarPassword.valueChanges.subscribe((changes) => {
+      this.validarCambios(this.valoresIniciales, changes);
+    });
+
+    this.formCambiarPassword.valueChanges.subscribe((val) => {
+      const contrasena = val.contrasena;
+      const foto = val.fotoSeleccionada;
+    
+      const contrasenaCambiada = contrasena && contrasena.trim() !== '';
+      const fotoCambiada = foto && foto !== this.fotoSeleccionadaOriginal;
+    
+      this.validarGuardar = contrasenaCambiada ?? fotoCambiada;
+    
+      this.formCambiarPassword.updateValueAndValidity({ onlySelf: false, emitEvent: false });
+    });
+    
+
+  }
+
+  validarCambios(valoresIniciales: any, cambios: any) {
+    let dataInicial = { contrasena: valoresIniciales.contrasena, fotoSeleccionada: valoresIniciales.fotoSeleccionada };
+    let dataCambiada = { contrasena: cambios.contrasena, fotoSeleccionada: cambios.fotoSeleccionada };
+  
+    const valoresDiferentes = this.compararValores(dataCambiada, dataInicial);
+  
+    if (!valoresDiferentes) {
+      this.validarGuardar = false;
+    } else {
+      this.contrasenasIgualesValidator(this.formCambiarPassword);
+    }
+  }
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
+  togglePasswordVisibilityConfirm() {
+    this.showPasswordConfirm = !this.showPasswordConfirm;
+  }
+
+  compararValores(valoresIniciales: any, valoresActuales: any) {
+    let valoresInicialesJson = JSON.stringify(valoresIniciales);
+    let valoresActualesJson = JSON.stringify(valoresActuales);
+
+  return valoresInicialesJson !== valoresActualesJson;
   }
 
   actualizarValidadoresContrasena() {
@@ -99,12 +174,29 @@ export class CambiarContrasenaComponent implements OnInit {
     if (input?.files?.[0]) {
       this.fotoSeleccionada = input.files[0];
       this.formCambiarPassword.patchValue({ fotoSeleccionada: input.files[0] });
+      this.validarGuardar = true;
     }
+    // Generar vista previa
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      this.imagePreview = e.target?.result as string;
+    };
+    reader.readAsDataURL(this.fotoSeleccionada!);
+  
   }
+  
 
-  removerFoto(): void {
+  removerFoto() {
     this.fotoSeleccionada = null;
+    this.imagePreview =null;
+    this.formCambiarPassword.get('fotoSeleccionada')?.setValue(null);
+    this.validarGuardar = true;
+    if (this.inputFoto) {
+      this.inputFoto.nativeElement.value = '';
+    }
+    
   }
+  
 
   abrirInput(): void {
     this.inputFoto.nativeElement.click();
@@ -115,7 +207,7 @@ export class CambiarContrasenaComponent implements OnInit {
   }
 
   guardar() {
-    if (this.formCambiarPassword.invalid) {
+    if (this.formCambiarPassword.invalid || this.contrasenaNoCoinciden) {
       this.markAllAsTouched(this.formCambiarPassword);
       this.mostrarToastError("Es necesario llenar los campos indicados.");
       return;
@@ -124,18 +216,39 @@ export class CambiarContrasenaComponent implements OnInit {
       ...this.informacionUsuario,
       password: this.formCambiarPassword.get('contrasena')?.value,
     }
-    this.informacionUsuario.archivoImagen = this.fotoSeleccionada?.name;
-    this.informacionUsuario.imagen = this.fotoSeleccionada ?? undefined;
+     if (this.fotoSeleccionada) {
+    const extension = this.fotoSeleccionada.name.split('.').pop();
+    const nombreFormateado = `${this.informacionUsuario.apellidoPaterno}_${this.informacionUsuario.apellidoMaterno}_${this.informacionUsuario.nombre}`;
+    this.informacionUsuario.archivoImagen = `${nombreFormateado}.${extension}`;
+    this.informacionUsuario.imagen = this.fotoSeleccionada;
+    } else {
+    this.informacionUsuario.archivoImagen = '';
+    this.informacionUsuario.imagen = undefined;
+    }
+
+    if (this.informacionUsuario.password != '')
+    {
+      let valorContrasena = this.contrasenasIgualesValidator(this.formCambiarPassword);
+      if (valorContrasena != null )
+      {
+        this.validarGuardar = false;
+        this.mostrarToastError("Las contraseñas no coinciden.");
+        return;
+      }
+    }
 
     const formData = new FormData();
 
     formData.append('Password', this.formCambiarPassword.get('contrasena')?.value);
     if (this.fotoSeleccionada) {
       formData.append('Imagen', this.fotoSeleccionada);
-      formData.append('ArchivoImagen', this.fotoSeleccionada?.name);
+      formData.append('ArchivoImagen', this.informacionUsuario.archivoImagen);
     }
 
     formData.append('idUsuario', this.informacionUsuario.idUsuario.toString());
+    formData.append('Nombre', this.nombre); 
+    formData.append('ApellidoPaterno', this.apellidoPaterno); 
+    formData.append('ApellidoMaterno', this.apellidoMaterno); 
 
     this.authService.cambiarPassword(formData).subscribe({
       next: (response: any) => {
@@ -145,6 +258,12 @@ export class CambiarContrasenaComponent implements OnInit {
             summary: 'La operación se realizó con éxito.',
             detail: response.errorMessage,
           });
+          if(this.fotoSeleccionada) {
+            this.imagenService.actualizarImagenPerfil(this.informacionUsuario.archivoImagen!);
+          }
+          else if (this.fotoSeleccionada == null && response.errorMessage == "La imagen se actualizó correctamente.") {
+            this.imagenService.actualizarImagenPerfil('')
+          }
           this.formCambiarPassword.reset();
           this.router.navigate(['/oportunidades']);
         } else {
@@ -172,15 +291,16 @@ export class CambiarContrasenaComponent implements OnInit {
     });
   }
 
-  contrasenasIgualesValidator(form: AbstractControl): ValidationErrors | null {
-    const password = form.get('contrasena')?.value;
-    const confirmPassword = form.get('contrasenaConfirm')?.value;
-  
-    if (password && confirmPassword && password !== confirmPassword) {
+  contrasenasIgualesValidator: ValidatorFn = (group: AbstractControl): ValidationErrors | null => {
+    const contrasena = group.get('contrasena')?.value;
+    const contrasenaConfirm = group.get('contrasenaConfirm')?.value;
+    if (contrasena && contrasenaConfirm && contrasena !== contrasenaConfirm) {
+      this.contrasenaNoCoinciden = true;
       return { contrasenasNoCoinciden: true };
     }
+    this.contrasenaNoCoinciden = false;
     return null;
-  }
+  };
 
   imagenOContrasenaValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
@@ -188,7 +308,7 @@ export class CambiarContrasenaComponent implements OnInit {
       const foto = control.get('fotoSeleccionada')?.value; 
   
       if (!contrasena && !foto) {
-        return { 'alMenosUnoDebeLlenarse': true };
+        return { 'imagenOContrasena': true };
       }
   
       return null;
@@ -207,5 +327,4 @@ export class CambiarContrasenaComponent implements OnInit {
       return null;
     };
   }
-
 }

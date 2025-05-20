@@ -228,7 +228,7 @@
 .large-icon {
   font-size: 20px;
   margin-right: 4px;
-  color: #8ee3bc;
+  color: #fff;
   position: absolute;
   display: contents;
 }
@@ -262,7 +262,7 @@
   height: 30px;
   background: rgb(247, 106, 19);
   background: linear-gradient(0deg, rgba(247, 106, 19, 1) 0%, rgba(200, 87, 24, 1) 35%, rgba(231, 91, 42, 1) 100%);
-  color: #ffffff;
+  color: #8ee3bc;
   z-index: 1001;
   cursor: pointer;
   border-radius: 5px;
@@ -276,11 +276,11 @@
 .btnAgregar i {
   font-size: 18px;      
   border: none;
+  color: #8ee3bc;
 }
 .btnAgregar:hover {
   background-color: #e4e4e4;
 }
-
 
 .estiloPerfilMenu {
   position: fixed;
@@ -350,9 +350,7 @@
 .option-btn button:last-child {
   border-bottom: none;
 }
-
-/* Efecto hover en los elementos del submenú */
 .option-btn button:hover {
-  background-color: rgba(16, 61, 102, 0.5);  /* C cambio de color */
-  color: white; /* Color de la letra */
+  background-color: rgba(16, 61, 102, 0.5);  
+  color: white; 
 }

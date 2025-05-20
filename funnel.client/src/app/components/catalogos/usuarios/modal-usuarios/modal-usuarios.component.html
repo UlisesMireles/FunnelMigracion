@@ -154,12 +154,13 @@
     </span>
   </div>
 </div>
-      <div class="row "  *ngIf="!insertar">
-        <div class="col-sm-4 lbl">
+      <div class="row"  *ngIf="!insertar">
+        <div class="col-sm-4" style="margin-left: -50px">
           <label for="estatus">Estatus:</label>
         </div>
-        <div class="col-sm-8 ">
-          <p-checkbox formControlName="estatus" class="inptSize" [binary]="true"></p-checkbox><label> Activo</label>
+        <div class="col-sm-8 " style="width: 58%; margin-left: -29px">
+          <p-checkbox formControlName="estatus" [binary]="true"></p-checkbox>
+          <span style="padding-left: 6px !important;">Activo</span>
         </div>
       </div><div class="row align-items-center">
   <div class="col-sm-2">

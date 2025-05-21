@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Usuarios } from '../../../interfaces/usuarios';
@@ -7,10 +7,15 @@ import { LoginService } from '../../../services/login.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ImagenActualizadaService } from '../../../services/imagen-actualizada.service';
 import { environment } from '../../../../environments/environment';
+import { ImageCroppedEvent, ImageCropperComponent, ImageTransform } from 'ngx-image-cropper';
+import { CommonModule } from '@angular/common';
+import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-cambiar-contrasena',
-  standalone: false,
+  standalone: true,
+  imports: [ImageCropperComponent, FormsModule, ReactiveFormsModule, CommonModule, DialogModule, ButtonModule ],
   templateUrl: './cambiar-contrasena.component.html',
   styleUrl: './cambiar-contrasena.component.css'
 })
@@ -64,6 +69,16 @@ export class CambiarContrasenaComponent implements OnInit {
   showPasswordConfirm = false;
   contrasenaNoCoinciden: boolean = false;
   fotoSeleccionadaOriginal: File | null = null;
+
+  imageChangedEvent: any = null;
+  croppedImage: string = '';
+  showCropperModal: boolean = false;
+  transform: ImageTransform = {};
+  imagenFinal!: File;
+  previewUrl: string = '';
+  croppedImageBase64: string = '';
+  croppedImageFile?: Blob;
+  zoom = 1;
 
   constructor(private readonly fb: FormBuilder,  private readonly router: Router, private readonly messageService: MessageService, private readonly authService: LoginService, private readonly imagenService: ImagenActualizadaService) {
   }
@@ -171,24 +186,116 @@ export class CambiarContrasenaComponent implements OnInit {
   
   onFotoSeleccionada(event: any) {
     const input = event.target as HTMLInputElement;
-    if (input?.files?.[0]) {
-      this.fotoSeleccionada = input.files[0];
-      this.formCambiarPassword.patchValue({ fotoSeleccionada: input.files[0] });
-      this.validarGuardar = true;
-    }
+
+  if (input.files && input.files.length > 0) {
+    const file = input.files[0];
+
+    this.fotoSeleccionada = file;
+    this.imageChangedEvent = event; // Importante: pasa el evento completo
+    this.showCropperModal = true;
+  }
     // Generar vista previa
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      this.imagePreview = e.target?.result as string;
-    };
-    reader.readAsDataURL(this.fotoSeleccionada!);
+    // const reader = new FileReader();
+    // reader.onload = (e) => {
+    //   this.imagePreview = e.target?.result as string;
+    // };
+    // reader.readAsDataURL(this.fotoSeleccionada!);
   
   }
+
+  async imageCropped(event: ImageCroppedEvent) {
+   setTimeout(() => {
+    if (event.blob && event.blob.size > 0) {
+      this.croppedImageFile = event.blob;
+      this.imagePreview = URL.createObjectURL(this.croppedImageFile);
+    } else {
+      console.warn('Blob vacío o no generado');
+    }
+  }, 100);
+}
+
+guardarImagenRecortada() {
+   if (!this.croppedImageFile || !this.imagePreview) {
+    console.error('No hay imagen recortada para guardar.');
+    return;
+  }
+
+  const extension = this.croppedImageFile.type.split('/')[1]; // "png", "jpeg", etc.
+  const nombreFormateado = `${this.apellidoPaterno}_${this.apellidoMaterno}_${this.nombre}`;
+  const fileName = `${nombreFormateado}.${extension}`;
+
+  // Asegúrate de crear el File con el tipo MIME correcto
+  this.fotoSeleccionada = new File([this.croppedImageFile], fileName, {
+    type: this.croppedImageFile.type,
+  });
+
+  this.imagePreview = URL.createObjectURL(this.fotoSeleccionada);
+  this.showCropperModal = false;
+}
+
+getExtension(mimeType: string): string {
+  switch (mimeType) {
+    case 'image/jpeg':
+      return 'jpg';
+    case 'image/png':
+      return 'png';
+    case 'image/gif':
+      return 'gif';
+    default:
+      return 'png'; // fallback
+  }
+}
   
+blobToBase64(blob: Blob): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result as string);
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+}
+
+rotateLeft() {
+  this.transform = {
+    ...this.transform,
+    rotate: (this.transform?.rotate || 0) - 90
+  };
+}
+
+rotateRight() {
+  this.transform = {
+    ...this.transform,
+    rotate: (this.transform?.rotate || 0) + 90
+  };
+}
+
+zoomIn() {
+  this.transform = {
+    ...this.transform,
+    scale: (this.transform?.scale || 1) + 0.1
+  };
+}
+
+zoomOut() {
+  this.transform = {
+    ...this.transform,
+    scale: (this.transform?.scale || 1) - 0.1
+  };
+}
+
+onZoomChange(event: any) {
+  this.zoom = event.target.value;
+  this.transform = {
+    ...this.transform,
+    scale: this.zoom
+  };
+}
 
   removerFoto() {
     this.fotoSeleccionada = null;
     this.imagePreview =null;
+    this.imageChangedEvent = null;
+    this.croppedImageFile = undefined;
     this.formCambiarPassword.get('fotoSeleccionada')?.setValue(null);
     this.validarGuardar = true;
     if (this.inputFoto) {
@@ -205,6 +312,19 @@ export class CambiarContrasenaComponent implements OnInit {
   cancelar() {
     this.router.navigate(['/oportunidades']);
   }
+
+  cancelarRecorte() {
+   this.showCropperModal = false;
+
+  this.imagePreview = null;
+  this.fotoSeleccionada = null;
+  this.imageChangedEvent = null;
+
+  // Reiniciar input file para permitir re-subir la misma imagen si quiere
+  if (this.inputFoto) {
+    this.inputFoto.nativeElement.value = '';
+  }
+}
 
   guardar() {
     if (this.formCambiarPassword.invalid || this.contrasenaNoCoinciden) {

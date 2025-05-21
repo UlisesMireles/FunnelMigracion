@@ -140,7 +140,6 @@ registerLocaleData(localeEs, 'es-MX');
     TerminosCondicionesComponent,
     MenuComponent,
     DobleAutenticacionComponent,
-    CambiarContrasenaComponent,
     OlvidasteContrasenaComponent,
     FooterComponent,
     ProspectosComponent,
@@ -228,7 +227,8 @@ registerLocaleData(localeEs, 'es-MX');
     MatIconModule,
     YaSePreguntoPipe,
     SplitButtonModule,
-    PlotlyModule
+    PlotlyModule,
+    CambiarContrasenaComponent
 ],
   providers: [
     { provide: LOCALE_ID, useValue: 'es-MX' },

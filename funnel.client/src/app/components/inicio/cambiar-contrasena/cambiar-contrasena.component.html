@@ -1,5 +1,5 @@
 <div class="cambiar-password-header">
-    <div class="header position-relative">  
+    <div class="header position-relative">
         <h2 class="titulo m-0">Mi Cuenta</h2>
         <button class="btn-close btn-close-white position-absolute" (click)="cancelar()" aria-label="Cerrar"></button>
     </div>
@@ -65,7 +65,8 @@
             </div>
             <div class="row inptSpace">
                 <div class="col-sm-4 lbl">
-                    <label for="txtContrasenaConfirm" class="control-label" (input)="contrasenasIgualesValidator(formCambiarPassword)">Confirmar Contraseña*</label>
+                    <label for="txtContrasenaConfirm" class="control-label"
+                        (input)="contrasenasIgualesValidator(formCambiarPassword)">Confirmar Contraseña*</label>
                 </div>
                 <div class="col-sm-8 inptSpace row">
                     <div class="col-11" style="padding-right: 0px;">
@@ -79,7 +80,8 @@
                     <div class="col-1" style="padding-right: 0px; padding-left: 0px;">
                         <span class="input-group-text toggle-password" (click)="togglePasswordVisibilityConfirm()"
                             style="width: fit-content;">
-                            <i class="bi" [class.bi-eye-slash]="!showPasswordConfirm" [class.bi-eye]="showPasswordConfirm"></i>
+                            <i class="bi" [class.bi-eye-slash]="!showPasswordConfirm"
+                                [class.bi-eye]="showPasswordConfirm"></i>
                         </span>
                     </div>
 
@@ -112,8 +114,10 @@
                     </div>
 
                     <div *ngIf="imagePreview" class="d-flex align-items-center">
-                       <div style="width: 90px; height: 90px; border-radius: 50%; overflow: hidden; margin-right: 30px;">
-                        <img [src]="imagePreview" alt="Vista previa" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div
+                            style="width: 90px; height: 90px; border-radius: 50%; overflow: hidden; margin-right: 30px;">
+                            <img [src]="imagePreview" alt="Vista previa"
+                                style="width: 100%; height: 100%; object-fit: cover;">
                         </div>
                         <button class="btn btn-link text-danger p-0" (click)="removerFoto()">
                             <span class="me-1">❌</span> Remover
@@ -128,7 +132,54 @@
 <div class="cambiar-password-footer">
     <div class="contenido col-12" style="text-align: right;">
         <button pButton label="Guardar" severity="secondary" (click)="guardar()" style="margin-right: 10px;"
-        [disabled]="!validarGuardar || formCambiarPassword.invalid"></button>
+            [disabled]="!validarGuardar || formCambiarPassword.invalid"></button>
         <button pButton label="Salir" severity="secondary" (click)="cancelar()"></button>
     </div>
 </div>
+
+<p-dialog [(visible)]="showCropperModal" [modal]="true" [closable]="false" header="Editar Imagen">
+    <div class="cropper-container" style="width: 80%; margin: 0 auto;">
+        <image-cropper 
+        [transform]="transform" 
+        [imageChangedEvent]="imageChangedEvent" 
+        [maintainAspectRatio]="true"
+        [aspectRatio]="1 / 1" 
+        [resizeToWidth]="80" 
+        [imageQuality]="100" 
+        [cropperMinWidth]="80"
+        [cropperMinHeight]="80" 
+        [cropperStaticWidth]="80" 
+        [cropperStaticHeight]="80"
+        (imageCropped)="imageCropped($event)" class="cropper-fixed">
+        </image-cropper>
+    </div>
+    <div class="row">
+        <div class="col-4" style="padding-top: 10px;">
+            <button class="btn-icon" (click)="rotateLeft()" title="Rotar izquierda">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rotate-ccw">
+                    <polyline points="1 4 1 10 7 10"></polyline>
+                    <path d="M3.51 15a9 9 0 1 0 .13-6.36L1 10"></path>
+                </svg>
+            </button>
+
+            <button class="btn-icon" (click)="rotateRight()" title="Rotar derecha">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rotate-cw">
+                    <polyline points="23 4 23 10 17 10"></polyline>
+                    <path d="M20.49 15a9 9 0 1 1-.13-6.36L23 10"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="zoom-control col-8">
+            <label for="zoomRange">Zoom:</label>
+            <input id="zoomRange" type="range" min="0.5" max="3" step="0.1" [value]="zoom"
+                (input)="onZoomChange($event)" />
+        </div>
+    </div>
+    <div class="mt-3 text-end">
+        <button class="btn btn-secondary me-2" (click)="cancelarRecorte()">Cancelar</button>
+        <button class="btn btn-primary" (click)="guardarImagenRecortada()">Guardar</button>
+    </div>
+</p-dialog>

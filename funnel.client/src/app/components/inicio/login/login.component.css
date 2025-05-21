@@ -916,3 +916,6 @@ label {
   top: 12px;
   left: 220px;
 }
+.link{
+  text-decoration: none;
+}

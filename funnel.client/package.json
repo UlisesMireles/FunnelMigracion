@@ -33,6 +33,7 @@
     "material-icons": "^1.13.14",
     "ngx-captcha": "^13.0.0",
     "plotly.js-dist-min": "^3.0.1",
+    "plotly.js-locales": "^3.0.1",
     "primeicons": "^7.0.0",
     "primeng": "^19.0.9",
     "run-script-os": "*",

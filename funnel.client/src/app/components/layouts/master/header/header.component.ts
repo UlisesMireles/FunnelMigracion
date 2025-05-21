@@ -144,14 +144,6 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  ngAfterViewInit() {
-    const mainButton = this.splitButton.containerViewChild?.nativeElement.querySelector('.p-button-secondary');
-    if (mainButton) {
-      mainButton.addEventListener('click', (event: MouseEvent) => {
-        this.splitButton.onDropdownButtonClick(event);
-      });
-    }
-  }
 
   agregarOportunidad() {
     this.modalOportunidadesService.openModal(true, true, [], {})

@@ -201,6 +201,12 @@ export class CambiarContrasenaComponent implements OnInit {
   abrirInput(): void {
     this.inputFoto.nativeElement.click();
   }
+mostrarImagenDefault(event: Event) {
+  const target = event.target as HTMLImageElement;
+  if (target && target.src !== this.rutaImgenDefault) {
+    target.src = this.rutaImgenDefault;
+  }
+}
 
   cancelar() {
     this.router.navigate(['/oportunidades']);

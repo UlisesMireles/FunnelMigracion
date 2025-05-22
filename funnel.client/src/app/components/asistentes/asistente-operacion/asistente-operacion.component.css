@@ -50,12 +50,7 @@
     gap: 7px;
 }
  */
-.app-online-icon {
-    width: 29px;
-    height: 30px;
-    margin-top: 4px;
-    margin-left: -10px;
-}
+
 
 .app-sr-only {
     position: absolute;
@@ -72,15 +67,15 @@
 
 .app-chat-close-icon {
     cursor: pointer;
-    font-size: 35px !important;
-    margin-top: -10px;
+    font-size: 20px !important;
+    margin-top: 1px;
 }
 
 .app-chat-reset-icon {
     cursor: pointer;
-    font-size: 35px !important;
-    margin-top: -10px;
-    margin-left: 40px;
+    font-size: 20px !important;
+    margin-top: 1px;
+    margin-right: 10px;
 }
 .bi-list::before {
     content: "\f479";

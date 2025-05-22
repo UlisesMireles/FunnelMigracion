@@ -120,6 +120,10 @@ export class UsuarioPerfilComponent implements OnInit, OnDestroy {
     event.stopPropagation();
     this.isUserPanelVisible = !this.isUserPanelVisible;
   }
+  goToPoliticas() {
+    this.visible = false;
+    this.router.navigate(['/politica-privacidad']);
+  }
 
   // @HostListener('document:click', ['$event'])
   // onDocumentClick(event: Event): void {

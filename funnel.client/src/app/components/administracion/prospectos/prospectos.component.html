@@ -130,7 +130,20 @@
                       'font-weight': def.key === 'nombre' ? 'bold' : 'normal'
                   }">
                 <ng-container [ngSwitch]="def.tipoFormato">
-                  <span *ngSwitchCase="'text'">{{ rowData[def.key] }}</span>
+                  <span *ngSwitchCase="'text'">
+                    <span *ngIf="def.key === 'nombreSector'" [ngStyle]="{ 'color': rowData[def.key] === 'Por Asignar' ? 'red' : 'inherit' }">
+                        {{ rowData[def.key] }}
+                    </span>
+                    <span *ngIf="def.key !== 'nombreSector'">
+                        {{ rowData[def.key] }}
+                    </span>
+                </span>
+
+                <span *ngSwitchCase="'textNFilter'">
+                    <span *ngIf="def.key !== 'nombreSector'">
+                        {{ rowData[def.key] }}
+                    </span>
+                </span>
                   
                   <span *ngSwitchCase="'currency'">
                     {{ rowData[def.key] | currency:'$':'symbol':'1.2-2' }}

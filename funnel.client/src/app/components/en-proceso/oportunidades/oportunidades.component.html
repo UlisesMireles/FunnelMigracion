@@ -159,35 +159,40 @@
                     (def.valor.includes('%')) ? 'center' :
                     def.tipoFormato === 'currency' ? 'right' :
                     (def.tipoFormato === 'number' || def.tipoFormato === 'date') ? 'center' : 'left',
+                    'font-weight': def.key === 'nombre' || def.key === 'nombreOportunidad' ? 'bold' : 'normal',
                     'width': def.key === 'stage' || def.key === 'abreviatura' || def.key === 'entrega' || def.key === 'iniciales' || def.key === 'nombreContacto' ? '80px' : ''
                 }">
                 <ng-container [ngSwitch]="def.tipoFormato">
                   <span *ngSwitchCase="'text'">
                     <span *ngIf="def.key === 'nombreContacto'" pTooltip="{{rowData[def.key]}}" tooltipPosition="top">
-                      {{ rowData[def.key]?.split(' ')[0] }}
+                        {{ rowData[def.key]?.split(' ')[0] }}
                     </span>
                     <span *ngIf="def.key === 'iniciales'" pTooltip="{{rowData['nombreEjecutivo']}}" tooltipPosition="top">
-                      {{ rowData[def.key] }}
+                        {{ rowData[def.key] }}
                     </span>
                     <span *ngIf="def.key === 'abreviatura'" pTooltip="{{rowData['descripcion']}}" tooltipPosition="top">
-                      {{ rowData[def.key] }}
+                        {{ rowData[def.key] }}
                     </span>
                     <span *ngIf="def.key === 'entrega'" pTooltip="{{rowData['entregaDescripcion'] || rowData['entregaDescripcion']}}" tooltipPosition="top">
-                      {{ rowData[def.key] }}
+                        {{ rowData[def.key] }}
                     </span>
                     <span *ngIf="def.key === 'nombreOportunidad'" pTooltip="{{rowData['nombreOportunidad']}}" tooltipPosition="top">
-                      {{ rowData[def.key] }}
+                        {{ rowData[def.key] }}
                     </span>
-                    <span *ngIf="def.key !== 'nombreContacto' && def.key !== 'iniciales' && def.key !== 'abreviatura' && def.key !== 'entrega' && def.key !== 'nombreOportunidad'" >
-                      {{ rowData[def.key] }}
+                    <span *ngIf="def.key === 'nombreSector'" [ngStyle]="{ 'color': rowData[def.key] === 'Por Asignar' ? 'red' : 'inherit' }">
+                        {{ rowData[def.key] }}
                     </span>
-                  </span>
 
-                  <span *ngSwitchCase="'textNFilter'">
-                    <span *ngIf="def.key !== 'nombreContacto' && def.key !== 'iniciales' && def.key !== 'abreviatura' && def.key !== 'entrega'" >
-                      {{ rowData[def.key] }}
+                    <span *ngIf="def.key !== 'nombreContacto' && def.key !== 'iniciales' && def.key !== 'abreviatura' && def.key !== 'entrega' && def.key !== 'nombreOportunidad' && def.key !== 'nombreSector'">
+                        {{ rowData[def.key] }}
                     </span>
-                  </span>
+                </span>
+
+                <span *ngSwitchCase="'textNFilter'">
+                    <span *ngIf="def.key !== 'nombreContacto' && def.key !== 'iniciales' && def.key !== 'abreviatura' && def.key !== 'entrega' && def.key !== 'nombreOportunidad' && def.key !== 'nombreSector'">
+                        {{ rowData[def.key] }}
+                    </span>
+                </span>
                  
                   <span *ngSwitchCase="'currency'">
                     {{ rowData[def.key] | currency:'$':'symbol':'1.2-2' }}

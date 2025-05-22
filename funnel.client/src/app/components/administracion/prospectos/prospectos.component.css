@@ -303,3 +303,28 @@ th.sort-active p-sortIcon {
   background: rgba(147, 136, 121, 0.75) !important;
   color: #272722 !important;
 }
+
+/* En tu archivo CSS/SCSS */
+::ng-deep .columna-nombre {
+  width: 200px !important;
+  min-width: 200px !important;
+  max-width: 200px !important;
+}
+
+::ng-deep .columna-sector {
+  width: 200px !important;
+  min-width: 200px !important;
+  max-width: 200px !important;
+}
+
+::ng-deep .columna-ubicacion {
+  width: 200px !important;
+  min-width: 200px !important;
+  max-width: 200px !important;
+}
+
+::ng-deep .columna-default {
+  width: 95px !important;
+  min-width: 95px !important;
+  max-width: 95px !important;
+}

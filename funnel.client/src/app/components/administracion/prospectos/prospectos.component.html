@@ -43,7 +43,16 @@
           </ng-template>
           <ng-template pTemplate="header" let-columns>
             <tr class="custom-header">
-                <th *ngFor="let def of lsColumnasAMostrar" pSortableColumn="{{def.key}}" pReorderableColumn [class.sort-active]="isSorted(def.key)">
+                <th *ngFor="let def of lsColumnasAMostrar" 
+                  pSortableColumn="{{def.key}}" 
+                  pReorderableColumn 
+                  [class.sort-active]="isSorted(def.key)"
+                  [ngClass]="{
+                    'columna-nombre': def.key === 'nombre',
+                    'columna-sector': def.key === 'nombreSector',
+                    'columna-ubicacion': def.key === 'ubicacionFisica',
+                    'columna-default': def.key !== 'nombre' && def.key !== 'nombreSector' && def.key !== 'ubicacionFisica'
+                }">
                     {{def.valor}}
                   <p-sortIcon field="{{def.key}}"></p-sortIcon>
                 </th>
@@ -117,8 +126,8 @@
                   [ngStyle]="{
                     'text-align': 
                       def.tipoFormato === 'currency' ? 'right' : 
-                      (def.tipoFormato === 'number' || def.tipoFormato === 'estatus' || def.key === 'porcEfectividad') ? 'center' : 'left'
-                      
+                      (def.tipoFormato === 'number' || def.tipoFormato === 'estatus' || def.key === 'porcEfectividad') ? 'center' : 'left',
+                      'font-weight': def.key === 'nombre' ? 'bold' : 'normal'
                   }">
                 <ng-container [ngSwitch]="def.tipoFormato">
                   <span *ngSwitchCase="'text'">{{ rowData[def.key] }}</span>

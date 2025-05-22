@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CambiarContrasenaComponent } from './components/inicio/cambiar-contrasena/cambiar-contrasena.component';
 import { LoginComponent } from './components/inicio/login/login.component';
+import { PoliticaPrivacidadComponent } from './components/inicio/legal/politica-privacidad/politica-privacidad.component';
+import { TerminosCondicionesComponent } from './components/inicio/legal/terminos-condiciones/terminos-condiciones.component';
 import { DobleAutenticacionComponent } from './components/inicio/doble-autenticacion/doble-autenticacion.component';
 import { OlvidasteContrasenaComponent } from './components/inicio/olvidaste-contrasena/olvidaste-contrasena.component';
 import { AuthGuard } from './shared/guards/auth.guard';
@@ -22,7 +24,6 @@ import { OportunidadesPerdidasComponent } from './components/terminadas/oportuni
 import { ModalOportunidadesCanceladasComponent } from './components/terminadas/oportunidades-canceladas/modal-oportunidades-canceladas/modal-oportunidades-canceladas.component';
 import { ModalOportunidadesPerdidasComponent } from './components/terminadas/oportunidades-perdidas/modal-oportunidades-perdidas/modal-oportunidades-perdidas.component';
 
-
 import { PermisosComponent } from './components/catalogos/permisos/permisos.component';
 import { AdministracionHerramientasComponent } from './components/herramientas/administracion-herramientas/administracion-herramientas.component';
 import { ModalTiposEntregaComponent } from './components/catalogos/tipos-entrega/modal-tipos-entrega/modal-tipos-entrega.component';
@@ -33,6 +34,8 @@ import { OportunidadesGeneralComponent } from './components/dashboard/oportunida
 const routes: Routes = [
   { path: '', component: LoginComponent, title: 'Login' },
   { path: 'login', component: LoginComponent, title: 'Login' },
+  {path: 'politica-privacidad', component: PoliticaPrivacidadComponent, title: 'Politica Privacidad' },
+  {path: 'terminos-condiciones', component: TerminosCondicionesComponent, title: 'Terminos y Condiciones' },
   { path: 'cambiar-contrasena', component: CambiarContrasenaComponent, title: 'Cambiar Contraseña', canActivate: [AuthGuard] },
   { path: 'two-factor', component: DobleAutenticacionComponent, title: 'Autenticación' },
   { path: 'recuperar-contrasena', component: OlvidasteContrasenaComponent, title: 'Recuperar contraseña' },

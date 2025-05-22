@@ -33,22 +33,20 @@
     </div>
   </div>
 </div>
+
 <div class="chatbot-message-box" [class.active]="loadOpciones"  
   [class.has-options]="loadOpciones"  data-role="chatbot">
   <input type="text" class="chatbot-input" [(ngModel)]="pregunta" placeholder="¿Cómo puedo ayudarte el día de hoy?"
     (keydown.enter)="consultaMensajeOpenIa()">
-  <mat-icon matSuffix class="iconoChatBot"
+  <mat-icon matSuffix class="iconoChatBot me-2"
     [ngClass]="{'iconoChatBotTemaAsistenteOperacion': asistenteSeleccionado.idBot == 4}"
-    (click)="loadOpciones = !loadOpciones">more_horiz</mat-icon>
-  <button class="enviarMensaje"
-  [disabled]="!this.pregunta.trim()">
-  <mat-icon matSuffix class="ms-2 iconoChatBot"
-  [ngClass]="{'iconoChatBotTemaAsistenteOperacion': asistenteSeleccionado.idBot == 4}"
-  (click)="consultaMensajeOpenIa()">send</mat-icon>
+    (click)="resetConversation()" matTooltip="Eliminar historial" style="cursor: pointer;">delete</mat-icon>
+  <button class="enviarMensaje" [disabled]="!this.pregunta.trim()">
+    <mat-icon matSuffix class="ms-2 iconoChatBot"
+      [ngClass]="{'iconoChatBotTemaAsistenteOperacion': asistenteSeleccionado.idBot == 4}"
+      (click)="consultaMensajeOpenIa()">send</mat-icon>
   </button>
 </div>
-
-<ng-container *ngIf="loadOpciones" [ngTemplateOutlet]="opciones"></ng-container>
 
 <ng-template #cargando>
   <div class="chat-bubble ai-bubble">
@@ -101,21 +99,6 @@
            [ngClass]="{'colorChipTemaAsistenteOperacion': asistenteSeleccionado.idBot == 4}"
            (click)="seleccionPregunta(preguntaFaq)">
         {{preguntaFaq.pregunta}}
-      </div>
-    </div>
-  </div>
-</ng-template>
-
-<ng-template #opciones>
-  <div class="row m-0 opcionesClass">
-    <div class="col-6 offset-6" [ngClass]="loadOpciones ? 'conditionalOpen' : 'conditionalClose'">
-      <div class="row align-items-center">
-        <div class="col-6 text-end">
-          <i class="bi bi-trash opcionesIconTrash " style="margin-left: 200px;"
-             (click)="resetConversation()" 
-             matTooltip="Eliminar historial">
-          </i>
-        </div>
       </div>
     </div>
   </div>

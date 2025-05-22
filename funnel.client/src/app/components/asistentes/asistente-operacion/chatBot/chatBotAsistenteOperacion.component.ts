@@ -364,7 +364,7 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
   
     // Mostrar categorías directamente
     this.chatHistorial.push(
-      { rol: "asistente", mensaje: "Estas son las categorías disponibles:" },
+      { rol: "asistente", mensaje: "¡Hola! ¿En qué puedo ayudarte hoy?" },
       { rol: "categorias", mensaje: "" }
     );
     

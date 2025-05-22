@@ -387,3 +387,54 @@
     line-height: 1.2;
     
 }
+.btn-copiar {
+  align-self: flex-start;
+  margin-top: 5px;
+  margin-right: 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  padding: 2px 5px;
+  border-radius: 4px;
+}
+.btn-copiar mat-icon {
+  font-size: 16px; 
+  height: 16px;
+  width: 16px;
+  line-height: 16px;
+}
+
+.btn-copiar:hover {
+  background-color: #f0f0f0;
+}
+
+.btn-copiar-tema-operacion {
+  color: #256F45 !important; 
+}
+
+.btn-copiar-tema-operacion:hover {
+  background-color:  #dce9e1 !important; 
+}
+/* Mensaje flotante de copiado */
+.mensaje-flotante {
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #256F45;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  animation: fadeInOut 3s ease-in-out;
+  opacity: 0;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateX(-50%) translateY(10px); }
+  20% { opacity: 1; transform: translateX(-50%) translateY(0); }
+  80% { opacity: 1; transform: translateX(-50%) translateY(0); }
+  100% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+}

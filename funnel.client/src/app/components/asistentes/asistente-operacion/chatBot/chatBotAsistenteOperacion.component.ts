@@ -11,6 +11,7 @@ import { OpenIaService } from '../../../../services/asistentes/openIA.service';
 import { PreguntasFrecuentesService } from '../../../../services/asistentes/preguntasFrecuentes.service';
 import { environment } from '../../../../../environments/environment';
 import { LoginService } from '../../../../services/login.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   standalone: false,
@@ -53,6 +54,8 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
   /** */
   loadOpciones: boolean = false;
   isConsultandoOpenIa: boolean = false;
+  mostrarMensajeCopiado: boolean = false;
+  mensajeCopiadoTexto: string = '';
   @Output() nombreAsistenteSeleccionado = new EventEmitter<any>();
 
   constructor(
@@ -60,7 +63,8 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
     public asistenteService: AsistenteService,
     private cdRef: ChangeDetectorRef,
     private preguntasFAQService: PreguntasFrecuentesService,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private messageService: MessageService
   ) {
   }
 
@@ -401,5 +405,26 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
   }
 
   //#endregion
+  copiarRespuesta(texto: string) {
+  const textoLimpio = texto.replace(/<[^>]*>/g, '');
 
-}
+  navigator.clipboard.writeText(textoLimpio).then(() => {
+    this.mostrarMensajeCopiado = true;
+    this.mensajeCopiadoTexto = '✅ Texto copiado al portapapeles';
+    this.cdRef.detectChanges(); 
+
+    setTimeout(() => {
+      this.mostrarMensajeCopiado = false;
+      this.cdRef.detectChanges(); 
+    }, 1000);
+  }).catch(err => {
+    this.mostrarMensajeCopiado = true;
+    this.mensajeCopiadoTexto = '⚠️ Error al copiar el texto';
+    this.cdRef.detectChanges(); 
+
+    setTimeout(() => {
+      this.mostrarMensajeCopiado = false;
+      this.cdRef.detectChanges(); 
+    }, 1000);
+  });
+}}

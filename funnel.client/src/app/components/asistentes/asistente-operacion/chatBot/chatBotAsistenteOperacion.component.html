@@ -1,4 +1,7 @@
 <div class="scrollable-div" #scrollMe [scrollTop]="scrollMe.scrollHeight">
+  <div *ngIf="mostrarMensajeCopiado" class="mensaje-flotante">
+    {{ mensajeCopiadoTexto }}
+  </div>
   <div class="chat-historial" *ngFor="let chat of chatHistorial">
     <div class="chat-row" [ngClass]="{'filtroFaq' : 'row-reverse', 'revisarCategorias' : 'row-reverse'}[chat.rol]">
       <ng-container [ngSwitch]="chat.rol">
@@ -12,6 +15,12 @@
               <label class="labelAsistente ps-2" *ngIf="chat.rol === 'asistente'">Asistente Funnel</label>
               <div class="chat-bubble ai-bubble formatoMensajes vstack" [innerHTML]="chat.mensaje">
               </div>
+              <button class="btn-copiar" 
+              [ngClass]="{'btn-copiar-tema-operacion': asistenteSeleccionado.idBot == 4}"
+              (click)="copiarRespuesta(chat.mensaje)"
+              matTooltip="Copiar respuesta">
+        <mat-icon>content_copy</mat-icon>
+      </button>
             </div>
           </div>
         </ng-container>

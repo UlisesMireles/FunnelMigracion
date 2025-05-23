@@ -65,7 +65,8 @@ namespace Funnel.Data
                         DesEstatus = ComprobarNulos.CheckStringNull(reader["DesEstatus"]),
                         TipoUsuario = ComprobarNulos.CheckStringNull(reader["TipoUsuario"]),
                         Usuario = ComprobarNulos.CheckStringNull(reader["Usuario"]),
-                        ArchivoImagen = ComprobarNulos.CheckStringNull(reader["ArchivoImagen"])
+                        ArchivoImagen = ComprobarNulos.CheckStringNull(reader["ArchivoImagen"]),
+                        CantidadOportunidades = ComprobarNulos.CheckIntNull(reader["NumOportunidades"]),   
                     };
                     result.Add(dto);
                 }

@@ -50,6 +50,7 @@ export class UsuariosComponent {
     {key: 'iniciales', isCheck: true, valor: 'Iniciales', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
     {key:'correo', isCheck: true, valor: 'Correo Electrónico', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
     {key:'tipoUsuario', isCheck: true, valor: 'Tipo Usuario', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
+    {key:'cantidadOportunidades', isCheck: true, valor: 'Op Proceso', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
     {key:'desEstatus', isCheck: true, valor: 'Estatus', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'estatus'},
   ];
   columnsAMostrarResp = JSON.stringify(this.lsColumnasAMostrar);
@@ -320,6 +321,7 @@ clear(table: Table) {
           correo: '100%',
           tipoUsuario: '100%',
           desEstatus: '100%',
+          cantidadOportunidades: '100%',
       };
       return { width: widths[key] || 'auto' };
   }

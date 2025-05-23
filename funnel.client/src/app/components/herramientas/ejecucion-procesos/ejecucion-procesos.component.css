@@ -1,0 +1,74 @@
+.cardEjecucionProcesos {
+    margin-top: 40px;
+}
+
+.multiselect-full-width {
+    width: 100%;
+    margin-top: 10px;
+}
+
+:host ::ng-deep .p-button {
+    width: 150px;
+}
+
+:host ::ng-deep .p-card-title {
+    background: linear-gradient(0deg, rgba(247, 106, 19, 1) 0%, rgba(200, 87, 24, 1) 35%, rgba(231, 91, 42, 1) 100%);
+    color: white;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    height: 50px;
+    margin-top: -15px;
+    margin-left: -15px;
+    margin-right: -15px;
+}
+
+:host ::ng-deep .p-fieldset-legend {
+    font-size: 1.15rem;
+}
+
+::ng-deep .inptSpaceEstatus {
+    text-align: left !important;
+}
+
+.lbl-opt {
+    margin-top: 5px;
+    text-align: left;
+    padding-top: 5px;
+}
+
+.inptSpaceEstatus {
+    margin-top: 10px;
+}
+
+.test {
+    width: 200px;
+}
+
+.card-alto {
+    min-height: 370px;
+}
+
+.validaInput {
+    margin-top: 5px;
+    display: block;
+}
+
+.validaSelect {
+    margin-top: 5px;
+    display: flex;
+}
+
+.inptDias {
+    width: 96% !important;
+    height: 35px;
+    padding-right: 4px;
+}
+
+.flex-rp {
+    display: flex;
+    justify-content: end;
+}
+
+.tituloCardTexto{
+    margin: 0px;
+}

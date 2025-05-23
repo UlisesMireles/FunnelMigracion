@@ -187,6 +187,15 @@ export class CambiarContrasenaComponent implements OnInit {
   onFotoSeleccionada(event: any) {
     const input = event.target as HTMLInputElement;
 
+    const file = (input.files as FileList)[0];
+    const extension = file.type;
+    const validaExtencion = this.getExtension(extension);
+    if(validaExtencion === '')
+    {
+      this.mostrarToastError("No es un archivo de imagen permitido.");
+      return;
+    }
+
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
 
@@ -225,6 +234,23 @@ export class CambiarContrasenaComponent implements OnInit {
     this.imagePreview = URL.createObjectURL(this.fotoSeleccionada);
     this.showCropperModal = false;
   }
+
+  getExtension(mimeType: string): string {
+  switch (mimeType) {
+    case 'image/jpeg':
+      return 'jpeg';
+    case 'image/jpg':
+      return 'jpg';
+    case 'image/png':
+      return 'png';
+    case 'image/gif':
+      return 'gif';
+    case 'image/webp':
+      return 'webp';
+    default:
+      return '';
+  }
+}
 
   rotateLeft() {
     this.transform = {

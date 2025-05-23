@@ -277,7 +277,7 @@ namespace Funnel.Data
         public async Task<BaseOut> GuardarImagen(int idUsuario, IFormFile imagen, UsuarioDto request)
         {
             BaseOut result = new BaseOut();
-            var formatosPermitidos = new List<string> { ".jpg", ".png", ".jpeg" };
+            var formatosPermitidos = new List<string> { ".jpg", ".png", ".jpeg", "gif", "webp" };
             string carpetaDestino = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Fotografia");
             string nombreArchivoNuevo = null;
 

@@ -6,16 +6,16 @@
 
     <div class="user-panel float-end" [class.show]="visible">
       <div class="user-header">
-        <img [src]="rutaImgen" alt="Usuario" class="user-image" />
+        <img [src]="rutaImgen" alt="Usuario" (error)="mostrarImagenDefault($event)" class="user-image" />
         <h5>{{nombre}}</h5>
       </div>
       <div class="user-actions">
         <button type="button" (click)="goToMiCuenta()" class="btn btn-cancel btnmenuuser">
-          Mi Cuenta
+          Perfil
          </button>
-        <button (click)="logout()" type="button" class="btn btn-cancel btnmenuuser">
-          Cerrar Sesión
-        </button>
+        <a [href]="baseUrlAssets + '/politica-privacidad'" target="_blank"class="btn btn-cancel btnmenuuser btnPoliticas" [title]="'Ir a Politicas de Privacidad'"> 
+          Politica Privacidad
+        </a>
       </div>
     </div>
 </div>

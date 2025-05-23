@@ -29,6 +29,7 @@ export class UsuarioPerfilComponent implements OnInit, OnDestroy {
 
   isUserPanelVisible = false;
   baseUrl: string = environment.baseURL;
+  baseUrlAssets: string = environment.baseURLAssets;
   rutaImgenDefault: string = this.baseUrl + 'Fotografia/persona_icono_principal.png';
   rutaImgen: string = this.baseUrl + '/Fotografia/';
   nombreUsuario: string = '';
@@ -120,6 +121,10 @@ export class UsuarioPerfilComponent implements OnInit, OnDestroy {
     event.stopPropagation();
     this.isUserPanelVisible = !this.isUserPanelVisible;
   }
+  goToPoliticas() {
+    this.visible = false;
+    this.router.navigate(['/politica-privacidad']);
+  }
 
   // @HostListener('document:click', ['$event'])
   // onDocumentClick(event: Event): void {
@@ -130,4 +135,10 @@ export class UsuarioPerfilComponent implements OnInit, OnDestroy {
     this.sideNavService.toggle();
     this.sideNavService.toggleIconState();
   }
+  mostrarImagenDefault(event: Event) {
+  const target = event.target as HTMLImageElement;
+  if (target && target.src !== this.rutaImgenDefault) {
+    target.src = this.rutaImgenDefault;
+  }
+}
 }

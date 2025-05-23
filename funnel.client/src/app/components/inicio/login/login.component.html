@@ -2,7 +2,7 @@
   <main>
     <div class="navbar">
       <nav class="text-center m-auto">
-        <img width="80" [src]="baseUrl + '/assets/img/SFS blanco.png'" alt="logo SFS" class="m-auto">
+        <img width="150" [src]="baseUrl + '/assets/img/logotipo-glupoint.png'" alt="logo SFS" class="m-auto">
         <button *ngIf="showIniciarSesion" class="iniciarSesion float-end" (click)="openLoginModal()">Iniciar Sesión</button>
       </nav>
     </div>
@@ -141,9 +141,9 @@
                                 [ngClass]="{'is-invalid': aFormGroup.get('privacidadTerminos')?.invalid && aFormGroup.get('privacidadTerminos')?.touched}">
                                 <label for="chkPrivacyTerms">
                                   Declaro que he leído y acepto la
-                                  <span class="link">Política de privacidad</span>
+                                 <a href="/politica-privacidad" target="_blank" rel="noopener noreferrer" class="link">Política de privacidad</a>
                                   y los
-                                  <span class="link">Términos y Condiciones</span>
+                                <a href="/terminos-condiciones" target="_blank" rel="noopener noreferrer"  class="link">Términos y Condiciones</a>
                                   de Sales Funnel System.
                                 </label>
                                 <span *ngIf="aFormGroup.get('privacidadTerminos')?.invalid && aFormGroup.get('privacidadTerminos')?.touched" class="text-danger">

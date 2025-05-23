@@ -282,9 +282,13 @@ export class ModalUsuariosComponent {
       this.UsuariosService.postGuardarUsuario(formData).subscribe({
         next: (result: any) => {
           if (result.result && this.selectedFile instanceof File) {
-            this.imagenService.actualizarImagenPerfil(nombreArchivo);
-          }else if (this.selectedFile == null || this.selectedFile == undefined) {
-            this.imagenService.actualizarImagenPerfil('')
+            if (this.usuario.idUsuario === this.loginService.obtenerIdUsuario()) {
+              this.imagenService.actualizarImagenPerfil(nombreArchivo);
+            } 
+            }
+            else if (this.selectedFile == null || this.selectedFile == undefined) {
+              if (this.usuario.idUsuario === this.loginService.obtenerIdUsuario()) {
+            this.imagenService.actualizarImagenPerfil('')}
           }
           this.result.emit(result);
           this.close();
@@ -447,7 +451,12 @@ removerFoto() {
   abrirInput(): void {
     this.fileInput.nativeElement.click();
   }
-
+mostrarImagenDefault(event: Event) {
+  const target = event.target as HTMLImageElement;
+  if (target && target.src !== this.rutaImgenDefault) {
+    target.src = this.rutaImgenDefault;
+  }
+}
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }

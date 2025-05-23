@@ -280,7 +280,7 @@
     background-color: #fff !important;
     position: relative; /* Añadido para posicionar opciones */
     transition: padding 0.3s ease; /* Transición suave */
-    padding-top: 4px !important;     /* antes 8px */
+    padding-top: 15px !important;     /* antes 8px */
     padding-bottom: 4px !important;  /* antes 8px */
     min-height: 36px !important;
     

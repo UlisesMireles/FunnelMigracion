@@ -358,6 +358,9 @@ ul.subm>li>a {
   z-index: 1000;
   left: 82vw;
 }
+.btnPoliticas{
+  padding: 5px !important;
+}
 
 /* @media (max-width: 1280px) {
   .user-panel-modal {

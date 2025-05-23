@@ -44,6 +44,8 @@ import { ToggleSwitchModule } from 'primeng/toggleswitch';
 
 import { DobleAutenticacionComponent } from './components/inicio/doble-autenticacion/doble-autenticacion.component';
 import { LoginComponent } from './components/inicio/login/login.component';
+import { PoliticaPrivacidadComponent } from './components/inicio/legal/politica-privacidad/politica-privacidad.component';
+import { TerminosCondicionesComponent } from './components/inicio/legal/terminos-condiciones/terminos-condiciones.component';
 import { OlvidasteContrasenaComponent } from './components/inicio/olvidaste-contrasena/olvidaste-contrasena.component';
 import { CambiarContrasenaComponent } from './components/inicio/cambiar-contrasena/cambiar-contrasena.component';
 
@@ -137,6 +139,8 @@ registerLocaleData(localeEs, 'es-MX');
   declarations: [
     AppComponent,
     LoginComponent,
+    PoliticaPrivacidadComponent,
+    TerminosCondicionesComponent,
     MenuComponent,
     DobleAutenticacionComponent,
     CambiarContrasenaComponent,

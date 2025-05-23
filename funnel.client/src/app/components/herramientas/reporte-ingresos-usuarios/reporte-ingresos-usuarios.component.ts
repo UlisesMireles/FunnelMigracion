@@ -24,6 +24,7 @@ export class ReporteIngresosUsuariosComponent {
   anchoTabla = 100;//porciento
 
   usuarioDropdown: any = [];
+  usuarioDropdownOriginal: any = [];
   selectedUsuario: any = null;
   sortField = 'fechaIngreso';
   sortOrder = -1;
@@ -60,6 +61,7 @@ export class ReporteIngresosUsuariosComponent {
           new Map(result.map(i => [i.usuario, { label: i.usuario, value: i.usuario }])).values()
         );
         this.usuarioDropdown.unshift({ label: 'Todos los Usuarios', value: null });
+        this.usuarioDropdownOriginal = [...this.usuarioDropdown];
 
         //Mapeo de años
         this.years = [
@@ -116,7 +118,7 @@ export class ReporteIngresosUsuariosComponent {
   }
 
   FiltrarPorUsuario() {
-
+    //Se realiza el filtro por usuario y año
     if (this.selectedYear && this.selectedYear !== "Todos los Años") {
       this.ingresos = this.selectedUsuario === null
         ? [...this.ingresosOriginal.filter((x) => new Date(x.fechaIngreso).getFullYear().toString() === this.selectedYear)]
@@ -125,6 +127,7 @@ export class ReporteIngresosUsuariosComponent {
         this.dt.first = 0;
       }
     }
+    //Mostrar datos de todos los usuarios y años
     else {
       this.ingresos = this.selectedUsuario === null
         ? [...this.ingresosOriginal]
@@ -138,7 +141,25 @@ export class ReporteIngresosUsuariosComponent {
   }
 
   filterByYear() {
+    //Si se selecciono un año
     if (this.selectedYear && this.selectedYear !== "Todos los Años") {
+      
+      //Verifica los usuarios que existen en base al año seleccionado, si hay datos llena combo de usuarios
+      this.usuarioDropdown = Array.from(
+        new Map(this.ingresosOriginal.filter((x) => new Date(x.fechaIngreso).getFullYear().toString() === this.selectedYear)
+          .map(i => [i.usuario, { label: i.usuario, value: i.usuario }])).values()
+      );
+      this.usuarioDropdown.unshift({ label: 'Todos los Usuarios', value: null });
+      
+      //Si tienes seleccionado un usuario y no existe registro en ese usuario y ese año, se limpia filtro de usuarios, a Todos Los Usuarios
+      if (this.selectedUsuario !== null) {
+        let filtro = this.ingresosOriginal.filter((x) => x.usuario === this.selectedUsuario && new Date(x.fechaIngreso).getFullYear().toString() === this.selectedYear);
+        if (filtro.length == 0) {
+          this.selectedUsuario = null
+        }
+      }
+      
+      //Realiza el filtro en base al año selecionado y o el usuario
       this.ingresos = this.selectedUsuario === null
         ? [...this.ingresosOriginal.filter((x) => new Date(x.fechaIngreso).getFullYear().toString() === this.selectedYear)]
         : [...this.ingresosOriginal.filter((x) => x.usuario === this.selectedUsuario && new Date(x.fechaIngreso).getFullYear().toString() === this.selectedYear)];
@@ -148,7 +169,15 @@ export class ReporteIngresosUsuariosComponent {
 
     }
     else {
-      this.ingresos = [...this.ingresosOriginal]
+
+      //Si se selcciona todos los años, se limpia el combo de usuarios dejando todos los usuarios
+      this.selectedUsuario = null
+      this.usuarioDropdown = [...this.usuarioDropdownOriginal];
+
+      //Se realiza el filtro para mostrar todos los registros de todos los años y o el usuario
+      this.ingresos = this.selectedUsuario === null
+        ? [...this.ingresosOriginal]
+        : [...this.ingresosOriginal.filter((x) => x.usuario === this.selectedUsuario)];
       if (this.dt) {
         this.dt.first = 0;
       }
@@ -184,6 +213,26 @@ export class ReporteIngresosUsuariosComponent {
     return this.dt?.sortField === columnKey;
   }
 
+  exportExcel(table: Table) {
+    let lsColumnasAMostrar = this.lsColumnasAMostrar.filter(col => col.isCheck);
+    let columnasAMostrarKeys = lsColumnasAMostrar.map(col => col.key);
+
+    let dataExport = (table.filteredValue || table.value || []).map(row => {
+      return columnasAMostrarKeys.reduce((acc, key) => {
+        acc[key] = row[key];
+        return acc;
+      }, {} as { [key: string]: any });
+    });
+
+
+    import('xlsx').then(xlsx => {
+      const hojadeCalculo: import('xlsx').WorkSheet = xlsx.utils.json_to_sheet(dataExport);
+      const libro: import('xlsx').WorkBook = xlsx.utils.book_new();
+      xlsx.utils.book_append_sheet(libro, hojadeCalculo, "Reporte de Ingresos de Usuarios");
+      xlsx.writeFile(libro, "ReporteIngresosUsuarios.xlsx");
+    });
+  }
+
   exportPdf(table: Table) {
     let lsColumnasAMostrar = this.lsColumnasAMostrar.filter(col => col.isCheck);
     let columnasAMostrarKeys = lsColumnasAMostrar.map(col => col.key);
@@ -203,7 +252,7 @@ export class ReporteIngresosUsuariosComponent {
 
     if (dataExport.length == 0)
       return
-    
+
     this.herramientasService.descargarReporteIngresos(data).subscribe({
       next: (result: Blob) => {
         const url = window.URL.createObjectURL(result);

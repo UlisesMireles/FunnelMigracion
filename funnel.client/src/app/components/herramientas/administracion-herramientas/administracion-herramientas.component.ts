@@ -11,7 +11,7 @@ export class AdministracionHerramientasComponent {
   titulo: string = 'Herramientas Administración';
 
   ngOnInit(): void {
-    this.cambioTitulo(0);
+    this.cambioTitulo(1);
     document.documentElement.style.fontSize = 12 + 'px';
   }
 
@@ -19,7 +19,7 @@ export class AdministracionHerramientasComponent {
   cambioTitulo(index: number) {
     const titulos = [
       'Reporte Ingresos Usuarios',
-      'Activar / Desactivar ejecución de job para los siguientes procesos'
+      'Activar / Desactivar Job de Procesos'
     ];
     this.titulo = titulos[index] || 'Herramientas Administración';
   }

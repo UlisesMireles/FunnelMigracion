@@ -20,15 +20,13 @@
           <i class="bi bi-stars color-amarillo"></i> 
           <span class="ia-button-text color-amarillo"> IA</span>
         </button>
-        <!-- Contenedor del chatbot -->
-        <ng-container *ngIf="(asistenteService.asistenteObservable | async) === 1">
-          <div id="chat-container" class="chatbot-window" #chatContainer>
-            <app-asistente-operacion></app-asistente-operacion>
-          </div>
-        </ng-container>
+       <!-- Contenedor del chatbot -->
+      <ng-container *ngIf="(asistenteService.asistenteObservable | async) === 1">
+      <div id="chat-container" class="chatbot-window" #chatContainer (mousedown)="startDrag($event)">
+      <app-asistente-operacion></app-asistente-operacion>
       </div>
-  
-      
+      </ng-container>
+      </div>
       <!-- Perfil (el primero de derecha a izquierda) -->
       <div class="perfil ms-2" style="justify-content: end;">
         <button class="menu-item-perfil" (click)="navigateTo('/perfil')">

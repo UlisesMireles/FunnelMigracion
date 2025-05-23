@@ -51,6 +51,9 @@ export class HeaderComponent implements OnInit {
   items: MenuItem[];
   @ViewChild('splitBtn') splitButton!: SplitButton;
   @ViewChild('chatContainer') chatContainer!: ElementRef;
+  
+  private isDragging = false;
+  private offset = { x: 0, y: 0 };
 
   constructor(public asistenteService: AsistenteService, private modalService: ModalService, private router: Router,
     private messageService: MessageService, private modalOportunidadesService: ModalOportunidadesService) {
@@ -274,5 +277,35 @@ export class HeaderComponent implements OnInit {
       });
     }
   }
+startDrag(event: MouseEvent): void {
+    const el = this.chatContainer.nativeElement as HTMLElement;
+
+    this.isDragging = true;
+    this.offset = {
+      x: event.clientX - el.getBoundingClientRect().left,
+      y: event.clientY - el.getBoundingClientRect().top,
+    };
+
+    document.addEventListener('mousemove', this.onDrag);
+    document.addEventListener('mouseup', this.endDrag);
+  }
+
+  onDrag = (event: MouseEvent): void => {
+    if (!this.isDragging) return;
+
+    const x = event.clientX - this.offset.x;
+    const y = event.clientY - this.offset.y;
+
+    const el = this.chatContainer.nativeElement as HTMLElement;
+    el.style.left = `${x}px`;
+    el.style.top = `${y}px`;
+    el.style.right = 'auto'; // anula el "right" para permitir mover
+  };
+
+  endDrag = (): void => {
+    this.isDragging = false;
+    document.removeEventListener('mousemove', this.onDrag);
+    document.removeEventListener('mouseup', this.endDrag);
+  };
 
 }

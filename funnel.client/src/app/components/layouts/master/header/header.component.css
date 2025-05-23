@@ -66,7 +66,6 @@
   margin-left: 9px;
   font-weight: bold;
 }
-
 .chatbot-window {
   width: 490px;
   height: 550px;
@@ -79,8 +78,8 @@
   z-index: 5000;
   transition: all 0.3s ease;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  /*cursor: move;*/
 }
-
 
 ::ng-deep .chatbot-window .app-chat-header {
   background: linear-gradient(to right, #103d66, #1a4e80) !important;

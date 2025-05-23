@@ -29,6 +29,7 @@ export class UsuarioPerfilComponent implements OnInit, OnDestroy {
 
   isUserPanelVisible = false;
   baseUrl: string = environment.baseURL;
+  baseUrlAssets: string = environment.baseURLAssets;
   rutaImgenDefault: string = this.baseUrl + 'Fotografia/persona_icono_principal.png';
   rutaImgen: string = this.baseUrl + '/Fotografia/';
   nombreUsuario: string = '';

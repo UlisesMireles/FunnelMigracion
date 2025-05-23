@@ -25,6 +25,7 @@ export interface Usuarios {
     iniciales: string;
     id?: number;
     imagen?: File;
+    cantidadOportunidades?: number;
   }
   
   export interface RequestUsuario {

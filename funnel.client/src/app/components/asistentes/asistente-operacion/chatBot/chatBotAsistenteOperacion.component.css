@@ -265,36 +265,29 @@
         transform: scaleY(0)
     }
 }
-
 .chatbot-message-box {
-    padding: 2px 12px !important;       /* Reducción radical (antes 8px 16px) */
-    min-height: 32px !important; 
+    padding: 0px 12px !important;      /* Padding vertical reducido (arriba/abajo) */
+    min-height: 28px !important;      /* Altura mínima reducida */
     border-width: 1px 0 0;
     border-style: solid;
     flex: 0 0 auto;
     display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
+    align-items: center;              /* Centra el input verticalmente */
     border-color: #ccc;
-    color: #333;
     background-color: #fff !important;
-    position: relative; /* Añadido para posicionar opciones */
-    transition: padding 0.3s ease; /* Transición suave */
-    padding-top: 15px !important;     /* antes 8px */
-    padding-bottom: 4px !important;  /* antes 8px */
-    min-height: 36px !important;
-    
+    position: relative;
+    transition: padding 0.3s ease;
+    margin-top: 15px !important;
 
     .chatbot-input {
-        font-size: .9rem !important;
+        font-size: 0.9rem !important;
         margin: 0;
         padding: 0;
         border: none !important;
-        font: inherit;
         background: 0;
         flex: 1 1 auto;
         outline: none !important;
-
+        line-height: 1.3;            /* Controla la posición vertical del texto */
     }
 }
 

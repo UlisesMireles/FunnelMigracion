@@ -47,9 +47,9 @@
     (keydown.enter)="consultaMensajeOpenIa()">
   <mat-icon matSuffix class="iconoChatBot me-2"
     [ngClass]="{'iconoChatBotTemaAsistenteOperacion': asistenteSeleccionado.idBot == 4}"
-    (click)="resetConversation()" matTooltip="Eliminar historial" style="cursor: pointer;">delete</mat-icon>
-  <button class="enviarMensaje" [disabled]="!this.pregunta.trim()">
-    <mat-icon matSuffix class="ms-2 iconoChatBot"
+    (click)="resetConversation()" matTooltip="Eliminar historial" style="cursor: pointer; margin-top: 1px; ">delete</mat-icon>
+  <button class="enviarMensaje"  [disabled]="!this.pregunta.trim()">
+    <mat-icon matSuffix class="ms-2 iconoChatBot"  style="margin-top: 4px;"
       [ngClass]="{'iconoChatBotTemaAsistenteOperacion': asistenteSeleccionado.idBot == 4}"
       (click)="consultaMensajeOpenIa()">send</mat-icon>
   </button>

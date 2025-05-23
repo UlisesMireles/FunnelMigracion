@@ -78,12 +78,6 @@ export class OportunidadesGanadasComponent {
       this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
       this.getOportunidades();
 
-      const currentYear = new Date().getFullYear();
-      for (let year = currentYear; year >= 2020; year--) {
-        this.years.push(year.toString());
-      }
-      this.years.unshift("Todos los Años");
-
       document.documentElement.style.fontSize = 12 + 'px';
     }
 
@@ -114,6 +108,20 @@ export class OportunidadesGanadasComponent {
           
           this.oportunidades = [...oportunidadesOrdenadas];
           this.oportunidadesOriginal = oportunidadesOrdenadas;
+          
+          const yearsSet = new Set<string>();
+          oportunidadesOrdenadas.forEach(o => {
+            if (o.fechaEstimadaCierre) {
+              yearsSet.add(new Date(o.fechaEstimadaCierre).getFullYear().toString());
+            }
+          });
+          this.years = Array.from(yearsSet).sort((a, b) => Number(b) - Number(a));
+          this.years.unshift("Todos los Años");
+
+          if (!this.years.includes(this.selectedYear)) {
+            this.selectedYear = this.years[1] || "Todos los Años";
+          }
+
           this.filterByYear();
           this.cdr.detectChanges(); 
           this.loading = false;

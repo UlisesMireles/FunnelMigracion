@@ -225,17 +225,32 @@ export class ModalUsuariosComponent {
   
       const formValue = { ...this.usuarioForm.getRawValue() };
       const usuarioIngresado = formValue.usuario?.trim()?.toLowerCase();
+      const correoIngresado = formValue.correo?.trim()?.toLowerCase();
   
+      const correoYaExiste = this.usuarios.some(u =>
+        u.correo.toLowerCase() === correoIngresado &&
+        u.idUsuario !== this.usuario.idUsuario
+      );
+
       const usuarioYaExiste = this.usuarios.some(u =>
         u.usuario.toLowerCase() === usuarioIngresado &&
-        (this.insertar || (!this.insertar && u.idUsuario !== this.usuario.idUsuario))
+        u.idUsuario !== this.usuario.idUsuario
       );
-  
+
       if (usuarioYaExiste) {
         this.messageService.add({
           severity: 'warn',
           summary: 'Usuario duplicado',
           detail: `El nombre de usuario '${usuarioIngresado}' ya está en uso.`,
+        });
+        return;
+      }
+
+      if (correoYaExiste) {
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Correo duplicado',
+          detail: `El correo '${correoIngresado}' ya está en uso.`,
         });
         return;
       }

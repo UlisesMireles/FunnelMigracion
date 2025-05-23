@@ -14,7 +14,7 @@
         <p>Se te ha enviado un código para validar que tu correo electrónico sea real. Por favor ingresar el código de 6 dígitos.</p>
       </div>
       <form [formGroup]="twoFactorForm" class="text-center border border-light formLogin">
-        <input type="text" class="codigo-input col-10 large-placeholder" maxlength="6" placeholder="------" formControlName="codigo" autofocus>
+        <input type="text" class="codigo-input col-10 large-placeholder" maxlength="6" placeholder="------" formControlName="codigo" autofocus (input)="onCodigoInput()">
 
         <p class="tiempo-restante" *ngIf="!timeExpired" >Tiempo restante: <span id="tiempo">{{ formattedTime }}</span></p>
         <p *ngIf="timeExpired" style="color: red; text-align: center; margin-top: 10px;">

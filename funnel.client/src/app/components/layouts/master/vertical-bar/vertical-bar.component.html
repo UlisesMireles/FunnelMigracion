@@ -15,7 +15,10 @@
 
       <li class="menu-item" *ngFor="let item of ListaMenu.slice(1); let i = index" (mouseenter)="showSubmenu(i)"
         (mouseleave)="hideSubmenu()" (click)="navigateTo(item.ruta)">
-        <i [ngClass]="item.icono" [title]="item.tooltip" [ngStyle]="{'color': item.colorIcono}"></i>
+        <i [ngClass]="item.icono" [title]="item.tooltip"
+        [ngStyle]="{
+                    'font-size': item.nombre === 'SALIR' ? '22px' : '20px',
+                    'color': item.colorIcono}"></i>
         <span *ngIf="isExpanded">{{ item.nombre }}</span>
 
         <!-- Solo mostrar submenú si existe y tiene elementos -->
@@ -41,7 +44,9 @@
     <div class="expand-btn-container" (mouseenter)="showTooltip = true" (mouseleave)="showTooltip = false">
       <div class="expand-btn" (click)="toggleMenu()" (mouseenter)="showTooltip = true"
         (mouseleave)="showTooltip = false">
-        <i class="bi" [ngClass]="isExpanded ? 'bi-chevron-left' : 'bi-chevron-right'"></i>
+        <i class="bi bi-chevron-left"></i>
+        <i class="bi bi-chevron-right"></i>
+        <!-- <i class="bi" [ngClass]="isExpanded ? 'bi-chevron-left' : 'bi-chevron-right'"></i> -->
       </div>
       <div class="tooltip-box" *ngIf="showTooltip">
         {{ isExpanded ? 'Contraer la navegación' : 'Ampliar la navegación' }}

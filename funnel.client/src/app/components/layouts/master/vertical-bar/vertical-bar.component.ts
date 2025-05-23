@@ -51,7 +51,7 @@ export class VerticalBarComponent {
           nombre: 'SALIR',
           ruta: '/login',
           icono: 'bi-box-arrow-right',
-          colorIcono: '#f44336',
+          colorIcono: '#ffffff',
           tooltip: 'Cerrar sesión',
           subMenu: []
         };

@@ -145,4 +145,17 @@ export class DobleAutenticacionComponent {
   cerrarModal() {
     this.router.navigate(['']);
   }
+  onCodigoInput() {
+    const codigo = this.twoFactorForm.get('codigo')?.value;
+    if (codigo && codigo.length === 6) {
+      this.EnviarCodigo();
+      this.messageService.add({
+            severity: 'success',
+            summary: 'Éxito',
+            detail: 'El código ha sido enviado.',
+      });
+      this.twoFactorForm.get('codigo')?.reset();
+    }
+  }
+
 }

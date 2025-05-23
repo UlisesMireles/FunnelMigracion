@@ -29,6 +29,7 @@ export class UsuarioPerfilComponent implements OnInit, OnDestroy {
 
   isUserPanelVisible = false;
   baseUrl: string = environment.baseURL;
+  baseUrlAssets: string = environment.baseURLAssets;
   rutaImgenDefault: string = this.baseUrl + 'Fotografia/persona_icono_principal.png';
   rutaImgen: string = this.baseUrl + '/Fotografia/';
   nombreUsuario: string = '';
@@ -119,6 +120,10 @@ export class UsuarioPerfilComponent implements OnInit, OnDestroy {
   toggleUserPanel(event: Event): void {
     event.stopPropagation();
     this.isUserPanelVisible = !this.isUserPanelVisible;
+  }
+  goToPoliticas() {
+    this.visible = false;
+    this.router.navigate(['/politica-privacidad']);
   }
 
   // @HostListener('document:click', ['$event'])

@@ -118,6 +118,7 @@
                   (def.valor.includes('%')) ? 'center' :
                   def.tipoFormato === 'currency' ? 'right' :
                   (def.tipoFormato === 'number' || def.tipoFormato === 'date') ? 'center' : 'left',
+                  'font-weight': def.key === 'nombre' || def.key === 'nombreOportunidad' ? 'bold' : 'normal',
                 'width': 
                   def.key === 'monto' ? '120px' : 
                   (def.key === 'stage' || def.key === 'abreviatura' || def.key === 'entrega' || def.key === 'iniciales' || def.key === 'nombreContacto') ? '80px' : ''

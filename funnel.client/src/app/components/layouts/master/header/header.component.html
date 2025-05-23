@@ -1,5 +1,9 @@
 <header class="page-header font-small blue" id="header">
   <div class="navbar col-12">
+    <div class="col-3 logo-container">
+      <img width="120" [src]="baseUrl + '/assets/img/logotipo-glupoint.png'" alt="logo SFS" style="cursor: pointer;" (click)="navigateTo('/oportunidades')">
+      <span class="spanNombre">{{ licencia }}</span>
+    </div>
     <div class="col-4 menu-header-container">
       <div class="agregar btn-agregar-custom ms-2" (click)="toggleOptions()" (mouseenter)="showSubmenu()" (mouseleave)="hideSubmenu()">
         <!-- <p-splitbutton label="Agregar" [model]="items" raised severity="secondary" #splitBtn /> -->
@@ -34,14 +38,16 @@
           <span class="spanNombre">{{ nombreUsuario }}</span>
         </button>
       </div>
+      <div class="ms-2" style="justify-content: end;">
+        <button class="menu-item-logout" (click)="logout()">
+          <i class="bi bi-box-arrow-right large-icon" [title]="'Cerrar Sesión'"></i>
+        </button>
+      </div>
     </div>
     
 
     <!-- Logo (el último de derecha a izquierda) -->
-    <div class="col-3 logo-container" >
-      <img width="50" [src]="baseUrl + '/assets/img/SFS blanco.png'" alt="logo SFS">
-      <span class="spanNombre">{{ licencia }}</span>
-    </div>
+    
   </div>
 </header>
 

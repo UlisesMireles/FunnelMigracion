@@ -11,11 +11,11 @@
       </div>
       <div class="user-actions">
         <button type="button" (click)="goToMiCuenta()" class="btn btn-cancel btnmenuuser">
-          Mi Cuenta
+          Perfil
          </button>
-        <button (click)="logout()" type="button" class="btn btn-cancel btnmenuuser">
-          Cerrar Sesión
-        </button>
+        <a [href]="baseUrlAssets + '/politica-privacidad'" target="_blank"class="btn btn-cancel btnmenuuser btnPoliticas" [title]="'Ir a Politicas de Privacidad'"> 
+          Politica Privacidad
+        </a>
       </div>
     </div>
 </div>

@@ -35,6 +35,9 @@ import { ToastModule } from 'primeng/toast';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { SplitButtonModule } from 'primeng/splitbutton';
+import { CardModule } from 'primeng/card';
+import { FieldsetModule } from 'primeng/fieldset';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
 
 
 //Login
@@ -140,7 +143,6 @@ registerLocaleData(localeEs, 'es-MX');
     TerminosCondicionesComponent,
     MenuComponent,
     DobleAutenticacionComponent,
-    CambiarContrasenaComponent,
     OlvidasteContrasenaComponent,
     FooterComponent,
     ProspectosComponent,
@@ -228,7 +230,11 @@ registerLocaleData(localeEs, 'es-MX');
     MatIconModule,
     YaSePreguntoPipe,
     SplitButtonModule,
-    PlotlyModule
+    PlotlyModule,
+    CambiarContrasenaComponent,
+    CardModule,
+    FieldsetModule,
+    ToggleSwitchModule
 ],
   providers: [
     { provide: LOCALE_ID, useValue: 'es-MX' },

@@ -11,6 +11,7 @@ import { MenuItem, MessageService } from 'primeng/api';
 import { Prospectos } from '../../../../interfaces/prospecto';
 import { Contacto } from '../../../../interfaces/contactos';
 import { SplitButton } from 'primeng/splitbutton';
+import { LoginService } from '../../../../services/login.service';
 @Component({
   selector: 'app-header',
   standalone: false,
@@ -56,7 +57,7 @@ export class HeaderComponent implements OnInit {
   private offset = { x: 0, y: 0 };
 
   constructor(public asistenteService: AsistenteService, private modalService: ModalService, private router: Router,
-    private messageService: MessageService, private modalOportunidadesService: ModalOportunidadesService) {
+    private messageService: MessageService, private modalOportunidadesService: ModalOportunidadesService, private readonly authService: LoginService) {
     this.items = [
       {
         label: 'Oportunidades',
@@ -308,4 +309,8 @@ startDrag(event: MouseEvent): void {
     document.removeEventListener('mouseup', this.endDrag);
   };
 
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
 }

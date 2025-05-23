@@ -152,7 +152,7 @@ export class DobleAutenticacionComponent {
       this.messageService.add({
             severity: 'success',
             summary: 'Éxito',
-            detail: 'El código ha sido enviada.',
+            detail: 'El código ha sido enviado.',
       });
       this.twoFactorForm.get('codigo')?.reset();
     }

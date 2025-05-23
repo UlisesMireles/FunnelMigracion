@@ -267,7 +267,8 @@ export class OportunidadesComponent {
 
     let data = {
       columnas: lsColumnasAMostrar,
-      datos: dataExport
+      datos: dataExport,
+      empresa: this.loginService.obtenerEmpresa()
     }
 
     if (dataExport.length == 0)

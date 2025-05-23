@@ -99,9 +99,9 @@ export class OportunidadesService {
     return this.http.post<baseOut>(this.baseUrl + 'api/Oportunidades/ActualizarEtapa', data);
   }
 
-  descargarReporteSeguimientoOportunidades(idOportunidad: number, idEmpresa: number): Observable<Blob> {
+  descargarReporteSeguimientoOportunidades(idOportunidad: number, idEmpresa: number, _empresa: string): Observable<Blob> {
     return this.http.get(`${this.baseUrl}api/Oportunidades/DescargarReporteSeguimientoOportunidades`, {
-      params: { idOportunidad: idOportunidad.toString(), idEmpresa: idEmpresa.toString() }, responseType: 'blob'
+      params: { idOportunidad: idOportunidad.toString(), idEmpresa: idEmpresa.toString(), empresa: _empresa }, responseType: 'blob'
     });
   }
 

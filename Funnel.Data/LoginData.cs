@@ -41,6 +41,7 @@ namespace Funnel.Data
                         usuario.ApellidoMaterno = ComprobarNulos.CheckStringNull(reader["ApellidoMaterno"]);
                         usuario.Correo = ComprobarNulos.CheckStringNull(reader["Correo"]);
                         usuario.IdEmpresa = ComprobarNulos.CheckIntNull(reader["IdEmpresa"]);
+                        usuario.Empresa = ComprobarNulos.CheckStringNull(reader["Empresa"]);
                         usuario.IdRol = ComprobarNulos.CheckIntNull(reader["IdTipoUsuario"]);
                         usuario.Alias = ComprobarNulos.CheckStringNull(reader["Alias"]);
                         usuario.Id = ComprobarNulos.CheckIntNull(reader["Respuesta"]);

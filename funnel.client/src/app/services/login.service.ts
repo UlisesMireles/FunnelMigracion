@@ -64,6 +64,7 @@ export class LoginService {
           sessionStorage.setItem('IdUsuario', user.idUsuario);
           sessionStorage.setItem('IdTipoUsuario', user.idRol);
           sessionStorage.setItem('IdEmpresa', user.idEmpresa);
+          sessionStorage.setItem('Empresa', user.Empresa);
           this.catalogoService.cargarCatalogos(user.idEmpresa);
           this.startSessionTimer();
         }
@@ -156,7 +157,13 @@ export class LoginService {
     }
     return 0;
   }
-
+  obtenerEmpresa(): string {
+    const sesion = this.desencriptaSesion();
+    if (sesion?.empresa) {
+        return sesion?.empresa;
+    }
+    return "";
+  }
   obtenerAlias(): string {
     const sesion = this.desencriptaSesion();
     if (sesion?.alias) {

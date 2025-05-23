@@ -2,6 +2,7 @@
 using DinkToPdf;
 using Funnel.Data.Interfaces;
 using Funnel.Logic.Interfaces;
+using Funnel.Logic.Utils;
 using Funnel.Models.Base;
 using Funnel.Models.Dto;
 using System;
@@ -110,6 +111,11 @@ namespace Funnel.Logic
             return await _herramientasData.ComboCorreosUsuariosActivos(IdEmpresa);
         }
 
+        public async Task<List<ComboCorreosUsuariosDTO>> ConsultarCorreosUsuariosReporteAuto(int IdEmpresa, int IdReporte)
+        {
+            return await _herramientasData.ConsultarCorreosUsuariosReporteAuto(IdEmpresa,IdReporte);
+        }
+
         public async Task<List<EjecucionProcesosReportesDTO>> ConsultarEjecucionProcesosPorEmpresa(int IdEmpresa)
         {
             return await _herramientasData.ConsultarEjecucionProcesosPorEmpresa(IdEmpresa);
@@ -128,17 +134,13 @@ namespace Funnel.Logic
             return result;
         }
 
-        public async Task<BaseOut> GuardarDiasReportesEstatus(EjecucionProcesosReportesDTO request, bool estatus)
+        public async Task<BaseOut> GuardarDiasReportesEstatus(EjecucionProcesosReportesDTO request)
         {
-            if (estatus)
-            {
-                var listaEjecucionProceso = await _herramientasData.ConsultarEjecucionProcesosPorEmpresa((int)request.IdEmpresa);
-                var ejecucion = listaEjecucionProceso.First(v => v.IdReporte == request.IdReporte);
-                ejecucion.EjecucionJob = request.EjecucionJob;
-                return await _herramientasData.GuardarDiasReportesEstatus(ejecucion, estatus);
-            }
-            else
-                return await _herramientasData.GuardarDiasReportesEstatus(request, estatus);
+            string correos = "";
+            if (request.Correos.Count > 0)
+                correos = String.Join(",", request.Correos);
+            return await _herramientasData.GuardarDiasReportesEstatus(request, correos);
         }
+        
     }
 }

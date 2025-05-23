@@ -9,4 +9,5 @@ export interface EjecucionProcesosReportes {
     diasInactividad: number;
     diasFechaVencida: number;
     ejecucionJob: boolean;
+    correos: string[];
 }

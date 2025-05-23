@@ -18,5 +18,6 @@ namespace Funnel.Models.Dto
         public int DiasInactividad { get; set; }
         public int DiasFechaVencida { get; set; }
         public bool EjecucionJob { get; set; }
+        public List<string>? Correos { get; set; }
     }
 }

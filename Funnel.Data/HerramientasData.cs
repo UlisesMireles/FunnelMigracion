@@ -94,25 +94,49 @@ namespace Funnel.Data
             return result;
         }
 
-        public async Task<BaseOut> GuardarDiasReportesEstatus(EjecucionProcesosReportesDTO request, bool estatus)
+        public async Task<List<ComboCorreosUsuariosDTO>> ConsultarCorreosUsuariosReporteAuto(int IdEmpresa, int IdReporte)
+        {
+            List<ComboCorreosUsuariosDTO> result = new List<ComboCorreosUsuariosDTO>();
+            IList<ParameterSQl> list = new List<ParameterSQl>
+                {
+                    DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 100, ParameterDirection.Input, false, null, DataRowVersion.Default, "SEL-USUARIOS-REPORTE-AUTO" ),
+                    DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, IdEmpresa ),
+                    DataBase.CreateParameterSql("@pIdReporte", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, IdReporte ),
+                };
+            using (IDataReader reader = await DataBase.GetReaderSql("F_EjecucionReportes", CommandType.StoredProcedure, list, _connectionString))
+            {
+                while (reader.Read())
+                {
+                    var dto = new ComboCorreosUsuariosDTO();
+                    dto.Nombre = ComprobarNulos.CheckStringNull(reader["Nombre"]);
+                    dto.CorreoElectronico = ComprobarNulos.CheckStringNull(reader["CorreoElectronico"]);
+
+                    result.Add(dto);
+                }
+            }
+            return result;
+        }
+
+        public async Task<BaseOut> GuardarDiasReportesEstatus(EjecucionProcesosReportesDTO request, string Correos)
         {
             BaseOut result = new BaseOut();
             try
             {
                 IList<ParameterSQl> list = new List<ParameterSQl>
                 {
-                    DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 100, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Bandera ?? (object)DBNull.Value ),
+                    DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 100, ParameterDirection.Input, false, null, DataRowVersion.Default, "INSERT" ),
                     DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, request.IdEmpresa ),
                     DataBase.CreateParameterSql("@pIdReporte", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, request.IdReporte ),
                     DataBase.CreateParameterSql("@pEstatus", SqlDbType.Bit, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, request.EjecucionJob ),
                     DataBase.CreateParameterSql("@pDiasInactividad", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, request.DiasInactividad ),
                     DataBase.CreateParameterSql("@pDiasFechaVencida", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, request.DiasFechaVencida ),
-                    DataBase.CreateParameterSql("@pUsuarioRegistro", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, request.IdUsuario )
+                    DataBase.CreateParameterSql("@pUsuarioRegistro", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, request.IdUsuario ),
+                    DataBase.CreateParameterSql("@pCorreos", SqlDbType.VarChar, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, Correos ?? (object)DBNull.Value )
                 };
 
                 // Ejecutar el SP sin leer datos
                 using (IDataReader reader = await DataBase.GetReaderSql("F_EjecucionReportes", CommandType.StoredProcedure, list, _connectionString))
-                result.ErrorMessage = estatus ? "Se ha cambiado el estatus éxitosamente" : "Datos Guardados correctamente.";
+                result.ErrorMessage = "Datos Guardados correctamente.";
                 result.Id = 1;
                 result.Result = true;
 
@@ -152,6 +176,7 @@ namespace Funnel.Data
                 result.Result = false;
             }
             return result;
-        }        
+        }
+
     }
 }

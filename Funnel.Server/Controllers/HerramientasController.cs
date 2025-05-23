@@ -36,6 +36,13 @@ namespace Funnel.Server.Controllers
         }
 
         [HttpGet("[action]/")]
+        public async Task<ActionResult<List<ComboCorreosUsuariosDTO>>> ConsultarCorreosUsuariosReporteAuto(int IdEmpresa, int IdReporte)
+        {
+            var respuesta = await _herramientasService.ConsultarCorreosUsuariosReporteAuto(IdEmpresa, IdReporte);
+            return Ok(respuesta);
+        }
+
+        [HttpGet("[action]/")]
         public async Task<ActionResult<List<EjecucionProcesosReportesDTO>>> ConsultarEjecucionProcesosPorEmpresa(int IdEmpresa)
         {
             var respuesta = await _herramientasService.ConsultarEjecucionProcesosPorEmpresa(IdEmpresa);
@@ -50,9 +57,9 @@ namespace Funnel.Server.Controllers
         }
 
         [HttpPost("[action]/")]
-        public async Task<ActionResult<BaseOut>> GuardarDiasReportesEstatus([FromBody]EjecucionProcesosReportesDTO request, bool estatus)
+        public async Task<ActionResult<BaseOut>> GuardarDiasReportesEstatus([FromBody]EjecucionProcesosReportesDTO request)
         {
-            var respuesta = await _herramientasService.GuardarDiasReportesEstatus(request, estatus);
+            var respuesta = await _herramientasService.GuardarDiasReportesEstatus(request);
             return Ok(respuesta);
         }
 

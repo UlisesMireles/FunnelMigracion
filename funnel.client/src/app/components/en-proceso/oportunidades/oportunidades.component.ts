@@ -68,7 +68,7 @@ export class OportunidadesComponent {
     { key: 'probabilidadOriginal', isCheck: false, valor: '% Original', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'textNFilter' },
     { key: 'probabilidad', isCheck: true, valor: '% Actual', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'textNFilter' },
     { key: 'montoNormalizado', isCheck: true, valor: 'Vta Esperada', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
-    { key: 'fechaRegistro', isCheck: false, valor: 'Fecha Alta', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
+    { key: 'fechaRegistro', isCheck: true, valor: 'Fecha Alta', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
     { key: 'diasFunnel', isCheck: true, valor: 'Días Funnel', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
     { key: 'fechaEstimadaCierreOriginal', isCheck: true, valor: 'Cierre Est', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
     { key: 'fechaModificacion', isCheck: true, valor: 'Días S/Act', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' }
@@ -267,7 +267,8 @@ export class OportunidadesComponent {
 
     let data = {
       columnas: lsColumnasAMostrar,
-      datos: dataExport
+      datos: dataExport,
+      empresa: this.loginService.obtenerEmpresa()
     }
 
     if (dataExport.length == 0)

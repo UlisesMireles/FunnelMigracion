@@ -108,9 +108,9 @@ namespace Funnel.Server.Controllers
             return Ok(result);
         }
         [HttpGet("[action]/")]
-        public async Task<ActionResult> DescargarReporteSeguimientoOportunidades(int idEmpresa, int idOportunidad)
+        public async Task<ActionResult> DescargarReporteSeguimientoOportunidades(int idEmpresa, int idOportunidad, string empresa)
         {
-            var doc = await _oportunidadesService.GenerarReporteSeguimientoOportunidades(idEmpresa, idOportunidad, Directory.GetCurrentDirectory());
+            var doc = await _oportunidadesService.GenerarReporteSeguimientoOportunidades(idEmpresa, idOportunidad, Directory.GetCurrentDirectory(), empresa);
             var pdf = _converter.Convert(doc);
             return File(pdf, "application/pdf", "SeguimientoOportunidades.pdf");
         }

@@ -141,9 +141,9 @@
                                 [ngClass]="{'is-invalid': aFormGroup.get('privacidadTerminos')?.invalid && aFormGroup.get('privacidadTerminos')?.touched}">
                                 <label for="chkPrivacyTerms">
                                   Declaro que he leído y acepto la
-                                 <a href="/politica-privacidad" target="_blank" rel="noopener noreferrer" class="link">Política de privacidad</a>
+                                 <a [href]="baseUrl + '/politica-privacidad'" target="_blank" rel="noopener noreferrer" class="link">Política de privacidad</a>
                                   y los
-                                <a href="/terminos-condiciones" target="_blank" rel="noopener noreferrer"  class="link">Términos y Condiciones</a>
+                                <a [href]="baseUrl + '/terminos-condiciones'" target="_blank" rel="noopener noreferrer"  class="link">Términos y Condiciones</a>
                                   de Sales Funnel System.
                                 </label>
                                 <span *ngIf="aFormGroup.get('privacidadTerminos')?.invalid && aFormGroup.get('privacidadTerminos')?.touched" class="text-danger">

@@ -1,4 +1,7 @@
 <div class="scrollable-div" #scrollMe [scrollTop]="scrollMe.scrollHeight">
+  <div *ngIf="mostrarMensajeCopiado" class="mensaje-flotante">
+    {{ mensajeCopiadoTexto }}
+  </div>
   <div class="chat-historial" *ngFor="let chat of chatHistorial">
     <div class="chat-row" [ngClass]="{'filtroFaq' : 'row-reverse', 'revisarCategorias' : 'row-reverse'}[chat.rol]">
       <ng-container [ngSwitch]="chat.rol">
@@ -12,6 +15,10 @@
               <label class="labelAsistente ps-2" *ngIf="chat.rol === 'asistente'">Asistente Funnel</label>
               <div class="chat-bubble ai-bubble formatoMensajes vstack" [innerHTML]="chat.mensaje">
               </div>
+              <button class="btn-copiar" [ngClass]="{'btn-copiar-tema-operacion': asistenteSeleccionado.idBot == 4}"
+              (click)="copiarRespuesta(chat.mensaje)" matTooltip="Copiar respuesta" *ngIf="chatHistorial.indexOf(chat) > 1">
+              <mat-icon>content_copy</mat-icon>
+              </button>
             </div>
           </div>
         </ng-container>
@@ -40,9 +47,9 @@
     (keydown.enter)="consultaMensajeOpenIa()">
   <mat-icon matSuffix class="iconoChatBot me-2"
     [ngClass]="{'iconoChatBotTemaAsistenteOperacion': asistenteSeleccionado.idBot == 4}"
-    (click)="resetConversation()" matTooltip="Eliminar historial" style="cursor: pointer;">delete</mat-icon>
-  <button class="enviarMensaje" [disabled]="!this.pregunta.trim()">
-    <mat-icon matSuffix class="ms-2 iconoChatBot"
+    (click)="resetConversation()" matTooltip="Eliminar historial" style="cursor: pointer; margin-top: 1px; ">delete</mat-icon>
+  <button class="enviarMensaje"  [disabled]="!this.pregunta.trim()">
+    <mat-icon matSuffix class="ms-2 iconoChatBot"  style="margin-top: 4px;"
       [ngClass]="{'iconoChatBotTemaAsistenteOperacion': asistenteSeleccionado.idBot == 4}"
       (click)="consultaMensajeOpenIa()">send</mat-icon>
   </button>

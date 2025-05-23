@@ -8,15 +8,15 @@
             <!-- Pestañas  -->
             <ul class="nav nav-tabs custom-tabs">
                 <li class="nav-item">
-                    <a class="nav-link active" data-bs-toggle="tab" href="#reporteIngresoUsuario" (click)="cambioTitulo(0)"
-                        pTooltip="Reporte Usuarios" tooltipPosition="top">
-                        <i class="bi bi-person-check-fill"></i>
+                    <a class="nav-link active" data-bs-toggle="tab" href="#reporteIngresoUsuario"
+                        (click)="cambioTitulo(1)" pTooltip="Ejecución Jobs" tooltipPosition="top">
+                        <i class="bi bi-envelope-arrow-up"></i>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tab" href="#ejecucionProcesos" (click)="cambioTitulo(1)"
-                        pTooltip="Ejecución Procesos" tooltipPosition="top">
-                        <i class="bi bi-envelope-arrow-up"></i>
+                    <a class="nav-link" data-bs-toggle="tab" href="#ejecucionProcesos" (click)="cambioTitulo(0)"
+                        pTooltip="Reporte Usuarios" tooltipPosition="top">
+                        <i class="bi bi-person-check-fill"></i>
                     </a>
                 </li>
             </ul>
@@ -25,12 +25,13 @@
             <div class="tab-content">
                 <!--Reporte Ingreso Usuarios -->
                 <div class="tab-pane fade show active" id="reporteIngresoUsuario">
-                    <app-reporte-ingresos-usuarios></app-reporte-ingresos-usuarios>
+                    <app-ejecucion-procesos></app-ejecucion-procesos>
                 </div>
 
                 <!--Ejecucion de Procesos -->
                 <div class="tab-pane fade" id="ejecucionProcesos">
-                    <app-ejecucion-procesos></app-ejecucion-procesos>
+                    <app-reporte-ingresos-usuarios></app-reporte-ingresos-usuarios>
+
                 </div>
             </div>
 

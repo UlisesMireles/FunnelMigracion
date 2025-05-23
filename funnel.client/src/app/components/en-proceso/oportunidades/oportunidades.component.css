@@ -373,7 +373,7 @@ th.sort-active p-sortIcon {
 
 ::ng-deep .custom-pencil {
   color: #000; 
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   display: inline-block;
   background: transparent !important;
 }

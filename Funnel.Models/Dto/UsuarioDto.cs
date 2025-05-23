@@ -14,6 +14,7 @@ namespace Funnel.Models.Dto
         public string? Correo { get; set; }
         public string? Alias { get; set; }
         public int? IdEmpresa { get; set; }
+        public string? Empresa { get; set; }
         public int IdRol { get; set; }
         public int? IdTipoUsuario { get; set; }
         public string? Descripcion { get; set; }

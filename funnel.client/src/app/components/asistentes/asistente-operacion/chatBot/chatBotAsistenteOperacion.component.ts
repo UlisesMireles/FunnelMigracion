@@ -11,7 +11,8 @@ import { OpenIaService } from '../../../../services/asistentes/openIA.service';
 import { PreguntasFrecuentesService } from '../../../../services/asistentes/preguntasFrecuentes.service';
 import { environment } from '../../../../../environments/environment';
 import { LoginService } from '../../../../services/login.service';
-
+import { MessageService } from 'primeng/api';
+import { EstadoChatService } from '../../../../services/asistentes/estado-chat.service';
 @Component({
   standalone: false,
   selector: 'app-chatBotAsistenteOperacion',
@@ -38,21 +39,23 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
     esPreguntaFrecuente: false
   };
 
-  chatHistorial: ChatHistorial[] = [
+  public chatHistorial: ChatHistorial[] = [
     { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨" },
     { rol: "asistente", mensaje: "Bienvenido(a) al asistente virtual del sistema de ventas Funnel. Estoy aquí para ayudarte. Puedes escribir tu pregunta directamente o explorar por categorías si lo prefieres." }
   ];
 
   lsRevisarCategorias: any[] = ['Sí', 'No'];
-  chatHistorialResp!: string;
+  public chatHistorialResp!: string;
   pregunta = "";
   asistenteSeleccionado = { idBot: 4, documento: false };
-  lsAsistentesPorCategoria!: AsitenteCategoriasDto[];
-  lsCategoriaPreguntas!: CategoriaPreguntasDto[];
-  lsPreguntasPorCategoria!: PreguntasPorCategoriaDto[];
+  public lsAsistentesPorCategoria!: AsitenteCategoriasDto[];
+  public lsCategoriaPreguntas!: CategoriaPreguntasDto[];
+  public lsPreguntasPorCategoria!: PreguntasPorCategoriaDto[];
   /** */
   loadOpciones: boolean = false;
   isConsultandoOpenIa: boolean = false;
+  mostrarMensajeCopiado: boolean = false;
+  mensajeCopiadoTexto: string = '';
   @Output() nombreAsistenteSeleccionado = new EventEmitter<any>();
 
   constructor(
@@ -60,16 +63,37 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
     public asistenteService: AsistenteService,
     private cdRef: ChangeDetectorRef,
     private preguntasFAQService: PreguntasFrecuentesService,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private messageService: MessageService,
+    private estadoChatService: EstadoChatService
   ) {
   }
 
   ngOnInit() {
     this.chatHistorialResp = JSON.stringify(this.chatHistorial);
-    this.obtenListaPreguntasFrecuentesCategoriaOperaciones();
 
+     // Cargar estado guardado
+    const savedState = this.estadoChatService.getCurrentState();
+    if (savedState) {
+      this.restoreState(savedState);
+    } else {
+      this.obtenListaPreguntasFrecuentesCategoriaOperaciones();
+    }
   }
-
+  private restoreState(state: any) {
+    this.chatHistorial = state.historial || [
+      { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨" },
+      { rol: "asistente", mensaje: "Bienvenido(a) al asistente virtual del sistema de ventas Funnel. Estoy aquí para ayudarte. Puedes escribir tu pregunta directamente o explorar por categorías si lo prefieres." }
+    ];
+    
+    this.chatHistorialResp = JSON.stringify(this.chatHistorial);
+    this.asistenteSeleccionado = state.asistenteSeleccionado || { idBot: 4, documento: false };
+    this.lsPreguntasPorCategoria = state.lsPreguntasPorCategoria || [];
+    this.lsCategoriaPreguntas = state.lsCategoriaPreguntas || [];
+    this.lsAsistentesPorCategoria = state.lsAsistentesPorCategoria || [];
+    
+    this.cdRef.detectChanges();
+  }
   //#region obtencion de datos de session storage
   nombreUsuario(): string {
     let NombreUsuarioString = environment.usuarioData.nombreUsuario;
@@ -346,6 +370,7 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
     this.asistenteSeleccionado = { idBot: 0, documento: false };
     this.chatHistorial = JSON.parse(this.chatHistorialResp);
     this.obtenListaPreguntasFrecuentesCategoriaOperaciones();
+    this.estadoChatService.clearState();
     this.cdRef.detectChanges();
   }
 
@@ -360,7 +385,7 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
   
     // Mostrar categorías directamente
     this.chatHistorial.push(
-      { rol: "asistente", mensaje: "Estas son las categorías disponibles:" },
+      { rol: "asistente", mensaje: "¡Hola! ¿En qué puedo ayudarte hoy?" },
       { rol: "categorias", mensaje: "" }
     );
     
@@ -401,5 +426,26 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
   }
 
   //#endregion
+  copiarRespuesta(texto: string) {
+  const textoLimpio = texto.replace(/<[^>]*>/g, '');
 
-}
+  navigator.clipboard.writeText(textoLimpio).then(() => {
+    this.mostrarMensajeCopiado = true;
+    this.mensajeCopiadoTexto = '✅ Texto copiado al portapapeles';
+    this.cdRef.detectChanges(); 
+
+    setTimeout(() => {
+      this.mostrarMensajeCopiado = false;
+      this.cdRef.detectChanges(); 
+    }, 1000);
+  }).catch(err => {
+    this.mostrarMensajeCopiado = true;
+    this.mensajeCopiadoTexto = '⚠️ Error al copiar el texto';
+    this.cdRef.detectChanges(); 
+
+    setTimeout(() => {
+      this.mostrarMensajeCopiado = false;
+      this.cdRef.detectChanges(); 
+    }, 1000);
+  });
+}}

@@ -244,7 +244,8 @@ export class OportunidadesGanadasComponent {
       let data = {
         columnas: lsColumnasAMostrar,
         datos: dataExport,
-        anio: this.selectedYear
+        anio: this.selectedYear,
+        empresa: this.loginService.obtenerEmpresa()
       }
   
       if (dataExport.length == 0)

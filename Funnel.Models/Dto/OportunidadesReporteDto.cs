@@ -11,6 +11,7 @@ namespace Funnel.Models.Dto
         public List<ColumnasPaginacion> Columnas { get; set; }
         public List<OportunidadesEnProcesoDto> Datos { get; set; }
         public string? Anio { get; set; }
+        public string? Empresa { get; set; }
     }
     public class ColumnasPaginacion
     {

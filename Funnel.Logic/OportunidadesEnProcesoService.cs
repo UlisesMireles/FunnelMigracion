@@ -212,11 +212,10 @@ namespace Funnel.Logic
             return await _oportunidadesData.ActualizarEtapa(request);
         }
 
-        public async Task<HtmlToPdfDocument> GenerarReporteSeguimientoOportunidades(int IdEmpresa, int IdOportunidad, string RutaBase)
+        public async Task<HtmlToPdfDocument> GenerarReporteSeguimientoOportunidades(int IdEmpresa, int IdOportunidad, string RutaBase, string Empresa)
         {
             var datos = await _oportunidadesData.ConsultarHistoricoOportunidades(IdEmpresa, IdOportunidad);
 
-            var rutaPlantillaHeader = Path.Combine(RutaBase, "PlantillasReporteHtml", "PlantillaReporteFunnelHeader.html");
             var rutaPlantillaBody = Path.Combine(RutaBase, "PlantillasReporteHtml", "PlantillaReporteFunnel.html");
             var htmlTemplateBody = System.IO.File.ReadAllText(rutaPlantillaBody);
 
@@ -245,13 +244,14 @@ namespace Funnel.Logic
             // Reemplazar la tabla en la plantilla
             htmlTemplateBody = htmlTemplateBody.Replace("{{TITULO}}", "Reporte Seguimiento Oportunidades en Proceso");
             htmlTemplateBody = htmlTemplateBody.Replace("{{TABLA}}", sb.ToString());
+            htmlTemplateBody = htmlTemplateBody.Replace("{{Empresa}}", Empresa);
 
             var doc = new HtmlToPdfDocument()
             {
                 GlobalSettings = {
                     PaperSize = PaperKind.A4,
                     Orientation = Orientation.Portrait,
-                    Margins = new MarginSettings { Top = 45 },
+                    Margins = new MarginSettings { Top = 10 },
                     DocumentTitle = "Seguimiento Oportunidades",
                 },
                 Objects = {
@@ -261,7 +261,6 @@ namespace Funnel.Logic
                         WebSettings = { DefaultEncoding = "utf-8" },
                         HeaderSettings = new HeaderSettings
                         {
-                            HtmUrl = rutaPlantillaHeader,
                             Spacing = 5
                         }
                     }
@@ -271,12 +270,10 @@ namespace Funnel.Logic
             return doc;
         }
 
-        public async Task<HtmlToPdfDocument> GenerarReporteOportunidades(OportunidadesReporteDto oportunidades, string RutaBase, string titulo)
+        public async Task<HtmlToPdfDocument> GenerarReporteOportunidades(OportunidadesReporteDto oportunidades, string RutaBase, string Titulo)
         {
-            var rutaPlantillaHeader = Path.Combine(RutaBase, "PlantillasReporteHtml", "PlantillaReporteFunnelHeader.html");
             var rutaPlantillaBody = Path.Combine(RutaBase, "PlantillasReporteHtml", "PlantillaReporteFunnel.html");
             var htmlTemplateBody = System.IO.File.ReadAllText(rutaPlantillaBody);
-
             var propiedadesTexto = typeof(OportunidadesEnProcesoDto).GetProperties(BindingFlags.Public | BindingFlags.Instance).Select(v => v.Name.ToLower()).ToList();
             var propiedades = oportunidades.Datos.First().GetType().GetProperties();
             var keysColumnas = oportunidades.Columnas.Where(v => propiedadesTexto.Contains(v.key.ToLower())).Select(v => v.key.ToLower()).ToList();
@@ -318,16 +315,17 @@ namespace Funnel.Logic
             sb.Append("</tbody></table>");
 
             // Reemplazar la tabla en la plantilla
-            htmlTemplateBody = htmlTemplateBody.Replace("{{TITULO}}", titulo);
+            htmlTemplateBody = htmlTemplateBody.Replace("{{TITULO}}", Titulo);
             htmlTemplateBody = htmlTemplateBody.Replace("{{TABLA}}", sb.ToString());
+            htmlTemplateBody = htmlTemplateBody.Replace("{{Empresa}}", oportunidades.Empresa);
 
             var doc = new HtmlToPdfDocument()
             {
                 GlobalSettings = {
                     PaperSize = PaperKind.Legal,
                     Orientation = Orientation.Landscape,
-                    Margins = new MarginSettings { Top = 45 },
-                    DocumentTitle = titulo,
+                    Margins = new MarginSettings { Top = 10 },
+                    DocumentTitle = Titulo,
                 },
                 Objects = {
                     new ObjectSettings() {
@@ -336,7 +334,6 @@ namespace Funnel.Logic
                         WebSettings = { DefaultEncoding = "utf-8" },
                         HeaderSettings = new HeaderSettings
                         {
-                            HtmUrl = rutaPlantillaHeader,
                             Spacing = 5
                         }
                     }

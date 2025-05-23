@@ -143,7 +143,6 @@ registerLocaleData(localeEs, 'es-MX');
     TerminosCondicionesComponent,
     MenuComponent,
     DobleAutenticacionComponent,
-    CambiarContrasenaComponent,
     OlvidasteContrasenaComponent,
     FooterComponent,
     ProspectosComponent,
@@ -232,6 +231,7 @@ registerLocaleData(localeEs, 'es-MX');
     YaSePreguntoPipe,
     SplitButtonModule,
     PlotlyModule,
+    CambiarContrasenaComponent,
     CardModule,
     FieldsetModule,
     ToggleSwitchModule

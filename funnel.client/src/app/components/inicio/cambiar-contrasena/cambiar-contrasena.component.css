@@ -171,6 +171,6 @@
   margin: 0 auto;
 }
 
-::ng-deep .source-image {
-  cursor: move;
+.zoom-control {
+    align-content: center;
 }

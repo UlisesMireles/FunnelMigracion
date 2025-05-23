@@ -141,13 +141,14 @@
         [transform]="transform" 
         [imageChangedEvent]="imageChangedEvent" 
         [maintainAspectRatio]="true"
-        [aspectRatio]="1 / 1" 
-        [resizeToWidth]="80" 
+        [aspectRatio]="1" 
+        [resizeToWidth]="100" 
         [imageQuality]="100" 
-        [cropperMinWidth]="80"
-        [cropperMinHeight]="80" 
-        [cropperStaticWidth]="80" 
-        [cropperStaticHeight]="80"
+        [cropperMinWidth]="100"
+        [cropperMinHeight]="100" 
+        [cropperStaticWidth]="100" 
+        [cropperStaticHeight]="100"
+        [roundCropper]="true"
         (imageCropped)="imageCropped($event)" class="cropper-fixed">
         </image-cropper>
     </div>

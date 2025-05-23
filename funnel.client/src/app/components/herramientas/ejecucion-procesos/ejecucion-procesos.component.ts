@@ -267,8 +267,8 @@ export class EjecucionProcesosComponent {
   }
 
   enviarCorreoInmediatoSemana(idReporte: number) {
-    //let correos = this.correosSelImediataSemana.map(ct => ct.correoElectronico)
-    let correos = ["mario.canales@eisei.net.mx"]
+    let correos = this.correosSelImediataSemana.map(ct => ct.correoElectronico)
+    //let correos = ["mario.canales@eisei.net.mx"]
 
     this.herramientasService.enviarCorreosInmediatos(correos, this.loginService.obtenerIdEmpresa(), idReporte).subscribe({
       next: (result: baseOut) => {
@@ -299,8 +299,8 @@ export class EjecucionProcesosComponent {
   }
 
   enviarCorreoInmediatoDiario(idReporte: number) {
-    //let correos = this.correosSelImediataDiario.map(ct => ct.correoElectronico)
-    let correos = ["mario.canales@eisei.net.mx"]
+    let correos = this.correosSelImediataDiario.map(ct => ct.correoElectronico)
+    //let correos = ["mario.canales@eisei.net.mx"]
 
     this.herramientasService.enviarCorreosInmediatos(correos, this.loginService.obtenerIdEmpresa(), idReporte).subscribe({
       next: (result: baseOut) => {

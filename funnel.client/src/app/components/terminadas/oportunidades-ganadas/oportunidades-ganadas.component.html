@@ -22,7 +22,11 @@
             </div>
             <div class="row">
               <div class="col inDivDatatableHeader" style="text-align:right; margin-right:5px">
-                <p-dropdown [options]="years" [(ngModel)]="selectedYear" (onChange)="filterByYear()" placeholder="Selecciona un año"
+
+                <p-dropdown [options]="years" [(ngModel)]="selectedYear" (onChange)="onYearChange()" placeholder="Selecciona un año"
+                  [ngStyle]="{'margin-right': '5px'}">
+                </p-dropdown>
+                <p-dropdown [options]="months" [(ngModel)]="selectedMonth" (onChange)="filterByYearAndMonth()" placeholder="Selecciona un mes"
                   [ngStyle]="{'margin-right': '5px'}">
                 </p-dropdown>
                 <p-button label="" icon="bi bi-arrow-clockwise" (click)="clear(dt)" severity="secondary"

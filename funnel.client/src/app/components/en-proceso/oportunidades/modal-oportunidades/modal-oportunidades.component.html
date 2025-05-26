@@ -11,7 +11,6 @@
         <div class="row">
             <!-- Columna Izquierda -->
             <div class="col-md-6">
-                <!-- PROSPECTO -->
                <div class="form-group" [ngStyle]="{ visibility: insertar ? 'visible' : 'hidden', 'margin-bottom': insertar ? '15px' : '0px' }">
                     <label for="prospecto" class="text-start w-100">Prospecto:</label>
                     <p-dropdown class="form-control text-start" [options]="prospectos" [filter]="true" formControlName="idProspecto" 
@@ -22,7 +21,6 @@
                         <ng-container *ngIf="oportunidadForm.get('idProspecto')?.errors?.['required']">Debe seleccionar un prospecto.</ng-container>
                     </span>
                 </div>
-                <!-- DESCRIPCIÓN -->
                 <div class="form-group" [ngStyle]="{ 'margin-top': !insertar ? '-58px' : '0px' }">
                     <label for="descripcion" class="text-start w-100">Descripción:</label>
                     <input pInputText class="form-control text-start" formControlName="descripcion" 
@@ -36,7 +34,6 @@
                         <ng-container *ngIf="oportunidadForm.get('descripcion')?.errors?.['maxlength']">La descripción no puede exceder los 100 caracteres.</ng-container>
                     </span>
                 </div>
-                <!-- ETAPA -->
                 <div class="form-group" style="margin-bottom: 15px;">
                     <label for="etapa" class="text-start w-100">Etapa:</label>
                     <p-dropdown class="form-control text-start" [options]="etapas" formControlName="idStage" optionLabel="concepto"
@@ -57,28 +54,17 @@
                     servicio.</ng-container>
                   </span>
                 </div>
-                 <!-- F. EST. CIERRE -->
-<div class="form-group" style="margin-bottom: 22px;">
-  <label for="fecha" class="text-start w-100">F. Est. Cierre:</label>
-  <p-datepicker 
-    formControlName="fechaEstimadaCierreOriginal"
-    dateFormat="dd/mm/yy"
-    appendTo="body"
-    #calendar
-    [showIcon]="true"
-    [showButtonBar]="true"
-    [dataType]="'date'"
-    placeholder="dd/mm/aaaa">
-  </p-datepicker>
-  
-  <span *ngIf="oportunidadForm.get('fechaEstimadaCierreOriginal')?.invalid && oportunidadForm.get('fechaEstimadaCierreOriginal')?.touched" class="text-danger">
-    <ng-container *ngIf="oportunidadForm.get('fechaEstimadaCierreOriginal')?.errors?.['required']">
-      Debe seleccionar una fecha estimada.
-    </ng-container>
-  </span>
-</div>
-              
-              <!-- ESTATUS OPORTUNIDAD -->
+            <div class="form-group" style="margin-bottom: 22px;">
+            <label for="fecha" class="text-start w-100">F. Est. Cierre:</label>
+            <p-datepicker formControlName="fechaEstimadaCierreOriginal" dateFormat="dd/mm/yy" appendTo="body" #calendar
+            [showIcon]="true" [showButtonBar]="true" [dataType]="'date'" placeholder="dd/mm/aaaa" [style]="{ width: '1200px' }">
+             </p-datepicker>
+            <span *ngIf="oportunidadForm.get('fechaEstimadaCierreOriginal')?.invalid && oportunidadForm.get('fechaEstimadaCierreOriginal')?.touched" class="text-danger">
+              <ng-container *ngIf="oportunidadForm.get('fechaEstimadaCierreOriginal')?.errors?.['required']">
+                Debe seleccionar una fecha estimada.
+              </ng-container>
+            </span>
+          </div>
                 <div class="form-group" *ngIf="!insertar">
                     <label for="estatusOportunidad" class="text-start w-100">Estatus Oportunidad:</label>
                     <p-dropdown class="form-control text-start" [options]="estatusOportunidad" formControlName="idEstatus" optionLabel="descripcion"
@@ -92,7 +78,6 @@
 
             <!-- Columna Derecha -->
             <div class="col-md-6">
-                <!-- CONTACTO -->
                 <div class="form-group" style="margin-bottom: 15px;">
                     <label for="contacto" class="text-start w-100">Contacto:</label>
                     <p-dropdown class="form-control text-start" [options]="contactos" formControlName="idContactoProspecto"
@@ -103,8 +88,6 @@
                         <ng-container *ngIf="oportunidadForm.get('idContactoProspecto')?.errors?.['required']">Debe seleccionar un contacto.</ng-container>
                     </span>
                 </div>
-
-                <!-- MONTO -->
                 <div class="form-group" style="margin-bottom: 15px;">
                     <label for="monto" class="text-start w-100">Monto:</label>
                     <input pInputText class="form-control text-start" formControlName="monto" type="number" />
@@ -114,7 +97,6 @@
                         <ng-container *ngIf="oportunidadForm.get('monto')?.errors?.['pattern']">El monto solo puede contener números.</ng-container>
                     </span>
                 </div>
-                <!-- EJECUTIVO -->
                 <div class="form-group" style="margin-bottom: 15px;">
                     <label for="ejecutivo" class="text-start w-100">Ejecutivo:</label>
                     <p-dropdown class="form-control text-start" [options]="ejecutivos" formControlName="idEjecutivo"
@@ -124,7 +106,6 @@
                         <ng-container *ngIf="oportunidadForm.get('idEjecutivo')?.errors?.['required']">Debe seleccionar un ejecutivo.</ng-container>
                     </span>
                 </div>
-                <!-- ENTREGA -->
                 <div class="form-group" style="margin-bottom: 15px;">
                     <label for="entregas" class="text-start w-100">Entrega:</label>
                     <p-dropdown class="form-control text-start" [options]="entregas" formControlName="idTipoEntrega" optionLabel="descripcion"
@@ -134,7 +115,6 @@
                         <ng-container *ngIf="oportunidadForm.get('idTipoEntrega')?.errors?.['required']">Debe seleccionar una entrega.</ng-container>
                     </span>
                 </div>
-                <!-- COMENTARIO -->
                 <div class="form-group">
                     <label for="comentario" class="text-start w-100">Comentario:</label>
                     <textarea pInputText class="form-control estiloComentario text-start" formControlName="comentario" 

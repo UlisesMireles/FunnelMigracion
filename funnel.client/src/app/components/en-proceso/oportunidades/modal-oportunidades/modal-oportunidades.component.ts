@@ -151,7 +151,7 @@ export class ModalOportunidadesComponent {
       this.banderaContacto = false;
    // Contacto por defecto si solo hay uno
     if (this.contactos.length === 1) {
-      this.oportunidadForm.get('idContactoProspectos')?.setValue(this.contactos[0].idContactoProspecto);
+      this.oportunidadForm.get('idContactoProspecto')?.setValue(this.contactos[0].idContactoProspecto);
     }
   } else {
     this.banderaContacto = true;

@@ -21,7 +21,7 @@ import { Subscription } from 'rxjs';
 })
 export class LoginComponent implements OnInit {
   aFormGroup!: FormGroup;
-  siteKey: string = '6LcOK0crAAAAAJ2R5MdG5LIWnY7j8fRDLYBkjh_B';
+  siteKey: string = '6LdlBicqAAAAABMCqyAjZOTSKrbdshNyKxwRiGL9';
  // siteKey: string = '6LcOK0crAAAAAAV02O_xnUV4xzMYR8RuTzxiG2P_'; //Prueba
   baseUrl: string = environment.baseURLAssets;
   enableAsistenteBienvenida = false; // Inicia oculto

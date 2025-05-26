@@ -436,3 +436,13 @@ th.sort-active p-sortIcon {
 ::ng-deep .p-datepicker-buttonbar .p-button:hover {
   background-color: #2f78b3!important;
 }
+::ng-deep .columna-etapa {
+  width: 65px !important;
+  min-width: 65px !important;
+  max-width: 65px !important;
+}
+::ng-deep .columna-tipo {
+  width: 55px !important;
+  min-width: 55px !important;
+  max-width: 55px !important;
+}

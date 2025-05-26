@@ -22,7 +22,9 @@ export class ModalOportunidadesComponent {
 
   constructor(private readonly catalogoService: CatalogoService, private oportunidadService: OportunidadesService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder, private cdr: ChangeDetectorRef,
     private modalOportunidadesService: ModalOportunidadesService
-  ) { }
+  ) { 
+   
+  }
   @Input() oportunidad!: Oportunidad;
   @Input() oportunidades: Oportunidad[] = [];
   @Input() title: string = 'Modal';
@@ -166,6 +168,12 @@ export class ModalOportunidadesComponent {
   }
 
   onDialogShow() {
+    this.catalogoService.cargarProspectos(this.loginService.obtenerIdEmpresa());
+    this.catalogoService.cargarContactos(this.loginService.obtenerIdEmpresa());
+    this.catalogoService.cargarServicios(this.loginService.obtenerIdEmpresa());
+    this.catalogoService.cargarEtapas(this.loginService.obtenerIdEmpresa());
+    this.catalogoService.cargarEjecutivos(this.loginService.obtenerIdEmpresa());
+    this.catalogoService.cargarEntregas(this.loginService.obtenerIdEmpresa());
     this.cargarDatos();
   }
 

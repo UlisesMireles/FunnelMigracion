@@ -149,12 +149,15 @@ export class ModalOportunidadesComponent {
     if (idProspecto > 0) {
       this.contactos = this.catalogoService.obtenerContactos(idProspecto);
       this.banderaContacto = false;
+   // Contacto por defecto si solo hay uno
+    if (this.contactos.length === 1) {
+      this.oportunidadForm.get('idContactoProspectos')?.setValue(this.contactos[0].idContactoProspecto);
     }
-    else {
-      this.banderaContacto = true;
-    }
-    this.cdr.detectChanges();
+  } else {
+    this.banderaContacto = true;
   }
+  this.cdr.detectChanges();
+}
 
   onChangeProbabilidad() {
     const idStage = this.oportunidadForm.get('idStage')?.value;
@@ -187,8 +190,40 @@ export class ModalOportunidadesComponent {
     this.entregas = this.catalogoService.obtenerEntregas();
     this.estatusOportunidad = this.catalogoService.obtenerEstatusOportunidad();
     this.inicializarFormulario();
-    this.cdr.detectChanges();
-  }
+    // Asignaciones por defecto
+    if (this.insertar) {
+    // Servicio "Proyecto" por defecto
+    const servicio = this.servicios.find(s => s.descripcion.toLowerCase() === 'proyecto');
+    if (servicio) {
+      this.oportunidadForm.get('idTipoProyecto')?.setValue(servicio.idTipoProyecto);
+    } else if (this.servicios.length > 0) {
+      // Si no existe usar el primero
+      this.oportunidadForm.get('idTipoProyecto')?.setValue(this.servicios[0].idTipoProyecto);
+    }
+    // Entrega "Interna" por defecto
+    const entrega = this.entregas.find(e => e.descripcion.toLowerCase() === 'interna');
+    if (entrega) {
+      this.oportunidadForm.get('idTipoEntrega')?.setValue(entrega.idTipoEntrega);
+    }else if (this.entregas.length > 0) {
+      // Si no existe usar el primero
+      this.oportunidadForm.get('idTipoEntrega')?.setValue(this.entregas[0].idTipoEntrega);
+    }
+    // Etapa por defecto (primer elemento)
+    if (this.etapas.length > 0) {
+      this.oportunidadForm.get('idStage')?.setValue(this.etapas[0].id);
+      this.onChangeProbabilidad(); 
+    }
+    // Ejecutivo por defecto 
+    const usuarioLogueado = this.loginService.obtenerIdUsuario();
+    const ejecutivoLogueado = this.ejecutivos.find(e => e.idUsuario === usuarioLogueado);
+    if (ejecutivoLogueado) {
+      this.oportunidadForm.get('idEjecutivo')?.setValue(usuarioLogueado);
+    }
+    }
+  
+      this.cdr.detectChanges();
+    }
+  
 
 
   close() {

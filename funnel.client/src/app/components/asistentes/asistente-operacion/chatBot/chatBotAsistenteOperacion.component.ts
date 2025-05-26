@@ -385,6 +385,7 @@ ngOnInit() {
     this.chatHistorial = JSON.parse(this.chatHistorialResp);
     this.obtenListaPreguntasFrecuentesCategoriaOperaciones();
     /*this.estadoChatService.clearState();*/
+    sessionStorage.removeItem('chatBotOperacionState');
     this.cdRef.detectChanges();
   }
 

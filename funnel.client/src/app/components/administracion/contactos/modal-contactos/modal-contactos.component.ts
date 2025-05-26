@@ -86,8 +86,8 @@ export class ModalContactosComponent {
         telefono: ['', [
             Validators.required,
             Validators.minLength(8),
-            Validators.maxLength(15),
-            Validators.pattern('^[0-9]+$')
+            Validators.maxLength(20),
+            Validators.pattern('^[0-9+\\-\\s()]+$')
           ]
         ],
         correoElectronico: ['', [Validators.required, Validators.email]],
@@ -118,8 +118,8 @@ export class ModalContactosComponent {
         telefono: [this.contacto?.telefono || '', [
             Validators.required,
             Validators.minLength(8),
-            Validators.maxLength(15),
-            Validators.pattern('^[0-9]+$')
+            Validators.maxLength(20),
+            Validators.pattern('^[0-9+\\-\\s()]+$')
           ]
         ],
         correoElectronico: [this.contacto?.correoElectronico || '', [Validators.required, Validators.email]],

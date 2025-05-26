@@ -63,7 +63,7 @@
             <ng-container *ngIf="contactoForm.get('telefono')?.errors?.['required']">El teléfono es obligatorio. </ng-container>
             <ng-container *ngIf="contactoForm.get('telefono')?.errors?.['minlength']">El teléfono debe tener al menos 8 caracteres. </ng-container>
             <ng-container *ngIf="contactoForm.get('telefono')?.errors?.['maxlength']">El teléfono no puede tener más de 15 caracteres. </ng-container>
-            <ng-container *ngIf="contactoForm.get('telefono')?.errors?.['pattern']">El teléfono solo puede contener números. </ng-container>
+            <ng-container *ngIf="contactoForm.get('telefono')?.errors?.['pattern']">Formato de telefono incorrecto. </ng-container>
           </span>
         </div>
       </div>

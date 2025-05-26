@@ -22,7 +22,7 @@ import { Subscription } from 'rxjs';
 export class LoginComponent implements OnInit {
   aFormGroup!: FormGroup;
   siteKey: string = '6LdlBicqAAAAABMCqyAjZOTSKrbdshNyKxwRiGL9';
-  //siteKey: string = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'; //Prueba
+ // siteKey: string = '6LcOK0crAAAAAAV02O_xnUV4xzMYR8RuTzxiG2P_'; //Prueba
   baseUrl: string = environment.baseURLAssets;
   enableAsistenteBienvenida = false; // Inicia oculto
   username: string = '';

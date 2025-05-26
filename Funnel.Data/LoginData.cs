@@ -13,8 +13,10 @@ namespace Funnel.Data
     public class LoginData : ILoginData
     {
         private readonly string _connectionString;
+        private readonly IConfiguration _configuration;
         public LoginData(IConfiguration configuration)
         {
+            _configuration = configuration;
             _connectionString = configuration.GetConnectionString("FunelDatabase");
         }
 
@@ -412,5 +414,39 @@ namespace Funnel.Data
             }
             return result;
         }
+        public async Task<BaseOut> ObtenerImagenEmpresa(int IdEmpresa)
+        {
+            BaseOut result = new BaseOut();
+            IList<ParameterSQl> list = new List<ParameterSQl>
+           {
+               DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, "SEL-IMAGEN-EMPRESA"),
+               DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, IdEmpresa)
+           };
+            try
+            {
+                using (IDataReader reader = await DataBase.GetReaderSql("F_Tenant", CommandType.StoredProcedure, list, _connectionString))
+                {
+                    while (reader.Read())
+                    {
+                        result.Result = true;
+                        string nombreImagen = ComprobarNulos.CheckStringNull(reader["ArchivoImagen"]);
+                        string? baseUrl = _configuration["BaseUrl"];
+                        if (string.IsNullOrEmpty(baseUrl))
+                        {
+                            throw new InvalidOperationException("BaseUrl no está configurado en la configuración.");
+                        }
+                        string urlImagen = $"{baseUrl.TrimEnd('/')}/LogosEmpresas/{nombreImagen}";
+                        result.ErrorMessage = urlImagen;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Result = false;
+                result.ErrorMessage = "Error al obtener la imagen de la empresa: " + ex.Message;
+            }
+            return result;
+        }
+
     }
 }

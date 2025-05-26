@@ -92,5 +92,11 @@ namespace Funnel.Server.Controllers
 
             return Ok(await _loginService.CambioPassword(datos));
         }
+        [HttpGet("[action]/")]
+        public async Task<ActionResult<BaseOut>> ObtenerImagenEmpresa(int IdEmpresa)
+        {
+            var respuesta = await _loginService.ObtenerImagenEmpresa(IdEmpresa);
+            return Ok(respuesta);
+        }
     }
 }

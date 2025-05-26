@@ -145,7 +145,7 @@ export class LoginService {
   obtenerUsuarioSesion(): LoginUser | null {
     const sesion = this.desencriptaSesion();
     if (sesion) {
-        return sesion;
+      return sesion;
     }
     return null;
   }
@@ -153,21 +153,21 @@ export class LoginService {
   obtenerIdEmpresa(): number {
     const sesion = this.desencriptaSesion();
     if (sesion?.idEmpresa) {
-        return sesion?.idEmpresa;
+      return sesion?.idEmpresa;
     }
     return 0;
   }
   obtenerEmpresa(): string {
     const sesion = this.desencriptaSesion();
     if (sesion?.empresa) {
-        return sesion?.empresa;
+      return sesion?.empresa;
     }
     return "";
   }
   obtenerAlias(): string {
     const sesion = this.desencriptaSesion();
     if (sesion?.alias) {
-        return sesion?.alias;
+      return sesion?.alias;
     }
     return '';
   }
@@ -183,7 +183,7 @@ export class LoginService {
   obtenerIdUsuario(): number {
     const sesion = this.desencriptaSesion();
     if (sesion?.idUsuario) {
-        return sesion?.idUsuario;
+      return sesion?.idUsuario;
     }
     return 0;
   }
@@ -197,13 +197,13 @@ export class LoginService {
   }
 
   postSolicitudRegistro(data: SolicitudRegistroSistema): Observable<baseOut> {
-      return this.http.post<baseOut>(this.baseUrl + 'api/Login/GuardarSolicitudRegistro', data);
-    }
+    return this.http.post<baseOut>(this.baseUrl + 'api/Login/GuardarSolicitudRegistro', data);
+  }
 
   postReenviarCodigo(correo: string): Observable<baseOut> {
-      return this.http.post<baseOut>(this.baseUrl + 'api/Login/ReenviarCodigo?correo=' + encodeURIComponent(correo), null);
-    }
-    
+    return this.http.post<baseOut>(this.baseUrl + 'api/Login/ReenviarCodigo?correo=' + encodeURIComponent(correo), null);
+  }
+
 
   cambiarPassword(formData: FormData): Observable<baseOut> {
     const headers = new HttpHeaders();
@@ -212,7 +212,14 @@ export class LoginService {
   cerrarSesion(): void {
     // Limpiar el estado del chat al cerrar sesión
     this.estadoChatService.clearState();
-  
+
+  }
+  obtenerUrlImagenEmpresa(_idEmpresa: number): Observable<string> {
+  return this.http.get<any>(`${this.baseUrl}api/Login/ObtenerImagenEmpresa/`, {
+    params: { idEmpresa: _idEmpresa }
+  }).pipe(
+    map(data => data.errorMessage ?? '')
+  );
 }
 
 }

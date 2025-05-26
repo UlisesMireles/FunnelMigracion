@@ -169,9 +169,7 @@ export class OportunidadesGanadasComponent {
       });
       this.months = Array.from(monthsSet).sort((a, b) => a - b).map(m => monthNames[m]);
       this.months.unshift("Todos los Meses");
-      if (!this.months.includes(this.selectedMonth)) {
-        this.selectedMonth = this.months[1] || "Todos los Meses";
-      }
+      this.selectedMonth = "Todos los Meses";
     }
 
     actualiza(licencia: Oportunidad) {

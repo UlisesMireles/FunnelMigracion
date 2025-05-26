@@ -65,13 +65,13 @@ export class OportunidadesComponent {
     { key: 'monto', isCheck: true, valor: 'Monto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
     // { key: 'probabilidadOriginal', isCheck: false, valor: '% Original', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     // { key: 'probabilidad', isCheck: true, valor: '% Actual', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'probabilidadOriginal', isCheck: false, valor: '% Original', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'textNFilter' },
-    { key: 'probabilidad', isCheck: true, valor: '% Actual', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'textNFilter' },
+    { key: 'probabilidadOriginal', isCheck: false, valor: '% Orig', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'textNFilter' },
+    { key: 'probabilidad', isCheck: true, valor: '% Act', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'textNFilter' },
     { key: 'montoNormalizado', isCheck: true, valor: 'Vta Esperada', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
     { key: 'fechaRegistro', isCheck: true, valor: 'Fecha Alta', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
-    { key: 'diasFunnel', isCheck: true, valor: 'Días Funnel', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
+    { key: 'diasFunnel', isCheck: true, valor: 'D. Alta', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
     { key: 'fechaEstimadaCierreOriginal', isCheck: true, valor: 'Cierre Est', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
-    { key: 'fechaModificacion', isCheck: true, valor: 'Días S/Act', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' }
+    { key: 'fechaModificacion', isCheck: true, valor: 'D. S/Act', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' }
   ];
 
   columnsAMostrarResp: string = JSON.stringify(this.lsColumnasAMostrar);

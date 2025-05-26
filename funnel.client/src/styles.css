@@ -107,3 +107,9 @@
   background-color: #1976d2 !important;
   color: #ffffff !important;
 }
+.p-button-icon-only.p-button-rounded{
+ width: 16px !important;
+}
+.p-datatable-inline-filter {
+  gap: 0 !important;
+}

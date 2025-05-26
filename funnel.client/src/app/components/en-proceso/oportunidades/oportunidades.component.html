@@ -66,8 +66,11 @@
             </div>
           </ng-template>
           <ng-template pTemplate="header" let-columns>
-            <tr class="custom-header">
-                <th *ngFor="let def of lsColumnasAMostrar" pSortableColumn="{{def.key}}" pReorderableColumn [class.sort-active]="isSorted(def.key)">
+            <tr class="custom-header" >
+                <th *ngFor="let def of lsColumnasAMostrar" pSortableColumn="{{def.key}}" pReorderableColumn [class.sort-active]="isSorted(def.key)"
+                [ngClass]="{
+                    'columna-etapa': def.key === 'stage','columna-tipo': def.key === 'abreviatura',
+                }">
                     {{def.valor}}
                   <p-sortIcon field="{{def.key}}"></p-sortIcon>
                 </th>
@@ -160,7 +163,8 @@
                     def.tipoFormato === 'currency' ? 'right' :
                     (def.tipoFormato === 'number' || def.tipoFormato === 'date') ? 'center' : 'left',
                     'font-weight': def.key === 'nombre' || def.key === 'nombreOportunidad' ? 'bold' : 'normal',
-                    'width': def.key === 'stage' || def.key === 'abreviatura' || def.key === 'entrega' || def.key === 'iniciales' || def.key === 'nombreContacto' ? '80px' : ''
+                    'width': def.key === 'abreviatura' || def.key === 'entrega' || def.key === 'iniciales' || def.key === 'nombreContacto' ? '80px' : 
+                    def.key === 'stage' ? '120px' : ''
                 }">
                 <ng-container [ngSwitch]="def.tipoFormato">
                   <span *ngSwitchCase="'text'">

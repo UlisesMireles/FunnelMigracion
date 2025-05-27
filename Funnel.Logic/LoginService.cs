@@ -175,7 +175,7 @@ namespace Funnel.Logic
         {
             return await _loginData.RegistrarIngresoUsuario(IdUsuario, IdEmpresa);
         }
-        public async Task<BaseOut> ObtenerImagenEmpresa(int IdEmpresa)
+        public async Task<EmpresaDTO> ObtenerImagenEmpresa(int IdEmpresa)
         {
             return await _loginData.ObtenerImagenEmpresa(IdEmpresa);
         }

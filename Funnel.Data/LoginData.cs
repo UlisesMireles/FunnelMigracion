@@ -414,9 +414,9 @@ namespace Funnel.Data
             }
             return result;
         }
-        public async Task<BaseOut> ObtenerImagenEmpresa(int IdEmpresa)
+        public async Task<EmpresaDTO> ObtenerImagenEmpresa(int IdEmpresa)
         {
-            BaseOut result = new BaseOut();
+            EmpresaDTO result = new EmpresaDTO();
             IList<ParameterSQl> list = new List<ParameterSQl>
            {
                DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, "SEL-IMAGEN-EMPRESA"),
@@ -428,15 +428,17 @@ namespace Funnel.Data
                 {
                     while (reader.Read())
                     {
-                        result.Result = true;
-                        string nombreImagen = ComprobarNulos.CheckStringNull(reader["ArchivoImagen"]);
+                        result.IdEmpresa = ComprobarNulos.CheckIntNull(reader["IdEmpresa"]);
+                        result.NombreEmpresa = ComprobarNulos.CheckStringNull(reader["NombreEmpresa"]);
+                        result.UrlImagen = ComprobarNulos.CheckStringNull(reader["ArchivoImagen"]);
                         string? baseUrl = _configuration["BaseUrl"];
                         if (string.IsNullOrEmpty(baseUrl))
                         {
                             throw new InvalidOperationException("BaseUrl no está configurado en la configuración.");
                         }
-                        string urlImagen = $"{baseUrl.TrimEnd('/')}/LogosEmpresas/{nombreImagen}";
-                        result.ErrorMessage = urlImagen;
+                        result.UrlImagen = $"{baseUrl.TrimEnd('/')}/LogosEmpresas/{result.UrlImagen}";
+                        result.Result = true;
+
                     }
                 }
             }

@@ -473,4 +473,39 @@ ngOnInit() {
       this.cdRef.detectChanges(); 
     }, 1000);
   });
+}
+mostrarBotonCopiar(chat: ChatHistorial): boolean {
+  if (
+    chat.mensaje === "¿Podrías ser más específico en tu pregunta?😊" ||
+    chat.mensaje === "Tu pregunta no es valida, has otra pregunta"
+  ) {
+    return false;
+  }
+  const index = this.chatHistorial.indexOf(chat);
+  if (index > 0) {
+    const mensajeAnterior = this.chatHistorial[index - 1];
+
+    // Si la respuesta viene de seleccionRevisarCategorias
+    if (
+      mensajeAnterior.rol === 'usuario' &&
+      this.lsRevisarCategorias.includes(mensajeAnterior.mensaje) &&
+      chat.rol === 'asistente'
+    ) {
+      return false;
+    }
+     
+    //Es respuesta a una pregunta frecuente 
+    const esPreguntaFrecuente = this.lsPreguntasPorCategoria?.some(
+      p => p.pregunta === mensajeAnterior.mensaje
+    );
+    
+    // Es respuesta a un input 
+    const esInputUsuario = mensajeAnterior.rol === 'usuario' && 
+                         !this.lsCategoriaPreguntas?.some(
+                           c => c.descripcion === mensajeAnterior.mensaje
+                         );
+
+    return esPreguntaFrecuente || esInputUsuario;
+  }
+  return false;
 }}

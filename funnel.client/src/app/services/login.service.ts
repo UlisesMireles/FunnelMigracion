@@ -8,7 +8,7 @@ import { CatalogoService } from './catalogo.service';
 import { SolicitudRegistroSistema } from '../interfaces/solicitud-registro';
 import { baseOut } from '../interfaces/utils/utils/baseOut';
 import { Usuarios } from '../interfaces/usuarios';
-import { EstadoChatService } from './asistentes/estado-chat.service';
+/*import { EstadoChatService } from './asistentes/estado-chat.service';*/
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,7 @@ export class LoginService {
 
   private sessionTimeout = 30 * 60 * 1000;
   private timer: any;
-  constructor(private http: HttpClient, private router: Router, private readonly catalogoService: CatalogoService, private estadoChatService: EstadoChatService) {
+  constructor(private http: HttpClient, private router: Router, private readonly catalogoService: CatalogoService /*private estadoChatService: EstadoChatService*/) {
     this.currentUser = this.currentUserSubject.asObservable();
     this.checkInitialSession();
   }
@@ -209,10 +209,10 @@ export class LoginService {
     const headers = new HttpHeaders();
     return this.http.post<baseOut>(this.baseUrl + 'api/Login/CambioPassword', formData, { headers });
   }
-  cerrarSesion(): void {
+  /*cerrarSesion(): void {
     // Limpiar el estado del chat al cerrar sesión
     this.estadoChatService.clearState();
   
-}
+}*/
 
 }

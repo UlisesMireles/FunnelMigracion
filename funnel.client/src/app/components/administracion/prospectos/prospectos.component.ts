@@ -60,6 +60,7 @@ EstatusDropdown = [
   columnsAMostrarResp = JSON.stringify(this.lsColumnasAMostrar);
   columnsTodasResp = JSON.stringify(this.lsTodasColumnas);
   private modalSubscription!: Subscription;
+  disabledPdf: boolean = false;
 
   constructor( private messageService: MessageService, private cdr: ChangeDetectorRef, private prospectoService: ProspectoService, private loginService: LoginService, public dialog: MatDialog, private modalOportunidadesService: ModalOportunidadesService) { }
 
@@ -250,9 +251,11 @@ clear(table: Table) {
   
       if (dataExport.length == 0)
         return
+
+      this.disabledPdf = true;
   
   
-      this.prospectoService.descargarReporteProspectos(data).subscribe({
+      this.prospectoService.descargarReporteProspectos(data, this.loginService.obtenerIdEmpresa()).subscribe({
         next: (result: Blob) => {
           const url = window.URL.createObjectURL(result);
           const link = document.createElement('a');
@@ -260,6 +263,7 @@ clear(table: Table) {
           link.download = 'Prospectos.pdf';
           link.click();
           URL.revokeObjectURL(url);
+          this.disabledPdf = false;
   
         },
         error: (error) => {
@@ -268,6 +272,7 @@ clear(table: Table) {
             summary: 'Se ha producido un error al generar reporte',
             detail: error.errorMessage,
           });
+          this.disabledPdf = false;
         },
       });
   

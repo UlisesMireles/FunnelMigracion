@@ -55,6 +55,7 @@ export class EstadisticasPorEtapaComponent {@ViewChild('dt') dt!: Table;
 
   columnsAMostrarResp: string = JSON.stringify(this.lsColumnasAMostrar);
   columnsTodasResp: string = JSON.stringify(this.lsTodasColumnas);
+  disabledPdf: boolean = false;
 
   constructor(private oportunidadService: OportunidadesService, private messageService: MessageService, private cdr: ChangeDetectorRef,
       private readonly loginService: LoginService, public dialog: MatDialog
@@ -176,9 +177,10 @@ export class EstadisticasPorEtapaComponent {@ViewChild('dt') dt!: Table;
   
       if (dataExport.length == 0)
         return
+
+      this.disabledPdf = true;  
   
-  
-      this.oportunidadService.descargarReporteOportunidadesPorEtapa(data).subscribe({
+      this.oportunidadService.descargarReporteOportunidadesPorEtapa(data, this.loginService.obtenerIdEmpresa()).subscribe({
         next: (result: Blob) => {
           const url = window.URL.createObjectURL(result);
           const link = document.createElement('a');
@@ -186,6 +188,7 @@ export class EstadisticasPorEtapaComponent {@ViewChild('dt') dt!: Table;
           link.download = 'EstadisticasPorEtapa.pdf';
           link.click();
           URL.revokeObjectURL(url);
+          this.disabledPdf = false;
         },
         error: (error) => {
           this.messageService.add({
@@ -194,6 +197,7 @@ export class EstadisticasPorEtapaComponent {@ViewChild('dt') dt!: Table;
             detail: error.errorMessage,
           });
           this.loading = false;
+          this.disabledPdf = false;
         },
       });
   

@@ -13,12 +13,10 @@ namespace Funnel.Server.Controllers
     public class HerramientasController : Controller
     {
         private readonly IHerramientasService _herramientasService;
-        private readonly IConverter _converter;
 
-        public HerramientasController(IHerramientasService herramientasService, IConverter converter)
+        public HerramientasController(IHerramientasService herramientasService)
         {
             _herramientasService = herramientasService;
-            _converter = converter;
         }
 
         [HttpGet("[action]/")]
@@ -64,13 +62,12 @@ namespace Funnel.Server.Controllers
         }
 
         [HttpPost("[action]/")]
-        public async Task<ActionResult> DescargarReporteIngresosUsuarios([FromBody] IngresosFunnelReporteDTO ingresos)
+        public async Task<ActionResult> DescargarReporteIngresosUsuarios([FromBody] IngresosFunnelReporteDTO ingresos, int IdEmpresa)
         {
             var titulo = ingresos.Anio.Contains("Todos") ? "Reporte de Ingresos de Usuarios de Todos los Años" :
                 "Reporte de Ingresos de Usuarios del Año " + ingresos.Anio; 
 
-            var doc = await _herramientasService.GenerarReporteIngresosUsuarios(ingresos, Directory.GetCurrentDirectory(), titulo);
-            var pdf = _converter.Convert(doc);
+            var pdf = await _herramientasService.GenerarReporteIngresosUsuarios(ingresos, Directory.GetCurrentDirectory(), titulo, IdEmpresa);            
             return File(pdf, "application/pdf", "IngresosUsuarios.pdf");
         }
     }

@@ -61,6 +61,7 @@ export class TopVeinteComponent {
 
   columnsAMostrarResp = JSON.stringify(this.lsColumnasAMostrar);
   columnsTodasResp = JSON.stringify(this.lsTodasColumnas);
+  disabledPdf: boolean = false;
 
   constructor( private messageService: MessageService, private cdr: ChangeDetectorRef, private prospectoService: ProspectoService, private loginService: LoginService, public dialog: MatDialog) { }
 
@@ -201,8 +202,10 @@ export class TopVeinteComponent {
     if (dataExport.length == 0)
       return
 
+    this.disabledPdf = true;
 
-    this.prospectoService.descargarReporteTop20(data).subscribe({
+
+    this.prospectoService.descargarReporteTop20(data, this.loginService.obtenerIdEmpresa()).subscribe({
       next: (result: Blob) => {
         const url = window.URL.createObjectURL(result);
         const link = document.createElement('a');
@@ -210,6 +213,7 @@ export class TopVeinteComponent {
         link.download = 'Clientes_Top_20.pdf';
         link.click();
         URL.revokeObjectURL(url);
+        this.disabledPdf = false;
 
       },
       error: (error) => {
@@ -218,6 +222,7 @@ export class TopVeinteComponent {
           summary: 'Se ha producido un error al generar reporte',
           detail: error.errorMessage,
         });
+        this.disabledPdf = false;
       },
     });
 

@@ -15,7 +15,7 @@ namespace Funnel.Logic.Interfaces
     {
         Task<List<ServicioDTO>> ConsultarServicios(int IdEmpresa);
         Task<BaseOut> GuardarServicio(ServicioDTO servicio);
-        Task<HtmlToPdfDocument> GenerarReporteServicios(ServiciosReporteDTO servicios, string RutaBase, string titulo);
+        Task<byte[]> GenerarReporteServicios(ServiciosReporteDTO servicios, string RutaBase, string titulo, int IdEmpresa);
 
     }
 }

@@ -12,7 +12,7 @@ namespace Funnel.Logic.Interfaces
     public interface IHerramientasService
     {
         public Task<List<IngresosFunnelDTO>> ConsultarIngresos(int IdUsuario, int IdEmpresa);
-        public Task<HtmlToPdfDocument> GenerarReporteIngresosUsuarios(IngresosFunnelReporteDTO ingresos, string RutaBase, string titulo);
+        public Task<byte[]> GenerarReporteIngresosUsuarios(IngresosFunnelReporteDTO ingresos, string RutaBase, string titulo, int IdEmpresa);
         public Task<List<EjecucionProcesosReportesDTO>> ConsultarEjecucionProcesosPorEmpresa(int IdEmpresa);
         public Task<BaseOut> GuardarDiasReportesEstatus(EjecucionProcesosReportesDTO request);
         public Task<BaseOut> EnvioCorreosReporteSeguimiento(int IdEmpresa, int IdReporte, List<string> Correos);

@@ -63,10 +63,9 @@ namespace Funnel.Server.Controllers
         }
 
         [HttpPost("[action]/")]
-        public async Task<ActionResult> DescargarReporteUsuarios([FromBody] UsuariosReporteDTO usuarios)
+        public async Task<ActionResult> DescargarReporteUsuarios([FromBody] UsuariosReporteDTO usuarios, int IdEmpresa)
         {
-            var doc = await _usuariosService.GenerarReporteUsuarios(usuarios, Directory.GetCurrentDirectory(), "Reporte de Usuarios");
-            var pdf = _converter.Convert(doc);
+            var pdf = await _usuariosService.GenerarReporteUsuarios(usuarios, Directory.GetCurrentDirectory(), "Reporte de Usuarios", IdEmpresa);
             return File(pdf, "application/pdf", "Usuarios.pdf");
         }
 

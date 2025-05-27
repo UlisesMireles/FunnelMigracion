@@ -379,15 +379,23 @@ ngOnInit() {
 
   //#region metodos de acciones de componente
   resetConversation() {
-    this.loadOpciones = false;
-    this.nombreAsistenteSeleccionado.emit({ asistente: '', idBot: 0 });
-    this.asistenteSeleccionado = { idBot: 0, documento: false };
-    this.chatHistorial = JSON.parse(this.chatHistorialResp);
-    this.obtenListaPreguntasFrecuentesCategoriaOperaciones();
-    /*this.estadoChatService.clearState();*/
-    sessionStorage.removeItem('chatBotOperacionState');
-    this.cdRef.detectChanges();
-  }
+  this.loadOpciones = false;
+  this.nombreAsistenteSeleccionado.emit({ asistente: '', idBot: 0 });
+  this.asistenteSeleccionado = { idBot: 0, documento: false };
+  //Limpiar historial y arrays
+  this.chatHistorial = [
+    { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨" },
+    { rol: "asistente", mensaje: "Bienvenido(a) al asistente virtual del sistema de ventas Funnel. Estoy aquí para ayudarte. Puedes escribir tu pregunta directamente o explorar por categorías si lo prefieres." }
+  ];
+  this.chatHistorialResp = JSON.stringify(this.chatHistorial);
+  this.lsPreguntasPorCategoria = [];
+  this.lsCategoriaPreguntas = [];
+  this.lsAsistentesPorCategoria = [];
+  sessionStorage.removeItem('chatBotOperacionState');
+  localStorage.removeItem('chatBotOperacionState');
+  this.obtenListaPreguntasFrecuentesCategoriaOperaciones();
+  this.cdRef.detectChanges();
+}
 
   mostrarCategorias() {
     this.asistenteSeleccionado = { idBot: 4, documento: false };

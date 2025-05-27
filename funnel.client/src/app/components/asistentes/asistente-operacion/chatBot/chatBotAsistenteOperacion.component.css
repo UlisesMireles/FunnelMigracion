@@ -396,19 +396,20 @@
   height: 16px;
   width: 16px;
   line-height: 16px;
+  margin-left: 17px;
 }
 
-.btn-copiar:hover {
+/*.btn-copiar:hover {
   background-color: #f0f0f0;
-}
+}*/
 
 .btn-copiar-tema-operacion {
   color: #256F45 !important; 
 }
 
-.btn-copiar-tema-operacion:hover {
+/*.btn-copiar-tema-operacion:hover {
   background-color:  #dce9e1 !important; 
-}
+}*/
 /* Mensaje flotante de copiado */
 .mensaje-flotante {
   position: absolute;

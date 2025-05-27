@@ -258,12 +258,6 @@ getTotalNormalizado(mes: OportunidadesPorMes): number {
   return mes.tarjetas.reduce((acc, tarjeta) => acc + (tarjeta.montoNormalizado || 0), 0);
 }
 
-onModalClose() {
- // this.modalEditarVisible = false;
- console.log('Modal cerrado');
- this.getOportunidadesPorMes();
-}
-
 manejarResultado(result: baseOut) {
   if (result.result) {
     this.messageService.add({
@@ -314,14 +308,13 @@ private crearNuevaLicencia(licencia: Tarjeta) {
 }
 actualiza(licencia: Tarjeta) {
     this.modalOportunidadesService.openModal(true, false, [], licencia);
-    this.oportunidadSeleccionada = this.crearNuevaLicencia(licencia);
+    this.oportunidadSeleccionada = licencia;
     this.insertar = false;
     this.modalEditarVisible = true;
 }
 
 seguimiento(licencia: Tarjeta) {
-
-  this.oportunidadSeleccionada = this.crearNuevaLicencia(licencia);;
+  this.oportunidadSeleccionada = licencia;
   this.seguimientoOportunidad = true;
   this.modalSeguimientoVisible = true;
 }

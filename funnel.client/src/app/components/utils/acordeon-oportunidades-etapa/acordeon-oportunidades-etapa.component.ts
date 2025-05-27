@@ -31,7 +31,6 @@ export class AcordeonOportunidadesEtapaComponent {
     oportunidades: Oportunidad[] = [];
     seguimientoOportunidad: boolean = false;
     cantidadExpandidos: number = 0;
-
     // Output para emitir resultados de la petición post (por ejemplo, para notificar a un padre)
     @Output() result: EventEmitter<baseOut> = new EventEmitter();
 
@@ -203,10 +202,6 @@ export class AcordeonOportunidadesEtapaComponent {
       return mes.tarjetas.reduce((acc, tarjeta) => acc + (tarjeta.montoNormalizado || 0), 0);
     }
 
-    onModalClose() {
-      this.modalEditarVisible = false;
-    }
-
     manejarResultado(result: baseOut) {
       if (result.result) {
         this.messageService.add({
@@ -269,15 +264,14 @@ export class AcordeonOportunidadesEtapaComponent {
   }
 
   actualiza(licencia: Tarjeta) {
-    this.modalOportunidadesService.openModal(true, false, [], licencia);
-    this.oportunidadSeleccionada = this.crearNuevaLicencia(licencia);
-    this.insertar = false;
-    this.modalEditarVisible = true;
+      this.modalOportunidadesService.openModal(true, false, [], licencia);
+      this.oportunidadSeleccionada = licencia;
+      this.insertar = false;
+      this.modalEditarVisible = true;
   }
-  
+
   seguimiento(licencia: Tarjeta) {
-  
-    this.oportunidadSeleccionada = this.crearNuevaLicencia(licencia);;
+    this.oportunidadSeleccionada = licencia;
     this.seguimientoOportunidad = true;
     this.modalSeguimientoVisible = true;
   }

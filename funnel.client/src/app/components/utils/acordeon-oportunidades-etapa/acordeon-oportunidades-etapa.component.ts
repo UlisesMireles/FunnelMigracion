@@ -5,6 +5,8 @@ import { Oportunidad, OportunidadesPorEtapa, Tarjeta, RequestActualizarEtapa } f
 import { OportunidadesService } from '../../../services/oportunidades.service';
 import { baseOut } from '../../../interfaces/utils/utils/baseOut';
 import { LoginService } from '../../../services/login.service';
+import { ModalOportunidadesService } from '../../../services/modalOportunidades.service';
+
 
 
 @Component({
@@ -34,7 +36,8 @@ export class AcordeonOportunidadesEtapaComponent {
     @Output() result: EventEmitter<baseOut> = new EventEmitter();
 
     constructor(
-      private oportunidadService: OportunidadesService,private readonly loginService: LoginService,private messageService: MessageService,private cdr: ChangeDetectorRef
+      private oportunidadService: OportunidadesService,private readonly loginService: LoginService,private messageService: MessageService,private cdr: ChangeDetectorRef,
+      private modalOportunidadesService: ModalOportunidadesService
     ) { }
   
     ngOnInit() {
@@ -266,7 +269,7 @@ export class AcordeonOportunidadesEtapaComponent {
   }
 
   actualiza(licencia: Tarjeta) {
-
+    this.modalOportunidadesService.openModal(true, false, [], licencia);
     this.oportunidadSeleccionada = this.crearNuevaLicencia(licencia);
     this.insertar = false;
     this.modalEditarVisible = true;

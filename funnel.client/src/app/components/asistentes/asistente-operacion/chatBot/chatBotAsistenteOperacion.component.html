@@ -16,7 +16,7 @@
               <div class="chat-bubble ai-bubble formatoMensajes vstack" [innerHTML]="chat.mensaje">
               </div>
               <button class="btn-copiar" [ngClass]="{'btn-copiar-tema-operacion': asistenteSeleccionado.idBot == 4}"
-              (click)="copiarRespuesta(chat.mensaje)" matTooltip="Copiar respuesta" *ngIf="chatHistorial.indexOf(chat) > 1">
+              (click)="copiarRespuesta(chat.mensaje)" matTooltip="Copiar respuesta"  *ngIf="mostrarBotonCopiar(chat)">
               <mat-icon>content_copy</mat-icon>
               </button>
             </div>

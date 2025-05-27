@@ -38,6 +38,8 @@ export class OportunidadesEliminadasComponent {
 
   years: string[] = [];
   selectedYear: string = new Date().getFullYear().toString();
+  months: string[] = [];
+  selectedMonth: string = "Todos los Meses";
 
   loading: boolean = true;
 
@@ -90,21 +92,58 @@ export class OportunidadesEliminadasComponent {
     }
 
 
-    filterByYear() {
+     filterByYearAndMonth() {
       if (this.oportunidadesOriginal) {
+        const monthNames = [
+          "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+          "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+        ];
         this.oportunidades = this.oportunidadesOriginal.filter(oportunidad => {
-          if(!this.esNumero(this.selectedYear))
-            return true
-          else if (oportunidad.fechaEstimadaCierre) {
-            const fechaRegistro = new Date(oportunidad.fechaEstimadaCierre);
-            return fechaRegistro.getFullYear().toString() === this.selectedYear;
-          }
-          else
-            return false;
+        const fecha = oportunidad.fechaEstimadaCierre ? new Date(oportunidad.fechaEstimadaCierre) : null;
+        const isSinFecha = !fecha || fecha.getFullYear() === 1;
+
+        if (this.selectedYear === "Sin Fecha") {
+          return isSinFecha;
+        }
+
+        if (isSinFecha) return false;
+
+        const year = fecha.getFullYear().toString();
+        const monthName = monthNames[fecha.getMonth()];
+
+        const yearMatch = this.selectedYear === "Todos los Años" || year === this.selectedYear;
+        const monthMatch = this.selectedMonth === "Todos los Meses" || monthName === this.selectedMonth;
+
+        return yearMatch && monthMatch;
         });
       }
     }
 
+    onYearChange() {
+      this.actualizarMesesPorAnio();
+      this.filterByYearAndMonth();
+    }
+
+    actualizarMesesPorAnio() {
+      console.log("actualizarMesesPorAnio");
+      const monthNames = [
+        "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+        "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+      ];
+      const monthsSet = new Set<number>();
+      this.oportunidadesOriginal.forEach(o => {
+        if (o.fechaEstimadaCierre) {
+          const fecha = new Date(o.fechaEstimadaCierre);
+          const year = fecha.getFullYear().toString();
+          if (this.selectedYear === "Todos los Años" || year === this.selectedYear) {
+            monthsSet.add(fecha.getMonth());
+          }
+        }
+      });
+      this.months = Array.from(monthsSet).sort((a, b) => a - b).map(m => monthNames[m]);
+      this.months.unshift("Todos los Meses");
+      this.selectedMonth = "Todos los Meses";
+    }
 
     getOportunidades() {
       this.oportunidadService.getOportunidades(this.loginService.obtenerIdEmpresa(), this.loginService.obtenerIdUsuario(), this.idEstatus).subscribe({
@@ -116,7 +155,33 @@ export class OportunidadesEliminadasComponent {
           
           this.oportunidades = [...oportunidadesOrdenadas];
           this.oportunidadesOriginal =  oportunidadesOrdenadas;
-          this.filterByYear();
+
+            
+         const yearsSet = new Set<string>();
+          oportunidadesOrdenadas.forEach(o => {
+            if (!o.fechaEstimadaCierre || new Date(o.fechaEstimadaCierre).getFullYear() === 1) {
+              yearsSet.add("Sin Fecha");
+            } else {
+              const fecha = new Date(o.fechaEstimadaCierre);
+              yearsSet.add(fecha.getFullYear().toString());
+            }
+          });
+          this.years = Array.from(yearsSet).sort((a, b) => {
+            if (a === "Sin Fecha") return 1;
+            if (b === "Sin Fecha") return -1;
+            return Number(b) - Number(a);
+          });
+          this.years.unshift("Todos los Años");
+
+
+          this.actualizarMesesPorAnio();
+          if (!this.years.includes(this.selectedYear)) {
+            this.selectedYear = this.years[1] || "Todos los Años";
+          }
+          if (!this.months.includes(this.selectedMonth)) {
+            this.selectedMonth = this.months[1] || "Todos los Meses";
+          }
+          this.filterByYearAndMonth()
           this.cdr.detectChanges(); 
           this.loading = false;
         },

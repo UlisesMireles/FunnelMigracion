@@ -228,30 +228,22 @@ onChangeProspecto() {
     this.entregas = this.catalogoService.obtenerEntregas();
     this.estatusOportunidad = this.catalogoService.obtenerEstatusOportunidad();
     this.inicializarFormulario();
-    // Asignaciones por defecto
+    // Asignaciones por defecto (primer elemento)
     if (this.insertar) {
-    // Servicio "Proyecto" por defecto
-    const servicio = this.servicios.find(s => s.descripcion.toLowerCase() === 'proyecto');
-    if (servicio) {
-      this.oportunidadForm.get('idTipoProyecto')?.setValue(servicio.idTipoProyecto);
-    } else if (this.servicios.length > 0) {
-      // Si no existe usar el primero
+    // Servicio 
+    if (this.servicios.length > 0) {
       this.oportunidadForm.get('idTipoProyecto')?.setValue(this.servicios[0].idTipoProyecto);
     }
-    // Entrega "Interna" por defecto
-    const entrega = this.entregas.find(e => e.descripcion.toLowerCase() === 'interna');
-    if (entrega) {
-      this.oportunidadForm.get('idTipoEntrega')?.setValue(entrega.idTipoEntrega);
-    }else if (this.entregas.length > 0) {
-      // Si no existe usar el primero
+    // Entrega 
+    if (this.entregas.length > 0) {
       this.oportunidadForm.get('idTipoEntrega')?.setValue(this.entregas[0].idTipoEntrega);
     }
-    // Etapa por defecto (primer elemento)
+    // Etapa 
     if (this.etapas.length > 0) {
       this.oportunidadForm.get('idStage')?.setValue(this.etapas[0].id);
       this.onChangeProbabilidad(); 
     }
-    // Ejecutivo por defecto 
+    // Ejecutivo (el que se encuentra logueado)
     const usuarioLogueado = this.loginService.obtenerIdUsuario();
     const ejecutivoLogueado = this.ejecutivos.find(e => e.idUsuario === usuarioLogueado);
     if (ejecutivoLogueado) {

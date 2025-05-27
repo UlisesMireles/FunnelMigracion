@@ -307,10 +307,16 @@ private crearNuevaLicencia(licencia: Tarjeta) {
   };
 }
 actualiza(licencia: Tarjeta) {
-    this.modalOportunidadesService.openModal(true, false, [], licencia);
     this.oportunidadSeleccionada = licencia;
     this.insertar = false;
-    this.modalEditarVisible = true;
+    this.modalEditarVisible = true;   
+    this.modalOportunidadesService
+    .openModal(true, false, [], licencia)
+    .subscribe((modalResult) => {
+      if (modalResult?.result) {
+        this.ngOnInit();
+      }
+    });
 }
 
 seguimiento(licencia: Tarjeta) {

@@ -209,13 +209,16 @@ export class LoginService {
     const headers = new HttpHeaders();
     return this.http.post<baseOut>(this.baseUrl + 'api/Login/CambioPassword', formData, { headers });
   }
+
+  obtenerVersion(): Observable<baseOut> {
+    return this.http.get<any>(this.baseUrl + 'api/Login/ObtenerVersion');
+  }
+
   /*cerrarSesion(): void {
     // Limpiar el estado del chat al cerrar sesión
     this.estadoChatService.clearState();
   
 }*/
-
-  
   obtenerUrlImagenEmpresa(_idEmpresa: number): Observable<string> {
     return this.http.get<any>(`${this.baseUrl}api/Login/ObtenerImagenEmpresa/`, {
       params: { idEmpresa: _idEmpresa }

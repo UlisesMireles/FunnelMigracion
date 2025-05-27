@@ -40,6 +40,8 @@ export class ModalOportunidadesComponent {
   contactos: any[] = [];
   entregas: any[] = [];
   estatusOportunidad: any[] = [];
+  prospectosFiltrados: any[] = [];
+  busquedaProspecto: string = '';
 
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() closeModal: EventEmitter<void> = new EventEmitter();
@@ -62,7 +64,7 @@ export class ModalOportunidadesComponent {
       this.banderaContacto = true;
       this.oportunidadForm = this.fb.group({
         idOportunidad: [0],
-        idProspecto: [0, Validators.required],
+        idProspecto: [null, Validators.required],
         descripcion: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
         monto: [0, [Validators.required, Validators.min(1)]],
         idTipoProyecto: ['', Validators.required],
@@ -146,17 +148,45 @@ export class ModalOportunidadesComponent {
     return valoresInicialesJson === valoresActualesJson;
   }
 
-  onChangeProspecto() {
-    const idProspecto = this.oportunidadForm.get('idProspecto')?.value;
-    if (idProspecto > 0) {
-      this.contactos = this.catalogoService.obtenerContactos(idProspecto);
-      this.banderaContacto = false;
-   // Contacto por defecto si solo hay uno
+
+filtrarProspectos(event: any) {
+  const valorBusqueda = event.target.value.toLowerCase();
+  this.busquedaProspecto = valorBusqueda;
+  
+  if (valorBusqueda.length > 0) {
+    this.prospectosFiltrados = this.prospectos.filter(prospecto => 
+      prospecto.nombre.toLowerCase().includes(valorBusqueda)
+    );
+  } else {
+    this.prospectosFiltrados = [];
+  }
+}
+
+// Método para seleccionar un prospecto
+seleccionarProspecto(prospecto: any) {
+  this.oportunidadForm.get('idProspecto')?.setValue(prospecto.id);
+  this.busquedaProspecto = prospecto.nombre;
+  this.prospectosFiltrados = [];
+  this.onChangeProspecto(); 
+}
+
+onChangeProspecto() {
+  const idProspecto = this.oportunidadForm.get('idProspecto')?.value;
+  if (idProspecto > 0) {
+    this.contactos = this.catalogoService.obtenerContactos(idProspecto);
+    this.banderaContacto = false;
+    const prospectoSeleccionado = this.prospectos.find(p => p.id === idProspecto);
+    if (prospectoSeleccionado) {
+      this.busquedaProspecto = prospectoSeleccionado.nombre;
+    }
+    // Contacto por defecto si solo hay uno
     if (this.contactos.length === 1) {
       this.oportunidadForm.get('idContactoProspecto')?.setValue(this.contactos[0].idContactoProspecto);
     }
+    
   } else {
     this.banderaContacto = true;
+    this.busquedaProspecto = '';
   }
   this.cdr.detectChanges();
 }

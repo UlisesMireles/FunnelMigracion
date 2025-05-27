@@ -13,10 +13,14 @@
             <div class="col-md-6">
                <div class="form-group" [ngStyle]="{ visibility: insertar ? 'visible' : 'hidden', 'margin-bottom': insertar ? '15px' : '0px' }">
                     <label for="prospecto" class="text-start w-100">Prospecto:</label>
-                    <p-dropdown  tabindex="1" class="form-control text-start" [options]="prospectos" [filter]="true" formControlName="idProspecto" 
-                                optionLabel="nombre" optionValue="id" placeholder="Selecciona un prospecto" 
-                                (onChange)="onChangeProspecto()">
-                    </p-dropdown>
+                    <input type="text" tabindex="1" class="form-control" formControlName="idProspecto" placeholder="Buscar prospecto..."
+                    [(ngModel)]="busquedaProspecto" (input)="filtrarProspectos($event)" style="height: 40px;">
+                    <input type="hidden" formControlName="idProspecto">
+                <div *ngIf="prospectosFiltrados.length > 0" class="dropdown-menu show">
+                <a *ngFor="let prospecto of prospectosFiltrados" class="dropdown-item" style=" width: 274px; cursor: pointer;" (click)="seleccionarProspecto(prospecto)">
+                    {{prospecto.nombre}}
+                </a>
+                </div>
                     <span *ngIf="oportunidadForm.get('idProspecto')?.invalid && oportunidadForm.get('idProspecto')?.touched" class="text-danger">
                         <ng-container *ngIf="oportunidadForm.get('idProspecto')?.errors?.['required']">Debe seleccionar un prospecto.</ng-container>
                     </span>

@@ -30,4 +30,14 @@
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
     cursor: grab;
   }
-  
+.plot-container {
+  height: 330px;
+  max-height: 330px;
+  overflow: hidden;
+  position: relative;
+}
+.plot-container plotly-plot {
+  height: 100% !important;
+  width: 100% !important;
+  display: block;
+}

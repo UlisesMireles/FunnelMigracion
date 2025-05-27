@@ -3,6 +3,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import { LoginService } from '../../../services/login.service';
 import { GraficasService } from '../../../services/graficas.service';
 import { GraficasDto, RequestGraficasDto } from '../../../interfaces/graficas';
+import { head } from 'lodash-es';
 @Component({
   selector: 'app-oportunidades-general',
   standalone: false,
@@ -12,10 +13,42 @@ import { GraficasDto, RequestGraficasDto } from '../../../interfaces/graficas';
 })
 export class OportunidadesGeneralComponent {
   quadrants = [
-    { cards: [{id: 1, titulo: 'Indicadores por Etapa'}],},
-    { cards: [{id: 2, titulo: 'Oportunidades por Sector'}],},
-    { cards: [{id: 3, titulo: 'Oportunidades por Tipo'}],},
-    { cards: [],}
+    {
+      cards: [
+        {
+          id: 1,
+          titulo: 'Indicadores por Etapa',
+          grafica: {
+            data: [],
+            layout: {},
+            config: { displaylogo: false, responsive: true, locale: 'es-ES', scrollZoom: true, displayModeBar: true }
+          }
+        }
+      ]
+    },
+    {
+      cards: [{
+        id: 2,
+        titulo: 'Oportunidades por Sector',
+        grafica: {
+          data: [],
+          layout: {},
+          config: { displaylogo: false, responsive: true, locale: 'es-ES', scrollZoom: true, displayModeBar: true }
+        }
+      }],
+    },
+    {
+      cards: [{
+        id: 3,
+        titulo: 'Oportunidades por Tipo',
+        grafica: {
+          data: [],
+          layout: {},
+          config: { displaylogo: false, responsive: true, locale: 'es-ES', scrollZoom: true, displayModeBar: true }
+        }
+      }],
+    },
+    { cards: [], }
   ];
   get dropListIds() {
     return this.quadrants.map((_, index) => `dropList${index}`);
@@ -23,10 +56,10 @@ export class OportunidadesGeneralComponent {
   infoCargada: boolean = false;
   constructor(private readonly graficasService: GraficasService,
     private readonly sessionService: LoginService) { }
-  
-  
-    public graph: any;
-  
+
+
+  public graph: any;
+
   getRandomColor() {
     let color = '#';
     let letters = '0123456789ABCDEF';
@@ -39,8 +72,8 @@ export class OportunidadesGeneralComponent {
   ngOnInit(): void {
     this.consultarGraficaStage();
   }
- 
-  
+
+
 
   consultarGraficaStage(): void {
     const idEmpresa = this.sessionService.obtenerIdEmpresa(); // Obtén el IdEmpresa de la sesión
@@ -48,45 +81,43 @@ export class OportunidadesGeneralComponent {
       bandera: 'SEL-OPORTUNIDAD-STAGE',
       idEmpresa: idEmpresa
     };
-  
+
     this.graficasService.obtenerGraficaData(request).subscribe({
       next: (response: GraficasDto[]) => {
-      
-  
+
+
         // Procesar los datos para Plotly
         const dataAGraficar: any = [{
           type: 'funnel',
-          x: response.map(item => item.valor), // Combina todos los valores en un solo array
-          y: response.map(item => item.label ?? 'Sin etiqueta'), // Combina todas las etiquetas en un solo array
-         
+          x: response.map(item => item.valor), 
+          text: response.map(item => item.label ?? 'Sin etiqueta'), 
           textfont: { family: "Old Standard TT", size: 13, color: "black" },
-          hoverinfo: 'percent total+x', 
-          marker: {color: response.map(item => item.coloreSerie ?? this.getRandomColor()),
-            line: {"width": [4, 2, 2, 3, 1, 1], color: response.map(item => item.coloreSerie ?? this.getRandomColor())}},
-            connector: {line: {color: "royalblue", dash: "dot", width: 3}}
+          hoverinfo: 'percent total+x',
+          marker: {
+            color: response.map(item => item.coloreSerie ?? this.getRandomColor())
+          },
+          connector: { line: { color: "royalblue", dash: "dot", width: 3 } }
         }];
 
         // Configuración del layout
         const layOutGrafica: any = {
-          title: {
-            text: 'Indicadores por Etapa',
-          },
           margin: { l: 50, r: 50, b: 130, t: 60 },
-          barmode: "group"
+          height: 630,
+          yaxis: {
+            visible: false, // Oculta el eje Y completamente
+            showticklabels: false, // Opcional: oculta etiquetas
+            showgrid: false,       // Opcional: oculta la cuadrícula
+            zeroline: false        // Opcional: oculta la línea cero
+          },
         };
-        this.graph = {
-          data: dataAGraficar,
-          layout: layOutGrafica ,
-          config: {displaylogo: false, responsive: true, locale: 'es-ES', scrollZoom: true, displayModeBar: true}
-        }
+        // Asignar los datos y el layout a la gráfica
+        this.quadrants[0].cards[0].grafica.data = dataAGraficar;
+        this.quadrants[0].cards[0].grafica.layout = layOutGrafica;
         // Renderizar la gráfica con Plotly
         this.infoCargada = true;
-        console.log(this.graph);
-        import('plotly.js-dist-min').then(ploty => {
-          ploty.newPlot("prueba", dataAGraficar, layOutGrafica, { displaylogo: false, responsive: true, locale: 'es-ES' });
-        });
+
       },
-      error: (err:any) => {
+      error: (err: any) => {
         console.error('Error al consultar la gráfica:', err);
       }
     });
@@ -98,16 +129,16 @@ export class OportunidadesGeneralComponent {
     } else {
       const draggedItem = event.previousContainer.data[event.previousIndex];
       const targetList = event.container.data;
-      console.log(targetList[0] );
+      console.log(targetList[0]);
       if (targetList.length > 0 && targetList[0] !== undefined) {
         // Hay un item en el destino: intercambiar
         const targetItem = targetList[0];
-        
+
         event.previousContainer.data[event.previousIndex] = targetItem;
         targetList[0] = draggedItem;
       } else {
         // El destino está vacío: solo mover
-        transferArrayItem(  
+        transferArrayItem(
           event.previousContainer.data,
           event.container.data,
           event.previousIndex,

@@ -5,14 +5,15 @@
   display: block;
   width: 100%;
   border: #215388 solid 1px;
-  position: relative; /* Añadido para posicionamiento relativo */
+  position: relative; 
+  overflow: hidden; 
 }
 
 /* Estilo para el contenedor del botón de cierre */
 .close-container {
   position: absolute;
-  top: 15px;
-  right: 15px;
+  top: -1px;
+  right: 2px;
   z-index: 1;
 }
 
@@ -20,27 +21,22 @@
   cursor: pointer;
   border: none;
   background: transparent;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   line-height: 1;
-  color: #333; /* Añade color para mejor visibilidad */
+  color: #FFFFFF;
   padding: 0;
   margin: 0;
-  width: 24px;
-  height: 24px;
+  width: 30px;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
+  border-radius: 0%;
+  font-weight: bold;
 }
 
-.btn-close:hover {
-  background-color: #f5f5f5;
-  color: #000;
-}
-
-/* Ajustes para el título */
 .listCheck h4 {
-  padding-right: 30px; /* Espacio para la X */
+  padding-right: 30px; 
   margin-bottom: 20px;
 }
 
@@ -86,4 +82,50 @@ button.p-button-primary {
 button.p-button-primary:hover {
   background: #164475;
 }
+
+.listCheck h3 {
+  background-color: #E05E00; 
+  color: white;
+  padding: 8px;
+  margin: -25px -25px 20px -25px; 
+  text-align: center;
+  font-weight: normal;
+  font-size: 1.7rem;
+}
+
+.button-group {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+button.p-button-primary {
+  background: #f3f2f2 !important; 
+  color: #585757;
+  border: none !important;
+  flex: 1;
+}
+
+button.p-button-primary:hover {
+  background: #dad9d8 !important; 
+  color: #585757;
+}
+
+.btn-cancel {
+  background: #f3f2f2 !important; 
+  color: #585757;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 4px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  flex: 1;
+  cursor: pointer;
+}
+
+.btn-cancel:hover {
+  background: #dad9d8 !important; 
+  color: #585757;
+}
+
   

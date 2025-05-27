@@ -91,23 +91,38 @@ export class OportunidadesEliminadasComponent {
     }
 
 
-    filterByYearAndMonth() {
+     filterByYearAndMonth() {
       if (this.oportunidadesOriginal) {
         const monthNames = [
           "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
           "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
         ];
         this.oportunidades = this.oportunidadesOriginal.filter(oportunidad => {
-          if (!oportunidad.fechaEstimadaCierre) return false;
-          const fecha = new Date(oportunidad.fechaEstimadaCierre);
-          const year = fecha.getFullYear().toString();
-          const monthName = monthNames[fecha.getMonth()];
-          const yearMatch = !this.esNumero(this.selectedYear) || year === this.selectedYear;
-          const monthMatch = this.selectedMonth === "Todos los Meses" || monthName === this.selectedMonth;
-          return yearMatch && monthMatch;
+        const fecha = oportunidad.fechaEstimadaCierre ? new Date(oportunidad.fechaEstimadaCierre) : null;
+        const isSinFecha = !fecha || fecha.getFullYear() === 1;
+
+        if (this.selectedYear === "Sin Fecha") {
+          return isSinFecha;
+        }
+
+        if (isSinFecha) return false;
+
+        const year = fecha.getFullYear().toString();
+        const monthName = monthNames[fecha.getMonth()];
+
+        const yearMatch = this.selectedYear === "Todos los Años" || year === this.selectedYear;
+        const monthMatch = this.selectedMonth === "Todos los Meses" || monthName === this.selectedMonth;
+
+        return yearMatch && monthMatch;
         });
       }
     }
+
+    onYearChange() {
+      this.actualizarMesesPorAnio();
+      this.filterByYearAndMonth();
+    }
+
     actualizarMesesPorAnio() {
       console.log("actualizarMesesPorAnio");
       const monthNames = [
@@ -129,11 +144,6 @@ export class OportunidadesEliminadasComponent {
       this.selectedMonth = "Todos los Meses";
     }
 
-    onYearChange() {
-      this.actualizarMesesPorAnio();
-      this.filterByYearAndMonth();
-    }
-
     getOportunidades() {
       this.oportunidadService.getOportunidades(this.loginService.obtenerIdEmpresa(), this.loginService.obtenerIdUsuario(), this.idEstatus).subscribe({
         next: (result: Oportunidad[]) => {
@@ -146,17 +156,22 @@ export class OportunidadesEliminadasComponent {
           this.oportunidadesOriginal =  oportunidadesOrdenadas;
 
             
-          const yearsSet = new Set<string>();
-          const monthsSet = new Set<number>();
+         const yearsSet = new Set<string>();
           oportunidadesOrdenadas.forEach(o => {
-          if (o.fechaEstimadaCierre) {
-            const fecha = new Date(o.fechaEstimadaCierre);
-            yearsSet.add(fecha.getFullYear().toString());
-            monthsSet.add(fecha.getMonth()); 
-          }
+            if (!o.fechaEstimadaCierre || new Date(o.fechaEstimadaCierre).getFullYear() === 1) {
+              yearsSet.add("Sin Fecha");
+            } else {
+              const fecha = new Date(o.fechaEstimadaCierre);
+              yearsSet.add(fecha.getFullYear().toString());
+            }
           });
-          this.years = Array.from(yearsSet).sort((a, b) => Number(b) - Number(a));
+          this.years = Array.from(yearsSet).sort((a, b) => {
+            if (a === "Sin Fecha") return 1;
+            if (b === "Sin Fecha") return -1;
+            return Number(b) - Number(a);
+          });
           this.years.unshift("Todos los Años");
+
 
           this.actualizarMesesPorAnio();
           if (!this.years.includes(this.selectedYear)) {

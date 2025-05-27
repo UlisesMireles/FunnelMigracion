@@ -83,20 +83,29 @@ export class OportunidadesGanadasComponent {
       document.documentElement.style.fontSize = 12 + 'px';
     }
 
-    filterByYearAndMonth() {
+ filterByYearAndMonth() {
       if (this.oportunidadesOriginal) {
         const monthNames = [
           "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
           "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
         ];
         this.oportunidades = this.oportunidadesOriginal.filter(oportunidad => {
-          if (!oportunidad.fechaEstimadaCierre) return false;
-          const fecha = new Date(oportunidad.fechaEstimadaCierre);
-          const year = fecha.getFullYear().toString();
-          const monthName = monthNames[fecha.getMonth()];
-          const yearMatch = !this.esNumero(this.selectedYear) || year === this.selectedYear;
-          const monthMatch = this.selectedMonth === "Todos los Meses" || monthName === this.selectedMonth;
-          return yearMatch && monthMatch;
+        const fecha = oportunidad.fechaEstimadaCierre ? new Date(oportunidad.fechaEstimadaCierre) : null;
+        const isSinFecha = !fecha || fecha.getFullYear() === 1;
+
+        if (this.selectedYear === "Sin Fecha") {
+          return isSinFecha;
+        }
+
+        if (isSinFecha) return false;
+
+        const year = fecha.getFullYear().toString();
+        const monthName = monthNames[fecha.getMonth()];
+
+        const yearMatch = this.selectedYear === "Todos los Años" || year === this.selectedYear;
+        const monthMatch = this.selectedMonth === "Todos los Meses" || monthName === this.selectedMonth;
+
+        return yearMatch && monthMatch;
         });
       }
     }
@@ -104,51 +113,6 @@ export class OportunidadesGanadasComponent {
     onYearChange() {
       this.actualizarMesesPorAnio();
       this.filterByYearAndMonth();
-    }
-
-    getOportunidades() {
-      this.oportunidadService.getOportunidades(this.loginService.obtenerIdEmpresa(),  this.loginService.obtenerIdUsuario(), this.idEstatus).subscribe({
-        next: (result: Oportunidad[]) => {
-
-          const oportunidadesOrdenadas = sortBy(result, (o) =>
-            o.fechaEstimadaCierre ? new Date(o.fechaEstimadaCierre) : new Date('2100-01-01')
-          ).reverse();
-          
-          this.oportunidades = [...oportunidadesOrdenadas];
-          this.oportunidadesOriginal = oportunidadesOrdenadas;
-          
-          const yearsSet = new Set<string>();
-          const monthsSet = new Set<number>();
-          oportunidadesOrdenadas.forEach(o => {
-          if (o.fechaEstimadaCierre) {
-            const fecha = new Date(o.fechaEstimadaCierre);
-            yearsSet.add(fecha.getFullYear().toString());
-            monthsSet.add(fecha.getMonth()); 
-          }
-          });
-          this.years = Array.from(yearsSet).sort((a, b) => Number(b) - Number(a));
-          this.years.unshift("Todos los Años");
-
-          this.actualizarMesesPorAnio();
-          if (!this.years.includes(this.selectedYear)) {
-            this.selectedYear = this.years[1] || "Todos los Años";
-          }
-          if (!this.months.includes(this.selectedMonth)) {
-            this.selectedMonth = this.months[1] || "Todos los Meses";
-          }
-          this.filterByYearAndMonth() 
-          this.cdr.detectChanges(); 
-          this.loading = false;
-        },
-        error: (error) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Se ha producido un error.',
-            detail: error.errorMessage,
-          });
-          this.loading = false;
-        },
-      });
     }
 
     actualizarMesesPorAnio() {
@@ -170,6 +134,55 @@ export class OportunidadesGanadasComponent {
       this.months = Array.from(monthsSet).sort((a, b) => a - b).map(m => monthNames[m]);
       this.months.unshift("Todos los Meses");
       this.selectedMonth = "Todos los Meses";
+    }
+    getOportunidades() {
+      this.oportunidadService.getOportunidades(this.loginService.obtenerIdEmpresa(),  this.loginService.obtenerIdUsuario(), this.idEstatus).subscribe({
+        next: (result: Oportunidad[]) => {
+
+          const oportunidadesOrdenadas = sortBy(result, (o) =>
+            o.fechaEstimadaCierre ? new Date(o.fechaEstimadaCierre) : new Date('2100-01-01')
+          ).reverse();
+          
+          this.oportunidades = [...oportunidadesOrdenadas];
+          this.oportunidadesOriginal = oportunidadesOrdenadas;
+          
+          const yearsSet = new Set<string>();
+          oportunidadesOrdenadas.forEach(o => {
+            if (!o.fechaEstimadaCierre || new Date(o.fechaEstimadaCierre).getFullYear() === 1) {
+              yearsSet.add("Sin Fecha");
+            } else {
+              const fecha = new Date(o.fechaEstimadaCierre);
+              yearsSet.add(fecha.getFullYear().toString());
+            }
+          });
+          this.years = Array.from(yearsSet).sort((a, b) => {
+            if (a === "Sin Fecha") return 1;
+            if (b === "Sin Fecha") return -1;
+            return Number(b) - Number(a);
+          });
+          this.years.unshift("Todos los Años");
+
+
+          this.actualizarMesesPorAnio();
+          if (!this.years.includes(this.selectedYear)) {
+            this.selectedYear = this.years[1] || "Todos los Años";
+          }
+          if (!this.months.includes(this.selectedMonth)) {
+            this.selectedMonth = this.months[1] || "Todos los Meses";
+          }
+          this.filterByYearAndMonth() 
+          this.cdr.detectChanges(); 
+          this.loading = false;
+        },
+        error: (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Se ha producido un error.',
+            detail: error.errorMessage,
+          });
+          this.loading = false;
+        },
+      });
     }
 
     actualiza(licencia: Oportunidad) {

@@ -156,9 +156,12 @@
                     </span>
                   </span>
                   
-                  <span *ngSwitchCase="'date'" >
-                    {{ rowData[def.key] | date:'dd/MM/yyyy' }}
+                  <span *ngSwitchCase="'date'">
+                    <ng-container *ngIf="rowData[def.key] && rowData[def.key] !== '0001-01-01T00:00:00'">
+                      {{ rowData[def.key] | date:'dd/MM/yyyy' }}
+                    </ng-container>
                   </span>
+
                 </ng-container>
               </td>
               <td style="position: relative;">

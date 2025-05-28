@@ -13,9 +13,9 @@
             <div class="col-md-6">
                <div class="form-group" [ngStyle]="{ visibility: insertar ? 'visible' : 'hidden', 'margin-bottom': insertar ? '15px' : '0px' }">
                     <label for="prospecto" class="text-start w-100">Prospecto:</label>
-                    <input type="text" tabindex="1" class="form-control" formControlName="idProspecto" placeholder="Buscar prospecto..."
-                    [(ngModel)]="busquedaProspecto" (input)="filtrarProspectos($event)" style="height: 40px;">
-                    <input type="hidden" formControlName="idProspecto">
+                    <input type="text" tabindex="1" class="form-control" placeholder="Buscar prospecto..."
+                    [(ngModel)]="busquedaProspecto" [ngModelOptions]="{ standalone: true }" (input)="filtrarProspectos($event)" style="height: 40px;">
+                    <input type="hidden" formControlName="idProspecto" />
                 <div *ngIf="prospectosFiltrados.length > 0" class="dropdown-menu show">
                 <a *ngFor="let prospecto of prospectosFiltrados" class="dropdown-item" style=" width: 274px; cursor: pointer;" (click)="seleccionarProspecto(prospecto)">
                     {{prospecto.nombre}}
@@ -94,7 +94,10 @@
             <div *ngIf="prospectoSeleccionado && contactos.length === 0" 
              class="form-control text-start d-flex align-items-center" 
              style="height: 38px; background-color: #e9ecef; color: red;">
-            No hay contactos. Registrar contacto
+            No hay contactos. 
+            <a (click)="agregarContacto()" style="margin-left: 5px; color: red; text-decoration: underline; cursor: pointer;">
+                Registrar contacto aquí
+            </a>
         </div>
             </ng-template>
             <span *ngIf="oportunidadForm.get('idContactoProspecto')?.invalid && oportunidadForm.get('idContactoProspecto')?.touched"

@@ -12,6 +12,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CatalogoService } from '../../../../services/catalogo.service';
 import { ModalOportunidadesService } from '../../../../services/modalOportunidades.service';
 import { Subscription } from 'rxjs';
+import { Contacto } from '../../../../interfaces/contactos';
 
 @Component({
   selector: 'app-modal-oportunidades',
@@ -43,6 +44,8 @@ export class ModalOportunidadesComponent {
   prospectosFiltrados: any[] = [];
   busquedaProspecto: string = '';
   prospectoSeleccionado : boolean = false;  
+  contactoSeleccionado!: Contacto;
+  
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() closeModal: EventEmitter<void> = new EventEmitter();
   @Output() result: EventEmitter<baseOut> = new EventEmitter();
@@ -184,7 +187,6 @@ onChangeProspecto() {
     if (this.contactos.length === 1) {
       this.oportunidadForm.get('idContactoProspecto')?.setValue(this.contactos[0].idContactoProspecto);
     }
-    
   } else {
     this.banderaContacto = true;
     this.busquedaProspecto = '';
@@ -404,6 +406,27 @@ onChangeProspecto() {
 
   seleccionarHoy() {
     this.oportunidadForm.get('fechaEstimadaCierreOriginal')?.setValue(new Date());
+  }
+  agregarContacto() {
+    const idProspecto = this.oportunidadForm.get('idProspecto')?.value;
+    const nombreProspecto = this.busquedaProspecto;
+   
+    this.contactoSeleccionado = {
+      idContactoProspecto: 0,
+      nombre: '',
+      apellidos: '',
+      telefono: '',
+      correoElectronico: '',
+      prospecto: nombreProspecto || '',
+      idEmpresa: 0,
+      idProspecto: idProspecto || 0,
+      estatus: 0,
+      desEstatus: '',
+      nombreCompleto: '',
+      bandera: ''
+    };
+    this.modalOportunidadesService.openModalContacto(true, true, [], this.contactoSeleccionado);
+
   }
 }
 

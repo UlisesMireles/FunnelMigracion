@@ -73,7 +73,7 @@ export class ModalContactosComponent {
         estatus: 0,
         desEstatus: '',
         prospecto: '',
-        idProspecto: 0,
+        idProspecto: this.contacto?.idProspecto?? 0,
         idEmpresa: 0};
       this.contactoForm = this.fb.group({
         idContactoProspecto: [0],
@@ -91,9 +91,10 @@ export class ModalContactosComponent {
           ]
         ],
         correoElectronico: ['', [Validators.required, Validators.email]],
-        idProspecto: [null, Validators.required],
+        idProspecto: [this.contacto?.idProspecto?? null, Validators.required],
         estatus: [true],
         idEmpresa: [idEmpresa],
+        
         bandera: ['INSERT']
       });
 

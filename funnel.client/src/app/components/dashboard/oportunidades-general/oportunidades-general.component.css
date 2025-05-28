@@ -3,8 +3,8 @@
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
     gap: 20px;
-    height: 89vh;
-    padding: 20px;
+    height: 86vh;
+    padding: 5px 10px;
     box-sizing: border-box;
   }
   

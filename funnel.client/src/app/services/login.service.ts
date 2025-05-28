@@ -4,11 +4,13 @@ import { environment } from '../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Usuario, DobleAutenticacion, LoginUser } from '../interfaces/usuario';
+import { Permiso } from '../interfaces/permisos'; // Ajusta la ruta si es necesario
 import { CatalogoService } from './catalogo.service';
 import { SolicitudRegistroSistema } from '../interfaces/solicitud-registro';
 import { baseOut } from '../interfaces/utils/utils/baseOut';
 import { Usuarios } from '../interfaces/usuarios';
 import { EstadoChatService } from './asistentes/estado-chat.service';
+import { PermisosService } from './permisos.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +22,8 @@ export class LoginService {
 
   private sessionTimeout = 30 * 60 * 1000;
   private timer: any;
-  constructor(private http: HttpClient, private router: Router, private readonly catalogoService: CatalogoService, private estadoChatService: EstadoChatService) {
+  constructor(private http: HttpClient, private router: Router, private readonly catalogoService: CatalogoService, 
+    private readonly permisosService: PermisosService, private estadoChatService: EstadoChatService) {
     this.currentUser = this.currentUserSubject.asObservable();
     this.checkInitialSession();
   }
@@ -66,13 +69,23 @@ export class LoginService {
           sessionStorage.setItem('IdEmpresa', user.idEmpresa);
           sessionStorage.setItem('Empresa', user.Empresa);
           this.catalogoService.cargarCatalogos(user.idEmpresa);
+          this.cargarPermisosUsuario(user.idRol, user.idEmpresa);
           this.startSessionTimer();
         }
         return user;
       }));
   }
 
-
+  cargarPermisosUsuario(idRol:number, idEmrpesa: number):void {
+    this.permisosService.getPermisosPorRol(idRol, idEmrpesa).subscribe({
+      next: (result: Permiso[]) => {
+          sessionStorage.setItem('permisos', window.btoa(JSON.stringify(result)));
+      },
+      error: (error: any) => {
+        console.error('Error al cargar los permisos del usuario:', error);
+      },
+    });
+  }
   reenviarTwoFactor(user: string, pass: string) {
     const datos = { usuario: user, password: pass };
     return this.http.post<any>(this.baseUrl + "api/Login/Autenticacion", datos);
@@ -142,10 +155,20 @@ export class LoginService {
       return {} as LoginUser;
     }
   }
+
+  desencriptaPermiso(): any[] {
+    const sesion = sessionStorage.getItem("permisos");
+    if (sesion) {
+      return JSON.parse(window.atob(sesion));
+    } else {
+      return [];
+    }
+  }
+
   obtenerUsuarioSesion(): LoginUser | null {
     const sesion = this.desencriptaSesion();
     if (sesion) {
-        return sesion;
+      return sesion;
     }
     return null;
   }
@@ -153,21 +176,21 @@ export class LoginService {
   obtenerIdEmpresa(): number {
     const sesion = this.desencriptaSesion();
     if (sesion?.idEmpresa) {
-        return sesion?.idEmpresa;
+      return sesion?.idEmpresa;
     }
     return 0;
   }
   obtenerEmpresa(): string {
     const sesion = this.desencriptaSesion();
     if (sesion?.empresa) {
-        return sesion?.empresa;
+      return sesion?.empresa;
     }
     return "";
   }
   obtenerAlias(): string {
     const sesion = this.desencriptaSesion();
     if (sesion?.alias) {
-        return sesion?.alias;
+      return sesion?.alias;
     }
     return '';
   }
@@ -183,11 +206,17 @@ export class LoginService {
   obtenerIdUsuario(): number {
     const sesion = this.desencriptaSesion();
     if (sesion?.idUsuario) {
-        return sesion?.idUsuario;
+      return sesion?.idUsuario;
     }
     return 0;
   }
-
+  obtenerPermisosUsuario(): any[] {
+    const permiso = this.desencriptaPermiso();
+    if (permiso) {
+      return permiso;
+    }
+    return [];
+  }
   recuperarContrasena(user: string) {
     let datos = { usuario: user };
     return this.http.get<any>(this.baseUrl + "api/Login/RecuperarContrasena", { params: datos });
@@ -197,13 +226,13 @@ export class LoginService {
   }
 
   postSolicitudRegistro(data: SolicitudRegistroSistema): Observable<baseOut> {
-      return this.http.post<baseOut>(this.baseUrl + 'api/Login/GuardarSolicitudRegistro', data);
-    }
+    return this.http.post<baseOut>(this.baseUrl + 'api/Login/GuardarSolicitudRegistro', data);
+  }
 
   postReenviarCodigo(correo: string): Observable<baseOut> {
-      return this.http.post<baseOut>(this.baseUrl + 'api/Login/ReenviarCodigo?correo=' + encodeURIComponent(correo), null);
-    }
-    
+    return this.http.post<baseOut>(this.baseUrl + 'api/Login/ReenviarCodigo?correo=' + encodeURIComponent(correo), null);
+  }
+
 
   cambiarPassword(formData: FormData): Observable<baseOut> {
     const headers = new HttpHeaders();
@@ -212,7 +241,7 @@ export class LoginService {
   cerrarSesion(): void {
     // Limpiar el estado del chat al cerrar sesión
     this.estadoChatService.clearState();
-  
-}
+
+  }
 
 }

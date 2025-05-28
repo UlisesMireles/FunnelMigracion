@@ -1,0 +1,42 @@
+<div class="container-fluid">
+    <div class="row">
+        <!-- <div class="col-12" style="text-align: left; margin-top: 14px; margin-left: 10px; padding-left: 0">
+            <h3>{{titulo}}</h3>
+        </div> -->
+
+        <div class="col-12">
+            <!-- Pestañas  -->
+            <ul class="nav nav-tabs custom-tabs">
+                <li class="nav-item" *ngIf="permisoOportunidadesGeneral">
+                    <a class="nav-link" [class.active]="activeTab === 0" data-bs-toggle="tab" href="#OportunidadesGeneral" (click)="cambioPestana(0)"
+                        pTooltip="Oportunidades General" tooltipPosition="top">
+                        <i class="bi bi-list"></i><span class="title-tab">{{EnumPaginas.OPORTUNIDADES_GENERAL}}</span>
+                    </a>
+                </li>
+                <li class="nav-item" *ngIf="permisoOportunidadesPorAgente">
+                    <a class="nav-link" [class.active]="activeTab === 1" data-bs-toggle="tab" href="#OportunidadesPorAgente" (click)="cambioPestana(1)"
+                        pTooltip="Candelarización" tooltipPosition="top">
+                        <i class="bi bi-calendar"></i><span class="title-tab">{{EnumPaginas.OPORTUNIDADES_POR_AGENTE}}</span>
+                    </a>
+                </li>
+                <li class="nav-item" *ngIf="permisoClientesTop20">
+                    <a class="nav-link" [class.active]="activeTab === 2" data-bs-toggle="tab" href="#ClientesTop20" (click)="cambioPestana(2)" pTooltip="Oportunidades por agente"
+                        tooltipPosition="top">
+                        <i class="bi bi-calendar-check"></i><span class="title-tab">{{EnumPaginas.CLIENTES_TOP_20}}</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content" >
+                <div class="tab-pane fade" [class.show]="activeTab === 0" [class.active]="activeTab === 0" id="OportunidadesGeneral">
+                    <app-oportunidades-general></app-oportunidades-general>
+                </div>
+                <div class="tab-pane fade" [class.show]="activeTab === 1" [class.active]="activeTab === 1"id="OportunidadesPorAgente">
+                    <p>Oportunidades por agente
+                </div>
+                <div class="tab-pane fade" [class.show]="activeTab === 2" [class.active]="activeTab === 2" id="ClientesTop20">
+                    <app-top-veinte></app-top-veinte>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

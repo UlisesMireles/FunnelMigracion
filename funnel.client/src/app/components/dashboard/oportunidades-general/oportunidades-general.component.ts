@@ -96,7 +96,7 @@ export class OportunidadesGeneralComponent {
           marker: {
             color: response.map(item => item.coloreSerie ?? this.getRandomColor())
           },
-          connector: { line: { color: "royalblue", dash: "dot", width: 3 } }
+          connector: { line: { color: "royalblue", dash: "dot", width: 1 } }
         }];
 
         // Configuración del layout

@@ -10,8 +10,11 @@ export class ColumnasDisponiblesComponent implements OnInit {
 
   searchValue: any = '';
   listaColumnas: any[] = [];
+  originalData: any[] = []; 
+
   constructor(public dialogRef: MatDialogRef<ColumnasDisponiblesComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
     this.listaColumnas = data.todosColumnas
+    this.originalData = JSON.parse(JSON.stringify(data.todosColumnas));
   }
 
 
@@ -19,10 +22,23 @@ export class ColumnasDisponiblesComponent implements OnInit {
   }
 
   cerrarModal(): void {
+    this.data.todosColumnas.forEach((element: any, index: number) => {
+    element.isCheck = this.originalData[index].isCheck;
+    });
     this.dialogRef.close();
+  }
+    hasChanges(): boolean {
+    if (!this.originalData || !this.data.todosColumnas) {
+    return false;
+    }
+
+    return this.data.todosColumnas.some((column: any, index: number) => {
+      return column.isCheck !== this.originalData[index]?.isCheck;
+    });
   }
 
   aplicarFiltroParent(): void {
+    this.originalData = JSON.parse(JSON.stringify(this.data.todosColumnas));
     this.dialogRef.close(this.data.todosColumnas);
   }
 

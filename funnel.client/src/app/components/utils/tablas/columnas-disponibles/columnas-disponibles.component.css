@@ -128,4 +128,16 @@ button.p-button-primary:hover {
   color: #585757;
 }
 
+/* Estilo para botón deshabilitado */
+.p-button-primary:disabled {
+  background-color: #e9ecef !important;
+  border-color: #e9ecef !important;
+  color: #adb5bd !important;
+  cursor: not-allowed !important;
+  opacity: 0.7;
+}
+
+.p-button-primary:disabled:hover {
+  background-color: #e9ecef !important;
+}
   

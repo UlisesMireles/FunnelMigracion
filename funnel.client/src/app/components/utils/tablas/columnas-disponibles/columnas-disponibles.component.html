@@ -18,7 +18,7 @@
   </div>
 
   <div class="button-group">
-    <button class="p-button-primary" (click)="aplicarFiltroParent()">Guardar</button>
+    <button class="p-button-primary" (click)="aplicarFiltroParent()" [disabled]="!hasChanges()">Guardar</button>
     <button class="btn-cancel" (click)="cerrarModal()">Cancelar</button>
   </div>
 </div>

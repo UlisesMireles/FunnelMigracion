@@ -42,7 +42,7 @@ export class ModalOportunidadesComponent {
   estatusOportunidad: any[] = [];
   prospectosFiltrados: any[] = [];
   busquedaProspecto: string = '';
-
+  prospectoSeleccionado : boolean = false;  
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() closeModal: EventEmitter<void> = new EventEmitter();
   @Output() result: EventEmitter<baseOut> = new EventEmitter();
@@ -152,7 +152,7 @@ export class ModalOportunidadesComponent {
 filtrarProspectos(event: any) {
   const valorBusqueda = event.target.value.toLowerCase();
   this.busquedaProspecto = valorBusqueda;
-  
+  this.prospectoSeleccionado = false;
   if (valorBusqueda.length > 0) {
     this.prospectosFiltrados = this.prospectos.filter(prospecto => 
       prospecto.nombre.toLowerCase().includes(valorBusqueda)
@@ -167,6 +167,7 @@ seleccionarProspecto(prospecto: any) {
   this.oportunidadForm.get('idProspecto')?.setValue(prospecto.id);
   this.busquedaProspecto = prospecto.nombre;
   this.prospectosFiltrados = [];
+  this.prospectoSeleccionado = true;
   this.onChangeProspecto(); 
 }
 

@@ -83,17 +83,27 @@
             </div>
 
             <!-- Columna Derecha -->
-            <div class="col-md-6">
-                <div class="form-group"style="margin-bottom: 15px;">
-                    <label for="contacto" class="text-start w-100">Contacto:</label>
-                    <p-dropdown tabindex="2"  class="form-control text-start" [options]="contactos" formControlName="idContactoProspecto"
-                                optionLabel="nombreCompleto" optionValue="idContactoProspecto" appendTo="body"
-                                placeholder="Selecciona un contacto" [attr.disabled]="!banderaContacto" [disabled]="banderaContacto">
-                    </p-dropdown>
-                    <span *ngIf="oportunidadForm.get('idContactoProspecto')?.invalid && oportunidadForm.get('idContactoProspecto')?.touched" class="text-danger">
-                        <ng-container *ngIf="oportunidadForm.get('idContactoProspecto')?.errors?.['required']">Debe seleccionar un contacto.</ng-container>
-                    </span>
-                </div>
+   <div class="col-md-6">
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label for="contacto" class="text-start w-100">Contacto:</label>
+           <ng-container *ngIf="!prospectoSeleccionado || contactos.length > 0; else sinContactos">
+             <p-dropdown tabindex="2" class="form-control text-start" [options]="contactos" formControlName="idContactoProspecto"
+             optionLabel="nombreCompleto" optionValue="idContactoProspecto" appendTo="body" placeholder="Selecciona un contacto"
+             [attr.disabled]="!banderaContacto" [disabled]="banderaContacto"></p-dropdown></ng-container>
+            <ng-template #sinContactos>
+            <div *ngIf="prospectoSeleccionado && contactos.length === 0" 
+             class="form-control text-start d-flex align-items-center" 
+             style="height: 38px; background-color: #e9ecef; color: red;">
+            No hay contactos. Registrar contacto
+        </div>
+            </ng-template>
+            <span *ngIf="oportunidadForm.get('idContactoProspecto')?.invalid && oportunidadForm.get('idContactoProspecto')?.touched"
+            class="text-danger">
+            <ng-container *ngIf="oportunidadForm.get('idContactoProspecto')?.errors?.['required']">
+                Debe seleccionar un contacto.
+            </ng-container>
+            </span>
+    </div> 
                 <div class="form-group"  style="margin-bottom: 15px;">
                     <label for="monto" class="text-start w-100">Monto:</label>
                     <input tabindex="4" pInputText class="form-control text-start" formControlName="monto" type="number" />

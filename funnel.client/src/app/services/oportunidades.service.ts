@@ -105,27 +105,33 @@ export class OportunidadesService {
     });
   }
 
-  descargarReporteOportunidadesEnProceso(data: any): Observable<Blob> {
-    return this.http.post(`${this.baseUrl}api/Oportunidades/DescargarReporteOportunidadesEnProceso`, data, { responseType: 'blob' });
+  descargarReporteOportunidadesEnProceso(data: any, idEmpresa: number): Observable<Blob> {
+    return this.http.post(`${this.baseUrl}api/Oportunidades/DescargarReporteOportunidadesEnProceso`, data,
+      { params: { idEmpresa: idEmpresa.toString() }, responseType: 'blob' });
   }
 
-  descargarReporteOportunidadesPorEtapa(data: any): Observable<Blob> {
-    return this.http.post(`${this.baseUrl}api/Oportunidades/DescargarReporteOportunidadesPorEtapa`, data, { responseType: 'blob' });
+  descargarReporteOportunidadesPorEtapa(data: any, idEmpresa: number): Observable<Blob> {
+    return this.http.post(`${this.baseUrl}api/Oportunidades/DescargarReporteOportunidadesPorEtapa`, data,
+      { params: { idEmpresa: idEmpresa.toString() }, responseType: 'blob' });
   }
 
-  descargarReporteOportunidadesGanadas(data: any): Observable<Blob> {
-    return this.http.post(`${this.baseUrl}api/Oportunidades/DescargarReporteOportunidadesGanadas`, data, { responseType: 'blob' });
+  descargarReporteOportunidadesGanadas(data: any, idEmpresa: number): Observable<Blob> {
+    return this.http.post(`${this.baseUrl}api/Oportunidades/DescargarReporteOportunidadesGanadas`, data,
+      { params: { idEmpresa: idEmpresa.toString() }, responseType: 'blob' });
   }
 
-  descargarReporteOportunidadesPerdidas(data: any): Observable<Blob> {
-    return this.http.post(`${this.baseUrl}api/Oportunidades/DescargarReporteOportunidadesPerdidas`, data, { responseType: 'blob' });
+  descargarReporteOportunidadesPerdidas(data: any, idEmpresa: number): Observable<Blob> {
+    return this.http.post(`${this.baseUrl}api/Oportunidades/DescargarReporteOportunidadesPerdidas`, data, 
+      { params: { idEmpresa: idEmpresa.toString() }, responseType: 'blob' });
   }
 
-  descargarReporteOportunidadesCanceladas(data: any): Observable<Blob> {
-    return this.http.post(`${this.baseUrl}api/Oportunidades/DescargarReporteOportunidadesCanceladas`, data, { responseType: 'blob' });
+  descargarReporteOportunidadesCanceladas(data: any, idEmpresa: number): Observable<Blob> {
+    return this.http.post(`${this.baseUrl}api/Oportunidades/DescargarReporteOportunidadesCanceladas`, data, 
+      { params: { idEmpresa: idEmpresa.toString() }, responseType: 'blob' });
   }
 
-  descargarReporteOportunidadesEliminadas(data: any): Observable<Blob> {
-    return this.http.post(`${this.baseUrl}api/Oportunidades/DescargarReporteOportunidadesEliminadas`, data, { responseType: 'blob' });
+  descargarReporteOportunidadesEliminadas(data: any, idEmpresa: number): Observable<Blob> {
+    return this.http.post(`${this.baseUrl}api/Oportunidades/DescargarReporteOportunidadesEliminadas`, data,
+      { params: { idEmpresa: idEmpresa.toString() }, responseType: 'blob' });
   }
 }

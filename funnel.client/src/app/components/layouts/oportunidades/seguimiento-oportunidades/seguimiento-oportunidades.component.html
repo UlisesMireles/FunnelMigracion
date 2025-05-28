@@ -89,7 +89,7 @@
               <button pButton label="Añadir" (click)="guardarHistorial()" severity="secondary"
                       *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value === 1"
                       [disabled]="!oportunidadForm.get('comentario')?.value" class="me-2"></button>
-            <button pButton severity="secondary" (click)="exportPdf(oportunidadForm.get('idOportunidad')?.value)"
+            <button pButton severity="secondary" [disabled]="disabledPdf" (click)="exportPdf(oportunidadForm.get('idOportunidad')?.value)"
                       [disabled]="historialOportunidad.length === 0"
                       [ngStyle]="{'margin-right': isTerminado ? '0.5rem' : '0'}"
                       [ngClass]="{'align-right': isTerminado,'float-end': isTerminado, 'default-position': !isTerminado, 'icon-btn': true}"

@@ -1,10 +1,13 @@
 ﻿using DinkToPdf;
+using DinkToPdf.Contracts;
 using Funnel.Data;
 using Funnel.Data.Interfaces;
 using Funnel.Logic.Interfaces;
+using Funnel.Logic.Utils;
 using Funnel.Models.Base;
 using Funnel.Models.Dto;
 using Microsoft.Identity.Client;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
@@ -16,9 +19,13 @@ namespace Funnel.Logic
     public class OportunidadesEnProcesoService : IOportunidadesEnProcesoService
     {
         private readonly IOportunidadesEnProcesoData _oportunidadesData;
-        public OportunidadesEnProcesoService(IOportunidadesEnProcesoData oportunidadesData)
+        private readonly ILoginService _loginService;
+        private readonly IConverter _converter;
+        public OportunidadesEnProcesoService(IOportunidadesEnProcesoData oportunidadesData, IConverter converter, ILoginService loginService)
         {
             _oportunidadesData = oportunidadesData;
+            _converter = converter;
+            _loginService = loginService;
         }
 
         public async Task<List<ContactoDto>> ComboContactos(int IdEmpresa, int IdProspecto)
@@ -212,12 +219,27 @@ namespace Funnel.Logic
             return await _oportunidadesData.ActualizarEtapa(request);
         }
 
-        public async Task<HtmlToPdfDocument> GenerarReporteSeguimientoOportunidades(int IdEmpresa, int IdOportunidad, string RutaBase, string Empresa)
+        public async Task<byte[]> GenerarReporteSeguimientoOportunidades(int IdEmpresa, int IdOportunidad, string RutaBase)
         {
+            var imagenEmpresa = await _loginService.ObtenerImagenEmpresa(IdEmpresa);
+            string urlLogo = imagenEmpresa.UrlImagen;
+            string logoBase64 = await Descarga.DescargarImagenComoBase64(urlLogo);
+
             var datos = await _oportunidadesData.ConsultarHistoricoOportunidades(IdEmpresa, IdOportunidad);
 
+            var rutaPlantillaHeader = Path.Combine(RutaBase, "PlantillasReporteHtml", "PlantillaReporteFunnelHeaderDinamico.html");
             var rutaPlantillaBody = Path.Combine(RutaBase, "PlantillasReporteHtml", "PlantillaReporteFunnel.html");
             var htmlTemplateBody = System.IO.File.ReadAllText(rutaPlantillaBody);
+
+            //Leer encabezado de plantilla de reporte
+            string htmlTemplate = File.ReadAllText(rutaPlantillaHeader);
+            string htmlHeaderDinamico = htmlTemplate.Replace("{{LogoBase64}}", logoBase64);
+            htmlHeaderDinamico = htmlHeaderDinamico.Replace("{{Empresa}}", imagenEmpresa.NombreEmpresa);
+            htmlHeaderDinamico = htmlHeaderDinamico.Replace("{{TITULO}}", "Reporte Seguimiento Oportunidades en Proceso");
+
+            //Generar Html Temporal
+            var rutaArchivoTempHeader = Path.Combine(RutaBase, "PlantillasReporteHtml", $"PlantillaReporteHeader-{Guid.NewGuid()}.html");
+            File.WriteAllText(rutaArchivoTempHeader, htmlHeaderDinamico);
 
             // Generar tabla HTML dinámica
             var sb = new StringBuilder();
@@ -242,16 +264,14 @@ namespace Funnel.Logic
             sb.Append("</tbody></table>");
 
             // Reemplazar la tabla en la plantilla
-            htmlTemplateBody = htmlTemplateBody.Replace("{{TITULO}}", "Reporte Seguimiento Oportunidades en Proceso");
             htmlTemplateBody = htmlTemplateBody.Replace("{{TABLA}}", sb.ToString());
-            htmlTemplateBody = htmlTemplateBody.Replace("{{Empresa}}", Empresa);
 
             var doc = new HtmlToPdfDocument()
             {
                 GlobalSettings = {
                     PaperSize = PaperKind.A4,
                     Orientation = Orientation.Portrait,
-                    Margins = new MarginSettings { Top = 10 },
+                    Margins = new MarginSettings { Top = 45 },
                     DocumentTitle = "Seguimiento Oportunidades",
                 },
                 Objects = {
@@ -261,19 +281,44 @@ namespace Funnel.Logic
                         WebSettings = { DefaultEncoding = "utf-8" },
                         HeaderSettings = new HeaderSettings
                         {
+                            HtmUrl = rutaArchivoTempHeader,
                             Spacing = 5
                         }
                     }
                 }
             };
 
-            return doc;
+            //Convertir PDF
+            byte[] pdfBytes = _converter.Convert(doc);
+
+            //Eliminar el archivo temporal
+            if (File.Exists(rutaArchivoTempHeader))
+                File.Delete(rutaArchivoTempHeader);
+
+
+            return pdfBytes;
         }
 
-        public async Task<HtmlToPdfDocument> GenerarReporteOportunidades(OportunidadesReporteDto oportunidades, string RutaBase, string Titulo)
+        public async Task<byte[]> GenerarReporteOportunidades(OportunidadesReporteDto oportunidades, string RutaBase, string titulo, int IdEmpresa)
         {
+            var imagenEmpresa = await _loginService.ObtenerImagenEmpresa(IdEmpresa);
+            string urlLogo = imagenEmpresa.UrlImagen;
+            string logoBase64 = await Descarga.DescargarImagenComoBase64(urlLogo);
+
+            var rutaPlantillaHeader = Path.Combine(RutaBase, "PlantillasReporteHtml", "PlantillaReporteFunnelHeaderDinamico.html");
             var rutaPlantillaBody = Path.Combine(RutaBase, "PlantillasReporteHtml", "PlantillaReporteFunnel.html");
             var htmlTemplateBody = System.IO.File.ReadAllText(rutaPlantillaBody);
+
+            //Leer encabezado de plantilla de reporte
+            string htmlTemplate = File.ReadAllText(rutaPlantillaHeader);
+            string htmlHeaderDinamico = htmlTemplate.Replace("{{LogoBase64}}", logoBase64);
+            htmlHeaderDinamico = htmlHeaderDinamico.Replace("{{Empresa}}", imagenEmpresa.NombreEmpresa);
+            htmlHeaderDinamico = htmlHeaderDinamico.Replace("{{TITULO}}", titulo);
+
+            //Generar Html Temporal
+            var rutaArchivoTempHeader = Path.Combine(RutaBase, "PlantillasReporteHtml", $"PlantillaReporteHeader-{Guid.NewGuid()}.html");
+            File.WriteAllText(rutaArchivoTempHeader, htmlHeaderDinamico);
+
             var propiedadesTexto = typeof(OportunidadesEnProcesoDto).GetProperties(BindingFlags.Public | BindingFlags.Instance).Select(v => v.Name.ToLower()).ToList();
             var propiedades = oportunidades.Datos.First().GetType().GetProperties();
             var keysColumnas = oportunidades.Columnas.Where(v => propiedadesTexto.Contains(v.key.ToLower())).Select(v => v.key.ToLower()).ToList();
@@ -315,17 +360,15 @@ namespace Funnel.Logic
             sb.Append("</tbody></table>");
 
             // Reemplazar la tabla en la plantilla
-            htmlTemplateBody = htmlTemplateBody.Replace("{{TITULO}}", Titulo);
             htmlTemplateBody = htmlTemplateBody.Replace("{{TABLA}}", sb.ToString());
-            htmlTemplateBody = htmlTemplateBody.Replace("{{Empresa}}", oportunidades.Empresa);
 
             var doc = new HtmlToPdfDocument()
             {
                 GlobalSettings = {
                     PaperSize = PaperKind.Legal,
                     Orientation = Orientation.Landscape,
-                    Margins = new MarginSettings { Top = 10 },
-                    DocumentTitle = Titulo,
+                    Margins = new MarginSettings { Top = 45 },
+                    DocumentTitle = titulo,
                 },
                 Objects = {
                     new ObjectSettings() {
@@ -334,13 +377,22 @@ namespace Funnel.Logic
                         WebSettings = { DefaultEncoding = "utf-8" },
                         HeaderSettings = new HeaderSettings
                         {
+                            HtmUrl = rutaArchivoTempHeader,
                             Spacing = 5
                         }
                     }
                 }
             };
 
-            return doc;
+            //Convertir PDF
+            byte[] pdfBytes = _converter.Convert(doc);
+
+            //Eliminar el archivo temporal
+            if (File.Exists(rutaArchivoTempHeader))
+                File.Delete(rutaArchivoTempHeader);
+
+
+            return pdfBytes;
         }
     }
 }

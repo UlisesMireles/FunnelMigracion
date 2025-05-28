@@ -76,6 +76,7 @@ export class OportunidadesComponent {
 
   columnsAMostrarResp: string = JSON.stringify(this.lsColumnasAMostrar);
   columnsTodasResp: string = JSON.stringify(this.lsTodasColumnas);
+  disabledPdf: boolean = false;
 
   constructor(private oportunidadService: OportunidadesService, private messageService: MessageService, private cdr: ChangeDetectorRef,
     private readonly loginService: LoginService, public dialog: MatDialog, private modalOportunidadesService: ModalOportunidadesService
@@ -274,8 +275,9 @@ export class OportunidadesComponent {
     if (dataExport.length == 0)
       return
 
+    this.disabledPdf = true;
 
-    this.oportunidadService.descargarReporteOportunidadesEnProceso(data).subscribe({
+    this.oportunidadService.descargarReporteOportunidadesEnProceso(data, this.loginService.obtenerIdEmpresa()).subscribe({
       next: (result: Blob) => {
         const url = window.URL.createObjectURL(result);
         const link = document.createElement('a');
@@ -283,6 +285,7 @@ export class OportunidadesComponent {
         link.download = 'OportunidadesEnProceso.pdf';
         link.click();
         URL.revokeObjectURL(url);
+        this.disabledPdf = false;
 
       },
       error: (error) => {
@@ -291,6 +294,7 @@ export class OportunidadesComponent {
           summary: 'Se ha producido un error al generar reporte',
           detail: error.errorMessage,
         });
+        this.disabledPdf = false;
       },
     });
 

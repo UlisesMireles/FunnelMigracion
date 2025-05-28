@@ -14,6 +14,6 @@ namespace Funnel.Logic.Interfaces
     {
         Task<List<TipoEntregaDto>> ConsultarTiposEntrega(int IdEmpresa);
         Task<BaseOut> GuardarTipoEntrega(TipoEntregaDto tipoEntrega);
-        Task<HtmlToPdfDocument> GenerarReporteTiposEntregas(TiposEntregasReporteDTO TiposEntregas, string RutaBase, string titulo);
+        Task<byte[]> GenerarReporteTiposEntregas(TiposEntregasReporteDTO TiposEntregas, string RutaBase, string titulo, int IdEmpresa);
     }
 }

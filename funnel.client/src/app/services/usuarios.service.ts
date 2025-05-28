@@ -35,8 +35,9 @@ export class UsuariosService {
     });
   }
 
-  descargarReporteUsuarios(data: any): Observable<Blob> {
-    return this.http.post(`${this.baseUrl}api/Usuarios/DescargarReporteUsuarios`, data, { responseType: 'blob' });
+  descargarReporteUsuarios(data: any, idEmpresa: number): Observable<Blob> {
+    return this.http.post(`${this.baseUrl}api/Usuarios/DescargarReporteUsuarios`, data,
+      { params: { idEmpresa: idEmpresa.toString() }, responseType: 'blob' });
   }
 
 }

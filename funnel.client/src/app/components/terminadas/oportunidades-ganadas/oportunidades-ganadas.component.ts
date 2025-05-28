@@ -71,6 +71,7 @@ export class OportunidadesGanadasComponent {
 
   columnsAMostrarResp: string = JSON.stringify(this.lsColumnasAMostrar);
   columnsTodasResp: string = JSON.stringify(this.lsTodasColumnas);
+  disabledPdf: boolean = false;
 
   constructor(private oportunidadService: OportunidadesService, private messageService: MessageService, private cdr: ChangeDetectorRef,
       private readonly loginService: LoginService, public dialog: MatDialog
@@ -307,9 +308,11 @@ export class OportunidadesGanadasComponent {
   
       if (dataExport.length == 0)
         return
+
+      this.disabledPdf = true;
   
   
-      this.oportunidadService.descargarReporteOportunidadesGanadas(data).subscribe({
+      this.oportunidadService.descargarReporteOportunidadesGanadas(data,this.loginService.obtenerIdEmpresa()).subscribe({
         next: (result: Blob) => {
           const url = window.URL.createObjectURL(result);
           const link = document.createElement('a');
@@ -317,6 +320,7 @@ export class OportunidadesGanadasComponent {
           link.download = 'OportunidadesGanadas.pdf';
           link.click();
           URL.revokeObjectURL(url);
+          this.disabledPdf = false;
         },
         error: (error) => {
           this.messageService.add({
@@ -325,6 +329,7 @@ export class OportunidadesGanadasComponent {
             detail: error.errorMessage,
           });
           this.loading = false;
+          this.disabledPdf = false;
         },
       });
   

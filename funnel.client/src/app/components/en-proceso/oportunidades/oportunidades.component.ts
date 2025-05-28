@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs';
 import { ModalOportunidadesService } from '../../../services/modalOportunidades.service';
 import { map } from 'rxjs/operators';
 import { Prospectos } from '../../../interfaces/prospecto';
+import { state } from '@angular/animations';
 
 @Component({
   selector: 'app-oportunidades',
@@ -36,6 +37,7 @@ export class OportunidadesComponent {
   idEstatus: number = 1;
 
   insertar: boolean = false;
+  desdeSector = false;
   seguimientoOportunidad: boolean = false;
   modalVisible: boolean = false;
   modalSeguimientoVisible: boolean = false;
@@ -100,6 +102,16 @@ export class OportunidadesComponent {
       if (state.result.id != -1 && state.result.result) {
         this.getOportunidades();
       }
+    });
+    this.modalSubscription = this.modalOportunidadesService.modalProspectoState$.subscribe(state => {
+      this.desdeSector = state.desdeSector;
+      this.insertar = state.insertar;
+      if (!state.showModal) {
+      this.prospectoEdicion = null;
+    }
+    if (state.result.id != -1 && state.result.result) {
+      this.getOportunidades();
+    }
     });
   }
 
@@ -453,8 +465,9 @@ export class OportunidadesComponent {
     this.prospectoEdicion = { ... rowData };
     this.insertar = false;
     this.modalVisible = true;
+    this.desdeSector = true;
     this.modalOportunidadesService
-    .openModalProspecto(true, false, [], rowData)
+    .openModalProspecto(true, false, [], rowData, { errorMessage: '', result: false, id: -1 }, true)
     .subscribe((modalResult) => {
       if (modalResult?.result.result === true) {
         this.ngOnInit();

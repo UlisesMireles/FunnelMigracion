@@ -45,6 +45,7 @@ export class TiposEntregaComponent {
   ];
   columnsAMostrarResp = JSON.stringify(this.lsColumnasAMostrar);
   columnsTodasResp = JSON.stringify(this.lsTodasColumnas);
+  disabledPdf: boolean = false;
 
   constructor(private tipoEntregaService: TipoEntregaService, private messageService: MessageService, private cdr: ChangeDetectorRef, private loginService:LoginService, public dialog: MatDialog) { }
 
@@ -206,9 +207,11 @@ clear(table: Table) {
   
       if (dataExport.length == 0)
         return
+
+      this.disabledPdf = true;
   
   
-      this.tipoEntregaService.descargarReporteTiposEntregas(data).subscribe({
+      this.tipoEntregaService.descargarReporteTiposEntregas(data,this.loginService.obtenerIdEmpresa()).subscribe({
         next: (result: Blob) => {
           const url = window.URL.createObjectURL(result);
           const link = document.createElement('a');
@@ -216,6 +219,7 @@ clear(table: Table) {
           link.download = 'Tipos_de_Entregas.pdf';
           link.click();
           URL.revokeObjectURL(url);
+          this.disabledPdf = false;
   
         },
         error: (error) => {
@@ -224,6 +228,7 @@ clear(table: Table) {
             summary: 'Se ha producido un error al generar reporte',
             detail: error.errorMessage,
           });
+          this.disabledPdf = false;
         },
       });
   

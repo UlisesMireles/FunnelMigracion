@@ -31,7 +31,7 @@
                 <p-button label="" icon="bi bi-arrow-clockwise" (click)="clear(dt)" severity="secondary"
                 pTooltip="Refrescar" tooltipPosition="top" styleClass="custom-button refresh-button"
                 [ngStyle]="{'margin-right': '5px'}" />
-                <p-button label="" icon="bi bi-filetype-pdf" severity="secondary" (click)="exportPdf(dt)" 
+                <p-button [disabled]="disabledPdf" label="" icon="bi bi-filetype-pdf" severity="secondary" (click)="exportPdf(dt)" 
                 pTooltip="Descargar PDF" tooltipPosition="top" styleClass="custom-button download-button"
                 [ngStyle]="{'margin-right': '5px'}"/>
                 <p-button label="" icon="bi bi-download" severity="secondary" (click)="exportExcel(dt)"  

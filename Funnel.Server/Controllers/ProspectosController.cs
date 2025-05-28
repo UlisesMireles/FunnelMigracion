@@ -13,12 +13,10 @@ namespace Funnel.Server.Controllers
     public class ProspectosController : Controller
     {
         private readonly IProspectosService _prospectosService;
-        private readonly IConverter _converter;
 
-        public ProspectosController(IProspectosService prospectosService, IConverter converter)
+        public ProspectosController(IProspectosService prospectosService)
         {
             _prospectosService = prospectosService;
-            _converter = converter;
         }
 
         [HttpGet("[action]/")]
@@ -51,18 +49,16 @@ namespace Funnel.Server.Controllers
         }
 
         [HttpPost("[action]/")]
-        public async Task<ActionResult> DescargarReporteProspectos([FromBody] ProspectosReporteDTO prospectos)
+        public async Task<ActionResult> DescargarReporteProspectos([FromBody] ProspectosReporteDTO prospectos, int IdEmpresa)
         {
-            var doc = await _prospectosService.GenerarReporteProspectos(prospectos, Directory.GetCurrentDirectory(), "Reporte de Prospectos");
-            var pdf = _converter.Convert(doc);
+            var pdf = await _prospectosService.GenerarReporteProspectos(prospectos, Directory.GetCurrentDirectory(), "Reporte de Prospectos", IdEmpresa);
             return File(pdf, "application/pdf", "Prospectos.pdf");
         }
 
         [HttpPost("[action]/")]
-        public async Task<ActionResult> DescargarReporteTop20([FromBody] ProspectosReporteDTO prospectos)
+        public async Task<ActionResult> DescargarReporteTop20([FromBody] ProspectosReporteDTO prospectos, int IdEmpresa)
         {
-            var doc = await _prospectosService.GenerarReporteTop20(prospectos, Directory.GetCurrentDirectory(), "Reporte de Clientes Top 20");
-            var pdf = _converter.Convert(doc);
+            var pdf = await _prospectosService.GenerarReporteTop20(prospectos, Directory.GetCurrentDirectory(), "Reporte de Clientes Top 20", IdEmpresa);
             return File(pdf, "application/pdf", "ClientesTop20.pdf");
         }
     }

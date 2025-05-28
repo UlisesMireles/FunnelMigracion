@@ -72,6 +72,7 @@ export class OportunidadesEliminadasComponent {
 
   columnsAMostrarResp: string = JSON.stringify(this.lsColumnasAMostrar);
   columnsTodasResp: string = JSON.stringify(this.lsTodasColumnas);
+  disabledPdf: boolean = false;
 
   constructor(private oportunidadService: OportunidadesService, private messageService: MessageService, private cdr: ChangeDetectorRef,
       private readonly loginService: LoginService, public dialog: MatDialog
@@ -317,9 +318,10 @@ export class OportunidadesEliminadasComponent {
   
       if (dataExport.length == 0)
         return
+
+      this.disabledPdf = true;  
   
-  
-      this.oportunidadService.descargarReporteOportunidadesEliminadas(data).subscribe({
+      this.oportunidadService.descargarReporteOportunidadesEliminadas(data, this.loginService.obtenerIdEmpresa()).subscribe({
         next: (result: Blob) => {
           const url = window.URL.createObjectURL(result);
           const link = document.createElement('a');
@@ -327,6 +329,7 @@ export class OportunidadesEliminadasComponent {
           link.download = 'OportunidadesEliminadas.pdf';
           link.click();
           URL.revokeObjectURL(url);
+          this.disabledPdf = false;
         },
         error: (error) => {
           this.messageService.add({
@@ -335,6 +338,7 @@ export class OportunidadesEliminadasComponent {
             detail: error.errorMessage,
           });
           this.loading = false;
+          this.disabledPdf = false;
         },
       });
   

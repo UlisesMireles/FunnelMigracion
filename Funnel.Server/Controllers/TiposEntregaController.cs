@@ -17,12 +17,10 @@ namespace Funnel.Server.Controllers
     public class TiposEntregaController : Controller
     {
         private readonly ITiposEntregaService _tiposEntregaService;
-        private readonly IConverter _converter;
 
-        public TiposEntregaController(ITiposEntregaService tiposEntregaService, IConverter converter)
+        public TiposEntregaController(ITiposEntregaService tiposEntregaService)
         {
             _tiposEntregaService = tiposEntregaService;
-            _converter = converter;
         }
 
         [HttpGet("[action]/")]
@@ -40,10 +38,9 @@ namespace Funnel.Server.Controllers
         }
 
         [HttpPost("[action]/")]
-        public async Task<ActionResult> DescargarReporteTiposEntregas([FromBody] TiposEntregasReporteDTO tiposEntregas)
+        public async Task<ActionResult> DescargarReporteTiposEntregas([FromBody] TiposEntregasReporteDTO tiposEntregas, int IdEmpresa)
         {
-            var doc = await _tiposEntregaService.GenerarReporteTiposEntregas(tiposEntregas, Directory.GetCurrentDirectory(), "Reporte de Tipos de Entregas");
-            var pdf = _converter.Convert(doc);
+            var pdf = await _tiposEntregaService.GenerarReporteTiposEntregas(tiposEntregas, Directory.GetCurrentDirectory(), "Reporte de Tipos de Entregas", IdEmpresa);
             return File(pdf, "application/pdf", "TiposDeEntregas.pdf");
         }
     }

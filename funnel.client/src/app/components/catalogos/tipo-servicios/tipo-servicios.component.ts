@@ -49,6 +49,7 @@ export class TipoServiciosComponent {
   ];
   columnsAMostrarResp = JSON.stringify(this.lsColumnasAMostrar);
   columnsTodasResp = JSON.stringify(this.lsTodasColumnas);
+  disabledPdf: boolean = false;
 
   constructor(private servicioService: TipoServicioService, private messageService: MessageService, private cdr: ChangeDetectorRef, private loginService:LoginService, public dialog: MatDialog ) { }
 
@@ -214,9 +215,10 @@ export class TipoServiciosComponent {
     
         if (dataExport.length == 0)
           return
+        
+        this.disabledPdf = true;
     
-    
-        this.servicioService.descargarReporteServicios(data).subscribe({
+        this.servicioService.descargarReporteServicios(data, this.loginService.obtenerIdEmpresa()).subscribe({
           next: (result: Blob) => {
             const url = window.URL.createObjectURL(result);
             const link = document.createElement('a');
@@ -224,6 +226,7 @@ export class TipoServiciosComponent {
             link.download = 'Tipos_de_Servicios.pdf';
             link.click();
             URL.revokeObjectURL(url);
+            this.disabledPdf = false;
     
           },
           error: (error) => {
@@ -232,6 +235,7 @@ export class TipoServiciosComponent {
               summary: 'Se ha producido un error al generar reporte',
               detail: error.errorMessage,
             });
+            this.disabledPdf = false;
           },
         });
     

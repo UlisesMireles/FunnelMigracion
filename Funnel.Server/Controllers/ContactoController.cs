@@ -12,11 +12,9 @@ namespace Funnel.Server.Controllers
     public class ContactoController : Controller
     {
         private readonly IContactoService _contactoService;
-        private readonly IConverter _converter;
-        public ContactoController(IContactoService contactoService, IConverter converter)
+        public ContactoController(IContactoService contactoService)
         {
             _contactoService = contactoService;
-            _converter = converter;
         }
         [HttpGet("[action]/")]
         public async Task<ActionResult<List<ContactoDto>>> ConsultarContacto(int idEmpresa)
@@ -38,10 +36,9 @@ namespace Funnel.Server.Controllers
         }
 
         [HttpPost("[action]/")]
-        public async Task<ActionResult> DescargarReporteContactos([FromBody] ContactosReporteDTO contactos)
+        public async Task<ActionResult> DescargarReporteContactos([FromBody] ContactosReporteDTO contactos, int IdEmpresa)
         {
-            var doc = await _contactoService.GenerarReporteContactos(contactos, Directory.GetCurrentDirectory(), "Reporte de Contactos");
-            var pdf = _converter.Convert(doc);
+            var pdf = await _contactoService.GenerarReporteContactos(contactos, Directory.GetCurrentDirectory(), "Reporte de Contactos", IdEmpresa);
             return File(pdf, "application/pdf", "Contactos.pdf");
         }
     }

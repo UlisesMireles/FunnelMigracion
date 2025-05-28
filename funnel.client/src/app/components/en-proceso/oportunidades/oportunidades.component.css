@@ -396,7 +396,7 @@ th.sort-active p-sortIcon {
 
 ::ng-deep .fixed-width-oportunidad {
   width: 200px !important;
-  max-width: 200px !important;
+  max-width: 250px !important;
   min-width: 200px !important;
   white-space: normal !important;
   word-break: break-word !important;

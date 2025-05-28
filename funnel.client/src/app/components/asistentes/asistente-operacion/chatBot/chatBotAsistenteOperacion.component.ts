@@ -12,7 +12,7 @@ import { PreguntasFrecuentesService } from '../../../../services/asistentes/preg
 import { environment } from '../../../../../environments/environment';
 import { LoginService } from '../../../../services/login.service';
 import { MessageService } from 'primeng/api';
-import { EstadoChatService } from '../../../../services/asistentes/estado-chat.service';
+/*import { EstadoChatService } from '../../../../services/asistentes/estado-chat.service';*/
 @Component({
   standalone: false,
   selector: 'app-chatBotAsistenteOperacion',
@@ -64,22 +64,21 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
     private cdRef: ChangeDetectorRef,
     private preguntasFAQService: PreguntasFrecuentesService,
     private loginService: LoginService,
-    private messageService: MessageService,
-    private estadoChatService: EstadoChatService
+    private messageService: MessageService
+    /*private estadoChatService: EstadoChatService*/
   ) {
   }
 
-  ngOnInit() {
-    this.chatHistorialResp = JSON.stringify(this.chatHistorial);
+ngOnInit() {
+  this.chatHistorialResp = JSON.stringify(this.chatHistorial);
 
-     // Cargar estado guardado
-    const savedState = this.estadoChatService.getCurrentState();
-    if (savedState) {
-      this.restoreState(savedState);
-    } else {
-      this.obtenListaPreguntasFrecuentesCategoriaOperaciones();
-    }
+  const savedState = sessionStorage.getItem('chatBotOperacionState');
+  if (savedState) {
+    this.restoreState(JSON.parse(savedState));
+  } else {
+    this.obtenListaPreguntasFrecuentesCategoriaOperaciones();
   }
+}
   private restoreState(state: any) {
     this.chatHistorial = state.historial || [
       { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨" },
@@ -94,6 +93,16 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
     
     this.cdRef.detectChanges();
   }
+  private saveState() {
+  const state = {
+    historial: this.chatHistorial,
+    asistenteSeleccionado: this.asistenteSeleccionado,
+    lsPreguntasPorCategoria: this.lsPreguntasPorCategoria,
+    lsCategoriaPreguntas: this.lsCategoriaPreguntas,
+    lsAsistentesPorCategoria: this.lsAsistentesPorCategoria
+  };
+  sessionStorage.setItem('chatBotOperacionState', JSON.stringify(state));
+}
   //#region obtencion de datos de session storage
   nombreUsuario(): string {
     let NombreUsuarioString = environment.usuarioData.nombreUsuario;
@@ -199,6 +208,7 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
     }
     this.chatHistorial.push({ rol: "preguntasPorCat", mensaje: "" });
     this.scrollToBottom();
+    this.saveState(); 
   }
 
   seleccionPregunta(preguntaFaq: PreguntasPorCategoriaDto) {
@@ -220,6 +230,7 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
 
       this.scrollToBottom();
       this.cdRef.detectChanges();
+      this.saveState();
     } else {
       this.consultaAsistente.idBot = this.asistenteSeleccionado.idBot;
       this.consultaAsistente.pregunta = preguntaFaq.pregunta;
@@ -250,6 +261,7 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
 
           this.scrollToBottom();
           this.cdRef.detectChanges();
+          this.saveState();
         },
         error: (err: HttpErrorResponse) => {
           this.chatHistorial.pop();
@@ -324,6 +336,7 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
 
                 this.scrollToBottom();
                 this.cdRef.detectChanges();
+                this.saveState();
               },
               error: (err: HttpErrorResponse) => {
                 this.chatHistorial.pop();
@@ -358,6 +371,7 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
         this.scrollToBottom();
         this.cdRef.detectChanges();
         this.isConsultandoOpenIa = false;
+        this.saveState();
         console.error(err);
       }
     });
@@ -365,14 +379,23 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
 
   //#region metodos de acciones de componente
   resetConversation() {
-    this.loadOpciones = false;
-    this.nombreAsistenteSeleccionado.emit({ asistente: '', idBot: 0 });
-    this.asistenteSeleccionado = { idBot: 0, documento: false };
-    this.chatHistorial = JSON.parse(this.chatHistorialResp);
-    this.obtenListaPreguntasFrecuentesCategoriaOperaciones();
-    this.estadoChatService.clearState();
-    this.cdRef.detectChanges();
-  }
+  this.loadOpciones = false;
+  this.nombreAsistenteSeleccionado.emit({ asistente: '', idBot: 0 });
+  this.asistenteSeleccionado = { idBot: 0, documento: false };
+  //Limpiar historial y arrays
+  this.chatHistorial = [
+    { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨" },
+    { rol: "asistente", mensaje: "Bienvenido(a) al asistente virtual del sistema de ventas Funnel. Estoy aquí para ayudarte. Puedes escribir tu pregunta directamente o explorar por categorías si lo prefieres." }
+  ];
+  this.chatHistorialResp = JSON.stringify(this.chatHistorial);
+  this.lsPreguntasPorCategoria = [];
+  this.lsCategoriaPreguntas = [];
+  this.lsAsistentesPorCategoria = [];
+  sessionStorage.removeItem('chatBotOperacionState');
+  localStorage.removeItem('chatBotOperacionState');
+  this.obtenListaPreguntasFrecuentesCategoriaOperaciones();
+  this.cdRef.detectChanges();
+}
 
   mostrarCategorias() {
     this.asistenteSeleccionado = { idBot: 4, documento: false };
@@ -391,6 +414,7 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
     
     this.scrollToBottom();
     this.cdRef.detectChanges();
+    this.saveState();
   }
 
   seleccionRevisarCategorias(respuesta: string) {
@@ -413,6 +437,7 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
     }
     
     this.scrollToBottom();
+    this.saveState();
   }
 
   scrollToBottom() {
@@ -448,4 +473,39 @@ export class ChatBotAsistenteOperacionComponent implements OnInit {
       this.cdRef.detectChanges(); 
     }, 1000);
   });
+}
+mostrarBotonCopiar(chat: ChatHistorial): boolean {
+  if (
+    chat.mensaje === "¿Podrías ser más específico en tu pregunta?😊" ||
+    chat.mensaje === "Tu pregunta no es valida, has otra pregunta"
+  ) {
+    return false;
+  }
+  const index = this.chatHistorial.indexOf(chat);
+  if (index > 0) {
+    const mensajeAnterior = this.chatHistorial[index - 1];
+
+    // Si la respuesta viene de seleccionRevisarCategorias
+    if (
+      mensajeAnterior.rol === 'usuario' &&
+      this.lsRevisarCategorias.includes(mensajeAnterior.mensaje) &&
+      chat.rol === 'asistente'
+    ) {
+      return false;
+    }
+     
+    //Es respuesta a una pregunta frecuente 
+    const esPreguntaFrecuente = this.lsPreguntasPorCategoria?.some(
+      p => p.pregunta === mensajeAnterior.mensaje
+    );
+    
+    // Es respuesta a un input 
+    const esInputUsuario = mensajeAnterior.rol === 'usuario' && 
+                         !this.lsCategoriaPreguntas?.some(
+                           c => c.descripcion === mensajeAnterior.mensaje
+                         );
+
+    return esPreguntaFrecuente || esInputUsuario;
+  }
+  return false;
 }}

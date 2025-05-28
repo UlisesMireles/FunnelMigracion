@@ -21,8 +21,9 @@ export class TipoEntregaService {
       return this.http.post(`${this.baseUrl}api/TiposEntrega/GuardarTipoEntrega`, request);
     }
 
-    descargarReporteTiposEntregas(data: any): Observable<Blob> {
-      return this.http.post(`${this.baseUrl}api/TiposEntrega/DescargarReporteTiposEntregas`, data, { responseType: 'blob' });
+    descargarReporteTiposEntregas(data: any, idEmpresa: number): Observable<Blob> {
+      return this.http.post(`${this.baseUrl}api/TiposEntrega/DescargarReporteTiposEntregas`, data,
+        { params: { idEmpresa: idEmpresa.toString() }, responseType: 'blob' });
     }
 
 }

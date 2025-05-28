@@ -16,12 +16,10 @@ namespace Funnel.Server.Controllers
     public class ServiciosController : Controller
     {
         private readonly IServiciosService _serviciosService;
-        private readonly IConverter _converter;
 
-        public ServiciosController(IServiciosService serviciosService, IConverter converter)
+        public ServiciosController(IServiciosService serviciosService)
         {
             _serviciosService = serviciosService;
-            _converter = converter;
         }
 
         [HttpGet("[action]/{idEmpresa}")]
@@ -42,10 +40,9 @@ namespace Funnel.Server.Controllers
         }
 
         [HttpPost("[action]/")]
-        public async Task<ActionResult> DescargarReporteServicios([FromBody] ServiciosReporteDTO servicios)
+        public async Task<ActionResult> DescargarReporteServicios([FromBody] ServiciosReporteDTO servicios, int IdEmpresa)
         {
-            var doc = await _serviciosService.GenerarReporteServicios(servicios, Directory.GetCurrentDirectory(), "Reporte de Tipos Servicios");
-            var pdf = _converter.Convert(doc);
+            var pdf = await _serviciosService.GenerarReporteServicios(servicios, Directory.GetCurrentDirectory(), "Reporte de Tipos Servicios", IdEmpresa);
             return File(pdf, "application/pdf", "TiposDeServicios.pdf");
         }
 

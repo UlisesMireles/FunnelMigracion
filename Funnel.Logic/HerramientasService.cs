@@ -1,5 +1,6 @@
 ﻿using Azure.Core;
 using DinkToPdf;
+using DinkToPdf.Contracts;
 using Funnel.Data.Interfaces;
 using Funnel.Logic.Interfaces;
 using Funnel.Logic.Utils;
@@ -17,10 +18,15 @@ namespace Funnel.Logic
     public class HerramientasService : IHerramientasService
     {
         private readonly IHerramientasData _herramientasData;
+        private readonly IConverter _converter;
+        private readonly ILoginService _loginService;
 
-        public HerramientasService(IHerramientasData herramientasData)
+
+        public HerramientasService(IHerramientasData herramientasData, IConverter converter, ILoginService loginService)
         {
             _herramientasData = herramientasData;
+            _converter = converter;
+            _loginService = loginService;
         }
 
         public async Task<List<IngresosFunnelDTO>> ConsultarIngresos(int IdUsuario, int IdEmpresa)
@@ -28,11 +34,26 @@ namespace Funnel.Logic
             return await _herramientasData.ConsultarIngresos(IdUsuario, IdEmpresa);
         }
 
-        public async Task<HtmlToPdfDocument> GenerarReporteIngresosUsuarios(IngresosFunnelReporteDTO ingresos, string RutaBase, string titulo)
+        public async Task<byte[]> GenerarReporteIngresosUsuarios(IngresosFunnelReporteDTO ingresos, string RutaBase, string titulo, int IdEmpresa)
         {
-            var rutaPlantillaHeader = Path.Combine(RutaBase, "PlantillasReporteHtml", "PlantillaReporteFunnelHeader.html");
+            var imagenEmpresa = await _loginService.ObtenerImagenEmpresa(IdEmpresa);
+
+            string urlLogo = imagenEmpresa.UrlImagen;
+            string logoBase64 = await Descarga.DescargarImagenComoBase64(urlLogo);
+
+            var rutaPlantillaHeader = Path.Combine(RutaBase, "PlantillasReporteHtml", "PlantillaReporteFunnelHeaderDinamico.html");
             var rutaPlantillaBody = Path.Combine(RutaBase, "PlantillasReporteHtml", "PlantillaReporteFunnel.html");
             var htmlTemplateBody = System.IO.File.ReadAllText(rutaPlantillaBody);
+
+            //Leer encabezado de plantilla de reporte
+            string htmlTemplate = File.ReadAllText(rutaPlantillaHeader);
+            string htmlHeaderDinamico = htmlTemplate.Replace("{{LogoBase64}}", logoBase64);
+            htmlHeaderDinamico = htmlHeaderDinamico.Replace("{{Empresa}}", imagenEmpresa.NombreEmpresa);
+            htmlHeaderDinamico = htmlHeaderDinamico.Replace("{{TITULO}}", titulo);
+
+            //Generar Html Temporal
+            var rutaArchivoTempHeader = Path.Combine(RutaBase, "PlantillasReporteHtml", $"PlantillaReporteHeader-{Guid.NewGuid()}.html");
+            File.WriteAllText(rutaArchivoTempHeader, htmlHeaderDinamico);
 
             var propiedadesTexto = typeof(IngresosFunnelDTO).GetProperties(BindingFlags.Public | BindingFlags.Instance).Select(v => v.Name.ToLower()).ToList();
             var propiedades = ingresos.Datos.First().GetType().GetProperties();
@@ -78,17 +99,16 @@ namespace Funnel.Logic
             sb.Append("</tbody></table>");
 
             // Reemplazar la tabla en la plantilla
-            htmlTemplateBody = htmlTemplateBody.Replace("{{TITULO}}", titulo);
             htmlTemplateBody = htmlTemplateBody.Replace("{{TABLA}}", sb.ToString());
 
             var doc = new HtmlToPdfDocument()
             {
                 GlobalSettings = {
-                    PaperSize = PaperKind.Legal,
-                    Orientation = Orientation.Landscape,
-                    Margins = new MarginSettings { Top = 45 },
-                    DocumentTitle = titulo,
-                },
+                PaperSize = PaperKind.Legal,
+                Orientation = Orientation.Landscape,
+                Margins = new MarginSettings { Top = 45 },
+                DocumentTitle = titulo,
+            },
                 Objects = {
                     new ObjectSettings() {
                         PagesCount = true,
@@ -96,14 +116,22 @@ namespace Funnel.Logic
                         WebSettings = { DefaultEncoding = "utf-8" },
                         HeaderSettings = new HeaderSettings
                         {
-                            HtmUrl = rutaPlantillaHeader,
+                            HtmUrl = rutaArchivoTempHeader,
                             Spacing = 5
                         }
                     }
                 }
             };
 
-            return doc;
+            //Convertir PDF
+            byte[] pdfBytes = _converter.Convert(doc);
+
+            //Eliminar el archivo temporal
+            if (File.Exists(rutaArchivoTempHeader))
+                File.Delete(rutaArchivoTempHeader);
+
+
+            return pdfBytes;
         }
 
         public async Task<List<ComboCorreosUsuariosDTO>> ComboCorreosUsuariosActivos(int IdEmpresa)
@@ -113,7 +141,7 @@ namespace Funnel.Logic
 
         public async Task<List<ComboCorreosUsuariosDTO>> ConsultarCorreosUsuariosReporteAuto(int IdEmpresa, int IdReporte)
         {
-            return await _herramientasData.ConsultarCorreosUsuariosReporteAuto(IdEmpresa,IdReporte);
+            return await _herramientasData.ConsultarCorreosUsuariosReporteAuto(IdEmpresa, IdReporte);
         }
 
         public async Task<List<EjecucionProcesosReportesDTO>> ConsultarEjecucionProcesosPorEmpresa(int IdEmpresa)
@@ -141,6 +169,6 @@ namespace Funnel.Logic
                 correos = String.Join(",", request.Correos);
             return await _herramientasData.GuardarDiasReportesEstatus(request, correos);
         }
-        
+
     }
 }

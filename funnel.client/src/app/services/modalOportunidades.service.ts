@@ -51,6 +51,7 @@ export class ModalOportunidadesService {
   // Método para abrir la modal
   openModal(showModal: boolean, insertar: boolean, oportunidades: Oportunidad[], oportunidadSeleccionada: Oportunidad, result: BaseOut = { errorMessage: '', result: false, id: -1 }) {
     this.modalStateSubject.next({ showModal: showModal, insertar: insertar, oportunidades: oportunidades, oportunidadSeleccionada: oportunidadSeleccionada, result: result });
+    return this.modalStateSubject.asObservable();
   }
 
   // Método para cerrar la modal

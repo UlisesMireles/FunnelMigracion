@@ -271,8 +271,11 @@ export class HeaderComponent implements OnInit {
     }
   }
 startDrag(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.app-chat-header')) {
+      return; 
+    }
     const el = this.chatContainer.nativeElement as HTMLElement;
-
     this.isDragging = true;
     this.offset = {
       x: event.clientX - el.getBoundingClientRect().left,

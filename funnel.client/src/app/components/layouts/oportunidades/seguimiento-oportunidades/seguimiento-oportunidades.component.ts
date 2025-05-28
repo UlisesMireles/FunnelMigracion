@@ -37,6 +37,7 @@ export class SeguimientoOportunidadesComponent {
   anchoTabla = 100;
   validacionActiva = false;
   wordCount: number = 0;
+  disabledPdf: boolean = false;
 
 
   historialOportunidad: Oportunidad[] = [];
@@ -159,6 +160,7 @@ export class SeguimientoOportunidadesComponent {
   }
 
   exportPdf(idOportunidad: number) {
+    this.disabledPdf = true;
     this.oportunidadService.descargarReporteSeguimientoOportunidades(idOportunidad, this.loginService.obtenerIdEmpresa(), this.loginService.obtenerEmpresa()).subscribe({
       next: (result: Blob) => {
         const url = window.URL.createObjectURL(result);
@@ -167,6 +169,7 @@ export class SeguimientoOportunidadesComponent {
         link.download = 'SeguimientoOportunidades.pdf';
         link.click();
         URL.revokeObjectURL(url);
+        this.disabledPdf = false;
       },
       error: (error) => {
         this.messageService.add({
@@ -175,6 +178,7 @@ export class SeguimientoOportunidadesComponent {
           detail: error.errorMessage,
         });
         this.loading = false;
+        this.disabledPdf = false;
       },
     });
 

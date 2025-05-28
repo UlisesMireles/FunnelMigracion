@@ -56,6 +56,7 @@ export class ContactosComponent {
   columnsAMostrarResp: string = JSON.stringify(this.lsColumnasAMostrar);
   columnsTodasResp: string = JSON.stringify(this.lsTodasColumnas);
   private modalSubscription!: Subscription;
+  disabledPdf: boolean = false;
 
   constructor(
     private contactosService: ContactosService,
@@ -244,8 +245,10 @@ export class ContactosComponent {
     if (dataExport.length == 0)
       return
 
+    this.disabledPdf = true;
 
-    this.contactosService.descargarReporteContactos(data).subscribe({
+
+    this.contactosService.descargarReporteContactos(data,this.loginService.obtenerIdEmpresa()).subscribe({
       next: (result: Blob) => {
         const url = window.URL.createObjectURL(result);
         const link = document.createElement('a');
@@ -253,6 +256,7 @@ export class ContactosComponent {
         link.download = 'Contactos.pdf';
         link.click();
         URL.revokeObjectURL(url);
+        this.disabledPdf = false;
 
       },
       error: (error) => {
@@ -261,6 +265,7 @@ export class ContactosComponent {
           summary: 'Se ha producido un error al generar reporte',
           detail: error.errorMessage,
         });
+        this.disabledPdf = false;
       },
     });
 

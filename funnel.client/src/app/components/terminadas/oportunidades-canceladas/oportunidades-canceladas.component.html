@@ -24,13 +24,16 @@
             </div>
             <div class="row">
               <div class="col inDivDatatableHeader" style="text-align:right; margin-right:5px">
-                <p-dropdown [options]="years" [(ngModel)]="selectedYear" (onChange)="filterByYear()" placeholder="Selecciona un año"
+                <p-dropdown [options]="months" [(ngModel)]="selectedMonth" (onChange)="filterByYearAndMonth()" placeholder="Selecciona un mes"
+                  [ngStyle]="{'margin-right': '5px'}">
+                </p-dropdown>
+                <p-dropdown [options]="years" [(ngModel)]="selectedYear" (onChange)="onYearChange()" placeholder="Selecciona un año"
                   [ngStyle]="{'margin-right': '5px'}">
                 </p-dropdown>
                 <p-button label="" icon="bi bi-arrow-clockwise" (click)="clear(dt)" severity="secondary"
                 pTooltip="Refrescar" tooltipPosition="top" styleClass="custom-button refresh-button"
                 [ngStyle]="{'margin-right': '5px'}" />
-                <p-button label="" icon="bi bi-filetype-pdf" severity="secondary" (click)="exportPdf(dt)" 
+                <p-button [disabled]="disabledPdf" label="" icon="bi bi-filetype-pdf" severity="secondary" (click)="exportPdf(dt)" 
                 pTooltip="Descargar PDF" tooltipPosition="top" styleClass="custom-button download-button"
                 [ngStyle]="{'margin-right': '5px'}"/>
                 <p-button label="" icon="bi bi-download" severity="secondary" (click)="exportExcel(dt)"  
@@ -155,9 +158,12 @@
                     </span>
                   </span>
                   
-                  <span *ngSwitchCase="'date'" >
-                    {{ rowData[def.key] | date:'dd/MM/yyyy' }}
+                  <span *ngSwitchCase="'date'">
+                    <ng-container *ngIf="rowData[def.key] && rowData[def.key] !== '0001-01-01T00:00:00'">
+                      {{ rowData[def.key] | date:'dd/MM/yyyy' }}
+                    </ng-container>
                   </span>
+
                 </ng-container>
               </td>
               <td style="position: relative;">

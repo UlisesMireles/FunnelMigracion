@@ -40,6 +40,8 @@ export class OportunidadesGanadasComponent {
 
   years: string[] = [];
   selectedYear: string = new Date().getFullYear().toString();
+  months: string[] = [];
+  selectedMonth: string = "Todos los Meses";
 
   lsColumnasAMostrar: any[] = [
    
@@ -69,6 +71,7 @@ export class OportunidadesGanadasComponent {
 
   columnsAMostrarResp: string = JSON.stringify(this.lsColumnasAMostrar);
   columnsTodasResp: string = JSON.stringify(this.lsTodasColumnas);
+  disabledPdf: boolean = false;
 
   constructor(private oportunidadService: OportunidadesService, private messageService: MessageService, private cdr: ChangeDetectorRef,
       private readonly loginService: LoginService, public dialog: MatDialog
@@ -78,32 +81,61 @@ export class OportunidadesGanadasComponent {
       this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
       this.getOportunidades();
 
-      const currentYear = new Date().getFullYear();
-      for (let year = currentYear; year >= 2020; year--) {
-        this.years.push(year.toString());
-      }
-      this.years.unshift("Todos los Años");
-
       document.documentElement.style.fontSize = 12 + 'px';
     }
 
-
-    filterByYear() {
+ filterByYearAndMonth() {
       if (this.oportunidadesOriginal) {
+        const monthNames = [
+          "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+          "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+        ];
         this.oportunidades = this.oportunidadesOriginal.filter(oportunidad => {
-          if(!this.esNumero(this.selectedYear))
-            return true
-          else if (oportunidad.fechaEstimadaCierre) {
-            const fechaRegistro = new Date(oportunidad.fechaEstimadaCierre);
-            return fechaRegistro.getFullYear().toString() === this.selectedYear;
-          }
-          else
-            return false;
+        const fecha = oportunidad.fechaEstimadaCierre ? new Date(oportunidad.fechaEstimadaCierre) : null;
+        const isSinFecha = !fecha || fecha.getFullYear() === 1;
+
+        if (this.selectedYear === "Sin Fecha") {
+          return isSinFecha;
+        }
+
+        if (isSinFecha) return false;
+
+        const year = fecha.getFullYear().toString();
+        const monthName = monthNames[fecha.getMonth()];
+
+        const yearMatch = this.selectedYear === "Todos los Años" || year === this.selectedYear;
+        const monthMatch = this.selectedMonth === "Todos los Meses" || monthName === this.selectedMonth;
+
+        return yearMatch && monthMatch;
         });
       }
     }
 
+    onYearChange() {
+      this.actualizarMesesPorAnio();
+      this.filterByYearAndMonth();
+    }
 
+    actualizarMesesPorAnio() {
+      console.log("actualizarMesesPorAnio");
+      const monthNames = [
+        "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+        "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+      ];
+      const monthsSet = new Set<number>();
+      this.oportunidadesOriginal.forEach(o => {
+        if (o.fechaEstimadaCierre) {
+          const fecha = new Date(o.fechaEstimadaCierre);
+          const year = fecha.getFullYear().toString();
+          if (this.selectedYear === "Todos los Años" || year === this.selectedYear) {
+            monthsSet.add(fecha.getMonth());
+          }
+        }
+      });
+      this.months = Array.from(monthsSet).sort((a, b) => a - b).map(m => monthNames[m]);
+      this.months.unshift("Todos los Meses");
+      this.selectedMonth = "Todos los Meses";
+    }
     getOportunidades() {
       this.oportunidadService.getOportunidades(this.loginService.obtenerIdEmpresa(),  this.loginService.obtenerIdUsuario(), this.idEstatus).subscribe({
         next: (result: Oportunidad[]) => {
@@ -114,7 +146,32 @@ export class OportunidadesGanadasComponent {
           
           this.oportunidades = [...oportunidadesOrdenadas];
           this.oportunidadesOriginal = oportunidadesOrdenadas;
-          this.filterByYear();
+          
+          const yearsSet = new Set<string>();
+          oportunidadesOrdenadas.forEach(o => {
+            if (!o.fechaEstimadaCierre || new Date(o.fechaEstimadaCierre).getFullYear() === 1) {
+              yearsSet.add("Sin Fecha");
+            } else {
+              const fecha = new Date(o.fechaEstimadaCierre);
+              yearsSet.add(fecha.getFullYear().toString());
+            }
+          });
+          this.years = Array.from(yearsSet).sort((a, b) => {
+            if (a === "Sin Fecha") return 1;
+            if (b === "Sin Fecha") return -1;
+            return Number(b) - Number(a);
+          });
+          this.years.unshift("Todos los Años");
+
+
+          this.actualizarMesesPorAnio();
+          if (!this.years.includes(this.selectedYear)) {
+            this.selectedYear = this.years[1] || "Todos los Años";
+          }
+          if (!this.months.includes(this.selectedMonth)) {
+            this.selectedMonth = this.months[1] || "Todos los Meses";
+          }
+          this.filterByYearAndMonth() 
           this.cdr.detectChanges(); 
           this.loading = false;
         },
@@ -128,6 +185,7 @@ export class OportunidadesGanadasComponent {
         },
       });
     }
+
     actualiza(licencia: Oportunidad) {
       this.oportunidadSeleccionada = licencia;
       this.insertar = false;
@@ -250,9 +308,11 @@ export class OportunidadesGanadasComponent {
   
       if (dataExport.length == 0)
         return
+
+      this.disabledPdf = true;
   
   
-      this.oportunidadService.descargarReporteOportunidadesGanadas(data).subscribe({
+      this.oportunidadService.descargarReporteOportunidadesGanadas(data,this.loginService.obtenerIdEmpresa()).subscribe({
         next: (result: Blob) => {
           const url = window.URL.createObjectURL(result);
           const link = document.createElement('a');
@@ -260,6 +320,7 @@ export class OportunidadesGanadasComponent {
           link.download = 'OportunidadesGanadas.pdf';
           link.click();
           URL.revokeObjectURL(url);
+          this.disabledPdf = false;
         },
         error: (error) => {
           this.messageService.add({
@@ -268,6 +329,7 @@ export class OportunidadesGanadasComponent {
             detail: error.errorMessage,
           });
           this.loading = false;
+          this.disabledPdf = false;
         },
       });
   

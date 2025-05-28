@@ -1,7 +1,9 @@
 ﻿using DinkToPdf;
+using DinkToPdf.Contracts;
 using Funnel.Data;
 using Funnel.Data.Interfaces;
 using Funnel.Logic.Interfaces;
+using Funnel.Logic.Utils;
 using Funnel.Models.Base;
 using Funnel.Models.Dto;
 using System;
@@ -16,9 +18,14 @@ namespace Funnel.Logic
     public class ProspectoService : IProspectosService
     {
         private readonly IProspectoData _ProspectoData;
-        public ProspectoService(IProspectoData ProspectoData)
+        private readonly ILoginService _loginService;
+        private readonly IConverter _converter;
+
+        public ProspectoService(IProspectoData ProspectoData, IConverter converter, ILoginService loginService)
         {
             _ProspectoData = ProspectoData;
+            _converter = converter;
+            _loginService = loginService;
         }
 
         public async Task<List<ComboSectoresDto>> ComboSectores()
@@ -56,11 +63,25 @@ namespace Funnel.Logic
             return await _ProspectoData.GuardarProspecto(request);
         }
 
-        public async Task<HtmlToPdfDocument> GenerarReporteProspectos(ProspectosReporteDTO prospectos, string RutaBase, string titulo)
+        public async Task<byte[]> GenerarReporteProspectos(ProspectosReporteDTO prospectos, string RutaBase, string titulo, int IdEmpresa)
         {
-            var rutaPlantillaHeader = Path.Combine(RutaBase, "PlantillasReporteHtml", "PlantillaReporteFunnelHeader.html");
+            var imagenEmpresa = await _loginService.ObtenerImagenEmpresa(IdEmpresa);
+            string urlLogo = imagenEmpresa.UrlImagen;
+            string logoBase64 = await Descarga.DescargarImagenComoBase64(urlLogo);
+
+            var rutaPlantillaHeader = Path.Combine(RutaBase, "PlantillasReporteHtml", "PlantillaReporteFunnelHeaderDinamico.html");
             var rutaPlantillaBody = Path.Combine(RutaBase, "PlantillasReporteHtml", "PlantillaReporteFunnel.html");
             var htmlTemplateBody = System.IO.File.ReadAllText(rutaPlantillaBody);
+
+            //Leer encabezado de plantilla de reporte
+            string htmlTemplate = File.ReadAllText(rutaPlantillaHeader);
+            string htmlHeaderDinamico = htmlTemplate.Replace("{{LogoBase64}}", logoBase64);
+            htmlHeaderDinamico = htmlHeaderDinamico.Replace("{{Empresa}}", imagenEmpresa.NombreEmpresa);
+            htmlHeaderDinamico = htmlHeaderDinamico.Replace("{{TITULO}}", titulo);
+
+            //Generar Html Temporal
+            var rutaArchivoTempHeader = Path.Combine(RutaBase, "PlantillasReporteHtml", $"PlantillaReporteHeader-{Guid.NewGuid()}.html");
+            File.WriteAllText(rutaArchivoTempHeader, htmlHeaderDinamico);
 
             var propiedadesTexto = typeof(ProspectoDTO).GetProperties(BindingFlags.Public | BindingFlags.Instance).Select(v => v.Name.ToLower()).ToList();
             var propiedades = prospectos.Datos.First().GetType().GetProperties();
@@ -121,21 +142,43 @@ namespace Funnel.Logic
                         WebSettings = { DefaultEncoding = "utf-8" },
                         HeaderSettings = new HeaderSettings
                         {
-                            HtmUrl = rutaPlantillaHeader,
+                            HtmUrl = rutaArchivoTempHeader,
                             Spacing = 5
                         }
                     }
                 }
             };
 
-            return doc;
+            //Convertir PDF
+            byte[] pdfBytes = _converter.Convert(doc);
+
+            //Eliminar el archivo temporal
+            if (File.Exists(rutaArchivoTempHeader))
+                File.Delete(rutaArchivoTempHeader);
+
+
+            return pdfBytes;
         }
 
-        public async Task<HtmlToPdfDocument> GenerarReporteTop20(ProspectosReporteDTO prospectos, string RutaBase, string titulo)
+        public async Task<byte[]> GenerarReporteTop20(ProspectosReporteDTO prospectos, string RutaBase, string titulo, int IdEmpresa)
         {
-            var rutaPlantillaHeader = Path.Combine(RutaBase, "PlantillasReporteHtml", "PlantillaReporteFunnelHeader.html");
+            var imagenEmpresa = await _loginService.ObtenerImagenEmpresa(IdEmpresa);
+            string urlLogo = imagenEmpresa.UrlImagen;
+            string logoBase64 = await Descarga.DescargarImagenComoBase64(urlLogo);
+
+            var rutaPlantillaHeader = Path.Combine(RutaBase, "PlantillasReporteHtml", "PlantillaReporteFunnelHeaderDinamico.html");
             var rutaPlantillaBody = Path.Combine(RutaBase, "PlantillasReporteHtml", "PlantillaReporteFunnel.html");
             var htmlTemplateBody = System.IO.File.ReadAllText(rutaPlantillaBody);
+
+            //Leer encabezado de plantilla de reporte
+            string htmlTemplate = File.ReadAllText(rutaPlantillaHeader);
+            string htmlHeaderDinamico = htmlTemplate.Replace("{{LogoBase64}}", logoBase64);
+            htmlHeaderDinamico = htmlHeaderDinamico.Replace("{{Empresa}}", imagenEmpresa.NombreEmpresa);
+            htmlHeaderDinamico = htmlHeaderDinamico.Replace("{{TITULO}}", titulo);
+
+            //Generar Html Temporal
+            var rutaArchivoTempHeader = Path.Combine(RutaBase, "PlantillasReporteHtml", $"PlantillaReporteHeader-{Guid.NewGuid()}.html");
+            File.WriteAllText(rutaArchivoTempHeader, htmlHeaderDinamico);
 
             var propiedadesTexto = typeof(ProspectoDTO).GetProperties(BindingFlags.Public | BindingFlags.Instance).Select(v => v.Name.ToLower()).ToList();
             var propiedades = prospectos.Datos.First().GetType().GetProperties();
@@ -204,7 +247,6 @@ namespace Funnel.Logic
             sb.Append("</tbody></table>");
 
             // Reemplazar la tabla en la plantilla
-            htmlTemplateBody = htmlTemplateBody.Replace("{{TITULO}}", titulo);
             htmlTemplateBody = htmlTemplateBody.Replace("{{TABLA}}", sb.ToString());
 
             var doc = new HtmlToPdfDocument()
@@ -222,14 +264,22 @@ namespace Funnel.Logic
                         WebSettings = { DefaultEncoding = "utf-8" },
                         HeaderSettings = new HeaderSettings
                         {
-                            HtmUrl = rutaPlantillaHeader,
+                            HtmUrl = rutaArchivoTempHeader,
                             Spacing = 5
                         }
                     }
                 }
             };
 
-            return doc;
+            //Convertir PDF
+            byte[] pdfBytes = _converter.Convert(doc);
+
+            //Eliminar el archivo temporal
+            if (File.Exists(rutaArchivoTempHeader))
+                File.Delete(rutaArchivoTempHeader);
+
+
+            return pdfBytes;
         }
     }
 }

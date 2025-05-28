@@ -46,6 +46,8 @@ export class ModalOportunidadesService {
 
   modalContactoState$ = this.modalContactoStateSubject.asObservable();
 
+  private modalResultSubject = new Subject<BaseOut>();
+
   constructor() { }
 
   // Método para abrir la modal
@@ -62,6 +64,7 @@ export class ModalOportunidadesService {
   // Método para abrir la modal
   openModalProspecto(showModal: boolean, insertar: boolean, prospectos: Prospectos[], prospectoSeleccionado: Prospectos, result: BaseOut = { errorMessage: '', result: false, id: -1 }) {
     this.modalProspectoStateSubject.next({ showModal: showModal, insertar: insertar, prospectos: prospectos, prospectoSeleccionado: prospectoSeleccionado, result: result });
+    return this.modalProspectoStateSubject.asObservable();
   }
 
   // Método para cerrar la modal

@@ -156,13 +156,14 @@ export class HeaderComponent implements OnInit {
     const idEmpresa = idEmpresaStr ? Number(idEmpresaStr) : null;
 
     if (idEmpresa === null || isNaN(idEmpresa)) {
-      this.imagenEmpresaUrl = this.baseUrl + '/assets/img/logotipo-glupoint.png';
+      this.imagenEmpresaUrl = `${this.baseUrl}/assets/img/logotipo-glupoint.png?t=${Date.now()}`;
       return;
     }
 
     this.authService.obtenerUrlImagenEmpresa(idEmpresa).subscribe({
       next: (urlImagen) => {
-        this.imagenEmpresaUrl = urlImagen?.trim() ? urlImagen : this.baseUrl + '/assets/img/logotipo-glupoint.png';
+        this.imagenEmpresaUrl = urlImagen?.trim() ? `${urlImagen}?t=${Date.now()}` : `${this.baseUrl}/assets/img/logotipo-glupoint.png?t=${Date.now()}`;
+
       },
       error: (err) => {
         console.error('Error al cargar imagen:', err);

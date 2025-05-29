@@ -50,9 +50,9 @@ export class HeaderComponent implements OnInit {
   private asistenteSubscription!: Subscription;
   asistenteObservableValue: number = -1;
   items: MenuItem[];
+  @ViewChild('splitBtn') splitButton!: SplitButton;
   esLogoDefault = false;
   imagenEmpresaUrl: string | null = null; 
-  @ViewChild('splitBtn') splitButton!: SplitButton;
   @ViewChild('chatContainer') chatContainer!: ElementRef;
   
   private isDragging = false;

@@ -222,7 +222,7 @@ namespace Funnel.Logic
         public async Task<byte[]> GenerarReporteSeguimientoOportunidades(int IdEmpresa, int IdOportunidad, string RutaBase)
         {
             var imagenEmpresa = await _loginService.ObtenerImagenEmpresa(IdEmpresa);
-            string urlLogo = imagenEmpresa.UrlImagen;
+            string urlLogo = $"{imagenEmpresa.UrlImagen}?v={Guid.NewGuid()}";
             string logoBase64 = await Descarga.DescargarImagenComoBase64(urlLogo);
 
             var datos = await _oportunidadesData.ConsultarHistoricoOportunidades(IdEmpresa, IdOportunidad);
@@ -302,7 +302,7 @@ namespace Funnel.Logic
         public async Task<byte[]> GenerarReporteOportunidades(OportunidadesReporteDto oportunidades, string RutaBase, string titulo, int IdEmpresa)
         {
             var imagenEmpresa = await _loginService.ObtenerImagenEmpresa(IdEmpresa);
-            string urlLogo = imagenEmpresa.UrlImagen;
+            string urlLogo = $"{imagenEmpresa.UrlImagen}?v={Guid.NewGuid()}";
             string logoBase64 = await Descarga.DescargarImagenComoBase64(urlLogo);
 
             var rutaPlantillaHeader = Path.Combine(RutaBase, "PlantillasReporteHtml", "PlantillaReporteFunnelHeaderDinamico.html");

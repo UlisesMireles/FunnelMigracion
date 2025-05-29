@@ -51,6 +51,8 @@ export class HeaderComponent implements OnInit {
   asistenteObservableValue: number = -1;
   items: MenuItem[];
   @ViewChild('splitBtn') splitButton!: SplitButton;
+  esLogoDefault = false;
+  imagenEmpresaUrl: string | null = null; 
   @ViewChild('chatContainer') chatContainer!: ElementRef;
   
   private isDragging = false;
@@ -112,6 +114,7 @@ export class HeaderComponent implements OnInit {
   }
   ngOnInit(): void {
     this.asistenteService.asistenteSubject.next(-1);
+    this.cargarImagenEmpresa();
     const perfil = {
       nombre: localStorage.getItem('username')!,//'Perfil',
       ruta: '/perfil',
@@ -147,6 +150,28 @@ export class HeaderComponent implements OnInit {
       this.contactoSeleccionado = state.contactoSeleccionado;
     });
   }
+
+    cargarImagenEmpresa() {
+    const idEmpresaStr = localStorage.getItem('idEmpresa');
+    const idEmpresa = idEmpresaStr ? Number(idEmpresaStr) : null;
+
+    if (idEmpresa === null || isNaN(idEmpresa)) {
+      this.imagenEmpresaUrl = `${this.baseUrl}/assets/img/logotipo-glupoint.png?t=${Date.now()}`;
+      return;
+    }
+
+    this.authService.obtenerUrlImagenEmpresa(idEmpresa).subscribe({
+      next: (urlImagen) => {
+        this.imagenEmpresaUrl = urlImagen?.trim() ? `${urlImagen}?t=${Date.now()}` : `${this.baseUrl}/assets/img/logotipo-glupoint.png?t=${Date.now()}`;
+
+      },
+      error: (err) => {
+        console.error('Error al cargar imagen:', err);
+        this.imagenEmpresaUrl = this.baseUrl + '/assets/img/logotipo-glupoint.png';
+      }
+    });
+  }
+
 
   ngAfterViewInit() {
     const mainButton = this.splitButton.containerViewChild?.nativeElement.querySelector('.p-button-secondary');

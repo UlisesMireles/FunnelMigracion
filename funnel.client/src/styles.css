@@ -108,7 +108,8 @@
   color: #ffffff !important;
 }
 .p-button-icon-only.p-button-rounded{
- width: 16px !important;
+ width: 30px !important;
+  height: 30px !important;
 }
 .p-datatable-inline-filter {
   gap: 0 !important;
@@ -118,7 +119,7 @@
   background: #f4f4f4 !important;
   color: #495057 !important;
   border-radius: 6px !important;
-  min-width: 40px;
+  min-width: 20px;
   min-height: 20px;
-  padding: 0 1ppx;
+
 }

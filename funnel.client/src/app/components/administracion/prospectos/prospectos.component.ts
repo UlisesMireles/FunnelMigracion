@@ -35,6 +35,7 @@ export class ProspectosComponent {
   insertar: boolean = false;
   modalVisible: boolean = false;
   selectedEstatus: any = null;
+  desdeSector = false;
 
 EstatusDropdown = [
   { label: 'Todo', value: null },
@@ -69,6 +70,8 @@ ngOnInit(): void {
   this.getProspectos();
   document.documentElement.style.fontSize = 12 + 'px';
   this.modalSubscription = this.modalOportunidadesService.modalProspectoState$.subscribe((state) => {
+    this.desdeSector = state.desdeSector;
+    this.insertar = state.insertar;
     if (!state.showModal) {
       this.prospectoEdicion = null;
     }
@@ -143,7 +146,7 @@ inserta() {
   this.modalVisible = true;
 }
 actualiza(licencia: Prospectos) {
-  this.modalOportunidadesService.openModalProspecto(true, false, [], licencia);
+  this.modalOportunidadesService.openModalProspecto(true, false, [], licencia, { errorMessage: '', result: false, id: -1 }, false);
   this.prospectoSeleccionado = licencia;
   this.prospectoEdicion = { ...licencia };
   this.insertar = false;

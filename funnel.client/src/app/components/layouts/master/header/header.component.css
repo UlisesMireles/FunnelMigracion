@@ -10,6 +10,30 @@
   height: 50px;
 }
 
+#header img {
+  height: auto;
+  max-height: 120px; 
+  width: auto;
+  max-width: 120px;
+  object-fit: contain;
+}
+
+#header img.logo-empresa {
+  max-height: 100% !important;  
+  max-width: 120px !important; 
+  width: auto !important;      
+  height: auto !important;     
+  object-fit: contain !important;
+  padding: 2px 0 !important;
+}
+
+.navbar > div:first-child {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  max-height: 50px; 
+}
+
 .navbar {
   display: flex;
   align-items: center;

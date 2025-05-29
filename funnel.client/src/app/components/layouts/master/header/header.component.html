@@ -1,8 +1,10 @@
 <header class="page-header font-small blue" id="header">
   <div class="navbar col-12">
     <div class="col-3 logo-container">
-      <img width="120" [src]="baseUrl + '/assets/img/logotipo-glupoint.png'" alt="logo SFS" style="cursor: pointer;" (click)="navigateTo('/oportunidades')">
-      <span class="spanNombre">{{ licencia }}</span>
+    <img *ngIf="imagenEmpresaUrl" width="120" [src]="imagenEmpresaUrl" alt="logo SFS" 
+     style="cursor: pointer;" (click)="navigateTo('/oportunidades')"
+     [class.logo-empresa]="!esLogoDefault">   
+     <span class="spanNombre">{{ licencia }}</span>
     </div>
     <div class="col-4 menu-header-container">
       <div class="agregar btn-agregar-custom ms-2" (click)="toggleOptions()" (mouseenter)="showSubmenu()" (mouseleave)="hideSubmenu()">

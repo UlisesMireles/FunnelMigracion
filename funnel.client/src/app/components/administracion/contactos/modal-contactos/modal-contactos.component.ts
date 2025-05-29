@@ -166,6 +166,9 @@ export class ModalContactosComponent {
     this.visible = false;
     this.visibleChange.emit(this.visible);
     this.closeModal.emit();
+    if (this.insertar) {
+    this.inicializarFormulario();
+    }
   }
 
   guardarContacto(){
@@ -192,7 +195,6 @@ export class ModalContactosComponent {
 
     this.contactosService.postContacto(this.informacionContactos).subscribe({
       next: (result: baseOut) => {
-        console.log(result);
         this.result.emit(result);
         this.close();
       },

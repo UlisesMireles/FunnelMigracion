@@ -44,6 +44,11 @@ export class ModalOportunidadesComponent {
   prospectosFiltrados: any[] = [];
   busquedaProspecto: string = '';
   prospectoSeleccionado : boolean = false;  
+  
+  private modalSubscription!: Subscription;
+  private modalContactosSubscription!: Subscription;
+  //Modal Contactos
+  modalVisibleContactos: boolean = false;
   contactoSeleccionado!: Contacto;
   
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -54,7 +59,6 @@ export class ModalOportunidadesComponent {
   validaGuadar: boolean = false;
   banderaContacto: boolean = true;
   informacionOportunidad: Oportunidad = {};
-  private modalSubscription!: Subscription;
   
   inicializarFormulario() {
     this.modalSubscription = this.modalOportunidadesService.modalState$.subscribe((state) => {
@@ -132,6 +136,16 @@ export class ModalOportunidadesComponent {
       this.modalSubscription.unsubscribe(); 
     }
   }
+  ngOnInit(): void {
+    
+    //Suscripcion a servicio de modal de contactos, recibe datos para el despliegue del modal
+    this.modalContactosSubscription = this.modalOportunidadesService. modalContactoOportunidadesState$.subscribe((state) => {
+      this.modalVisibleContactos = state.showModal;
+      this.insertar = state.insertar;
+      this.contactos = state.contactos;
+      this.contactoSeleccionado = state.contactoSeleccionado;
+    });
+  }
 
   validarCambios(valoresIniciales: any, cambios: any) {
     const valoresActuales = cambios;
@@ -165,12 +179,12 @@ filtrarProspectos(event: any) {
   }
 }
 
-// Método para seleccionar un prospecto
 seleccionarProspecto(prospecto: any) {
   this.oportunidadForm.get('idProspecto')?.setValue(prospecto.id);
   this.busquedaProspecto = prospecto.nombre;
   this.prospectosFiltrados = [];
   this.prospectoSeleccionado = true;
+  this.cdr.detectChanges();
   this.onChangeProspecto(); 
 }
 
@@ -260,6 +274,10 @@ onChangeProspecto() {
 
 
   close() {
+    this.busquedaProspecto = '';
+    this.prospectosFiltrados = [];
+    this.prospectoSeleccionado = false;
+    this.banderaContacto = true;
     this.visible = false;
     this.modalOportunidadesService.closeModal();
     this.visibleChange.emit(this.visible);
@@ -410,6 +428,7 @@ onChangeProspecto() {
   agregarContacto() {
     const idProspecto = this.oportunidadForm.get('idProspecto')?.value;
     const nombreProspecto = this.busquedaProspecto;
+    
    
     this.contactoSeleccionado = {
       idContactoProspecto: 0,
@@ -425,10 +444,61 @@ onChangeProspecto() {
       nombreCompleto: '',
       bandera: ''
     };
-    this.modalOportunidadesService.openModalContacto(true, true, [], this.contactoSeleccionado);
+    this.modalOportunidadesService.openModalContactoOportunidades(true, true, [], this.contactoSeleccionado);
 
   }
+  
+  onModalCloseContactos() {
+  this.modalOportunidadesService.closeModalContactoOportunidades();
+  
 }
 
+ manejarResultadoContactos(result: baseOut) {
+  if (result.result) {
+    this.messageService.add({
+      severity: 'success',
+      summary: 'La operación se realizó con éxito.',
+      detail: result.errorMessage,
+    });
+    this.modalOportunidadesService.closeModalContactoOportunidades(result);
 
+    const idProspecto = this.oportunidadForm.get('idProspecto')?.value;
 
+    
+  if (idProspecto > 0) {
+    if (!this.oportunidadForm.get('idProspecto')?.value) {
+      this.oportunidadForm.get('idProspecto')?.setValue(idProspecto);
+    }
+
+  this.catalogoService.cargarContactos(this.loginService.obtenerIdEmpresa());
+    setTimeout(() => {
+    this.contactos = this.catalogoService.obtenerContactos(idProspecto);
+
+    this.banderaContacto = false;
+
+ const contactoNuevo = this.contactos.find(c => c.idContactoProspecto === result.id);
+  if (contactoNuevo) {
+    this.oportunidadForm.get('idContactoProspecto')?.setValue(result.id);
+  } else if (this.contactos.length === 1) {
+    this.oportunidadForm.get('idContactoProspecto')?.setValue(this.contactos[0].idContactoProspecto);
+  } 
+ 
+   this.cdr.detectChanges();
+}, 500);
+
+    } else {
+      this.busquedaProspecto = '';
+      this.contactos = [];
+      this.banderaContacto = true;
+      this.oportunidadForm.get('idContactoProspecto')?.setValue(null);
+      this.cdr.detectChanges();
+    }
+  } else {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Se ha producido un error.',
+      detail: result.errorMessage,
+    });
+  }
+}
+}

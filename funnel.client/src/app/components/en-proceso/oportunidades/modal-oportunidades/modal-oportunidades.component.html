@@ -17,7 +17,7 @@
                     [(ngModel)]="busquedaProspecto" [ngModelOptions]="{ standalone: true }" (input)="filtrarProspectos($event)" style="height: 40px;">
                     <input type="hidden" formControlName="idProspecto" />
                 <div *ngIf="prospectosFiltrados.length > 0" class="dropdown-menu show">
-                <a *ngFor="let prospecto of prospectosFiltrados" class="dropdown-item" style=" width: 274px; cursor: pointer;" (click)="seleccionarProspecto(prospecto)">
+                <a *ngFor="let prospecto of prospectosFiltrados" class="dropdown-item" style=" width: 274px; cursor: pointer; outline: none; box-shadow: none; background-color: inherit;" (click)="seleccionarProspecto(prospecto)">
                     {{prospecto.nombre}}
                 </a>
                 </div>
@@ -162,3 +162,8 @@
     <button pButton label="Cancelar" (click)="close()" severity="secondary"></button>
   </ng-template>
 </p-dialog>
+
+<!-- Modal de contactos -->
+<app-modal-contactos [(visible)]="modalVisibleContactos" [title]="'Editar Datos de '" (closeModal)="onModalCloseContactos()"
+  (result)="manejarResultadoContactos($event)" [insertar]="insertar" [contactos]="contactos" [contacto]="contactoSeleccionado">
+</app-modal-contactos>

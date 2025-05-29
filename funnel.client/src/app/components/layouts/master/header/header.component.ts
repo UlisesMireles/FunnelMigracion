@@ -50,7 +50,7 @@ export class HeaderComponent implements OnInit {
   private asistenteSubscription!: Subscription;
   asistenteObservableValue: number = -1;
   items: MenuItem[];
-  @ViewChild('splitBtn') splitButton!: SplitButton;
+  // @ViewChild('splitBtn') splitButton!: SplitButton;
   @ViewChild('chatContainer') chatContainer!: ElementRef;
   
   private isDragging = false;
@@ -148,14 +148,14 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  ngAfterViewInit() {
-    const mainButton = this.splitButton.containerViewChild?.nativeElement.querySelector('.p-button-secondary');
-    if (mainButton) {
-      mainButton.addEventListener('click', (event: MouseEvent) => {
-        this.splitButton.onDropdownButtonClick(event);
-      });
-    }
-  }
+  // ngAfterViewInit() {
+  //   const mainButton = this.splitButton.containerViewChild?.nativeElement.querySelector('.p-button-secondary');
+  //   if (mainButton) {
+  //     mainButton.addEventListener('click', (event: MouseEvent) => {
+  //       this.splitButton.onDropdownButtonClick(event);
+  //     });
+  //   }
+  // }
 
   agregarOportunidad() {
     this.modalOportunidadesService.openModal(true, true, [], {})

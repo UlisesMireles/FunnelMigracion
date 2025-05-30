@@ -37,10 +37,9 @@
           <ng-template #sinContactos>
             <div *ngIf="prospectoSeleccionado && contactos.length === 0" 
               class="form-control text-start d-flex align-items-center" 
-              style="height: 38px; background-color: #e9ecef; color: red;">
-              No hay contactos. 
-              <a (click)="agregarContacto()" style="margin-left: 5px; color: red; text-decoration: underline; cursor: pointer;">
-                Registrar contacto aquí
+              style="height: 38px; background-color: #e9ecef;">Registra contacto 
+              <a (click)="agregarContacto()" style="margin-left: 3px; color: red; text-decoration: underline; cursor: pointer;">
+                aquí
               </a>
             </div>
           </ng-template>

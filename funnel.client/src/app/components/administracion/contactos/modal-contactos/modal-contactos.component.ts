@@ -25,6 +25,7 @@ export class ModalContactosComponent {
   @Input() title: string = 'Modal';
   @Input() visible: boolean = false;
   @Input() insertar: boolean = false;
+  @Input() lecturaProspecto: boolean = false;
   request!: RequestPContacto;
 
   contactoForm!: FormGroup;

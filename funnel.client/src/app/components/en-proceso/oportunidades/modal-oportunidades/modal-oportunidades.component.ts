@@ -450,7 +450,6 @@ onChangeProspecto() {
   
   onModalCloseContactos() {
   this.modalOportunidadesService.closeModalContactoOportunidades();
-  
 }
 
  manejarResultadoContactos(result: baseOut) {

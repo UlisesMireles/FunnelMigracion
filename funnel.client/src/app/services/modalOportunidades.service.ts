@@ -106,7 +106,7 @@ export class ModalOportunidadesService {
   // Método para cerrar la modal desde oportunidades
   closeModalContactoOportunidades(result: BaseOut = { errorMessage: '', result: false, id: -1 }) {
     this.modalContactoOportunidadesStateSubject.next({
-      showModal: false, insertar: false, contactos: [],
+      showModal: false, insertar: true, contactos: [],
       contactoSeleccionado: { bandera: '', idContactoProspecto: -1, nombre: '', apellidos: '', telefono: '', correoElectronico: '', prospecto: '', idEmpresa: 0, idProspecto: 0, estatus: 0, desEstatus: '', nombreCompleto: '', },
       result: result
     });

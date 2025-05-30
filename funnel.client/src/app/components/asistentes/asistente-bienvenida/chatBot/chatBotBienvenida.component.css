@@ -10,7 +10,24 @@
 
     font-family: "Segoe UI", Arial, Helvetica, sans-serif;
 }
+.scrollable-div::-webkit-scrollbar {
+    width: 10px;
+}
 
+.scrollable-div::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 5px;
+}
+
+.scrollable-div::-webkit-scrollbar-thumb {
+    background: #c0c0c0;
+    border-radius: 5px;
+    border: 2px solid #f0f0f0;
+}
+
+.scrollable-div::-webkit-scrollbar-thumb:hover {
+    background: #a0a0a0;
+}
 /*caja de mensajes*/
 .chat-prompt-input {
     width: 95%;
@@ -32,7 +49,7 @@
 
 .chat-row {
     display: flex;
-    padding-top: 10px;
+    padding-top: 5px;
     font-family: "Segoe UI", Arial, Helvetica, sans-serif;
 }
 

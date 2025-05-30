@@ -16,7 +16,7 @@ import { UsuariosComponent } from './components/catalogos/usuarios/usuarios.comp
 import { OportunidadesComponent } from './components/en-proceso/oportunidades/oportunidades.component';
 import { EstadisticasPorEtapaComponent } from './components/en-proceso/estadisticas-por-etapa/estadisticas-por-etapa.component';
 import { OortunidadesMesAcordeonComponent } from './components/utils/acordion-horizontal/app-oportunidadesMes-acordeon.component';
-import { TopVeinteComponent } from './components/dashboard/top-veinte/top-veinte.component';
+import { AdminDashboardComponent } from './components/dashboard/admin-dashboard/admin-dashboard.component';
 import { OportunidadesGanadasComponent } from './components/terminadas/oportunidades-ganadas/oportunidades-ganadas.component';
 import { OportunidadesEliminadasComponent } from './components/terminadas/oportunidades-eliminadas/oportunidades-eliminadas.component';
 import { OportunidadesCanceladasComponent } from './components/terminadas/oportunidades-canceladas/oportunidades-canceladas.component';
@@ -56,10 +56,12 @@ const routes: Routes = [
   { path: 'estadisticas-por-etapa', component: EstadisticasPorEtapaComponent, title: 'Estadisticas Por Etapa', canActivate: [AuthGuard] },
 
   { path: 'permisos', component: PermisosComponent, title: 'Permisos', canActivate: [AuthGuard] },
-  { path: 'top-veinte', component: TopVeinteComponent, title: 'Top Veinte', canActivate: [AuthGuard] },
+  //{ path: 'top-veinte', component: AdminDashboardComponent, title: 'Top Veinte', canActivate: [AuthGuard] },
   { path: 'perfil', component: UsuarioPerfilComponent, title: 'Perfil', canActivate: [AuthGuard] },
   { path: 'app-oportunidadesMes-acordeon', component: OortunidadesMesAcordeonComponent, title: 'Oportunidades Mes', canActivate: [AuthGuard] },
   { path: 'herramientas', component: AdministracionHerramientasComponent, title: 'Herramientas', canActivate: [AuthGuard] },
+ // { path: 'dashboard-general', component: AdminDashboardComponent, title: 'Dashboard General', canActivate: [AuthGuard]},
+  { path: 'dashboard', component: AdminDashboardComponent, title: 'Dashboard General', canActivate: [AuthGuard]},
 ];
 
 

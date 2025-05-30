@@ -27,7 +27,7 @@ export class HerramientasService {
 
     getCorreosUsuariosReporteAuto(idEmpresa: number, idReporte: number): Observable<any> {
         return this.http.get(`${this.baseUrl}api/Herramientas/ConsultarCorreosUsuariosReporteAuto`, {
-            params: { idEmpresa: idEmpresa.toString(), idReporte : idReporte.toString() }
+            params: { idEmpresa: idEmpresa.toString(), idReporte: idReporte.toString() }
         });
     }
 
@@ -37,16 +37,17 @@ export class HerramientasService {
         });
     }
 
-    descargarReporteIngresos(data: any): Observable<Blob> {
-        return this.http.post(`${this.baseUrl}api/Herramientas/DescargarReporteIngresosUsuarios`, data, { responseType: 'blob' });
+    descargarReporteIngresos(data: any, idEmpresa: number): Observable<Blob> {
+        return this.http.post(`${this.baseUrl}api/Herramientas/DescargarReporteIngresosUsuarios`, data,
+            { params: { idEmpresa: idEmpresa.toString() },responseType: 'blob' });
     }
 
     guardarEjecucionProcesos(data: EjecucionProcesosReportes): Observable<baseOut> {
         return this.http.post<baseOut>(this.baseUrl + 'api/Herramientas/GuardarDiasReportesEstatus', data);
     }
 
-    enviarCorreosInmediatos(correos: string[],idEmpresa: number, idReporte: number): Observable<baseOut> {
-        return this.http.post<baseOut>(this.baseUrl + 'api/Herramientas/EnvioCorreosReporteSeguimiento', correos, 
-            {params: {idEmpresa: idEmpresa.toString(), idReporte: idReporte.toString()}});
+    enviarCorreosInmediatos(correos: string[], idEmpresa: number, idReporte: number): Observable<baseOut> {
+        return this.http.post<baseOut>(this.baseUrl + 'api/Herramientas/EnvioCorreosReporteSeguimiento', correos,
+            { params: { idEmpresa: idEmpresa.toString(), idReporte: idReporte.toString() } });
     }
 }

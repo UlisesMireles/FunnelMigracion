@@ -386,9 +386,9 @@ th.sort-active p-sortIcon {
               0 -0.5px 0 currentColor;
 }
 ::ng-deep .fixed-width-oportunidad {
-  width: 300px !important;
-  max-width: 300px !important;
-  min-width: 300px !important;
+  width: 200px !important;
+  max-width: 200px !important;
+  min-width: 200px !important;
   white-space: normal !important;
   word-break: break-word !important;
   overflow-wrap: break-word !important;

@@ -12,6 +12,8 @@ import { sumBy, map as mapping, omit, sortBy, groupBy, keys as getKeys } from "l
 import { Subscription } from 'rxjs';
 import { ModalOportunidadesService } from '../../../services/modalOportunidades.service';
 import { map } from 'rxjs/operators';
+import { Prospectos } from '../../../interfaces/prospecto';
+import { state } from '@angular/animations';
 
 @Component({
   selector: 'app-oportunidades',
@@ -35,6 +37,7 @@ export class OportunidadesComponent {
   idEstatus: number = 1;
 
   insertar: boolean = false;
+  desdeSector = false;
   seguimientoOportunidad: boolean = false;
   modalVisible: boolean = false;
   modalSeguimientoVisible: boolean = false;
@@ -46,6 +49,9 @@ export class OportunidadesComponent {
   loading: boolean = true;
 
   titulo: string = 'Oportunidades en Proceso';
+
+  prospectoSeleccionado!: Prospectos;
+  prospectoEdicion: Prospectos | null = null;
 
 
   lsColumnasAMostrar: any[] = [
@@ -61,7 +67,7 @@ export class OportunidadesComponent {
     { key: 'stage', isCheck: true, valor: 'Etapa', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'numberFilter' },
     { key: 'iniciales', isCheck: true, valor: 'Ejecutivo', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreContacto', isCheck: true, valor: 'Contacto', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'entrega', isCheck: true, valor: 'Entrega', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'entrega', isCheck: false, valor: 'Entrega', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'monto', isCheck: true, valor: 'Monto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
     // { key: 'probabilidadOriginal', isCheck: false, valor: '% Original', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     // { key: 'probabilidad', isCheck: true, valor: '% Actual', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
@@ -76,6 +82,7 @@ export class OportunidadesComponent {
 
   columnsAMostrarResp: string = JSON.stringify(this.lsColumnasAMostrar);
   columnsTodasResp: string = JSON.stringify(this.lsTodasColumnas);
+  disabledPdf: boolean = false;
 
   constructor(private oportunidadService: OportunidadesService, private messageService: MessageService, private cdr: ChangeDetectorRef,
     private readonly loginService: LoginService, public dialog: MatDialog, private modalOportunidadesService: ModalOportunidadesService
@@ -95,6 +102,16 @@ export class OportunidadesComponent {
       if (state.result.id != -1 && state.result.result) {
         this.getOportunidades();
       }
+    });
+    this.modalSubscription = this.modalOportunidadesService.modalProspectoState$.subscribe(state => {
+      this.desdeSector = state.desdeSector;
+      this.insertar = state.insertar;
+      if (!state.showModal) {
+      this.prospectoEdicion = null;
+    }
+    if (state.result.id != -1 && state.result.result) {
+      this.getOportunidades();
+    }
     });
   }
 
@@ -274,8 +291,9 @@ export class OportunidadesComponent {
     if (dataExport.length == 0)
       return
 
+    this.disabledPdf = true;
 
-    this.oportunidadService.descargarReporteOportunidadesEnProceso(data).subscribe({
+    this.oportunidadService.descargarReporteOportunidadesEnProceso(data, this.loginService.obtenerIdEmpresa()).subscribe({
       next: (result: Blob) => {
         const url = window.URL.createObjectURL(result);
         const link = document.createElement('a');
@@ -283,6 +301,7 @@ export class OportunidadesComponent {
         link.download = 'OportunidadesEnProceso.pdf';
         link.click();
         URL.revokeObjectURL(url);
+        this.disabledPdf = false;
 
       },
       error: (error) => {
@@ -291,6 +310,7 @@ export class OportunidadesComponent {
           summary: 'Se ha producido un error al generar reporte',
           detail: error.errorMessage,
         });
+        this.disabledPdf = false;
       },
     });
 
@@ -438,6 +458,21 @@ export class OportunidadesComponent {
       5: 'Negociación'
     };
     return etapas[numeroEtapa] || 'Etapa desconocida';
+  }
+
+  abrirModalSector(rowData: any) {
+    this.prospectoSeleccionado = rowData;
+    this.prospectoEdicion = { ... rowData };
+    this.insertar = false;
+    this.modalVisible = true;
+    this.desdeSector = true;
+    this.modalOportunidadesService
+    .openModalProspecto(true, false, [], rowData, { errorMessage: '', result: false, id: -1 }, true)
+    .subscribe((modalResult) => {
+      if (modalResult?.result.result === true) {
+        this.ngOnInit();
+      }
+    });
   }
 }
 

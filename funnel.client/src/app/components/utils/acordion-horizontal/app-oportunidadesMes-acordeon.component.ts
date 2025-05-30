@@ -5,6 +5,7 @@ import { Oportunidad, OportunidadesPorMes, RequestActualizarFechaEstimadaCierre,
 import { OportunidadesService } from '../../../services/oportunidades.service';
 import { baseOut } from '../../../interfaces/utils/utils/baseOut';
 import { LoginService } from '../../../services/login.service';
+import { ModalOportunidadesService } from '../../../services/modalOportunidades.service';
 
 @Component({
   selector: 'app-oportunidadesMes-acordeon',
@@ -32,12 +33,14 @@ export class OortunidadesMesAcordeonComponent {
   oportunidadSeleccionada!: Oportunidad;
   oportunidades: Oportunidad[] = [];
   seguimientoOportunidad: boolean = false;
+
   // Output para emitir resultados de la petición post (por ejemplo, para notificar a un padre)
   @Output() result: EventEmitter<baseOut> = new EventEmitter();
 
   // Inyección de servicios en el constructor
   constructor(
-    private oportunidadService: OportunidadesService,private readonly loginService: LoginService,private messageService: MessageService,private cdr: ChangeDetectorRef
+    private oportunidadService: OportunidadesService,private readonly loginService: LoginService,private messageService: MessageService,private cdr: ChangeDetectorRef,
+    private modalOportunidadesService: ModalOportunidadesService
   ) { }
 
   ngOnInit() {
@@ -255,10 +258,6 @@ getTotalNormalizado(mes: OportunidadesPorMes): number {
   return mes.tarjetas.reduce((acc, tarjeta) => acc + (tarjeta.montoNormalizado || 0), 0);
 }
 
-onModalClose() {
-  this.modalEditarVisible = false;
-}
-
 manejarResultado(result: baseOut) {
   if (result.result) {
     this.messageService.add({
@@ -308,15 +307,20 @@ private crearNuevaLicencia(licencia: Tarjeta) {
   };
 }
 actualiza(licencia: Tarjeta) {
-
-  this.oportunidadSeleccionada = this.crearNuevaLicencia(licencia);
-  this.insertar = false;
-  this.modalEditarVisible = true;
+    this.oportunidadSeleccionada = licencia;
+    this.insertar = false;
+    this.modalEditarVisible = true;   
+    this.modalOportunidadesService
+    .openModal(true, false, [], licencia)
+    .subscribe((modalResult) => {
+      if (modalResult?.result) {
+        this.ngOnInit();
+      }
+    });
 }
 
 seguimiento(licencia: Tarjeta) {
-
-  this.oportunidadSeleccionada = this.crearNuevaLicencia(licencia);;
+  this.oportunidadSeleccionada = licencia;
   this.seguimientoOportunidad = true;
   this.modalSeguimientoVisible = true;
 }

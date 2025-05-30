@@ -35,11 +35,13 @@ export class ProspectoService {
     });
   }
 
-  descargarReporteProspectos(data: any): Observable<Blob> {
-    return this.http.post(`${this.baseUrl}api/Prospectos/DescargarReporteProspectos`, data, { responseType: 'blob' });
+  descargarReporteProspectos(data: any, idEmpresa: number): Observable<Blob> {
+    return this.http.post(`${this.baseUrl}api/Prospectos/DescargarReporteProspectos`, data,
+      { params: { idEmpresa: idEmpresa.toString() }, responseType: 'blob' });
   }
 
-  descargarReporteTop20(data: any): Observable<Blob> {
-    return this.http.post(`${this.baseUrl}api/Prospectos/DescargarReporteTop20`, data, { responseType: 'blob' });
+  descargarReporteTop20(data: any, idEmpresa: number): Observable<Blob> {
+    return this.http.post(`${this.baseUrl}api/Prospectos/DescargarReporteTop20`, data,
+      { params: { idEmpresa: idEmpresa.toString() }, responseType: 'blob' });
   }
 }

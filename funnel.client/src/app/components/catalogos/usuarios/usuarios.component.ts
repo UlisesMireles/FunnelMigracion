@@ -32,6 +32,7 @@ export class UsuariosComponent {
   cantidadUsuarios: number = 0;
   insertar: boolean = true;
   modalVisible: boolean = false;
+  disabledPdf: boolean = false;
 
   
 
@@ -250,8 +251,9 @@ clear(table: Table) {
       if (dataExport.length == 0)
         return
   
-  
-      this.UsuariosService.descargarReporteUsuarios(data).subscribe({
+      this.disabledPdf = true;
+
+      this.UsuariosService.descargarReporteUsuarios(data,this.loginService.obtenerIdEmpresa()).subscribe({
         next: (result: Blob) => {
           const url = window.URL.createObjectURL(result);
           const link = document.createElement('a');
@@ -259,6 +261,7 @@ clear(table: Table) {
           link.download = 'Usuarios.pdf';
           link.click();
           URL.revokeObjectURL(url);
+          this.disabledPdf = false;
   
         },
         error: (error) => {
@@ -267,6 +270,7 @@ clear(table: Table) {
             summary: 'Se ha producido un error al generar reporte',
             detail: error.errorMessage,
           });
+          this.disabledPdf = false;
         },
       });
   

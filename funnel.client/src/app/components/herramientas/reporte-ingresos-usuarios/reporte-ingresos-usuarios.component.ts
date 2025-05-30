@@ -30,6 +30,7 @@ export class ReporteIngresosUsuariosComponent {
   sortOrder = -1;
   years: string[] = [];
   selectedYear: string = "Todos los Años";
+  disabledPdf: boolean = false;
 
   loading: boolean = true;
   lsColumnasAMostrar: any[] = [];
@@ -253,7 +254,9 @@ export class ReporteIngresosUsuariosComponent {
     if (dataExport.length == 0)
       return
 
-    this.herramientasService.descargarReporteIngresos(data).subscribe({
+    this.disabledPdf = true;
+
+    this.herramientasService.descargarReporteIngresos(data, this.loginService.obtenerIdEmpresa()).subscribe({
       next: (result: Blob) => {
         const url = window.URL.createObjectURL(result);
         const link = document.createElement('a');
@@ -261,6 +264,7 @@ export class ReporteIngresosUsuariosComponent {
         link.download = 'ReporteIngresosUsuarios.pdf';
         link.click();
         URL.revokeObjectURL(url);
+        this.disabledPdf = false;
       },
       error: (error) => {
         this.messageService.add({
@@ -269,6 +273,7 @@ export class ReporteIngresosUsuariosComponent {
           detail: error.errorMessage,
         });
         this.loading = false;
+        this.disabledPdf = false;
       },
     });
   }

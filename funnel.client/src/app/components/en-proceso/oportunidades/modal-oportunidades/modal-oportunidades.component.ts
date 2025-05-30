@@ -322,18 +322,6 @@ onChangeProspecto() {
     this.informacionOportunidad.probabilidad = this.informacionOportunidad.probabilidad?.replace('%', '').trim();
     this.informacionOportunidad.idUsuario = this.loginService.obtenerIdUsuario();
 
-    // Guardar historial primero
-    const historicoOportunidad = {
-      bandera: 'INS-HISTORICO',
-      idOportunidad: this.oportunidadForm.get('idOportunidad')?.value,
-      idStage: this.oportunidadForm.get('idStage')?.value,
-      idUsuario: this.loginService.obtenerIdUsuario(),
-      comentario: this.oportunidadForm.get('comentario')?.value,
-    };
-
-    this.oportunidadService.postHistorial(historicoOportunidad).subscribe({
-      next: () => {
-        // Si el historial se guarda correctamente, guardar la oportunidad
         this.oportunidadService.postOportunidad(this.informacionOportunidad).subscribe({
           next: (result: baseOut) => {
             this.result.emit(result);
@@ -346,15 +334,6 @@ onChangeProspecto() {
               detail: error.errorMessage,
             });
           },
-        });
-      },
-      error: (error: baseOut) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Se ha producido un error al guardar el historial.',
-          detail: error.errorMessage,
-        });
-      },
     });
   }
   obtenerProbabilidadPorEtapa(idStage: number) {

@@ -7,6 +7,9 @@ import { ProspectoService } from '../../../../services/prospecto.service';
 import { baseOut } from '../../../../interfaces/utils/utils/baseOut';
 import { LoginService } from '../../../../services/login.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ModalOportunidadesService } from '../../../../services/modalOportunidades.service';
+import { Subscription } from 'rxjs';
+
 @Component({
   selector: 'app-modal-prospectos',
   standalone: false,
@@ -14,7 +17,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrl: './modal-prospectos.component.css'
 })
 export class ModalProspectosComponent {
-  constructor (private prospectoService: ProspectoService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder, private cdr: ChangeDetectorRef) { }
+  constructor (private prospectoService: ProspectoService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder, private cdr: ChangeDetectorRef,
+  private modalOportunidadesService: ModalOportunidadesService
+  ) { }
   @Input() prospecto!: Prospectos;
   @Input() prospectos: Prospectos[] = [];
   @Input() title: string = 'Modal';
@@ -25,7 +30,7 @@ export class ModalProspectosComponent {
   prospectoActivo: boolean = false;
   prospectoForm!: FormGroup;
   sectores: any[] = [];
-  
+  desdeSector: boolean = false;
   
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter();
@@ -51,7 +56,11 @@ export class ModalProspectosComponent {
   };
 
   ngOnInit() {
+    this.modalOportunidadesService.modalProspectoState$.subscribe(state => {
+      this.desdeSector = state.desdeSector;
+    });
     this.inicializarFormulario()
+    
   }
   // ngOnChanges(changes: SimpleChanges) {
   //   if (changes['prospecto'] && this.prospecto) {

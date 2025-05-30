@@ -20,6 +20,6 @@ namespace Funnel.Logic.Interfaces
         public Task<List<ComboTiposUsuariosDto>> ComboTiposUsuarios();
         Task<bool> ValidarInicialesExistente(string iniciales, int idEmpresa);
         Task<BaseOut> GuardarImagen(List<IFormFile> imagen, UsuarioDto request);
-        public Task<HtmlToPdfDocument> GenerarReporteUsuarios(UsuariosReporteDTO usuarios, string RutaBase, string titulo);
+        public Task<byte[]> GenerarReporteUsuarios(UsuariosReporteDTO usuarios, string RutaBase, string titulo, int IdEmpresa);
     }
 }

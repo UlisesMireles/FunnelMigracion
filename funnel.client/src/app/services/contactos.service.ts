@@ -29,7 +29,8 @@ export class ContactosService {
     });
   }
 
-  descargarReporteContactos(data: any): Observable<Blob> {
-    return this.http.post(`${this.baseUrl}api/Contacto/DescargarReporteContactos`, data, { responseType: 'blob' });
+  descargarReporteContactos(data: any, idEmpresa: number): Observable<Blob> {
+    return this.http.post(`${this.baseUrl}api/Contacto/DescargarReporteContactos`, data,
+      { params: { idEmpresa: idEmpresa.toString() }, responseType: 'blob' });
   }
 }

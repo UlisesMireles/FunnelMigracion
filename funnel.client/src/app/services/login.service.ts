@@ -4,10 +4,13 @@ import { environment } from '../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Usuario, DobleAutenticacion, LoginUser } from '../interfaces/usuario';
+import { Permiso } from '../interfaces/permisos'; // Ajusta la ruta si es necesario
 import { CatalogoService } from './catalogo.service';
 import { SolicitudRegistroSistema } from '../interfaces/solicitud-registro';
 import { baseOut } from '../interfaces/utils/utils/baseOut';
 import { Usuarios } from '../interfaces/usuarios';
+import { EstadoChatService } from './asistentes/estado-chat.service';
+import { PermisosService } from './permisos.service';
 /*import { EstadoChatService } from './asistentes/estado-chat.service';*/
 
 @Injectable({
@@ -20,7 +23,8 @@ export class LoginService {
 
   private sessionTimeout = 30 * 60 * 1000;
   private timer: any;
-  constructor(private http: HttpClient, private router: Router, private readonly catalogoService: CatalogoService /*private estadoChatService: EstadoChatService*/) {
+  constructor(private http: HttpClient, private router: Router, private readonly catalogoService: CatalogoService, 
+    private readonly permisosService: PermisosService, private estadoChatService: EstadoChatService) {
     this.currentUser = this.currentUserSubject.asObservable();
     this.checkInitialSession();
   }
@@ -66,13 +70,23 @@ export class LoginService {
           sessionStorage.setItem('IdEmpresa', user.idEmpresa);
           sessionStorage.setItem('Empresa', user.Empresa);
           this.catalogoService.cargarCatalogos(user.idEmpresa);
+          this.cargarPermisosUsuario(user.idRol, user.idEmpresa);
           this.startSessionTimer();
         }
         return user;
       }));
   }
 
-
+  cargarPermisosUsuario(idRol:number, idEmrpesa: number):void {
+    this.permisosService.getPermisosPorRol(idRol, idEmrpesa).subscribe({
+      next: (result: Permiso[]) => {
+          sessionStorage.setItem('permisos', window.btoa(JSON.stringify(result)));
+      },
+      error: (error: any) => {
+        console.error('Error al cargar los permisos del usuario:', error);
+      },
+    });
+  }
   reenviarTwoFactor(user: string, pass: string) {
     const datos = { usuario: user, password: pass };
     return this.http.post<any>(this.baseUrl + "api/Login/Autenticacion", datos);
@@ -142,6 +156,16 @@ export class LoginService {
       return {} as LoginUser;
     }
   }
+
+  desencriptaPermiso(): any[] {
+    const sesion = sessionStorage.getItem("permisos");
+    if (sesion) {
+      return JSON.parse(window.atob(sesion));
+    } else {
+      return [];
+    }
+  }
+
   obtenerUsuarioSesion(): LoginUser | null {
     const sesion = this.desencriptaSesion();
     if (sesion) {
@@ -187,7 +211,13 @@ export class LoginService {
     }
     return 0;
   }
-
+  obtenerPermisosUsuario(): any[] {
+    const permiso = this.desencriptaPermiso();
+    if (permiso) {
+      return permiso;
+    }
+    return [];
+  }
   recuperarContrasena(user: string) {
     let datos = { usuario: user };
     return this.http.get<any>(this.baseUrl + "api/Login/RecuperarContrasena", { params: datos });
@@ -214,11 +244,6 @@ export class LoginService {
     return this.http.get<any>(this.baseUrl + 'api/Login/ObtenerVersion');
   }
 
-  /*cerrarSesion(): void {
-    // Limpiar el estado del chat al cerrar sesión
-    this.estadoChatService.clearState();
-  
-}*/
   obtenerUrlImagenEmpresa(_idEmpresa: number): Observable<string> {
     return this.http.get<any>(`${this.baseUrl}api/Login/ObtenerImagenEmpresa/`, {
       params: { idEmpresa: _idEmpresa }

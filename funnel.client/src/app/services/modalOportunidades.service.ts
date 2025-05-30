@@ -34,7 +34,7 @@ export class ModalOportunidadesService {
 
   modalProspectoState$ = this.modalProspectoStateSubject.asObservable();
 
-  // Observable para Contactos
+  // Observable para Contactos desde header
   private modalContactoStateSubject = new BehaviorSubject<{
     showModal: boolean, insertar: boolean, contactos: Contacto[],
     contactoSeleccionado: Contacto, result: BaseOut
@@ -44,8 +44,21 @@ export class ModalOportunidadesService {
       contactoSeleccionado: { bandera: '', idContactoProspecto: -1, nombre: '', apellidos: '', telefono: '', correoElectronico: '', prospecto: '', idEmpresa: 0, idProspecto: 0, estatus: 0, desEstatus: '', nombreCompleto: '', },
       result: { errorMessage: '', result: false, id: -1 }
     });
-
+  
   modalContactoState$ = this.modalContactoStateSubject.asObservable();
+
+  // Observable para Contactos desde oportunidades
+  private modalContactoOportunidadesStateSubject = new BehaviorSubject<{
+    showModal: boolean, insertar: boolean, contactos: Contacto[],
+    contactoSeleccionado: Contacto, result: BaseOut
+  }>
+    ({
+      showModal: false, insertar: false, contactos: [],
+      contactoSeleccionado: { bandera: '', idContactoProspecto: -1, nombre: '', apellidos: '', telefono: '', correoElectronico: '', prospecto: '', idEmpresa: 0, idProspecto: 0, estatus: 0, desEstatus: '', nombreCompleto: '', },
+      result: { errorMessage: '', result: false, id: -1 }
+    });
+  
+  modalContactoOportunidadesState$ = this.modalContactoOportunidadesStateSubject.asObservable();
 
   constructor() { }
 
@@ -79,15 +92,28 @@ export class ModalOportunidadesService {
     return this.modalProspectoStateSubject.asObservable();
   }
 
-  // Método para abrir la modal
+  // Método para abrir la modal desde header
   openModalContacto(showModal: boolean, insertar: boolean, contactos: Contacto[], contactoSeleccionado: Contacto, result: BaseOut = { errorMessage: '', result: false, id: -1 }) {
     this.modalContactoStateSubject.next({ showModal: showModal, insertar: insertar, contactos: contactos, contactoSeleccionado: contactoSeleccionado, result: result });
   }
 
-  // Método para cerrar la modal
+  // Método para cerrar la modal desde header
   closeModalContacto(result: BaseOut = { errorMessage: '', result: false, id: -1 }) {
     this.modalContactoStateSubject.next({
       showModal: false, insertar: false, contactos: [],
+      contactoSeleccionado: { bandera: '', idContactoProspecto: -1, nombre: '', apellidos: '', telefono: '', correoElectronico: '', prospecto: '', idEmpresa: 0, idProspecto: 0, estatus: 0, desEstatus: '', nombreCompleto: '', },
+      result: result
+    });
+  }
+  // Método para abrir la modal desde oportunidades
+  openModalContactoOportunidades(showModal: boolean, insertar: boolean, contactos: Contacto[], contactoSeleccionado: Contacto, result: BaseOut = { errorMessage: '', result: false, id: -1 }) {
+    this.modalContactoOportunidadesStateSubject.next({ showModal: showModal, insertar: insertar, contactos: contactos, contactoSeleccionado: contactoSeleccionado, result: result });
+  }
+
+  // Método para cerrar la modal desde oportunidades
+  closeModalContactoOportunidades(result: BaseOut = { errorMessage: '', result: false, id: -1 }) {
+    this.modalContactoOportunidadesStateSubject.next({
+      showModal: false, insertar: true, contactos: [],
       contactoSeleccionado: { bandera: '', idContactoProspecto: -1, nombre: '', apellidos: '', telefono: '', correoElectronico: '', prospecto: '', idEmpresa: 0, idProspecto: 0, estatus: 0, desEstatus: '', nombreCompleto: '', },
       result: result
     });

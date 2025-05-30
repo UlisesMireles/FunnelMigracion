@@ -29,6 +29,8 @@ namespace Funnel.Server.Extensions
             services.AddScoped<IPermisosService, PermisosService>();
             services.AddScoped<IHerramientasData, HerramientasData>();
             services.AddScoped<IHerramientasService, HerramientasService>();
+            services.AddScoped<IGraficasData, GraficasData>();
+            services.AddScoped<IGraficasService, GraficasService>();
 
 
             return services;

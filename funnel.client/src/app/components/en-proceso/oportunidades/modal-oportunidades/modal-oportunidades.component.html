@@ -21,7 +21,7 @@
               {{prospecto.nombre}}
             </a>
           </div>
-          <span *ngIf="oportunidadForm.get('idProspecto')?.invalid && oportunidadForm.get('idProspecto')?.touched" class="text-danger">
+          <span *ngIf="oportunidadForm.get('idProspecto')?.invalid && oportunidadForm.get('idProspecto')?.touched" class="text-danger position-absolute" style="left: 16px;">
             <ng-container *ngIf="oportunidadForm.get('idProspecto')?.errors?.['required']">Debe seleccionar un prospecto.</ng-container>
           </span>
         </div>
@@ -44,7 +44,7 @@
               </a>
             </div>
           </ng-template>
-           <div class="text-danger d-flex justify-content-between align-items-start w-100">
+           <div class="text-danger position-absolute d-flex justify-content-between align-items-start w-100">
                 <ng-container *ngIf="oportunidadForm.get('idContactoProspecto')?.invalid && oportunidadForm.get('idContactoProspecto')?.touched">
                     <div *ngIf="oportunidadForm.get('idContactoProspecto')?.errors?.['required']">Debe seleccionar un contacto.</div>
                 </ng-container>
@@ -59,15 +59,15 @@
           <label for="descripcion" class="text-start w-100">Descripción:</label>
           <input pInputText class="form-control text-start" formControlName="descripcion" 
             maxlength="100" (input)="limitarCaracteres()" />
-            <div class="d-flex justify-content-between align-items-start w-100">
-                <div class="text-danger">
+            <div class="justify-content-between align-items-start w-100">
+                <div class="text-danger position-absolute">
                     <ng-container *ngIf="oportunidadForm.get('descripcion')?.invalid && oportunidadForm.get('descripcion')?.touched">
                     <div *ngIf="oportunidadForm.get('descripcion')?.errors?.['required']">Debe agregar una descripción.</div>
                     <div *ngIf="oportunidadForm.get('descripcion')?.errors?.['minlength']">Debe tener al menos 5 caracteres.</div>
                     <div *ngIf="oportunidadForm.get('descripcion')?.errors?.['maxlength']">No puede exceder los 100 caracteres.</div>
                     </ng-container>
                 </div>
-                    <div class="text-muted text-end" style="white-space: nowrap;">
+                    <div class="text-end" style="white-space: nowrap;">
                         {{ oportunidadForm.get('descripcion')?.value?.length || 0 }}/100
                     </div>
             </div>
@@ -77,7 +77,7 @@
         <div class="form-group" style="margin-bottom: 15px;">
           <label for="monto" class="text-start w-100">Monto:</label>
           <input  pInputText class="form-control text-start" formControlName="monto" type="number" />
-            <div class="text-danger d-flex justify-content-between align-items-start w-100">
+            <div class="text-danger position-absolute d-flex justify-content-between align-items-start w-100">
                 <ng-container *ngIf="oportunidadForm.get('monto')?.invalid && oportunidadForm.get('monto')?.touched">
                     <div *ngIf="oportunidadForm.get('monto')?.errors?.['required']">Debe agregar un monto.</div>
                     <div *ngIf="oportunidadForm.get('monto')?.errors?.['minlength']">El monto debe ser mayor a 0.</div>
@@ -95,7 +95,7 @@
           <p-dropdown class="form-control text-start" [options]="etapas" formControlName="idStage" optionLabel="concepto"
             optionValue="id" appendTo="body" placeholder="Selecciona una etapa" (onChange)="onChangeProbabilidad()">
           </p-dropdown>
-          <span *ngIf="oportunidadForm.get('idStage')?.invalid && oportunidadForm.get('idStage')?.touched" class="text-danger">
+          <span *ngIf="oportunidadForm.get('idStage')?.invalid && oportunidadForm.get('idStage')?.touched" class="text-danger position-absolute">
             <ng-container *ngIf="oportunidadForm.get('idStage')?.errors?.['required']">Debe seleccionar una etapa.</ng-container>
           </span>
         </div>
@@ -106,7 +106,7 @@
           <p-dropdown  class="form-control text-start" [options]="ejecutivos" formControlName="idEjecutivo"
             optionLabel="nombreCompleto" optionValue="idUsuario" appendTo="body" placeholder="Selecciona un ejecutivo">
           </p-dropdown>
-          <span *ngIf="oportunidadForm.get('idEjecutivo')?.invalid && oportunidadForm.get('idEjecutivo')?.touched" class="text-danger">
+          <span *ngIf="oportunidadForm.get('idEjecutivo')?.invalid && oportunidadForm.get('idEjecutivo')?.touched" class="text-danger position-absolute">
             <ng-container *ngIf="oportunidadForm.get('idEjecutivo')?.errors?.['required']">Debe seleccionar un ejecutivo.</ng-container>
           </span>
         </div>
@@ -121,7 +121,7 @@
             optionValue="idTipoProyecto" appendTo="body" placeholder="Selecciona un servicio">
           </p-dropdown>
           <span *ngIf="oportunidadForm.get('idTipoProyecto')?.invalid && oportunidadForm.get('idTipoProyecto')?.touched"
-            class="text-danger"><br>
+            class="text-danger position-absolute"><br>
             <ng-container *ngIf="oportunidadForm.get('idTipoProyecto')?.errors?.['required']">Debe seleccionar un
               servicio.</ng-container>
           </span>
@@ -133,7 +133,7 @@
           <p-dropdown  class="form-control text-start" [options]="entregas" formControlName="idTipoEntrega" optionLabel="descripcion"
             optionValue="idTipoEntrega" appendTo="body" placeholder="Selecciona un tipo de entrega">
           </p-dropdown>
-          <span *ngIf="oportunidadForm.get('idTipoEntrega')?.invalid && oportunidadForm.get('idTipoEntrega')?.touched" class="text-danger">
+          <span *ngIf="oportunidadForm.get('idTipoEntrega')?.invalid && oportunidadForm.get('idTipoEntrega')?.touched" class="text-danger position-absolute">
             <ng-container *ngIf="oportunidadForm.get('idTipoEntrega')?.errors?.['required']">Debe seleccionar una entrega.</ng-container>
           </span>
         </div>
@@ -143,11 +143,11 @@
     <div class="row">
       <div class="col-md-6">
         <div class="form-group" style="margin-bottom: 44px;"   [ngStyle]="{ 'margin-top': !insertar ? '-73px' : '0px' }">
-          <label for="fecha" class="text-start w-100">F. Est. Cierre:</label>
+          <label for="fecha" class="text-start w-100">Fecha Estimada Cierre:</label>
           <p-datepicker formControlName="fechaEstimadaCierreOriginal" dateFormat="dd/mm/yy" appendTo="body" #calendar
             [showIcon]="true" [showButtonBar]="true" [dataType]="'date'" placeholder="dd/mm/aaaa" [style]="{ width: '1200px' }">
           </p-datepicker>
-           <div class="text-danger d-flex justify-content-between align-items-start w-100">
+           <div class="text-danger position-absolute d-flex justify-content-between align-items-start w-100">
                 <ng-container *ngIf="oportunidadForm.get('fechaEstimadaCierreOriginal')?.invalid && oportunidadForm.get('fechaEstimadaCierreOriginal')?.touched">
                     <div *ngIf="oportunidadForm.get('fechaEstimadaCierreOriginal')?.errors?.['required']">Debe seleccionar una fecha estimada.</div>
                 </ng-container>
@@ -160,8 +160,8 @@
           <textarea pInputText class="form-control estiloComentario text-start" formControlName="comentario" 
             [placeholder]="insertar ? 'Agrega un comentario' : 'Agregar un comentario / modificaciones que se realizaron'"
             rows="4"></textarea>
-            <div class="d-flex justify-content-between align-items-start w-100">
-                <div class="text-danger">
+            <div class="justify-content-between align-items-start w-100">
+                <div class="text-danger position-absolute">
                     <ng-container *ngIf="oportunidadForm.get('comentario')?.touched">
                     <div *ngIf="oportunidadForm.get('comentario')?.errors?.['required']">
                         {{ insertar ? 'Debe ingresar un comentario' : 'Debe describir las modificaciones' }}<br>
@@ -188,7 +188,7 @@
           <p-dropdown class="form-control text-start" [options]="estatusOportunidad" formControlName="idEstatus" optionLabel="descripcion"
             optionValue="idEstatus" appendTo="body" placeholder="Seleccione un estatus">
           </p-dropdown>
-          <span *ngIf="oportunidadForm.get('idEstatus')?.invalid && oportunidadForm.get('idEstatus')?.touched" class="text-danger">
+          <span *ngIf="oportunidadForm.get('idEstatus')?.invalid && oportunidadForm.get('idEstatus')?.touched" class="text-danger position-absolute">
             <ng-container *ngIf="oportunidadForm.get('idEstatus')?.errors?.['required']">Debe seleccionar un estatus.</ng-container>
           </span>
         </div>

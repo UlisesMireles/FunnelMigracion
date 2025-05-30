@@ -26,8 +26,8 @@
           </span>
         </div>
       </div>
-      <div class="col-md-6">
-        <div class="form-group" style="margin-bottom: 15px;">
+      <div class="col-12 col-md-6">
+        <div class="form-group mb-3"   >
           <label for="contacto" class="text-start w-100">Contacto:</label>
           <ng-container *ngIf="!prospectoSeleccionado || contactos.length > 0; else sinContactos">
             <p-dropdown  class="form-control text-start" [options]="contactos" formControlName="idContactoProspecto"
@@ -54,8 +54,8 @@
     </div>
     <!-- Fila 2 -->
     <div class="row">
-      <div class="col-md-6">
-        <div class="form-group"   [ngStyle]="{ 'margin-top': !insertar ? '-75px' : '0px' }">
+      <div class="col-12 col-md-6">
+        <div class="form-group mb-3"   >
           <label for="descripcion" class="text-start w-100">Descripción:</label>
           <input pInputText class="form-control text-start" formControlName="descripcion" 
             maxlength="100" (input)="limitarCaracteres()" />
@@ -73,8 +73,8 @@
             </div>
         </div>
       </div>
-      <div class="col-md-6">
-        <div class="form-group" style="margin-bottom: 15px;">
+      <div class="col-12 col-md-6">
+        <div class="form-group mb-3"   >
           <label for="monto" class="text-start w-100">Monto:</label>
           <input  pInputText class="form-control text-start" formControlName="monto" type="number" />
             <div class="text-danger position-absolute d-flex justify-content-between align-items-start w-100">
@@ -89,60 +89,8 @@
     </div>
     <!-- Fila 3 -->
       <div class="row">
-      <div class="col-md-6">
-        <div class="form-group" style="margin-bottom: 15px;"   [ngStyle]="{ 'margin-top': !insertar ? '-65px' : '0px' }">
-          <label for="etapa" class="text-start w-100">Etapa:</label>
-          <p-dropdown class="form-control text-start" [options]="etapas" formControlName="idStage" optionLabel="concepto"
-            optionValue="id" appendTo="body" placeholder="Selecciona una etapa" (onChange)="onChangeProbabilidad()">
-          </p-dropdown>
-          <span *ngIf="oportunidadForm.get('idStage')?.invalid && oportunidadForm.get('idStage')?.touched" class="text-danger position-absolute">
-            <ng-container *ngIf="oportunidadForm.get('idStage')?.errors?.['required']">Debe seleccionar una etapa.</ng-container>
-          </span>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="form-group" style="margin-bottom: 15px;">
-          <label for="ejecutivo" class="text-start w-100">Ejecutivo:</label>
-          <p-dropdown  class="form-control text-start" [options]="ejecutivos" formControlName="idEjecutivo"
-            optionLabel="nombreCompleto" optionValue="idUsuario" appendTo="body" placeholder="Selecciona un ejecutivo">
-          </p-dropdown>
-          <span *ngIf="oportunidadForm.get('idEjecutivo')?.invalid && oportunidadForm.get('idEjecutivo')?.touched" class="text-danger position-absolute">
-            <ng-container *ngIf="oportunidadForm.get('idEjecutivo')?.errors?.['required']">Debe seleccionar un ejecutivo.</ng-container>
-          </span>
-        </div>
-      </div>
-    </div>
-    <!-- Fila 4 -->
-     <div class="row">
-      <div class="col-md-6">
-        <div class="form-group" style="margin-bottom: 15px;"   [ngStyle]="{ 'margin-top': !insertar ? '-75px' : '0px' }">
-          <label for="servicio" class="text-start w-100">Servicio:</label>
-          <p-dropdown  class="form-control text-start" [options]="servicios" formControlName="idTipoProyecto" optionLabel="descripcion"
-            optionValue="idTipoProyecto" appendTo="body" placeholder="Selecciona un servicio">
-          </p-dropdown>
-          <span *ngIf="oportunidadForm.get('idTipoProyecto')?.invalid && oportunidadForm.get('idTipoProyecto')?.touched"
-            class="text-danger position-absolute"><br>
-            <ng-container *ngIf="oportunidadForm.get('idTipoProyecto')?.errors?.['required']">Debe seleccionar un
-              servicio.</ng-container>
-          </span>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="form-group" style="margin-bottom: 15px;">
-          <label for="entregas" class="text-start w-100">Entrega:</label>
-          <p-dropdown  class="form-control text-start" [options]="entregas" formControlName="idTipoEntrega" optionLabel="descripcion"
-            optionValue="idTipoEntrega" appendTo="body" placeholder="Selecciona un tipo de entrega">
-          </p-dropdown>
-          <span *ngIf="oportunidadForm.get('idTipoEntrega')?.invalid && oportunidadForm.get('idTipoEntrega')?.touched" class="text-danger position-absolute">
-            <ng-container *ngIf="oportunidadForm.get('idTipoEntrega')?.errors?.['required']">Debe seleccionar una entrega.</ng-container>
-          </span>
-        </div>
-      </div>
-    </div>
-<!-- Fila 5 -->
-    <div class="row">
-      <div class="col-md-6">
-        <div class="form-group" style="margin-bottom: 44px;"   [ngStyle]="{ 'margin-top': !insertar ? '-73px' : '0px' }">
+      <div class="col-12 col-md-6">
+        <div class="form-group mb-3"   >
           <label for="fecha" class="text-start w-100">Fecha Estimada Cierre:</label>
           <p-datepicker formControlName="fechaEstimadaCierreOriginal" dateFormat="dd/mm/yy" appendTo="body" #calendar
             [showIcon]="true" [showButtonBar]="true" [dataType]="'date'" placeholder="dd/mm/aaaa" [style]="{ width: '1200px' }">
@@ -154,8 +102,8 @@
              </div>
         </div>
       </div>
-      <div class="col-md-6">
-        <div class="form-group">
+       <div class="col-12 col-md-6">
+        <div class="form-group mb-3"   >
           <label for="comentario" class="text-start w-100">Comentario:</label>
           <textarea pInputText class="form-control estiloComentario text-start" formControlName="comentario" 
             [placeholder]="insertar ? 'Agrega un comentario' : 'Agregar un comentario / modificaciones que se realizaron'"
@@ -180,10 +128,63 @@
         </div>
       </div>
     </div>
+    <!-- Fila 4 -->
+      <div class="row">
+      <div class="col-12 col-md-6">
+        <div class="form-group mb-3">
+          <label for="etapa" class="text-start w-100">Etapa:</label>
+          <p-dropdown class="form-control text-start" [options]="etapas" formControlName="idStage" optionLabel="concepto"
+            optionValue="id" appendTo="body" placeholder="Selecciona una etapa" (onChange)="onChangeProbabilidad()">
+          </p-dropdown>
+          <span *ngIf="oportunidadForm.get('idStage')?.invalid && oportunidadForm.get('idStage')?.touched" class="text-danger position-absolute">
+            <ng-container *ngIf="oportunidadForm.get('idStage')?.errors?.['required']">Debe seleccionar una etapa.</ng-container>
+          </span>
+        </div>
+      </div>
+      <div class="col-12 col-md-6">
+        <div class="form-group mb-3"   >
+          <label for="ejecutivo" class="text-start w-100">Ejecutivo:</label>
+          <p-dropdown  class="form-control text-start" [options]="ejecutivos" formControlName="idEjecutivo"
+            optionLabel="nombreCompleto" optionValue="idUsuario" appendTo="body" placeholder="Selecciona un ejecutivo">
+          </p-dropdown>
+          <span *ngIf="oportunidadForm.get('idEjecutivo')?.invalid && oportunidadForm.get('idEjecutivo')?.touched" class="text-danger position-absolute">
+            <ng-container *ngIf="oportunidadForm.get('idEjecutivo')?.errors?.['required']">Debe seleccionar un ejecutivo.</ng-container>
+          </span>
+        </div>
+      </div>
+    </div>
+<!-- Fila 5 -->
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <div class="form-group mb-3"   >
+          <label for="servicio" class="text-start w-100">Servicio:</label>
+          <p-dropdown  class="form-control text-start" [options]="servicios" formControlName="idTipoProyecto" optionLabel="descripcion"
+            optionValue="idTipoProyecto" appendTo="body" placeholder="Selecciona un servicio">
+          </p-dropdown>
+          <span *ngIf="oportunidadForm.get('idTipoProyecto')?.invalid && oportunidadForm.get('idTipoProyecto')?.touched"
+            class="text-danger position-absolute"><br>
+            <ng-container *ngIf="oportunidadForm.get('idTipoProyecto')?.errors?.['required']">Debe seleccionar un
+              servicio.</ng-container>
+          </span>
+        </div>
+      </div>
+       <div class="col-12 col-md-6">
+        <div class="form-group mb-3"   >
+          <label for="entregas" class="text-start w-100">Entrega:</label>
+          <p-dropdown  class="form-control text-start" [options]="entregas" formControlName="idTipoEntrega" optionLabel="descripcion"
+            optionValue="idTipoEntrega" appendTo="body" placeholder="Selecciona un tipo de entrega">
+          </p-dropdown>
+          <span *ngIf="oportunidadForm.get('idTipoEntrega')?.invalid && oportunidadForm.get('idTipoEntrega')?.touched" class="text-danger position-absolute">
+            <ng-container *ngIf="oportunidadForm.get('idTipoEntrega')?.errors?.['required']">Debe seleccionar una entrega.</ng-container>
+          </span>
+        </div>
+      </div>
+    </div>
+
     <!-- Fila 6 (solo si no es insertar) -->
     <div class="row" *ngIf="!insertar">
-      <div class="col-md-6">
-        <div class="form-group"   [ngStyle]="{ 'margin-top': !insertar ? '-96px' : '0px' }">
+      <div class="col-12 col-md-6">
+        <div class="form-group mb-3"   >
           <label for="estatusOportunidad" class="text-start w-100">Estatus Oportunidad:</label>
           <p-dropdown class="form-control text-start" [options]="estatusOportunidad" formControlName="idEstatus" optionLabel="descripcion"
             optionValue="idEstatus" appendTo="body" placeholder="Seleccione un estatus">

@@ -14,6 +14,9 @@ export class GraficasService {
   constructor(private readonly http: HttpClient) { }
 
   obtenerGraficaData(data: RequestGraficasDto): Observable<GraficasDto[]> {
-    return this.http.post<GraficasDto[]>(`${this.baseUrl}api/GRaficas/ObtenerGraficaOportunidades`, data);
+    return this.http.post<GraficasDto[]>(`${this.baseUrl}api/Graficas/ObtenerGraficaOportunidades`, data);
+  }
+  obtenerGraficaAgentesData(data: RequestGraficasDto): Observable<GraficasDto[]> {
+    return this.http.post<GraficasDto[]>(`${this.baseUrl}api/Graficas/ObtenerGraficaAgentes`, data);
   }
 }

@@ -5,5 +5,6 @@ namespace Funnel.Logic.Interfaces
     public interface IGraficasService
     {
         Task<List<GraficaDto>> ObtenerGraficaOportunidades(RequestGrafica data);
+        Task<List<GraficaDto>> ObtenerGraficaAgentes(RequestGrafica data);
     }
 }

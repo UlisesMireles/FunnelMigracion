@@ -6,6 +6,8 @@ export interface GraficasDto {
     coloreSerie?: string;
     contador: number;
     area: number;
+    montoNormalizado?: number;
+    porcentaje?: number;
 }
 export interface RequestGraficasDto {
     bandera: string;

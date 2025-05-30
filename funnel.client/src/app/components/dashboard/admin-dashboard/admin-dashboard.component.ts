@@ -31,13 +31,11 @@ export class AdminDashboardComponent {
   }
   consultarPermisosUsuario() {
     const permisos = this.loginService.obtenerPermisosUsuario();
-    console.log('Permisos del usuario:', permisos);
     if (permisos && permisos.length > 0) {
       const permisoDashboard = permisos.find(p => p.nombre === 'DASHBOARD');
       if(permisoDashboard){
-        console.log('Permiso Dashboard encontrado:', permisoDashboard);
         this.permisoOportunidadesGeneral = permisoDashboard.subMenu.some((p:any) => p.pagina === EnumPaginas.OPORTUNIDADES_GENERAL);
-        this.permisoOportunidadesPorAgente = permisoDashboard.subMenu.some((p:any) => p.pagina === EnumPaginas.OPORTUNIDADES_POR_AGENTE);
+        this.permisoOportunidadesPorAgente = false;
         this.permisoClientesTop20 = permisoDashboard.subMenu.some((p:any) => p.pagina === EnumPaginas.CLIENTES_TOP_20);
       }
     }

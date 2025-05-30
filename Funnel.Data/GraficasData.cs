@@ -28,13 +28,26 @@ namespace Funnel.Data
                     while (reader.Read())
                     {
                         var dto = new GraficaDto();
-                        dto.Id = ComprobarNulos.CheckIntNull(reader["Id"]);
-                        dto.Label = ComprobarNulos.CheckStringNull(reader["Concepto"]);
-                        dto.Valor = ComprobarNulos.CheckDecimalNull(reader["Monto"]);
-                        dto.Area = ComprobarNulos.CheckIntNull(reader["Area"]);
-                        dto.ColoreSerie = ComprobarNulos.CheckStringNull(reader["ColorSerie"]);
+                        if (data.Bandera == "SEL-OPORTUNIDAD-STAGE")
+                        {
+                            dto.Id = ComprobarNulos.CheckIntNull(reader["Id"]);
+                            dto.Label = ComprobarNulos.CheckStringNull(reader["Concepto"]);
+                            dto.Valor = ComprobarNulos.CheckDecimalNull(reader["Monto"]);
+                            dto.Area = ComprobarNulos.CheckIntNull(reader["Area"]);
+                            dto.ColoreSerie = ComprobarNulos.CheckStringNull(reader["ColorSerie"]);
 
-                        result.Add(dto);
+                            result.Add(dto);
+                        }
+                        else if (data.Bandera == "SEL-TIPO-SIN-MONTOS-CEROS")
+                        {
+                            dto.Id = ComprobarNulos.CheckIntNull(reader["IdTipoProyecto"]);
+                            dto.Label = ComprobarNulos.CheckStringNull(reader["Descripcion"]);
+                            dto.Valor = ComprobarNulos.CheckDecimalNull(reader["Monto"]);
+                            dto.MontoNormalizado = ComprobarNulos.CheckDecimalNull(reader["MontoNormalizado"]);
+                            dto.Porcentaje = ComprobarNulos.CheckDecimalNull(reader["Porcentaje"]);
+
+                            result.Add(dto);
+                        }
                     }
                 }
             }
@@ -42,6 +55,43 @@ namespace Funnel.Data
             {
                 throw new Exception("Error al obtener la gráfica de oportunidades", ex);
                 
+            }
+
+            return result;
+        }
+        public async Task<List<GraficaDto>> ObtenerGraficaAgentes(RequestGrafica data)
+        {
+            List<GraficaDto> result = new List<GraficaDto>();
+            IList<ParameterSQl> list = new List<ParameterSQl>
+            {
+                DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, data.IdEmpresa),
+                DataBase.CreateParameterSql("@IdUsuario", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, data.IdUsuario ?? 0),
+                DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, data.Bandera ?? "")
+            };
+            try
+            {
+                using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoUsuarios", CommandType.StoredProcedure, list, _connectionString))
+                {
+                    while (reader.Read())
+                    {
+                        var dto = new GraficaDto();
+                        if (data.Bandera == "SEL-AGENTE-SECTOR")
+                        {
+                            dto.Id = ComprobarNulos.CheckIntNull(reader["IdSector"]);
+                            dto.Label = ComprobarNulos.CheckStringNull(reader["Descripcion"]);
+                            dto.Valor = ComprobarNulos.CheckDecimalNull(reader["Monto"]);
+                            dto.Porcentaje = ComprobarNulos.CheckDecimalNull(reader["Porcentaje"]);
+                            dto.MontoNormalizado = ComprobarNulos.CheckDecimalNull(reader["MontoNormalizado"]);
+
+                            result.Add(dto);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener la gráfica de oportunidades", ex);
+
             }
 
             return result;

@@ -6,7 +6,7 @@
         <h5 class="card-title">{{card.titulo}}</h5>
       </div>
       <div class="p-0" style="height:330px;max-height: 330px; z-index: 5000;">
-        <plotly-plot *ngIf="infoCargada" [data]="card.grafica.data" [layout]="card.grafica.layout"
+        <plotly-plot *ngIf="card.infoCargada" [data]="card.grafica.data" [layout]="card.grafica.layout"
           [config]="card.grafica.config"></plotly-plot>
       </div>
     </div>

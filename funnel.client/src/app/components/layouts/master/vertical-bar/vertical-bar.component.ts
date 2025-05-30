@@ -58,6 +58,12 @@ export class VerticalBarComponent {
 
         // Combinar: primero "Perfil", luego los permisos, luego "SALIR"
         this.ListaMenu = [perfil, ...result, salir];
+
+        this.ListaMenu = this.ListaMenu.map(menu =>
+          menu.nombre === 'DASHBOARD'
+            ? { ...menu, subMenu: [], ruta: '/dashboard' }
+            : menu
+        );
       },
       error: (error) => {
         this.messageService.add({

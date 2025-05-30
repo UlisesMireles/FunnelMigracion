@@ -128,6 +128,7 @@ import * as PlotlyJS from 'plotly.js-dist-min';
 import { PlotlyModule } from 'angular-plotly.js';
 import { OportunidadesGeneralComponent } from './components/dashboard/oportunidades-general/oportunidades-general.component';
 import { AdminDashboardComponent } from './components/dashboard/admin-dashboard/admin-dashboard.component';
+import { OportunidadesPorAgenteComponent } from './components/dashboard/oportunidades-por-agente/oportunidades-por-agente.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -189,7 +190,8 @@ registerLocaleData(localeEs, 'es-MX');
     UsuarioPerfilComponent,
     AcordeonOportunidadesEtapaComponent,
     OportunidadesGeneralComponent,
-    AdminDashboardComponent
+    AdminDashboardComponent,
+    OportunidadesPorAgenteComponent
   ],
   imports: [
     BrowserModule,

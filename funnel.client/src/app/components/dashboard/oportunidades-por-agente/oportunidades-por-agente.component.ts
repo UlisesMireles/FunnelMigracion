@@ -1,18 +1,17 @@
+
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
 import { LoginService } from '../../../services/login.service';
 import { GraficasService } from '../../../services/graficas.service';
 import { GraficasDto, RequestGraficasDto } from '../../../interfaces/graficas';
 @Component({
-  selector: 'app-oportunidades-general',
+  selector: 'app-oportunidades-por-agente',
   standalone: false,
-  templateUrl: './oportunidades-general.component.html',
-  styleUrl: './oportunidades-general.component.css',
-  encapsulation: ViewEncapsulation.None
+  templateUrl: './oportunidades-por-agente.component.html',
+  styleUrl: './oportunidades-por-agente.component.css'
 })
-
-export class OportunidadesGeneralComponent {
-  quadrants = [
+export class OportunidadesPorAgenteComponent {
+ quadrants = [
     { cards: [this.createCard(1, 'Indicadores por Etapa')] },
     { cards: [this.createCard(2, 'Oportunidades por Sector')] },
     { cards: [this.createCard(3, 'Oportunidades por Tipo')] },
@@ -20,7 +19,7 @@ export class OportunidadesGeneralComponent {
   ];
 
   get dropListIds() {
-    return this.quadrants.map((_, index) => `dropList${index}`);
+    return this.quadrants.map((_, index) => `cardList${index}`);
   }
   infoCargada: boolean = false;
 
@@ -81,7 +80,7 @@ export class OportunidadesGeneralComponent {
           textfont: { family: "Old Standard TT", size: 13, color: "black" },
           hoverinfo: 'percent total+x',
           marker: {
-            color: response.map(item => item.coloreSerie ?? OportunidadesGeneralComponent.getRandomColor())
+            color: response.map(item => item.coloreSerie ?? OportunidadesPorAgenteComponent.getRandomColor())
           }
         }];
         const layOutGrafica = {
@@ -139,7 +138,7 @@ export class OportunidadesGeneralComponent {
       textinfo: "label+percent",
       automargin: true,
       marker: {
-        color: items.map(item => item.coloreSerie ?? OportunidadesGeneralComponent.getRandomColor())
+        color: items.map(item => item.coloreSerie ?? OportunidadesPorAgenteComponent.getRandomColor())
       }
     };
   }

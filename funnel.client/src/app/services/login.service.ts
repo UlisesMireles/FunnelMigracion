@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, finalize, Observable, map } from 'rxjs';
+import { BehaviorSubject, finalize, Observable, map} from 'rxjs';
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -248,7 +248,7 @@ export class LoginService {
     return this.http.get<any>(`${this.baseUrl}api/Login/ObtenerImagenEmpresa/`, {
       params: { idEmpresa: _idEmpresa }
     }).pipe(
-      map(data => data.errorMessage ?? '')
+      map(data => data.urlImagen ?? '')
     );
   }
 

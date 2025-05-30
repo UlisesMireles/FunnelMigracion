@@ -11,6 +11,7 @@ import { ImageCroppedEvent, ImageCropperComponent, ImageTransform } from 'ngx-im
 import { CommonModule } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
+import { ModalService } from '../../../services/modal-perfil.service';
 
 @Component({
   selector: 'app-cambiar-contrasena',
@@ -80,7 +81,7 @@ export class CambiarContrasenaComponent implements OnInit {
   croppedImageFile?: Blob;
   zoom = 1;
 
-  constructor(private readonly fb: FormBuilder, private readonly router: Router, private readonly messageService: MessageService, private readonly authService: LoginService, private readonly imagenService: ImagenActualizadaService) {
+  constructor(private readonly fb: FormBuilder, private readonly router: Router, private readonly messageService: MessageService, private readonly authService: LoginService, private readonly imagenService: ImagenActualizadaService, private modalService: ModalService) {
   }
 
   ngOnInit(): void {
@@ -113,9 +114,10 @@ export class CambiarContrasenaComponent implements OnInit {
     if (imagenPerfil) {
       this.fotoSeleccionada = { name: imagenPerfil } as File;
       this.formCambiarPassword.patchValue({ fotoSeleccionada: this.fotoSeleccionada });
-      this.imagePreview = this.baseUrl + '/Fotografia/' + imagenPerfil;
+      //this.imagePreview = this.baseUrl + '/Fotografia/' + imagenPerfil;
+      this.imagePreview = `${this.baseUrl}/Fotografia/${imagenPerfil}?t=${Date.now()}`;
     } else {
-      this.imagePreview = this.rutaImgenDefault;
+      this.imagePreview = null;
 
     }
 
@@ -233,6 +235,7 @@ export class CambiarContrasenaComponent implements OnInit {
 
     this.imagePreview = URL.createObjectURL(this.fotoSeleccionada);
     this.showCropperModal = false;
+    this.validarGuardar = true;
   }
 
   getExtension(mimeType: string): string {
@@ -371,6 +374,7 @@ export class CambiarContrasenaComponent implements OnInit {
             this.imagenService.actualizarImagenPerfil('')
           }
           this.formCambiarPassword.reset();
+          this.modalService.closeModal();
           this.router.navigate(['/oportunidades']);
         } else {
           this.mostrarToastError(response.errorMessage);

@@ -11,7 +11,7 @@
     <!-- Fila 1 -->
     <div class="row">
       <div class="col-md-6">
-        <div class="form-group" [ngStyle]="{ visibility: insertar ? 'visible' : 'hidden', 'margin-bottom': insertar ? '15px' : '0px' }">
+        <div class="form-group" *ngIf="insertar; else descripcionField" [ngStyle]="{ visibility: insertar ? 'visible' : 'hidden', 'margin-bottom': insertar ? '15px' : '0px' }">
           <label for="prospecto" class="text-start w-100">Prospecto:</label>
           <input type="text"  class="form-control" placeholder="Buscar prospecto..."
             [(ngModel)]="busquedaProspecto" [ngModelOptions]="{ standalone: true }" (input)="filtrarProspectos($event)" style="height: 40px;">
@@ -55,23 +55,42 @@
     <!-- Fila 2 -->
     <div class="row">
       <div class="col-12 col-md-6">
-        <div class="form-group mb-3"   >
+        <div class="form-group mb-3" *ngIf="insertar; else fechaField">
           <label for="descripcion" class="text-start w-100">Descripción:</label>
           <input pInputText class="form-control text-start" formControlName="descripcion" 
             maxlength="100" (input)="limitarCaracteres()" />
-            <div class="justify-content-between align-items-start w-100">
-                <div class="text-danger position-absolute">
-                    <ng-container *ngIf="oportunidadForm.get('descripcion')?.invalid && oportunidadForm.get('descripcion')?.touched">
-                    <div *ngIf="oportunidadForm.get('descripcion')?.errors?.['required']">Debe agregar una descripción.</div>
-                    <div *ngIf="oportunidadForm.get('descripcion')?.errors?.['minlength']">Debe tener al menos 5 caracteres.</div>
-                    <div *ngIf="oportunidadForm.get('descripcion')?.errors?.['maxlength']">No puede exceder los 100 caracteres.</div>
-                    </ng-container>
-                </div>
-                    <div class="text-end" style="white-space: nowrap;">
-                        {{ oportunidadForm.get('descripcion')?.value?.length || 0 }}/100
-                    </div>
+          <div class="justify-content-between align-items-start w-100">
+            <div class="text-danger position-absolute">
+              <ng-container *ngIf="oportunidadForm.get('descripcion')?.invalid && oportunidadForm.get('descripcion')?.touched">
+                <div *ngIf="oportunidadForm.get('descripcion')?.errors?.['required']">Debe agregar una descripción.</div>
+                <div *ngIf="oportunidadForm.get('descripcion')?.errors?.['minlength']">Debe tener al menos 5 caracteres.</div>
+                <div *ngIf="oportunidadForm.get('descripcion')?.errors?.['maxlength']">No puede exceder los 100 caracteres.</div>
+              </ng-container>
             </div>
+            <div class="text-end" style="white-space: nowrap;">
+              {{ oportunidadForm.get('descripcion')?.value?.length || 0 }}/100
+            </div>
+          </div>
         </div>
+        <ng-template #descripcionField>
+          <div class="form-group mb-3">
+            <label for="descripcion" class="text-start w-100">Descripción:</label>
+            <input pInputText class="form-control text-start" formControlName="descripcion" 
+              maxlength="100" (input)="limitarCaracteres()" />
+            <div class="justify-content-between align-items-start w-100">
+              <div class="text-danger position-absolute">
+                <ng-container *ngIf="oportunidadForm.get('descripcion')?.invalid && oportunidadForm.get('descripcion')?.touched">
+                  <div *ngIf="oportunidadForm.get('descripcion')?.errors?.['required']">Debe agregar una descripción.</div>
+                  <div *ngIf="oportunidadForm.get('descripcion')?.errors?.['minlength']">Debe tener al menos 5 caracteres.</div>
+                  <div *ngIf="oportunidadForm.get('descripcion')?.errors?.['maxlength']">No puede exceder los 100 caracteres.</div>
+                </ng-container>
+              </div>
+              <div class="text-end" style="white-space: nowrap;">
+                {{ oportunidadForm.get('descripcion')?.value?.length || 0 }}/100
+              </div>
+            </div>
+          </div>
+        </ng-template>
       </div>
       <div class="col-12 col-md-6">
         <div class="form-group mb-3"   >
@@ -90,7 +109,7 @@
     <!-- Fila 3 -->
       <div class="row">
       <div class="col-12 col-md-6">
-        <div class="form-group mb-3"   >
+        <div class="form-group mb-3"  *ngIf="insertar; else etapaField">
           <label for="fecha" class="text-start w-100">Fecha Estimada Cierre:</label>
           <p-datepicker formControlName="fechaEstimadaCierreOriginal" dateFormat="dd/mm/yy" appendTo="body" #calendar
             [showIcon]="true" [showButtonBar]="true" [dataType]="'date'" placeholder="dd/mm/aaaa" [style]="{ width: '1200px' }">
@@ -102,6 +121,19 @@
              </div>
         </div>
       </div>
+      <ng-template #fechaField>
+        <div class="form-group mb-3">
+          <label for="fecha" class="text-start w-100">Fecha Estimada Cierre:</label>
+          <p-datepicker formControlName="fechaEstimadaCierreOriginal" dateFormat="dd/mm/yy" appendTo="body" #calendar
+            [showIcon]="true" [showButtonBar]="true" [dataType]="'date'" placeholder="dd/mm/aaaa" [style]="{ width: '1200px' }">
+          </p-datepicker>
+           <div class="text-danger position-absolute d-flex justify-content-between align-items-start w-100">
+                <ng-container *ngIf="oportunidadForm.get('fechaEstimadaCierreOriginal')?.invalid && oportunidadForm.get('fechaEstimadaCierreOriginal')?.touched">
+                    <div *ngIf="oportunidadForm.get('fechaEstimadaCierreOriginal')?.errors?.['required']">Debe seleccionar una fecha estimada.</div>
+                </ng-container>
+             </div>
+        </div>
+      </ng-template>
        <div class="col-12 col-md-6">
         <div class="form-group mb-3"   >
           <label for="comentario" class="text-start w-100">Comentario:</label>
@@ -131,7 +163,7 @@
     <!-- Fila 4 -->
       <div class="row">
       <div class="col-12 col-md-6">
-        <div class="form-group mb-3">
+        <div class="form-group mb-3" *ngIf="insertar; else servicioField">
           <label for="etapa" class="text-start w-100">Etapa:</label>
           <p-dropdown class="form-control text-start" [options]="etapas" formControlName="idStage" optionLabel="concepto"
             optionValue="id" appendTo="body" placeholder="Selecciona una etapa" (onChange)="onChangeProbabilidad()">
@@ -141,6 +173,17 @@
           </span>
         </div>
       </div>
+      <ng-template #etapaField>
+        <div class="form-group mb-3">
+          <label for="etapa" class="text-start w-100">Etapa:</label>
+          <p-dropdown class="form-control text-start" [options]="etapas" formControlName="idStage" optionLabel="concepto"
+            optionValue="id" appendTo="body" placeholder="Selecciona una etapa" (onChange)="onChangeProbabilidad()">
+          </p-dropdown>
+          <span *ngIf="oportunidadForm.get('idStage')?.invalid && oportunidadForm.get('idStage')?.touched" class="text-danger position-absolute">
+            <ng-container *ngIf="oportunidadForm.get('idStage')?.errors?.['required']">Debe seleccionar una etapa.</ng-container>
+          </span>
+        </div>
+      </ng-template>
       <div class="col-12 col-md-6">
         <div class="form-group mb-3"   >
           <label for="ejecutivo" class="text-start w-100">Ejecutivo:</label>
@@ -156,7 +199,7 @@
 <!-- Fila 5 -->
     <div class="row">
       <div class="col-12 col-md-6">
-        <div class="form-group mb-3"   >
+        <div class="form-group mb-3" *ngIf="insertar; else estatusField">
           <label for="servicio" class="text-start w-100">Servicio:</label>
           <p-dropdown  class="form-control text-start" [options]="servicios" formControlName="idTipoProyecto" optionLabel="descripcion"
             optionValue="idTipoProyecto" appendTo="body" placeholder="Selecciona un servicio">
@@ -168,6 +211,19 @@
           </span>
         </div>
       </div>
+      <ng-template #servicioField>
+       <div class="form-group mb-3">
+          <label for="servicio" class="text-start w-100">Servicio:</label>
+          <p-dropdown  class="form-control text-start" [options]="servicios" formControlName="idTipoProyecto" optionLabel="descripcion"
+            optionValue="idTipoProyecto" appendTo="body" placeholder="Selecciona un servicio">
+          </p-dropdown>
+          <span *ngIf="oportunidadForm.get('idTipoProyecto')?.invalid && oportunidadForm.get('idTipoProyecto')?.touched"
+            class="text-danger position-absolute"><br>
+            <ng-container *ngIf="oportunidadForm.get('idTipoProyecto')?.errors?.['required']">Debe seleccionar un
+              servicio.</ng-container>
+          </span>
+        </div>
+      </ng-template>
        <div class="col-12 col-md-6">
         <div class="form-group mb-3"   >
           <label for="entregas" class="text-start w-100">Entrega:</label>
@@ -182,19 +238,19 @@
     </div>
 
     <!-- Fila 6 (solo si no es insertar) -->
-    <div class="row" *ngIf="!insertar">
-      <div class="col-12 col-md-6">
-        <div class="form-group mb-3"   >
-          <label for="estatusOportunidad" class="text-start w-100">Estatus Oportunidad:</label>
-          <p-dropdown class="form-control text-start" [options]="estatusOportunidad" formControlName="idEstatus" optionLabel="descripcion"
-            optionValue="idEstatus" appendTo="body" placeholder="Seleccione un estatus">
-          </p-dropdown>
-          <span *ngIf="oportunidadForm.get('idEstatus')?.invalid && oportunidadForm.get('idEstatus')?.touched" class="text-danger position-absolute">
-            <ng-container *ngIf="oportunidadForm.get('idEstatus')?.errors?.['required']">Debe seleccionar un estatus.</ng-container>
-          </span>
+    <ng-template #estatusField>
+      <div class="row">
+          <div class="form-group mb-3">
+            <label for="estatusOportunidad" class="text-start w-100">Estatus Oportunidad:</label>
+            <p-dropdown class="form-control text-start" [options]="estatusOportunidad" formControlName="idEstatus" optionLabel="descripcion"
+              optionValue="idEstatus" appendTo="body" placeholder="Seleccione un estatus">
+            </p-dropdown>
+            <span *ngIf="oportunidadForm.get('idEstatus')?.invalid && oportunidadForm.get('idEstatus')?.touched" class="text-danger position-absolute">
+              <ng-container *ngIf="oportunidadForm.get('idEstatus')?.errors?.['required']">Debe seleccionar un estatus.</ng-container>
+            </span>
+          </div>
         </div>
-      </div>
-    </div>
+    </ng-template>
   </div>
 </ng-template>
   <ng-template pTemplate="footer">

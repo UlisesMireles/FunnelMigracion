@@ -767,8 +767,8 @@ label {
 }
 
 .chatbot-window {
-  width: 480px;
-  height: 480px;
+  height: 70vh;
+  width: 25vw;
   background: white !important;
   position: absolute;
   bottom: 9.5vh;

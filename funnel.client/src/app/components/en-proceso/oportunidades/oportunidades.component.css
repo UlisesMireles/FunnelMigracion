@@ -446,3 +446,8 @@ th.sort-active p-sortIcon {
   min-width: 55px !important;
   max-width: 55px !important;
 }
+
+.error-placeholder {
+  min-height: 18px; 
+  display: block;
+}

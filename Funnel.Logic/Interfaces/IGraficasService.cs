@@ -6,5 +6,6 @@ namespace Funnel.Logic.Interfaces
     {
         Task<List<GraficaDto>> ObtenerGraficaOportunidades(RequestGrafica data);
         Task<List<GraficaDto>> ObtenerGraficaAgentes(RequestGrafica data);
+        Task<List<AgenteDto>> ObtenerAgentes(RequestGrafica data);
     }
 }

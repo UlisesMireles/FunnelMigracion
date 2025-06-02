@@ -3,7 +3,8 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { Component } from '@angular/core';
 import { LoginService } from '../../../services/login.service';
 import { GraficasService } from '../../../services/graficas.service';
-import { GraficasDto, RequestGraficasDto } from '../../../interfaces/graficas';
+import { AgenteDto, GraficasDto, RequestGraficasDto } from '../../../interfaces/graficas';
+import { environment } from '../../../../environments/environment';
 @Component({
   selector: 'app-oportunidades-por-agente',
   standalone: false,
@@ -11,11 +12,14 @@ import { GraficasDto, RequestGraficasDto } from '../../../interfaces/graficas';
   styleUrl: './oportunidades-por-agente.component.css'
 })
 export class OportunidadesPorAgenteComponent {
- quadrants = [
-    { cards: [this.createCard(1, 'Indicadores por Etapa')] },
-    { cards: [this.createCard(2, 'Oportunidades por Sector')] },
-    { cards: [this.createCard(3, 'Oportunidades por Tipo')] },
-    { cards: [] }
+  
+  baseUrl: string = environment.baseURL;
+  agentes: AgenteDto[] = [];
+  quadrants = [
+    { cards: [this.createCard(1, 'Consulta Agentes')] },
+    { cards: [this.createCard(2, 'Grafica por Agente - Clientes')] },
+    { cards: [this.createCard(3, 'Grafica por Agente - Tipo Oportunidad')] },
+    { cards: [this.createCard(4, 'Grafica por Agente - Sector')]  }
   ];
 
   get dropListIds() {
@@ -53,9 +57,8 @@ export class OportunidadesPorAgenteComponent {
   }
 
   ngOnInit(): void {
-    this.consultarGraficaStage();
-    this.consultarGraficaTipo();
-    this.consultarGraficaSector();
+    this.baseUrl = this.baseUrl + '/Fotografia/';
+    this.consultarAgente();
   }
 
   private setGraficaData(quadrantIdx: number, cardIdx: number, data: any, layout: any) {
@@ -63,47 +66,55 @@ export class OportunidadesPorAgenteComponent {
     this.quadrants[quadrantIdx].cards[cardIdx].grafica.layout = layout;
     this.quadrants[quadrantIdx].cards[cardIdx].infoCargada = true;
   }
-
-  consultarGraficaStage(): void {
+  recargarGraficasPorAgente(idAgente: number) {
+    this.consultarGraficaAgenteCliente(idAgente);
+    this.consultarGraficaAgenteTipoOportunidad(idAgente);
+    this.consultarGraficaAgenteSector(idAgente);
+  }
+  consultarAgente(): void {
     const idEmpresa = this.sessionService.obtenerIdEmpresa();
     const request: RequestGraficasDto = {
-      bandera: 'SEL-OPORTUNIDAD-STAGE',
-      idEmpresa
+      bandera: 'SEL-AGENTES',
+      idEmpresa: idEmpresa
     };
 
-    this.graficasService.obtenerGraficaData(request).subscribe({
+    this.graficasService.obtenerAgentesData(request).subscribe({
+      next: (response: AgenteDto[]) => {
+        this.agentes = response;
+        this.consultarGraficaAgenteCliente(this.agentes.length > 0 ? this.agentes[0].idAgente : -1);
+        this.consultarGraficaAgenteTipoOportunidad(this.agentes.length > 0 ? this.agentes[0].idAgente : -1);
+        this.consultarGraficaAgenteSector(this.agentes.length > 0 ? this.agentes[0].idAgente : -1);
+      },
+      error: (err: any) => console.error('Error al consultar los agentes:', err)
+    });
+  }
+
+  consultarGraficaAgenteCliente(idAgente: number): void {
+    const request: RequestGraficasDto = {
+      bandera: 'SEL-AGENTE-CLIENTES',
+      idUsuario: idAgente
+    };
+
+    this.graficasService.obtenerGraficaAgentesData(request).subscribe({
       next: (response: GraficasDto[]) => {
-        const dataAGraficar = [{
-          type: 'funnel',
-          x: response.map(item => item.valor),
-          text: response.map(item => item.label ?? 'Sin etiqueta'),
-          textfont: { family: "Old Standard TT", size: 13, color: "black" },
-          hoverinfo: 'percent total+x',
-          marker: {
-            color: response.map(item => item.coloreSerie ?? OportunidadesPorAgenteComponent.getRandomColor())
-          }
-        }];
-        const layOutGrafica = {
-          margin: { l: 50, r: 50, b: 70, t: 30 },
-          height: 400,
-          yaxis: { visible: false, showticklabels: false, showgrid: false, zeroline: false }
-        };
-        this.setGraficaData(0, 0, dataAGraficar, layOutGrafica);
+        const dataAGraficar = [this.createBarData(response), this.createBarNormalizadoData(response)];
+        const layOutGrafica = this.createBarLayout();
+        this.setGraficaData(1, 0, dataAGraficar, layOutGrafica);
       },
       error: (err: any) => console.error('Error al consultar la gráfica:', err)
     });
   }
 
-  consultarGraficaTipo(): void {
-    const idEmpresa = this.sessionService.obtenerIdEmpresa();
+  consultarGraficaAgenteTipoOportunidad(idAgente: number): void {
     const request: RequestGraficasDto = {
-      bandera: 'SEL-TIPO-SIN-MONTOS-CEROS',
-      idEmpresa
+      bandera: 'SEL-AGENTE-TIPO',
+      idEmpresa: this.sessionService.obtenerIdEmpresa(),
+      idUsuario: idAgente
     };
 
-    this.graficasService.obtenerGraficaData(request).subscribe({
+    this.graficasService.obtenerGraficaAgentesData(request).subscribe({
       next: (response: GraficasDto[]) => {
-        const dataAGraficar = [this.createPieData(response)];
+        const dataAGraficar = [this.createPieData(response)]; 
         const layOutGrafica = this.createPieLayout();
         this.setGraficaData(2, 0, dataAGraficar, layOutGrafica);
       },
@@ -111,24 +122,25 @@ export class OportunidadesPorAgenteComponent {
     });
   }
 
-  consultarGraficaSector(): void {
-    const idEmpresa = this.sessionService.obtenerIdEmpresa();
+  consultarGraficaAgenteSector(idAgente: number): void {
     const request: RequestGraficasDto = {
-      bandera: 'SEL-AGENTE-SECTOR',
-      idEmpresa
+      bandera: 'SEL-AGENTE-SECTOR-PERSONAL',
+      idEmpresa: this.sessionService.obtenerIdEmpresa(),
+      idUsuario: idAgente
     };
 
     this.graficasService.obtenerGraficaAgentesData(request).subscribe({
       next: (response: GraficasDto[]) => {
-        const filtrados = response.filter(item => item.valor > 0);
-        const dataAGraficar = [this.createPieData(filtrados)];
+        console.log('Respuesta de la gráfica por tipo de oportunidad:', response);
+        const dataAGraficar = [this.createPieData(response)]; 
         const layOutGrafica = this.createPieLayout();
-        this.setGraficaData(1, 0, dataAGraficar, layOutGrafica);
+        this.setGraficaData(3, 0, dataAGraficar, layOutGrafica);
       },
       error: (err: any) => console.error('Error al consultar la gráfica:', err)
     });
   }
 
+  
   private createPieData(items: GraficasDto[]) {
     return {
       type: 'pie',
@@ -142,7 +154,28 @@ export class OportunidadesPorAgenteComponent {
       }
     };
   }
-
+  private createBarData(items: GraficasDto[]) {
+    return {
+      type: 'bar',
+      y: items.map(item => item.valor),
+      x: items.map(item => item.label ?? 'Sin etiqueta'),
+      name: 'Monto',
+      marker: {
+        color: items.map(item => OportunidadesPorAgenteComponent.getRandomColor())
+      }
+    };
+  }
+    private createBarNormalizadoData(items: GraficasDto[]) {
+    return {
+      type: 'bar',
+      y: items.map(item => item.montoNormalizado),
+      x: items.map(item => item.label ?? 'Sin etiqueta'),
+      name: 'Monto Normalizado',
+      marker: {
+        color: items.map(item => item.coloreSerie ?? OportunidadesPorAgenteComponent.getRandomColor())
+      }
+    };
+  }
   private createPieLayout() {
     return {
       margin: { t: 0, b: 100, l: 0, r: 100 },
@@ -150,7 +183,13 @@ export class OportunidadesPorAgenteComponent {
       showlegend: false
     };
   }
-
+  private createBarLayout() {
+    return {
+      margin: { t: 50, b: 50, l: 50, r: 150 },
+      height: 330,
+      barmode: 'group'
+    };
+  }
   drop(event: CdkDragDrop<any>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);

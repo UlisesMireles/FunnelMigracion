@@ -130,8 +130,16 @@ import { OportunidadesGeneralComponent } from './components/dashboard/oportunida
 import { AdminDashboardComponent } from './components/dashboard/admin-dashboard/admin-dashboard.component';
 import { OportunidadesPorAgenteComponent } from './components/dashboard/oportunidades-por-agente/oportunidades-por-agente.component';
 
+import { es } from 'plotly.js-locales';
+
 PlotlyModule.plotlyjs = PlotlyJS;
 
+if (PlotlyJS.register) {
+  PlotlyJS.register(es);
+}
+if (PlotlyJS.setPlotConfig) {
+  PlotlyJS.setPlotConfig({ locale: 'es' });
+}
 export function configurationProviderFactory(provider: PrimeNgConfiguracionService) {
   return () => provider.load();
 }

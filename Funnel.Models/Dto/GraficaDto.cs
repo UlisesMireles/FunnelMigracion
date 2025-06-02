@@ -22,5 +22,13 @@ namespace Funnel.Models.Dto
         public string? Bandera { get; set; }
         public int? IdUsuario { get; set; }
     }
+    public class AgenteDto
+    {
+        public int IdAgente { get; set; }
+        public string? Nombre { get; set; }
+        public decimal? TotalAgente { get; set; }
+        public decimal? MontoNormalizado { get; set; }
+        public string? ArchivoImagen { get; set; }
 
+    }
 }

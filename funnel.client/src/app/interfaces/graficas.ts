@@ -12,5 +12,12 @@ export interface GraficasDto {
 export interface RequestGraficasDto {
     bandera: string;
     idUsuario?: number;
-    idEmpresa: number;
+    idEmpresa?: number;
+}
+export interface AgenteDto {
+    idAgente: number;
+    nombre?: string;
+    totalAgente: number;
+    montoNormalizado?: number;
+    archivoImagen?: string;
 }

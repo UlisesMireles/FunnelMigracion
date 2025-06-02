@@ -75,9 +75,18 @@ namespace Funnel.Data
                     while (reader.Read())
                     {
                         var dto = new GraficaDto();
-                        if (data.Bandera == "SEL-AGENTE-SECTOR")
+                       
+                        if (data.Bandera == "SEL-AGENTE-CLIENTES")
                         {
-                            dto.Id = ComprobarNulos.CheckIntNull(reader["IdSector"]);
+                            dto.Label = ComprobarNulos.CheckStringNull(reader["Nombre"]);
+                            dto.Valor = ComprobarNulos.CheckDecimalNull(reader["TotalAgente"]);
+                            dto.ColoreSerie = ComprobarNulos.CheckStringNull(reader["ColorNormalizado"]);
+                            dto.MontoNormalizado = ComprobarNulos.CheckDecimalNull(reader["MontoNormalizado"]);
+
+                            result.Add(dto);
+                        }
+                        else
+                        {
                             dto.Label = ComprobarNulos.CheckStringNull(reader["Descripcion"]);
                             dto.Valor = ComprobarNulos.CheckDecimalNull(reader["Monto"]);
                             dto.Porcentaje = ComprobarNulos.CheckDecimalNull(reader["Porcentaje"]);
@@ -85,6 +94,41 @@ namespace Funnel.Data
 
                             result.Add(dto);
                         }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener la gráfica de oportunidades", ex);
+
+            }
+
+            return result;
+        }
+        public async Task<List<AgenteDto>> ObtenerAgentes(RequestGrafica data)
+        {
+            List<AgenteDto> result = new List<AgenteDto>();
+            IList<ParameterSQl> list = new List<ParameterSQl>
+            {
+                DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, data.IdEmpresa),
+                DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, data.Bandera),
+            };
+            try
+            {
+                using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoUsuarios", CommandType.StoredProcedure, list, _connectionString))
+                {
+                    while (reader.Read())
+                    {
+                        var dto = new AgenteDto();
+                        
+                        dto.IdAgente = ComprobarNulos.CheckIntNull(reader["IdUsuario"]);
+                        dto.Nombre = ComprobarNulos.CheckStringNull(reader["NombreCompleto"]);
+                        dto.TotalAgente = ComprobarNulos.CheckDecimalNull(reader["TotalAgente"]);
+                        dto.MontoNormalizado = ComprobarNulos.CheckDecimalNull(reader["MontoNormalizado"]);
+                        dto.ArchivoImagen = ComprobarNulos.CheckStringNull(reader["ArchivoImagen"]);
+
+                       result.Add(dto);
+                       
                     }
                 }
             }

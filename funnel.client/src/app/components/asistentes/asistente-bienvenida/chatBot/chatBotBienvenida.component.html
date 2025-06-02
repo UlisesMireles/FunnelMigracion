@@ -36,14 +36,12 @@
 <div class="chatbot-message-box" [class.active]="loadOpciones" [class.has-options]="loadOpciones"  data-role="chatbot">
   <input type="text" class="chatbot-input" [(ngModel)]="pregunta" placeholder="¿Cómo puedo ayudarte el día de hoy?"
     (keydown.enter)="consultaMensajeOpenIa($event)">
-     <div class="row">
-        <div class="col-6 d-flex justify-content-end pt-1" style="margin-left: 50px;"> <i class="bi bi-trash opcionesIconTrash"
-            (click)="resetConversation()" matTooltip="Eliminar historial"></i>
-        </div>
-      </div>
+    
+  <mat-icon matSuffix [ngStyle]="{'color':'#1a237e'}"
+    (click)="resetConversation()" matTooltip="Eliminar historial" style="cursor: pointer; margin-top: 1px; ">delete</mat-icon>
 <!-- <mat-icon matSuffix (click)="loadOpciones = !loadOpciones">more_horiz</mat-icon> -->
   <mat-icon matSuffix class="ms-2" (click)="!pregunta || isConsultandoOpenIa ? null : consultaMensajeOpenIa()"
-    [ngClass]="{'disabled-icon': !pregunta || isConsultandoOpenIa}">send</mat-icon>
+    [ngClass]="{'disabled-icon': !pregunta || isConsultandoOpenIa}" [ngStyle]="{'color':'#5c6bc0'}">send</mat-icon>
 
 </div>
 <ng-container *ngIf="loadOpciones" [ngTemplateOutlet]="opciones"></ng-container>

@@ -124,3 +124,20 @@
   min-height: 20px;
 
 }
+ .btn-seleccionar {
+    background: #ededed;
+    color: #475569;
+    border: 1px solid #ededed; 
+    padding: 5px 15px;
+    font-size: 14px; 
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease; 
+  }
+  
+  /* Efecto hover */
+  .btn-seleccionar:hover {
+    background: #d4d4d4; 
+    border-color: #d4d4d4; 
+    color: #475569;
+  }
+

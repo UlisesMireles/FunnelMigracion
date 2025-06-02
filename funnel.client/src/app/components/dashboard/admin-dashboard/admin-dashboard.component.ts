@@ -35,7 +35,7 @@ export class AdminDashboardComponent {
       const permisoDashboard = permisos.find(p => p.nombre === 'DASHBOARD');
       if(permisoDashboard){
         this.permisoOportunidadesGeneral = permisoDashboard.subMenu.some((p:any) => p.pagina === EnumPaginas.OPORTUNIDADES_GENERAL);
-        this.permisoOportunidadesPorAgente = false;
+        this.permisoOportunidadesPorAgente = permisoDashboard.subMenu.some((p:any) => p.pagina === EnumPaginas.OPORTUNIDADES_POR_AGENTE);
         this.permisoClientesTop20 = permisoDashboard.subMenu.some((p:any) => p.pagina === EnumPaginas.CLIENTES_TOP_20);
       }
     }

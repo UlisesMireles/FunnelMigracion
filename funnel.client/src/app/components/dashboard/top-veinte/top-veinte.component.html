@@ -143,6 +143,18 @@
                   </td>
                 </tr>
               </ng-template>
+              <ng-template pTemplate="footer" let-columns #footer>
+                <tr class="custom-footer">
+                  <td *ngFor="let def of lsColumnasAMostrar"
+                      [ngStyle]="{
+                        'text-align':
+                          def.tipoFormato === 'currency' ? 'right' :
+                          (def.tipoFormato === 'number' || def.tipoFormato === 'date') ? 'center' : 'left'
+                      }">
+                  </td>
+                  <td></td>
+                </tr>
+              </ng-template>
   
             <ng-template pTemplate="emptymessage">
               <tr>

@@ -114,7 +114,7 @@
 
   .btn-seleccionar {
     background: #ededed;
-    color: black;
+    color: #475569;
     border: 1px solid #ededed; 
     padding: 5px 15px;
     font-size: 14px; 
@@ -126,7 +126,7 @@
   .btn-seleccionar:hover {
     background: #d4d4d4; 
     border-color: #d4d4d4; 
-    color: black; 
+    color: #475569;
   }
 
 

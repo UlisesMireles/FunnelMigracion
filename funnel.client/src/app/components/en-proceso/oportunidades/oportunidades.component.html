@@ -164,7 +164,9 @@
                     (def.tipoFormato === 'number' || def.tipoFormato === 'date') ? 'center' : 'left',
                     'font-weight': def.key === 'nombre' || def.key === 'nombreOportunidad' ? 'bold' : 'normal',
                     'width': def.key === 'abreviatura' || def.key === 'entrega' || def.key === 'iniciales' || def.key === 'nombreContacto' ? '80px' : 
-                    def.key === 'stage' ? '120px' : ''
+                    def.key === 'stage' ? '80px' : '',
+                    'min-width': def.key === 'stage' ? '80px' : '',
+                    'max-width': def.key === 'stage' ? '80px' : '',
                 }">
                 <ng-container [ngSwitch]="def.tipoFormato">
                   <span *ngSwitchCase="'text'">
@@ -274,7 +276,7 @@
  
               <ng-template pTemplate="emptymessage">
                 <tr>
-                    <td colspan="5">No preguntas encontradas.</td>
+                    <td colspan="5">No hay oportunidades disponibles </td>
                 </tr>
               </ng-template>
             </p-table>

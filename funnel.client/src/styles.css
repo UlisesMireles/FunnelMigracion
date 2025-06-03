@@ -141,3 +141,7 @@
     color: #475569;
   }
 
+.p-button-text.p-button-secondary {
+    padding: 0 !important;
+    width: 14px !important;
+}

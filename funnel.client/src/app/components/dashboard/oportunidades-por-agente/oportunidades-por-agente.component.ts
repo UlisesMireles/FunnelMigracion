@@ -12,48 +12,23 @@ import { environment } from '../../../../environments/environment';
   styleUrl: './oportunidades-por-agente.component.css'
 })
 export class OportunidadesPorAgenteComponent {
-  
+  quadrants: { cards: any[] }[] = [];
   baseUrl: string = environment.baseURL;
   agentes: AgenteDto[] = [];
-  quadrants = [
-    { cards: [this.createCard(1, 'Consulta Agentes')] },
-    { cards: [this.createCard(2, 'Grafica por Agente - Clientes')] },
-    { cards: [this.createCard(3, 'Grafica por Agente - Tipo Oportunidad')] },
-    { cards: [this.createCard(4, 'Grafica por Agente - Sector')]  }
-  ];
 
   get dropListIds() {
     return this.quadrants.map((_, index) => `cardList${index}`);
   }
   infoCargada: boolean = false;
 
-  constructor(
-    private readonly graficasService: GraficasService,
-    private readonly sessionService: LoginService
-  ) {}
+  constructor( private readonly graficasService: GraficasService,private readonly sessionService: LoginService) {
+    this.quadrants = [
+      { cards: [this.graficasService.createCard(1, 'Consulta Agentes', 'tabla')] },
+      { cards: [this.graficasService.createCard(2, 'Grafica por Agente - Clientes', 'grafica')] },
+      { cards: [this.graficasService.createCard(3, 'Grafica por Agente - Tipo Oportunidad', 'grafica')] },
+      { cards: [this.graficasService.createCard(4, 'Grafica por Agente - Sector', 'grafica')] }
+    ];
 
-  public graph: any;
-
-  static getRandomColor() {
-    let color = '#';
-    let letters = '0123456789ABCDEF';
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  }
-
-  private createCard(id: number, titulo: string) {
-    return {
-      id,
-      titulo,
-      infoCargada: false,
-      grafica: {
-        data: [],
-        layout: {},
-        config: { displaylogo: false, responsive: true, locale: 'es-ES', scrollZoom: true, displayModeBar: true }
-      }
-    };
   }
 
   ngOnInit(): void {
@@ -97,8 +72,8 @@ export class OportunidadesPorAgenteComponent {
 
     this.graficasService.obtenerGraficaAgentesData(request).subscribe({
       next: (response: GraficasDto[]) => {
-        const dataAGraficar = [this.createBarData(response), this.createBarNormalizadoData(response)];
-        const layOutGrafica = this.createBarLayout();
+        const dataAGraficar = [this.graficasService.createBarHorizontalNormalizadoData(response), this.graficasService.createBarHorizontalData(response)];
+        const layOutGrafica = this.graficasService.createBarHorizontalLayout();
         this.setGraficaData(1, 0, dataAGraficar, layOutGrafica);
       },
       error: (err: any) => console.error('Error al consultar la gráfica:', err)
@@ -114,8 +89,8 @@ export class OportunidadesPorAgenteComponent {
 
     this.graficasService.obtenerGraficaAgentesData(request).subscribe({
       next: (response: GraficasDto[]) => {
-        const dataAGraficar = [this.createPieData(response)]; 
-        const layOutGrafica = this.createPieLayout();
+        const dataAGraficar = [this.graficasService.createPieData(response)];
+        const layOutGrafica = this.graficasService.createPieLayout();
         this.setGraficaData(2, 0, dataAGraficar, layOutGrafica);
       },
       error: (err: any) => console.error('Error al consultar la gráfica:', err)
@@ -131,65 +106,14 @@ export class OportunidadesPorAgenteComponent {
 
     this.graficasService.obtenerGraficaAgentesData(request).subscribe({
       next: (response: GraficasDto[]) => {
-        console.log('Respuesta de la gráfica por tipo de oportunidad:', response);
-        const dataAGraficar = [this.createPieData(response)]; 
-        const layOutGrafica = this.createPieLayout();
+        const dataAGraficar = [this.graficasService.createPieData(response)];
+        const layOutGrafica = this.graficasService.createPieLayout();
         this.setGraficaData(3, 0, dataAGraficar, layOutGrafica);
       },
       error: (err: any) => console.error('Error al consultar la gráfica:', err)
     });
   }
 
-  
-  private createPieData(items: GraficasDto[]) {
-    return {
-      type: 'pie',
-      values: items.map(item => item.valor),
-      labels: items.map(item => item.label ?? 'Sin etiqueta'),
-      textposition: "outside",
-      textinfo: "label+percent",
-      automargin: true,
-      marker: {
-        color: items.map(item => item.coloreSerie ?? OportunidadesPorAgenteComponent.getRandomColor())
-      }
-    };
-  }
-  private createBarData(items: GraficasDto[]) {
-    return {
-      type: 'bar',
-      y: items.map(item => item.valor),
-      x: items.map(item => item.label ?? 'Sin etiqueta'),
-      name: 'Monto',
-      marker: {
-        color: items.map(item => OportunidadesPorAgenteComponent.getRandomColor())
-      }
-    };
-  }
-    private createBarNormalizadoData(items: GraficasDto[]) {
-    return {
-      type: 'bar',
-      y: items.map(item => item.montoNormalizado),
-      x: items.map(item => item.label ?? 'Sin etiqueta'),
-      name: 'Monto Normalizado',
-      marker: {
-        color: items.map(item => item.coloreSerie ?? OportunidadesPorAgenteComponent.getRandomColor())
-      }
-    };
-  }
-  private createPieLayout() {
-    return {
-      margin: { t: 0, b: 100, l: 0, r: 100 },
-      height: 330,
-      showlegend: false
-    };
-  }
-  private createBarLayout() {
-    return {
-      margin: { t: 50, b: 50, l: 50, r: 150 },
-      height: 330,
-      barmode: 'group'
-    };
-  }
   drop(event: CdkDragDrop<any>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);

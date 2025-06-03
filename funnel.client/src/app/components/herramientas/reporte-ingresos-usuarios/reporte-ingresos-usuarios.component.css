@@ -300,9 +300,8 @@ th.sort-active p-sortIcon {
 }
 
 ::ng-deep .fixed-width-oportunidad {
-    width: 200px !important;
-    max-width: 200px !important;
-    min-width: 200px !important;
+  width: 25% !important;
+  min-width: 280px !important;
     white-space: normal !important;
     word-break: break-word !important;
     overflow-wrap: break-word !important;

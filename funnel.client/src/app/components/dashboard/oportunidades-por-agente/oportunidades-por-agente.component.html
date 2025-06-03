@@ -5,7 +5,7 @@
             <div class="card-header" cdkDrag>
                 <h5 class="card-title">{{card.titulo}}</h5>
             </div>
-            <div class="p-3 mb-3 overflow-auto" *ngIf="card.id === 1">
+            <div class="p-3 mb-3 overflow-auto" *ngIf="card.tipo === 'tabla'">
                 <p-table [value]="agentes">
                     <ng-template pTemplate="header">
                         <tr>
@@ -27,7 +27,7 @@
                     </ng-template>
                 </p-table>
             </div>
-            <div *ngIf="card.id > 1" class="p-0" style="height:330px;max-height: 330px; z-index: 5000;">
+            <div *ngIf="card.tipo === 'grafica'" class="p-0" style="height:330px;max-height: 330px; z-index: 5000;">
                 <plotly-plot *ngIf="card.infoCargada" [data]="card.grafica.data" [layout]="card.grafica.layout"
                     [config]="card.grafica.config"></plotly-plot>
             </div>

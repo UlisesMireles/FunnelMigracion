@@ -12,13 +12,7 @@ import { GraficasDto, RequestGraficasDto } from '../../../interfaces/graficas';
 })
 
 export class OportunidadesGeneralComponent {
-  quadrants = [
-    { cards: [this.createCard(1, 'Indicadores por Etapa')] },
-    { cards: [this.createCard(2, 'Oportunidades por Sector')] },
-    { cards: [this.createCard(3, 'Oportunidades por Tipo')] },
-    { cards: [] }
-  ];
-
+  quadrants: { cards: any[] }[] = [];
   get dropListIds() {
     return this.quadrants.map((_, index) => `dropList${index}`);
   }
@@ -27,31 +21,17 @@ export class OportunidadesGeneralComponent {
   constructor(
     private readonly graficasService: GraficasService,
     private readonly sessionService: LoginService
-  ) {}
+  ) {
+    this.quadrants = [
+    { cards: [this.graficasService.createCard(1, 'Indicadores por Etapa', 'grafica')] },
+    { cards: [this.graficasService.createCard(2, 'Oportunidades por Sector', 'grafica')] },
+    { cards: [this.graficasService.createCard(3, 'Oportunidades por Tipo', 'grafica')] },
+    { cards: [] }
+  ];
 
+  }
+  
   public graph: any;
-
-  static getRandomColor() {
-    let color = '#';
-    let letters = '0123456789ABCDEF';
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  }
-
-  private createCard(id: number, titulo: string) {
-    return {
-      id,
-      titulo,
-      infoCargada: false,
-      grafica: {
-        data: [],
-        layout: {},
-        config: { displaylogo: false, responsive: true, locale: 'es-ES', scrollZoom: true, displayModeBar: true }
-      }
-    };
-  }
 
   ngOnInit(): void {
     this.consultarGraficaStage();
@@ -74,21 +54,9 @@ export class OportunidadesGeneralComponent {
 
     this.graficasService.obtenerGraficaData(request).subscribe({
       next: (response: GraficasDto[]) => {
-        const dataAGraficar = [{
-          type: 'funnel',
-          x: response.map(item => item.valor),
-          text: response.map(item => item.label ?? 'Sin etiqueta'),
-          textfont: { family: "Old Standard TT", size: 13, color: "black" },
-          hoverinfo: 'percent total+x',
-          marker: {
-            color: response.map(item => item.coloreSerie ?? OportunidadesGeneralComponent.getRandomColor())
-          }
-        }];
-        const layOutGrafica = {
-          margin: { l: 50, r: 50, b: 70, t: 30 },
-          height: 400,
-          yaxis: { visible: false, showticklabels: false, showgrid: false, zeroline: false }
-        };
+        console.log('Response de la gráfica de etapas:', response);
+        const dataAGraficar = [this.graficasService.createFunnelData(response)];
+        const layOutGrafica = this.graficasService.createFunnelLayout();
         this.setGraficaData(0, 0, dataAGraficar, layOutGrafica);
       },
       error: (err: any) => console.error('Error al consultar la gráfica:', err)
@@ -104,8 +72,8 @@ export class OportunidadesGeneralComponent {
 
     this.graficasService.obtenerGraficaData(request).subscribe({
       next: (response: GraficasDto[]) => {
-        const dataAGraficar = [this.createPieData(response)];
-        const layOutGrafica = this.createPieLayout();
+        const dataAGraficar = [this.graficasService.createPieData(response)];
+        const layOutGrafica = this.graficasService.createPieLayout();
         this.setGraficaData(2, 0, dataAGraficar, layOutGrafica);
       },
       error: (err: any) => console.error('Error al consultar la gráfica:', err)
@@ -122,34 +90,13 @@ export class OportunidadesGeneralComponent {
     this.graficasService.obtenerGraficaAgentesData(request).subscribe({
       next: (response: GraficasDto[]) => {
         const filtrados = response.filter(item => item.valor > 0);
-        const dataAGraficar = [this.createPieData(filtrados)];
-        const layOutGrafica = this.createPieLayout();
+        console.log('Response de la gráfica de sectores:', filtrados);
+        const dataAGraficar = [this.graficasService.createBarData(filtrados)];
+        const layOutGrafica = this.graficasService.createBarLayout();
         this.setGraficaData(1, 0, dataAGraficar, layOutGrafica);
       },
       error: (err: any) => console.error('Error al consultar la gráfica:', err)
     });
-  }
-
-  private createPieData(items: GraficasDto[]) {
-    return {
-      type: 'pie',
-      values: items.map(item => item.valor),
-      labels: items.map(item => item.label ?? 'Sin etiqueta'),
-      textposition: "outside",
-      textinfo: "label+percent",
-      automargin: true,
-      marker: {
-        color: items.map(item => item.coloreSerie ?? OportunidadesGeneralComponent.getRandomColor())
-      }
-    };
-  }
-
-  private createPieLayout() {
-    return {
-      margin: { t: 0, b: 100, l: 0, r: 100 },
-      height: 330,
-      showlegend: false
-    };
   }
 
   drop(event: CdkDragDrop<any>) {

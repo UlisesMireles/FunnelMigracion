@@ -364,6 +364,15 @@
   height: 120px;
 }
 
+
+.bodyDialog:not(.maximized) .seguimiento-container{
+ padding-left: 30px;
+}
+
+.bodyDialog:not(.maximized) .seguimiento-textarea{
+   height: 120px;
+}
+
 /* Asegurar que los botones se mantengan alineados */
 .icon-btn {
   min-width: 35px;

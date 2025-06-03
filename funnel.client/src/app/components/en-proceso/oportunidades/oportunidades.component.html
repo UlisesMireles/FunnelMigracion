@@ -99,7 +99,7 @@
                               <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false">
                                   <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                                       <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
-                                          (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
+                                          (ngModelChange)="filter($event)" class="p-inputtext" placeholder=""  [ngStyle]="{'width': def.key === 'nombreSector' ? '130px !important' : ''}">
                                   </ng-template>
                               </p-columnFilter>
                           </div>

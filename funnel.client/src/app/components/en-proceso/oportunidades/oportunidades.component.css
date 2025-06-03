@@ -471,3 +471,8 @@ th.sort-active p-sortIcon {
   min-height: 18px; 
   display: block;
 }
+
+::ng-deep .p-button-text.p-button-secondary{
+    padding: 0 !important;
+    width: 14px !important;
+}

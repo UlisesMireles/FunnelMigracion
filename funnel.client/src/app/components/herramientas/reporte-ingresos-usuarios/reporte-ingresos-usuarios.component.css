@@ -33,12 +33,7 @@ div.inDivDatatableHeader>p-button>button.p-button {
     color: red;
   } */
 
-.inDivDatatableHeader {
-    padding-left: 50px;
-    padding-top: 5px;
-    margin-top: 35px;
-    margin-bottom: 10px;
-}
+
 
 
 .custom-header th {
@@ -316,4 +311,20 @@ th.sort-active p-sortIcon {
     padding-top: 8px !important;
     padding-bottom: 8px !important;
     vertical-align: top !important;
+}
+
+
+/*Estilos Acordeon*/
+.contendor-accordion{
+    margin-top: 85px;
+
+}
+
+.totales-panel-header{
+    justify-content: right;
+}
+
+.headerAcciones {
+    padding-left: 50px;
+    margin-bottom: 10px;
 }

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, signal, ViewChild } from '@angular/core';
 import { HerramientasService } from '../../../services/herramientas.service';
 import { MessageService } from 'primeng/api';
 import { LoginService } from '../../../services/login.service';
@@ -6,20 +6,30 @@ import { MatDialog } from '@angular/material/dialog';
 import { Ingresos } from '../../../interfaces/ingresos';
 import { Table } from 'primeng/table';
 import { sumBy, map as mapping, omit, sortBy, groupBy, keys as getKeys } from "lodash-es";
+import { IngresosUsuarios } from '../../../interfaces/ingresos-usuarios';
 
 @Component({
   selector: 'app-reporte-ingresos-usuarios',
   standalone: false,
   templateUrl: './reporte-ingresos-usuarios.component.html',
-  styleUrl: './reporte-ingresos-usuarios.component.css'
+  styleUrl: './reporte-ingresos-usuarios.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ReporteIngresosUsuariosComponent {
+
+  readonly panelOpenState = signal(false);
 
   @ViewChild('dt') dt!: Table
 
   ingresos: Ingresos[] = [];
   ingresosOriginal: Ingresos[] = [];
   ingresosSeleccionado!: Ingresos;
+
+  ingresosUsuarios: IngresosUsuarios[] = [];
+  ingresosUsuariosOriginal: IngresosUsuarios[] = [];
+  ingresosUsuariosPorAnio: IngresosUsuarios[] = [];
+  ingresosUsuariosSeleccionado!: IngresosUsuarios;
+  arrayGraficar: any[] = [];
 
   anchoTabla = 100;//porciento
 
@@ -29,7 +39,7 @@ export class ReporteIngresosUsuariosComponent {
   sortField = 'fechaIngreso';
   sortOrder = -1;
   years: string[] = [];
-  selectedYear: string = "Todos los Años";
+  selectedYear: string = new Date().getFullYear().toString();
   disabledPdf: boolean = false;
 
   loading: boolean = true;
@@ -52,34 +62,72 @@ export class ReporteIngresosUsuariosComponent {
     document.documentElement.style.fontSize = 12 + 'px';
   }
 
+  /* ******************************************************/
   getIngresos() {
     this.herramientasService.getIngresos(this.loginService.obtenerIdUsuario(), this.loginService.obtenerIdEmpresa()).subscribe({
       next: (result) => {
 
         //Mapeo de Usuarios
-        this.selectedUsuario = null;
-        this.usuarioDropdown = Array.from(
+        //this.selectedUsuario = null;
+        let usuarioDropdown: any = Array.from(
           new Map(result.map(i => [i.usuario, { label: i.usuario, value: i.usuario }])).values()
         );
-        this.usuarioDropdown.unshift({ label: 'Todos los Usuarios', value: null });
-        this.usuarioDropdownOriginal = [...this.usuarioDropdown];
+        usuarioDropdown.unshift({ label: 'Todos los Usuarios', value: null });
+        let usuarioDropdownOriginal = [...usuarioDropdown];
 
         //Mapeo de años
-        this.years = [
-          ...new Set(
-            result
-              .map(i => new Date(i.fechaIngreso).getFullYear().toString())
-          )
-        ];
-        this.years.unshift("Todos los Años");
-        this.selectedYear = "Todos los Años";
+        if (result.length == 0) {
+          this.years = [new Date().getFullYear().toString()];
+        }
+        else {
+          this.years = result[0].anios.map(i => i.toString());
+        }
+        //this.years.unshift("Todos los Años");
+        this.selectedYear = new Date().getFullYear().toString();
 
-        this.ingresos = [...result];
-        this.ingresosOriginal = result;
+
+        this.ingresosUsuarios = [...result];
+        this.ingresosUsuariosOriginal = result;
+        this.ingresosUsuariosPorAnio = this.filtrarPorAnio(this.ingresosUsuarios, parseInt(this.selectedYear));
+
+
         setTimeout(() => {
           this.cdr.detectChanges();
 
         }, 0);
+        
+        //Generar array para graficar
+        this.ingresosUsuarios.forEach(v => {
+          v.anios.forEach(a => {
+            let filtro = v.data.filter((x) => x.anio === a);
+            if (filtro.length != 0) {
+              this.arrayGraficar.push({
+                idUsuario: v.idUsuario,
+                anio: a,
+                usuario: v.usuario,
+                dataAGraficar: [{
+                  x: filtro.map(i => i.mesTexto),
+                  y: filtro.map(i => i.totalAccesos),
+                  width: filtro.map(i => 0.2),
+                  type: 'bar',
+                  textfont: { family: "Old Standard TT", size: 13, color: "black" },
+
+                }],
+                layOutGrafica: {
+                  title: {
+                    text: `Reporte de Ingresos del año ${a}`
+                  },
+                  margin: { l: 50, r: 50, b: 130, t: 120 },
+                  height: 400,
+
+                },
+                config: { displaylogo: false, responsive: true, locale: 'es-ES', scrollZoom: true, displayModeBar: true }
+              });
+            }
+          })
+        })
+
+
         this.loading = false;
 
       },
@@ -94,188 +142,64 @@ export class ReporteIngresosUsuariosComponent {
     });
   }
 
-  getColumnWidth(key: string): object {
-    const widths: { [key: string]: string } = {
-      usuario: '100%',
-      fechaIngreso: '100%'
-    };
-    return { width: widths[key] || 'auto' };
+  filtrarPorAnio(usuarios: IngresosUsuarios[], anio: number): IngresosUsuarios[] {
+  return usuarios
+    .map(usuario => {
+      const dataFiltrada = usuario.data.filter(item => item.anio === anio);
+      if (dataFiltrada.length === 0) return null;
+
+      const nuevoTotal = dataFiltrada.reduce((acc, item) => acc + item.totalAccesos, 0);
+
+      return {
+        ...usuario,
+        data: dataFiltrada,
+        total: nuevoTotal
+      };
+    })
+    .filter((usuario): usuario is IngresosUsuarios => usuario !== null);
+}
+
+  onChangeFiltroAnio() {
+    //Si se selecciono un año
+    this.ingresosUsuariosPorAnio = this.filtrarPorAnio(this.ingresosUsuarios, parseInt(this.selectedYear));
+  }
+
+  getData(ingresoUsuario: IngresosUsuarios): any {
+    let selectedYear = this.selectedYear
+    let filtro = this.arrayGraficar.find(v => v.anio.toString() === selectedYear && v.idUsuario === ingresoUsuario.idUsuario);
+    if (filtro) {
+      return filtro.dataAGraficar
+    }
+    else
+      return null
+
+  }
+
+  getLayout(ingresoUsuario: IngresosUsuarios): any {
+    let selectedYear = this.selectedYear
+    let filtro = this.arrayGraficar.find(v => v.anio.toString() === selectedYear && v.idUsuario === ingresoUsuario.idUsuario);
+    if (filtro) {
+      return filtro.layOutGrafica
+    }
+    else
+      return null
+
+  }
+
+  getConfig(ingresoUsuario: IngresosUsuarios): any {
+    let selectedYear = this.selectedYear
+    let filtro = this.arrayGraficar.find(v => v.anio.toString() === selectedYear && v.idUsuario === ingresoUsuario.idUsuario);
+    if (filtro) {
+      return filtro.config
+    }
+    else
+      return null
+
   }
 
   clear(table: Table) {
     this.loading = true
-    table.clear(); // Limpia filtros, ordenamiento y selección
-    table.reset(); // También reinicia paginación (si hay)
     this.getIngresos();
-    this.lsColumnasAMostrar = JSON.parse(this.columnsAMostrarResp);
-    this.lsTodasColumnas = JSON.parse(this.columnsTodasResp);
-    this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
-    this.anchoTabla = 100;
-    this.selectedYear = new Date().getFullYear().toString();
-
-    table.sortField = this.sortField;
-    table.sortOrder = this.sortOrder;
-    table.sortSingle()
-  }
-
-  FiltrarPorUsuario() {
-    //Se realiza el filtro por usuario y año
-    if (this.selectedYear && this.selectedYear !== "Todos los Años") {
-      this.ingresos = this.selectedUsuario === null
-        ? [...this.ingresosOriginal.filter((x) => new Date(x.fechaIngreso).getFullYear().toString() === this.selectedYear)]
-        : [...this.ingresosOriginal.filter((x) => x.usuario === this.selectedUsuario && new Date(x.fechaIngreso).getFullYear().toString() === this.selectedYear)];
-      if (this.dt) {
-        this.dt.first = 0;
-      }
-    }
-    //Mostrar datos de todos los usuarios y años
-    else {
-      this.ingresos = this.selectedUsuario === null
-        ? [...this.ingresosOriginal]
-        : [...this.ingresosOriginal.filter((x) => x.usuario === this.selectedUsuario)];
-      if (this.dt) {
-        this.dt.first = 0;
-      }
-    }
-
-
-  }
-
-  filterByYear() {
-    //Si se selecciono un año
-    if (this.selectedYear && this.selectedYear !== "Todos los Años") {
-      
-      //Verifica los usuarios que existen en base al año seleccionado, si hay datos llena combo de usuarios
-      this.usuarioDropdown = Array.from(
-        new Map(this.ingresosOriginal.filter((x) => new Date(x.fechaIngreso).getFullYear().toString() === this.selectedYear)
-          .map(i => [i.usuario, { label: i.usuario, value: i.usuario }])).values()
-      );
-      this.usuarioDropdown.unshift({ label: 'Todos los Usuarios', value: null });
-      
-      //Si tienes seleccionado un usuario y no existe registro en ese usuario y ese año, se limpia filtro de usuarios, a Todos Los Usuarios
-      if (this.selectedUsuario !== null) {
-        let filtro = this.ingresosOriginal.filter((x) => x.usuario === this.selectedUsuario && new Date(x.fechaIngreso).getFullYear().toString() === this.selectedYear);
-        if (filtro.length == 0) {
-          this.selectedUsuario = null
-        }
-      }
-      
-      //Realiza el filtro en base al año selecionado y o el usuario
-      this.ingresos = this.selectedUsuario === null
-        ? [...this.ingresosOriginal.filter((x) => new Date(x.fechaIngreso).getFullYear().toString() === this.selectedYear)]
-        : [...this.ingresosOriginal.filter((x) => x.usuario === this.selectedUsuario && new Date(x.fechaIngreso).getFullYear().toString() === this.selectedYear)];
-      if (this.dt) {
-        this.dt.first = 0;
-      }
-
-    }
-    else {
-
-      //Si se selcciona todos los años, se limpia el combo de usuarios dejando todos los usuarios
-      this.selectedUsuario = null
-      this.usuarioDropdown = [...this.usuarioDropdownOriginal];
-
-      //Se realiza el filtro para mostrar todos los registros de todos los años y o el usuario
-      this.ingresos = this.selectedUsuario === null
-        ? [...this.ingresosOriginal]
-        : [...this.ingresosOriginal.filter((x) => x.usuario === this.selectedUsuario)];
-      if (this.dt) {
-        this.dt.first = 0;
-      }
-    }
-  }
-
-  obtenerArregloFiltros(data: any[], columna: string): any[] {
-    const lsGroupBy = groupBy(data, columna);
-    return sortBy(getKeys(lsGroupBy));
-  }
-
-  getTotalCostPrimeNg(table: Table, def: any) {
-    if (!def.isTotal) {
-      return;
-    }
-
-    const registrosVisibles = table.filteredValue ? table.filteredValue : this.ingresos;
-
-    if (def.key === 'usuario') {
-      return registrosVisibles.length;
-    }
-
-    return (
-      registrosVisibles.reduce(
-        (acc: number, empresa: Ingresos) =>
-          acc + (Number(empresa[def.key as keyof Ingresos]) || 0),
-        0
-      ) / registrosVisibles.length
-    );
-  }
-
-  isSorted(columnKey: string): boolean {
-    return this.dt?.sortField === columnKey;
-  }
-
-  exportExcel(table: Table) {
-    let lsColumnasAMostrar = this.lsColumnasAMostrar.filter(col => col.isCheck);
-    let columnasAMostrarKeys = lsColumnasAMostrar.map(col => col.key);
-
-    let dataExport = (table.filteredValue || table.value || []).map(row => {
-      return columnasAMostrarKeys.reduce((acc, key) => {
-        acc[key] = row[key];
-        return acc;
-      }, {} as { [key: string]: any });
-    });
-
-
-    import('xlsx').then(xlsx => {
-      const hojadeCalculo: import('xlsx').WorkSheet = xlsx.utils.json_to_sheet(dataExport);
-      const libro: import('xlsx').WorkBook = xlsx.utils.book_new();
-      xlsx.utils.book_append_sheet(libro, hojadeCalculo, "Reporte de Ingresos de Usuarios");
-      xlsx.writeFile(libro, "ReporteIngresosUsuarios.xlsx");
-    });
-  }
-
-  exportPdf(table: Table) {
-    let lsColumnasAMostrar = this.lsColumnasAMostrar.filter(col => col.isCheck);
-    let columnasAMostrarKeys = lsColumnasAMostrar.map(col => col.key);
-
-    let dataExport = (table.filteredValue || table.value || []).map(row => {
-      return columnasAMostrarKeys.reduce((acc, key) => {
-        acc[key] = row[key];
-        return acc;
-      }, {} as { [key: string]: any });
-    });
-
-    let data = {
-      columnas: lsColumnasAMostrar,
-      datos: dataExport,
-      anio: this.selectedYear
-    }
-
-    if (dataExport.length == 0)
-      return
-
-    this.disabledPdf = true;
-
-    this.herramientasService.descargarReporteIngresos(data, this.loginService.obtenerIdEmpresa()).subscribe({
-      next: (result: Blob) => {
-        const url = window.URL.createObjectURL(result);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'ReporteIngresosUsuarios.pdf';
-        link.click();
-        URL.revokeObjectURL(url);
-        this.disabledPdf = false;
-      },
-      error: (error) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Se ha producido un error al generar reporte',
-          detail: error.errorMessage,
-        });
-        this.loading = false;
-        this.disabledPdf = false;
-      },
-    });
   }
 
 

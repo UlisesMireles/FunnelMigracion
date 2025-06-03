@@ -38,6 +38,7 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 import { CardModule } from 'primeng/card';
 import { FieldsetModule } from 'primeng/fieldset';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 
 //Login
@@ -248,7 +249,8 @@ registerLocaleData(localeEs, 'es-MX');
     CambiarContrasenaComponent,
     CardModule,
     FieldsetModule,
-    ToggleSwitchModule
+    ToggleSwitchModule,
+    MatExpansionModule
 ],
   providers: [
     { provide: LOCALE_ID, useValue: 'es-MX' },

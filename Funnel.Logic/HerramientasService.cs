@@ -8,6 +8,7 @@ using Funnel.Models.Base;
 using Funnel.Models.Dto;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -27,11 +28,33 @@ namespace Funnel.Logic
             _herramientasData = herramientasData;
             _converter = converter;
             _loginService = loginService;
-        }
+        }        
 
-        public async Task<List<IngresosFunnelDTO>> ConsultarIngresos(int IdUsuario, int IdEmpresa)
+        public async Task<List<IngresosUsuariosDTO>> ConsultarIngresos(int IdUsuario, int IdEmpresa)
         {
-            return await _herramientasData.ConsultarIngresos(IdUsuario, IdEmpresa);
+            var ingresos = await _herramientasData.ConsultarIngresos(IdUsuario, IdEmpresa);
+
+            var ingresosMensuales = ingresos
+                .GroupBy(i => i.IdUsuario)
+                .Select(i => new IngresosUsuariosDTO
+                {
+                    IdUsuario = i.Key,
+                    Usuario = i.First().Usuario,
+                    Total = i.Count(),
+                    Anios = ingresos.GroupBy(v=> v.FechaIngreso.Year).Select(v=> v.Key).ToList(),
+                    Data = ingresos.Where(v => v.IdUsuario == i.Key)
+                            .GroupBy(i => new { i.Usuario, Anio = i.FechaIngreso.Year, Mes = i.FechaIngreso.Month })
+                            .Select(g => new IngresosUsuariosPorMes
+                            {
+                                Usuario = g.Key.Usuario,
+                                Anio = g.Key.Anio,
+                                Mes = g.Key.Mes,
+                                MesTexto = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(g.Key.Mes).ToUpper(),
+                                TotalAccesos = g.Count()
+                            }).OrderByDescending(x => x.Anio).ThenBy(x => x.Mes).ThenBy(x => x.Usuario).ToList()
+                }).OrderBy(i => i.Usuario).ToList();
+
+            return ingresosMensuales;
         }
 
         public async Task<byte[]> GenerarReporteIngresosUsuarios(IngresosFunnelReporteDTO ingresos, string RutaBase, string titulo, int IdEmpresa)
@@ -169,6 +192,5 @@ namespace Funnel.Logic
                 correos = String.Join(",", request.Correos);
             return await _herramientasData.GuardarDiasReportesEstatus(request, correos);
         }
-
     }
 }

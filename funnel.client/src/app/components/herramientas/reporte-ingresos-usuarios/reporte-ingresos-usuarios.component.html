@@ -5,171 +5,42 @@
         </div>
         <p>Cargando...</p>
     </div>
-    <p-table *ngIf="!loading" #dt [stripedRows]="true" [value]="ingresos" dataKey="id" [rows]="10"
-        [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 20, 50]" [paginator]="true" paginatorPosition="both"
-        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros"
-        [columns]="lsColumnasAMostrar" [resizableColumns]="true" [sortField]="sortField" [sortOrder]="sortOrder"
-        [globalFilterFields]="['usuario',  'fechaIngreso']" [tableStyle]="{'min-width': anchoTabla+ '%'}">
 
+
+    <div *ngIf="!loading" class="contendor-accordion">
         <!-- Acciones -->
-        <ng-template class="divAccionesTabla" #caption>
-            <div class="col-12" style="text-align: left; font-weight: bold; margin-top: 20px">
-            </div>
-            <div class="row">
-                <div class="col inDivDatatableHeader" style="text-align:right; margin-right:5px">
-                    <p-dropdown [options]="years" [(ngModel)]="selectedYear" (onChange)="filterByYear()"
-                        placeholder="Selecciona un año" [ngStyle]="{'margin-right': '5px'}">
-                    </p-dropdown>
-                    <p-button label="" icon="bi bi-arrow-clockwise" (click)="clear(dt)" severity="secondary"
-                        pTooltip="Refrescar" tooltipPosition="top" styleClass="custom-button refresh-button"
-                        [ngStyle]="{'margin-right': '5px'}" />
-                    <p-button [disabled]="disabledPdf" label="" icon="bi bi-filetype-pdf" severity="secondary" (click)="exportPdf(dt)"
-                        pTooltip="Descargar PDF" tooltipPosition="top" styleClass="custom-button download-button"
-                        [ngStyle]="{'margin-right': '5px'}" />
-                    <p-button label="" icon="bi bi-download" severity="secondary" (click)="exportExcel(dt)"
-                        pTooltip="Descargar Excel" tooltipPosition="top" styleClass="custom-button add-button"
-                        [ngStyle]="{'margin-right': '5px'}" />
-                </div>
-            </div>
-        </ng-template>
+        <div class="col headerAcciones" style="text-align:right; margin-right:5px">
+            <p-dropdown [options]="years" [(ngModel)]="selectedYear" (onChange)="onChangeFiltroAnio()"
+                placeholder="Selecciona un año" [ngStyle]="{'margin-right': '5px'}">
+            </p-dropdown>
+            <p-button label="" icon="bi bi-arrow-clockwise" (click)="clear(dt)" severity="secondary"
+                pTooltip="Refrescar" tooltipPosition="top" styleClass="custom-button refresh-button"
+                [ngStyle]="{'margin-right': '5px'}" />
+        </div>
+        <p  *ngIf="ingresosUsuariosPorAnio?.length == 0">No se encontraron registros en el año seleccionado</p>
+        <mat-accordion>
+            <mat-expansion-panel *ngFor="let usuario of ingresosUsuariosPorAnio" (opened)="panelOpenState.set(true)"
+                (closed)="panelOpenState.set(false)">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        <h5>{{usuario.usuario}}</h5>
+                    </mat-panel-title>
+                    <mat-panel-description class="totales-panel-header">
+                        <h6>Total de ingresos {{usuario.total}}</h6>
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                <!-- <div class="p-0" style="height:330px;max-height: 330px; z-index: 5000;"> -->
+                <ng-template *ngIf="getData(usuario)" matExpansionPanelContent>
+                    <!-- <div *ngIf="getData(usuario)">
+                            <p>grafica {{usuario.usuario}}</p>
+                        </div> -->
+                    <plotly-plot [data]="getData(usuario)" [layout]="getLayout(usuario)"
+                        [config]="getConfig(usuario)"></plotly-plot>
+                </ng-template>
+                <!-- </div> -->
+            </mat-expansion-panel>
+        </mat-accordion>
 
-        <!-- Encabezado Tabla -->
-        <ng-template pTemplate="header" let-columns>
-            <tr class="custom-header">
-                <th *ngFor="let def of lsColumnasAMostrar" pSortableColumn="{{def.key}}"
-                    [class.sort-active]="isSorted(def.key)">
-                    {{def.valor}}
-                    <p-sortIcon field="{{def.key}}"></p-sortIcon>
-                </th>
-            </tr>
-            <tr>
-                <th *ngFor="let def of lsColumnasAMostrar">
-                    <ng-container *ngIf="def.groupColumn">
-                        <p-columnFilter field="{{def.key}}" matchMode="in" [showMenu]="false">
-                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                                <p-multiSelect [ngModel]="value" [options]="obtenerArregloFiltros(ingresos, def.key)"
-                                    placeholder="" (onChange)="filter($event.value)">
-                                    <ng-template let-option pTemplate="item">
-                                        <div class="p-multiselect-representative-option">
-                                            <span class="ml-1">{{option}}</span>
-                                        </div>
-                                    </ng-template>
-                                </p-multiSelect>
-                            </ng-template>
-                        </p-columnFilter>
-                    </ng-container>
-                    <ng-container *ngIf="!def.groupColumn">
-                        <div [ngSwitch]="def.tipoFormato">
-                            <div *ngSwitchCase="'text'">
-                                <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false">
-                                    <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                                        <input type="text" pInputText [ngModel]="value"
-                                            [ngStyle]="getColumnWidth(def.key)" (ngModelChange)="filter($event)"
-                                            class="p-inputtext" placeholder="">
-                                    </ng-template>
-                                </p-columnFilter>
-                            </div>
-                            <div *ngSwitchCase="'currency'">
-                                <p-columnFilter type="numeric" field="{{def.key}}" [showButtons]="false"
-                                    [maxFractionDigits]="7">
-                                    <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                                        <input type="text" pInputText [ngModel]="value"
-                                            [ngStyle]="getColumnWidth(def.key)" (ngModelChange)="filter($event)"
-                                            class="p-inputtext" placeholder="">
-                                    </ng-template>
-                                </p-columnFilter>
-                            </div>
-                            <div *ngSwitchCase="'usuario'">
-                                <p-columnFilter field="{{def.key}}" matchMode="equals" [showMenu]="false">
-                                    <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                                        <p-dropdown [options]="usuarioDropdown" [(ngModel)]="selectedUsuario"
-                                            [appendTo]="'body'" (onChange)="FiltrarPorUsuario()" optionLabel="label"
-                                            optionValue="value"
-                                            [style]="{ width: '100%', height: '30px', textAlign: 'center' }">
-                                        </p-dropdown>
-                                    </ng-template>
-                                </p-columnFilter>
-                            </div>
-                            <div *ngSwitchCase="'numberFilter'">
-                                <p-columnFilter type="numeric" field="{{def.key}}" [showButtons]="false"
-                                    [maxFractionDigits]="7">
-                                    <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                                        <input type="text" pInputText [ngModel]="value"
-                                            [ngStyle]="getColumnWidth(def.key)" (ngModelChange)="filter($event)"
-                                            class="p-inputtext" placeholder="">
-                                    </ng-template>
-                                </p-columnFilter>
-                            </div>
-                            <div *ngSwitchCase="'date'">
-                                <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false">
-                                    <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                                        <input type="text" pInputText [ngModel]="value"
-                                            [ngStyle]="getColumnWidth(def.key)" (ngModelChange)="filter($event)"
-                                            class="p-inputtext" placeholder="">
-                                    </ng-template>
-                                </p-columnFilter>
-                            </div>
-                            <div *ngSwitchDefault>
-                                <p-columnFilter
-                                    *ngIf="def.tipoFormato !== 'text' && def.tipoFormato !== 'currency' && def.tipoFormato !== 'date'"
-                                    type="{{def.tipoFormato}}" field="{{def.key}}" [showButtons]="false"
-                                    [showMenu]="false">
-                                </p-columnFilter>
-                            </div>
-                        </div>
-                    </ng-container>
-                </th>
-            </tr>
-        </ng-template>
-
-        <!-- Cuerpo Tabla -->
-        <ng-template pTemplate="body" let-rowData let-columns="columns">
-            <tr>
-                <td *ngFor="let def of lsColumnasAMostrar" [ngStyle]="{
-                    'text-align': 
-                      def.tipoFormato === 'currency' ? 'right' : 
-                      def.tipoFormato === 'number' || def.tipoFormato === 'date' ? 'center' : 'left'
-                  }">
-                    <ng-container [ngSwitch]="def.tipoFormato">
-                        <span *ngSwitchCase="'text'">{{ rowData[def.key] }}</span>
-
-                        <span *ngSwitchCase="'currency'">
-                            {{ rowData[def.key] | currency:'$':'symbol':'1.2-2' }}
-                        </span>
-
-                        <span *ngSwitchCase="'number'">
-                            {{ rowData[def.key] | number:'1.0-0' }}
-                        </span>
-
-                        <span *ngSwitchCase="'date'">
-                            {{ rowData[def.key] | date:'dd/MM/yyyy hh:mm:ss a' }}
-                        </span>
-
-                        <span *ngSwitchDefault>{{ rowData[def.key] }}</span>
-                    </ng-container>
-                </td>
-            </tr>
-        </ng-template>
-
-        <!-- Pie Tabla -->
-        <ng-template pTemplate="footer" let-columns #footer>
-            <tr class="custom-footer">
-                <td *ngFor="let def of lsColumnasAMostrar" [ngStyle]="{
-                    'text-align': 
-                      def.tipoFormato === 'currency' ? 'right' : 
-                      def.tipoFormato === 'number' || def.tipoFormato === 'date' ? 'center' : 'left'
-                  }">
-                    <ng-container *ngIf="def.key === 'usuario'">
-                        Total de registros: {{ getTotalCostPrimeNg(dt, def) }}
-                    </ng-container>
-                    <ng-container *ngIf="def.tipoFormato === 'number' && def.key !== 'usuario'">
-                        {{ getTotalCostPrimeNg(dt, def) | number:'1.0-0' }}
-                    </ng-container>
-                </td>
-                <td></td>
-            </tr>
-        </ng-template>
-
-    </p-table>
+    </div>
 
 </div>

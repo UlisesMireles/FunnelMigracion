@@ -396,7 +396,7 @@ th.sort-active p-sortIcon {
 
 ::ng-deep .fixed-width-oportunidad {
   width: 25% !important;
-  min-width: 300px !important;
+  min-width: 280px !important;
   white-space: normal !important;
   word-break: break-word !important;
   overflow-wrap: break-word !important;
@@ -407,9 +407,26 @@ th.sort-active p-sortIcon {
   vertical-align: top !important;   
 }
 
-
+::ng-deep .columna-nombre-sector{
+  width: 30px !important;
+  min-width: 30px !important;
+  white-space: normal !important;
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+  text-overflow: unset !important;
+  line-height: 1.4 !important;       
+  padding-top: 8px !important;      
+  padding-bottom: 8px !important;   
+  vertical-align: top !important;   
+}
 ::ng-deep .p-datatable-tbody > tr > td.fixed-width-oportunidad {
   height: auto !important;       /* Permite que la celda crezca */
+  line-height: 1.6 !important;   /* Espaciado entre líneas */
+  min-height: 26px !important;   /* Altura mínima pero puede expandirse */
+  white-space: normal !important;
+  padding: 8px 5px !important;   /* Espacio interno */
+}
+::ng-deep .p-datatable-tbody > tr > td.columna-nombre-sector{
   line-height: 1.6 !important;   /* Espaciado entre líneas */
   min-height: 26px !important;   /* Altura mínima pero puede expandirse */
   white-space: normal !important;
@@ -445,7 +462,11 @@ th.sort-active p-sortIcon {
   min-width: 55px !important;
   max-width: 55px !important;
 }
-
+::ng-deep .columna-sector{
+  width: 55px !important;
+  min-width: 55px !important;
+  max-width: 55px !important;
+}
 .error-placeholder {
   min-height: 18px; 
   display: block;

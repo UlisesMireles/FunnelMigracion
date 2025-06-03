@@ -59,7 +59,6 @@ export class SeguimientoOportunidadesComponent {
       probabilidad: [this.oportunidad.probabilidad],
       idEstatusOportunidad: [this.oportunidad.idEstatusOportunidad],
       tooltipStage: [this.oportunidad.tooltipStage],
-      montoNormalizado: [this.oportunidad.montoNormalizado],
       idUsuario: [this.loginService.obtenerIdUsuario()],
       bandera: ['INS-HISTORICO'],
     });

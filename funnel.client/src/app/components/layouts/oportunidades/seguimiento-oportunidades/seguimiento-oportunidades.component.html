@@ -1,17 +1,6 @@
-<p-dialog 
-  appendTo="body"
-  [(visible)]="visible" 
-  [modal]="true" 
-  [closable]="true" 
-  [maximizable]="true"
-  [style]="{
-    width: maximized ? '100vw' : '75rem',
-    height: maximized ? '100vh' : '40rem'
-  }" 
-  [ngClass]="{'maximized': maximized}"
-  (onHide)="close()" 
-  (onShow)="onDialogShow()" 
-  class="bodyDialog">
+<p-dialog appendTo="body" [(visible)]="visible" [modal]="true" [closable]="true" [maximizable]="true" [style]="{
+    width: maximized ? '100vw' : '75rem', height: maximized ? '100vh' : '40rem'}" 
+  [ngClass]="{'maximized': maximized}" (onHide)="close()" (onShow)="onDialogShow()" class="bodyDialog">
 
   <ng-template pTemplate="header">
     <label class="margen">
@@ -20,53 +9,50 @@
   </ng-template>
 
   <ng-template pTemplate="content">
-    <div class="row">
-      <div class="col-sm-2">
-        <label class="margen text-left nombre-destacado">
-          {{ 'Prospecto: ' + oportunidadForm.get('nombre')?.value }}
-        </label>
-      </div>
-      <div class="col-sm-6" style="margin-left: 15px;">
-        <label class="margen text-left">
-          {{ 'Oportunidad: ' + oportunidadForm.get('nombreOportunidad')?.value  }}
-        </label>
-        <br />
-        <label class="margen text-left" style="margin-left: -3px;">
-          {{ 'Probabilidad ' + oportunidadForm.get('probabilidad')?.value }}
-        </label>
-        <small *ngIf="validacionActiva && oportunidadForm.get('stage')?.errors?.['required']" class="text-danger">
-          Necesita asignar una etapa para registrar un seguimiento
-        </small>
-      </div>
-      <div class="col-sm-4" style="margin-left: -40px;">
-        <label class="margen text-left">
-          {{ oportunidadForm.get('monto')?.value | currency:'MXN':'symbol':'1.2-2' }}
-        </label>
-        <br />
-        <label class="margen text-left">
-          {{ oportunidadForm.get('montoNormalizado')?.value | currency:'MXN':'symbol':'1.2-2' }}
-        </label>
-      </div>
-    </div>
-    <br />
-    <form [formGroup]="oportunidadForm">
+    <div class="container-fluid">
       <div class="row">
-        <div class="col-sm-2" *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value === 1">
-          <label class="margen text-left" style="margin-top: 35px;">Seguimiento:</label>
+        <div class="col-md-6">
+          <div class="row mb-2">
+            <div class="col">
+              <label class="margen text-left nombre-destacado">
+                {{ 'Prospecto: ' + oportunidadForm.get('nombre')?.value }}
+              </label>
+            </div>
+          </div>
+          <div class="row mb-2">
+            <div class="col">
+              <label class="margen text-left">
+                {{ 'Oportunidad: ' + oportunidadForm.get('nombreOportunidad')?.value }}
+              </label>
+            </div>
+          </div>
+          <div class="row mb-2">
+            <div class="col">
+              <label class="margen text-left">
+                {{ 'Probabilidad: ' + oportunidadForm.get('probabilidad')?.value }}
+              </label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label class="margen text-left">
+                {{ 'Monto: ' + (oportunidadForm.get('monto')?.value | currency:'MXN':'symbol':'1.2-2') }}
+              </label>
+            </div>
+          </div>
         </div>
-        <div class="col-sm-10 inptSpace pl-0" [class.col-sm-12]="oportunidadForm.get('idEstatusOportunidad')?.value !== 1"
-        [class.maximized-padding]="maximized">
-          <div class="row" [class.justify-content-end]="oportunidadForm.get('idEstatusOportunidad')?.value !== 1">
-            <div class="col-sm-8" *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value === 1">
-              <textarea pInputText class="seguimiento-textarea" formControlName="comentario" (input)="onComentarioInput()" ></textarea>
+        <div class="col-md-6 seguimiento-container">
+          <form [formGroup]="oportunidadForm">
+            <div *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value === 1" class="seguimiento-area">
+              <label class="seguimiento-label">Seguimiento:</label>
+              <textarea pInputText class="seguimiento-textarea" formControlName="comentario" 
+                (input)="onComentarioInput()"  placeholder="Escribe un comentario de al menos 10 palabras"></textarea>
               <div class="d-flex justify-content-between mt-1">
                 <div>
-                  <small *ngIf="wordCount < 10 && !(oportunidadForm.get('comentario')?.invalid && oportunidadForm.get('comentario')?.touched)" 
-                    class="text-muted" style="margin-left: 20px;">
-                    Escribe un comentario de al menos 10 palabras
+                  <small class="text-muted">
+                  Palabras: {{ wordCount }}
                   </small>
-                  <div 
-                    *ngIf="oportunidadForm.get('comentario')?.invalid && oportunidadForm.get('comentario')?.touched"
+                  <div *ngIf="oportunidadForm.get('comentario')?.invalid && oportunidadForm.get('comentario')?.touched"
                     class="text-danger mt-1">
                     <small *ngIf="oportunidadForm.get('comentario')?.errors?.['required']">
                       El comentario es obligatorio.
@@ -76,91 +62,62 @@
                     </small>
                   </div>
                 </div>
-                <small class="text-muted">
-                  Palabras: {{ wordCount }}
-                </small>
               </div>
             </div>
-            <div class="col-sm-4" [class.col-12]="oportunidadForm.get('idEstatusOportunidad')?.value !== 1"
-              [class.text-right]="oportunidadForm.get('idEstatusOportunidad')?.value !== 1">
-            <div class="button-group" 
-                [class.compact-buttons]="oportunidadForm.get('idEstatusOportunidad')?.value === 1"
-                [class.align-right]="!oportunidadForm.get('comentario')?.value && historialOportunidad.length === 0">
+            
+            <div class="button-group-right">
               <button pButton label="Añadir" (click)="guardarHistorial()" severity="secondary"
-                      *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value === 1"
-                      [disabled]="!oportunidadForm.get('comentario')?.value" class="me-2"></button>
-            <button pButton severity="secondary" [disabled]="disabledPdf" (click)="exportPdf(oportunidadForm.get('idOportunidad')?.value)"
-                      [disabled]="historialOportunidad.length === 0"
-                      [ngStyle]="{'margin-right': isTerminado ? '0.5rem' : '0'}"
-                      [ngClass]="{'align-right': isTerminado,'float-end': isTerminado, 'default-position': !isTerminado, 'icon-btn': true}"
-                      pTooltip="Descargar PDF" tooltipPosition="top">
+                *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value === 1"
+                [disabled]="!oportunidadForm.get('comentario')?.value"></button>
+              
+              <button pButton label="Salir" (click)="close()" severity="secondary"
+                *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value === 1"></button>
+
+              <button pButton severity="secondary" [disabled]="disabledPdf" 
+                (click)="exportPdf(oportunidadForm.get('idOportunidad')?.value)"
+                [disabled]="historialOportunidad.length === 0"
+                pTooltip="Descargar PDF" tooltipPosition="top" class="icon-btn">
                 <i class="bi bi-filetype-pdf"></i>
               </button>
+              
               <button pButton severity="secondary" (click)="exportExcel(oportunidadForm.get('idOportunidad')?.value)" 
-                      [disabled]="historialOportunidad.length === 0"
-                      [ngStyle]="{'margin-right': isTerminado ? '0.5rem' : '0'}"
-                      [ngClass]="{'align-right': isTerminado,'float-end': isTerminado, 'default-position': !isTerminado, 'icon-btn': true}"
-                      pTooltip="Descargar Excel" tooltipPosition="top">
+                [disabled]="historialOportunidad.length === 0"
+                pTooltip="Descargar Excel" tooltipPosition="top" class="icon-btn ml-2">
                 <i class="bi bi-download"></i>
               </button>
-              <button pButton label="Salir" (click)="close()" severity="secondary"
-                      *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value === 1"></button>
             </div>
-            </div>
-          </div>
-
-          <!-- <div class="d-flex align-items-center">
-          </div>
-          <div *ngIf="oportunidadForm.get('comentario')?.invalid && oportunidadForm.get('comentario')?.touched" class="text-danger">
-            <small *ngIf="oportunidadForm.get('comentario')?.errors?.['required']">
-              El comentario es obligatorio.
-            </small>
-            <small *ngIf="oportunidadForm.get('comentario')?.errors?.['minWords']">
-              El comentario debe tener al menos 10 palabras.
-            </small>            
-          </div>
-          <div class="guardar-btn-container">
-            <button pButton label="Añadir Comentario" (click)="guardarHistorial()" severity="secondary" 
-                   *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value === 1" 
-                   [disabled]="!oportunidadForm.get('comentario')?.value" class="me-2"></button>
-          </div>
-          <div class="export-button-container">
-            <button class="btn btn-outline-secondary btn-sm export-button" 
-                    (click)="exportExcel(oportunidadForm.get('idOportunidad')?.value)" 
-                    [disabled]="historialOportunidad.length === 0">
-              <i class="bi bi-download"></i> 
-            </button>
-          </div> -->
+          </form>
         </div>
       </div>
-    </form>
-
-    <div class="row mt-3">
-      <div class="col-sm-12" *ngIf="historialOportunidad.length > 0; else noComments">
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th>Usuario</th>
-              <th>Fecha</th>
-              <th>Comentario</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let item of historialOportunidad">
-              <td class="text-left">{{ item.iniciales }}</td>
-              <td class="text-left">{{ item.fechaRegistro | date:'dd/MM/yyyy' }}</td>
-              <td class="text-left" style="max-width: 100px; word-wrap: break-word;">
-                {{ item.comentario }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      
+<div class="row mt-3">
+  <div class="col-sm-12" *ngIf="historialOportunidad.length > 0; else noComments">
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Usuario</th>
+            <th>Fecha</th>
+            <th style="min-width: 150px;">Comentario</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of historialOportunidad">
+            <td class="text-left">{{ item.iniciales }}</td>
+            <td class="text-left">{{ item.fechaRegistro | date:'dd/MM/yyyy' }}</td>
+            <td class="text-left comentario-cell">
+              {{ item.comentario }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
     </div>
   </ng-template>
 
   <ng-template #noComments>
     <p class="text-center">Sin comentarios</p>
   </ng-template>
-
 </p-dialog>

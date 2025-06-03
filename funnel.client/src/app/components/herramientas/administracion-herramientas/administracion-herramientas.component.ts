@@ -18,7 +18,7 @@ export class AdministracionHerramientasComponent {
 
   cambioTitulo(index: number) {
     const titulos = [
-      'Reporte Ingresos Usuarios',
+      'Ingresos Usuarios',
       'Activar / Desactivar Job de Procesos'
     ];
     this.titulo = titulos[index] || 'Herramientas Administración';

@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { Ingresos } from '../interfaces/ingresos';
 import { EjecucionProcesosReportes } from '../interfaces/ejecucion-procesos-reportes';
 import { baseOut } from '../interfaces/utils/utils/baseOut';
+import { IngresosUsuarios } from '../interfaces/ingresos-usuarios';
 @Injectable({
     providedIn: 'root'
 })
@@ -13,8 +14,8 @@ export class HerramientasService {
 
     constructor(private http: HttpClient) { }
 
-    getIngresos(idUsuario: number, idEmpresa: number): Observable<Ingresos[]> {
-        return this.http.get<Ingresos[]>(`${this.baseUrl}api/Herramientas/ConsultarIngresos`, {
+    getIngresos(idUsuario: number, idEmpresa: number): Observable<IngresosUsuarios[]> {
+        return this.http.get<IngresosUsuarios[]>(`${this.baseUrl}api/Herramientas/ConsultarIngresos`, {
             params: { idUsuario: idUsuario, idEmpresa: idEmpresa.toString() }
         });
     }

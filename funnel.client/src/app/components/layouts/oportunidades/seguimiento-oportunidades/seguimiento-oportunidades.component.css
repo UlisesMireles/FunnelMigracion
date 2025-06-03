@@ -26,15 +26,6 @@
     height: 35px;
   }
   
-  /*
-  ::ng-deep .Iconos .pi {
-    color: red;
-  }
-  
-  ::ng-deep .Iconos {
-    color: red;
-  } */
-  
   .inDivDatatableHeader {
     padding-left: 50px;
     padding-top: 5px;
@@ -119,7 +110,7 @@
     position: relative;
   }
   
-  ::ng-deep .p-datatable-tbody>tr {
+ .p-datatable-tbody>tr {
     display: table-row !important;
   }
   
@@ -276,20 +267,6 @@
   font-size: 1.2rem; 
 }
 
-/*
-::ng-deep .p-dialog {
-  overflow-x: hidden; 
-  z-index: 1001 !important;
-  margin-top: 70px; 
-  margin-bottom: 45px;
-  max-height: calc(100vh - 115px) !important;
-}
-
-::ng-deep .p-dialog-content {
-  max-height: calc(100vh - 180px) !important; 
-  overflow-y: auto;
-  overflow-x: hidden; 
-}*/
 .export-button-container {
   display: flex;
   justify-content: flex-end;
@@ -407,4 +384,60 @@
   padding-left: 0.75rem;
   padding-right: 0.75rem;
   text-align: center;
+}
+/* Estilos para el contenedor del seguimiento */
+.seguimiento-container {
+  padding-left: 20px;
+  border-left: 1px solid #ddd;
+}
+
+.seguimiento-area {
+  margin-bottom: 15px;
+}
+
+.seguimiento-label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  margin-top: 13px;
+}
+
+.seguimiento-textarea {
+  width: 100% !important;
+  height: 80px;
+  resize: none;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Estilos para los botones alineados a la derecha */
+.button-group-right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+/* Ajustes para el modal maximizado */
+.bodyDialog.maximized .seguimiento-container {
+  padding-left: 30px;
+}
+
+.bodyDialog.maximized .seguimiento-textarea {
+  height: 120px;
+}
+
+/* Asegurar que los botones se mantengan alineados */
+.icon-btn {
+  min-width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ml-2 {
+  margin-left: 8px;
 }

@@ -226,17 +226,6 @@
   white-space: nowrap;
 }
 
-.seguimiento-textarea {
-  width: 97%!important;
-  height: 80px; 
-  resize: none; 
-  padding: 8px; 
-  border: 1px solid #ccc; 
-  border-radius: 5px;
-  width: 70%; 
-  margin-left: 20px;
-}
-
 .nombre-destacado {
   font-size: 1.5rem; 
   font-weight: bold; 
@@ -250,10 +239,6 @@
   align-items: center; 
 }
 
-.ml-2 {
-  margin-left: 0.5rem; 
-}
-
 .p-button-icon-only {
   width: 40px;  
   height: 40px; 
@@ -265,40 +250,6 @@
 
 .bi-download {
   font-size: 1.2rem; 
-}
-
-.export-button-container {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 50px; 
-  margin-right: 10px;
-}
-.guardar-btn-container {
-  display: flex;
-  margin-top: -60px;
-  margin-left: 430px;
-}
-
-.accion-btn{
-  width: 60px;
-}
-
-.compact-buttons {
-  display: flex;
-  gap: 8px;
-  margin-top: 20px;
-  margin-right: 20px;
-}
-
-.compact-buttons .p-button {
-  min-width: auto !important;  
-  width: auto !important;     
-  padding: 0.5rem 1rem !important; 
-}
-
-
-.compact-buttons .p-button-icon-only {
-  width: 2.5rem !important;   
 }
 
 
@@ -316,15 +267,6 @@
 
 .p-button {
   flex-shrink: 0;
-}
-
-.button-group:not(.compact-buttons) {
-  margin-top: -35px;  
-  padding-top: 0;
-}
-
-.button-group.compact-buttons {
-  margin-top: 20px; 
 }
 
 /* Estilos para el modal maximizado */
@@ -378,17 +320,10 @@
   margin-left: 0px;
 }
 
-.icon-btn {
-  min-width: 35px;
-  height: 35px;
-  padding-left: 0.75rem;
-  padding-right: 0.75rem;
-  text-align: center;
-}
 /* Estilos para el contenedor del seguimiento */
 .seguimiento-container {
   padding-left: 20px;
-  border-left: 1px solid #ddd;
+ 
 }
 
 .seguimiento-area {
@@ -409,8 +344,8 @@
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  margin-left: 1px;
 }
-
 /* Estilos para los botones alineados a la derecha */
 .button-group-right {
   display: flex;
@@ -437,7 +372,8 @@
   align-items: center;
   justify-content: center;
 }
-
-.ml-2 {
-  margin-left: 8px;
+.comentario-cell {
+  word-break: break-word;
+  white-space: normal;
+  max-width: 250px; 
 }

@@ -255,6 +255,8 @@ namespace Funnel.Data
                         ArchivoDescripcion = ComprobarNulos.CheckStringNull(reader["ArchivoDescripcion"]),
                         Foto = ComprobarNulos.CheckStringNull(reader["Foto"]),
 
+                        UbicacionFisica = ComprobarNulos.CheckStringNull(reader["UbicacionFisica"]),
+                        Estatus = ComprobarNulos.CheckIntNull(reader["Estatus"]),
                     };
 
                     result.Add(dto);

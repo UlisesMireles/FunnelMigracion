@@ -117,8 +117,8 @@
                        <div style="width: 90px; height: 90px; border-radius: 50%; overflow: hidden; margin-right: 30px;">
                         <img [src]="imagePreview" alt="Vista previa"  (error)="mostrarImagenDefault($event)" style="width: 100%; height: 100%; object-fit: cover;">
                         </div>
-                        <button class="btn btn-link text-danger p-0" (click)="removerFoto()">
-                            <span class="me-1">❌</span> Remover
+                        <button class="btn btn-seleccionar" (click)="removerFoto()">
+                           Remover
                         </button>
                     </div>
                 </div>
@@ -142,12 +142,12 @@
         [imageChangedEvent]="imageChangedEvent" 
         [maintainAspectRatio]="true"
         [aspectRatio]="1" 
-        [resizeToWidth]="100" 
+        [resizeToWidth]="400" 
         [imageQuality]="100" 
-        [cropperMinWidth]="100"
-        [cropperMinHeight]="100" 
-        [cropperStaticWidth]="100" 
-        [cropperStaticHeight]="100"
+        [cropperMinWidth]="150"
+        [cropperMinHeight]="150" 
+        [cropperStaticWidth]="150" 
+        [cropperStaticHeight]="150"
         [roundCropper]="true"
         (imageCropped)="imageCropped($event)" class="cropper-fixed">
         </image-cropper>

@@ -243,7 +243,7 @@ div.inDivDatatableHeader > p-button > button.p-button {
   /* overflow-x: auto; */
   width: 100%;
   margin-top: -45px !important; 
-  margin-bottom: 50px;
+  margin-bottom: 0px;
 }
 .table-responsive{
   overflow-x: auto;
@@ -395,9 +395,9 @@ th.sort-active p-sortIcon {
 }
 
 ::ng-deep .fixed-width-oportunidad {
-  width: 300px !important;
-  max-width: 300px !important;
-  min-width: 300px !important;
+  width: 200px !important;
+  max-width: 250px !important;
+  min-width: 200px !important;
   white-space: normal !important;
   word-break: break-word !important;
   overflow-wrap: break-word !important;
@@ -445,4 +445,9 @@ th.sort-active p-sortIcon {
   width: 55px !important;
   min-width: 55px !important;
   max-width: 55px !important;
+}
+
+.error-placeholder {
+  min-height: 18px; 
+  display: block;
 }

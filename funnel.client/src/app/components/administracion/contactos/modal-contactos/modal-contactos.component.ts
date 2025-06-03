@@ -25,6 +25,7 @@ export class ModalContactosComponent {
   @Input() title: string = 'Modal';
   @Input() visible: boolean = false;
   @Input() insertar: boolean = false;
+  @Input() lecturaProspecto: boolean = false;
   request!: RequestPContacto;
 
   contactoForm!: FormGroup;
@@ -73,7 +74,7 @@ export class ModalContactosComponent {
         estatus: 0,
         desEstatus: '',
         prospecto: '',
-        idProspecto: 0,
+        idProspecto: this.contacto?.idProspecto?? 0,
         idEmpresa: 0};
       this.contactoForm = this.fb.group({
         idContactoProspecto: [0],
@@ -91,9 +92,10 @@ export class ModalContactosComponent {
           ]
         ],
         correoElectronico: ['', [Validators.required, Validators.email]],
-        idProspecto: [null, Validators.required],
+        idProspecto: [this.contacto?.idProspecto?? null, Validators.required],
         estatus: [true],
         idEmpresa: [idEmpresa],
+        
         bandera: ['INSERT']
       });
 
@@ -165,6 +167,9 @@ export class ModalContactosComponent {
     this.visible = false;
     this.visibleChange.emit(this.visible);
     this.closeModal.emit();
+    if (this.insertar) {
+    this.inicializarFormulario();
+    }
   }
 
   guardarContacto(){
@@ -191,7 +196,6 @@ export class ModalContactosComponent {
 
     this.contactosService.postContacto(this.informacionContactos).subscribe({
       next: (result: baseOut) => {
-        console.log(result);
         this.result.emit(result);
         this.close();
       },

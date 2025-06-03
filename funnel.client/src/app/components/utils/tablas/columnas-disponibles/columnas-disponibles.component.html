@@ -1,15 +1,11 @@
 <div class="listCheck">
-  <!-- Botón de cierre -->
   <div class="close-container">
     <button class="btn-close" (click)="cerrarModal()">&times;</button>
   </div>
 
-  <!-- Título -->
-  <div class="row mb-3">
-    <div class="col-12">
-      <h4 class="text-center">Actualizar Columnas</h4>
-    </div>
-  </div>
+  <h3 class="text-center draggable-header" (mousedown)="onMouseDown($event)">
+    Actualizar Columnas
+  </h3>
 
   <div class="row">
     <div *ngFor="let filtro of data.todosColumnas; let index = index">
@@ -22,11 +18,9 @@
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-12">
-      <button class="p-button-primary p-button-sm w-100 mt-2" (click)="aplicarFiltroParent()">
-        Guardar
-      </button>
-    </div>
+
+  <div class="button-group">
+    <button class="p-button-primary" (click)="aplicarFiltroParent()" [disabled]="!hasChanges()">Guardar</button>
+    <button class="btn-cancel" (click)="cerrarModal()">Cancelar</button>
   </div>
 </div>

@@ -23,17 +23,18 @@ export class ModalOportunidadesService {
   // Observable para Prospectos
   private modalProspectoStateSubject = new BehaviorSubject<{
     showModal: boolean, insertar: boolean, prospectos: Prospectos[],
-    prospectoSeleccionado: Prospectos, result: BaseOut
-  }>
-    ({
-      showModal: false, insertar: false, prospectos: [],
-      prospectoSeleccionado: { bandera: '', idProspecto: -1, nombre: '', ubicacionFisica: '', estatus: 0, desEstatus: '', nombreSector: '', idSector: 0, totalOportunidades: 0, proceso: 0, ganadas: 0, perdidas: 0, canceladas: 0, eliminadas: 0, idEmpresa: 0, porcEfectividad: 0 },
-      result: { errorMessage: '', result: false, id: -1 }
-    });
+    prospectoSeleccionado: Prospectos, result: BaseOut, desdeSector: boolean
+  }>({
+    showModal: false, insertar: false, prospectos: [],
+    prospectoSeleccionado: { bandera: '', idProspecto: -1, nombre: '', ubicacionFisica: '', estatus: 0, desEstatus: '', nombreSector: '', idSector: 0, totalOportunidades: 0, proceso: 0, ganadas: 0, perdidas: 0, canceladas: 0, eliminadas: 0, idEmpresa: 0, porcEfectividad: 0 },
+    result: { errorMessage: '', result: false, id: -1 },
+    desdeSector: false
+  });
+
 
   modalProspectoState$ = this.modalProspectoStateSubject.asObservable();
 
-  // Observable para Contactos
+  // Observable para Contactos desde header
   private modalContactoStateSubject = new BehaviorSubject<{
     showModal: boolean, insertar: boolean, contactos: Contacto[],
     contactoSeleccionado: Contacto, result: BaseOut
@@ -43,8 +44,21 @@ export class ModalOportunidadesService {
       contactoSeleccionado: { bandera: '', idContactoProspecto: -1, nombre: '', apellidos: '', telefono: '', correoElectronico: '', prospecto: '', idEmpresa: 0, idProspecto: 0, estatus: 0, desEstatus: '', nombreCompleto: '', },
       result: { errorMessage: '', result: false, id: -1 }
     });
-
+  
   modalContactoState$ = this.modalContactoStateSubject.asObservable();
+
+  // Observable para Contactos desde oportunidades
+  private modalContactoOportunidadesStateSubject = new BehaviorSubject<{
+    showModal: boolean, insertar: boolean, contactos: Contacto[],
+    contactoSeleccionado: Contacto, result: BaseOut
+  }>
+    ({
+      showModal: false, insertar: false, contactos: [],
+      contactoSeleccionado: { bandera: '', idContactoProspecto: -1, nombre: '', apellidos: '', telefono: '', correoElectronico: '', prospecto: '', idEmpresa: 0, idProspecto: 0, estatus: 0, desEstatus: '', nombreCompleto: '', },
+      result: { errorMessage: '', result: false, id: -1 }
+    });
+  
+  modalContactoOportunidadesState$ = this.modalContactoOportunidadesStateSubject.asObservable();
 
   constructor() { }
 
@@ -60,28 +74,46 @@ export class ModalOportunidadesService {
   }
 
   // Método para abrir la modal
-  openModalProspecto(showModal: boolean, insertar: boolean, prospectos: Prospectos[], prospectoSeleccionado: Prospectos, result: BaseOut = { errorMessage: '', result: false, id: -1 }) {
-    this.modalProspectoStateSubject.next({ showModal: showModal, insertar: insertar, prospectos: prospectos, prospectoSeleccionado: prospectoSeleccionado, result: result });
+  openModalProspecto(showModal: boolean, insertar: boolean, prospectos: Prospectos[], prospectoSeleccionado: Prospectos, result: BaseOut = { errorMessage: '', result: false, id: -1 }, desdeSector: boolean = false) {
+    this.modalProspectoStateSubject.next({showModal, insertar, prospectos, prospectoSeleccionado, result, desdeSector
+    });
+    return this.modalProspectoStateSubject.asObservable();
   }
+
 
   // Método para cerrar la modal
   closeModalProspecto(result: BaseOut = { errorMessage: '', result: false, id: -1 }) {
     this.modalProspectoStateSubject.next({
       showModal: false, insertar: false, prospectos: [],
       prospectoSeleccionado: { bandera: '', idProspecto: -1, nombre: '', ubicacionFisica: '', estatus: 0, desEstatus: '', nombreSector: '', idSector: 0, totalOportunidades: 0, proceso: 0, ganadas: 0, perdidas: 0, canceladas: 0, eliminadas: 0, idEmpresa: 0, porcEfectividad: 0 },
-      result: result
+      result: result,
+      desdeSector: false
     });
+    return this.modalProspectoStateSubject.asObservable();
   }
 
-  // Método para abrir la modal
+  // Método para abrir la modal desde header
   openModalContacto(showModal: boolean, insertar: boolean, contactos: Contacto[], contactoSeleccionado: Contacto, result: BaseOut = { errorMessage: '', result: false, id: -1 }) {
     this.modalContactoStateSubject.next({ showModal: showModal, insertar: insertar, contactos: contactos, contactoSeleccionado: contactoSeleccionado, result: result });
   }
 
-  // Método para cerrar la modal
+  // Método para cerrar la modal desde header
   closeModalContacto(result: BaseOut = { errorMessage: '', result: false, id: -1 }) {
     this.modalContactoStateSubject.next({
       showModal: false, insertar: false, contactos: [],
+      contactoSeleccionado: { bandera: '', idContactoProspecto: -1, nombre: '', apellidos: '', telefono: '', correoElectronico: '', prospecto: '', idEmpresa: 0, idProspecto: 0, estatus: 0, desEstatus: '', nombreCompleto: '', },
+      result: result
+    });
+  }
+  // Método para abrir la modal desde oportunidades
+  openModalContactoOportunidades(showModal: boolean, insertar: boolean, contactos: Contacto[], contactoSeleccionado: Contacto, result: BaseOut = { errorMessage: '', result: false, id: -1 }) {
+    this.modalContactoOportunidadesStateSubject.next({ showModal: showModal, insertar: insertar, contactos: contactos, contactoSeleccionado: contactoSeleccionado, result: result });
+  }
+
+  // Método para cerrar la modal desde oportunidades
+  closeModalContactoOportunidades(result: BaseOut = { errorMessage: '', result: false, id: -1 }) {
+    this.modalContactoOportunidadesStateSubject.next({
+      showModal: false, insertar: true, contactos: [],
       contactoSeleccionado: { bandera: '', idContactoProspecto: -1, nombre: '', apellidos: '', telefono: '', correoElectronico: '', prospecto: '', idEmpresa: 0, idProspecto: 0, estatus: 0, desEstatus: '', nombreCompleto: '', },
       result: result
     });

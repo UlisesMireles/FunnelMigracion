@@ -1,13 +1,31 @@
 @import "./cargandoMensaje.css";
 /*scrollable-div es el historial de mensajes*/
 .scrollable-div {
-    height: 80%;
+    height: 85%;
     padding-top: 10px;
     padding-bottom: 10px;
     padding-left: 10px;
     overflow-y: auto;
 
     font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+}
+.scrollable-div::-webkit-scrollbar {
+    width: 10px;
+}
+
+.scrollable-div::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 5px;
+}
+
+.scrollable-div::-webkit-scrollbar-thumb {
+    background: #c0c0c0;
+    border-radius: 5px;
+    border: 2px solid #f0f0f0;
+}
+
+.scrollable-div::-webkit-scrollbar-thumb:hover {
+    background: #a0a0a0;
 }
 
 .chat-historial {
@@ -277,7 +295,7 @@
     background-color: #fff !important;
     position: relative;
     transition: padding 0.3s ease;
-    margin-top: 15px !important;
+    /*margin-top: 15px !important;*/
 
     .chatbot-input {
         font-size: 0.9rem !important;

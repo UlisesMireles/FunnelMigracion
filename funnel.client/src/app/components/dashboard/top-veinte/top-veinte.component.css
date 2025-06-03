@@ -195,6 +195,7 @@
     font-weight: bold;
     font-size: 12.5px !important;
     background: #E1DAC7 !important;
+    height: 20px !important;
   }
   
   :host ::ng-deep .custom-header2 input,
@@ -224,7 +225,7 @@
   .contenedorTabla{
     /* overflow-x: auto; */
     width: 100%;
-    margin-top: -45px !important;
+    margin-top: 0px !important;
     margin-bottom: 50px;
   }
   .table-responsive{

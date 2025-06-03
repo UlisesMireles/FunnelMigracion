@@ -6,6 +6,7 @@
   border-radius: 9px !important;
   min-height: 38px !important;
   background: #6EB74B !important;
+  margin-top: 500px !important;
   /* opacity: 0.65 !important; */
 }
 
@@ -108,8 +109,35 @@
   color: #ffffff !important;
 }
 .p-button-icon-only.p-button-rounded{
- width: 16px !important;
+ width: 30px !important;
+  height: 30px !important;
 }
 .p-datatable-inline-filter {
   gap: 0 !important;
 }
+
+.custom-button {
+  background: #f4f4f4 !important;
+  color: #495057 !important;
+  border-radius: 6px !important;
+  min-width: 20px;
+  min-height: 20px;
+
+}
+ .btn-seleccionar {
+    background: #ededed;
+    color: #475569;
+    border: 1px solid #ededed; 
+    padding: 5px 15px;
+    font-size: 14px; 
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease; 
+  }
+  
+  /* Efecto hover */
+  .btn-seleccionar:hover {
+    background: #d4d4d4; 
+    border-color: #d4d4d4; 
+    color: #475569;
+  }
+

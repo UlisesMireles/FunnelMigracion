@@ -36,9 +36,12 @@
 <div class="chatbot-message-box" [class.active]="loadOpciones" [class.has-options]="loadOpciones"  data-role="chatbot">
   <input type="text" class="chatbot-input" [(ngModel)]="pregunta" placeholder="¿Cómo puedo ayudarte el día de hoy?"
     (keydown.enter)="consultaMensajeOpenIa($event)">
-  <mat-icon matSuffix (click)="loadOpciones = !loadOpciones">more_horiz</mat-icon>
+    
+  <mat-icon matSuffix [ngStyle]="{'color':'#1a237e'}"
+    (click)="resetConversation()" matTooltip="Eliminar historial" style="cursor: pointer; margin-top: 1px; ">delete</mat-icon>
+<!-- <mat-icon matSuffix (click)="loadOpciones = !loadOpciones">more_horiz</mat-icon> -->
   <mat-icon matSuffix class="ms-2" (click)="!pregunta || isConsultandoOpenIa ? null : consultaMensajeOpenIa()"
-    [ngClass]="{'disabled-icon': !pregunta || isConsultandoOpenIa}">send</mat-icon>
+    [ngClass]="{'disabled-icon': !pregunta || isConsultandoOpenIa}" [ngStyle]="{'color':'#5c6bc0'}">send</mat-icon>
 
 </div>
 <ng-container *ngIf="loadOpciones" [ngTemplateOutlet]="opciones"></ng-container>
@@ -73,10 +76,10 @@
   <div class="row m-0 justify-content-end">
     <mat-chip-listbox class="col-auto m-0 pb-2 ps-0 pe-0" aria-label="Seleccion preguntas Faq"
       *ngFor="let preguntaCat of lsPreguntasPorCategoria">
-      <mat-chip *ngIf="!preguntaCat.yaSePregunto" (click)="seleccionPregunta(preguntaCat)">
+      <mat-chip *ngIf="!preguntaCat.yaSePregunto" (click)="seleccionPregunta(preguntaCat)" style="font-size: small;">
         <small>
           <b>
-            {{preguntaCat.pregunta}}
+            {{preguntaCat.pregunta}} 
           </b>
         </small>
       </mat-chip>
@@ -84,6 +87,7 @@
   </div>
 </ng-template>
 
+<!-- Opciones del chat -->
 <ng-template #opciones>
   <div class="row m-0 opcionesClass">
     <div class="col-4 offset-8" [ngClass]="loadOpciones ? 'conditionalOpen' : 'conditionalClose'">

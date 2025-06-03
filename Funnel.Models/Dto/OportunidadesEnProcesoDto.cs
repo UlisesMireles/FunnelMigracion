@@ -57,5 +57,7 @@
         public int? IdTipoOportunidad { get; set; }
         public string? Bandera { get; set; }
         public string? Foto { get; set; }
+        public string? UbicacionFisica { get; set; }
+        public int? Estatus { get; set; }
     }
 }

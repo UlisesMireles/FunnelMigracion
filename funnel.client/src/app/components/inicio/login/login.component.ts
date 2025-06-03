@@ -179,7 +179,7 @@ export class LoginComponent implements OnInit {
     this.authService.recuperarContrasena(user).subscribe({
       next: (data: any) => {
         this.snackBar.open(data.errorMessage, 'X', { 
-          horizontalPosition: 'end', 
+          horizontalPosition: 'center', 
           verticalPosition: 'top', 
           duration: 300000,
           panelClass: 'success-snackbar'

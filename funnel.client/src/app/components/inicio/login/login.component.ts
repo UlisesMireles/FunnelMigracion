@@ -11,6 +11,7 @@ import { baseOut } from '../../../interfaces/utils/utils/baseOut';
 import { ModalService } from '../../../services/modal-perfil.service';
 import { AsistenteService } from '../../../services/asistentes/asistente.service';
 import { Subscription } from 'rxjs';
+import { result } from 'lodash-es';
 
 
 @Component({
@@ -177,22 +178,32 @@ export class LoginComponent implements OnInit {
     this.showErrors = false;
     const user = this.resetUsername;//this.resetForm.get('usuario')?.value;
     this.authService.recuperarContrasena(user).subscribe({
-      next: (data: any) => {
-        this.snackBar.open(data.errorMessage, 'X', { 
-          horizontalPosition: 'center', 
-          verticalPosition: 'top', 
-          duration: 300000,
-          panelClass: 'success-snackbar'
-        });
-        //this.snackbarService.showSnackbar(data.errorMessage, 'success');
-
+      next:(result: baseOut) => {
+        if (result.result) {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'La operación se realizó con éxito.',
+            detail: result.errorMessage,
+            key: 'reset-toast'
+          });
+        }
+        else {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: result.errorMessage,
+            key: 'reset-toast'
+          });
+        }
       },
-      error: (err: Error) => {
-        this.showErrors = true;
-        this.resetErrorMessage = "Ocurrio un error, intentalo más tarde.";
-        console.log(err);
+      error: (error: baseOut) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: error.errorMessage,
+          key: 'reset-toast'
+        });
       }
-
     });
   }
   guardarInformacion(event: any): void {

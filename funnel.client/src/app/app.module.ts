@@ -130,7 +130,7 @@ import { PlotlyModule } from 'angular-plotly.js';
 import { OportunidadesGeneralComponent } from './components/dashboard/oportunidades-general/oportunidades-general.component';
 import { AdminDashboardComponent } from './components/dashboard/admin-dashboard/admin-dashboard.component';
 import { OportunidadesPorAgenteComponent } from './components/dashboard/oportunidades-por-agente/oportunidades-por-agente.component';
-
+import { GraficasPorAnioComponent } from './components/terminadas/oportunidades-ganadas/graficas-por-anio/graficas-por-anio.component';
 import { es } from 'plotly.js-locales';
 
 PlotlyModule.plotlyjs = PlotlyJS;
@@ -200,7 +200,8 @@ registerLocaleData(localeEs, 'es-MX');
     AcordeonOportunidadesEtapaComponent,
     OportunidadesGeneralComponent,
     AdminDashboardComponent,
-    OportunidadesPorAgenteComponent
+    OportunidadesPorAgenteComponent,
+    GraficasPorAnioComponent
   ],
   imports: [
     BrowserModule,

@@ -9,9 +9,15 @@
         <plotly-plot *ngIf="card.infoCargada" [data]="card.grafica.data" [layout]="card.grafica.layout"
           [config]="card.grafica.config"></plotly-plot>
           <div *ngIf="card.titulo === 'Indicadores por Etapa'" class="position-absolute bottom-0 start-0 p-2">
-          <a href="javascript:void(0)" (click)="openDetailsModal()" class="text-primary">Ver detalles</a>
+          <a href="javascript:void(0)" (click)="openDetailsModal()" class="text-primary">Ver detalles</a>       
         </div>
       </div>
     </div>
   </div>
 </div>
+
+
+<app-modal-detalles-indicadores-etapa 
+  [(visible)]="modalIndicadoresVisible"
+  (closeModal)="onModalIndicadoresClose()">
+</app-modal-detalles-indicadores-etapa>

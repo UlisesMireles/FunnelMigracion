@@ -1,7 +1,34 @@
 <div class="container-fluid">
   <div class="row">
+    <div class="col-12" style="text-align: left; margin-top: 14px; margin-left: 10px; padding-left: 0">
+      <h3>{{titulo}}</h3>
+    </div>
+   
     <div class="col-12">
-      <div class="row contenedorTabla">
+       <!-- Pestañas  -->
+    <ul class="nav nav-tabs custom-tabs">
+      <li class="nav-item">
+        <a class="nav-link active" data-bs-toggle="tab" href="#lista"  pTooltip="Lista" tooltipPosition="top" >
+          <i class="bi bi-list"></i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#porAño" pTooltip="Gráficas por año" tooltipPosition="top">
+          <i class="bi bi-bar-chart-line"></i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#porAgente"  pTooltip="Gráficas por agente" tooltipPosition="top">
+          <i class="bi bi-pie-chart"></i>  
+        </a>
+      </li>
+    </ul>
+ 
+       <!-- Contenido de las pestañas -->
+       <div class="tab-content">
+        <!-- Pestaña 1 -->
+        <div class="tab-pane fade show active" id="lista">
+        <div class="row contenedorTabla">
         <div *ngIf="loading" class="loading-message" style="padding-top: 50px;">
           <div class="spinner-border text-primary" role="status">
             <span class="visually-hidden">Cargando...</span>
@@ -18,7 +45,6 @@
           
           <ng-template class="divAccionesTabla" #caption>
             <div class="col-12" style="text-align: left; font-weight: bold; margin-top: 40px;">
-              <h3>Oportunidades Ganadas</h3>
             </div>
             <div class="row">
               <div class="col inDivDatatableHeader" style="text-align:right; margin-right:5px">

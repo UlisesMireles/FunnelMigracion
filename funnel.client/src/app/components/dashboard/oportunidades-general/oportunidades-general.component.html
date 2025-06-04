@@ -8,6 +8,9 @@
       <div class="p-0" style="height:330px;max-height: 330px; z-index: 5000;">
         <plotly-plot *ngIf="card.infoCargada" [data]="card.grafica.data" [layout]="card.grafica.layout"
           [config]="card.grafica.config"></plotly-plot>
+          <div *ngIf="card.titulo === 'Indicadores por Etapa'" class="position-absolute bottom-0 start-0 p-2">
+          <a href="javascript:void(0)" (click)="openDetailsModal()" class="text-primary">Ver detalles</a>
+        </div>
       </div>
     </div>
   </div>

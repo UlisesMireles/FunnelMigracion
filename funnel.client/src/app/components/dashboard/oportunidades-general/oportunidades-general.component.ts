@@ -119,4 +119,8 @@ export class OportunidadesGeneralComponent {
       }
     }
   }
+
+  openDetailsModal() {
+    console.log('Abriendo modal de detalles...');
+  }
 }

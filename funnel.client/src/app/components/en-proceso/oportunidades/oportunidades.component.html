@@ -7,24 +7,24 @@
     <div class="col-12">
        <!-- Pestañas  -->
     <ul class="nav nav-tabs custom-tabs">
-      <li class="nav-item">
+      <li class="nav-item tab-item">
         <a class="nav-link active" data-bs-toggle="tab" href="#lista" (click)="camTitulo(0)" pTooltip="Lista" tooltipPosition="top" >
-          <i class="bi bi-list"></i>
+          <i class="bi bi-list color-tab-1"></i>
         </a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="tab" href="#porMes" (click)="camTitulo(1)" pTooltip="Candelarización" tooltipPosition="top">
-          <i class="bi bi-calendar"></i>
-        </a>
-      </li>
-      <li class="nav-item">
+      <li class="nav-item tab-item">
         <a class="nav-link" data-bs-toggle="tab" href="#porEtapa" (click)="camTitulo(2)" pTooltip="Etapa" tooltipPosition="top">
-          <i class="bi bi-calendar-check"></i>  
+          <i class="bi bi-calendar-check color-tab-2"></i>  
         </a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item tab-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#porMes" (click)="camTitulo(1)" pTooltip="Candelarización" tooltipPosition="top">
+          <i class="bi bi-calendar color-tab-3"></i>
+        </a>
+      </li>
+      <li class="nav-item tab-item">
         <a class="nav-link" data-bs-toggle="tab" href="#estadisticas" (click)="camTitulo(3)" pTooltip="Estadisticas" tooltipPosition="top">
-          <i class="bi bi-bar-chart"></i>
+          <i class="bi bi-bar-chart color-tab-4"></i>
         </a>
       </li>
     </ul>
@@ -33,7 +33,13 @@
        <div class="tab-content">
         <!-- Pestaña 1 -->
         <div class="tab-pane fade show active" id="lista">
-        <div class="row contenedorTabla">
+         
+        <div class="row contenedorTabla" *ngIf="mostrarLista">
+           <div *ngIf="loading" class="spinner-container w-100 spinner-tabla ">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+          </div>
         <p-table *ngIf="!loading" #dt [stripedRows]="true" [value]="oportunidades" dataKey="id" [rows]="10"
           [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 20, 50]" [paginator]="true" paginatorPosition="both"
           currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros"
@@ -287,27 +293,23 @@
         <div class="tab-pane fade" id="porMes">
           <div class="row">
             <div class="col-12">
-              <app-oportunidadesMes-acordeon></app-oportunidadesMes-acordeon>
+               <app-oportunidadesMes-acordeon *ngIf="mostrarOportunidadesMes"></app-oportunidadesMes-acordeon>
             </div>
           </div>
         </div>
  
         <!-- Oportunidades por Etapa -->
-        <div class="tab-pane fade" id="porEtapa">
+       <div class="tab-pane fade" id="porEtapa">
           <div class="row">
             <div class="col-12">
-              <app-acordeon-oportunidades-etapa></app-acordeon-oportunidades-etapa>
+              <app-acordeon-oportunidades-etapa *ngIf="mostrarOportunidadesEtapa"></app-acordeon-oportunidades-etapa>
             </div>
           </div>
         </div>
  
         <!--Estadísticas por Etapa -->
         <div class="tab-pane fade" id="estadisticas">
-          <!-- <div class="row">
-            <div class="col-12"> -->
-              <app-estadisticas-por-etapa></app-estadisticas-por-etapa>
-            <!-- </div>
-          </div> -->
+          <app-estadisticas-por-etapa *ngIf="mostrarEstadisticas"></app-estadisticas-por-etapa>
         </div>
       </div>
     </div>

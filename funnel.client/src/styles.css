@@ -140,3 +140,14 @@
     border-color: #d4d4d4; 
     color: #475569;
   }
+
+
+.spinner-tabla{
+  position: absolute;
+  z-index: 500;
+  transform: translate(-14px, 100px);
+}
+.spinner-tarjeta{
+  position: absolute;
+  transform: translate(-14px, 60px);
+}

@@ -16,6 +16,9 @@ quadrants: { cards: any[] }[] = [];
     return this.quadrants.map((_, index) => `dropList${index}`);
   }
   infoCargada: boolean = false;
+  aniosDisponibles: number[] = [];
+  anioSeleccionado: number = new Date().getFullYear();
+  loading: boolean = true;
 
   constructor(
     private readonly graficasService: GraficasService,
@@ -36,8 +39,41 @@ quadrants: { cards: any[] }[] = [];
     this.consultarGraficaClientes();
     this.consultarGraficaTipoProyecto();
     //this.consultarGraficaVentasAnuales();
+    this.obtenerAniosDisponibles();
   }
+ obtenerAniosDisponibles(): void {
+    const idEmpresa = this.sessionService.obtenerIdEmpresa();
+    const idEstatusOportunidad = 2;
+    const request: RequestGraficasDto = {
+      bandera: 'SEL-ANIOS-DISPONIBLES',
+      idEmpresa,
+      idEstatusOportunidad,
+    };
 
+    this.graficasService.obtenerAnios(idEmpresa, idEstatusOportunidad).subscribe({
+      next: (response: any[]) => {
+        this.aniosDisponibles = response.map(item => item.Anio);
+        if (this.aniosDisponibles.length > 0) {
+          this.anioSeleccionado = Math.max(...this.aniosDisponibles);
+          this.consultarTodasGraficas();
+        }
+        this.loading = false;
+        console.log(this.aniosDisponibles);
+      },
+      error: (err) => {
+        console.error('Error al obtener años disponibles:', err);
+        this.loading = false;
+      }
+    });
+  }
+  onAnioChange(): void {
+    this.consultarTodasGraficas();
+  }
+  consultarTodasGraficas(): void {
+    this.consultarGraficaClientes();
+    this.consultarGraficaTipoProyecto();
+    // this.consultarGraficaVentasAnuales();
+  }
   private setGraficaData(quadrantIdx: number, cardIdx: number, data: any, layout: any) {
     this.quadrants[quadrantIdx].cards[cardIdx].grafica.data = data;
     this.quadrants[quadrantIdx].cards[cardIdx].grafica.layout = layout;
@@ -47,9 +83,12 @@ quadrants: { cards: any[] }[] = [];
   
   consultarGraficaClientes(): void {
     const idEmpresa = this.sessionService.obtenerIdEmpresa();
+    const idEstatusOportunidad = 2;
     const request: RequestGraficasDto = {
       bandera: 'SEL-CLIENTES-ANIO',
-      idEmpresa
+      idEmpresa,
+      idEstatusOportunidad,
+      anio: this.anioSeleccionado
     };
 
     this.graficasService.obtenerGraficaData(request).subscribe({

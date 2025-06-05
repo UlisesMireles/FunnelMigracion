@@ -140,6 +140,26 @@ namespace Funnel.Data
 
             return result;
         }
+        public async Task<List<AniosDto>> Anios(int idEmpresa, int idEstatusOportunidad)
+        {
+            List<AniosDto> result = new List<AniosDto>();
+            IList<ParameterSQl> list = new List<ParameterSQl>
+            {
+                DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, "SEL-ANIOS-POR_ESTATUS"),
+                DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, idEmpresa),
+                DataBase.CreateParameterSql("@pIdEstatusOportunidad", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, idEstatusOportunidad),
+            };
+            using (IDataReader reader = await DataBase.GetReaderSql("F_OportunidadesGraficasPorEstatus", CommandType.StoredProcedure, list, _connectionString))
+            {
+                while (reader.Read())
+                {
+                    var dto = new AniosDto();
+                    dto.Anio = ComprobarNulos.CheckIntNull(reader["Anio"]);
+                    result.Add(dto);
+                }
+            }
+            return result;
+        }
         public async Task<List<GraficaDto>> ObtenerGraficaGanadasAnio(RequestGrafica data)
         {
             List<GraficaDto> result = new List<GraficaDto>();

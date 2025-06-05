@@ -1,4 +1,5 @@
-﻿using Funnel.Data.Interfaces;
+﻿using Funnel.Data;
+using Funnel.Data.Interfaces;
 using Funnel.Logic.Interfaces;
 using Funnel.Models.Dto;
 namespace Funnel.Logic
@@ -21,6 +22,10 @@ namespace Funnel.Logic
         public async Task<List<AgenteDto>> ObtenerAgentes(RequestGrafica data)
         {
             return await _graficasData.ObtenerAgentes(data);
+        }
+        public async Task<List<AniosDto>> Anios(int IdEmpresa, int IdEstatusOportunidad)
+        {
+            return await _graficasData.Anios( IdEmpresa, IdEstatusOportunidad);
         }
         public async Task<List<GraficaDto>>ObtenerGraficaGanadasAnio(RequestGrafica data)
         {

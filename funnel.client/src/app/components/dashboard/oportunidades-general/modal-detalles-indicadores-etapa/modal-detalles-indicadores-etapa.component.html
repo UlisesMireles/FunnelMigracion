@@ -1,16 +1,21 @@
 <p-dialog 
+  appendTo="body"
   [(visible)]="visible" 
   [modal]="true" 
   [closable]="true" 
   [maximizable]="true"
-  [style]="{ width: maximized ? '95vw' : '80rem', height: maximized ? '95vh' : 'auto' }"
-  [contentStyle]="{ 'max-height': maximized ? '90vh' : 'auto', 'overflow': 'hidden' }"
+  [style]="{
+    width: maximized ? '100vw' : '80rem',
+    height: maximized ? '100vh' : 'auto'
+  }"
+  [ngClass]="{'maximized': maximized}"
   (onHide)="close()"
   (onShow)="onDialogShow()"
-  [baseZIndex]="100000"
+  [baseZIndex]="1100"
   [draggable]="false"
   [resizable]="false"
-  [blockScroll]="true">
+  [blockScroll]="true"
+  class="bodyDialog">
   
   <ng-template pTemplate="header">
     <div class="dialog-header-content">
@@ -23,7 +28,7 @@
   <ng-template pTemplate="content">
     <div class="contenedor-tabla-dialogo">
       <!-- Tabla de oportunidades -->
-      <p-table #dt [value]="oportunidades" [loading]="loading" [paginator]="true" [rows]="10" 
+      <p-table #dt [value]="oportunidades" [paginator]="true" [rows]="10" 
         [rowsPerPageOptions]="[10, 25, 50]" [totalRecords]="oportunidades.length"
         styleClass="tabla-estilizada">
         

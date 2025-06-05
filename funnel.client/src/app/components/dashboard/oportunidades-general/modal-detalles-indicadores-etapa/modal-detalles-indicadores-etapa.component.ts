@@ -38,25 +38,19 @@ export class ModalDetallesIndicadoresEtapaComponent {
   }
 
     cargarOportunidades() {
-    this.loading = true;
-    this.oportunidadesService.getOportunidades(
-      this.loginService.obtenerIdEmpresa(),
-      this.loginService.obtenerIdUsuario(),
-      1 
-    ).subscribe({
-      next: (data) => {
-        console.log('Datos recibidos:', data);
-        this.oportunidades = data;
-        this.loading = false;
-        this.cdr.detectChanges();
-      },
-      error: (error) => {
-        console.error('Error al cargar oportunidades', error);
-        this.loading = false;
-        this.cdr.detectChanges();
-      }
-    });
-  }
+  this.oportunidadesService.getOportunidades(
+    this.loginService.obtenerIdEmpresa(),
+    this.loginService.obtenerIdUsuario(),
+    1 
+  ).subscribe({
+    next: (data) => {
+      this.oportunidades = data;
+    },
+    error: (error) => {
+      console.error('Error al cargar oportunidades', error);
+    }
+  });
+}
 
 close() { 
   this.visible = false;

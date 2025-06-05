@@ -1,4 +1,5 @@
 ﻿using Funnel.Data.Utils;
+using Funnel.Data.Interfaces;
 using Funnel.Models.Dto;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -10,9 +11,10 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
+
 namespace Funnel.Data
 {
-    public class ConfiguracionesData
+    public class ConfiguracionesData : IConfiguracionesData
     {
         private readonly string _connectionString;
 

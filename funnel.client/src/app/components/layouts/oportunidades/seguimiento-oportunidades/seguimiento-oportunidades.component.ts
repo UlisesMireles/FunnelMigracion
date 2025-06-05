@@ -46,7 +46,6 @@ export class SeguimientoOportunidadesComponent {
 
   copiado: boolean = false;
 
-
   historialOportunidad: Oportunidad[] = [];
 
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -239,10 +238,13 @@ export class SeguimientoOportunidadesComponent {
 
     this.visibleRespuesta = true;
     this.respuestaAsistente = ''; 
+    this.loading = true;
+    
     this.openIaService.AsistenteHistorico(body).subscribe({
       next: res => {
         this.visibleRespuesta = true;
         this.respuestaAsistente = res.respuesta || 'No se recibió respuesta.';
+        this.loading = false;
       },
       error: err => {
         this.respuestaAsistente = 'Error al consultar al asistente: ' + err.message;

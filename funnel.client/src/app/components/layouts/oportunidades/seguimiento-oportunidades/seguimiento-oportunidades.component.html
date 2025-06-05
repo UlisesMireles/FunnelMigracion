@@ -124,15 +124,24 @@
   </ng-template>
 </p-dialog>
 
-<p-dialog header="Analisis de seguimiento" [(visible)]="visibleRespuesta" [modal]="true" [closable]="true" [style]="{width: '50vw'}" appendTo="body">
- <div *ngIf="respuestaAsistente; else cargando" class="respuesta-html" [innerHTML]="respuestaAsistente"></div>
-  <button class="btn-copiar" (click)="copiarTexto()" pTooltip="Copiar" tooltipPosition="top">
-    <mat-icon [ngClass]="copiado ? 'icono-copiado' : ''">
-      {{ copiado ? 'check' : 'content_copy' }}
-    </mat-icon>
-    
-  </button>
+<p-dialog header="Análisis de seguimiento" [(visible)]="visibleRespuesta" [modal]="true" [closable]="true" [style]="{width: '50vw'}" appendTo="body">
+  <ng-container *ngIf="!loading; else cargando">
+    <div class="respuesta-html" [innerHTML]="respuestaAsistente"></div>
+    <button class="btn-copiar" (click)="copiarTexto()" pTooltip="Copiar" tooltipPosition="top">
+      <mat-icon [ngClass]="copiado ? 'icono-copiado' : ''">
+        {{ copiado ? 'check' : 'content_copy' }}
+      </mat-icon>
+    </button>
+  </ng-container>
+
   <ng-template #cargando>
-    <p>Cargando respuesta...</p>
+    <div class="text-center" style="padding: 20px;">
+      <p>Generando respuesta...</p>
+      <div class="spinner-border text-primary" role="status" style="margin-top: 20px;">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+    </div>
   </ng-template>
 </p-dialog>
+
+

@@ -100,7 +100,7 @@ import { FooterComponent } from './components/layouts/master/footer/footer.compo
 import { MenuComponent } from './components/layouts/master/menu/menu.component';
 import { AgregarQuitarColumnasComponent } from './components/utils/tablas/agregar-quitar-columnas/agregar-quitar-columnas.component';
 import { ColumnFilterComponent } from './components/utils/tablas/column-filter/column-filter.component';
-import { OortunidadesMesAcordeonComponent } from './components/utils/acordion-horizontal/app-oportunidadesMes-acordeon.component';
+import { OortunidadesMesAcordeonComponent } from './components/en-proceso/acordion-horizontal/app-oportunidadesMes-acordeon.component';
 import { ColumnasDisponiblesComponent } from './components/utils/tablas/columnas-disponibles/columnas-disponibles.component';
 import { HeaderOpcionesComponent } from './components/utils/tablas/header-opciones/header-opciones.component';
 
@@ -124,7 +124,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { YaSePreguntoPipe } from "./pipes/asistentes/yaSePregunto";
 import { UsuarioPerfilComponent } from './components/usuario-perfil/usuario-perfil.component';
-import { AcordeonOportunidadesEtapaComponent } from './components/utils/acordeon-oportunidades-etapa/acordeon-oportunidades-etapa.component';
+import { AcordeonOportunidadesEtapaComponent } from './components/en-proceso/acordeon-oportunidades-etapa/acordeon-oportunidades-etapa.component';
 import * as PlotlyJS from 'plotly.js-dist-min';
 import { PlotlyModule } from 'angular-plotly.js';
 import { OportunidadesGeneralComponent } from './components/dashboard/oportunidades-general/oportunidades-general.component';

@@ -53,20 +53,16 @@
             </div>
             <div class="col-9 tarjeta-row" id="Div + {{idOportunidadTarjeta}}">
               <div class="row justify-content-between">
-                <div class="col-8 col-8-tarjeta">
                   <label id="cliente" class="nombre-empresa"
                     [ngClass]="getClaseNombreEmpresa(tarjeta.nombreEmpresa, tarjeta.nombreAbrev)">
                     {{ tarjeta.nombreEmpresa }}
-                  </label>
-                </div>
-                <div class="col-3 abrev">
-                  <label id='Abrev' class="nombre-abrev" title="{{ tarjeta.descripcion }}">{{ tarjeta.nombreAbrev
-                    }}</label>
-                </div>
+              </label>
               </div>
               <label id="NombreOportunidad" class="nombre-oportunidad">{{ tarjeta.nombreOportunidad }}</label>
             </div>
-            <div class="col-3" style='padding-top:10px'>
+            <div class="col-3 tarjeta-side" >
+               <label id='Abrev' class="nombre-abrev" title="{{ tarjeta.descripcion }}">{{ tarjeta.nombreAbrev
+                    }}</label>
               <div class="fotoTarjeta"
                 [ngStyle]="{'background-image': 'url(assets/Fotografia/' + (tarjeta.imagen) + ')', 'margin': 'auto'}"
                 [title]="tarjeta.nombreEjecutivo"></div>

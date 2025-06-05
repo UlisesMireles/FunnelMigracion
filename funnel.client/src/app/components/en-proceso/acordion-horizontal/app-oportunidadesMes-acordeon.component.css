@@ -82,7 +82,8 @@
 /* Contenedor de las tarjetas (lista interna de tarjetas) */
 .contenedor-tarjetas {
   height: 100%;           /* Se establece la altura completa del contenedor padre */
-  overflow-y: auto;       /* Activa scroll vertical cuando el contenido excede la altura */
+  overflow-y: auto;      
+  overflow-x: hidden;
   padding: 5px;           /* Espaciado interno de 5px */
   display: flex;          /* Usa flexbox para organizar las tarjetas */
   flex-direction: column; /* Organiza las tarjetas en columna */
@@ -108,7 +109,12 @@
   border-radius: 5px;  /* Esquinas redondeadas con un radio de 5px */
 }
 
-/* Estilos para el preview del drag and drop */
+.tarjeta-side{
+  padding-top:3px; 
+  padding-left: 0 !important  ; 
+  padding-right: 10px;
+}/* Estilos para el preview del drag and drop */
+
 .cdk-drag-preview {
   box-sizing: border-box; /* Incluye padding y borde en el tamaño total */
   border-radius: 4px;       /* Esquinas redondeadas con 4px */
@@ -212,12 +218,12 @@ body {
 
 /* Espaciado superior para la fila de la tarjeta */
 .tarjeta-row {
-  padding-top: 10px;
+  padding-top: 20px;
 }
 
 /* Estilo para el nombre de la empresa */
 .nombre-empresa {
-  font-size: 17px;       /* Tamaño de fuente de 17px */
+  font-size: 14px;       /* Tamaño de fuente de 17px */
   font-weight: bold;     /* Negrita */
   color: #333333;        /* Color gris oscuro */
   text-align: left;      /* Alineación a la izquierda */
@@ -230,14 +236,15 @@ body {
 
 /* Estilo para la abreviatura del nombre */
 .nombre-abrev {
-  font-size: 17px;       /* Tamaño de fuente de 17px */
+  font-size: 14px;       /* Tamaño de fuente de 17px */
   font-weight: bold;     /* Negrita */
   color: #333333;        /* Color gris oscuro */
+  margin-bottom: 8px;
 }
 
 /* Estilo para el nombre de la oportunidad */
 .nombre-oportunidad {
-  font-size: 15px;       /* Tamaño de fuente de 15px */
+  font-size: 13px;       /* Tamaño de fuente de 15px */
   font-weight: 600;      /* Semi-negrita */
   color: #455a64;        /* Color azul grisáceo */
   text-align: left;      /* Alineación a la izquierda */
@@ -245,12 +252,12 @@ body {
 
 /* Estilos para monto, probabilidad y monto normalizado */
 .monto, .probabilidad, .monto-normalizado {
-  font-size: 14px;       /* Tamaño de fuente de 14px */
+  font-size: 13px;       /* Tamaño de fuente de 14px */
   font-weight: 500;      /* Peso medio */
   color: #747678;        /* Color gris medio */
   text-align: left;      /* Alineación a la izquierda */
   white-space: nowrap;   /* Evita el salto de línea */
-  margin-right: 35px;    /* Espaciado de 25px a la derecha entre elementos */
+  margin-right: 15px;    /* Espaciado de 25px a la derecha entre elementos */
 }
 
 /* Estilo para las iniciales */
@@ -265,8 +272,8 @@ body {
 
 /* Estilos para la foto (círculo) de la tarjeta */
 div.fotoTarjeta {
-  height: 55px;            /* Altura del círculo: 55px */
-  width: 55px;             /* Ancho del círculo: 55px */
+  height: 37px;            /* Altura del círculo: 55px */
+  width: 37px;             /* Ancho del círculo: 55px */
   background-repeat: no-repeat; /* No repetir la imagen de fondo */
   background-position: 50%;     /* Centrar la imagen de fondo */
   border-radius: 50%;      /* Hacer el contenedor circular */
@@ -333,7 +340,7 @@ div.fotoTarjeta {
   justify-content: flex-end;      /* Alinea el contenido a la derecha */
   align-items: center;            /* Centra verticalmente */
   padding: 0px;                   /* Espaciado interno de 5px */
-  gap: 10px;                    /* Espacio entre los iconos */
+  gap: 1px;                    /* Espacio entre los iconos */
   border-bottom: 1px solid #ddd;  /* Borde inferior gris */
   margin-left: 0px!important;     /* Margen izquierdo 0 (forzado) */
   margin-right: 0px!important;    /* Margen derecho 0 (forzado) */
@@ -381,12 +388,11 @@ div.fotoTarjeta {
   color: #08a742;
 }
 .total-row {
-  position: absolute;                /* Convierto la fila en un contenedor flex */
-  text-align: right;
-  margin-right: 25px;
+  display: flex;                /* Convierto la fila en un contenedor flex */
+  justify-content: flex-end;    /* Alinea los elementos al final (derecha) */
   align-items: center;          /* Centra verticalmente los elementos */
   width: 100%;                  /* Ocupa todo el ancho del contenedor */
-  margin-top: 5px;              /* Opcional: espacio superior */
+  margin-top: -8px;              /* Opcional: espacio superior */
   padding-right: 15px;
 }
 
@@ -399,6 +405,7 @@ div.fotoTarjeta {
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
+  width: 15px !important;
 }
 
 ::ng-deep .coloreditar-icon .p-button {
@@ -415,9 +422,10 @@ div.fotoTarjeta {
 
 ::ng-deep .blue-icon .p-button-icon {
   color: blue !important;
-  font-size: 1.5rem;
+  font-size: 1.5rem !important;
   background: transparent;
   border-color: transparent;
+  width: 15px !important;
 }
 
 ::ng-deep .blue-icon:hover {

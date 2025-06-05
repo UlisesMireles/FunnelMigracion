@@ -30,4 +30,8 @@ export class OpenIaService {
   obtenerPreguntas() {
     return this.http.get(this.urlBotsFunnel + '/api/WebApiBotWP/ObtenerPreguntasWP');
   }
+
+  AsistenteHistorico(data : ConsultaAsistenteDto): Observable<ConsultaAsistenteDto>{
+    return this.http.post<ConsultaAsistenteDto>(this.urlBotsFunnel + '/api/AsistenteHistorico/OpenIA',data);
+  }
 }

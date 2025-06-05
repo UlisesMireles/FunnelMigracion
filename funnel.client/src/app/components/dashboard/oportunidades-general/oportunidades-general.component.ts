@@ -1,8 +1,10 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, Inject} from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { LoginService } from '../../../services/login.service';
 import { GraficasService } from '../../../services/graficas.service';
 import { GraficasDto, RequestGraficasDto } from '../../../interfaces/graficas';
+import { ModalDetallesIndicadoresEtapaComponent } from './modal-detalles-indicadores-etapa/modal-detalles-indicadores-etapa.component'; 
 @Component({
   selector: 'app-oportunidades-general',
   standalone: false,
@@ -13,6 +15,7 @@ import { GraficasDto, RequestGraficasDto } from '../../../interfaces/graficas';
 
 export class OportunidadesGeneralComponent {
   quadrants: { cards: any[] }[] = [];
+  modalIndicadoresVisible: boolean = false;
   get dropListIds() {
     return this.quadrants.map((_, index) => `dropList${index}`);
   }
@@ -20,7 +23,8 @@ export class OportunidadesGeneralComponent {
 
   constructor(
     private readonly graficasService: GraficasService,
-    private readonly sessionService: LoginService
+    private readonly sessionService: LoginService,
+    private dialog: MatDialog
   ) {
     this.quadrants = [
     { cards: [this.graficasService.createCard(1, 'Indicadores por Etapa', 'grafica')] },
@@ -54,7 +58,6 @@ export class OportunidadesGeneralComponent {
 
     this.graficasService.obtenerGraficaData(request).subscribe({
       next: (response: GraficasDto[]) => {
-        console.log('Response de la gráfica de etapas:', response);
         const dataAGraficar = [this.graficasService.createFunnelData(response)];
         const layOutGrafica = this.graficasService.createFunnelLayout();
         this.setGraficaData(0, 0, dataAGraficar, layOutGrafica);
@@ -118,5 +121,13 @@ export class OportunidadesGeneralComponent {
         );
       }
     }
+  }
+openDetailsModal() {
+  this.modalIndicadoresVisible = true;
+}
+
+  // Método para cerrar (como en tu ejemplo)
+  onModalIndicadoresClose() {
+    this.modalIndicadoresVisible = false;
   }
 }

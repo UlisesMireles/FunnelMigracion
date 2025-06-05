@@ -396,7 +396,7 @@
   
   ::ng-deep .fixed-width-oportunidad {
   width: 25% !important;
-  min-width: 300px !important;
+  min-width: 280px !important;
     white-space: normal !important;
     word-break: break-word !important;
     overflow-wrap: break-word !important;

@@ -141,7 +141,13 @@
     color: #475569;
   }
 
-.p-button-text.p-button-secondary {
-    padding: 0 !important;
-    width: 14px !important;
+
+.spinner-tabla{
+  position: absolute;
+  z-index: 500;
+  transform: translate(-14px, 100px);
+}
+.spinner-tarjeta{
+  position: absolute;
+  transform: translate(-14px, 60px);
 }

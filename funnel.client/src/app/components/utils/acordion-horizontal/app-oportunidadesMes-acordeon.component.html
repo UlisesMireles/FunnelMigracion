@@ -1,4 +1,9 @@
-  <div class="acordeon-horizontal d-flex">
+<div *ngIf="loading" class="spinner-container w-100 spinner-tarjeta">
+  <div class="spinner-border" role="status">
+    <span class="visually-hidden">Cargando...</span>
+  </div>
+</div>
+  <div class="acordeon-horizontal d-flex" *ngIf="!loading">
     <div *ngFor="let mes of elementos; let i = index" class="item-acordeon" [class.expandido]="mes.expandido">
       <div class="encabezado-acordeon">
     <!-- Botón a la izquierda del nombre del mes -->

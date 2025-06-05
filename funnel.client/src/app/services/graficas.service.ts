@@ -112,7 +112,7 @@ export class GraficasService {
   }
  createBarHorizontalLayout() {
     return {
-      margin: { l: 130, r: 50, b: 100, t: 30 },
+      margin: { l: 130, r: 40, b: 100, t: 30 },
       height: 400,
       
     };

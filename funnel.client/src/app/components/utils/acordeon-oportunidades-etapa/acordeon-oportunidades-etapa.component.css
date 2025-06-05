@@ -23,7 +23,7 @@
     flex-direction: column; /* Organiza los elementos en columna */
     align-items: center; /* Centra horizontalmente el contenido */
     justify-content: space-between; /* Distribuye el contenido con espacio entre ellos */
-    padding: 10px; /* Espaciado interno de 10px */
+    padding: 10px 0; /* Espaciado interno de 10px */
     cursor: pointer; /* Cambia el cursor para indicar interactividad */
     transition: width 0.3s ease-in-out; /* Transición suave para el cambio de ancho (cuando se expande) */
     position: relative; /* Posicionamiento relativo para posicionar elementos internos si es necesario */
@@ -33,6 +33,7 @@
   /* Cuando el item está expandido */
   .item-acordeon.expandido {
     width: 20%; /* Ancho mayor para el estado expandido (ajusta según lo necesites) */
+    border-radius: 15px;
   }
   
   /* Encabezado del item (nombre del mes y botón) */
@@ -399,6 +400,7 @@
     align-items: center;          /* Centra verticalmente los elementos */
     width: 100%;                  /* Ocupa todo el ancho del contenedor */
     margin-top: 5px;              /* Opcional: espacio superior */
+    padding-right: 15px;
   }
   
   .total-row span {
@@ -451,6 +453,7 @@
   /* Estilos cuando todos (5) están expandidos */
 .todos-expandidos .tarjeta {
   padding: 6px;
+  border-radius: 10px
 }
 
 .todos-expandidos .nombre-empresa {
@@ -527,4 +530,47 @@
 .cuatro-expandidos div.fotoTarjeta {
   height: 50px;
   width: 50px;
+}
+::-webkit-scrollbar {
+  width: 6px; /* Ancho de la barra de desplazamiento */
+}
+
+#contenedor-tarjetas0::-webkit-scrollbar-thumb {
+  background: #f44336; /* azul */
+  border-radius: 4px;
+}
+#contenedor-tarjetas0::-webkit-scrollbar-track {
+  background: #e9bdc4;
+}
+
+#contenedor-tarjetas1::-webkit-scrollbar-thumb {
+  background: #ab47bc; /* azul */
+  border-radius: 4px;
+}
+#contenedor-tarjetas1::-webkit-scrollbar-track {
+  background: #ce93d8;
+}
+
+#contenedor-tarjetas2::-webkit-scrollbar-thumb {
+  background: #fb8c00; /* azul */
+  border-radius: 4px;
+}
+#contenedor-tarjetas2::-webkit-scrollbar-track {
+  background: #f2c582;
+}
+
+#contenedor-tarjetas3::-webkit-scrollbar-thumb {
+  background: #ffee58 ; /* azul */
+  border-radius: 4px;
+}
+#contenedor-tarjetas3::-webkit-scrollbar-track {
+  background: #ddd8a8;
+}
+
+#contenedor-tarjetas4::-webkit-scrollbar-thumb {
+  background: #00e676 ; /* azul */
+  border-radius: 4px;
+}
+#contenedor-tarjetas4::-webkit-scrollbar-track {
+  background: #bfecdc;
 }

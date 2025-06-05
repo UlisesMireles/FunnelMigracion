@@ -34,7 +34,7 @@
     <div *ngIf="etapa.expandido" cdkDropList #ListEtapa="cdkDropList" cdkDropListSortingDisabled
       [cdkDropListData]="etapa.tarjetas" [cdkDropListConnectedTo]="connectedDropLists" class="contenido-acordeon"
       [id]="'ListEtapa' + i" (cdkDropListDropped)="drop($event, etapa)">
-      <div class="contenedor-tarjetas">
+      <div class="contenedor-tarjetas" [id]="'contenedor-tarjetas' + i">
         <div *ngFor="let tarjeta of etapa.tarjetas" cdkDrag [cdkDragData]="tarjeta" class="tarjeta">
           <div class="row">
             <!-- Encabezado con título e ícono de edición -->

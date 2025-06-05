@@ -33,6 +33,7 @@ namespace Funnel.Data
                             dto.Id = ComprobarNulos.CheckIntNull(reader["Id"]);
                             dto.Label = ComprobarNulos.CheckStringNull(reader["Concepto"]);
                             dto.Valor = ComprobarNulos.CheckDecimalNull(reader["Monto"]);
+                            dto.Contador = ComprobarNulos.CheckIntNull(reader["Contador"]);
                             dto.Area = ComprobarNulos.CheckIntNull(reader["Area"]);
                             dto.ColoreSerie = ComprobarNulos.CheckStringNull(reader["ColorSerie"]);
 
@@ -54,9 +55,7 @@ namespace Funnel.Data
             catch (Exception ex)
             {
                 throw new Exception("Error al obtener la gráfica de oportunidades", ex);
-                
             }
-
             return result;
         }
         public async Task<List<GraficaDto>> ObtenerGraficaAgentes(RequestGrafica data)

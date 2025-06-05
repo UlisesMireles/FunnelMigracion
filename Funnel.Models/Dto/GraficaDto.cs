@@ -21,6 +21,8 @@ namespace Funnel.Models.Dto
         public int IdEmpresa { get; set; }
         public string? Bandera { get; set; }
         public int? IdUsuario { get; set; }
+        public int? IdEstatusOportunidad { get; set; }
+        public int? Anio { get; set; }
     }
     public class AgenteDto
     {

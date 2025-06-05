@@ -140,5 +140,53 @@ namespace Funnel.Data
 
             return result;
         }
+        public async Task<List<GraficaDto>> ObtenerGraficaGanadasAnio(RequestGrafica data)
+        {
+            List<GraficaDto> result = new List<GraficaDto>();
+            IList<ParameterSQl> list = new List<ParameterSQl>
+            {
+                DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, data.IdEmpresa),
+                DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, data.Bandera),
+                DataBase.CreateParameterSql("@pIdEstatusOportunidad", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, data.IdEstatusOportunidad),
+                DataBase.CreateParameterSql("@pAnio", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, data.Anio),
+            };
+            try
+            {
+                using (IDataReader reader = await DataBase.GetReaderSql("F_OportunidadesGraficasPorEstatus", CommandType.StoredProcedure, list, _connectionString))
+                {
+                    while (reader.Read())
+                    {
+                        var dto = new GraficaDto();
+                        if (data.Bandera == "SEL-CLIENTES-ANIO")
+                        {
+                            //dto.Id = ComprobarNulos.CheckIntNull(reader["IdEstatusOportunidad"]);
+                            dto.Label = ComprobarNulos.CheckStringNull(reader["Nombre"]);
+                            dto.Valor = ComprobarNulos.CheckDecimalNull(reader["TotalAnio"]);
+                            dto.MontoNormalizado = ComprobarNulos.CheckDecimalNull(reader["MontoNormalizado"]);
+                            dto.ColoreSerie = ComprobarNulos.CheckStringNull(reader["ColorNormalizado"]);
+
+                            result.Add(dto);
+                        }
+                        else if (data.Bandera == "SEL-TIPO-ANIO")
+                        {
+                            //dto.Id = ComprobarNulos.CheckIntNull(reader["IdEstatusOportunidad"]);
+                            dto.Label = ComprobarNulos.CheckStringNull(reader["Descripcion"]);
+                            dto.Valor = ComprobarNulos.CheckDecimalNull(reader["TotalAnio"]);
+                            dto.MontoNormalizado = ComprobarNulos.CheckDecimalNull(reader["MontoNormalizado"]);
+                            dto.ColoreSerie = ComprobarNulos.CheckStringNull(reader["ColorNormalizado"]);
+
+                            result.Add(dto);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener la gráfica de oportunidades ganadas por anio", ex);
+
+            }
+
+            return result;
+        }
     }
 }

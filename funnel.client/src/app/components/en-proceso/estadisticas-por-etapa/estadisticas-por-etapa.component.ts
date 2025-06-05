@@ -59,7 +59,9 @@ export class EstadisticasPorEtapaComponent {@ViewChild('dt') dt!: Table;
 
   constructor(private oportunidadService: OportunidadesService, private messageService: MessageService, private cdr: ChangeDetectorRef,
       private readonly loginService: LoginService, public dialog: MatDialog
-    ) { }
+    ) { 
+      this.loading = true;
+    }
 
     ngOnInit(): void {
       this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);

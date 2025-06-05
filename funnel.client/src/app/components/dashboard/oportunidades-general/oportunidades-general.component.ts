@@ -58,7 +58,6 @@ export class OportunidadesGeneralComponent {
 
     this.graficasService.obtenerGraficaData(request).subscribe({
       next: (response: GraficasDto[]) => {
-        console.log('Response de la gráfica de etapas:', response);
         const dataAGraficar = [this.graficasService.createFunnelData(response)];
         const layOutGrafica = this.graficasService.createFunnelLayout();
         this.setGraficaData(0, 0, dataAGraficar, layOutGrafica);

@@ -1,1 +1,14 @@
-<p>graficas-por-anio works!</p>
+<div class="grid-container">
+  <div class="quadrant p-0" *ngFor="let group of quadrants; let i = index" cdkDropList [cdkDropListData]="group.cards"
+    [cdkDropListConnectedTo]="dropListIds" [id]="'dropList' + i" (cdkDropListDropped)="drop($event)">
+    <div *ngFor="let card of group.cards" class="card p-0" id="prueba" >
+      <div class="card-header" cdkDrag>
+        <h5 class="card-title">{{card.titulo}}</h5>
+      </div>
+      <div class="p-0" style="height:330px;max-height: 330px; z-index: 5000;">
+        <plotly-plot *ngIf="card.infoCargada" [data]="card.grafica.data" [layout]="card.grafica.layout"
+          [config]="card.grafica.config"></plotly-plot>
+      </div>
+    </div>
+  </div>
+</div>

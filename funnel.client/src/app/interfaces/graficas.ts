@@ -13,6 +13,8 @@ export interface RequestGraficasDto {
     bandera: string;
     idUsuario?: number;
     idEmpresa?: number;
+    idEstatusOportunidad?: number;
+    anio?: number;
 }
 export interface AgenteDto {
     idAgente: number;

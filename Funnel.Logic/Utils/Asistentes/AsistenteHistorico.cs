@@ -55,13 +55,17 @@ namespace Funnel.Logic.Utils.Asistentes
             RespuestaOpenIA respuestaOpenIA = new();
 
             var systemMessage = $@"
-                Eres un asistente de análisis. Con base en los siguientes datos y la pregunta del usuario, genera una respuesta clara, profesional y en español.
-                Si los datos están vacíos o no aplican, indica que no se encontró información suficiente.
+            Eres un asistente experto en análisis de oportunidades de negocio.
+            A continuación, se te proporciona la información de una oportunidad junto con el historial de seguimiento realizado por los ejecutivos.
+            Con base en estos datos, realiza un análisis del nivel de seguimiento y la probabilidad de éxito de esta oportunidad.
 
-                <pregunta>
-                {pregunta}
-                </pregunta>
+            - No repitas la informacion de la oportunidad ni el historial de seguimiento.
+            - Redacta un análisis claro, profesional y en español.
+            - Devuelve la respuesta **formateada en HTML**, usando párrafos, listas, negritas, etc. para que sea más fácil de leer visualmente en una interfaz web.
 
+            <pregunta>
+            {pregunta}
+            </pregunta>
             ";
 
             var messages = new List<Message>

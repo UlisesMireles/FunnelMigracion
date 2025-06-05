@@ -80,11 +80,13 @@
                 <i class="bi bi-filetype-pdf"></i>
               </button>
               
-              <button pButton severity="secondary" (click)="exportExcel(oportunidadForm.get('idOportunidad')?.value)" 
+              <button pButton severity="secondary"
+                (click)="enviarSeguimiento()" 
                 [disabled]="historialOportunidad.length === 0"
-                pTooltip="Descargar Excel" tooltipPosition="top" class="icon-btn ml-2">
-                <i class="bi bi-download"></i>
+                pTooltip="Analisis de seguimiento" tooltipPosition="top" class="icon-btn ml-2">
+                <i class="bi bi-robot"></i>
               </button>
+
             </div>
           </form>
         </div>
@@ -119,5 +121,18 @@
 
   <ng-template #noComments>
     <p class="text-center">Sin comentarios</p>
+  </ng-template>
+</p-dialog>
+
+<p-dialog header="Analisis de seguimiento" [(visible)]="visibleRespuesta" [modal]="true" [closable]="true" [style]="{width: '50vw'}" appendTo="body">
+ <div *ngIf="respuestaAsistente; else cargando" class="respuesta-html" [innerHTML]="respuestaAsistente"></div>
+  <button class="btn-copiar" (click)="copiarTexto()" pTooltip="Copiar" tooltipPosition="top">
+    <mat-icon [ngClass]="copiado ? 'icono-copiado' : ''">
+      {{ copiado ? 'check' : 'content_copy' }}
+    </mat-icon>
+    
+  </button>
+  <ng-template #cargando>
+    <p>Cargando respuesta...</p>
   </ng-template>
 </p-dialog>

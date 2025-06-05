@@ -33,4 +33,10 @@ namespace Funnel.Models.Dto
         public string? ArchivoImagen { get; set; }
 
     }
+    public class AniosDto
+    {
+        public int IdEmpresa { get; set; }
+        public int? IdEstatusOportunidad { get; set; }
+        public int? Anio { get; set; }
+    }
 }

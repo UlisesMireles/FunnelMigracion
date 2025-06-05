@@ -23,3 +23,8 @@ export interface AgenteDto {
     montoNormalizado?: number;
     archivoImagen?: string;
 }
+export interface AniosDto{
+    idEmpresa: number;
+    idEstatusOportunidad: number;
+    anio: number;
+}

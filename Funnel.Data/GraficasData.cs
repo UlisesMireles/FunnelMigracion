@@ -197,6 +197,13 @@ namespace Funnel.Data
 
                             result.Add(dto);
                         }
+                        else if (data.Bandera == "SEL-TOTALES-ANUALES")
+                        {
+                            //dto.Id = ComprobarNulos.CheckIntNull(reader["IdEstatusOportunidad"]);
+                            dto.Valor = ComprobarNulos.CheckDecimalNull(reader["Anio"]);
+                            dto.MontoNormalizado = ComprobarNulos.CheckDecimalNull(reader["Monto"]);
+                            result.Add(dto);
+                        }
                     }
                 }
             }

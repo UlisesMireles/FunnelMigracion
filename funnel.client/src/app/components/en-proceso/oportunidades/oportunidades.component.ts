@@ -52,10 +52,16 @@ export class OportunidadesComponent {
 
   prospectoSeleccionado!: Prospectos;
   prospectoEdicion: Prospectos | null = null;
-
-
-  lsColumnasAMostrar: any[] = [
-
+  mostrarLista = true;
+  mostrarOportunidadesMes = true;
+  mostrarOportunidadesEtapa = true;
+  mostrarEstadisticas = true;
+  lsColumnasAMostrar: any[] = [];
+  titulos = [
+    'Oportunidades En Proceso',
+    'Oportunidades Por Mes',
+    'Oportunidades Por Etapa',
+    'Estadística Oportunidades por Etapa'
   ];
 
   lsTodasColumnas: any[] = [
@@ -85,8 +91,9 @@ export class OportunidadesComponent {
   disabledPdf: boolean = false;
 
   constructor(private oportunidadService: OportunidadesService, private messageService: MessageService, private cdr: ChangeDetectorRef,
-    private readonly loginService: LoginService, public dialog: MatDialog, private modalOportunidadesService: ModalOportunidadesService
-  ) { }
+  private readonly loginService: LoginService, public dialog: MatDialog, private modalOportunidadesService: ModalOportunidadesService) { 
+    this.loading = true;
+  }
 
   ngOnInit(): void {
     this.licencia = localStorage.getItem('licencia')!;
@@ -107,11 +114,11 @@ export class OportunidadesComponent {
       this.desdeSector = state.desdeSector;
       this.insertar = state.insertar;
       if (!state.showModal) {
-      this.prospectoEdicion = null;
-    }
-    if (state.result.id != -1 && state.result.result) {
-      this.getOportunidades();
-    }
+        this.prospectoEdicion = null;
+      }
+      if (state.result.id != -1 && state.result.result) {
+        this.getOportunidades();
+      }
     });
   }
 
@@ -146,22 +153,22 @@ export class OportunidadesComponent {
   }
 
   inserta() {
-      const limite = this.cantidadOportunidades;
-      const totalOportunidades = this.oportunidades.length;
-      if (totalOportunidades >= limite) {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Límite de oportunidades alcanzado',
-          detail: `El límite de ${limite} oportunidades de la licencia ${this.licencia} ha sido alcanzado. Para agregar más oportunidades, considere actualizar su licencia.`,
-        })
-        return;
-      }
-      this.modalOportunidadesService.openModal(true, true, [], {})
-      this.oportunidadSeleccionada = {
+    const limite = this.cantidadOportunidades;
+    const totalOportunidades = this.oportunidades.length;
+    if (totalOportunidades >= limite) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Límite de oportunidades alcanzado',
+        detail: `El límite de ${limite} oportunidades de la licencia ${this.licencia} ha sido alcanzado. Para agregar más oportunidades, considere actualizar su licencia.`,
+      })
+      return;
+    }
+    this.modalOportunidadesService.openModal(true, true, [], {})
+    this.oportunidadSeleccionada = {
 
-      };
-      this.insertar = true;
-      this.modalVisible = true;
+    };
+    this.insertar = true;
+    this.modalVisible = true;
   }
 
   seguimiento(licencia: Oportunidad) {
@@ -419,14 +426,29 @@ export class OportunidadesComponent {
     };
     return { width: widths[key] || 'auto' };
   }
+
+
   camTitulo(index: number) {
-    const titulos = [
-      'Oportunidades En Proceso',
-      'Oportunidades Por Mes',
-      'Oportunidades Por Etapa',
-      'Estadística Oportunidades por Etapa'
-    ];
-    this.titulo = titulos[index] || 'Administración General';
+    this.titulo = this.titulos[index] || 'Administración General';
+
+    this.titulo = this.titulos[index];
+    if (index === 0) { // Tab "lista"
+      this.mostrarLista = false;
+      this.getOportunidades();
+      setTimeout(() => this.mostrarLista = true, 0);
+    }
+    if (index === 1) { // Tab "porMes"
+      this.mostrarOportunidadesMes = false;
+      setTimeout(() => this.mostrarOportunidadesMes = true, 0);
+    }
+    if (index === 2) { // Tab "porEtapa"
+      this.mostrarOportunidadesEtapa = false;
+      setTimeout(() => this.mostrarOportunidadesEtapa = true, 0);
+    }
+    if (index === 3) { // Tab "estadisticas"
+      this.mostrarEstadisticas = false;
+      setTimeout(() => this.mostrarEstadisticas = true, 0);
+    }
   }
   isSorted(columnKey: string): boolean {
 
@@ -462,17 +484,17 @@ export class OportunidadesComponent {
 
   abrirModalSector(rowData: any) {
     this.prospectoSeleccionado = rowData;
-    this.prospectoEdicion = { ... rowData };
+    this.prospectoEdicion = { ...rowData };
     this.insertar = false;
     this.modalVisible = true;
     this.desdeSector = true;
     this.modalOportunidadesService
-    .openModalProspecto(true, false, [], rowData, { errorMessage: '', result: false, id: -1 }, true)
-    .subscribe((modalResult) => {
-      if (modalResult?.result.result === true) {
-        this.ngOnInit();
-      }
-    });
+      .openModalProspecto(true, false, [], rowData, { errorMessage: '', result: false, id: -1 }, true)
+      .subscribe((modalResult) => {
+        if (modalResult?.result.result === true) {
+          this.ngOnInit();
+        }
+      });
   }
 }
 

@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 export class OpenIaService {
   public urlBotsFunnel = environment.baseUrlBotsFunnel;
   private urlPython = environment.baseUrlPython;
+  baseUrl:string = environment.baseURL;
 
   constructor(private http: HttpClient) {
 
@@ -29,5 +30,9 @@ export class OpenIaService {
 
   obtenerPreguntas() {
     return this.http.get(this.urlBotsFunnel + '/api/WebApiBotWP/ObtenerPreguntasWP');
+  }
+
+  AsistenteHistorico(data : ConsultaAsistenteDto): Observable<ConsultaAsistenteDto>{
+    return this.http.post<ConsultaAsistenteDto>(this.baseUrl + 'api/AsistenteHistorico/OpenIA',data);
   }
 }

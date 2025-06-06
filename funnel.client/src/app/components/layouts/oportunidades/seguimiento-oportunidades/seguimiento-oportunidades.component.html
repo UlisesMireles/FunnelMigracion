@@ -80,11 +80,13 @@
                 <i class="bi bi-filetype-pdf"></i>
               </button>
               
-              <button pButton severity="secondary" (click)="exportExcel(oportunidadForm.get('idOportunidad')?.value)" 
+              <button pButton severity="secondary"
+                (click)="enviarSeguimiento()" 
                 [disabled]="historialOportunidad.length === 0"
-                pTooltip="Descargar Excel" tooltipPosition="top" class="icon-btn ml-2">
-                <i class="bi bi-download"></i>
+                pTooltip="Analisis de seguimiento" tooltipPosition="top" class="icon-btn ml-2">
+                <i class="bi bi-robot"></i>
               </button>
+
             </div>
           </form>
         </div>
@@ -121,3 +123,25 @@
     <p class="text-center">Sin comentarios</p>
   </ng-template>
 </p-dialog>
+
+<p-dialog header="Análisis de seguimiento" [(visible)]="visibleRespuesta" [modal]="true" [closable]="true" [style]="{width: '50vw'}" appendTo="body">
+  <ng-container *ngIf="!loading; else cargando">
+    <div class="respuesta-html" [innerHTML]="respuestaAsistente"></div>
+    <button class="btn-copiar" (click)="copiarTexto()" pTooltip="Copiar" tooltipPosition="top">
+      <mat-icon [ngClass]="copiado ? 'icono-copiado' : ''">
+        {{ copiado ? 'check' : 'content_copy' }}
+      </mat-icon>
+    </button>
+  </ng-container>
+
+  <ng-template #cargando>
+    <div class="text-center" style="padding: 20px;">
+      <p>Generando respuesta...</p>
+      <div class="spinner-border text-primary" role="status" style="margin-top: 20px;">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+    </div>
+  </ng-template>
+</p-dialog>
+
+

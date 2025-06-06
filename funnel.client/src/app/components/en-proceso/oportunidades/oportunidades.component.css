@@ -395,7 +395,7 @@ th.sort-active p-sortIcon {
 }
 
 ::ng-deep .fixed-width-oportunidad {
-  width: 25% !important;
+  width: 30% !important;
   min-width: 280px !important;
   white-space: normal !important;
   word-break: break-word !important;
@@ -475,4 +475,23 @@ th.sort-active p-sortIcon {
 ::ng-deep .p-button-text.p-button-secondary{
     padding: 0 !important;
     width: 14px !important;
+}
+.tab-item{
+  width: 75px;
+}
+
+.color-tab-1{
+  color: #0056d2 !important;
+}
+.color-tab-2{
+  color:#1abc9c   !important;
+}
+.color-tab-3{
+  color:#e67e22  !important;
+}
+.color-tab-4{
+  color: #e91e63 !important;
+}
+:host ::ng-deep .p-datatable-table-container{
+  border-radius: 8px !important;
 }

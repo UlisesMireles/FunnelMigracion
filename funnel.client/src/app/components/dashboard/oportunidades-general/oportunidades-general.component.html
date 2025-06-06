@@ -2,13 +2,22 @@
   <div class="quadrant p-0" *ngFor="let group of quadrants; let i = index" cdkDropList [cdkDropListData]="group.cards"
     [cdkDropListConnectedTo]="dropListIds" [id]="'dropList' + i" (cdkDropListDropped)="drop($event)">
     <div *ngFor="let card of group.cards" class="card p-0" id="prueba" >
-      <div class="card-header" cdkDrag>
+      <div class="card-header header-graficas" cdkDrag>
         <h5 class="card-title">{{card.titulo}}</h5>
       </div>
       <div class="p-0" style="height:330px;max-height: 330px; z-index: 5000;">
         <plotly-plot *ngIf="card.infoCargada" [data]="card.grafica.data" [layout]="card.grafica.layout"
           [config]="card.grafica.config"></plotly-plot>
+          <div *ngIf="card.titulo === 'Indicadores por Etapa'" class="position-absolute bottom-0 start-0 p-2">
+          <a href="javascript:void(0)" (click)="openDetailsModal()" class="text-primary">Ver detalles</a>       
+        </div>
       </div>
     </div>
   </div>
 </div>
+
+
+<app-modal-detalles-indicadores-etapa 
+  [(visible)]="modalIndicadoresVisible"
+  (closeModal)="onModalIndicadoresClose()">
+</app-modal-detalles-indicadores-etapa>

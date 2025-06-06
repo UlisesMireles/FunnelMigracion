@@ -2,7 +2,7 @@
     <div class="quadrant p-0" *ngFor="let group of quadrants; let i = index" cdkDropList [cdkDropListData]="group.cards"
         [cdkDropListConnectedTo]="dropListIds" [id]="'cardList' + i" (cdkDropListDropped)="drop($event)">
         <div *ngFor="let card of group.cards" class="card p-0" id="prueba">
-            <div class="card-header" cdkDrag>
+            <div class="card-header header-graficas" cdkDrag>
                 <h5 class="card-title">{{card.titulo}}</h5>
             </div>
             <div class="p-3 mb-3 overflow-auto" *ngIf="card.tipo === 'tabla'">

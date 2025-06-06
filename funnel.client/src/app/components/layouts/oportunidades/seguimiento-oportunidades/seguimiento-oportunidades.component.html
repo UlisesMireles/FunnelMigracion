@@ -73,18 +73,18 @@
               <button pButton label="Salir" (click)="close()" severity="secondary"
                 *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value === 1"></button>
 
-              <button pButton severity="secondary" [disabled]="disabledPdf" 
+        <!--      <button pButton severity="secondary" [disabled]="disabledPdf" 
                 (click)="exportPdf(oportunidadForm.get('idOportunidad')?.value)"
                 [disabled]="historialOportunidad.length === 0"
                 pTooltip="Descargar PDF" tooltipPosition="top" class="icon-btn">
                 <i class="bi bi-filetype-pdf"></i>
-              </button>
+              </button> -->
               
               <button pButton severity="secondary"
                 (click)="enviarSeguimiento()" 
                 [disabled]="historialOportunidad.length === 0"
-                pTooltip="Analisis de seguimiento" tooltipPosition="top" class="icon-btn ml-2">
-                <i class="bi bi-robot"></i>
+                pTooltip="Analisis de seguimiento" tooltipPosition="top" class="icon-btn ml-2 ">
+                <i class="bi bi-robot" style="font-size: 15px;"></i>
               </button>
 
             </div>
@@ -124,7 +124,21 @@
   </ng-template>
 </p-dialog>
 
-<p-dialog header="Análisis de seguimiento" [(visible)]="visibleRespuesta" [modal]="true" [closable]="true" [style]="{width: '50vw'}" appendTo="body">
+<p-dialog 
+  header="Análisis de seguimiento"
+  [(visible)]="visibleRespuesta"
+  [modal]="true"
+  [closable]="true"
+  [maximizable]="true"
+  [style]="{
+    width: maximizedRespuesta ? '100vw' : '50vw',
+    height: maximizedRespuesta ? '100vh' : 'auto'
+  }"
+  [ngClass]="{'maximized': maximizedRespuesta}"
+  (onHide)="maximizedRespuesta = false"
+  appendTo="body"
+  class="bodyDialog">
+
   <ng-container *ngIf="!loading; else cargando">
     <div class="respuesta-html" [innerHTML]="respuestaAsistente"></div>
     <button class="btn-copiar" (click)="copiarTexto()" pTooltip="Copiar" tooltipPosition="top">

@@ -51,5 +51,6 @@ namespace Funnel.Models.Dto
         public string? Probabilidad { get; set; }
         public string? Stage { get; set; }
         public string? TipoProyectoAbreviatura { get; set; }
+        public string? Iniciales { get; set; }
     }
 }

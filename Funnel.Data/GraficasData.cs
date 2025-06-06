@@ -207,6 +207,7 @@ namespace Funnel.Data
                             Probabilidad = ComprobarNulos.CheckStringNull(reader["Probabilidad"]),
                             Stage = ComprobarNulos.CheckStringNull(reader["Stage"]),
                             TipoProyectoAbreviatura = ComprobarNulos.CheckStringNull(reader["Abreviatura"]),
+                            Iniciales = ComprobarNulos.CheckStringNull(reader["Iniciales"]),
                         };
                         result.Add(dto);
                     }

@@ -35,7 +35,8 @@ export interface SectoresDetalles{
     nombreOportunidad: string;
     tipoProyecto: string; 
     tipoProyectoAbreviatura: string;       
-    ejecutivo: string;          
+    ejecutivo: string;   
+    iniciales: string;       
     monto: number;
     fechaEstimadaCierre: string;
     montoNormalizado: number;

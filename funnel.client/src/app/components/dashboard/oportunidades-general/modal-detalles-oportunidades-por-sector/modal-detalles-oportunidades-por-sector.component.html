@@ -49,8 +49,8 @@
             <td pTooltip="{{oportunidad.tipoProyecto}}" tooltipPosition="top">
             {{ oportunidad.tipoProyectoAbreviatura }}
             </td>
-            <td pTooltip="{{oportunidad.ejecutivo}}" tooltipPosition="top" class="celda-iniciales">
-            {{ getIniciales(oportunidad.ejecutivo, true) }}
+            <td pTooltip="{{oportunidad.ejecutivo}}" tooltipPosition="top">
+              {{ oportunidad.iniciales || 'N/A' }}
             </td>
             <td class="text-right">{{ oportunidad.monto | currency:'MXN':'symbol':'1.2-2' }}</td>
             <td>{{ oportunidad.fechaEstimadaCierre | date:'dd/MM/yyyy' }}</td>

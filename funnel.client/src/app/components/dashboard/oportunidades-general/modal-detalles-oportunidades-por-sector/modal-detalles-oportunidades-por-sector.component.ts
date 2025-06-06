@@ -141,15 +141,4 @@ cargarNombreSector() {
     });
 }
 
-getIniciales(texto: string, esNombre: boolean = true): string {
-  const partes = texto.split(' ');
-  
-  if (esNombre) {
-    const iniciales = partes.map(part => part[0].toUpperCase()).join('');
-    return iniciales.length > 3 ? iniciales.substring(0, 3) : iniciales;
-  } else {
-    return partes.map(part => part[0].toUpperCase()).join('');
-  }
-}
-
 }

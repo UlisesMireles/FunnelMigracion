@@ -1,12 +1,11 @@
-<div class="grid-container">
-  <div class="year-selector">
-    <label for="anio">Seleccionar Año:</label>
-    <select id="anio" [(ngModel)]="anioSeleccionado" (change)="onAnioChange()" [disabled]="loading">
-      <option *ngFor="let anio of aniosDisponibles" [value]="anio">{{anio}}</option>
-    </select>
-    <span *ngIf="loading">Cargando años disponibles...</span>
-  </div>
+<div class="year-selector">
+  <select id="anio"  [(ngModel)]="anioSeleccionado" (change)="onAnioChange()" [disabled]="loading">
+    <option *ngFor="let anio of aniosDisponibles" [value]="anio">{{anio}}</option>
+  </select>
+  <span *ngIf="loading">Cargando años disponibles...</span>
+</div>
 
+<div class="grid-container">
   <div class="quadrant p-0" *ngFor="let group of quadrants; let i = index" cdkDropList 
        [cdkDropListData]="group.cards" [cdkDropListConnectedTo]="dropListIds" 
        [id]="'dropList' + i" (cdkDropListDropped)="drop($event)">

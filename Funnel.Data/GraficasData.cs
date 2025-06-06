@@ -183,12 +183,13 @@ namespace Funnel.Data
                             dto.Label = ComprobarNulos.CheckStringNull(reader["Nombre"]);
                             dto.Valor = ComprobarNulos.CheckDecimalNull(reader["TotalAnio"]);
                             dto.MontoNormalizado = ComprobarNulos.CheckDecimalNull(reader["MontoNormalizado"]);
-                            dto.ColoreSerie = ComprobarNulos.CheckStringNull(reader["ColorNormalizado"]);
+                            dto.Porcentaje = ComprobarNulos.CheckDecimalNull(reader["Porcentaje"]);
+                            //dto.ColoreSerie = ComprobarNulos.CheckStringNull(reader["ColorNormalizado"]);
 
                             result.Add(dto);
                         }
                         else if (data.Bandera == "SEL-TIPO-ANIO")
-                        {
+                         {
                             //dto.Id = ComprobarNulos.CheckIntNull(reader["IdEstatusOportunidad"]);
                             dto.Label = ComprobarNulos.CheckStringNull(reader["Descripcion"]);
                             dto.Valor = ComprobarNulos.CheckDecimalNull(reader["TotalAnio"]);
@@ -200,8 +201,8 @@ namespace Funnel.Data
                         else if (data.Bandera == "SEL-TOTALES-ANUALES")
                         {
                             //dto.Id = ComprobarNulos.CheckIntNull(reader["IdEstatusOportunidad"]);
-                            dto.Valor = ComprobarNulos.CheckDecimalNull(reader["Anio"]);
-                            dto.MontoNormalizado = ComprobarNulos.CheckDecimalNull(reader["Monto"]);
+                            dto.Label = reader["Anio"].ToString(); 
+                            dto.Valor = ComprobarNulos.CheckDecimalNull(reader["Monto"]); 
                             result.Add(dto);
                         }
                     }

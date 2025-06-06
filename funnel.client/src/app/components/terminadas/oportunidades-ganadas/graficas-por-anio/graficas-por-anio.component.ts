@@ -28,7 +28,6 @@ quadrants: { cards: any[] }[] = [];
     { cards: [this.graficasService.createCard(1, 'Gráfica Anual por Clientes', 'grafica')] },
     { cards: [this.graficasService.createCard(2, 'Gráfica Anual por Tipo de Proyecto', 'grafica')] },
     { cards: [this.graficasService.createCard(3, 'Ventas Anuales', 'grafica')] },
-    { cards: [] }
   ];
 
   }
@@ -82,44 +81,45 @@ quadrants: { cards: any[] }[] = [];
   
   consultarGraficaClientes(): void {
     const idEmpresa = this.sessionService.obtenerIdEmpresa();
+    const idUsuario = this.sessionService.obtenerIdUsuario();
     const idEstatusOportunidad = 2;
     const anio = this.anioSeleccionado;
     const request: RequestGraficasDto = {
       bandera: 'SEL-CLIENTES-ANIO',
       idEmpresa,
+      idUsuario,
       idEstatusOportunidad,
       anio
     };
-
-    this.graficasService.obtenerGraficaData(request).subscribe({
+    this.graficasService.obtenerGraficaGanadasData(request).subscribe({
       next: (response: GraficasDto[]) => {
           const filtrados = response.filter(item => item.valor > 0);
-          console.log('Response de la gráfica', filtrados);
           const dataAGraficar = [this.graficasService.createBarData(filtrados)];
           const layOutGrafica = this.graficasService.createBarLayout();
-          this.setGraficaData(1, 0, dataAGraficar, layOutGrafica);
+          this.setGraficaData(0, 0, dataAGraficar, layOutGrafica);
         },
         error: (err: any) => console.error('Error al consultar la gráfica:', err)
       });
     }
   consultarGraficaTipoProyecto(): void {
     const idEmpresa = this.sessionService.obtenerIdEmpresa();
+    const idUsuario = this.sessionService.obtenerIdUsuario();
     const idEstatusOportunidad = 2;
     const anio = this.anioSeleccionado;
     const request: RequestGraficasDto = {
       bandera: 'SEL-TIPO-ANIO',
       idEmpresa,
+      idUsuario,
       idEstatusOportunidad,
       anio
     };
-
-    this.graficasService.obtenerGraficaData(request).subscribe({
+    this.graficasService.obtenerGraficaGanadasData(request).subscribe({
       next: (response: GraficasDto[]) => {
         const dataAGraficar = [this.graficasService.createPieData(response)];
         const layOutGrafica = this.graficasService.createPieLayout();
         this.setGraficaData(1, 0, dataAGraficar, layOutGrafica);
       },
-      error: (err: any) => console.error('Error al consultar la gráfica:', err)
+      error: (err: any) => console.error('Error al consultar la gráfica proyecto:', err)
     });
   }
   consultarGraficaVentasAnuales(): void {
@@ -130,12 +130,12 @@ quadrants: { cards: any[] }[] = [];
       idEmpresa,
       idEstatusOportunidad
     };
-
-    this.graficasService.obtenerGraficaData(request).subscribe({
+    this.graficasService.obtenerGraficaGanadasData(request).subscribe({
       next: (response: GraficasDto[]) => {
           const filtrados = response.filter(item => item.valor > 0);
-          console.log('Response de la gráfica', filtrados);
-          const dataAGraficar = [this.graficasService.createBarData(filtrados)];
+          const barData = this.graficasService.createBarData(filtrados);
+         barData.marker = { color: filtrados.map(() => '#1976d2') };
+          const dataAGraficar = [barData];
           const layOutGrafica = this.graficasService.createBarLayout();
           this.setGraficaData(2, 0, dataAGraficar, layOutGrafica);
         },

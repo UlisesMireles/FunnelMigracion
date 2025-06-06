@@ -16,8 +16,8 @@ quadrants: { cards: any[] }[] = [];
     return this.quadrants.map((_, index) => `dropList${index}`);
   }
   infoCargada: boolean = false;
-  aniosDisponibles: number[] = [];
-  anioSeleccionado: number = new Date().getFullYear();
+  aniosDisponibles: { label: string, value: number }[] = [];
+  anioSeleccionado!: number;
   loading: boolean = true;
 
   constructor(
@@ -40,16 +40,22 @@ quadrants: { cards: any[] }[] = [];
     this.consultarGraficaTipoProyecto();
     this.consultarGraficaVentasAnuales();
   }
- obtenerAniosDisponibles(): void {
+ 
+
+obtenerAniosDisponibles(): void {
   const idEmpresa = this.sessionService.obtenerIdEmpresa();
   const idEstatusOportunidad = 2;
 
   this.graficasService.obtenerAnios(idEmpresa, idEstatusOportunidad).subscribe({
     next: (response: any[]) => {
-      this.aniosDisponibles = response.map(item => Number(item.anio));
+      this.aniosDisponibles = response.map(item => {
+        const anio = Number(item.anio);
+        return { label: anio.toString(), value: anio };
+      });
 
       if (this.aniosDisponibles.length > 0) {
-        this.anioSeleccionado = Math.max(...this.aniosDisponibles); // asegura que sea number
+        const aniosSoloValores = this.aniosDisponibles.map(a => a.value);
+        this.anioSeleccionado = Math.max(...aniosSoloValores);
         this.consultarTodasGraficas();
       }
 
@@ -61,6 +67,7 @@ quadrants: { cards: any[] }[] = [];
     }
   });
 }
+
   onAnioChange(): void {
     this.consultarTodasGraficas();
   }

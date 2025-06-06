@@ -56,6 +56,21 @@ export class GraficasService {
     tabla:[]
   };
 }
+createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
+  return {
+    id,
+    titulo,
+    tipo,
+    infoCargada: false,
+    grafica: {
+      data: [],
+      layout: {},
+      config: { displaylogo: false, responsive: true, locale: 'es-ES', scrollZoom: false, displayModeBar: false }
+    },
+    tabla:[]
+  };
+}
+
 
   createPieData(items: GraficasDto[]) {
     return {

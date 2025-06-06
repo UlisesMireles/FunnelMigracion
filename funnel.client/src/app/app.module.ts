@@ -132,6 +132,7 @@ import { AdminDashboardComponent } from './components/dashboard/admin-dashboard/
 import { OportunidadesPorAgenteComponent } from './components/dashboard/oportunidades-por-agente/oportunidades-por-agente.component';
 import { GraficasPorAnioComponent } from './components/terminadas/oportunidades-ganadas/graficas-por-anio/graficas-por-anio.component';
 import { es } from 'plotly.js-locales';
+import { GraficasPorAgenteComponent } from './components/terminadas/oportunidades-ganadas/graficas-por-agente/graficas-por-agente.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -201,7 +202,8 @@ registerLocaleData(localeEs, 'es-MX');
     OportunidadesGeneralComponent,
     AdminDashboardComponent,
     OportunidadesPorAgenteComponent,
-    GraficasPorAnioComponent
+    GraficasPorAnioComponent,
+    GraficasPorAgenteComponent
   ],
   imports: [
     BrowserModule,

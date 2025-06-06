@@ -1,4 +1,4 @@
-<p-dialog appendTo="body" [(visible)]="visible" [modal]="true" [closable]="true" [maximizable]="true" [style]="{
+<p-dialog appendTo="body" [(visible)]="visible" [modal]="true" styleClass="custom-header-naranja" [closable]="true" [maximizable]="true" [style]="{
     width: maximized ? '100vw' : '75rem', height: maximized ? '100vh' : '40rem'}" 
   [ngClass]="{'maximized': maximized}" (onHide)="close()" (onShow)="onDialogShow()" class="bodyDialog">
 
@@ -124,7 +124,8 @@
   </ng-template>
 </p-dialog>
 
-<p-dialog header="Análisis de seguimiento" [(visible)]="visibleRespuesta" [modal]="true" [closable]="true" [style]="{width: '50vw'}" appendTo="body">
+<p-dialog header="Análisis de seguimiento" [(visible)]="visibleRespuesta" [modal]="true" [closable]="true" styleClass="custom-header-verde" [style]="{width: '50vw'}" appendTo="body">
+  
   <ng-container *ngIf="!loading; else cargando">
     <div class="respuesta-html" [innerHTML]="respuestaAsistente"></div>
     <button class="btn-copiar" (click)="copiarTexto()" pTooltip="Copiar" tooltipPosition="top">

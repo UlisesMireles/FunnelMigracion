@@ -134,6 +134,8 @@ import { GraficasPorAnioComponent } from './components/terminadas/oportunidades-
 import { es } from 'plotly.js-locales';
 import { GraficasPorAgenteComponent } from './components/terminadas/oportunidades-ganadas/graficas-por-agente/graficas-por-agente.component';
 import { ModalDetallesIndicadoresEtapaComponent } from './components/dashboard/oportunidades-general/modal-detalles-indicadores-etapa/modal-detalles-indicadores-etapa.component';
+import { ModalOportunidadesPorSectorComponent } from './components/dashboard/oportunidades-general/modal-oportunidades-por-sector/modal-oportunidades-por-sector.component';
+import { ModalDetallesOportunidadesPorSectorComponent } from './components/dashboard/oportunidades-general/modal-detalles-oportunidades-por-sector/modal-detalles-oportunidades-por-sector.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -205,7 +207,10 @@ registerLocaleData(localeEs, 'es-MX');
     OportunidadesPorAgenteComponent,
     GraficasPorAnioComponent,
     GraficasPorAgenteComponent,
-    ModalDetallesIndicadoresEtapaComponent
+    ModalDetallesIndicadoresEtapaComponent,
+    ModalDetallesIndicadoresEtapaComponent,
+    ModalOportunidadesPorSectorComponent,
+    ModalDetallesOportunidadesPorSectorComponent
   ],
   imports: [
     BrowserModule,

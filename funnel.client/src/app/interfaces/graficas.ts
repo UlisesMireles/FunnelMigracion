@@ -10,7 +10,7 @@ export interface GraficasDto {
     porcentaje?: number;
 }
 export interface RequestGraficasDto {
-    bandera: string;
+    bandera?: string;
     idUsuario?: number;
     idEmpresa?: number;
     idEstatusOportunidad?: number;
@@ -27,4 +27,25 @@ export interface AniosDto{
     idEmpresa: number;
     idEstatusOportunidad: number;
     anio: number;
+}
+export interface Sectores{
+    idSector: number;
+    nombreSector: string;  
+    monto: number;        
+    montoNormalizado: number;
+}
+
+export interface SectoresDetalles{
+    idOportunidad: number;
+    nombreProspecto: string;     
+    nombreOportunidad: string;
+    tipoProyecto: string; 
+    tipoProyectoAbreviatura: string;       
+    ejecutivo: string;   
+    iniciales: string;       
+    monto: number;
+    fechaEstimadaCierre: string;
+    montoNormalizado: number;
+    probabilidad: string;
+    stage: string;
 }

@@ -39,5 +39,14 @@ namespace Funnel.Logic
         {
             return await _graficasData.ObtenerGraficaAgentesPorAnio(data);
         }
+        public async Task<List<SectorDto>> ObtenerOportunidadesPorSector(RequestGrafica data)
+        {
+            return await _graficasData.ObtenerOportunidadesPorSector(data);
+        }
+
+        public async Task<List<OportunidadSectorDto>> ObtenerDetalleOportunidadesSector(int idSector, RequestGrafica data)
+        {
+            return await _graficasData.ObtenerDetalleOportunidadesSector(idSector, data);
+        }
     }
 }

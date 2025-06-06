@@ -24,6 +24,8 @@ import { OportunidadesPerdidasComponent } from './components/terminadas/oportuni
 import { ModalOportunidadesCanceladasComponent } from './components/terminadas/oportunidades-canceladas/modal-oportunidades-canceladas/modal-oportunidades-canceladas.component';
 import { ModalOportunidadesPerdidasComponent } from './components/terminadas/oportunidades-perdidas/modal-oportunidades-perdidas/modal-oportunidades-perdidas.component';
 import { ModalDetallesIndicadoresEtapaComponent } from './components/dashboard/oportunidades-general/modal-detalles-indicadores-etapa/modal-detalles-indicadores-etapa.component';
+import { ModalOportunidadesPorSectorComponent } from './components/dashboard/oportunidades-general/modal-oportunidades-por-sector/modal-oportunidades-por-sector.component';
+import { ModalDetallesOportunidadesPorSectorComponent } from './components/dashboard/oportunidades-general/modal-detalles-oportunidades-por-sector/modal-detalles-oportunidades-por-sector.component';
 
 import { PermisosComponent } from './components/catalogos/permisos/permisos.component';
 import { AdministracionHerramientasComponent } from './components/herramientas/administracion-herramientas/administracion-herramientas.component';
@@ -59,6 +61,8 @@ const routes: Routes = [
   { path: 'oportunidades-perdidas-modal', component: ModalOportunidadesPerdidasComponent, title: 'Oportunidades Perdidas', canActivate: [AuthGuard] },
   { path: 'estadisticas-por-etapa', component: EstadisticasPorEtapaComponent, title: 'Estadisticas Por Etapa', canActivate: [AuthGuard] },
   { path: 'modal-detalles-indicadores-etapa', component: ModalDetallesIndicadoresEtapaComponent, title: 'Detalles Indicadores Etapa', canActivate: [AuthGuard] },
+  { path: 'modal-oportunidades-por-sector', component: ModalOportunidadesPorSectorComponent, title: 'Oportunidades Por Sector', canActivate: [AuthGuard] },
+  { path: 'modal-detalles-oportunidades-por-sector', component: ModalDetallesOportunidadesPorSectorComponent, title: 'Detalles Oportunidades Por Sector', canActivate: [AuthGuard] },
 
   { path: 'permisos', component: PermisosComponent, title: 'Permisos', canActivate: [AuthGuard] },
   //{ path: 'top-veinte', component: AdminDashboardComponent, title: 'Top Veinte', canActivate: [AuthGuard] },

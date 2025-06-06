@@ -56,6 +56,17 @@ namespace Funnel.Server.Controllers
         public async Task<ActionResult<List<GraficaDto>>> ObtenerGraficaAgentesPorAnio(RequestGrafica data)
         {
             var result = await _graficasService.ObtenerGraficaAgentesPorAnio(data);
+        [HttpPost("[action]/")]
+        public async Task<ActionResult<List<SectorDto>>> ObtenerOportunidadesPorSector(RequestGrafica data)
+        {
+            var result = await _graficasService.ObtenerOportunidadesPorSector(data);
+            return Ok(result);
+        }
+
+        [HttpPost("[action]/{idSector}")]
+        public async Task<ActionResult<List<OportunidadSectorDto>>> ObtenerDetalleOportunidadesSector(int idSector, RequestGrafica data)
+        {
+            var result = await _graficasService.ObtenerDetalleOportunidadesSector(idSector, data);
             return Ok(result);
         }
     }

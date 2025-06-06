@@ -41,7 +41,9 @@ export class GraficasService {
     grafica: {
       data: [],
       layout: {},
-      config: { displaylogo: false, responsive: true, locale: 'es-ES', scrollZoom: true, displayModeBar: true }
+      config: { displaylogo: false, responsive: true, locale: 'es-ES', scrollZoom: true, displayModeBar: true,
+        modeBarButtonsToRemove: ['pan2d','select2d','lasso2d','resetScale2d','zoomIn2d','zoomOut2d', 'autoScale2d', 'zoom2d', 'sendDataToCloud', 'editInChartStudio', 'zoom3d', 'pan3d', 'orbitRotation', 'tableRotation', 'resetCameraDefault3d', 'resetCameraLastSave3d']
+       }
     },
     tabla:[]
   };

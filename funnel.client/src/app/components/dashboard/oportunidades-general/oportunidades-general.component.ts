@@ -43,8 +43,8 @@ export class OportunidadesGeneralComponent {
 
   ngOnInit(): void {
     this.consultarGraficaStage();
-    this.consultarGraficaTipo();
     this.consultarGraficaSector();
+    this.consultarGraficaTipo();
   }
 
   private setGraficaData(quadrantIdx: number, cardIdx: number, data: any, layout: any) {
@@ -97,7 +97,6 @@ export class OportunidadesGeneralComponent {
     this.graficasService.obtenerGraficaAgentesData(request).subscribe({
       next: (response: GraficasDto[]) => {
         const filtrados = response.filter(item => item.valor > 0);
-        console.log('Response de la gráfica de sectores:', filtrados);
         const dataAGraficar = [this.graficasService.createBarData(filtrados)];
         const layOutGrafica = this.graficasService.createBarLayout();
         this.setGraficaData(1, 0, dataAGraficar, layOutGrafica);

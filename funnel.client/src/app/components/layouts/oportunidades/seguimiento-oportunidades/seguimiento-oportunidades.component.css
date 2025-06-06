@@ -386,3 +386,38 @@
   white-space: normal;
   max-width: 250px; 
 }
+.btn-copiar {
+  align-self: flex-start;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 1px;
+  border-radius: 4px;
+}
+
+.btn-copiar mat-icon {
+  font-size: 16px; 
+  height: 16px;
+  width: 16px;
+  line-height: 16px;
+  margin-left: 0px;
+  color: #666; 
+}
+
+.icono-copiado {
+  color: #256F45 !important; 
+}
+
+.respuesta-html p {
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.respuesta-html ul {
+  margin-left: 20px;
+  list-style-type: disc;
+}
+
+.respuesta-html strong {
+  color: #2b2b2b;
+}

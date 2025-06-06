@@ -5,6 +5,8 @@ import { OportunidadesService } from '../../../../services/oportunidades.service
 import { LoginService } from '../../../../services/login.service';
 import { Oportunidad, RequestOportunidad } from '../../../../interfaces/oportunidades';
 import { baseOut } from '../../../../interfaces/utils/utils/baseOut';
+import { OpenIaService } from '../../../../services/asistentes/openIA.service';
+import { ConsultaAsistenteDto } from '../../../../interfaces/asistentes/consultaAsistente';
 
 @Component({
   selector: 'app-seguimiento-oportunidades',
@@ -18,7 +20,7 @@ export class SeguimientoOportunidadesComponent {
     return this.oportunidadForm.get('idEstatusOportunidad')?.value !== 1; 
   }
 
-  constructor(private oportunidadService: OportunidadesService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder, private cdr: ChangeDetectorRef) { }
+  constructor(private oportunidadService: OportunidadesService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder, private cdr: ChangeDetectorRef, private openIaService: OpenIaService) { }
   @Input() oportunidad!: Oportunidad;
   @Input() oportunidades: Oportunidad[] = [];
   @Input() oportunidadesOriginal: Oportunidad[] = [];
@@ -39,6 +41,10 @@ export class SeguimientoOportunidadesComponent {
   wordCount: number = 0;
   disabledPdf: boolean = false;
 
+  visibleRespuesta = false;
+  respuestaAsistente: string = '';
+
+  copiado: boolean = false;
 
   historialOportunidad: Oportunidad[] = [];
 
@@ -194,6 +200,98 @@ export class SeguimientoOportunidadesComponent {
       comentarioControl.markAsUntouched(); // Quita el estado "touched" para ocultar errores
     }
   }
+
+  enviarSeguimiento() {
+    const comentarios = this.historialOportunidad.map(item => ({
+      usuario: item.iniciales,
+      fecha: item.fechaRegistro,
+      comentario: item.comentario
+    }));
+
+    const historialTexto = comentarios.map(c => `(${c.fecha}) ${c.usuario}: ${c.comentario}`).join('\n');
+
+    const resumenOportunidad = `
+      Nombre oportunidad: ${this.oportunidad.nombreOportunidad}
+      Nombre: ${this.oportunidad.nombre}
+      Monto: ${this.oportunidad.monto}
+      Probabilidad: ${this.oportunidad.probabilidad}%
+      Ejecutivo: ${this.oportunidad.nombreEjecutivo}
+        `.trim();
+
+    const pregunta = `Analiza la siguiente información de la oportunidad:\n\n${resumenOportunidad}\n\nHistorial de seguimiento:\n${historialTexto}`;
+
+    const body: ConsultaAsistenteDto = {
+      exitoso: true,
+      errorMensaje: '',
+      idBot: 1,
+      pregunta: `${pregunta}`,
+      fechaPregunta: new Date(),
+      respuesta: '',
+      fechaRespuesta: new Date(),
+      tokensEntrada: 0,
+      tokensSalida: 0,
+      idUsuario: this.loginService.obtenerIdUsuario(),
+      idTipoUsuario: 0,
+      idEmpresa: this.loginService.obtenerIdEmpresa(),
+      esPreguntaFrecuente: false,
+    };
+
+    this.visibleRespuesta = true;
+    this.respuestaAsistente = ''; 
+    this.loading = true;
+    
+    this.openIaService.AsistenteHistorico(body).subscribe({
+      next: res => {
+        this.visibleRespuesta = true;
+        this.respuestaAsistente = res.respuesta || 'No se recibió respuesta.';
+        this.loading = false;
+      },
+      error: err => {
+        this.respuestaAsistente = 'Error al consultar al asistente: ' + err.message;
+      }
+    });
+  }
+ copiarTexto(): void {
+  if (!this.respuestaAsistente) return;
+
+  const tempElement = document.createElement('div');
+  tempElement.innerHTML = this.respuestaAsistente;
+
+  function getPlainText(element: HTMLElement): string {
+    let text = '';
+
+    element.childNodes.forEach(node => {
+      if (node.nodeType === Node.TEXT_NODE) {
+        // Texto normal
+        text += node.textContent;
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        const el = node as HTMLElement;
+        const tag = el.tagName.toLowerCase();
+
+        if (tag === 'p' || tag === 'div' || tag === 'br') {
+          text += getPlainText(el) + '\n';
+        } else if (tag === 'li') {
+          text += '- ' + getPlainText(el) + '\n';
+        } else if (tag === 'ul' || tag === 'ol') {
+          text += getPlainText(el) + '\n';
+        } else {
+          text += getPlainText(el);
+        }
+      }
+    });
+
+    return text;
+  }
+
+  const textoPlano = getPlainText(tempElement).trim();
+
+  navigator.clipboard.writeText(textoPlano).then(() => {
+    this.copiado = true;
+    setTimeout(() => this.copiado = false, 2000);
+  });
+}
+
+
 
 }
 

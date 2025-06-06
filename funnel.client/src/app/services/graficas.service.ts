@@ -33,6 +33,12 @@ export class GraficasService {
   obtenerGraficaGanadasData(data: RequestGraficasDto): Observable<GraficasDto[]> {
     return this.http.post<GraficasDto[]>(`${this.baseUrl}api/Graficas/ObtenerGraficaGanadasAnio`, data);
   }
+  obtenerAgentesPorAnioData(data: RequestGraficasDto): Observable<AgenteDto[]> {
+    return this.http.post<AgenteDto[]>(`${this.baseUrl}api/Graficas/ObtenerAgentesPorAnio`, data);
+  }
+  obtenerGraficaAgentesPorAnioData(data: RequestGraficasDto): Observable<GraficasDto[]> {
+    return this.http.post<GraficasDto[]>(`${this.baseUrl}api/Graficas/ObtenerGraficaAgentesPorAnio`, data);
+  }
   getRandomColor(): string {
     let color = '#';
     let letters = '0123456789ABCDEF';
@@ -65,7 +71,9 @@ createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
     grafica: {
       data: [],
       layout: {},
-      config: { displaylogo: false, responsive: true, locale: 'es-ES', scrollZoom: false, displayModeBar: false }
+      config: { displaylogo: false, responsive: true, locale: 'es-ES', scrollZoom: false, displayModeBar: true,
+      modeBarButtonsToRemove: ['sendDataToCloud', 'editInChartStudio', 'zoom2d', 'pan2d', 'select2d', 'lasso2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d', 'resetScale2d', 'hoverClosestCartesian', 'hoverCompareCartesian', 'toggleSpikelines']
+       }
     },
     tabla:[]
   };
@@ -210,4 +218,5 @@ createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
       name: 'Monto Normalizado',
     };
   }
+  
 }

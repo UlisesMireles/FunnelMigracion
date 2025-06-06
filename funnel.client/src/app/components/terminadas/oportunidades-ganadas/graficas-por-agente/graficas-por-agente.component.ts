@@ -4,6 +4,7 @@ import { LoginService } from '../../../../services/login.service';
 import { GraficasService } from '../../../../services/graficas.service';
 import { AgenteDto, GraficasDto, RequestGraficasDto, AniosDto } from '../../../../interfaces/graficas';
 import { environment } from '../../../../../environments/environment'
+
 @Component({
   selector: 'app-graficas-por-agente',
   standalone: false,
@@ -27,7 +28,7 @@ quadrants: { cards: any[] }[] = [];
     this.quadrants = [
       { cards: [this.graficasService.createCardPorAnio(1, 'Consulta Agentes', 'tabla')] },
       { cards: [this.graficasService.createCardPorAnio(2, 'Grafica por Agente - Clientes (Seleccione un Agente)', 'grafica')] },
-      { cards: [this.graficasService.createCardPorAnio(3, 'Grafica por Agente - Tipo Oportunidades (Seleccione un Agente)', 'grafica')] },
+      { cards: [this.graficasService.createCard(3, 'Grafica por Agente - Tipo Oportunidades (Seleccione un Agente)', 'grafica')] },
     ];
 
   }
@@ -89,8 +90,7 @@ onAnioChange(): void {
       idEstatusOportunidad,
       anio
     };
-    console.log('Request para obtener agentes:', request);
-    this.graficasService.obtenerAgentesData(request).subscribe({
+    this.graficasService.obtenerAgentesPorAnioData(request).subscribe({
       next: (response: AgenteDto[]) => {
         this.agentes = response;
         this.consultarGraficaAgenteCliente(this.agentes.length > 0 ? this.agentes[0].idAgente : -1);
@@ -110,7 +110,7 @@ onAnioChange(): void {
       anio
     };
 
-    this.graficasService.obtenerGraficaAgentesData(request).subscribe({
+    this.graficasService.obtenerGraficaAgentesPorAnioData(request).subscribe({
       next: (response: GraficasDto[]) => {
         const dataAGraficar = [this.graficasService.createBarHorizontalNormalizadoData(response), this.graficasService.createBarHorizontalData(response)];
         const layOutGrafica = this.graficasService.createBarHorizontalLayout();
@@ -131,7 +131,7 @@ onAnioChange(): void {
       anio
     };
 
-    this.graficasService.obtenerGraficaAgentesData(request).subscribe({
+    this.graficasService.obtenerGraficaAgentesPorAnioData(request).subscribe({
       next: (response: GraficasDto[]) => {
         const dataAGraficar = [this.graficasService.createPieData(response)];
         const layOutGrafica = this.graficasService.createPieLayout();

@@ -27,12 +27,10 @@
 
   <ng-template pTemplate="content">
     <div class="contenedor-tabla-dialogo">
-      <!-- Tabla de sectores -->
       <p-table #dt [value]="sectores" [paginator]="true" [rows]="10" 
   [rowsPerPageOptions]="[10, 25, 50]" [totalRecords]="sectores.length"
   styleClass="tabla-estilizada">
-  
-  <!-- Header -->
+
   <ng-template pTemplate="header" let-columns>
     <tr class="custom-header">
       <th *ngFor="let def of lsColumnasAMostrar" pSortableColumn="{{def.key}}" 
@@ -43,13 +41,11 @@
     </tr>
   </ng-template>
 
-  <!-- Body (solo filas de datos) -->
   <ng-template pTemplate="body" let-rowData>
     <tr class="fila-datos">
       <td *ngFor="let def of lsColumnasAMostrar">
         <ng-container [ngSwitch]="def.tipoFormato">
           <span *ngSwitchCase="'text'">
-            <!-- Enlace solo para la columna de nombreSector -->
             <a *ngIf="def.key === 'nombreSector'" 
             href="javascript:void(0)" 
             (click)="abrirDetalleSector(rowData.idSector); $event.stopPropagation()" 
@@ -64,8 +60,6 @@
       </td>
     </tr>
   </ng-template>
-
-  <!-- Footer (totales, solo una vez al final) -->
   <ng-template pTemplate="footer">
     <tr class="custom-footer">
       <td *ngFor="let def of lsColumnasAMostrar">

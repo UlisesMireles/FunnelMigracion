@@ -150,8 +150,11 @@ abrirModalDetalles(idSector: number): void {
   this.modalSectoresVisible = false;
 }
 
-  onModalDetallesClose(): void {
-    this.mostrarModalDetalles = false;
-  }
+onModalDetallesClose(): void {
+  this.mostrarModalDetalles = false;
+  setTimeout(() => {
+    this.modalSectoresVisible = true;
+  });
+}
 
 }

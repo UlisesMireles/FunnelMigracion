@@ -13,6 +13,7 @@ export class ModalOportunidadesPorSectorComponent {
   @Input() visible: boolean = false;
   @Output() visibleChange = new EventEmitter<boolean>();
   @Output() closeModal = new EventEmitter<void>();
+  @Output() abrirDetalle = new EventEmitter<number>();
 
   sectores: Sectores[] = [];
   loading: boolean = true;
@@ -82,4 +83,8 @@ export class ModalOportunidadesPorSectorComponent {
       isSorted(columnKey: string): boolean {
     return false;
   }
+
+abrirDetalleSector(idSector: number) {
+  this.abrirDetalle.emit(idSector);
+}
 }

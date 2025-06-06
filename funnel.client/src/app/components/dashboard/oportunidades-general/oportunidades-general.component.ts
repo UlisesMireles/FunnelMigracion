@@ -18,6 +18,8 @@ export class OportunidadesGeneralComponent {
   quadrants: { cards: any[] }[] = [];
   modalIndicadoresVisible: boolean = false;
   modalSectoresVisible: boolean = false;
+  mostrarModalDetalles: boolean = false;
+  sectorSeleccionado: number | null = null;
   get dropListIds() {
     return this.quadrants.map((_, index) => `dropList${index}`);
   }
@@ -128,7 +130,6 @@ openDetailsModal() {
   this.modalIndicadoresVisible = true;
 }
 
-  // Método para cerrar (como en tu ejemplo)
   onModalIndicadoresClose() {
     this.modalIndicadoresVisible = false;
   }
@@ -140,4 +141,18 @@ openDetailsModal() {
 onModalSectoresClose() {
   this.modalSectoresVisible = false;
 }
+
+abrirModalDetalles(idSector: number): void {
+
+  setTimeout(() => {
+    this.sectorSeleccionado = idSector;
+    this.mostrarModalDetalles = true;
+  });
+  this.modalSectoresVisible = false;
+}
+
+  onModalDetallesClose(): void {
+    this.mostrarModalDetalles = false;
+  }
+
 }

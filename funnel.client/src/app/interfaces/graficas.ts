@@ -10,7 +10,7 @@ export interface GraficasDto {
     porcentaje?: number;
 }
 export interface RequestGraficasDto {
-    bandera: string;
+    bandera?: string;
     idUsuario?: number;
     idEmpresa?: number;
 }

@@ -1,0 +1,73 @@
+<p-dialog 
+  appendTo="body"
+  [(visible)]="visible" 
+  [modal]="true" 
+  [closable]="true" 
+  [maximizable]="true"
+  [style]="{
+    width: maximized ? '100vw' : '80rem',
+    height: maximized ? '100vh' : 'auto'
+  }"
+  [ngClass]="{'maximized': maximized}"
+  (onHide)="close()"
+  (onShow)="onDialogShow()"
+  [baseZIndex]="1100"
+  [draggable]="true"
+  [resizable]="false"
+  [blockScroll]="true"
+  class="bodyDialog">
+  
+  <ng-template pTemplate="header">
+    <div class="dialog-header-content">
+      <label class="margen titulo-dialogo">
+        Detalles de Oportunidades para Sector: {{nombreSector}}
+      </label>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="content">
+    <div class="contenedor-tabla-dialogo">
+      <p-table #dt [value]="oportunidades" [paginator]="true" [rows]="10" 
+        [rowsPerPageOptions]="[10, 25, 50]" [totalRecords]="oportunidades.length"
+        styleClass="tabla-estilizada" [loading]="loading">
+        
+        <ng-template pTemplate="header">
+          <tr class="custom-header">
+            <th>Prospecto</th>
+            <th>Oportunidad</th>
+            <th>Tipo Proyecto</th>
+            <th>Ejecutivo</th>
+            <th>Monto</th>
+            <th>Monto Normalizado</th>
+            <th>Fecha Cierre</th>
+            <th>Probabilidad</th>
+            <th>Etapa</th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-oportunidad>
+          <tr class="fila-datos">
+            <td>{{ oportunidad.nombreProspecto }}</td>
+            <td>{{ oportunidad.nombreOportunidad }}</td>
+            <td>{{ oportunidad.tipoProyecto }}</td>
+            <td>{{ oportunidad.ejecutivo }}</td>
+            <td>{{ oportunidad.monto | currency:'MXN':'symbol':'1.2-2' }}</td>
+            <td>{{ oportunidad.montoNormalizado | currency:'MXN':'symbol':'1.2-2' }}</td>
+            <td>{{ oportunidad.fechaEstimadaCierre | date:'dd/MM/yyyy' }}</td>
+            <td>{{ oportunidad.probabilidad }}</td>
+            <td>{{ oportunidad.stage }}</td>
+          </tr>
+        </ng-template>
+        
+        <ng-template pTemplate="footer">
+          <tr class="custom-footer">
+            <td colspan="4">Total oportunidades: {{ oportunidades.length }}</td>
+            <td>{{ calcularSumaMontos() | currency:'MXN':'symbol':'1.2-2' }}</td>
+            <td>{{ calcularSumaMontosNormalizados() | currency:'MXN':'symbol':'1.2-2' }}</td>
+            <td colspan="3"></td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </ng-template>
+</p-dialog>

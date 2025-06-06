@@ -27,5 +27,12 @@
 
 <app-modal-oportunidades-por-sector
   [(visible)]="modalSectoresVisible"
-  (closeModal)="onModalSectoresClose()">
+  (closeModal)="onModalSectoresClose()"
+  (abrirDetalle)="abrirModalDetalles($event)">
 </app-modal-oportunidades-por-sector>
+
+<app-modal-detalles-oportunidades-por-sector
+  [(visible)]="mostrarModalDetalles"
+  [idSector]="sectorSeleccionado !== null ? sectorSeleccionado : 0"
+  (closeModal)="onModalDetallesClose()">
+</app-modal-detalles-oportunidades-por-sector>

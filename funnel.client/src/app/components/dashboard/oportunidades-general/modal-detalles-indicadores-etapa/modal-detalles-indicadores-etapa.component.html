@@ -46,14 +46,34 @@
           <tr class="fila-datos">
             <td *ngFor="let def of lsColumnasAMostrar">
               <ng-container [ngSwitch]="def.tipoFormato">
-                <span *ngSwitchCase="'text'">{{ rowData[def.key] }}</span>
+                <!-- Para el campo de ejecutivo -->
+                <span *ngSwitchCase="'text'">
+                <span *ngIf="def.key === 'iniciales'"
+                      pTooltip="{{rowData['nombreEjecutivo']}}" 
+                      tooltipPosition="top">
+                  {{ rowData[def.key] }}
+                </span>
+                
+                <!-- Para el campo de tipo (abreviatura) -->
+                <span *ngIf="def.key === 'abreviatura'"
+                      pTooltip="{{rowData['descripcion']}}" 
+                      tooltipPosition="top">
+                  {{ rowData[def.key] }}
+                </span>
+                
+                <!-- Para otros campos de texto sin tooltip -->
+                <span *ngIf="def.key !== 'iniciales' && def.key !== 'abreviatura'">
+                  {{ rowData[def.key] }}
+                </span>
+                </span>
+                
                 <span *ngSwitchCase="'currency'">{{ rowData[def.key] | currency:'MXN':'symbol':'1.2-2'}}</span>
                 <span *ngSwitchCase="'date'" 
-                    [ngStyle]="{
+                      [ngStyle]="{
                         'color': def.key === 'fechaEstimadaCierreOriginal' ? getColorForFechaEstimadaCierre(rowData[def.key]) : 'inherit',
                         'font-weight': 'bold' 
-                    }">
-                {{ rowData[def.key] | date:'dd/MM/yyyy hh:mm a' }}
+                      }">
+                  {{ rowData[def.key] | date:'dd/MM/yyyy' }}
                 </span>
               </ng-container>
             </td>

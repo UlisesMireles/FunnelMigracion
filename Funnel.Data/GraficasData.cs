@@ -159,15 +159,15 @@ namespace Funnel.Data
             }
             return result;
         }
-          public async Task<List<SectorDto>> ObtenerOportunidadesPorSector(RequestGrafica data)
+     public async Task<List<SectorDto>> ObtenerOportunidadesPorSector(RequestGrafica data)
     {
         List<SectorDto> result = new List<SectorDto>();
         IList<ParameterSQl> list = new List<ParameterSQl>
-{
+    {
     DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, data.IdEmpresa),
     DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "SEL-AGENTE-SECTOR"),
     DataBase.CreateParameterSql("@IdUsuario", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, data.IdUsuario ?? 0)
-};
+    };
  
         try
         {

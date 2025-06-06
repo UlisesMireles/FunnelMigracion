@@ -89,14 +89,14 @@ namespace Funnel.Logic
             List<OportunidadesTarjetasDto> lista = new List<OportunidadesTarjetasDto>();
             List<OportunidadesEnProcesoDto> oportunidades = await _oportunidadesData.ConsultarOportunidadesEnProceso(IdUsuario, IdEmpresa, 1);
 
-            int[] meses = new int[4];
-            int[] anio = new int[4];
-            string[] NombresMeses = new string[4];
+            int[] meses = new int[5];
+            int[] anio = new int[5];
+            string[] NombresMeses = new string[5];
             int primerMes = 0, primerAnio = 0;
             primerMes = oportunidades.OrderBy(x => x.FechaEstimadaCierre).Select(x => x.FechaEstimadaCierre.Value.Month).FirstOrDefault(DateTime.Now.Month);
             primerAnio = oportunidades.OrderBy(x => x.FechaEstimadaCierre).Select(x => x.FechaEstimadaCierre.Value.Year).FirstOrDefault(DateTime.Now.Year);
             DateTimeFormatInfo formatoFecha = CultureInfo.CurrentCulture.DateTimeFormat;
-            for (int i = 0, j = primerMes; i < 4; i++, j++)
+            for (int i = 0, j = primerMes; i < 5; i++, j++)
             {
 
                 if (j > 12)
@@ -115,7 +115,7 @@ namespace Funnel.Logic
                 }
             }
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 5; i++)
             {
                 lista.Add(new OportunidadesTarjetasDto
                 {

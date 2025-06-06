@@ -33,6 +33,7 @@ namespace Funnel.Data
                             dto.Id = ComprobarNulos.CheckIntNull(reader["Id"]);
                             dto.Label = ComprobarNulos.CheckStringNull(reader["Concepto"]);
                             dto.Valor = ComprobarNulos.CheckDecimalNull(reader["Monto"]);
+                            dto.Contador = ComprobarNulos.CheckIntNull(reader["Contador"]);
                             dto.Area = ComprobarNulos.CheckIntNull(reader["Area"]);
                             dto.ColoreSerie = ComprobarNulos.CheckStringNull(reader["ColorSerie"]);
 
@@ -54,9 +55,7 @@ namespace Funnel.Data
             catch (Exception ex)
             {
                 throw new Exception("Error al obtener la gráfica de oportunidades", ex);
-                
             }
-
             return result;
         }
         public async Task<List<GraficaDto>> ObtenerGraficaAgentes(RequestGrafica data)
@@ -136,6 +135,86 @@ namespace Funnel.Data
             {
                 throw new Exception("Error al obtener la gráfica de oportunidades", ex);
 
+            }
+
+            return result;
+        }
+
+        public async Task<List<SectorDto>> ObtenerOportunidadesPorSector(RequestGrafica data)
+        {
+            List<SectorDto> result = new List<SectorDto>();
+            IList<ParameterSQl> list = new List<ParameterSQl>
+    {
+        DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, data.IdEmpresa),
+        DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "SEL-AGENTE-SECTOR"),
+        DataBase.CreateParameterSql("@IdUsuario", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, data.IdUsuario ?? 0)
+    };
+
+            try
+            {
+                using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoUsuarios", CommandType.StoredProcedure, list, _connectionString))
+                {
+                    while (reader.Read())
+                    {
+                        var dto = new SectorDto
+                        {
+                            IdSector = ComprobarNulos.CheckIntNull(reader["IdSector"]),
+                            NombreSector = ComprobarNulos.CheckStringNull(reader["Descripcion"]), 
+                            Monto = ComprobarNulos.CheckDecimalNull(reader["Monto"]),
+                            MontoNormalizado = ComprobarNulos.CheckDecimalNull(reader["MontoNormalizado"])
+                        };
+                        result.Add(dto);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al obtener oportunidades por sector. Detalle: {ex.Message}", ex);
+            }
+
+            return result;
+        }
+
+        public async Task<List<OportunidadSectorDto>> ObtenerDetalleOportunidadesSector(int idSector, RequestGrafica data)
+        {
+            List<OportunidadSectorDto> result = new List<OportunidadSectorDto>();
+            IList<ParameterSQl> list = new List<ParameterSQl>
+    {
+        DataBase.CreateParameterSql("@pIdEstatusOportunidad", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, 1),
+        DataBase.CreateParameterSql("@pStage", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, -1),
+        DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, data.IdEmpresa),
+        DataBase.CreateParameterSql("@pIdUsuario", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, data.IdUsuario ?? 0),
+        DataBase.CreateParameterSql("@pIdSector", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, idSector)
+    };
+
+            try
+            {
+                using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoOportunidadesPorSector", CommandType.StoredProcedure, list, _connectionString))
+                {
+                    while (reader.Read())
+                    {
+                        var dto = new OportunidadSectorDto
+                        {
+                            IdOportunidad = ComprobarNulos.CheckIntNull(reader["IdOportunidad"]),
+                            NombreProspecto = ComprobarNulos.CheckStringNull(reader["Nombre"]),
+                            NombreOportunidad = ComprobarNulos.CheckStringNull(reader["NombreOportunidad"]),
+                            TipoProyecto = ComprobarNulos.CheckStringNull(reader["Descripcion"]),
+                            Ejecutivo = ComprobarNulos.CheckStringNull(reader["NombreEjecutivo"]),
+                            Monto = ComprobarNulos.CheckDecimalNull(reader["Monto"]),
+                            FechaEstimadaCierre = ComprobarNulos.CheckStringNull(reader["FechaEstimadaCierre"]),
+                            MontoNormalizado = ComprobarNulos.CheckDecimalNull(reader["MontoNormalizado"]),
+                            Probabilidad = ComprobarNulos.CheckStringNull(reader["Probabilidad"]),
+                            Stage = ComprobarNulos.CheckStringNull(reader["Stage"]),
+                            TipoProyectoAbreviatura = ComprobarNulos.CheckStringNull(reader["Abreviatura"]),
+                            Iniciales = ComprobarNulos.CheckStringNull(reader["Iniciales"]),
+                        };
+                        result.Add(dto);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener detalle de oportunidades por sector", ex);
             }
 
             return result;

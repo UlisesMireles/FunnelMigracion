@@ -23,7 +23,7 @@
   flex-direction: column; /* Organiza los elementos en columna */
   align-items: center; /* Centra horizontalmente el contenido */
   justify-content: space-between; /* Distribuye el contenido con espacio entre ellos */
-  padding: 10px; /* Espaciado interno de 10px */
+  padding: 10px 0; /* Espaciado interno de 10px */
   cursor: pointer; /* Cambia el cursor para indicar interactividad */
   transition: width 0.3s ease-in-out; /* Transición suave para el cambio de ancho (cuando se expande) */
   position: relative; /* Posicionamiento relativo para posicionar elementos internos si es necesario */
@@ -33,6 +33,7 @@
 /* Cuando el item está expandido */
 .item-acordeon.expandido {
   width: 25%; /* Ancho mayor para el estado expandido (ajusta según lo necesites) */
+    border-radius: 15px;
 }
 
 /* Encabezado del item (nombre del mes y botón) */
@@ -81,7 +82,8 @@
 /* Contenedor de las tarjetas (lista interna de tarjetas) */
 .contenedor-tarjetas {
   height: 100%;           /* Se establece la altura completa del contenedor padre */
-  overflow-y: auto;       /* Activa scroll vertical cuando el contenido excede la altura */
+  overflow-y: auto;      
+  overflow-x: hidden;
   padding: 5px;           /* Espaciado interno de 5px */
   display: flex;          /* Usa flexbox para organizar las tarjetas */
   flex-direction: column; /* Organiza las tarjetas en columna */
@@ -98,6 +100,7 @@
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave para dar profundidad */
   padding-top: 0pX;    /* (Posible error tipográfico: "0pX" en lugar de "0px") */
   border: black solid 1px !important; /* Borde negro de 1px, con !important para forzar la regla */
+  border-radius: 10px
 }
 
 /* Imagen interna de la tarjeta */
@@ -106,7 +109,12 @@
   border-radius: 5px;  /* Esquinas redondeadas con un radio de 5px */
 }
 
-/* Estilos para el preview del drag and drop */
+.tarjeta-side{
+  padding-top:3px; 
+  padding-left: 0 !important  ; 
+  padding-right: 10px;
+}/* Estilos para el preview del drag and drop */
+
 .cdk-drag-preview {
   box-sizing: border-box; /* Incluye padding y borde en el tamaño total */
   border-radius: 4px;       /* Esquinas redondeadas con 4px */
@@ -210,12 +218,12 @@ body {
 
 /* Espaciado superior para la fila de la tarjeta */
 .tarjeta-row {
-  padding-top: 10px;
+  padding-top: 20px;
 }
 
 /* Estilo para el nombre de la empresa */
 .nombre-empresa {
-  font-size: 17px;       /* Tamaño de fuente de 17px */
+  font-size: 14px;       /* Tamaño de fuente de 17px */
   font-weight: bold;     /* Negrita */
   color: #333333;        /* Color gris oscuro */
   text-align: left;      /* Alineación a la izquierda */
@@ -228,14 +236,15 @@ body {
 
 /* Estilo para la abreviatura del nombre */
 .nombre-abrev {
-  font-size: 17px;       /* Tamaño de fuente de 17px */
+  font-size: 14px;       /* Tamaño de fuente de 17px */
   font-weight: bold;     /* Negrita */
   color: #333333;        /* Color gris oscuro */
+  margin-bottom: 8px;
 }
 
 /* Estilo para el nombre de la oportunidad */
 .nombre-oportunidad {
-  font-size: 15px;       /* Tamaño de fuente de 15px */
+  font-size: 13px;       /* Tamaño de fuente de 15px */
   font-weight: 600;      /* Semi-negrita */
   color: #455a64;        /* Color azul grisáceo */
   text-align: left;      /* Alineación a la izquierda */
@@ -243,12 +252,12 @@ body {
 
 /* Estilos para monto, probabilidad y monto normalizado */
 .monto, .probabilidad, .monto-normalizado {
-  font-size: 14px;       /* Tamaño de fuente de 14px */
+  font-size: 13px;       /* Tamaño de fuente de 14px */
   font-weight: 500;      /* Peso medio */
   color: #747678;        /* Color gris medio */
   text-align: left;      /* Alineación a la izquierda */
   white-space: nowrap;   /* Evita el salto de línea */
-  margin-right: 35px;    /* Espaciado de 25px a la derecha entre elementos */
+  margin-right: 15px;    /* Espaciado de 25px a la derecha entre elementos */
 }
 
 /* Estilo para las iniciales */
@@ -263,8 +272,8 @@ body {
 
 /* Estilos para la foto (círculo) de la tarjeta */
 div.fotoTarjeta {
-  height: 55px;            /* Altura del círculo: 55px */
-  width: 55px;             /* Ancho del círculo: 55px */
+  height: 37px;            /* Altura del círculo: 55px */
+  width: 37px;             /* Ancho del círculo: 55px */
   background-repeat: no-repeat; /* No repetir la imagen de fondo */
   background-position: 50%;     /* Centrar la imagen de fondo */
   border-radius: 50%;      /* Hacer el contenedor circular */
@@ -331,7 +340,7 @@ div.fotoTarjeta {
   justify-content: flex-end;      /* Alinea el contenido a la derecha */
   align-items: center;            /* Centra verticalmente */
   padding: 0px;                   /* Espaciado interno de 5px */
-  gap: 10px;                    /* Espacio entre los iconos */
+  gap: 1px;                    /* Espacio entre los iconos */
   border-bottom: 1px solid #ddd;  /* Borde inferior gris */
   margin-left: 0px!important;     /* Margen izquierdo 0 (forzado) */
   margin-right: 0px!important;    /* Margen derecho 0 (forzado) */
@@ -379,12 +388,12 @@ div.fotoTarjeta {
   color: #08a742;
 }
 .total-row {
-  position: absolute;                /* Convierto la fila en un contenedor flex */
-  text-align: right;
-  margin-right: 25px;
+  display: flex;                /* Convierto la fila en un contenedor flex */
+  justify-content: flex-end;    /* Alinea los elementos al final (derecha) */
   align-items: center;          /* Centra verticalmente los elementos */
   width: 100%;                  /* Ocupa todo el ancho del contenedor */
-  margin-top: 5px;              /* Opcional: espacio superior */
+  margin-top: -8px;              /* Opcional: espacio superior */
+  padding-right: 15px;
 }
 
 .total-row span {
@@ -396,6 +405,7 @@ div.fotoTarjeta {
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
+  width: 15px !important;
 }
 
 ::ng-deep .coloreditar-icon .p-button {
@@ -412,9 +422,10 @@ div.fotoTarjeta {
 
 ::ng-deep .blue-icon .p-button-icon {
   color: blue !important;
-  font-size: 1.5rem;
+  font-size: 1.5rem !important;
   background: transparent;
   border-color: transparent;
+  width: 15px !important;
 }
 
 ::ng-deep .blue-icon:hover {
@@ -432,4 +443,47 @@ div.fotoTarjeta {
 
 .p-button {
   position: relative;
+}
+::-webkit-scrollbar {
+  width: 6px; /* Ancho de la barra de desplazamiento */
+}
+
+#contenedor-tarjetas0::-webkit-scrollbar-thumb {
+  background: #f44336; /* azul */
+  border-radius: 4px;
+}
+#contenedor-tarjetas0::-webkit-scrollbar-track {
+  background: #e9bdc4;
+}
+
+#contenedor-tarjetas1::-webkit-scrollbar-thumb {
+  background: #ab47bc; /* azul */
+  border-radius: 4px;
+}
+#contenedor-tarjetas1::-webkit-scrollbar-track {
+  background: #ce93d8;
+}
+
+#contenedor-tarjetas2::-webkit-scrollbar-thumb {
+  background: #fb8c00; /* azul */
+  border-radius: 4px;
+}
+#contenedor-tarjetas2::-webkit-scrollbar-track {
+  background: #f2c582;
+}
+
+#contenedor-tarjetas3::-webkit-scrollbar-thumb {
+  background: #ffee58 ; /* azul */
+  border-radius: 4px;
+}
+#contenedor-tarjetas3::-webkit-scrollbar-track {
+  background: #ddd8a8;
+}
+
+#contenedor-tarjetas4::-webkit-scrollbar-thumb {
+  background: #00e676 ; /* azul */
+  border-radius: 4px;
+}
+#contenedor-tarjetas4::-webkit-scrollbar-track {
+  background: #bfecdc;
 }

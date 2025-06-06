@@ -37,14 +37,18 @@ export class ModalDetallesIndicadoresEtapaComponent {
     this.cargarOportunidades();
   }
 
-    cargarOportunidades() {
+cargarOportunidades() {
   this.oportunidadesService.getOportunidades(
     this.loginService.obtenerIdEmpresa(),
     this.loginService.obtenerIdUsuario(),
     1 
   ).subscribe({
     next: (data) => {
-      this.oportunidades = data;
+      this.oportunidades = data.sort((a: Oportunidad, b: Oportunidad) => {
+        const fechaA = a.fechaEstimadaCierreOriginal ? new Date(a.fechaEstimadaCierreOriginal).getTime() : 0;
+        const fechaB = b.fechaEstimadaCierreOriginal ? new Date(b.fechaEstimadaCierreOriginal).getTime() : 0;
+        return fechaB - fechaA;
+      });
     },
     error: (error) => {
       console.error('Error al cargar oportunidades', error);

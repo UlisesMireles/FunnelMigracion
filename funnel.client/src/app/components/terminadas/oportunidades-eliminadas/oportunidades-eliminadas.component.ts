@@ -58,7 +58,7 @@ export class OportunidadesEliminadasComponent {
     { key: 'nombreEjecutivo', isCheck: false, valor: 'Ejecutivo', isIgnore: true, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'monto', isCheck: true, valor: 'Monto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
     { key: 'probabilidad', isCheck: false, valor: 'Probabilidad', isIgnore: true, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'fechaRegistro', isCheck: true, valor: 'Fecha Inicio', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
+    { key: 'fechaRegistro', isCheck: false, valor: 'Fecha Inicio', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
     { key: 'fechaEstimadaCierre', isCheck: true, valor: 'Fecha Cierre', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
     { key: 'fechaEstimadaCierreOriginal', isCheck: false, valor: 'Cierre Estimado', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
     { key: 'diasFunnelOriginal', isCheck: true, valor: 'Días Funnel', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },

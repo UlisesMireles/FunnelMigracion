@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
-import { SectoresDetalles, RequestGraficasDto } from '../../../../interfaces/graficas';
+import { SectoresDetalles, RequestGraficasDto , Sectores} from '../../../../interfaces/graficas';
 import { GraficasService } from '../../../../services/graficas.service';
 import { LoginService } from '../../../../services/login.service';
 
@@ -16,7 +16,6 @@ export class ModalDetallesOportunidadesPorSectorComponent {
   @Output() closeModal = new EventEmitter<void>();
 
   oportunidades: SectoresDetalles[] = [];
-  loading: boolean = true;
   maximized: boolean = false;
   nombreSector: string = '';
 
@@ -33,11 +32,11 @@ export class ModalDetallesOportunidadesPorSectorComponent {
   }
 
   onDialogShow() {
-    this.cargarDetalles();
+  this.cargarNombreSector(); 
+  this.cargarDetalles();  
   }
 
     cargarDetalles() {
-    this.loading = true;
     const requestData: RequestGraficasDto = {
       idEmpresa: this.loginService.obtenerIdEmpresa(),
       idUsuario: this.loginService.obtenerIdUsuario()
@@ -50,12 +49,11 @@ export class ModalDetallesOportunidadesPorSectorComponent {
             ...oportunidad,
             fechaEstimadaCierre: this.parsearFecha(oportunidad.fechaEstimadaCierre)
           }));
-          this.loading = false;
+
           this.cdr.detectChanges();
         },
         error: (error) => {
           console.error('Error al cargar detalles del sector:', error);
-          this.loading = false;
         }
       });
   }
@@ -97,6 +95,8 @@ export class ModalDetallesOportunidadesPorSectorComponent {
   }
 
   close() {
+    this.oportunidades = []; 
+    this.nombreSector = '';
     this.visible = false;
     this.visibleChange.emit(this.visible);
     this.closeModal.emit();
@@ -118,5 +118,38 @@ export class ModalDetallesOportunidadesPorSectorComponent {
   isSorted(columnKey: string): boolean {
     return false;
   }
+
+  // En tu componente
+cargarNombreSector() {
+  const requestData: RequestGraficasDto = {
+    idEmpresa: this.loginService.obtenerIdEmpresa(),
+    idUsuario: this.loginService.obtenerIdUsuario()
+  };
+
+  this.graficasService.obtenerOportunidadesPorSector(requestData)
+    .subscribe({
+      next: (sectores: Sectores[]) => {
+        const sectorEncontrado = sectores.find(s => s.idSector === this.idSector);
+        if (sectorEncontrado) {
+          this.nombreSector = sectorEncontrado.nombreSector;
+          this.cdr.detectChanges();
+        }
+      },
+      error: (error) => {
+        console.error('Error al obtener nombre del sector:', error);
+      }
+    });
+}
+
+getIniciales(texto: string, esNombre: boolean = true): string {
+  const partes = texto.split(' ');
+  
+  if (esNombre) {
+    const iniciales = partes.map(part => part[0].toUpperCase()).join('');
+    return iniciales.length > 3 ? iniciales.substring(0, 3) : iniciales;
+  } else {
+    return partes.map(part => part[0].toUpperCase()).join('');
+  }
+}
 
 }

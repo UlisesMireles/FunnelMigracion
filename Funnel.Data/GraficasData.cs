@@ -205,7 +205,8 @@ namespace Funnel.Data
                             FechaEstimadaCierre = ComprobarNulos.CheckStringNull(reader["FechaEstimadaCierre"]),
                             MontoNormalizado = ComprobarNulos.CheckDecimalNull(reader["MontoNormalizado"]),
                             Probabilidad = ComprobarNulos.CheckStringNull(reader["Probabilidad"]),
-                            Stage = ComprobarNulos.CheckStringNull(reader["Stage"])
+                            Stage = ComprobarNulos.CheckStringNull(reader["Stage"]),
+                            TipoProyectoAbreviatura = ComprobarNulos.CheckStringNull(reader["Abreviatura"]),
                         };
                         result.Add(dto);
                     }

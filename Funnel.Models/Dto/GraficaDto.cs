@@ -50,5 +50,6 @@ namespace Funnel.Models.Dto
         public decimal? MontoNormalizado { get; set; }
         public string? Probabilidad { get; set; }
         public string? Stage { get; set; }
+        public string? TipoProyectoAbreviatura { get; set; }
     }
 }

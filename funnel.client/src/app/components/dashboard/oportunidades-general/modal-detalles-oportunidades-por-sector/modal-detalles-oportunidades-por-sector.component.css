@@ -165,13 +165,7 @@ th.sort-active p-sortIcon {
   font-weight: bold;
 }
 
-.enlace-sector {
-  color: #0066cc;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.enlace-sector:hover {
-  text-decoration: underline;
-  color: #004499;
+.custom-footer td.text-right {
+  text-align: right !important;
+  padding-right: 1rem !important;
 }

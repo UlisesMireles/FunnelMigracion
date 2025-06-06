@@ -20,7 +20,7 @@
   <ng-template pTemplate="header">
     <div class="dialog-header-content">
       <label class="margen titulo-dialogo">
-        Detalles de Oportunidades para Sector: {{nombreSector}}
+        Oportunidades en Proceso por Sector Detalle: {{nombreSector}}
       </label>
     </div>
   </ng-template>
@@ -29,43 +29,40 @@
     <div class="contenedor-tabla-dialogo">
       <p-table #dt [value]="oportunidades" [paginator]="true" [rows]="10" 
         [rowsPerPageOptions]="[10, 25, 50]" [totalRecords]="oportunidades.length"
-        styleClass="tabla-estilizada" [loading]="loading">
+        styleClass="tabla-estilizada">
         
         <ng-template pTemplate="header">
           <tr class="custom-header">
             <th>Prospecto</th>
             <th>Oportunidad</th>
-            <th>Tipo Proyecto</th>
+            <th>Tipo </th>
             <th>Ejecutivo</th>
             <th>Monto</th>
-            <th>Monto Normalizado</th>
-            <th>Fecha Cierre</th>
-            <th>Probabilidad</th>
-            <th>Etapa</th>
+            <th>Cierre Estimado</th>
           </tr>
         </ng-template>
 
         <ng-template pTemplate="body" let-oportunidad>
-          <tr class="fila-datos">
+        <tr class="fila-datos">
             <td>{{ oportunidad.nombreProspecto }}</td>
             <td>{{ oportunidad.nombreOportunidad }}</td>
-            <td>{{ oportunidad.tipoProyecto }}</td>
-            <td>{{ oportunidad.ejecutivo }}</td>
-            <td>{{ oportunidad.monto | currency:'MXN':'symbol':'1.2-2' }}</td>
-            <td>{{ oportunidad.montoNormalizado | currency:'MXN':'symbol':'1.2-2' }}</td>
+            <td pTooltip="{{oportunidad.tipoProyecto}}" tooltipPosition="top">
+            {{ oportunidad.tipoProyectoAbreviatura }}
+            </td>
+            <td pTooltip="{{oportunidad.ejecutivo}}" tooltipPosition="top" class="celda-iniciales">
+            {{ getIniciales(oportunidad.ejecutivo, true) }}
+            </td>
+            <td class="text-right">{{ oportunidad.monto | currency:'MXN':'symbol':'1.2-2' }}</td>
             <td>{{ oportunidad.fechaEstimadaCierre | date:'dd/MM/yyyy' }}</td>
-            <td>{{ oportunidad.probabilidad }}</td>
-            <td>{{ oportunidad.stage }}</td>
-          </tr>
+        </tr>
         </ng-template>
         
         <ng-template pTemplate="footer">
-          <tr class="custom-footer">
+        <tr class="custom-footer">
             <td colspan="4">Total oportunidades: {{ oportunidades.length }}</td>
-            <td>{{ calcularSumaMontos() | currency:'MXN':'symbol':'1.2-2' }}</td>
-            <td>{{ calcularSumaMontosNormalizados() | currency:'MXN':'symbol':'1.2-2' }}</td>
+            <td class="text-right">{{ calcularSumaMontos() | currency:'MXN':'symbol':'1.2-2' }}</td>
             <td colspan="3"></td>
-          </tr>
+        </tr>
         </ng-template>
       </p-table>
     </div>

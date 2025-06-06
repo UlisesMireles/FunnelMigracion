@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { GraficasDto, RequestGraficasDto, AgenteDto } from '../interfaces/graficas';
+import { GraficasDto, RequestGraficasDto, AgenteDto, Sectores, SectoresDetalles } from '../interfaces/graficas';
 
 @Injectable({
   providedIn: 'root'
@@ -155,4 +155,19 @@ export class GraficasService {
       name: 'Monto Normalizado',
     };
   }
+
+  obtenerOportunidadesPorSector(data: RequestGraficasDto): Observable<Sectores[]> {
+    const requestData = {
+      ...data,
+      bandera: 'SEL-AGENTE-SECTOR' 
+    };
+    return this.http.post<Sectores[]>(`${this.baseUrl}api/Graficas/ObtenerOportunidadesPorSector`, requestData);
+  }
+
+  obtenerDetalleOportunidadesSector(idSector: number, data: RequestGraficasDto): Observable<SectoresDetalles[]> {
+      return this.http.post<SectoresDetalles[]>(
+        `${this.baseUrl}api/Graficas/ObtenerDetalleOportunidadesSector/${idSector}`, 
+        data
+      );
+    }
 }

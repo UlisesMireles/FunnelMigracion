@@ -5,6 +5,7 @@ import { LoginService } from '../../../services/login.service';
 import { GraficasService } from '../../../services/graficas.service';
 import { GraficasDto, RequestGraficasDto } from '../../../interfaces/graficas';
 import { ModalDetallesIndicadoresEtapaComponent } from './modal-detalles-indicadores-etapa/modal-detalles-indicadores-etapa.component'; 
+
 @Component({
   selector: 'app-oportunidades-general',
   standalone: false,
@@ -16,6 +17,7 @@ import { ModalDetallesIndicadoresEtapaComponent } from './modal-detalles-indicad
 export class OportunidadesGeneralComponent {
   quadrants: { cards: any[] }[] = [];
   modalIndicadoresVisible: boolean = false;
+  modalSectoresVisible: boolean = false;
   get dropListIds() {
     return this.quadrants.map((_, index) => `dropList${index}`);
   }
@@ -130,4 +132,12 @@ openDetailsModal() {
   onModalIndicadoresClose() {
     this.modalIndicadoresVisible = false;
   }
+
+  openSectoresModal() {
+  this.modalSectoresVisible = true;
+}
+
+onModalSectoresClose() {
+  this.modalSectoresVisible = false;
+}
 }

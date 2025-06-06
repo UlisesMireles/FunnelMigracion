@@ -21,3 +21,23 @@ export interface AgenteDto {
     montoNormalizado?: number;
     archivoImagen?: string;
 }
+
+export interface Sectores{
+    idSector: number;
+    nombreSector: string;  
+    monto: number;        
+    montoNormalizado: number;
+}
+
+export interface SectoresDetalles{
+    idOportunidad: number;
+    nombreProspecto: string;     
+    nombreOportunidad: string;
+    tipoProyecto: string;        
+    ejecutivo: string;          
+    monto: number;
+    fechaEstimadaCierre: string;
+    montoNormalizado: number;
+    probabilidad: string;
+    stage: string;
+}

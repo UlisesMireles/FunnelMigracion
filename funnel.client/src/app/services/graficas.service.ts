@@ -70,6 +70,21 @@ export class GraficasService {
       }
     };
   }
+  createPieMontoData(items: GraficasDto[]) {
+    return {
+      type: 'pie',
+      values: items.map(item => item.valor),
+      labels: items.map(item => item.label ?? 'Sin etiqueta'),
+      text: items.map(item => item.valor.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })),
+      textposition: "outside",
+      textinfo: "label+text",
+      hovertemplate: '%{label}<br>(%{percent}<extra></extra>)',
+      automargin: true,
+      marker: {
+        color: items.map(item => item.coloreSerie ?? this.getRandomColor())
+      }
+    };
+  }
 
   createPieLayout() {
     return {
@@ -107,6 +122,7 @@ export class GraficasService {
       }
     };
   }
+  
   createFunnelData(items: GraficasDto[]) {
     return {
       type: 'funnel',
@@ -156,6 +172,20 @@ export class GraficasService {
       }
     };
   }
+  createBarPorcentajeData(items: GraficasDto[]) {
+  return {
+    type: 'bar',
+    y: items.map(item => item.valor),
+    x: items.map(item => item.label ?? 'Sin etiqueta'),
+    text: items.map(item => item.valor.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })), 
+    textposition: 'auto', 
+    hovertemplate: '<b>%{x}</b><br> (<b>%{customdata}</b><extra></extra>)', 
+    customdata: items.map(item => `${item.porcentaje?.toFixed(2) ?? 0}%`), 
+    marker: {
+      color: items.map(item => item.coloreSerie ?? this.getRandomColor())
+    }
+  };
+}
   createBarNormalizadoData(items: GraficasDto[]) {
     return {
       type: 'bar',

@@ -216,5 +216,90 @@ namespace Funnel.Data
 
             return result;
         }
+        public async Task<List<AgenteDto>> ObtenerAgentesPorAnio(RequestGrafica data)
+        {
+            List<AgenteDto> result = new List<AgenteDto>();
+            IList<ParameterSQl> list = new List<ParameterSQl>
+            {
+                DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, data.IdEmpresa),
+                DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, data.Bandera),
+                DataBase.CreateParameterSql("@pIdEstatusOportunidad", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, data.IdEstatusOportunidad),
+                DataBase.CreateParameterSql("@pAnio", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, data.Anio),
+            };
+            try
+            {
+                using (IDataReader reader = await DataBase.GetReaderSql("F_OportunidadesGraficasPorEstatus", CommandType.StoredProcedure, list, _connectionString))
+                {
+                    while (reader.Read())
+                    {
+                        var dto = new AgenteDto();
+
+                        dto.IdAgente = ComprobarNulos.CheckIntNull(reader["IdUsuario"]);
+                        dto.Nombre = ComprobarNulos.CheckStringNull(reader["NombreCompleto"]);
+                        dto.TotalAgente = ComprobarNulos.CheckDecimalNull(reader["TotalAgente"]);
+                        dto.MontoNormalizado = ComprobarNulos.CheckDecimalNull(reader["MontoNormalizado"]);
+                        dto.ArchivoImagen = ComprobarNulos.CheckStringNull(reader["ArchivoImagen"]);
+
+                        result.Add(dto);
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener agentes por anio", ex);
+
+            }
+
+            return result;
+        }
+        public async Task<List<GraficaDto>> ObtenerGraficaAgentesPorAnio(RequestGrafica data)
+        {
+            List<GraficaDto> result = new List<GraficaDto>();
+            IList<ParameterSQl> list = new List<ParameterSQl>
+            {
+                DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, data.IdEmpresa),
+                DataBase.CreateParameterSql("@IdUsuario", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, data.IdUsuario ?? 0),
+                DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, data.Bandera ?? ""),
+                DataBase.CreateParameterSql("@pIdEstatusOportunidad", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, data.IdEstatusOportunidad),
+                DataBase.CreateParameterSql("@pAnio", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, data.Anio ?? 0),
+            };
+            try
+            {
+                using (IDataReader reader = await DataBase.GetReaderSql("F_OportunidadesGraficasPorEstatus", CommandType.StoredProcedure, list, _connectionString))
+                {
+                    while (reader.Read())
+                    {
+                        var dto = new GraficaDto();
+
+                        if (data.Bandera == "SEL-AGENTE-CLIENTES")
+                        {
+                            dto.Label = ComprobarNulos.CheckStringNull(reader["Nombre"]);
+                            dto.Valor = ComprobarNulos.CheckDecimalNull(reader["TotalAgente"]);
+                            dto.ColoreSerie = ComprobarNulos.CheckStringNull(reader["ColorNormalizado"]);
+                            dto.MontoNormalizado = ComprobarNulos.CheckDecimalNull(reader["MontoNormalizado"]);
+
+                            result.Add(dto);
+                        }
+                        else
+                        {
+                            dto.Label = ComprobarNulos.CheckStringNull(reader["Descripcion"]);
+                            dto.Valor = ComprobarNulos.CheckDecimalNull(reader["Monto"]);
+                            dto.Porcentaje = ComprobarNulos.CheckDecimalNull(reader["Porcentaje"]);
+                            dto.MontoNormalizado = ComprobarNulos.CheckDecimalNull(reader["MontoNormalizado"]);
+
+                            result.Add(dto);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener la gráfica de agentes por anio", ex);
+
+            }
+
+            return result;
+        }
     }
 }

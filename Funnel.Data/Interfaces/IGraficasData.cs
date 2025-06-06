@@ -8,6 +8,8 @@ namespace Funnel.Data.Interfaces
         Task<List<AgenteDto>> ObtenerAgentes(RequestGrafica data);
         public Task<List<AniosDto>> Anios(int idEmpresa, int idEstatusOportunidad);
         Task<List<GraficaDto>> ObtenerGraficaGanadasAnio(RequestGrafica data);
+        Task<List<AgenteDto>> ObtenerAgentesPorAnio(RequestGrafica data);
+        Task<List<GraficaDto>> ObtenerGraficaAgentesPorAnio(RequestGrafica data);
 
     }
 }

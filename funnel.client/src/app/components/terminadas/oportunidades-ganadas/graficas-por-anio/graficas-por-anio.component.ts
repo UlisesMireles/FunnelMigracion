@@ -91,7 +91,7 @@ quadrants: { cards: any[] }[] = [];
     this.graficasService.obtenerGraficaGanadasData(request).subscribe({
       next: (response: GraficasDto[]) => {
           const filtrados = response.filter(item => item.valor > 0);
-          const dataAGraficar = [this.graficasService.createBarData(filtrados)];
+          const dataAGraficar = [this.graficasService.createBarPorcentajeData(filtrados)];
           const layOutGrafica = this.graficasService.createBarLayout();
           this.setGraficaData(0, 0, dataAGraficar, layOutGrafica);
         },
@@ -112,7 +112,7 @@ quadrants: { cards: any[] }[] = [];
     };
     this.graficasService.obtenerGraficaGanadasData(request).subscribe({
       next: (response: GraficasDto[]) => {
-        const dataAGraficar = [this.graficasService.createPieData(response)];
+        const dataAGraficar = [this.graficasService.createPieMontoData(response)];
         const layOutGrafica = this.graficasService.createPieLayout();
         this.setGraficaData(1, 0, dataAGraficar, layOutGrafica);
       },

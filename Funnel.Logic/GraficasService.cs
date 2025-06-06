@@ -31,5 +31,13 @@ namespace Funnel.Logic
         {
             return await _graficasData.ObtenerGraficaGanadasAnio(data);
         }
+        public async Task<List<AgenteDto>> ObtenerAgentesPorAnio(RequestGrafica data)
+        {
+            return await _graficasData.ObtenerAgentesPorAnio(data);
+        }
+        public async Task<List<GraficaDto>> ObtenerGraficaAgentesPorAnio(RequestGrafica data)
+        {
+            return await _graficasData.ObtenerGraficaAgentesPorAnio(data);
+        }
     }
 }

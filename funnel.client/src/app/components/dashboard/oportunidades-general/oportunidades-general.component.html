@@ -11,6 +11,9 @@
           <div *ngIf="card.titulo === 'Indicadores por Etapa'" class="position-absolute bottom-0 start-0 p-2">
           <a href="javascript:void(0)" (click)="openDetailsModal()" class="text-primary">Ver detalles</a>       
         </div>
+        <div *ngIf="card.titulo === 'Oportunidades por Sector'" class="position-absolute bottom-0 start-0 p-2">
+          <a href="javascript:void(0)" (click)="openSectoresModal()" class="text-primary">Ver detalles</a>       
+        </div>
       </div>
     </div>
   </div>
@@ -21,3 +24,15 @@
   [(visible)]="modalIndicadoresVisible"
   (closeModal)="onModalIndicadoresClose()">
 </app-modal-detalles-indicadores-etapa>
+
+<app-modal-oportunidades-por-sector
+  [(visible)]="modalSectoresVisible"
+  (closeModal)="onModalSectoresClose()"
+  (abrirDetalle)="abrirModalDetalles($event)">
+</app-modal-oportunidades-por-sector>
+
+<app-modal-detalles-oportunidades-por-sector
+  [(visible)]="mostrarModalDetalles"
+  [idSector]="sectorSeleccionado !== null ? sectorSeleccionado : 0"
+  (closeModal)="onModalDetallesClose()">
+</app-modal-detalles-oportunidades-por-sector>

@@ -5,6 +5,7 @@ import { LoginService } from '../../../services/login.service';
 import { GraficasService } from '../../../services/graficas.service';
 import { GraficasDto, RequestGraficasDto } from '../../../interfaces/graficas';
 import { ModalDetallesIndicadoresEtapaComponent } from './modal-detalles-indicadores-etapa/modal-detalles-indicadores-etapa.component'; 
+
 @Component({
   selector: 'app-oportunidades-general',
   standalone: false,
@@ -16,6 +17,9 @@ import { ModalDetallesIndicadoresEtapaComponent } from './modal-detalles-indicad
 export class OportunidadesGeneralComponent {
   quadrants: { cards: any[] }[] = [];
   modalIndicadoresVisible: boolean = false;
+  modalSectoresVisible: boolean = false;
+  mostrarModalDetalles: boolean = false;
+  sectorSeleccionado: number | null = null;
   get dropListIds() {
     return this.quadrants.map((_, index) => `dropList${index}`);
   }
@@ -125,8 +129,29 @@ openDetailsModal() {
   this.modalIndicadoresVisible = true;
 }
 
-  // Método para cerrar (como en tu ejemplo)
   onModalIndicadoresClose() {
     this.modalIndicadoresVisible = false;
   }
+
+  openSectoresModal() {
+  this.modalSectoresVisible = true;
+}
+
+onModalSectoresClose() {
+  this.modalSectoresVisible = false;
+}
+
+abrirModalDetalles(idSector: number): void {
+
+  setTimeout(() => {
+    this.sectorSeleccionado = idSector;
+    this.mostrarModalDetalles = true;
+  });
+  this.modalSectoresVisible = false;
+}
+
+  onModalDetallesClose(): void {
+    this.mostrarModalDetalles = false;
+  }
+
 }

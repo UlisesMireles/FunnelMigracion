@@ -43,6 +43,8 @@ export class SeguimientoOportunidadesComponent {
 
   visibleRespuesta = false;
   respuestaAsistente: string = '';
+  maximizedRespuesta: boolean = false;
+
 
   copiado: boolean = false;
 
@@ -216,9 +218,10 @@ export class SeguimientoOportunidadesComponent {
       Monto: ${this.oportunidad.monto}
       Probabilidad: ${this.oportunidad.probabilidad}%
       Ejecutivo: ${this.oportunidad.nombreEjecutivo}
+      Dias sin actividad: ${this.oportunidad.fechaModificacion}
         `.trim();
 
-    const pregunta = `Analiza la siguiente información de la oportunidad:\n\n${resumenOportunidad}\n\nHistorial de seguimiento:\n${historialTexto}`;
+    const pregunta = `Información de la oportunidad:\n\n${resumenOportunidad}\n\nHistorial de seguimiento:\n${historialTexto}`;
 
     const body: ConsultaAsistenteDto = {
       exitoso: true,
@@ -243,7 +246,7 @@ export class SeguimientoOportunidadesComponent {
     this.openIaService.AsistenteHistorico(body).subscribe({
       next: res => {
         this.visibleRespuesta = true;
-        this.respuestaAsistente = res.respuesta || 'No se recibió respuesta.';
+        this.respuestaAsistente = this.limpiarRespuesta(res.respuesta || 'No se recibió respuesta.');
         this.loading = false;
       },
       error: err => {
@@ -289,6 +292,10 @@ export class SeguimientoOportunidadesComponent {
     this.copiado = true;
     setTimeout(() => this.copiado = false, 2000);
   });
+}
+
+limpiarRespuesta(respuesta: string): string {
+  return respuesta.replace(/```[\s\S]*?\n([\s\S]*?)```/g, '$1').trim();
 }
 
 

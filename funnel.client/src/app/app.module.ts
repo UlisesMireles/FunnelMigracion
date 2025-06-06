@@ -130,8 +130,9 @@ import { PlotlyModule } from 'angular-plotly.js';
 import { OportunidadesGeneralComponent } from './components/dashboard/oportunidades-general/oportunidades-general.component';
 import { AdminDashboardComponent } from './components/dashboard/admin-dashboard/admin-dashboard.component';
 import { OportunidadesPorAgenteComponent } from './components/dashboard/oportunidades-por-agente/oportunidades-por-agente.component';
-
+import { GraficasPorAnioComponent } from './components/terminadas/oportunidades-ganadas/graficas-por-anio/graficas-por-anio.component';
 import { es } from 'plotly.js-locales';
+import { GraficasPorAgenteComponent } from './components/terminadas/oportunidades-ganadas/graficas-por-agente/graficas-por-agente.component';
 import { ModalDetallesIndicadoresEtapaComponent } from './components/dashboard/oportunidades-general/modal-detalles-indicadores-etapa/modal-detalles-indicadores-etapa.component';
 import { ModalOportunidadesPorSectorComponent } from './components/dashboard/oportunidades-general/modal-oportunidades-por-sector/modal-oportunidades-por-sector.component';
 import { ModalDetallesOportunidadesPorSectorComponent } from './components/dashboard/oportunidades-general/modal-detalles-oportunidades-por-sector/modal-detalles-oportunidades-por-sector.component';
@@ -204,6 +205,9 @@ registerLocaleData(localeEs, 'es-MX');
     OportunidadesGeneralComponent,
     AdminDashboardComponent,
     OportunidadesPorAgenteComponent,
+    GraficasPorAnioComponent,
+    GraficasPorAgenteComponent,
+    ModalDetallesIndicadoresEtapaComponent,
     ModalDetallesIndicadoresEtapaComponent,
     ModalOportunidadesPorSectorComponent,
     ModalDetallesOportunidadesPorSectorComponent

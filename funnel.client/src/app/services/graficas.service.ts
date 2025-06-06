@@ -22,7 +22,23 @@ export class GraficasService {
   obtenerAgentesData(data: RequestGraficasDto): Observable<AgenteDto[]> {
     return this.http.post<AgenteDto[]>(`${this.baseUrl}api/Graficas/ObtenerAgentes`, data);
   }
-
+  obtenerAnios(idEmpresa: number, idEstatusOportunidad: number): Observable<any> {
+  return this.http.get(`${this.baseUrl}api/Graficas/Anios`, {
+    params: { 
+      IdEmpresa: idEmpresa.toString(),
+      IdEstatusOportunidad: idEstatusOportunidad.toString()
+    }
+  });
+}
+  obtenerGraficaGanadasData(data: RequestGraficasDto): Observable<GraficasDto[]> {
+    return this.http.post<GraficasDto[]>(`${this.baseUrl}api/Graficas/ObtenerGraficaGanadasAnio`, data);
+  }
+  obtenerAgentesPorAnioData(data: RequestGraficasDto): Observable<AgenteDto[]> {
+    return this.http.post<AgenteDto[]>(`${this.baseUrl}api/Graficas/ObtenerAgentesPorAnio`, data);
+  }
+  obtenerGraficaAgentesPorAnioData(data: RequestGraficasDto): Observable<GraficasDto[]> {
+    return this.http.post<GraficasDto[]>(`${this.baseUrl}api/Graficas/ObtenerGraficaAgentesPorAnio`, data);
+  }
   getRandomColor(): string {
     let color = '#';
     let letters = '0123456789ABCDEF';
@@ -48,6 +64,23 @@ export class GraficasService {
     tabla:[]
   };
 }
+createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
+  return {
+    id,
+    titulo,
+    tipo,
+    infoCargada: false,
+    grafica: {
+      data: [],
+      layout: {},
+      config: { displaylogo: false, responsive: true, locale: 'es-ES', scrollZoom: false, displayModeBar: true,
+      modeBarButtonsToRemove: ['sendDataToCloud', 'editInChartStudio', 'zoom2d', 'pan2d', 'select2d', 'lasso2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d', 'resetScale2d', 'hoverClosestCartesian', 'hoverCompareCartesian', 'toggleSpikelines']
+       }
+    },
+    tabla:[]
+  };
+}
+
 
   createPieData(items: GraficasDto[]) {
     return {
@@ -56,6 +89,21 @@ export class GraficasService {
       labels: items.map(item => item.label ?? 'Sin etiqueta'),
       textposition: "outside",
       textinfo: "label+percent",
+      automargin: true,
+      marker: {
+        color: items.map(item => item.coloreSerie ?? this.getRandomColor())
+      }
+    };
+  }
+  createPieMontoData(items: GraficasDto[]) {
+    return {
+      type: 'pie',
+      values: items.map(item => item.valor),
+      labels: items.map(item => item.label ?? 'Sin etiqueta'),
+      text: items.map(item => item.valor.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })),
+      textposition: "outside",
+      textinfo: "label+text",
+      hovertemplate: '%{label}<br>(%{percent}<extra></extra>)',
       automargin: true,
       marker: {
         color: items.map(item => item.coloreSerie ?? this.getRandomColor())
@@ -99,6 +147,7 @@ export class GraficasService {
       }
     };
   }
+  
   createFunnelData(items: GraficasDto[]) {
     return {
       type: 'funnel',
@@ -148,6 +197,20 @@ export class GraficasService {
       }
     };
   }
+  createBarPorcentajeData(items: GraficasDto[]) {
+  return {
+    type: 'bar',
+    y: items.map(item => item.valor),
+    x: items.map(item => item.label ?? 'Sin etiqueta'),
+    text: items.map(item => item.valor.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })), 
+    textposition: 'auto', 
+    hovertemplate: '<b>%{x}</b><br> (<b>%{customdata}</b><extra></extra>)', 
+    customdata: items.map(item => `${item.porcentaje?.toFixed(2) ?? 0}%`), 
+    marker: {
+      color: items.map(item => item.coloreSerie ?? this.getRandomColor())
+    }
+  };
+}
   createBarNormalizadoData(items: GraficasDto[]) {
     return {
       type: 'bar',
@@ -157,6 +220,7 @@ export class GraficasService {
       name: 'Monto Normalizado',
     };
   }
+  
 
   obtenerOportunidadesPorSector(data: RequestGraficasDto): Observable<Sectores[]> {
     const requestData = {

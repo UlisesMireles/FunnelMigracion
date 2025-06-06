@@ -42,7 +42,7 @@ export class OportunidadesGanadasComponent {
   selectedYear: string = new Date().getFullYear().toString();
   months: string[] = [];
   selectedMonth: string = "Todos los Meses";
-
+  titulo: string = 'Oportunidades Ganadas';
   lsColumnasAMostrar: any[] = [
    
   ];
@@ -418,5 +418,5 @@ export class OportunidadesGanadasComponent {
 esNumero(cadena: string): boolean {
   return !isNaN(Number(cadena)) && cadena.trim() !== '';
 }
-  
+
 }

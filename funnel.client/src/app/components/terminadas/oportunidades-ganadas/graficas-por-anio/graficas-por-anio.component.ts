@@ -41,29 +41,26 @@ quadrants: { cards: any[] }[] = [];
     this.consultarGraficaVentasAnuales();
   }
  obtenerAniosDisponibles(): void {
-    const idEmpresa = this.sessionService.obtenerIdEmpresa();
-    const idEstatusOportunidad = 2;
-    const request: RequestGraficasDto = {
-      bandera: 'SEL-ANIOS-DISPONIBLES',
-      idEmpresa,
-      idEstatusOportunidad,
-    };
+  const idEmpresa = this.sessionService.obtenerIdEmpresa();
+  const idEstatusOportunidad = 2;
 
-    this.graficasService.obtenerAnios(idEmpresa, idEstatusOportunidad).subscribe({
-      next: (response: any[]) => {
-        this.aniosDisponibles = response.map(item => item.anio);
-        if (this.aniosDisponibles.length > 0) {
-          this.anioSeleccionado = Math.max(...this.aniosDisponibles);
-          this.consultarTodasGraficas();
-        }
-        this.loading = false;
-      },
-      error: (err) => {
-        console.error('Error al obtener años disponibles:', err);
-        this.loading = false;
+  this.graficasService.obtenerAnios(idEmpresa, idEstatusOportunidad).subscribe({
+    next: (response: any[]) => {
+      this.aniosDisponibles = response.map(item => Number(item.anio));
+
+      if (this.aniosDisponibles.length > 0) {
+        this.anioSeleccionado = Math.max(...this.aniosDisponibles); // asegura que sea number
+        this.consultarTodasGraficas();
       }
-    });
-  }
+
+      this.loading = false;
+    },
+    error: (err) => {
+      console.error('Error al obtener años disponibles:', err);
+      this.loading = false;
+    }
+  });
+}
   onAnioChange(): void {
     this.consultarTodasGraficas();
   }

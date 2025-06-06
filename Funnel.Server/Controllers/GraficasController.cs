@@ -1,4 +1,5 @@
-﻿using Funnel.Logic.Interfaces;
+﻿using Funnel.Logic;
+using Funnel.Logic.Interfaces;
 using Funnel.Models.Base;
 using Funnel.Models.Dto;
 using Microsoft.AspNetCore.Http;
@@ -31,6 +32,30 @@ namespace Funnel.Server.Controllers
         public async Task<ActionResult<List<AgenteDto>>> ObtenerAgentes(RequestGrafica data)
         {
             var result = await _graficasService.ObtenerAgentes(data);
+            return Ok(result);
+        }
+        [HttpGet("[action]/")]
+        public async Task<ActionResult<List<AniosDto>>> Anios(int IdEmpresa, int IdEstatusOportunidad)
+        {
+            var respuesta = await _graficasService.Anios(IdEmpresa, IdEstatusOportunidad);
+            return Ok(respuesta);
+        }
+        [HttpPost("[action]/")]
+        public async Task<ActionResult<List<GraficaDto>>> ObtenerGraficaGanadasAnio(RequestGrafica data)
+        {
+            var result = await _graficasService.ObtenerGraficaGanadasAnio(data);
+            return Ok(result);
+        }
+        [HttpPost("[action]/")]
+        public async Task<ActionResult<List<AgenteDto>>> ObtenerAgentesPorAnio(RequestGrafica data)
+        {
+            var result = await _graficasService.ObtenerAgentesPorAnio(data);
+            return Ok(result);
+        }
+        [HttpPost("[action]/")]
+        public async Task<ActionResult<List<GraficaDto>>> ObtenerGraficaAgentesPorAnio(RequestGrafica data)
+        {
+            var result = await _graficasService.ObtenerGraficaAgentesPorAnio(data);
             return Ok(result);
         }
         [HttpPost("[action]/")]

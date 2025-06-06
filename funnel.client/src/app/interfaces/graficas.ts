@@ -13,6 +13,8 @@ export interface RequestGraficasDto {
     bandera?: string;
     idUsuario?: number;
     idEmpresa?: number;
+    idEstatusOportunidad?: number;
+    anio?: number;
 }
 export interface AgenteDto {
     idAgente: number;
@@ -21,7 +23,11 @@ export interface AgenteDto {
     montoNormalizado?: number;
     archivoImagen?: string;
 }
-
+export interface AniosDto{
+    idEmpresa: number;
+    idEstatusOportunidad: number;
+    anio: number;
+}
 export interface Sectores{
     idSector: number;
     nombreSector: string;  

@@ -21,6 +21,8 @@ namespace Funnel.Models.Dto
         public int IdEmpresa { get; set; }
         public string? Bandera { get; set; }
         public int? IdUsuario { get; set; }
+        public int? IdEstatusOportunidad { get; set; }
+        public int? Anio { get; set; }
     }
     public class AgenteDto
     {
@@ -31,26 +33,32 @@ namespace Funnel.Models.Dto
         public string? ArchivoImagen { get; set; }
 
     }
-    public class SectorDto
+    public class AniosDto
     {
-        public int IdSector { get; set; }
-        public string? NombreSector { get; set; }
-        public decimal Monto { get; set; }
-        public decimal MontoNormalizado { get; set; }
+        public int IdEmpresa { get; set; }
+        public int? IdEstatusOportunidad { get; set; }
+        public int? Anio { get; set; }
     }
-    public class OportunidadSectorDto
-    {
-        public int IdOportunidad { get; set; }
-        public string? NombreProspecto { get; set; }
-        public string? NombreOportunidad { get; set; }
-        public string? TipoProyecto { get; set; }
-        public string? Ejecutivo { get; set; }
-        public decimal Monto { get; set; }
-        public string? FechaEstimadaCierre { get; set; }
-        public decimal? MontoNormalizado { get; set; }
-        public string? Probabilidad { get; set; }
-        public string? Stage { get; set; }
-        public string? TipoProyectoAbreviatura { get; set; }
-        public string? Iniciales { get; set; }
+        public class SectorDto
+        {
+            public int IdSector { get; set; }
+            public string? NombreSector { get; set; }
+            public decimal Monto { get; set; }
+            public decimal MontoNormalizado { get; set; }
+        }
+        public class OportunidadSectorDto
+        {
+            public int IdOportunidad { get; set; }
+            public string? NombreProspecto { get; set; }
+            public string? NombreOportunidad { get; set; }
+            public string? TipoProyecto { get; set; }
+            public string? Ejecutivo { get; set; }
+            public decimal Monto { get; set; }
+            public string? FechaEstimadaCierre { get; set; }
+            public decimal? MontoNormalizado { get; set; }
+            public string? Probabilidad { get; set; }
+            public string? Stage { get; set; }
+            public string? TipoProyectoAbreviatura { get; set; }
+            public string? Iniciales { get; set; }
+        }
     }
-}

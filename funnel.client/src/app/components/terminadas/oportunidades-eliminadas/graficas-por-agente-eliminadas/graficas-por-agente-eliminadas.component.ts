@@ -43,12 +43,10 @@ quadrants: { cards: any[] }[] = [];
 
   this.graficasService.obtenerAnios(idEmpresa, idEstatusOportunidad).subscribe({
     next: (response: any[]) => {
-      this.aniosDisponibles = response
-      .filter(item => Number(item.anio) !== 0)
-      .map(item => {
-        const anio = Number(item.anio);
-        return { label: anio.toString(), value: anio };
-      });
+      this.aniosDisponibles = response.map(item => {
+      const anio = Number(item.anio);
+      return { label: anio === 0 ? 'Sin Fecha' : anio.toString(), value: anio };
+    });
 
       if (this.aniosDisponibles.length > 0) {
         const aniosSoloValores = this.aniosDisponibles.map(a => a.value);

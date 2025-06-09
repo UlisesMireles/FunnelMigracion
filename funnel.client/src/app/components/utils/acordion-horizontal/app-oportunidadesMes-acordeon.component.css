@@ -28,12 +28,13 @@
   transition: width 0.3s ease-in-out; /* Transición suave para el cambio de ancho (cuando se expande) */
   position: relative; /* Posicionamiento relativo para posicionar elementos internos si es necesario */
   overflow: hidden; /* Oculta el contenido que se salga del contenedor */
+  border-radius: 10px; /* Bordes redondeados */
 }
 
 /* Cuando el item está expandido */
 .item-acordeon.expandido {
   width: 25%; /* Ancho mayor para el estado expandido (ajusta según lo necesites) */
-    border-radius: 15px;
+  border-radius: 15px;
 }
 
 /* Encabezado del item (nombre del mes y botón) */
@@ -60,7 +61,7 @@
 
 .boton-toggle.colapsado {
   margin-top: 0px;
-  transform: translateY(-15px); 
+  transform: translate(5px, -10px); 
   margin-left: -7px;
 }
 
@@ -94,7 +95,7 @@
 /* Cada tarjeta individual */
 .tarjeta {
   background: #ffffff; /* Fondo blanco para cada tarjeta */
-  border-radius: 0px;  /* Sin redondeo en las esquinas */
+  border-radius: 15px;  /* Sin redondeo en las esquinas */
   padding: 10px;       /* Espaciado interno de 10px */
   text-align: center;  /* Centrado del texto */
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave para dar profundidad */

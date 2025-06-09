@@ -119,6 +119,7 @@ namespace Funnel.Data
                     var dto = new ComboProspectosDto();
                     dto.Id = ComprobarNulos.CheckIntNull(reader["IdProspecto"]);
                     dto.Nombre = ComprobarNulos.CheckStringNull(reader["Nombre"]);
+                    dto.FechaRegistro = ComprobarNulos.CheckDateTimeNull(reader["FechaRegistro"]);
                     result.Add(dto);
                 }
             }

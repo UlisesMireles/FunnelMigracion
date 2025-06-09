@@ -14,6 +14,7 @@ import { ModalOportunidadesService } from '../../../services/modalOportunidades.
 import { map } from 'rxjs/operators';
 import { Prospectos } from '../../../interfaces/prospecto';
 import { state } from '@angular/animations';
+import { CatalogoService } from '../../../services/catalogo.service';
 
 @Component({
   selector: 'app-oportunidades',
@@ -63,6 +64,9 @@ export class OportunidadesComponent {
     'Oportunidades Por Etapa',
     'Estadística Oportunidades por Etapa'
   ];
+  totalOportunidades: number = 0;
+  totalOportunidadesMes: number = 0;
+  totalProspectosMes: number = 0;
 
   lsTodasColumnas: any[] = [
     { key: 'idOportunidad', isCheck: false, valor: 'Id', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
@@ -91,8 +95,10 @@ export class OportunidadesComponent {
   disabledPdf: boolean = false;
 
   constructor(private oportunidadService: OportunidadesService, private messageService: MessageService, private cdr: ChangeDetectorRef,
-  private readonly loginService: LoginService, public dialog: MatDialog, private modalOportunidadesService: ModalOportunidadesService) { 
+    private readonly loginService: LoginService, public dialog: MatDialog, private modalOportunidadesService: ModalOportunidadesService,
+    private readonly catalogoService: CatalogoService) {
     this.loading = true;
+    this.catalogoService.cargarProspectos(this.loginService.obtenerIdEmpresa());
   }
 
   ngOnInit(): void {
@@ -145,6 +151,31 @@ export class OportunidadesComponent {
         this.loading = false;
       },
     });
+  }
+
+  llenarEtiquetas(): void {
+    this.catalogoService.cargarProspectos(this.loginService.obtenerIdEmpresa());
+    let prospecto = this.catalogoService.obtenerProspectos();
+    this.totalOportunidades = this.oportunidades.length;
+    const hoy = new Date();
+    this.totalOportunidadesMes = this.oportunidades
+      .filter(o => {
+        if (!o.fechaRegistro) return false;
+        const fecha = new Date(o.fechaRegistro);
+        return fecha.getMonth() === hoy.getMonth() && fecha.getFullYear() === hoy.getFullYear();
+      }).length;
+    console.log("prospecto", prospecto.filter(p =>
+       { if (!p.fechaRegistro) return false;
+        const fecha = new Date(p.fechaRegistro);
+        return fecha.getMonth() === hoy.getMonth() && fecha.getFullYear() === hoy.getFullYear();
+      }));
+
+    this.totalProspectosMes = prospecto
+      .filter(p => { 
+        if (!p.fechaRegistro) return false;
+        const fecha = new Date(p.fechaRegistro);
+        return fecha.getMonth() === hoy.getMonth() && fecha.getFullYear() === hoy.getFullYear();
+      } ).length;
   }
 
   inserta() {
@@ -434,10 +465,12 @@ export class OportunidadesComponent {
     }
     if (index === 1) { // Tab "porMes"
       this.mostrarOportunidadesMes = false;
+      this.llenarEtiquetas();
       setTimeout(() => this.mostrarOportunidadesMes = true, 0);
     }
     if (index === 2) { // Tab "porEtapa"
       this.mostrarOportunidadesEtapa = false;
+      this.llenarEtiquetas();
       setTimeout(() => this.mostrarOportunidadesEtapa = true, 0);
     }
     if (index === 3) { // Tab "estadisticas"

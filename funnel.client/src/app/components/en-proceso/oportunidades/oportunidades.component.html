@@ -28,7 +28,38 @@
         </a>
       </li>
     </ul>
- 
+
+    <div class="d-flex contenedor-etiquetas" *ngIf="titulo === 'Oportunidades Por Mes' || titulo === 'Oportunidades Por Etapa'">
+      <!-- Oportunidades en proceso -->
+      <div class="etiqueta bg-white shadow-md rounded-xl px-6 text-center">
+        <p class="titulo mb-0 color-tab-1">En proceso</p>
+        <p class="cantidad mb-0 color-tab-1">{{totalOportunidades}}</p>
+      </div>
+
+      <!-- Oportunidades abiertas en el mes -->
+      <div class="etiqueta bg-white shadow-md rounded-xl px-6 text-center">
+        <p class="titulo mb-0 color-tab-2">Abiertas en el mes</p>
+        <p class="cantidad mb-0 color-tab-2">{{totalOportunidadesMes}}</p>
+      </div>
+
+      <!-- Prospectos nuevos en el mes -->
+      <div class="etiqueta bg-white shadow-md rounded-xl px-6 text-center">
+        <p class="titulo mb-0 color-tab-3">Prospectos nuevos</p>
+        <p class="cantidad mb-0 color-tab-3">{{totalProspectosMes}}</p>
+      </div>
+
+      <!-- Prospectos nuevos en el mes -->
+      <div class="etiqueta bg-white shadow-md rounded-xl px-6 text-center">
+        <p class="titulo mb-0 color-tab-2">Ganadas en el mes</p>
+        <p class="cantidad mb-0 color-tab-2">{{totalProspectosMes}}</p>
+      </div>
+
+        <!-- Prospectos nuevos en el mes -->
+      <div class="etiqueta bg-white shadow-md rounded-xl px-6 text-center">
+        <p class="titulo mb-0 color-tab-4">Perdidas en el mes</p>
+        <p class="cantidad mb-0 color-tab-4">{{totalProspectosMes}}</p>
+      </div>
+    </div>
        <!-- Contenido de las pestañas -->
        <div class="tab-content">
         <!-- Pestaña 1 -->

@@ -55,9 +55,9 @@ export class OortunidadesMesAcordeonComponent {
       this.loginService.obtenerIdUsuario()
     ).subscribe({
       next: (result: OportunidadesPorMes[]) => {
-        console.log('Oportunidades por mes obtenidas:', result);
         // Asignamos el resultado a nuestro array 'elementos'
         this.elementos = [...result];
+     
         // Aseguramos que cada mes tenga inicializado el arreglo de tarjetas
         this.elementos.forEach(mes => {
           if (!Array.isArray(mes.tarjetas)) {
@@ -195,7 +195,7 @@ export class OortunidadesMesAcordeonComponent {
   actualizarExpansiones() {
     const total = this.elementos.length;
     this.elementos.forEach((mes, index) => {
-      mes.expandido = index >= total - 5;
+      mes.expandido = mes.tarjetas.length > 0;
     });
   }
 

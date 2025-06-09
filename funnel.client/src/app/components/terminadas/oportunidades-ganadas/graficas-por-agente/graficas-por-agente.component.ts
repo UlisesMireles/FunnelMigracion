@@ -23,7 +23,7 @@ quadrants: { cards: any[] }[] = [];
   aniosDisponibles: { label: string, value: number }[] = [];
   anioSeleccionado!: number;
   loading: boolean = true;
-
+  agenteSeleccionadoId: number | null = null;
   constructor( private readonly graficasService: GraficasService,private readonly sessionService: LoginService) {
     this.quadrants = [
       { cards: [this.graficasService.createCardPorAnio(1, 'Consulta Agentes', 'tabla')] },
@@ -93,11 +93,16 @@ onAnioChange(): void {
     this.graficasService.obtenerAgentesPorAnioData(request).subscribe({
       next: (response: AgenteDto[]) => {
         this.agentes = response;
+        this.agenteSeleccionadoId = this.agentes.length > 0 ? this.agentes[0].idAgente : null;
         this.consultarGraficaAgenteCliente(this.agentes.length > 0 ? this.agentes[0].idAgente : -1);
         this.consultarGraficaAgenteTipoOportunidad(this.agentes.length > 0 ? this.agentes[0].idAgente : -1);
       },
       error: (err: any) => console.error('Error al consultar los agentes:', err)
     });
+  }
+   seleccionarAgente(idAgente: number) {
+    this.agenteSeleccionadoId = idAgente;
+    this.recargarGraficasPorAgente(idAgente);
   }
 
   consultarGraficaAgenteCliente(idAgente: number): void {

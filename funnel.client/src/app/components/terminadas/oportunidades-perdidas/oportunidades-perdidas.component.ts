@@ -42,6 +42,7 @@ export class OportunidadesPerdidasComponent {
   selectedYear: string = new Date().getFullYear().toString();
   months: string[] = [];
   selectedMonth: string = "Todos los Meses";
+  titulo: string = 'Oportunidades Perdidas';
 
   lsColumnasAMostrar: any[] = [
    

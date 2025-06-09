@@ -32,8 +32,6 @@ import { AdministracionHerramientasComponent } from './components/herramientas/a
 import { ModalTiposEntregaComponent } from './components/catalogos/tipos-entrega/modal-tipos-entrega/modal-tipos-entrega.component';
 import { TiposEntregaComponent } from './components/catalogos/tipos-entrega/tipos-entrega.component';
 import { UsuarioPerfilComponent } from './components/usuario-perfil/usuario-perfil.component';
-import { GraficasPorAnioComponent } from './components/terminadas/oportunidades-ganadas/graficas-por-anio/graficas-por-anio.component';
-import { GraficasPorAgenteComponent } from './components/terminadas/oportunidades-ganadas/graficas-por-agente/graficas-por-agente.component';
 const routes: Routes = [
   { path: '', component: LoginComponent, title: 'Login' },
   { path: 'login', component: LoginComponent, title: 'Login' },
@@ -52,8 +50,6 @@ const routes: Routes = [
   { path: 'tipos-entrega', component: TiposEntregaComponent, title: 'Tipos Entrega', canActivate: [AuthGuard] },
   { path: 'tipos-entrega-modal', component: ModalTiposEntregaComponent, title: 'Tipos Entrega', canActivate: [AuthGuard] },
   { path: 'oportunidades-ganadas', component: OportunidadesGanadasComponent, title: 'Oportunidades Ganadas', canActivate: [AuthGuard] },
-  {path: 'graficas-por-año-ganadas', component: GraficasPorAnioComponent, title: 'Gráficas por Año', canActivate: [AuthGuard] },
-  { path: 'graficas-por-agente-ganadas', component: GraficasPorAgenteComponent, title: 'Gráficas por Agente', canActivate: [AuthGuard] },
   { path: 'oportunidades-eliminadas', component: OportunidadesEliminadasComponent, title: 'Oportunidades Eliminadas', canActivate: [AuthGuard] },
   { path: 'oportunidades-canceladas', component: OportunidadesCanceladasComponent, title: 'Oportunidades Canceladas', canActivate: [AuthGuard] },
   { path: 'oportunidades-perdidas', component: OportunidadesPerdidasComponent, title: 'Oportunidades Perdidas', canActivate: [AuthGuard] },

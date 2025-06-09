@@ -40,7 +40,7 @@ export class OportunidadesEliminadasComponent {
   selectedYear: string = new Date().getFullYear().toString();
   months: string[] = [];
   selectedMonth: string = "Todos los Meses";
-
+  titulo: string = 'Oportunidades Eliminadas';
   loading: boolean = true;
 
   lsColumnasAMostrar: any[] = [

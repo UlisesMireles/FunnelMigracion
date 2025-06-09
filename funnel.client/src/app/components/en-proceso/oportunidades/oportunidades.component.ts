@@ -130,10 +130,7 @@ export class OportunidadesComponent {
 
   getOportunidades() {
     this.oportunidadService.getOportunidades(this.loginService.obtenerIdEmpresa(), this.loginService.obtenerIdUsuario(), this.idEstatus).subscribe({
-      next: (result: Oportunidad[]) => {
-        // Ordenar por fechaEstimadaCierreOriginal (de más reciente a más antigua)
-      
-
+      next: (result: Oportunidad[]) => {      
         this.oportunidades = [...result];
         this.oportunidadesOriginal = [...result];
         this.cdr.detectChanges();

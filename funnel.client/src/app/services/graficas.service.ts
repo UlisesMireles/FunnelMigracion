@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { GraficasDto, RequestGraficasDto, AgenteDto, Sectores, SectoresDetalles } from '../interfaces/graficas';
+import { GraficasDto, RequestGraficasDto, AgenteDto, Sectores, SectoresDetalles, OportunidadesTipo, OportunidadesTipoDetalles } from '../interfaces/graficas';
 
 @Injectable({
   providedIn: 'root'
@@ -236,4 +236,19 @@ createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
         data
       );
     }
+
+  obtenerOportunidadesPorTipo(data: RequestGraficasDto): Observable<OportunidadesTipo[]> {
+    const requestData = {
+      ...data,
+      bandera: 'SEL-OPORTUNIDAD-STAGE' 
+    };
+    return this.http.post<OportunidadesTipo[]>(`${this.baseUrl}api/Graficas/ObtenerOportunidadesPorTipo`, requestData);
+  }
+
+  obtenerDetalleOportunidadesTipo(idEtapa: number, data: RequestGraficasDto): Observable<OportunidadesTipoDetalles[]> {
+    return this.http.post<OportunidadesTipoDetalles[]>(
+      `${this.baseUrl}api/Graficas/ObtenerDetalleOportunidadesTipo/${idEtapa}`, 
+      data
+    );
+  }
 }

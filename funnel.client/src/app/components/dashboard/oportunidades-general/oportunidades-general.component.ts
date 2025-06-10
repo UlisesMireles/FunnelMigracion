@@ -20,6 +20,9 @@ export class OportunidadesGeneralComponent {
   modalSectoresVisible: boolean = false;
   mostrarModalDetalles: boolean = false;
   sectorSeleccionado: number | null = null;
+  modalTiposVisible: boolean = false;
+  mostrarModalDetallesTipo: boolean = false;
+  tipoProyectoSeleccionado: number | null = null;
   get dropListIds() {
     return this.quadrants.map((_, index) => `dropList${index}`);
   }
@@ -154,6 +157,29 @@ onModalDetallesClose(): void {
   this.mostrarModalDetalles = false;
   setTimeout(() => {
     this.modalSectoresVisible = true;
+  });
+}
+
+openTiposModal() {
+  this.modalTiposVisible = true;
+}
+
+onModalTiposClose() {
+  this.modalTiposVisible = false;
+}
+
+abrirModalDetallesTipo(idTipoProyecto: number): void {
+  setTimeout(() => {
+    this.tipoProyectoSeleccionado = idTipoProyecto;
+    this.mostrarModalDetallesTipo = true;
+  });
+  this.modalTiposVisible = false;
+}
+
+onModalDetallesTipoClose(): void {
+  this.mostrarModalDetallesTipo = false;
+  setTimeout(() => {
+    this.modalTiposVisible = true;
   });
 }
 

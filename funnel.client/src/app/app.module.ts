@@ -139,6 +139,8 @@ import { ModalDetallesOportunidadesPorSectorComponent } from './components/dashb
 import { GraficasPorAgentePerdidasComponent } from './components/terminadas/oportunidades-perdidas/graficas-por-agente-perdidas/graficas-por-agente-perdidas.component';
 import { GraficasPorAgenteEliminadasComponent } from './components/terminadas/oportunidades-eliminadas/graficas-por-agente-eliminadas/graficas-por-agente-eliminadas.component';
 import { GraficasPorAgenteCanceladasComponent } from './components/terminadas/oportunidades-canceladas/graficas-por-agente-canceladas/graficas-por-agente-canceladas.component';
+import { ModalOportunidadesPorTipoComponent } from './components/dashboard/oportunidades-general/modal-oportunidades-por-tipo/modal-oportunidades-por-tipo.component';
+import { ModalDetallesOportunidadesPorTipoComponent } from './components/dashboard/oportunidades-general/modal-detalles-oportunidades-por-tipo/modal-detalles-oportunidades-por-tipo.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -217,6 +219,8 @@ registerLocaleData(localeEs, 'es-MX');
     GraficasPorAgentePerdidasComponent,
     GraficasPorAgenteEliminadasComponent,
     GraficasPorAgenteCanceladasComponent
+    ModalOportunidadesPorTipoComponent,
+    ModalDetallesOportunidadesPorTipoComponent
   ],
   imports: [
     BrowserModule,

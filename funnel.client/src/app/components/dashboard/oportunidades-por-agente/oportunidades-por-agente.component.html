@@ -6,7 +6,7 @@
                 <h5 class="card-title">{{card.titulo}}</h5>
             </div>
             <div class="p-3 mb-3 overflow-auto" *ngIf="card.tipo === 'tabla'">
-                <p-table [value]="agentes">
+                <p-table [value]="agentes" styleClass="my-custom-table">
                     <ng-template pTemplate="header">
                         <tr>
                             <th></th>

@@ -19,6 +19,8 @@
     height: 779px;
     padding: 5px 10px;
     box-sizing: border-box;
+    width: 100%;
+    overflow: hidden;
   }
   
   .quadrant {
@@ -30,6 +32,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    overflow: hidden;
   }
   
   .card {
@@ -42,12 +46,14 @@
     text-align: center;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
     cursor: grab;
+    overflow: hidden;
   }
 .plot-container {
   height: 330px;
   max-height: 330px;
   overflow: hidden;
   position: relative;
+  width: 100%;
 }
 .plot-container plotly-plot {
   height: 100% !important;

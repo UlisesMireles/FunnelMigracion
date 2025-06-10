@@ -6,18 +6,18 @@
    
     <div class="col-12">
        <!-- Pestañas  -->
-    <ul class="nav nav-tabs custom-tabs">
+     <!--<ul class="nav nav-tabs custom-tabs">
       <li class="nav-item">
         <a class="nav-link active" data-bs-toggle="tab" href="#lista"  pTooltip="Lista" tooltipPosition="top" >
           <i class="bi bi-list"></i>
         </a>
       </li>
-      <li class="nav-item">
+     <!--- <li class="nav-item">
         <a class="nav-link" data-bs-toggle="tab" href="#porAgente"  pTooltip="Gráficas por agente" tooltipPosition="top">
           <i class="bi bi-pie-chart"></i>  
         </a>
       </li>
-    </ul>
+    </ul>-->
  
        <!-- Contenido de las pestañas -->
       <div class="tab-content" style="padding-top: 75px;">
@@ -39,7 +39,7 @@
           [tableStyle]="{'min-width': anchoTabla+ '%'}">
           
           <ng-template class="divAccionesTabla" #caption>
-            <div class="col-12" style="text-align: left; font-weight: bold; margin-top: 40px">
+            <div class="col-12" style="text-align: left; font-weight: bold; margin-top: -50px">
             </div>
             <div class="row">
               <div class="col inDivDatatableHeader" style="text-align:right; margin-right:5px">
@@ -233,8 +233,8 @@
             </tr>
           </ng-template>
         </p-table>
-      </div></div>
-       <!-- Pestaña 2 - Gráficas por Agente -->
+      </div><!--</div>
+       <!-- Pestaña 2 - Gráficas por Agente 
         <div class="tab-pane fade" id="porAgente">
           <div class="row" style="margin-top: 15px;">
             <div class="col-12">
@@ -242,12 +242,10 @@
             </div>
           </div>
         </div>
-      </div>
+      </div>-->
       <p-toast position="center"></p-toast>
     </div>
   </div>
-</div>
-
 
 <app-modal-oportunidades-canceladas [(visible)]="modalVisible" [title]="'Editar Datos de '" (closeModal)="onModalClose()"
   (result)="manejarResultado($event)" [oportunidades]="oportunidadesCanceladas" [oportunidad]="oportunidadCanceladaSeleccionada">

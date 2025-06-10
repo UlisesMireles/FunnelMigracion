@@ -12,5 +12,7 @@ namespace Funnel.Data.Interfaces
         Task<List<GraficaDto>> ObtenerGraficaAgentesPorAnio(RequestGrafica data);
         Task<List<SectorDto>> ObtenerOportunidadesPorSector(RequestGrafica data);
         Task<List<OportunidadSectorDto>> ObtenerDetalleOportunidadesSector(int idSector, RequestGrafica data);
+        Task<List<TipoProyectoDto>> ObtenerOportunidadesPorTipo(RequestGrafica data);
+        Task<List<OportunidadTipoDto>> ObtenerDetalleOportunidadesTipo(int idTipoProyecto, RequestGrafica data);
     }
 }

@@ -379,5 +379,84 @@ namespace Funnel.Data
 
             return result;
         }
+        public async Task<List<TipoProyectoDto>> ObtenerOportunidadesPorTipo(RequestGrafica data)
+        {
+            List<TipoProyectoDto> result = new List<TipoProyectoDto>();
+            IList<ParameterSQl> list = new List<ParameterSQl>
+    {
+        DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, data.IdEmpresa),
+        DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "SEL-TIPO-SIN-MONTOS-CEROS"),
+    };
+
+            try
+            {
+                using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoOportunidades", CommandType.StoredProcedure, list, _connectionString))
+                {
+                    while (reader.Read())
+                    {
+                        var dto = new TipoProyectoDto
+                        {
+                            IdTipoProyecto = ComprobarNulos.CheckIntNull(reader["IdTipoProyecto"]),
+                            Descripcion = ComprobarNulos.CheckStringNull(reader["Descripcion"]),
+                            Monto = ComprobarNulos.CheckDecimalNull(reader["Monto"]),
+                            MontoNormalizado = ComprobarNulos.CheckDecimalNull(reader["MontoNormalizado"]),
+                            Porcentaje = ComprobarNulos.CheckDecimalNull(reader["Porcentaje"])
+                        };
+                        result.Add(dto);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al obtener oportunidades por tipo de proyecto. Detalle: {ex.Message}", ex);
+            }
+
+            return result;
+        }
+
+        public async Task<List<OportunidadTipoDto>> ObtenerDetalleOportunidadesTipo(int idTipoProyecto, RequestGrafica data)
+        {
+            List<OportunidadTipoDto> result = new List<OportunidadTipoDto>();
+            IList<ParameterSQl> list = new List<ParameterSQl>
+    {
+        DataBase.CreateParameterSql("@pIdEstatusOportunidad", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, 1),
+        DataBase.CreateParameterSql("@pStage", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, -1),
+        DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, data.IdEmpresa),
+        DataBase.CreateParameterSql("@pIdUsuario", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, data.IdUsuario ?? 0),
+        DataBase.CreateParameterSql("@pIdTipoProyecto", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, idTipoProyecto)
+    };
+
+            try
+            {
+                using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoOportunidadesPorTipo", CommandType.StoredProcedure, list, _connectionString))
+                {
+                    while (reader.Read())
+                    {
+                        var dto = new OportunidadTipoDto
+                        {
+                            IdOportunidad = ComprobarNulos.CheckIntNull(reader["IdOportunidad"]),
+                            NombreProspecto = ComprobarNulos.CheckStringNull(reader["Nombre"]),
+                            NombreOportunidad = ComprobarNulos.CheckStringNull(reader["NombreOportunidad"]),
+                            TipoProyecto = ComprobarNulos.CheckStringNull(reader["Descripcion"]),
+                            Ejecutivo = ComprobarNulos.CheckStringNull(reader["NombreEjecutivo"]),
+                            Monto = ComprobarNulos.CheckDecimalNull(reader["Monto"]),
+                            FechaEstimadaCierre = ComprobarNulos.CheckStringNull(reader["FechaEstimadaCierre"]),
+                            MontoNormalizado = ComprobarNulos.CheckDecimalNull(reader["MontoNormalizado"]),
+                            Probabilidad = ComprobarNulos.CheckStringNull(reader["Probabilidad"]),
+                            Stage = ComprobarNulos.CheckStringNull(reader["Stage"]),
+                            TipoProyectoAbreviatura = ComprobarNulos.CheckStringNull(reader["Abreviatura"]),
+                            Iniciales = ComprobarNulos.CheckStringNull(reader["Iniciales"]),
+                        };
+                        result.Add(dto);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener detalle de oportunidades por tipo de proyecto", ex);
+            }
+
+            return result;
+        }
     }
 }

@@ -16,15 +16,16 @@
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-rowData>
-                        <tr (click)="recargarGraficasPorAgente(rowData.idAgente)" style="cursor:pointer">
-                            <td>
-                                <img [src]="baseUrl + rowData.archivoImagen" alt="Avatar" width="32" height="32" style="border-radius:50%;">
-                            </td>
-                            <td>{{ rowData.nombre }}</td>
-                            <td>{{ rowData.totalAgente }}</td>
-                            <td>{{ rowData.montoNormalizado | currency:'$':'symbol':'1.2-2' }}</td>
-                        </tr>
-                    </ng-template>
+                    <tr (click)="seleccionarAgente(rowData.idAgente)" [class.selected-row]="rowData.idAgente === agenteSeleccionadoId"
+                    style="cursor:pointer">
+                    <td>
+                        <img [src]="baseUrl + rowData.archivoImagen" alt="Avatar" width="32" height="32" style="border-radius:50%;">
+                    </td>
+                    <td>{{ rowData.nombre }}</td>
+                    <td>{{ rowData.totalAgente | currency:'$':'symbol':'1.2-2' }}</td>
+                    <td>{{ rowData.montoNormalizado | currency:'$':'symbol':'1.2-2' }}</td>
+                    </tr>
+                </ng-template>
                 </p-table>
             </div>
             <div *ngIf="card.tipo === 'grafica'" class="p-0" style="height:330px;max-height: 330px; z-index: 5000;">

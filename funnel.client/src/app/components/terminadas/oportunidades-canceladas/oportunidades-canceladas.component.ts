@@ -40,7 +40,7 @@ export class OportunidadesCanceladasComponent {  @ViewChild('dt') dt!: Table;
   selectedYear: string = new Date().getFullYear().toString();
   months: string[] = [];
   selectedMonth: string = "Todos los Meses";
-
+  titulo: string = 'Oportunidades Canceladas';
   lsColumnasAMostrar: any[] = [
    
   ];

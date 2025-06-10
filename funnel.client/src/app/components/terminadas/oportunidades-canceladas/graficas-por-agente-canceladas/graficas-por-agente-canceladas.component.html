@@ -20,7 +20,7 @@
                     </ng-template>
                     <ng-template pTemplate="body" let-rowData>
                         <tr (click)="seleccionarAgente(rowData.idAgente)" [class.selected-row]="rowData.idAgente === agenteSeleccionadoId"
-                         style="cursor:pointer">
+                        style="cursor:pointer">
                             <td>
                                 <img [src]="baseUrl + rowData.archivoImagen" alt="Avatar" width="32" height="32" style="border-radius:50%;">
                             </td>

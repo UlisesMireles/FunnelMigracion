@@ -12,7 +12,7 @@ export interface Usuarios {
     idTipoUsuario: number;
     descripcion: string;
     apellidoPaterno: string;
-    apellidoMaterno: string;
+    apellidoMaterno?: string;
     fechaRegistro: string;
     fechaModificacion: string;
     estatus: number;
@@ -39,7 +39,7 @@ export interface Usuarios {
     idEmpresa: number;
     idTipoUsuario: number;
     apellidoPaterno: string;
-    apellidoMaterno: string;
+    apellidoMaterno?: string;
     archivoImagen?: string;
     usuarioCreador: number;
     codigoAutenticacion: string;

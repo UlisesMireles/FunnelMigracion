@@ -65,21 +65,7 @@ namespace Funnel.Logic.Utils.Asistentes
                  - Escribe un mensaje indicando que se requiere mayor detalle y más registros.
                  - Muestra **solo una visión general breve de máximo 50 palabras.**
                  - Evalúa la **inactividad solo como negativa si han pasado más de 10 días** desde el último seguimiento. Si no, no la menciones como problema.
-
-            2. **Si hay 5 o más seguimientos**, incluso si algunos reflejan falta de respuesta o acciones no concluyentes, considera como válidos:
-               - Intentos de contacto.
-               - Seguimientos reiterados.
-               - Comentarios sobre falta de respuesta, presupuesto o reestructuración.
-               - Referencias a actores clave, decisiones o barreras internas.
-               - Si se cumplen estas condiciones, genera lo siguiente:
-                 - <b>Visión general:</b> máximo 60 palabras.
-                 - <b>Análisis de sentimiento:</b> máximo 100 palabras.
-                 - <b>Análisis de actuación de los ejecutivos:</b> máximo 50 palabras.
-                 - <b>Consejos para el manejo de la cuenta:</b> máximo 80 palabras, en formato de lista basada en el análisis del comportamiento de los ejecutivos.
-
-            3. Siempre responde en **formato HTML**, con estructura clara y visualmente ordenada.
-
-            4. Considera como **relevantes** los seguimientos que incluyan:
+            2. Considera como **relevantes** los seguimientos que incluyan:
                - Acciones concretas (incluso si son negativas).
                - Ajustes a la propuesta.
                - Sesiones agendadas o realizadas.
@@ -88,9 +74,29 @@ namespace Funnel.Logic.Utils.Asistentes
                - Menciones de actores importantes (ej. ITESM, EISEI, Ana Karen).
                - Intentos de contacto con actores clave, seguimiento sin respuesta, reorganización interna, falta de presupuesto.
 
-            5. Considera la **fecha del último seguimiento** para evaluar la inactividad:
+           3. Si hay 5 o más seguimientos, y al menos 4 son relevantes, haz el análisis completo como se describe más abajo. 
+               - No ignores los seguimientos si hay acciones válidas (aunque algunas entradas estén vacías).
+               - Considera válidos los intentos de contacto, menciones de actores clave, falta de respuesta o seguimiento reiterado.
+               - Si se cumplen estas condiciones, genera lo siguiente:
+                 - <b>Visión general:</b> máximo 60 palabras.
+                 - <b>Análisis de sentimiento:</b> máximo 100 palabras.
+                 - <b>Análisis de actuación de los ejecutivos:</b> máximo 50 palabras.
+                 - <b>Consejos para el manejo de la cuenta:</b> máximo 80 palabras, en formato de lista basada en el análisis del comportamiento de los ejecutivos.
+
+            4. Considera la **fecha del último seguimiento** para evaluar la inactividad:
                - Si han pasado más de 10 días sin actividad, indícalo como un punto negativo.
                - Si han pasado 10 días o menos, **no lo menciones como un problema**.
+            
+            5. **Inactividad**:
+               - Si han pasado **más de 10 días sin actividad**, menciona esto como un punto negativo.
+               - Si han pasado **más de 15 días sin respuesta del cliente**, **incluye esta mención específica**:
+                 > <span style=""font-size: 16px; font-weight: bold;"">Se solicita actualizar este seguimiento dado que tiene más de 15 días sin respuesta del cliente.</span>
+
+            6. **Monto y etapa**:
+               - Si el **monto es menor a $100 pesos** y la oportunidad está en **etapa 1**, indica que puede ser una oportunidad de bajo impacto, **a menos que haya evolución o potencial comercial justificado**.
+               - Considera también la **fecha de alta** de la oportunidad: si está en etapa 1 desde hace mucho tiempo, sugerir descartar o cerrar si no hay avance.
+
+            7. Siempre responde en **formato HTML**, con estructura clara y visualmente ordenada.
 
             <!-- Hay más de 5 seguimientos relevantes, con acciones e interacciones de seguimiento claras -->
 

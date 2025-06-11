@@ -102,8 +102,8 @@
 }
 
 ::ng-deep .chatbot-window .app-chat-header {
-  background: linear-gradient(to right, #103d66, #1a4e80) !important;
-  color: white !important;
+  background: linear-gradient(to right, #ecfdf5, #ecfdf5) !important;
+  color: black !important;
   padding: 10px 15px;
   margin: 0;
 }
@@ -114,7 +114,7 @@
 ::ng-deep .chatbot-window .app-chat-header small,
 ::ng-deep .chatbot-window .app-chat-header i,
 ::ng-deep .chatbot-window .app-chat-version {
-  color: white !important;
+  color: rgb(0, 0, 0) !important;
 }
 
 ::ng-deep .chatbot-window .containerAsistente {

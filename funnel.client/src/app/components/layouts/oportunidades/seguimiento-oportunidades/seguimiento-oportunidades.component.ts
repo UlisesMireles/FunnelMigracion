@@ -219,6 +219,8 @@ export class SeguimientoOportunidadesComponent {
       Probabilidad: ${this.oportunidad.probabilidad}%
       Ejecutivo: ${this.oportunidad.nombreEjecutivo}
       Dias sin actividad: ${this.oportunidad.fechaModificacion}
+      Monto: ${this.oportunidad.monto}
+      Fecha Alta: ${this.oportunidad.fechaRegistro}
         `.trim();
 
     const pregunta = `Información de la oportunidad:\n\n${resumenOportunidad}\n\nHistorial de seguimiento:\n${historialTexto}`;

@@ -41,8 +41,7 @@
             </div>
           </div>
         <p-table *ngIf="!loading" #dt [stripedRows]="true" [value]="oportunidades" dataKey="id" [rows]="10"
-          [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 20, 50]" [paginator]="true" paginatorPosition="both"
-          currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros"
+          [showCurrentPageReport]="false" [rowsPerPageOptions]="[10, 20, 50]" [paginator]="true" paginatorPosition="both"
           [columns]="lsColumnasAMostrar"
           [resizableColumns]="true" [reorderableColumns]="true"
           [globalFilterFields]="['nombre','nombreSector','nombreOportunidad','abreviatura','stage','iniciales','nombreContacto','entrega','monto','probabilidadOriginal','probabilidad','montoNormalizado','fechaRegistro','diasFunnel','fechaEstimadaCierreOriginal','fechaModificacion']"

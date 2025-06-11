@@ -218,7 +218,7 @@ registerLocaleData(localeEs, 'es-MX');
     ModalDetallesOportunidadesPorSectorComponent,
     GraficasPorAgentePerdidasComponent,
     GraficasPorAgenteEliminadasComponent,
-    GraficasPorAgenteCanceladasComponent
+    GraficasPorAgenteCanceladasComponent,
     ModalOportunidadesPorTipoComponent,
     ModalDetallesOportunidadesPorTipoComponent
   ],

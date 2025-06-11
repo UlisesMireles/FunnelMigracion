@@ -233,9 +233,9 @@ onChangeProspecto() {
     this.servicios = this.catalogoService.obtenerServicios();
     this.etapas = this.catalogoService.obtenerEtapas();
     //Ordenar y asignar ejecutivos
-    this.ejecutivos = this.catalogoService.obtenerEjecutivos().sort((a, b) =>
-      a.nombreCompleto.localeCompare(b.nombreCompleto, 'es', { sensitivity: 'base' })
-    );
+  this.ejecutivos = this.catalogoService.obtenerEjecutivos().sort((a, b) =>
+    a.nombreCompleto.localeCompare(b.nombreCompleto, 'es', { sensitivity: 'base' })
+  );
     if (this.oportunidad)
     {
       if (this.oportunidad.idProspecto) {

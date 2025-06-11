@@ -19,7 +19,7 @@
     height: 779px;
     padding: 5px 10px;
     box-sizing: border-box;
-    margin-top: 100px;
+    margin-top: 30px;
     width: 100%;
     overflow: hidden;
   }
@@ -64,8 +64,8 @@
 
 .year-selector {
   position: absolute;
-  top: 90px;
-  right: 30px;
+  top: 30px;
+  right: 23px;
   z-index: 6000;
   background: transparent !important;
   border: none !important;

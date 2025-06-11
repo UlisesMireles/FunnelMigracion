@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ChangeDetectorRef } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectorRef, OnDestroy, OnInit } from '@angular/core';
 
 import { MessageService } from 'primeng/api';
 
@@ -19,7 +19,8 @@ import { Contacto } from '../../../../interfaces/contactos';
   standalone: false,
   templateUrl: './modal-oportunidades.component.html',
 })
-export class ModalOportunidadesComponent {
+export class ModalOportunidadesComponent implements OnInit, OnDestroy {
+  private catalogosSubscription!: Subscription;
 
   constructor(private readonly catalogoService: CatalogoService, private oportunidadService: OportunidadesService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder, private cdr: ChangeDetectorRef,
     private modalOportunidadesService: ModalOportunidadesService
@@ -137,6 +138,10 @@ export class ModalOportunidadesComponent {
     }
   }
   ngOnInit(): void {
+
+    this.catalogosSubscription = this.catalogoService.catalogosUpdated$.subscribe(() => {
+      this.cargarDatos(); 
+    });
     
     //Suscripcion a servicio de modal de contactos, recibe datos para el despliegue del modal
     this.modalContactosSubscription = this.modalOportunidadesService. modalContactoOportunidadesState$.subscribe((state) => {
@@ -224,6 +229,8 @@ onChangeProspecto() {
     this.catalogoService.cargarEtapas(this.loginService.obtenerIdEmpresa());
     this.catalogoService.cargarEjecutivos(this.loginService.obtenerIdEmpresa());
     this.catalogoService.cargarEntregas(this.loginService.obtenerIdEmpresa());
+
+    this.catalogoService.cargarCatalogos(this.loginService.obtenerIdEmpresa());
     this.cargarDatos();
   }
 
@@ -233,6 +240,7 @@ onChangeProspecto() {
     this.servicios = this.catalogoService.obtenerServicios();
     this.etapas = this.catalogoService.obtenerEtapas();
     this.ejecutivos = this.catalogoService.obtenerEjecutivos();
+    this.entregas = this.catalogoService.obtenerEntregas();
     //Ordenar y asignar ejecutivos
   this.ejecutivos = this.catalogoService.obtenerEjecutivos().sort((a, b) =>
     a.nombreCompleto.localeCompare(b.nombreCompleto, 'es', { sensitivity: 'base' })

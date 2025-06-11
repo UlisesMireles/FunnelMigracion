@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import{ Observable } from 'rxjs';
+import { Subject } from 'rxjs';
 
 import { RequestPContacto } from '../interfaces/contactos';
 import { baseOut } from '../interfaces/utils/utils/baseOut';
@@ -9,6 +10,13 @@ import { baseOut } from '../interfaces/utils/utils/baseOut';
   providedIn: 'root'
 })
 export class CatalogoService {
+
+  private catalogosUpdated = new Subject<void>();
+  catalogosUpdated$ = this.catalogosUpdated.asObservable();
+
+  notifyCatalogosUpdated() {
+    this.catalogosUpdated.next();
+  }
 
   baseUrl:string = environment.baseURL;
 
@@ -23,14 +31,18 @@ export class CatalogoService {
     this.cargarEntregas(idEmpresa);
     this.cargarEstatusOportunidad(idEmpresa);
   }
-  cargarProspectos(idEmpresa:number) {
+  cargarProspectos(idEmpresa: number) {
     this.http.get(`${this.baseUrl}api/Oportunidades/ComboProspectos`, {
-        params: { idEmpresa: idEmpresa.toString() }
-      }).subscribe({
+      params: { idEmpresa: idEmpresa.toString() }
+    }).subscribe({
       next: (result) => {
-        sessionStorage.setItem('CatalogoProspectos', window.btoa(JSON.stringify(result)))
+        sessionStorage.setItem('CatalogoProspectos', window.btoa(JSON.stringify(result)));
+        this.notifyCatalogosUpdated(); 
       },
-      error: (error) =>  sessionStorage.setItem('CatalogoProspectos', window.btoa(JSON.stringify([])))
+      error: (error) => {
+        sessionStorage.setItem('CatalogoProspectos', window.btoa(JSON.stringify([])));
+        this.notifyCatalogosUpdated(); 
+      }
     });
   }
 
@@ -40,8 +52,12 @@ export class CatalogoService {
       }).subscribe({
       next: (result) => {
         sessionStorage.setItem('CatalogoServicios', window.btoa(JSON.stringify(result)))
+        this.notifyCatalogosUpdated();
       },
-      error: (error) =>  sessionStorage.setItem('CatalogoServicios', window.btoa(JSON.stringify([])))
+      error: (error) => {
+        sessionStorage.setItem('CatalogoServicios', window.btoa(JSON.stringify([])))
+        this.notifyCatalogosUpdated();
+      }
     });
   }
 
@@ -51,8 +67,12 @@ export class CatalogoService {
       }).subscribe({
       next: (result) => {
         sessionStorage.setItem('CatalogoEtapas', window.btoa(JSON.stringify(result)))
+        this.notifyCatalogosUpdated();
       },
-      error: (error) =>  sessionStorage.setItem('CatalogoEtapas', window.btoa(JSON.stringify([])))
+      error: (error) => {
+      sessionStorage.setItem('CatalogoEtapas', window.btoa(JSON.stringify([])))
+        this.notifyCatalogosUpdated();
+      }
     });
   }
 
@@ -62,8 +82,12 @@ export class CatalogoService {
       }).subscribe({
       next: (result) => {
         sessionStorage.setItem('CatalogoEjecutivos', window.btoa(JSON.stringify(result)))
+        this.notifyCatalogosUpdated();
       },
-      error: (error) =>  sessionStorage.setItem('CatalogoEjecutivos', window.btoa(JSON.stringify([])))
+      error: (error) => {
+         sessionStorage.setItem('CatalogoEjecutivos', window.btoa(JSON.stringify([])))
+        this.notifyCatalogosUpdated();
+      }
     });
   }
 
@@ -73,8 +97,12 @@ export class CatalogoService {
       }).subscribe({
       next: (result) => {
         sessionStorage.setItem('CatalogoContactos', window.btoa(JSON.stringify(result)))
+        this.notifyCatalogosUpdated();
       },
-      error: (error) =>  sessionStorage.setItem('CatalogoContactos', window.btoa(JSON.stringify([])))
+      error: (error) =>  {
+        sessionStorage.setItem('CatalogoContactos', window.btoa(JSON.stringify([])))
+        this.notifyCatalogosUpdated();
+      }
     });
   }
 
@@ -84,8 +112,12 @@ export class CatalogoService {
       }).subscribe({
       next: (result) => {
         sessionStorage.setItem('CatalogoEntregas', window.btoa(JSON.stringify(result)))
+        this.notifyCatalogosUpdated();
       },
-      error: (error) =>  sessionStorage.setItem('CatalogoEntregas', window.btoa(JSON.stringify([])))
+      error: (error) =>  {
+        sessionStorage.setItem('CatalogoEntregas', window.btoa(JSON.stringify([])))
+        this.notifyCatalogosUpdated();
+      }
     });
   }
   cargarEstatusOportunidad(idEmpresa: number) {
@@ -94,8 +126,12 @@ export class CatalogoService {
     }).subscribe({
       next: (result) => {
         sessionStorage.setItem('CatalogoEstatusOportunidad', window.btoa(JSON.stringify(result)))
+        this.notifyCatalogosUpdated();
       },
-      error: (error) =>  sessionStorage.setItem('CatalogoEstatusOportunidad', window.btoa(JSON.stringify([])))
+      error: (error) =>  {
+        sessionStorage.setItem('CatalogoEstatusOportunidad', window.btoa(JSON.stringify([])))
+        this.notifyCatalogosUpdated();
+      }
     });
   }
 

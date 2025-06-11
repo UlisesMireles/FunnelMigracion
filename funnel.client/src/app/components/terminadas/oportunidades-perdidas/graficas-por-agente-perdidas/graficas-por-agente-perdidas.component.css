@@ -21,6 +21,7 @@
     box-sizing: border-box;
     width: 100%;
     overflow: hidden;
+    margin-top: 26px;
   }
   
   .quadrant {
@@ -63,8 +64,8 @@
 
 .year-selector {
   position: absolute;
-  top: 80px;
-  right: 30px;
+  top: 30px;
+  right: 23px;
   z-index: 6000;
   background: transparent !important;
   border: none !important;

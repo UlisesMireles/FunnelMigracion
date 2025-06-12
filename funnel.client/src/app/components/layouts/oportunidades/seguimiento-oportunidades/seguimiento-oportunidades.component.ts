@@ -204,24 +204,27 @@ export class SeguimientoOportunidadesComponent {
   }
 
   enviarSeguimiento() {
-    const comentarios = this.historialOportunidad.map(item => ({
+  const comentarios = this.historialOportunidad.map(item => ({
       usuario: item.iniciales,
       fecha: item.fechaRegistro,
       comentario: item.comentario
     }));
 
-    const historialTexto = comentarios.map(c => `(${c.fecha}) ${c.usuario}: ${c.comentario}`).join('\n');
+    const historialTexto = comentarios.map(c => {
+      const comentario = c.comentario?.trim();
+      return comentario
+        ? `<li><b>${c.fecha}</b> – ${c.usuario}: ${comentario}</li>`
+        : `<li><b>${c.fecha}</b> – ${c.usuario}: (Sin comentario)</li>`;
+    }).join('\n');
 
     const resumenOportunidad = `
-      Nombre oportunidad: ${this.oportunidad.nombreOportunidad}
-      Nombre: ${this.oportunidad.nombre}
-      Monto: ${this.oportunidad.monto}
-      Probabilidad: ${this.oportunidad.probabilidad}%
-      Ejecutivo: ${this.oportunidad.nombreEjecutivo}
-      Dias sin actividad: ${this.oportunidad.fechaModificacion}
-      Monto: ${this.oportunidad.monto}
-      Fecha Alta: ${this.oportunidad.fechaRegistro}
-        `.trim();
+      <p><b>Nombre oportunidad:</b> ${this.oportunidad.nombreOportunidad}</p>
+      <p><b>Nombre:</b> ${this.oportunidad.nombre}</p>
+      <p><b>Monto:</b> $${this.oportunidad.monto}</p>
+      <p><b>Probabilidad:</b> ${this.oportunidad.probabilidad}%</p>
+      <p><b>Ejecutivo:</b> ${this.oportunidad.nombreEjecutivo}</p>
+      <p><b>Días sin actividad:</b> ${this.oportunidad.fechaModificacion}</p>
+    `.trim();
 
     const pregunta = `Información de la oportunidad:\n\n${resumenOportunidad}\n\nHistorial de seguimiento:\n${historialTexto}`;
 

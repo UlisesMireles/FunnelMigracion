@@ -40,9 +40,11 @@
               <span class="visually-hidden">Cargando...</span>
             </div>
           </div>
-        <p-table *ngIf="!loading" #dt [stripedRows]="true" [value]="oportunidades" dataKey="id" [rows]="10"
+        <p-table class="tabla-izquierd" *ngIf="!loading" #dt [stripedRows]="true" [value]="oportunidades" dataKey="id" [rows]="10"
           [showCurrentPageReport]="false" [rowsPerPageOptions]="[10, 20, 50]" [paginator]="true" paginatorPosition="both"
-          [columns]="lsColumnasAMostrar"
+          [pageLinks]="1" 
+          currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros"
+          [columns]="lsColumnasAMostrar" 
           [resizableColumns]="true" [reorderableColumns]="true"
           [globalFilterFields]="['nombre','nombreSector','nombreOportunidad','abreviatura','stage','iniciales','nombreContacto','entrega','monto','probabilidadOriginal','probabilidad','montoNormalizado','fechaRegistro','diasFunnel','fechaEstimadaCierreOriginal','fechaModificacion']"
           [tableStyle]="{'min-width': anchoTabla + '%'}">

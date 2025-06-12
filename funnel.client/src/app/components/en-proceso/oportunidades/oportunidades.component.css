@@ -574,3 +574,7 @@ th.sort-active p-sortIcon {
     z-index: 2;
   }
 }
+::ng-deep .tabla-izquierd .p-paginator {
+  justify-content: flex-start !important;
+  margin-top: 1.6rem;
+}

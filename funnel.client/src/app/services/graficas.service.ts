@@ -54,6 +54,7 @@ export class GraficasService {
     titulo,
     tipo,
     infoCargada: false,
+    maximizada: false, 
     grafica: {
       data: [],
       layout: {},

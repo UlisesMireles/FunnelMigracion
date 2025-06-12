@@ -1,20 +1,45 @@
 <div class="grid-container">
-  <div class="quadrant p-0" *ngFor="let group of quadrants; let i = index" cdkDropList [cdkDropListData]="group.cards"
-    [cdkDropListConnectedTo]="dropListIds" [id]="'dropList' + i" (cdkDropListDropped)="drop($event)">
-    <div *ngFor="let card of group.cards" class="card p-0" id="prueba" >
+  <div class="quadrant p-0" *ngFor="let group of quadrants; let i = index" cdkDropList 
+       [cdkDropListData]="group.cards" [cdkDropListConnectedTo]="dropListIds" 
+       [id]="'dropList' + i" (cdkDropListDropped)="drop($event)">
+       
+    <div *ngFor="let card of group.cards; let j = index" class="card p-0" 
+         [ngClass]="{'maximized-card': card.maximizada}"
+         [attr.data-id]="card.id">  
+         
       <div class="card-header header-graficas" cdkDrag>
         <h5 class="card-title">{{card.titulo}}</h5>
+        <button class="btn btn-sm btn-link maximize-btn" 
+                (click)="toggleMaximizar(i, j)" 
+                [disabled]="!card.infoCargada"
+                title="{{card.maximizada ? 'Minimizar' : 'Maximizar'}}">
+          <i [class]="card.maximizada ? 'fas fa-window-minimize' : 'fas fa-window-maximize'"></i>
+        </button>
       </div>
-      <div class="p-0" style="height:330px;max-height: 330px; z-index: 5000;">
-        <plotly-plot *ngIf="card.infoCargada" [data]="card.grafica.data" [layout]="card.grafica.layout"
-          [config]="card.grafica.config"></plotly-plot>
-          <div *ngIf="card.titulo === 'Indicadores por Etapa'" class="position-absolute bottom-0 start-0 p-2">
+      
+      <div class="card-content" [ngClass]="{'maximized-content': card.maximizada}">
+        <div class="plot-wrapper" *ngIf="card.infoCargada">
+          <plotly-plot [data]="card.grafica.data"
+                      [layout]="card.grafica.layout"
+                      [config]="card.grafica.config">
+          </plotly-plot>
+        </div>
+        
+        <!-- Botón de Indicadores por Etapa -->
+        <div *ngIf="card.titulo === 'Indicadores por Etapa' && !card.maximizada" 
+             class="position-absolute bottom-0 start-0 p-2">
           <a href="javascript:void(0)" (click)="openDetailsModal()" class="text-primary">Ver detalles</a>       
         </div>
-        <div *ngIf="card.titulo === 'Oportunidades por Sector'" class="position-absolute bottom-0 start-0 p-2">
+        
+        <!-- Botón de Oportunidades por Sector -->
+        <div *ngIf="card.titulo === 'Oportunidades por Sector' && !card.maximizada" 
+             class="position-absolute bottom-0 start-0 p-2">
           <a href="javascript:void(0)" (click)="openSectoresModal()" class="text-primary">Ver detalles</a>       
         </div>
-        <div *ngIf="card.titulo === 'Oportunidades por Tipo'" class="position-absolute bottom-0 start-0 p-2">
+        
+        <!-- Botón de Oportunidades por Tipo -->
+        <div *ngIf="card.titulo === 'Oportunidades por Tipo' && !card.maximizada" 
+             class="position-absolute bottom-0 start-0 p-2">
           <a href="javascript:void(0)" (click)="openTiposModal()" class="text-primary">Ver detalles</a>       
         </div>
       </div>
@@ -23,6 +48,7 @@
 </div>
 
 
+<!-- Modales existentes -->
 <app-modal-detalles-indicadores-etapa 
   [(visible)]="modalIndicadoresVisible"
   (closeModal)="onModalIndicadoresClose()">

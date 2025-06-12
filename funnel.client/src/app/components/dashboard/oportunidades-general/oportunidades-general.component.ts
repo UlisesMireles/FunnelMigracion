@@ -1,5 +1,6 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Component, ViewEncapsulation, Inject} from '@angular/core';
+import { Component, ViewEncapsulation, Inject, Renderer2} from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { LoginService } from '../../../services/login.service';
 import { GraficasService } from '../../../services/graficas.service';
@@ -23,6 +24,8 @@ export class OportunidadesGeneralComponent {
   modalTiposVisible: boolean = false;
   mostrarModalDetallesTipo: boolean = false;
   tipoProyectoSeleccionado: number | null = null;
+  originalParentElements = new Map<number, { parent: HTMLElement, nextSibling: Node | null }>();
+
   get dropListIds() {
     return this.quadrants.map((_, index) => `dropList${index}`);
   }
@@ -31,7 +34,8 @@ export class OportunidadesGeneralComponent {
   constructor(
     private readonly graficasService: GraficasService,
     private readonly sessionService: LoginService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private renderer: Renderer2, @Inject(DOCUMENT) private document: Document
   ) {
     this.quadrants = [
     { cards: [this.graficasService.createCard(1, 'Indicadores por Etapa', 'grafica')] },
@@ -183,4 +187,44 @@ onModalDetallesTipoClose(): void {
   });
 }
 
+toggleMaximizar(quadrantIdx: number, cardIdx: number): void {
+  const card = this.quadrants[quadrantIdx].cards[cardIdx];
+  card.maximizada = !card.maximizada;
+
+  const cardId = card.id;
+  const cardElement = this.document.querySelector(`.card[data-id="${cardId}"]`) as HTMLElement;
+
+  if (!cardElement) return;
+
+  if (card.maximizada) {
+    // Guarda la posición original antes de mover
+    const originalParent = cardElement.parentElement;
+    const nextSibling = cardElement.nextSibling;
+    
+    if (originalParent) {
+      this.originalParentElements.set(cardId, {
+        parent: originalParent,
+        nextSibling: nextSibling
+      });
+      
+      // Mueve al final del body
+      this.renderer.appendChild(this.document.body, cardElement);
+    }
+  } else {
+    // Restaura a la posición original
+    const originalPosition = this.originalParentElements.get(cardId);
+    if (originalPosition) {
+      if (originalPosition.nextSibling) {
+        this.renderer.insertBefore(
+          originalPosition.parent,
+          cardElement,
+          originalPosition.nextSibling
+        );
+      } else {
+        this.renderer.appendChild(originalPosition.parent, cardElement);
+      }
+      this.originalParentElements.delete(cardId);
+    }
+  }
+}
 }

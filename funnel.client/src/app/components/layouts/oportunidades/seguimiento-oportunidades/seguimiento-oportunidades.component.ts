@@ -300,10 +300,12 @@ export class SeguimientoOportunidadesComponent {
 }
 
 limpiarRespuesta(respuesta: string): string {
-  return respuesta.replace(/```[\s\S]*?\n([\s\S]*?)```/g, '$1').trim();
+  return respuesta
+    .replace(/```(?:\w+)?\s*([^]*?)```/g, (_, contenido) => contenido.trim())
+    .replace(/^```(?:\w+)?\s*/, '') 
+    .replace(/```$/, '')       
+    .trim();
 }
-
-
 
 }
 

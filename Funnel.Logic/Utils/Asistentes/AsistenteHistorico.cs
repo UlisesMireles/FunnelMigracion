@@ -138,7 +138,7 @@ namespace Funnel.Logic.Utils.Asistentes
                 model = modelo,
                 messages = messages,
                 temperature = 0.7,
-                max_tokens = 500
+                max_tokens = 700
             };
 
             var chatRespuestaOpenIA = await OpenIAFunciones.ChatCompletionAsync(llave, requestBody);

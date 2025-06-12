@@ -10,7 +10,7 @@
                 <h5 class="card-title">{{card.titulo}}</h5>
            </div>
             <div class="p-3 mb-3 overflow-auto" *ngIf="card.tipo === 'tabla'">
-                 <p-table [value]="agentes" styleClass="my-custom-table">
+                <p-table [value]="agentes">
                     <ng-template pTemplate="header">
                         <tr>
                             <th></th>
@@ -20,7 +20,7 @@
                     </ng-template>
                     <ng-template pTemplate="body" let-rowData>
                         <tr (click)="seleccionarAgente(rowData.idAgente)" [class.selected-row]="rowData.idAgente === agenteSeleccionadoId"
-                         style="cursor:pointer">
+                        style="cursor:pointer">
                             <td>
                                 <img [src]="baseUrl + rowData.archivoImagen" alt="Avatar" width="32" height="32" style="border-radius:50%;">
                             </td>

@@ -76,9 +76,9 @@ export class ModalUsuariosComponent {
           ]
         ],
         apellidoMaterno: ['', [
-            Validators.required,
+            //Validators.required,
             Validators.maxLength(50),
-            Validators.pattern('^[a-zA-ZÀ-ÿ\\s]+$')
+            Validators.pattern('^[a-zA-ZÀ-ÿ\\s]*$')
           ]
         ],
         usuario: ['', [
@@ -139,9 +139,9 @@ export class ModalUsuariosComponent {
           ]
         ],
         apellidoMaterno: [this.usuario.apellidoMaterno, [
-            Validators.required,
+            //Validators.required,
             Validators.maxLength(50),
-            Validators.pattern('^[a-zA-ZÀ-ÿ\\s]+$')
+            Validators.pattern('^[a-zA-ZÀ-ÿ\\s]*$')
           ]
         ],
         usuario: [this.usuario.usuario, [

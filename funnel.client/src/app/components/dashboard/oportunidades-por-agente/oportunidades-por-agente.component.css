@@ -54,3 +54,7 @@
   width: 100% !important;
   display: block;
 }
+.selected-row {
+    background-color: #1976d2 !important;
+    color: #fff;
+}

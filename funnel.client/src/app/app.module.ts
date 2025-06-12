@@ -136,6 +136,9 @@ import { GraficasPorAgenteComponent } from './components/terminadas/oportunidade
 import { ModalDetallesIndicadoresEtapaComponent } from './components/dashboard/oportunidades-general/modal-detalles-indicadores-etapa/modal-detalles-indicadores-etapa.component';
 import { ModalOportunidadesPorSectorComponent } from './components/dashboard/oportunidades-general/modal-oportunidades-por-sector/modal-oportunidades-por-sector.component';
 import { ModalDetallesOportunidadesPorSectorComponent } from './components/dashboard/oportunidades-general/modal-detalles-oportunidades-por-sector/modal-detalles-oportunidades-por-sector.component';
+import { GraficasPorAgentePerdidasComponent } from './components/terminadas/oportunidades-perdidas/graficas-por-agente-perdidas/graficas-por-agente-perdidas.component';
+import { GraficasPorAgenteEliminadasComponent } from './components/terminadas/oportunidades-eliminadas/graficas-por-agente-eliminadas/graficas-por-agente-eliminadas.component';
+import { GraficasPorAgenteCanceladasComponent } from './components/terminadas/oportunidades-canceladas/graficas-por-agente-canceladas/graficas-por-agente-canceladas.component';
 import { ModalOportunidadesPorTipoComponent } from './components/dashboard/oportunidades-general/modal-oportunidades-por-tipo/modal-oportunidades-por-tipo.component';
 import { ModalDetallesOportunidadesPorTipoComponent } from './components/dashboard/oportunidades-general/modal-detalles-oportunidades-por-tipo/modal-detalles-oportunidades-por-tipo.component';
 
@@ -213,6 +216,9 @@ registerLocaleData(localeEs, 'es-MX');
     ModalDetallesIndicadoresEtapaComponent,
     ModalOportunidadesPorSectorComponent,
     ModalDetallesOportunidadesPorSectorComponent,
+    GraficasPorAgentePerdidasComponent,
+    GraficasPorAgenteEliminadasComponent,
+    GraficasPorAgenteCanceladasComponent,
     ModalOportunidadesPorTipoComponent,
     ModalDetallesOportunidadesPorTipoComponent
   ],

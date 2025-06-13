@@ -1,34 +1,24 @@
 <div class="acordeon-horizontal d-flex" style="gap: 30px;">
   <div class="item-acordeon" [class.expandido]="prospectosExpandido">
-    <div class="acordeon-header" (click)="toggleProspectos()" style="cursor:pointer;display:flex;align-items:center;gap:8px;">
-      <span>{{ prospectosExpandido ? '◀' : '▶' }}</span>
-      <span>Prospectos</span>
-    </div>
-    <div 
-      class="contenido-acordeon-horizontal"
-      [ngStyle]="{ width: prospectosExpandido ? '1000px' : '0', padding: prospectosExpandido ? '16px' : '0' }"
-    >
-      <div class="contenedor-tarjetas" *ngIf="prospectosExpandido">
-        <div class="tarjeta">
-          <app-prospectos></app-prospectos>
-        </div>
-      </div>
-    </div>
+  <div class="encabezado-acordeon">
+    <button class="boton-toggle" (click)="toggleProspectos()">
+      <i [ngClass]="prospectosExpandido ? 'bi bi-chevron-left' : 'bi bi-chevron-right'"></i>
+    </button>
+    <span class="nombre-seccion">Prospectos</span>
   </div>
+  <div class="contenido-acordeon-horizontal" *ngIf="prospectosExpandido">
+    <app-prospectos></app-prospectos>
+  </div>
+</div>
   <div class="item-acordeon" [class.expandido]="contactosExpandido">
-    <div class="acordeon-header" (click)="toggleContactos()" style="cursor:pointer;display:flex;align-items:center;gap:8px;">
-      <span>{{ contactosExpandido ? '◀' : '▶' }}</span>
-      <span>Contactos</span>
+    <div class="encabezado-acordeon">
+      <button class="boton-toggle" (click)="toggleContactos()">
+        <i [ngClass]="contactosExpandido ? 'bi bi-chevron-left' : 'bi bi-chevron-right'"></i>
+      </button>
+      <span class="nombre-seccion">Contactos</span>
     </div>
-    <div 
-      class="contenido-acordeon-horizontal"
-      [ngStyle]="{ width: contactosExpandido ? '1000px' : '0', padding: contactosExpandido ? '16px' : '0' }"
-    >
-      <div class="contenedor-tarjetas" *ngIf="contactosExpandido">
-        <div class="tarjeta">
-          <app-contactos></app-contactos>
-        </div>
-      </div>
-    </div>
+     <div class="contenido-acordeon-horizontal" *ngIf="contactosExpandido">
+    <app-contactos></app-contactos>
   </div>
+</div>
 </div>

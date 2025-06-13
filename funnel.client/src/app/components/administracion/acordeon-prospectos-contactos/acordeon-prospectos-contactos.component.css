@@ -1,10 +1,70 @@
-.item-acordeon.expandido {
-  width: 48%;
-  min-width: 320px;
-  max-width: 600px;
-}
-.contenido-acordeon-horizontal {
+.item-acordeon {
+  width: 70px;
+  height: 90vh;
+  background: #e9e9e9;
+  border: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 10px 0;
+  cursor: pointer;
+  transition: width 0.3s;
+  position: relative;
   overflow: hidden;
+}
+
+.item-acordeon.expandido {
+  width: 70%;
+  min-width: 1200px;
+  max-width: 600px;
+  border-radius: 15px;
+}
+
+.encabezado-acordeon {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.boton-toggle {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  margin: 0;
+  padding: 0;
+  order: 1;
+  align-self: flex-start;
+}
+
+.nombre-seccion {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  white-space: nowrap;
+  font-weight: bold;
+  font-size: 14px;
+  text-align: center;
+  order: 2;
+  margin-left: -10px;
+  transition: writing-mode 0.3s, transform 0.3s;
+}
+
+.item-acordeon.expandido .nombre-seccion {
+  writing-mode: horizontal-tb;
+  transform: rotate(0);
+  margin-left: 0;
+}
+
+.contenido-acordeon-horizontal {
+  width: 100%;
   transition: width 0.3s, padding 0.3s;
   min-width: 0;
+  overflow: hidden;
+  display: none;
+}
+
+.item-acordeon.expandido .contenido-acordeon-horizontal {
+  display: block;
 }

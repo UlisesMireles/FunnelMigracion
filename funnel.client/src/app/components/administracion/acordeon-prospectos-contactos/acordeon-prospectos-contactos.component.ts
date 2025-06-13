@@ -10,12 +10,23 @@ import { ChangeDetectorRef, Component, EventEmitter, Output } from '@angular/cor
 })
 export class AcordeonProspectosContactosComponent {
   prospectosExpandido = true;
-  contactosExpandido = true;
+  contactosExpandido = false;
   toggleProspectos() {
-    this.prospectosExpandido = !this.prospectosExpandido;
+    if (this.prospectosExpandido) {
+      this.prospectosExpandido = false;
+      this.contactosExpandido = true;
+    } else {
+      this.prospectosExpandido = true;
+      this.contactosExpandido = false;
+    }
   }
-
-  toggleContactos() {
-    this.contactosExpandido = !this.contactosExpandido;
+   toggleContactos() {
+    if (this.contactosExpandido) {
+      this.contactosExpandido = false;
+      this.prospectosExpandido = true;
+    } else {
+      this.contactosExpandido = true;
+      this.prospectosExpandido = false;
+    }
   }
 }

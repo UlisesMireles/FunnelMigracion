@@ -1,0 +1,10 @@
+.item-acordeon.expandido {
+  width: 48%;
+  min-width: 320px;
+  max-width: 600px;
+}
+.contenido-acordeon-horizontal {
+  overflow: hidden;
+  transition: width 0.3s, padding 0.3s;
+  min-width: 0;
+}

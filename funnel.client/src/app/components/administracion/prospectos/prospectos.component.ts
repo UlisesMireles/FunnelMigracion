@@ -51,10 +51,10 @@ EstatusDropdown = [
     {key: 'totalOportunidades', isCheck: true, valor: 'Op/todas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
     {key: 'ganadas', isCheck: true, valor: 'Ganadas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
     {key: 'porcEfectividad', isCheck: true, valor: '% Efectividad', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'decimal'},
-    {key: 'proceso', isCheck: true, valor: 'En Proceso', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
-    {key: 'perdidas', isCheck: true, valor: 'Perdidas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
-    {key: 'canceladas', isCheck: true, valor: 'Canceladas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
-    {key: 'eliminadas', isCheck: true, valor: 'Eliminadas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
+    {key: 'proceso', isCheck: false, valor: 'En Proceso', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
+    {key: 'perdidas', isCheck: false, valor: 'Perdidas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
+    {key: 'canceladas', isCheck: false, valor: 'Canceladas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
+    {key: 'eliminadas', isCheck: false, valor: 'Eliminadas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
     {key: 'desEstatus', isCheck: true, valor: 'Estatus', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'estatus'}
   ];
 

@@ -34,6 +34,8 @@ import { AdministracionHerramientasComponent } from './components/herramientas/a
 import { ModalTiposEntregaComponent } from './components/catalogos/tipos-entrega/modal-tipos-entrega/modal-tipos-entrega.component';
 import { TiposEntregaComponent } from './components/catalogos/tipos-entrega/tipos-entrega.component';
 import { UsuarioPerfilComponent } from './components/usuario-perfil/usuario-perfil.component';
+
+import { AcordeonProspectosContactosComponent } from './components/administracion/acordeon-prospectos-contactos/acordeon-prospectos-contactos.component';
 const routes: Routes = [
   { path: '', component: LoginComponent, title: 'Login' },
   { path: 'login', component: LoginComponent, title: 'Login' },
@@ -71,6 +73,7 @@ const routes: Routes = [
   { path: 'herramientas', component: AdministracionHerramientasComponent, title: 'Herramientas', canActivate: [AuthGuard] },
  // { path: 'dashboard-general', component: AdminDashboardComponent, title: 'Dashboard General', canActivate: [AuthGuard]},
   { path: 'dashboard', component: AdminDashboardComponent, title: 'Dashboard General', canActivate: [AuthGuard]},
+  {path: 'acordeon', component: AcordeonProspectosContactosComponent, title: 'Acordeon Prospectos Contactos', canActivate: [AuthGuard]},
 ];
 
 

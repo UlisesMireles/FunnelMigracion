@@ -195,7 +195,7 @@ export class OortunidadesMesAcordeonComponent {
   actualizarExpansiones() {
     const total = this.elementos.length;
     this.elementos.forEach((mes, index) => {
-      mes.expandido = index >= total - 5;
+      mes.expandido = mes.tarjetas.length > 0;
     });
   }
 

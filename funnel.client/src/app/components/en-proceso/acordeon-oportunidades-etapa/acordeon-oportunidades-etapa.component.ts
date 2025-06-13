@@ -49,15 +49,14 @@ export class AcordeonOportunidadesEtapaComponent {
       const idUsuario = this.loginService.obtenerIdUsuario();
       const idEmpresa = this.loginService.obtenerIdEmpresa();
     
-      console.log('Consultando oportunidades para:', {idUsuario, idEmpresa});
     
       this.oportunidadService.getOportunidadesPorEtapa(idEmpresa, idUsuario).subscribe({
         next: (result: OportunidadesPorEtapa[]) => {
           
           this.etapas = result.map(etapa => ({
             ...etapa,
-            expandido: true, // Expandir todas las etapas por defecto
-            tarjetas: etapa.tarjetas || [] // Asegurar array vacío si es null/undefined
+            expandido: etapa.tarjetas.length > 0, // Inicializa 'expandido' en true si hay tarjetas
+            tarjetas: etapa.tarjetas || [] 
           }));
     
           this.connectedDropLists = this.etapas.map((_, i) => `ListEtapa${i}`);

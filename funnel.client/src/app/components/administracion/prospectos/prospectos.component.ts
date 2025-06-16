@@ -339,5 +339,18 @@ clear(table: Table) {
     
     return this.dt?.sortField === columnKey;
 }
-
+abrirModalSector(rowData: any) {
+    this.prospectoSeleccionado = rowData;
+    this.prospectoEdicion = { ...rowData };
+    this.insertar = false;
+    this.modalVisible = true;
+    this.desdeSector = true;
+    this.modalOportunidadesService
+      .openModalProspecto(true, false, [], rowData, { errorMessage: '', result: false, id: -1 }, true)
+      .subscribe((modalResult) => {
+        if (modalResult?.result.result === true) {
+          this.ngOnInit();
+        }
+      });
+  }
 }

@@ -193,16 +193,15 @@
                     <span *ngIf="def.key === 'nombreOportunidad'" pTooltip="{{rowData['nombreOportunidad']}}" tooltipPosition="top">
                         {{ rowData[def.key] }}
                     </span>
-                   <span *ngIf="def.key === 'nombreSector'">
-                    <a *ngIf="rowData[def.key] === 'Por Asignar'"  style="color: red; text-decoration: underline; cursor: pointer;"
-                      (click)="abrirModalSector(rowData)">
+                   <span *ngIf="def.key === 'nombreSector'"> 
+                    <button *ngIf="rowData[def.key] === 'Por Asignar'" (click)="abrirModalSector(rowData)"
+                      style="background-color: #f93e3e; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer;">
                       {{ rowData[def.key] }}
-                    </a>
+                    </button>
                     <span *ngIf="rowData[def.key] !== 'Por Asignar'">
                       {{ rowData[def.key] }}
                     </span>
                   </span>
-
                     <span *ngIf="def.key !== 'nombreContacto' && def.key !== 'iniciales' && def.key !== 'abreviatura' && def.key !== 'entrega' && def.key !== 'nombreOportunidad' && def.key !== 'nombreSector'">
                         {{ rowData[def.key] }}
                     </span>

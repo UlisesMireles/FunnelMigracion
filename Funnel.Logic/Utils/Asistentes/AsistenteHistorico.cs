@@ -81,19 +81,25 @@ namespace Funnel.Logic.Utils.Asistentes
                **NO descartes seguimientos solo porque estén escritos de forma breve. Si hay intención o acción, considéralo relevante.**
 
             3. **Análisis completo debe incluir:**
-               - <b>Visión general:</b> máximo 60 palabras.
+               - <b>Visión general:</b> máximo 100 palabras.
                - <b>Análisis de sentimiento:</b> máximo 100 palabras.
                - <b>Análisis de actuación de los ejecutivos:</b> máximo 50 palabras.
                - <b>Consejos para el manejo de la cuenta:</b> máximo 80 palabras, en lista.
 
             4. **Inactividad:**
-               - Si han pasado más de 15 días sin actividad, incluye esta línea textual:
+               - Si han pasado **más de 15 días sin actividad** en el resumen de oportunidad, incluye esta línea textual:
 
                  <span style=""font-size: 16px; font-weight: bold;"">Se solicita actualizar este seguimiento dado que tiene más de 15 días sin actividad.</span>
 
             5. **Monto y etapa:**
                - Si el monto es menor a $100 y la etapa es 1, menciónalo como oportunidad de bajo impacto salvo que haya evolución.
                - Si está estancada en etapa 1 por mucho tiempo sin avance, sugerir su cierre.
+
+            6. **Tiempo en etapas:**
+               - Considera los días que la oportunidad ha permanecido en cada etapa como parte del análisis.
+               - Si una etapa lleva más de 20 días sin avances o cambios, menciónalo como señal de posible estancamiento.
+               - Si hay progreso reciente entre etapas, destácalo como un indicio positivo de avance.
+               - Usa esta información para reforzar el análisis de sentimiento, la actuación del ejecutivo y los consejos de manejo.
 
             ---
 
@@ -139,7 +145,7 @@ namespace Funnel.Logic.Utils.Asistentes
                 model = modelo,
                 messages = messages,
                 temperature = 0.7,
-                max_tokens = 700
+                max_tokens = 900
             };
 
             var chatRespuestaOpenIA = await OpenIAFunciones.ChatCompletionAsync(llave, requestBody);

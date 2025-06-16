@@ -5,30 +5,31 @@
 </div>
 <div class="acordeon-horizontal d-flex" *ngIf="!loading">
   <div *ngFor="let mes of elementos; let i = index" class="item-acordeon" [class.expandido]="mes.expandido">
-    <div class="encabezado-acordeon">
+    <div class="encabezado-acordeon" [ngClass]="'encabezado-' + i+ '-' +  mes.expandido"
+      (click)="alternarItem(mes, $event)">
       <!-- Botón a la izquierda del nombre del mes -->
-      <button class="boton-toggle" [ngClass]="mes.expandido ? 'expandido' : 'colapsado'"
-        (click)="alternarItem(mes, $event)">
+      <!-- <button class="boton-toggle" [ngClass]="mes.expandido ? 'expandido' : 'colapsado'"
+       >
         <i [ngClass]="mes.expandido ? 'bi bi-chevron-left' : 'bi bi-chevron-right'"></i>
-      </button>
-
+      </button> -->
 
       <!-- Nombre del mes y contador -->
       <span class="nombre-mes">
         {{ mes.nombre.substring(0,1).toUpperCase() + mes.nombre.substring(1).toLowerCase() }}
         <span class="contador-tarjetas">({{ mes.tarjetas.length }})</span>
       </span>
+      <div class="total-row" *ngIf="mes.expandido">
+        <span id="lblTotalMes{{i}}" class="lblTotalMeses">
+          {{ getTotalMonto(mes) | currency:'MXN':'symbol':'1.0-0' }}
+        </span>
+        <span id="lblNormalizadoMes{{i}}" class="lblNormalizadoMeses">
+          {{ getTotalNormalizado(mes) | currency:'MXN':'symbol':'1.0-0' }}
+        </span>
+      </div>
     </div>
 
     <!-- Solo se muestra cuando el mes está expandido -->
-    <div class="total-row" *ngIf="mes.expandido">
-      <span id="lblTotalMes{{i}}" class="lblTotalMeses">
-        {{ getTotalMonto(mes) | currency:'MXN':'symbol':'1.0-0' }}
-      </span>
-      <span id="lblNormalizadoMes{{i}}" class="lblNormalizadoMeses">
-        {{ getTotalNormalizado(mes) | currency:'MXN':'symbol':'1.0-0' }}
-      </span>
-    </div>
+
 
 
     <div *ngIf="mes.expandido" cdkDropList #todoList="cdkDropList" [cdkDropListData]="mes.tarjetas"

@@ -59,6 +59,7 @@ namespace Funnel.Logic.Utils.Asistentes
 
             ### FORMATO DE RESPUESTA:
             Responde siempre en formato HTML, con estructura clara, visualmente ordenada y fácil de leer.
+            **No generes títulos ni repitas la informacion que se proporciona de la oportunidad** (usa solo subtítulos en negritas o párrafos si es necesario).
 
             ---
 

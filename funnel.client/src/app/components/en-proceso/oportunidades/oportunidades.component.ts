@@ -67,6 +67,8 @@ export class OportunidadesComponent {
   totalOportunidades: number = 0;
   totalOportunidadesMes: number = 0;
   totalProspectosMes: number = 0;
+  totalGanadasMes: number = 0;
+  totalPerdidasMes: number = 0;
 
   lsTodasColumnas: any[] = [
     { key: 'idOportunidad', isCheck: false, valor: 'Id', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
@@ -164,18 +166,22 @@ export class OportunidadesComponent {
         const fecha = new Date(o.fechaRegistro);
         return fecha.getMonth() === hoy.getMonth() && fecha.getFullYear() === hoy.getFullYear();
       }).length;
-    console.log("prospecto", prospecto.filter(p =>
-       { if (!p.fechaRegistro) return false;
-        const fecha = new Date(p.fechaRegistro);
-        return fecha.getMonth() === hoy.getMonth() && fecha.getFullYear() === hoy.getFullYear();
-      }));
-
-    this.totalProspectosMes = prospecto
-      .filter(p => { 
-        if (!p.fechaRegistro) return false;
-        const fecha = new Date(p.fechaRegistro);
-        return fecha.getMonth() === hoy.getMonth() && fecha.getFullYear() === hoy.getFullYear();
-      } ).length;
+    
+    this.oportunidadService.consultarEtiquetasOportunidades(this.loginService.obtenerIdEmpresa()).subscribe({
+      next: (result: any) => {
+        this.totalOportunidadesMes = result.abiertasMes;
+        this.totalProspectosMes = result.prospectosNuevos;
+        this.totalGanadasMes = result.ganadasMes;
+        this.totalPerdidasMes = result.perdidasMes;
+      },
+      error: (error:any) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Se ha producido un error al cargar las etiquetas.',
+          detail: error.errorMessage,
+        });
+      }
+    });
   }
 
   inserta() {

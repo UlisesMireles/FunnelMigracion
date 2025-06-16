@@ -493,5 +493,25 @@ namespace Funnel.Data
             }
             return result;
         }
+        public async Task<EtiquetasOportunidadesDto> ConsultarEtiquetas(int IdEmpresa)
+        {
+            EtiquetasOportunidadesDto result = new EtiquetasOportunidadesDto();
+            IList<ParameterSQl> list = new List<ParameterSQl>
+            {
+                DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "ETIQUETAS_OPORTUNIDADES"),
+                DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, IdEmpresa)
+            };
+            using (IDataReader reader = await DataBase.GetReaderSql("F_Catalogos", CommandType.StoredProcedure, list, _connectionString))
+            {
+                while (reader.Read())
+                {
+                    result.ProspectosNuevos = ComprobarNulos.CheckIntNull(reader["ProspectosNuevos"]);
+                    result.AbiertasMes = ComprobarNulos.CheckIntNull(reader["AbiertasMes"]);
+                    result.GanadasMes = ComprobarNulos.CheckIntNull(reader["GanadasMes"]);
+                    result.PerdidasMes = ComprobarNulos.CheckIntNull(reader["PerdidasMes"]);
+                }
+            }
+            return result;
+        }
     }
 }

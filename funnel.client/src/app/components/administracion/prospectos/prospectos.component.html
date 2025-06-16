@@ -131,20 +131,24 @@
                   }">
                 <ng-container [ngSwitch]="def.tipoFormato">
                   <span *ngSwitchCase="'text'">
-                    <span *ngIf="def.key === 'nombreSector'" [ngStyle]="{ 'color': rowData[def.key] === 'Por Asignar' ? 'red' : 'inherit' }">
-                        {{ rowData[def.key] }}
-                    </span>
-                    <span *ngIf="def.key !== 'nombreSector'">
-                        {{ rowData[def.key] }}
-                    </span>
-                </span>
-
-                <span *ngSwitchCase="'textNFilter'">
-                    <span *ngIf="def.key !== 'nombreSector'">
-                        {{ rowData[def.key] }}
-                    </span>
-                </span>
-                  
+                  <span *ngIf="def.key === 'nombreSector'"> 
+                  <button *ngIf="rowData[def.key] === 'Por Asignar'" (click)="abrirModalSector(rowData)"
+                    style="background-color: #f93e3e; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer;">
+                    {{ rowData[def.key] }}
+                  </button>
+                  <span *ngIf="rowData[def.key] !== 'Por Asignar'">
+                    {{ rowData[def.key] }}
+                  </span>
+                  </span>
+                  <span *ngIf="def.key !== 'nombreSector'">
+                      {{ rowData[def.key] }}
+                  </span>
+              </span>
+              <span *ngSwitchCase="'textNFilter'">
+                  <span *ngIf="def.key !== 'nombreSector'">
+                      {{ rowData[def.key] }}
+                  </span>
+              </span>         
                   <span *ngSwitchCase="'currency'">
                     {{ rowData[def.key] | currency:'$':'symbol':'1.2-2' }}
                   </span>

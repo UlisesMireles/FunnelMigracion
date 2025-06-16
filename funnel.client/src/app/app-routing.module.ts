@@ -44,8 +44,9 @@ const routes: Routes = [
   { path: 'cambiar-contrasena', component: CambiarContrasenaComponent, title: 'Cambiar Contraseña', canActivate: [AuthGuard] },
   { path: 'two-factor', component: DobleAutenticacionComponent, title: 'Autenticación' },
   { path: 'recuperar-contrasena', component: OlvidasteContrasenaComponent, title: 'Recuperar contraseña' },
-  { path: 'prospectos', component: ProspectosComponent, title: 'Prospectos', canActivate: [AuthGuard] },
-  { path: 'contactos', component: ContactosComponent, title: 'Contactos', canActivate: [AuthGuard] },
+  /*{ path: 'prospectos', component: ProspectosComponent, title: 'Prospectos', canActivate: [AuthGuard] },
+  { path: 'contactos', component: ContactosComponent, title: 'Contactos', canActivate: [AuthGuard] },*/
+  {path: 'prospectos-contactos', component: AcordeonProspectosContactosComponent, title: 'Acordeon Prospectos Contactos', canActivate: [AuthGuard]},
   { path: 'tipos-servicios', component: TipoServiciosComponent, title: 'Tipos Servicios ', canActivate: [AuthGuard] },
   { path: 'oportunidades', component: OportunidadesComponent, title: 'Oportunidades', canActivate: [AuthGuard] },
   { path: 'tipos-servicios-modal', component: ModalTipoServiciosComponent, title: 'Tipos Servicios ', canActivate: [AuthGuard] },
@@ -73,7 +74,6 @@ const routes: Routes = [
   { path: 'herramientas', component: AdministracionHerramientasComponent, title: 'Herramientas', canActivate: [AuthGuard] },
  // { path: 'dashboard-general', component: AdminDashboardComponent, title: 'Dashboard General', canActivate: [AuthGuard]},
   { path: 'dashboard', component: AdminDashboardComponent, title: 'Dashboard General', canActivate: [AuthGuard]},
-  {path: 'acordeon', component: AcordeonProspectosContactosComponent, title: 'Acordeon Prospectos Contactos', canActivate: [AuthGuard]},
 ];
 
 

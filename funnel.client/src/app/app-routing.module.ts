@@ -15,7 +15,7 @@ import { ModalTipoServiciosComponent } from './components/catalogos/tipo-servici
 import { UsuariosComponent } from './components/catalogos/usuarios/usuarios.component';
 import { OportunidadesComponent } from './components/en-proceso/oportunidades/oportunidades.component';
 import { EstadisticasPorEtapaComponent } from './components/en-proceso/estadisticas-por-etapa/estadisticas-por-etapa.component';
-import { OortunidadesMesAcordeonComponent } from './components/en-proceso/acordion-horizontal/app-oportunidadesMes-acordeon.component';
+import { OortunidadesMesAcordeonComponent } from './components/utils/acordion-horizontal/app-oportunidadesMes-acordeon.component';
 import { AdminDashboardComponent } from './components/dashboard/admin-dashboard/admin-dashboard.component';
 import { OportunidadesGanadasComponent } from './components/terminadas/oportunidades-ganadas/oportunidades-ganadas.component';
 import { OportunidadesEliminadasComponent } from './components/terminadas/oportunidades-eliminadas/oportunidades-eliminadas.component';

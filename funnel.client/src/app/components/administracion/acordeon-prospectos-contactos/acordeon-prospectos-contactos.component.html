@@ -1,4 +1,4 @@
-<div class="acordeon-horizontal d-flex" style="gap: 30px;">
+<div class="acordeon-horizontal d-flex" style="gap: 15px;">
   <div class="item-acordeon" [class.expandido]="prospectosExpandido">
   <div class="encabezado-acordeon">
     <button class="boton-toggle" (click)="toggleProspectos()">
@@ -6,7 +6,7 @@
     </button>
     <span class="nombre-seccion">Prospectos</span>
   </div>
-  <div class="contenido-acordeon-horizontal" *ngIf="prospectosExpandido">
+  <div class="contenido-acordeon-horizontal" style="margin-left: 35px;" *ngIf="prospectosExpandido">
     <app-prospectos></app-prospectos>
   </div>
 </div>

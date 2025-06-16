@@ -5,6 +5,8 @@ import { PermisosService } from '../../../../services/permisos.service';
 import { LoginService } from '../../../../services/login.service';
 import { Permiso } from '../../../../interfaces/permisos';
 import { ModalService } from '../../../../services/modal-perfil.service';
+import { EnumPaginas } from '../../../../enums/enumPaginas';
+import { EnumMenus } from '../../../../enums/enumMenus';
 
 @Component({
   selector: 'app-vertical-bar',
@@ -60,8 +62,15 @@ export class VerticalBarComponent {
         this.ListaMenu = [perfil, ...result, salir];
 
         this.ListaMenu = this.ListaMenu.map(menu =>
-          menu.nombre === 'DASHBOARD'
+          menu.nombre === EnumMenus.DASHBOARD
             ? { ...menu, subMenu: [], ruta: '/dashboard' }
+            : menu
+        );
+        this.ListaMenu = this.ListaMenu.map(menu =>
+          menu.nombre === EnumMenus.ADMINISTRACION
+            ? { ...menu, subMenu: [
+              { idPagina: 9, pagina: EnumPaginas.PROSPECTOS_CONTACTOS, ruta: "/prospectos-contactos" }
+            ] }
             : menu
         );
       },

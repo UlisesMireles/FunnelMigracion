@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, EventEmitter, Output } from '@angular/core';
 import { LoginService } from '../../../services/login.service';
 import { EnumPaginas } from '../../../enums/enumPaginas';
+import { EnumMenus } from '../../../enums/enumMenus';
 
 
 @Component({
@@ -10,6 +11,7 @@ import { EnumPaginas } from '../../../enums/enumPaginas';
   styleUrl: './acordeon-prospectos-contactos.component.css'
 })
 export class AcordeonProspectosContactosComponent {
+  permisoProspectos: boolean = false;
   permisoContactos: boolean = false;
   prospectosExpandido = true;
   contactosExpandido = false;
@@ -19,7 +21,7 @@ export class AcordeonProspectosContactosComponent {
      this.consultarPermisosUsuario();
   }
   toggleProspectos() {
-    if (!this.permisoContactos) return;
+    if (!this.permisoProspectos) return;
     if (this.prospectosExpandido) {
       this.prospectosExpandido = false;
       this.contactosExpandido = true;
@@ -40,10 +42,14 @@ export class AcordeonProspectosContactosComponent {
   }
   consultarPermisosUsuario() {
     const permisos = this.loginService.obtenerPermisosUsuario();
+    console.log('permisos', permisos);
     if (permisos && permisos.length > 0) {
-      const permisoProspectos = permisos.find(p => p.nombre === EnumPaginas.PROSPECTOS);
+      const permisoProspectos = permisos.find(p => p.nombre === EnumMenus.ADMINISTRACION);
+      console.log('permisoProspectos', permisoProspectos);
       if(permisoProspectos){
         this.permisoContactos = permisoProspectos.subMenu.some((p:any) => p.pagina === EnumPaginas.CONTACTOS);
+        this.permisoProspectos = permisoProspectos.subMenu.some((p:any) => p.pagina === EnumPaginas.PROSPECTOS);
+        this.contactosExpandido = !this.permisoProspectos;
       }
     }
   }

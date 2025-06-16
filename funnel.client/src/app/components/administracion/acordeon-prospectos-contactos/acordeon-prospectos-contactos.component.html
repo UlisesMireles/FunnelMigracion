@@ -1,5 +1,5 @@
 <div class="acordeon-horizontal d-flex" style="gap: 15px;">
-  <div class="item-acordeon"  [class.expandido]="prospectosExpandido">
+  <div class="item-acordeon" *ngIf="permisoProspectos"  [class.expandido]="prospectosExpandido">
   <div class="encabezado-acordeon">
     <button class="boton-toggle" (click)="toggleProspectos()">
       <i [ngClass]="prospectosExpandido ? 'bi bi-chevron-left' : 'bi bi-chevron-right'"></i>

@@ -61,4 +61,27 @@ namespace Funnel.Models.Dto
             public string? TipoProyectoAbreviatura { get; set; }
             public string? Iniciales { get; set; }
         }
-    }
+        public class TipoProyectoDto
+        {
+            public int IdTipoProyecto { get; set; }
+            public string? Descripcion { get; set; }
+            public decimal Monto { get; set; }
+            public decimal MontoNormalizado { get; set; }
+            public decimal Porcentaje { get; set; }
+        }
+        public class OportunidadTipoDto
+        {
+            public int IdOportunidad { get; set; }
+            public string? NombreProspecto { get; set; }
+            public string? NombreOportunidad { get; set; }
+            public string? TipoProyecto { get; set; }
+            public string? Ejecutivo { get; set; }
+            public decimal Monto { get; set; }
+            public string? FechaEstimadaCierre { get; set; }
+            public decimal? MontoNormalizado { get; set; }
+            public string? Probabilidad { get; set; }
+            public string? Stage { get; set; }
+            public string? TipoProyectoAbreviatura { get; set; }
+            public string? Iniciales { get; set; }
+        }
+}

@@ -6,11 +6,11 @@
     <div class="quadrant p-0" *ngFor="let group of quadrants; let i = index" cdkDropList [cdkDropListData]="group.cards"
         [cdkDropListConnectedTo]="dropListIds" [id]="'cardList' + i" (cdkDropListDropped)="drop($event)">
         <div *ngFor="let card of group.cards" class="card p-0" id="prueba">
-            <div class="card-header" cdkDrag>
+           <div class="card-header header-graficas" cdkDrag>
                 <h5 class="card-title">{{card.titulo}}</h5>
-            </div>
+           </div>
             <div class="p-3 mb-3 overflow-auto" *ngIf="card.tipo === 'tabla'">
-                <p-table [value]="agentes">
+                 <p-table [value]="agentes" styleClass="my-custom-table">
                     <ng-template pTemplate="header">
                         <tr>
                             <th></th>
@@ -19,12 +19,13 @@
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-rowData>
-                        <tr (click)="recargarGraficasPorAgente(rowData.idAgente)" style="cursor:pointer">
+                        <tr (click)="seleccionarAgente(rowData.idAgente)" [class.selected-row]="rowData.idAgente === agenteSeleccionadoId"
+                         style="cursor:pointer">
                             <td>
                                 <img [src]="baseUrl + rowData.archivoImagen" alt="Avatar" width="32" height="32" style="border-radius:50%;">
                             </td>
                             <td>{{ rowData.nombre }}</td>
-                            <td>{{ rowData.totalAgente }}</td>
+                            <td>{{ rowData.totalAgente | currency:'$':'symbol':'1.2-2' }}</td>
                         </tr>
                     </ng-template>
                 </p-table>

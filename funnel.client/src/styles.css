@@ -160,3 +160,25 @@
   text-align: center;
   font-size: 15px;
 }
+.my-custom-table .p-datatable-tbody > tr {
+    background-color: white !important;
+}
+.my-custom-table .p-datatable-tbody > tr.selected-row {
+    background-color: #1976d2 !important;
+    color: #fff;
+}
+.custom-header th:first-child {
+  border-top-left-radius: 8px !important;
+}
+.custom-header th:last-child {
+  border-top-right-radius: 8px !important;
+}
+.custom-footer td:first-child {
+  border-bottom-left-radius: 8px !important;
+}
+.custom-footer td:last-child {
+  border-bottom-right-radius: 8px !important;
+}
+.p-paginator {
+  justify-content: flex-start !important;
+}

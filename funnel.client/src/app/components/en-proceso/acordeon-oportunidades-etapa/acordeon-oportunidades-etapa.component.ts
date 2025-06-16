@@ -55,7 +55,7 @@ export class AcordeonOportunidadesEtapaComponent {
           
           this.etapas = result.map(etapa => ({
             ...etapa,
-            expandido:  etapa.tarjetas.length > 0, // Expandir todas las etapas por defecto
+            expandido: etapa.tarjetas.length > 0, // Expandir todas las etapas por defecto
             tarjetas: etapa.tarjetas || [] // Asegurar array vacío si es null/undefined
           }));
           

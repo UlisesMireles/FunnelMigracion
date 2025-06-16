@@ -21,7 +21,7 @@
 .chatBotAsistente {
     display: block;
     height: 90%;
-    background-color: white;
+    background-color: rgb(3, 0, 0);
     border-radius: 0 0 10px 10px;
     padding-bottom: 10px;
 }
@@ -39,7 +39,7 @@
     h4,
     h5,
     h6 {
-        color: #fff;
+        color: #040202;
         margin: 0;
     }
 }
@@ -95,14 +95,14 @@
 
 .app-chat-headerTemaAsistenteOperacion {
     background-color: #00C455;
-    color: #fff;
+    color: #1d0707;
 
     h2,
     h3,
     h4,
     h5,
     h6 {
-        color: #fff;
+        color: #100505;
         margin: 0;
     }
 }

@@ -49,3 +49,26 @@ export interface SectoresDetalles{
     probabilidad: string;
     stage: string;
 }
+
+export interface OportunidadesTipo {
+    idTipoProyecto: number;
+    descripcion: string;  
+    monto: number;        
+    montoNormalizado: number;
+    porcentaje: number;
+}
+
+export interface OportunidadesTipoDetalles {
+    idOportunidad: number;
+    nombreProspecto: string;     
+    nombreOportunidad: string;
+    tipoProyecto: string; 
+    tipoProyectoAbreviatura: string;       
+    ejecutivo: string;   
+    iniciales: string;       
+    monto: number;
+    fechaEstimadaCierre: string;
+    montoNormalizado: number;
+    probabilidad: string;
+    stage: string;
+}

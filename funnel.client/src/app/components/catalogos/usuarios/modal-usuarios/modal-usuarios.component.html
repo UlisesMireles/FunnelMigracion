@@ -48,10 +48,6 @@
         </div>
         <div class="col-sm-8 ">
           <input pInputText class="inptSize" formControlName="apellidoMaterno" />
-          <span *ngIf="usuarioForm.get('apellidoMaterno')?.invalid && usuarioForm.get('apellidoMaterno')?.touched" class="text-danger">
-            <br />
-            <ng-container *ngIf="usuarioForm.get('apellidoMaterno')?.errors?.['required']">El apellido materno es obligatorio.</ng-container>
-          </span>
         </div>
       </div>
   

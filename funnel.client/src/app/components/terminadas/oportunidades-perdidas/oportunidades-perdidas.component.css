@@ -74,9 +74,10 @@ div.inDivDatatableHeader > p-button > button.p-button {
 } */
 
 .inDivDatatableHeader {
-  padding-left: 50px;
-  padding-top: 5px;
-
+    padding-left: 50px;
+    padding-top: 5px;
+    margin-top: 35px;
+    margin-bottom: 10px;
 }
 
 .custom-header th {
@@ -425,4 +426,33 @@ padding-top: 10px;
 .fila-activa {
 background: rgba(147, 136, 121, 0.75) !important;
 color: #272722 !important;
+}
+
+/* Estilos personalizados para las pestañas */
+
+.custom-tabs .bi {
+  font-size: 1.5rem;  
+  margin-right: 0rem; 
+}
+
+.custom-tabs .nav-link {
+  color: #11489b !important; 
+  border-bottom: 3px solid transparent;
+}
+
+
+.custom-tabs .nav-link:hover {
+  color: #084298 !important;  
+}
+.custom-tabs {
+  display: inline-flex;
+  border-bottom: 1px solid #dee2e6;
+  position: absolute;
+  left: 46px;
+  top: 40px; 
+  z-index: 2;
+}
+
+.custom-tabs .nav-link.active {
+  color: #3c3e41 !important;
 }

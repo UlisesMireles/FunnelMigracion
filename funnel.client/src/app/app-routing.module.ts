@@ -26,14 +26,16 @@ import { ModalOportunidadesPerdidasComponent } from './components/terminadas/opo
 import { ModalDetallesIndicadoresEtapaComponent } from './components/dashboard/oportunidades-general/modal-detalles-indicadores-etapa/modal-detalles-indicadores-etapa.component';
 import { ModalOportunidadesPorSectorComponent } from './components/dashboard/oportunidades-general/modal-oportunidades-por-sector/modal-oportunidades-por-sector.component';
 import { ModalDetallesOportunidadesPorSectorComponent } from './components/dashboard/oportunidades-general/modal-detalles-oportunidades-por-sector/modal-detalles-oportunidades-por-sector.component';
+import { ModalDetallesOportunidadesPorTipoComponent } from './components/dashboard/oportunidades-general/modal-detalles-oportunidades-por-tipo/modal-detalles-oportunidades-por-tipo.component';
+import { ModalOportunidadesPorTipoComponent } from './components/dashboard/oportunidades-general/modal-oportunidades-por-tipo/modal-oportunidades-por-tipo.component';
 
 import { PermisosComponent } from './components/catalogos/permisos/permisos.component';
 import { AdministracionHerramientasComponent } from './components/herramientas/administracion-herramientas/administracion-herramientas.component';
 import { ModalTiposEntregaComponent } from './components/catalogos/tipos-entrega/modal-tipos-entrega/modal-tipos-entrega.component';
 import { TiposEntregaComponent } from './components/catalogos/tipos-entrega/tipos-entrega.component';
 import { UsuarioPerfilComponent } from './components/usuario-perfil/usuario-perfil.component';
-import { GraficasPorAnioComponent } from './components/terminadas/oportunidades-ganadas/graficas-por-anio/graficas-por-anio.component';
-import { GraficasPorAgenteComponent } from './components/terminadas/oportunidades-ganadas/graficas-por-agente/graficas-por-agente.component';
+
+import { AcordeonProspectosContactosComponent } from './components/administracion/acordeon-prospectos-contactos/acordeon-prospectos-contactos.component';
 const routes: Routes = [
   { path: '', component: LoginComponent, title: 'Login' },
   { path: 'login', component: LoginComponent, title: 'Login' },
@@ -42,8 +44,9 @@ const routes: Routes = [
   { path: 'cambiar-contrasena', component: CambiarContrasenaComponent, title: 'Cambiar Contraseña', canActivate: [AuthGuard] },
   { path: 'two-factor', component: DobleAutenticacionComponent, title: 'Autenticación' },
   { path: 'recuperar-contrasena', component: OlvidasteContrasenaComponent, title: 'Recuperar contraseña' },
-  { path: 'prospectos', component: ProspectosComponent, title: 'Prospectos', canActivate: [AuthGuard] },
-  { path: 'contactos', component: ContactosComponent, title: 'Contactos', canActivate: [AuthGuard] },
+  /*{ path: 'prospectos', component: ProspectosComponent, title: 'Prospectos', canActivate: [AuthGuard] },
+  { path: 'contactos', component: ContactosComponent, title: 'Contactos', canActivate: [AuthGuard] },*/
+  {path: 'prospectos-contactos', component: AcordeonProspectosContactosComponent, title: 'Acordeon Prospectos Contactos', canActivate: [AuthGuard]},
   { path: 'tipos-servicios', component: TipoServiciosComponent, title: 'Tipos Servicios ', canActivate: [AuthGuard] },
   { path: 'oportunidades', component: OportunidadesComponent, title: 'Oportunidades', canActivate: [AuthGuard] },
   { path: 'tipos-servicios-modal', component: ModalTipoServiciosComponent, title: 'Tipos Servicios ', canActivate: [AuthGuard] },
@@ -52,8 +55,6 @@ const routes: Routes = [
   { path: 'tipos-entrega', component: TiposEntregaComponent, title: 'Tipos Entrega', canActivate: [AuthGuard] },
   { path: 'tipos-entrega-modal', component: ModalTiposEntregaComponent, title: 'Tipos Entrega', canActivate: [AuthGuard] },
   { path: 'oportunidades-ganadas', component: OportunidadesGanadasComponent, title: 'Oportunidades Ganadas', canActivate: [AuthGuard] },
-  {path: 'graficas-por-año-ganadas', component: GraficasPorAnioComponent, title: 'Gráficas por Año', canActivate: [AuthGuard] },
-  { path: 'graficas-por-agente-ganadas', component: GraficasPorAgenteComponent, title: 'Gráficas por Agente', canActivate: [AuthGuard] },
   { path: 'oportunidades-eliminadas', component: OportunidadesEliminadasComponent, title: 'Oportunidades Eliminadas', canActivate: [AuthGuard] },
   { path: 'oportunidades-canceladas', component: OportunidadesCanceladasComponent, title: 'Oportunidades Canceladas', canActivate: [AuthGuard] },
   { path: 'oportunidades-perdidas', component: OportunidadesPerdidasComponent, title: 'Oportunidades Perdidas', canActivate: [AuthGuard] },
@@ -63,6 +64,8 @@ const routes: Routes = [
   { path: 'modal-detalles-indicadores-etapa', component: ModalDetallesIndicadoresEtapaComponent, title: 'Detalles Indicadores Etapa', canActivate: [AuthGuard] },
   { path: 'modal-oportunidades-por-sector', component: ModalOportunidadesPorSectorComponent, title: 'Oportunidades Por Sector', canActivate: [AuthGuard] },
   { path: 'modal-detalles-oportunidades-por-sector', component: ModalDetallesOportunidadesPorSectorComponent, title: 'Detalles Oportunidades Por Sector', canActivate: [AuthGuard] },
+  { path: 'modal-oportunidades-por-tipo', component: ModalOportunidadesPorTipoComponent, title: 'Oportunidades Por Tipo', canActivate: [AuthGuard] },
+  { path: 'modal-detalles-oportunidades-por-tipo', component: ModalDetallesOportunidadesPorTipoComponent, title: 'Detalles Oportunidades Por Tipo', canActivate: [AuthGuard] },
 
   { path: 'permisos', component: PermisosComponent, title: 'Permisos', canActivate: [AuthGuard] },
   //{ path: 'top-veinte', component: AdminDashboardComponent, title: 'Top Veinte', canActivate: [AuthGuard] },

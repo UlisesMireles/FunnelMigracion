@@ -36,6 +36,7 @@ import { TiposEntregaComponent } from './components/catalogos/tipos-entrega/tipo
 import { UsuarioPerfilComponent } from './components/usuario-perfil/usuario-perfil.component';
 
 import { AcordeonProspectosContactosComponent } from './components/administracion/acordeon-prospectos-contactos/acordeon-prospectos-contactos.component';
+import { ServiciosEntregasComponent } from './components/catalogos/servicios-entregas/servicios-entregas.component';
 import { UsuariosPermisosComponent } from './components/catalogos/usuarios-permisos/usuarios-permisos.component';
 const routes: Routes = [
   { path: '', component: LoginComponent, title: 'Login' },
@@ -47,6 +48,13 @@ const routes: Routes = [
   { path: 'recuperar-contrasena', component: OlvidasteContrasenaComponent, title: 'Recuperar contraseña' },
   /*{ path: 'prospectos', component: ProspectosComponent, title: 'Prospectos', canActivate: [AuthGuard] },
   { path: 'contactos', component: ContactosComponent, title: 'Contactos', canActivate: [AuthGuard] },*/
+  //{ path: 'tipos-servicios', component: TipoServiciosComponent, title: 'Tipos Servicios ', canActivate: [AuthGuard] },
+  {path: 'servicios-entregas', component: ServiciosEntregasComponent, title: 'Servicios-entregas', canActivate: [AuthGuard]},
+  { path: 'oportunidades', component: OportunidadesComponent, title: 'Oportunidades', canActivate: [AuthGuard] },
+  { path: 'tipos-servicios-modal', component: ModalTipoServiciosComponent, title: 'Tipos Servicios ', canActivate: [AuthGuard] },
+  { path: 'modal-prospectos', component: ModalProspectosComponent, title: 'Modal Prospectos', canActivate: [AuthGuard] },
+  { path: 'usuarios', component: UsuariosComponent, title: 'Usuarios', canActivate: [AuthGuard] },
+  //{ path: 'tipos-entrega', component: TiposEntregaComponent, title: 'Tipos Entrega', canActivate: [AuthGuard] },
   {path: 'prospectos-contactos', component: AcordeonProspectosContactosComponent, title: 'Prospectos-Contactos', canActivate: [AuthGuard]},
   { path: 'tipos-servicios', component: TipoServiciosComponent, title: 'Tipos Servicios ', canActivate: [AuthGuard] },
   { path: 'oportunidades', component: OportunidadesComponent, title: 'Oportunidades', canActivate: [AuthGuard] },

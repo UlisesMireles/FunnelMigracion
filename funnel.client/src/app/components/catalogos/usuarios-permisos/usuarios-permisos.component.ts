@@ -9,8 +9,8 @@ import { EnumMenus } from '../../../enums/enumMenus';
   styleUrl: './usuarios-permisos.component.css'
 })
 export class UsuariosPermisosComponent {
-  permisoUsuarios: boolean = true;
-  permisoPermisos: boolean = true;
+  permisoUsuarios: boolean = false;
+  permisoPermisos: boolean = false;
   usuariosExpandido = true;
   permisosExpandido = false;
   EnumPaginas = EnumPaginas;

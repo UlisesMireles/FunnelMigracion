@@ -129,13 +129,12 @@
 /* Cada tarjeta individual */
 .tarjeta {
   background: #ffffff; /* Fondo blanco para cada tarjeta */
-  border-radius: 15px;  /* Sin redondeo en las esquinas */
   padding: 10px;       /* Espaciado interno de 10px */
   text-align: center;  /* Centrado del texto */
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave para dar profundidad */
   padding-top: 0pX;    /* (Posible error tipográfico: "0pX" en lugar de "0px") */
-  border: black solid 1px !important; /* Borde negro de 1px, con !important para forzar la regla */
-  border-radius: 10px
+  border: #9c9b9b solid 1px !important; 
+  border-radius: 10px;
 }
 
 /* Imagen interna de la tarjeta */

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Oportunidad, RequestActualizarFechaEstimadaCierre,RequestActualizarEtapa, RequestOportunidad } from '../interfaces/oportunidades';
+import { Oportunidad, RequestActualizarFechaEstimadaCierre, RequestActualizarEtapa, RequestOportunidad } from '../interfaces/oportunidades';
 import { baseOut } from '../interfaces/utils/utils/baseOut';
 
 @Injectable({
@@ -121,17 +121,22 @@ export class OportunidadesService {
   }
 
   descargarReporteOportunidadesPerdidas(data: any, idEmpresa: number): Observable<Blob> {
-    return this.http.post(`${this.baseUrl}api/Oportunidades/DescargarReporteOportunidadesPerdidas`, data, 
+    return this.http.post(`${this.baseUrl}api/Oportunidades/DescargarReporteOportunidadesPerdidas`, data,
       { params: { idEmpresa: idEmpresa.toString() }, responseType: 'blob' });
   }
 
   descargarReporteOportunidadesCanceladas(data: any, idEmpresa: number): Observable<Blob> {
-    return this.http.post(`${this.baseUrl}api/Oportunidades/DescargarReporteOportunidadesCanceladas`, data, 
+    return this.http.post(`${this.baseUrl}api/Oportunidades/DescargarReporteOportunidadesCanceladas`, data,
       { params: { idEmpresa: idEmpresa.toString() }, responseType: 'blob' });
   }
 
   descargarReporteOportunidadesEliminadas(data: any, idEmpresa: number): Observable<Blob> {
     return this.http.post(`${this.baseUrl}api/Oportunidades/DescargarReporteOportunidadesEliminadas`, data,
       { params: { idEmpresa: idEmpresa.toString() }, responseType: 'blob' });
+  }
+  consultarEtiquetasOportunidades(idEmpresa: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}api/Oportunidades/ConsultarEtiquetasOportunidades`, {
+      params: { idEmpresa: idEmpresa.toString() }
+    });
   }
 }

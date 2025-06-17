@@ -554,10 +554,10 @@ th.sort-active p-sortIcon {
   font-size: 16px;
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1270px) {
   .etiqueta > .titulo {
-    width: 83px;
-    font-size: 10px;
+    width: 97px;
+    font-size: 11px;
     text-decoration: none;
     font-weight: bold;
     cursor: pointer;
@@ -570,9 +570,18 @@ th.sort-active p-sortIcon {
   }
   .contenedor-etiquetas {
     position: absolute;
-    top: 50px;
-    left: 70%;
+    top: 70px;
+    left: 66%;
     transform: translate(-50%, -50%);
+    justify-content: center;
+    z-index: 2;
+  }
+}
+@media (max-width: 840px) {
+  .contenedor-etiquetas {
+    position: relative;
+    top: 70px;
+    left: 50%;
     justify-content: center;
     z-index: 2;
   }

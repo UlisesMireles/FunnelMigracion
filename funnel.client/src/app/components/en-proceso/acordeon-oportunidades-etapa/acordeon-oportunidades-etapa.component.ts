@@ -62,7 +62,6 @@ export class AcordeonOportunidadesEtapaComponent {
           this.connectedDropLists = this.etapas.map((_, i) => `ListEtapa${i}`);
           this.cantidadExpandidos = this.etapas.filter(etapa => etapa.expandido).length;
           this.loading = false;
-          console.log('Oportunidades por etapa:', this.etapas);
           this.cdr.detectChanges();
         },
         error: (error) => {

@@ -377,7 +377,7 @@
 /* Asegurar que los botones se mantengan alineados */
 .icon-btn {
   min-width: 35px;
-  height: 35px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -430,4 +430,13 @@
 }
 .bi-stars::before{
   color: #47b984;
+}
+
+.parpadea {
+  animation: parpadeo 1s infinite;
+}
+
+@keyframes parpadeo {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
 }

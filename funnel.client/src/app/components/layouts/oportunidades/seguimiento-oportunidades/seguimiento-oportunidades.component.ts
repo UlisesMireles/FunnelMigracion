@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, SimpleChanges, ChangeDetectorRef} from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { OportunidadesService } from '../../../../services/oportunidades.service';
@@ -17,7 +17,7 @@ import { ConsultaAsistenteDto } from '../../../../interfaces/asistentes/consulta
 export class SeguimientoOportunidadesComponent {
 
   get isTerminado(): boolean {
-    return this.oportunidadForm.get('idEstatusOportunidad')?.value !== 1; 
+    return this.oportunidadForm.get('idEstatusOportunidad')?.value !== 1;
   }
 
   constructor(private oportunidadService: OportunidadesService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder, private cdr: ChangeDetectorRef, private openIaService: OpenIaService) { }
@@ -151,7 +151,7 @@ export class SeguimientoOportunidadesComponent {
     });
   }
 
-  exportExcel(idOportunidad: number) { 
+  exportExcel(idOportunidad: number) {
     const dataExport = this.historialOportunidad.map(opportunity => ({
       NombreEjecutivo: opportunity.nombreEjecutivo,
       Fecha: opportunity.fechaRegistro,
@@ -204,7 +204,7 @@ export class SeguimientoOportunidadesComponent {
   }
 
   enviarSeguimiento() {
-  const comentarios = this.historialOportunidad.map(item => ({
+    const comentarios = this.historialOportunidad.map(item => ({
       usuario: item.iniciales,
       fecha: item.fechaRegistro,
       comentario: item.comentario
@@ -245,9 +245,9 @@ export class SeguimientoOportunidadesComponent {
     };
 
     this.visibleRespuesta = true;
-    this.respuestaAsistente = ''; 
+    this.respuestaAsistente = '';
     this.loading = true;
-    
+
     this.openIaService.AsistenteHistorico(body).subscribe({
       next: res => {
         this.visibleRespuesta = true;
@@ -259,53 +259,94 @@ export class SeguimientoOportunidadesComponent {
       }
     });
   }
- copiarTexto(): void {
-  if (!this.respuestaAsistente) return;
+  copiarTexto(): void {
+    if (!this.respuestaAsistente) return;
 
-  const tempElement = document.createElement('div');
-  tempElement.innerHTML = this.respuestaAsistente;
+    const tempElement = document.createElement('div');
+    tempElement.innerHTML = this.respuestaAsistente;
 
-  function getPlainText(element: HTMLElement): string {
-    let text = '';
+    function getPlainText(element: HTMLElement): string {
+      let text = '';
 
-    element.childNodes.forEach(node => {
-      if (node.nodeType === Node.TEXT_NODE) {
-        // Texto normal
-        text += node.textContent;
-      } else if (node.nodeType === Node.ELEMENT_NODE) {
-        const el = node as HTMLElement;
-        const tag = el.tagName.toLowerCase();
+      element.childNodes.forEach(node => {
+        if (node.nodeType === Node.TEXT_NODE) {
+          // Texto normal
+          text += node.textContent;
+        } else if (node.nodeType === Node.ELEMENT_NODE) {
+          const el = node as HTMLElement;
+          const tag = el.tagName.toLowerCase();
 
-        if (tag === 'p' || tag === 'div' || tag === 'br') {
-          text += getPlainText(el) + '\n';
-        } else if (tag === 'li') {
-          text += '- ' + getPlainText(el) + '\n';
-        } else if (tag === 'ul' || tag === 'ol') {
-          text += getPlainText(el) + '\n';
-        } else {
-          text += getPlainText(el);
+          if (tag === 'p' || tag === 'div' || tag === 'br') {
+            text += getPlainText(el) + '\n';
+          } else if (tag === 'li') {
+            text += '- ' + getPlainText(el) + '\n';
+          } else if (tag === 'ul' || tag === 'ol') {
+            text += getPlainText(el) + '\n';
+          } else {
+            text += getPlainText(el);
+          }
         }
-      }
-    });
+      });
 
-    return text;
+      return text;
+    }
+
+    const textoPlano = getPlainText(tempElement).trim();
+
+    navigator.clipboard.writeText(textoPlano).then(() => {
+      this.copiado = true;
+      setTimeout(() => this.copiado = false, 2000);
+    });
   }
 
-  const textoPlano = getPlainText(tempElement).trim();
+  limpiarRespuesta(respuesta: string): string {
+    return respuesta
+      .replace(/```(?:\w+)?\s*([^]*?)```/g, (_, contenido) => contenido.trim())
+      .replace(/^```(?:\w+)?\s*/, '')
+      .replace(/```$/, '')
+      .trim();
+  }
+  dictando = false;
+  recognition: any;
+  textoDictado: string = '';
 
-  navigator.clipboard.writeText(textoPlano).then(() => {
-    this.copiado = true;
-    setTimeout(() => this.copiado = false, 2000);
-  });
-}
+  dictarComentario() {
+    // Inicializa reconocimiento si no existe
+    if (!this.recognition) {
+      const SpeechRecognition = (window as any).SpeechRecognition ?? (window as any).webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        alert('Tu navegador no soporta reconocimiento de voz.');
+        return;
+      }
+      this.recognition = new SpeechRecognition();
+      this.recognition.lang = 'es-MX';
+      this.recognition.continuous = false;
+      this.recognition.interimResults = false;
+      this.recognition.onresult = (event: any) => {
+        // Guarda solo el texto dictado en este ciclo
+        this.textoDictado = event.results[0][0].transcript;
+      };
 
-limpiarRespuesta(respuesta: string): string {
-  return respuesta
-    .replace(/```(?:\w+)?\s*([^]*?)```/g, (_, contenido) => contenido.trim())
-    .replace(/^```(?:\w+)?\s*/, '') 
-    .replace(/```$/, '')       
-    .trim();
-}
+      this.recognition.onerror = (event: any) => {
+        this.dictando = false;
+      };
 
+      this.recognition.onend = () => {
+        this.dictando = false;
+        const anterior = this.oportunidadForm.get('comentario')?.value ?? '';
+        this.oportunidadForm.get('comentario')?.setValue(anterior + (anterior ? '. ' : '') + this.textoDictado);
+        console.log('Reconocimiento de voz finalizado, texto:', this.textoDictado);
+      };
+    }
+
+    if (!this.dictando) {
+      this.textoDictado = ''; // Limpia el texto temporal
+      this.dictando = true;
+      this.recognition.start();
+    } else {
+      this.recognition.stop();
+      // El texto se coloca en onend
+    }
+  }
 }
 

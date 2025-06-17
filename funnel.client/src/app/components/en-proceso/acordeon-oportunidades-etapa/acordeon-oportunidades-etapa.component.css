@@ -161,7 +161,7 @@
     border-radius: 5px;  /* Esquinas redondeadas con un radio de 5px */
   }
   .tarjeta-side{
-    padding-top:3px; 
+    padding-top:13px; 
     padding-left: 0 !important  ; 
     padding-right: 10px;
   }
@@ -271,7 +271,7 @@
   
   /* Espaciado superior para la fila de la tarjeta */
   .tarjeta-row {
-    padding-top: 20px;
+    padding-top: 12px;
   }
   
   /* Estilo para el nombre de la empresa */

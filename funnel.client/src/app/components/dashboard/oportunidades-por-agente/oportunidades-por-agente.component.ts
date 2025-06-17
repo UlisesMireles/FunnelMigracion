@@ -144,8 +144,10 @@ export class OportunidadesPorAgenteComponent {
       }
     }
   }
+toggleMaximizar(i: number, j: number, event: MouseEvent): void {
+  event.stopPropagation();
+  event.preventDefault();
 
-toggleMaximizar(i: number, j: number): void {
   const card = this.quadrants[i].cards[j];
   card.isMaximized = !card.isMaximized;
 
@@ -165,9 +167,10 @@ toggleMaximizar(i: number, j: number): void {
         nextSibling: nextSibling
       });
       
-      // Mover al body
+      // Mover al body y aplicar estilos
       document.body.appendChild(cardElement);
       document.body.style.overflow = 'hidden';
+      cardElement.style.zIndex = '9999';
     }
   } else {
     // Restaurar posición original
@@ -178,7 +181,7 @@ toggleMaximizar(i: number, j: number): void {
       } else {
         originalPosition.parent.appendChild(cardElement);
       }
-      this.originalParentElements.delete(cardId);
+      cardElement.style.zIndex = '';
       document.body.style.overflow = '';
     }
   }

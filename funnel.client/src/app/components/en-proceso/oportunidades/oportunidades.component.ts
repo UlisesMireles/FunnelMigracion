@@ -14,6 +14,7 @@ import { ModalOportunidadesService } from '../../../services/modalOportunidades.
 import { map } from 'rxjs/operators';
 import { Prospectos } from '../../../interfaces/prospecto';
 import { state } from '@angular/animations';
+import { CatalogoService } from '../../../services/catalogo.service';
 
 @Component({
   selector: 'app-oportunidades',
@@ -63,13 +64,18 @@ export class OportunidadesComponent {
     'Oportunidades Por Etapa',
     'Estadística Oportunidades por Etapa'
   ];
+  totalOportunidades: number = 0;
+  totalOportunidadesMes: number = 0;
+  totalProspectosMes: number = 0;
+  totalGanadasMes: number = 0;
+  totalPerdidasMes: number = 0;
 
   lsTodasColumnas: any[] = [
     { key: 'idOportunidad', isCheck: false, valor: 'Id', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombre', isCheck: true, valor: 'Prospecto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreSector', isCheck: true, valor: 'Sector', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreOportunidad', isCheck: true, valor: 'Oportunidad', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'abreviatura', isCheck: true, valor: 'Tipo', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    { key: 'abreviatura', isCheck: false, valor: 'Tipo', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'stage', isCheck: true, valor: 'Etapa', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'numberFilter' },
     { key: 'iniciales', isCheck: true, valor: 'Ejecutivo', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreContacto', isCheck: true, valor: 'Contacto', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
@@ -91,8 +97,10 @@ export class OportunidadesComponent {
   disabledPdf: boolean = false;
 
   constructor(private oportunidadService: OportunidadesService, private messageService: MessageService, private cdr: ChangeDetectorRef,
-  private readonly loginService: LoginService, public dialog: MatDialog, private modalOportunidadesService: ModalOportunidadesService) { 
+    private readonly loginService: LoginService, public dialog: MatDialog, private modalOportunidadesService: ModalOportunidadesService,
+    private readonly catalogoService: CatalogoService) {
     this.loading = true;
+    this.catalogoService.cargarProspectos(this.loginService.obtenerIdEmpresa());
   }
 
   ngOnInit(): void {
@@ -144,6 +152,35 @@ export class OportunidadesComponent {
         });
         this.loading = false;
       },
+    });
+  }
+
+  llenarEtiquetas(): void {
+    this.catalogoService.cargarProspectos(this.loginService.obtenerIdEmpresa());
+    let prospecto = this.catalogoService.obtenerProspectos();
+    this.totalOportunidades = this.oportunidades.length;
+    const hoy = new Date();
+    this.totalOportunidadesMes = this.oportunidades
+      .filter(o => {
+        if (!o.fechaRegistro) return false;
+        const fecha = new Date(o.fechaRegistro);
+        return fecha.getMonth() === hoy.getMonth() && fecha.getFullYear() === hoy.getFullYear();
+      }).length;
+    
+    this.oportunidadService.consultarEtiquetasOportunidades(this.loginService.obtenerIdEmpresa()).subscribe({
+      next: (result: any) => {
+        this.totalOportunidadesMes = result.abiertasMes;
+        this.totalProspectosMes = result.prospectosNuevos;
+        this.totalGanadasMes = result.ganadasMes;
+        this.totalPerdidasMes = result.perdidasMes;
+      },
+      error: (error:any) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Se ha producido un error al cargar las etiquetas.',
+          detail: error.errorMessage,
+        });
+      }
     });
   }
 
@@ -434,10 +471,12 @@ export class OportunidadesComponent {
     }
     if (index === 1) { // Tab "porMes"
       this.mostrarOportunidadesMes = false;
+      this.llenarEtiquetas();
       setTimeout(() => this.mostrarOportunidadesMes = true, 0);
     }
     if (index === 2) { // Tab "porEtapa"
       this.mostrarOportunidadesEtapa = false;
+      this.llenarEtiquetas();
       setTimeout(() => this.mostrarOportunidadesEtapa = true, 0);
     }
     if (index === 3) { // Tab "estadisticas"

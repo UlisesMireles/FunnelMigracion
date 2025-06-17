@@ -47,6 +47,7 @@
               <label class="seguimiento-label">Seguimiento:</label>
               <textarea pInputText class="seguimiento-textarea" formControlName="comentario" 
                 (input)="onComentarioInput()"  placeholder="Escribe un comentario de al menos 10 palabras"></textarea>
+                
               <div class="d-flex justify-content-between mt-1">
                 <div>
                   <small class="text-muted">
@@ -66,6 +67,10 @@
             </div>
             
             <div class="button-group-right">
+              <button pButton severity="secondary" (click)="dictarComentario()" pTooltip="Dictar por voz" tooltipPosition="top"
+              [ngClass]="{'parpadea': dictando}">
+                <i class="bi bi-mic"></i>
+              </button>
               <button pButton label="Añadir" (click)="guardarHistorial()" severity="secondary"
                 *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value === 1"
                 [disabled]="!oportunidadForm.get('comentario')?.value"></button>

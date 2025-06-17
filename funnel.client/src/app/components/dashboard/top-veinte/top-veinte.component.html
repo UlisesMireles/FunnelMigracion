@@ -13,7 +13,7 @@
             currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros"
             [columns]="lsColumnasAMostrar"
             [resizableColumns]="true" [reorderableColumns]="true"
-            [globalFilterFields]="['nombre', 'nombreSector', 'ubicacionFisica', 'totalOportunidades', 'ganadas', 'porcGanadas', 'perdidas', 'porcPerdidas', 'canceladas', 'porcCanceladas', 'eliminadas', 'porcEliminadas', 'proceso','desEstatus']"
+            [globalFilterFields]="['nombre', 'nombreSector', 'ubicacionFisica', 'totalOportunidades', 'ganadas', 'porcGanadas', 'perdidas', 'porcPerdidas', 'canceladas', 'porcCanceladas', 'eliminadas', 'porcEliminadas', 'proceso','desEstatus', 'ultimaFechaRegistro']"
             [tableStyle]="{'min-width': anchoTabla+ '%'}">
   
             <ng-template class="divAccionesTabla" #caption>
@@ -47,6 +47,7 @@
                     <th rowspan="2">Nombre</th>
                     <th rowspan="2">Sector de la industria</th>
                     <th rowspan="2">Ubicación física</th>
+                    <th rowspan="2">Ultimo Registro</th>
                     <th rowspan="2">Oportunidades Totales</th>
             
                     <th colspan="2">Ganadas</th>
@@ -122,6 +123,14 @@
                             </ng-template>
                           </p-columnFilter>
                         </div>
+                        <div *ngSwitchCase="'date'">
+                            <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false">
+                                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                    <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
+                                        (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
+                                </ng-template>
+                            </p-columnFilter>
+                        </div>
                         <div *ngSwitchDefault>
                           <p-columnFilter type="text" field="{{def.key}}" [showMenu]="false"></p-columnFilter>
                         </div>
@@ -136,13 +145,14 @@
                   <td *ngFor="let def of lsColumnasAMostrar" [ngStyle]="{
                     'text-align': 
                       def.tipoFormato === 'percent' ? 'center' : 
-                      (def.tipoFormato === 'number' || def.tipoFormato === 'estatus') ? 'center' : 'left'
+                      (def.tipoFormato === 'number' || def.tipoFormato === 'estatus' || def.tipoFormato === 'date') ? 'center' : 'left'
                   }">
                     <ng-container [ngSwitch]="def.tipoFormato">
                       <span *ngSwitchCase="'text'">{{ rowData[def.key] }}</span>
                       <span *ngSwitchCase="'number'">{{ rowData[def.key] | number:'1.0-2' }}</span>
                       <span *ngSwitchCase="'percent'">{{ rowData[def.key] | number:'1.2-2' }}</span>
                       <span *ngSwitchCase="'estatus'">{{ rowData[def.key] }}</span>
+                      <span *ngSwitchCase="'date'">{{ rowData[def.key] | date:'dd/MM/yyyy' }}</span>
                       <span *ngSwitchDefault>{{ rowData[def.key] }}</span>
                     </ng-container>
                   </td>

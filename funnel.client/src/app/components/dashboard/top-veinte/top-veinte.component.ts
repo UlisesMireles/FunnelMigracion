@@ -52,6 +52,7 @@ export class TopVeinteComponent {
     { key: 'nombre', isCheck: true, valor: 'Nombre', groupHeader: '', isIgnore: false, tipoFormato: 'text' },
     { key: 'nombreSector', isCheck: true, valor: 'Sector de la industria', groupHeader: '', isIgnore: false, tipoFormato: 'text' },
     { key: 'ubicacionFisica', isCheck: true, valor: 'Ubicación Física', groupHeader: '', isIgnore: false, tipoFormato: 'text' },
+    { key: 'ultimaFechaRegistro', isCheck: true, valor: 'Ultimo Registro', groupHeader: '', isIgnore: false, tipoFormato: 'date' },
     { key: 'totalOportunidades', isCheck: true, valor: 'Oportunidades Totales', groupHeader: '', isIgnore: false, tipoFormato: 'number' },
     { key: 'ganadas', isCheck: true, valor: 'Total Ganadas', groupHeader: 'Ganadas', isIgnore: false, tipoFormato: 'number', colspan: 1, isSubHeader: true },
     { key: 'porcGanadas', isCheck: true, valor: '% Ganadas', groupHeader: 'Ganadas', isIgnore: false, tipoFormato: 'percent', colspan: 1, isSubHeader: true },
@@ -82,6 +83,7 @@ export class TopVeinteComponent {
     this.prospectoService.getTopVeinte(this.loginService.obtenerIdEmpresa()).subscribe({
       next: (result: ClientesTopVeinte[]) => {
         this.TopVeinteOriginal = result;
+        console.log(this.TopVeinteOriginal);
         this.selectedEstatus = 'Activo';
         this.cdr.detectChanges();
         this.loading = false;
@@ -255,7 +257,8 @@ export class TopVeinteComponent {
         porcCanceladas: '100%',
         eliminadas: '100%',
         porcEliminadas: '100%',
-        desEstatus: '100%'
+        desEstatus: '100%',
+        ultimaFechaRegistro: '100px',
     };
     return { width: widths[key] || 'auto' }; 
   }
@@ -274,7 +277,8 @@ export class TopVeinteComponent {
         porcEliminadas: item.porcEliminadas,
         canceladas: item.canceladas,
         porcCanceladas: item.porcCanceladas,
-        proceso: item.proceso
+        proceso: item.proceso,
+        ultimaFechaRegistro: item.ultimaFechaRegistro ? item.ultimaFechaRegistro : null,
       }));
 
       const historialTexto = Datos.map(c => {
@@ -282,6 +286,7 @@ export class TopVeinteComponent {
         Nombre: ${c.nombre}
         Sector: ${c.sector}
         Ubicación: ${c.ubicacion}
+        Ultima Oportunidad registrada el día: ${c.ultimaFechaRegistro}
         Total de Oportunidades: ${c.totalOportunidades}
         - Ganadas: ${c.ganadas} (${c.porcGanadas}%)
         - Perdidas: ${c.perdidas} (${c.porcPerdidas}%)

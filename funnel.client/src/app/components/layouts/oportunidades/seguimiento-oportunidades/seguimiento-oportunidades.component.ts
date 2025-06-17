@@ -238,7 +238,7 @@ export class SeguimientoOportunidadesComponent {
     const body: ConsultaAsistenteDto = {
       exitoso: true,
       errorMensaje: '',
-      idBot: 1,
+      idBot: 5,
       pregunta: `${pregunta}`,
       fechaPregunta: new Date(),
       respuesta: '',

@@ -6,8 +6,8 @@
 <div *ngIf="!loading" class="acordeon-horizontal d-flex" [class.todos-expandidos]="cantidadExpandidos >= 5"
   [class.cuatro-expandidos]="cantidadExpandidos === 4">
 
-  <div *ngFor="let etapa of etapas; let i = index" class="item-acordeon" [class.expandido]="etapa.expandido">
-    <div class="encabezado-acordeon" [ngClass]="'encabezado-' + etapa.anio + '-' +  etapa.expandido" (click)="alternarItem(etapa, $event)">
+  <div *ngFor="let etapa of etapas; let i = index" class="item-acordeon" [class.expandido]="etapa.expandido" [ngClass]="'item-acordeon-color-' + i + '-' +  etapa.expandido">
+    <div class="encabezado-acordeon" [ngClass]="'encabezado-' + i + '-' +  etapa.expandido" (click)="alternarItem(etapa, $event)">
       <!-- Botón a la izquierda del nombre del mes -->
       <!-- <button class="boton-toggle" [ngClass]="etapa.expandido ? 'expandido' : 'colapsado'"
         (click)="alternarItem(etapa, $event)">

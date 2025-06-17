@@ -48,12 +48,28 @@
     border-radius: 10px;
   }
   
-  /* Cuando el item está expandido */
   .item-acordeon.expandido {
     width: 25%; /* Ancho mayor para el estado expandido (ajusta según lo necesites) */
   }
-
   
+  .item-acordeon-color-5-false {
+    background-color: #CAFFBF;
+  }
+  .item-acordeon-color-4-false {
+    background-color: #CAFFBF;
+  }
+  .item-acordeon-color-3-false {
+    background-color: #FDFFB6;
+  }
+  .item-acordeon-color-2-false {
+    background-color: #FFD6A5;
+  }
+  .item-acordeon-color-1-false {
+    background-color: #BDB2FF;
+  }
+  .item-acordeon-color-0-false{
+     background-color: #fdd2d2;
+  }
   
   /* Encabezado del item (nombre del mes y botón) */
   .encabezado-acordeon {
@@ -63,22 +79,22 @@
     padding: 10px;
     border-radius: 10px;
   }
-  .encabezado-6-true {
-    background-color: #CAFFBF;
-  }
   .encabezado-5-true {
     background-color: #CAFFBF;
   }
   .encabezado-4-true {
-    background-color: #FDFFB6;
+    background-color: #CAFFBF;
   }
   .encabezado-3-true {
-    background-color: #FFD6A5;
+    background-color: #FDFFB6;
   }
   .encabezado-2-true {
-    background-color: #BDB2FF;
+    background-color: #FFD6A5;
   }
   .encabezado-1-true {
+    background-color: #BDB2FF;
+  }
+  .encabezado-0-true {
     background-color: #fdd2d2;
   }
   /* Botón de toggle para expandir/collapse */
@@ -136,7 +152,7 @@
     text-align: center;  /* Centrado del texto */
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave para dar profundidad */
     padding-top: 0pX;    /* (Posible error tipográfico: "0pX" en lugar de "0px") */
-    border: #9c9b9b solid 1px !important; /* Borde negro de 1px, con !important para forzar la regla */    
+    border: #9c9b9b solid 1px !important; 
   }
   
   /* Imagen interna de la tarjeta */

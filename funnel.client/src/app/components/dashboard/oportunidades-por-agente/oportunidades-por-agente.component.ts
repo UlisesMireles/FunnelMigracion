@@ -1,6 +1,6 @@
 
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChildren , Renderer2, QueryList } from '@angular/core';
 import { LoginService } from '../../../services/login.service';
 import { GraficasService } from '../../../services/graficas.service';
 import { AgenteDto, GraficasDto, RequestGraficasDto } from '../../../interfaces/graficas';
@@ -16,13 +16,17 @@ export class OportunidadesPorAgenteComponent {
   baseUrl: string = environment.baseURL;
   agentes: AgenteDto[] = [];
   agenteSeleccionadoId: number | null = null;
+  @ViewChildren('cardElement') cardElements!: QueryList<ElementRef>;
+  originalParentElements = new Map<string, { parent: HTMLElement, nextSibling: Node | null }>();
+
+
 
   get dropListIds() {
     return this.quadrants.map((_, index) => `cardList${index}`);
   }
   infoCargada: boolean = false;
 
-  constructor( private readonly graficasService: GraficasService,private readonly sessionService: LoginService) {
+  constructor( private readonly graficasService: GraficasService,private readonly sessionService: LoginService, private renderer: Renderer2, private el: ElementRef) {
     this.quadrants = [
       { cards: [this.graficasService.createCard(1, 'Consulta Agentes', 'tabla')] },
       { cards: [this.graficasService.createCard(2, 'Grafica por Agente - Clientes', 'grafica')] },
@@ -140,4 +144,43 @@ export class OportunidadesPorAgenteComponent {
       }
     }
   }
+
+toggleMaximizar(i: number, j: number): void {
+  const card = this.quadrants[i].cards[j];
+  card.isMaximized = !card.isMaximized;
+
+  const cardId = `card-${i}-${j}`;
+  const cardElement = document.querySelector(`[data-id="${cardId}"]`) as HTMLElement;
+
+  if (!cardElement) return;
+
+  if (card.isMaximized) {
+    // Guardar posición original
+    const originalParent = cardElement.parentElement;
+    const nextSibling = cardElement.nextSibling;
+    
+    if (originalParent) {
+      this.originalParentElements.set(cardId, {
+        parent: originalParent,
+        nextSibling: nextSibling
+      });
+      
+      // Mover al body
+      document.body.appendChild(cardElement);
+      document.body.style.overflow = 'hidden';
+    }
+  } else {
+    // Restaurar posición original
+    const originalPosition = this.originalParentElements.get(cardId);
+    if (originalPosition) {
+      if (originalPosition.nextSibling) {
+        originalPosition.parent.insertBefore(cardElement, originalPosition.nextSibling);
+      } else {
+        originalPosition.parent.appendChild(cardElement);
+      }
+      this.originalParentElements.delete(cardId);
+      document.body.style.overflow = '';
+    }
+  }
+}
 }

@@ -394,5 +394,10 @@ namespace Funnel.Logic
 
             return pdfBytes;
         }
+
+        public async Task<EtiquetasOportunidadesDto> ConsultarEtiquetas(int IdEmpresa)
+        {
+            return await _oportunidadesData.ConsultarEtiquetas(IdEmpresa);
+        }
     }
 }

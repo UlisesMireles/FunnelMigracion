@@ -55,13 +55,14 @@ export class AcordeonOportunidadesEtapaComponent {
           
           this.etapas = result.map(etapa => ({
             ...etapa,
-            expandido: etapa.tarjetas.length > 0, // Inicializa 'expandido' en true si hay tarjetas
-            tarjetas: etapa.tarjetas || [] 
+            expandido: etapa.tarjetas.length > 0, // Expandir todas las etapas por defecto
+            tarjetas: etapa.tarjetas || [] // Asegurar array vacío si es null/undefined
           }));
-    
+          
           this.connectedDropLists = this.etapas.map((_, i) => `ListEtapa${i}`);
           this.cantidadExpandidos = this.etapas.filter(etapa => etapa.expandido).length;
           this.loading = false;
+          console.log('Oportunidades por etapa:', this.etapas);
           this.cdr.detectChanges();
         },
         error: (error) => {

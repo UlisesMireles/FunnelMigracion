@@ -32,7 +32,7 @@
               <p>Cargando...</p>
             </div>
             <p-table *ngIf="!loading" #dt [stripedRows]="true" [value]="oportunidadesCanceladas" dataKey="id"
-              [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 20, 50]" [paginator]="true"
+              [rows]="10" [showCurrentPageReport]="false" [rowsPerPageOptions]="[10, 20, 50]" [paginator]="true"
               paginatorPosition="both"
               currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros"
               [columns]="lsColumnasAMostrar" [resizableColumns]="true" [reorderableColumns]="true"

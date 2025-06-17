@@ -19,6 +19,8 @@ quadrants: { cards: any[] }[] = [];
   aniosDisponibles: { label: string, value: number }[] = [];
   anioSeleccionado!: number;
   loading: boolean = true;
+  private originalParentElements = new Map<string, { parent: Node, nextSibling: Node | null }>();
+
 
   constructor(
     private readonly graficasService: GraficasService,
@@ -163,6 +165,49 @@ obtenerAniosDisponibles(): void {
           event.previousIndex,
           event.currentIndex
         );
+      }
+    }
+  }
+
+  toggleMaximizar(i: number, j: number, event: MouseEvent): void {
+    event.stopPropagation();
+    event.preventDefault();
+
+    const card = this.quadrants[i].cards[j];
+    card.isMaximized = !card.isMaximized;
+
+    const cardId = `card-${i}-${j}`;
+    const cardElement = document.querySelector(`[data-id="${cardId}"]`) as HTMLElement;
+
+    if (!cardElement) return;
+
+    if (card.isMaximized) {
+      // Guardar posición original
+      const originalParent = cardElement.parentElement;
+      const nextSibling = cardElement.nextSibling;
+      
+      if (originalParent) {
+        this.originalParentElements.set(cardId, {
+          parent: originalParent,
+          nextSibling: nextSibling
+        });
+        
+        // Mover al body y aplicar estilos
+        document.body.appendChild(cardElement);
+        document.body.style.overflow = 'hidden';
+        cardElement.style.zIndex = '9999';
+      }
+    } else {
+      // Restaurar posición original
+      const originalPosition = this.originalParentElements.get(cardId);
+      if (originalPosition) {
+        if (originalPosition.nextSibling) {
+          originalPosition.parent.insertBefore(cardElement, originalPosition.nextSibling);
+        } else {
+          originalPosition.parent.appendChild(cardElement);
+        }
+        cardElement.style.zIndex = '';
+        document.body.style.overflow = '';
       }
     }
   }

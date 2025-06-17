@@ -69,3 +69,55 @@
     font-size: 14px;
   }
 }
+
+/* Estilos para maximizado */
+.maximized-card {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10000;
+  background-color: white;
+  overflow: auto;
+}
+
+.maximized-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Estilos para gráficas maximizadas */
+.maximized-content .plot-container {
+  width: 95% !important;
+  height: 95% !important;
+  max-width: 1400px !important;
+  max-height: 1000px !important;
+  margin: auto !important;
+}
+
+/* Botón de maximizar */
+.maximize-btn {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  z-index: 1000;
+  color: #ffffff;
+  background: transparent;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.maximize-btn:hover {
+  color: #495057;
+  background: rgba(255,255,255,0.9);
+}
+
+.card-header {
+  position: relative;
+}

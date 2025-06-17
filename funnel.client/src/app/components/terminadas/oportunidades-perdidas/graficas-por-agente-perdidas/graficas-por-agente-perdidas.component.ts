@@ -24,6 +24,8 @@ quadrants: { cards: any[] }[] = [];
   anioSeleccionado!: number;
   loading: boolean = true;
   agenteSeleccionadoId: number | null = null;
+  private originalParentElements = new Map<string, { parent: Node, nextSibling: Node | null }>();
+
   constructor( private readonly graficasService: GraficasService,private readonly sessionService: LoginService) {
     this.quadrants = [
       { cards: [this.graficasService.createCardPorAnio(1, 'Consulta Agentes', 'tabla')] },
@@ -165,5 +167,34 @@ onAnioChange(): void {
       }
     }
   }
+
+  toggleMaximizar(i: number, j: number, event: MouseEvent): void {
+  event.stopPropagation();
+  event.preventDefault();
+
+  const card = this.quadrants[i].cards[j];
+  card.isMaximized = !card.isMaximized;
+
+  const header = document.querySelector('header') as HTMLElement;
+  const sidebar = document.querySelector('.sidebar') as HTMLElement;
+  const footer = document.querySelector('footer') as HTMLElement;
+
+  if (card.isMaximized) {
+    // Ocultar elementos
+    if (header) header.style.display = 'none';
+    if (sidebar) sidebar.style.display = 'none';
+    if (footer) footer.style.display = 'none';
+  } else {
+    // Mostrar nuevamente
+    if (header) header.style.display = '';
+    if (sidebar) sidebar.style.display = '';
+    if (footer) footer.style.display = '';
+    
+    // Forzar redibujado de gráficas tras un pequeño retraso
+    setTimeout(() => {
+      window.dispatchEvent(new Event('resize'));
+    }, 200);
+  }
+}
 }
 

@@ -1,0 +1,24 @@
+<div class="acordeon-horizontal d-flex" style="gap: 5px;">
+  <div class="item-acordeon" *ngIf="permisoServicios"  [class.expandido]="serviciosExpandido">
+  <div class="encabezado-acordeon">
+    <button class="boton-toggle" (click)="toggleServicios()">
+      <i [ngClass]="serviciosExpandido ? 'bi bi-chevron-left' : 'bi bi-chevron-right'"></i>
+    </button>
+    <span class="nombre-seccion">{{EnumPaginas.SERVICIOS}}</span>
+  </div>
+  <div class="contenido-acordeon-horizontal" style="margin-left: 35px;" *ngIf="serviciosExpandido">
+    <app-tipo-servicios></app-tipo-servicios>
+  </div>
+</div>
+ <div class="item-acordeon" *ngIf="permisoEntregas" [class.expandido]="entregasExpandido">
+    <div class="encabezado-acordeon">
+      <button class="boton-toggle" (click)="toggleEntregas()">
+        <i [ngClass]="entregasExpandido ? 'bi bi-chevron-left' : 'bi bi-chevron-right'"></i>
+      </button>
+      <span class="nombre-seccion">{{EnumPaginas.ENTREGAS}}</span>
+    </div>
+     <div class="contenido-acordeon-horizontal" *ngIf="entregasExpandido">
+    <app-tipos-entrega></app-tipos-entrega>
+  </div>
+</div>
+</div>

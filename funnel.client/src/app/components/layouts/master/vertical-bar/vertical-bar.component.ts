@@ -73,6 +73,13 @@ export class VerticalBarComponent {
             ] }
             : menu
         );
+        this.ListaMenu = this.ListaMenu.map(menu =>
+          menu.nombre === EnumMenus.CONFIGURACION
+            ? { ...menu, subMenu: [
+              { idPagina: 13, pagina: EnumPaginas.SERVICIOS_ENTREGAS, ruta: "/servicios-entregas" },
+            ] }
+            : menu
+        );
       },
       error: (error) => {
         this.messageService.add({

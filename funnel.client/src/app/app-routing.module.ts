@@ -36,6 +36,7 @@ import { TiposEntregaComponent } from './components/catalogos/tipos-entrega/tipo
 import { UsuarioPerfilComponent } from './components/usuario-perfil/usuario-perfil.component';
 
 import { AcordeonProspectosContactosComponent } from './components/administracion/acordeon-prospectos-contactos/acordeon-prospectos-contactos.component';
+import { UsuariosPermisosComponent } from './components/catalogos/usuarios-permisos/usuarios-permisos.component';
 const routes: Routes = [
   { path: '', component: LoginComponent, title: 'Login' },
   { path: 'login', component: LoginComponent, title: 'Login' },
@@ -46,12 +47,13 @@ const routes: Routes = [
   { path: 'recuperar-contrasena', component: OlvidasteContrasenaComponent, title: 'Recuperar contraseña' },
   /*{ path: 'prospectos', component: ProspectosComponent, title: 'Prospectos', canActivate: [AuthGuard] },
   { path: 'contactos', component: ContactosComponent, title: 'Contactos', canActivate: [AuthGuard] },*/
-  {path: 'prospectos-contactos', component: AcordeonProspectosContactosComponent, title: 'Acordeon Prospectos Contactos', canActivate: [AuthGuard]},
+  {path: 'prospectos-contactos', component: AcordeonProspectosContactosComponent, title: 'Prospectos-Contactos', canActivate: [AuthGuard]},
   { path: 'tipos-servicios', component: TipoServiciosComponent, title: 'Tipos Servicios ', canActivate: [AuthGuard] },
   { path: 'oportunidades', component: OportunidadesComponent, title: 'Oportunidades', canActivate: [AuthGuard] },
   { path: 'tipos-servicios-modal', component: ModalTipoServiciosComponent, title: 'Tipos Servicios ', canActivate: [AuthGuard] },
   { path: 'modal-prospectos', component: ModalProspectosComponent, title: 'Modal Prospectos', canActivate: [AuthGuard] },
-  { path: 'usuarios', component: UsuariosComponent, title: 'Usuarios', canActivate: [AuthGuard] },
+  //{ path: 'usuarios', component: UsuariosComponent, title: 'Usuarios', canActivate: [AuthGuard] },
+  { path: 'usuarios-permisos', component: UsuariosPermisosComponent, title: 'Usuarios-Permisos', canActivate: [AuthGuard] },
   { path: 'tipos-entrega', component: TiposEntregaComponent, title: 'Tipos Entrega', canActivate: [AuthGuard] },
   { path: 'tipos-entrega-modal', component: ModalTiposEntregaComponent, title: 'Tipos Entrega', canActivate: [AuthGuard] },
   { path: 'oportunidades-ganadas', component: OportunidadesGanadasComponent, title: 'Oportunidades Ganadas', canActivate: [AuthGuard] },
@@ -67,7 +69,7 @@ const routes: Routes = [
   { path: 'modal-oportunidades-por-tipo', component: ModalOportunidadesPorTipoComponent, title: 'Oportunidades Por Tipo', canActivate: [AuthGuard] },
   { path: 'modal-detalles-oportunidades-por-tipo', component: ModalDetallesOportunidadesPorTipoComponent, title: 'Detalles Oportunidades Por Tipo', canActivate: [AuthGuard] },
 
-  { path: 'permisos', component: PermisosComponent, title: 'Permisos', canActivate: [AuthGuard] },
+  //{ path: 'permisos', component: PermisosComponent, title: 'Permisos', canActivate: [AuthGuard] },
   //{ path: 'top-veinte', component: AdminDashboardComponent, title: 'Top Veinte', canActivate: [AuthGuard] },
   { path: 'perfil', component: UsuarioPerfilComponent, title: 'Perfil', canActivate: [AuthGuard] },
   { path: 'app-oportunidadesMes-acordeon', component: OortunidadesMesAcordeonComponent, title: 'Oportunidades Mes', canActivate: [AuthGuard] },

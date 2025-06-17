@@ -4,7 +4,7 @@
   </div>
 </div>
 <div class="acordeon-horizontal d-flex" *ngIf="!loading">
-  <div *ngFor="let mes of elementos; let i = index" class="item-acordeon" [class.expandido]="mes.expandido">
+  <div *ngFor="let mes of elementos; let i = index" class="item-acordeon" [class.expandido]="mes.expandido" [ngClass]="'item-acordeon-color-' + i + '-' +  mes.expandido">
     <div class="encabezado-acordeon" [ngClass]="'encabezado-' + i+ '-' +  mes.expandido"
       (click)="alternarItem(mes, $event)">
       <!-- Botón a la izquierda del nombre del mes -->

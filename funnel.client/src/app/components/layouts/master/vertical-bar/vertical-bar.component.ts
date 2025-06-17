@@ -74,9 +74,16 @@ export class VerticalBarComponent {
             : menu
         );
         this.ListaMenu = this.ListaMenu.map(menu =>
+           menu.nombre === EnumMenus.USUARIOS
+            ? { ...menu, subMenu: [
+              { idPagina: 11, pagina: EnumPaginas.USUARIOS_PERMISOS, ruta: "/usuarios-permisos" }
+            ] }
+            : menu
+        );
+        this.ListaMenu = this.ListaMenu.map(menu =>
           menu.nombre === EnumMenus.CONFIGURACION
             ? { ...menu, subMenu: [
-              { idPagina: 13, pagina: EnumPaginas.SERVICIOS_ENTREGAS, ruta: "/servicios-entregas" },
+              { idPagina: 13, pagina: EnumPaginas.SERVICIOS_ENTREGAS, ruta: "/servicios-entregas" }
             ] }
             : menu
         );

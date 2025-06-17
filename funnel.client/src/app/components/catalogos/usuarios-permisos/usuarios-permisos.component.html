@@ -1,0 +1,24 @@
+<div class="acordeon-horizontal d-flex" style="gap: 5px;">
+  <div class="item-acordeon" *ngIf="permisoUsuarios"  [class.expandido]="usuariosExpandido">
+  <div class="encabezado-acordeon">
+    <button class="boton-toggle" (click)="toggleUsuarios()">
+      <i [ngClass]="usuariosExpandido ? 'bi bi-chevron-left' : 'bi bi-chevron-right'"></i>
+    </button>
+    <span class="nombre-seccion">{{EnumPaginas.USUARIOS}}</span>
+  </div>
+  <div class="contenido-acordeon-horizontal" style="margin-left: 35px;" *ngIf="usuariosExpandido">
+    <app-usuarios></app-usuarios>
+  </div>
+</div>
+ <div class="item-acordeon" *ngIf="permisoPermisos" [class.expandido]="permisosExpandido">
+    <div class="encabezado-acordeon">
+      <button class="boton-toggle" (click)="togglePermisos()">
+        <i [ngClass]="permisosExpandido ? 'bi bi-chevron-left' : 'bi bi-chevron-right'"></i>
+      </button>
+      <span class="nombre-seccion">{{EnumPaginas.PERMISOS}}</span>
+    </div>
+     <div class="contenido-acordeon-horizontal" *ngIf="permisosExpandido">
+    <app-permisos></app-permisos>
+  </div>
+</div>
+</div>

@@ -51,6 +51,25 @@
     width: 25%; /* Ancho mayor para el estado expandido (ajusta según lo necesites) */
   }
 
+  .item-acordeon-color-5-false {
+    background-color: #CAFFBF;
+  }
+  .item-acordeon-color-4-false {
+    background-color: #CAFFBF;
+  }
+  .item-acordeon-color-3-false {
+    background-color: #FDFFB6;
+  }
+  .item-acordeon-color-2-false {
+    background-color: #FFD6A5;
+  }
+  .item-acordeon-color-1-false {
+    background-color: #BDB2FF;
+  }
+  .item-acordeon-color-0-false{
+     background-color: #fdd2d2;
+  }
+  
   /* Encabezado del item (nombre del mes y botón) */
   .encabezado-acordeon {
     align-items: center;      /* Centra verticalmente */

@@ -73,6 +73,13 @@ export class VerticalBarComponent {
             ] }
             : menu
         );
+        this.ListaMenu = this.ListaMenu.map(menu =>
+          menu.nombre === EnumMenus.USUARIOS
+            ? { ...menu, subMenu: [
+              { idPagina: 11, pagina: EnumPaginas.USUARIOS_PERMISOS, ruta: "/usuarios-permisos" }
+            ] }
+            : menu
+        );
       },
       error: (error) => {
         this.messageService.add({

@@ -1,5 +1,5 @@
 .item-acordeon {
-  width: 70px;
+  width: 150px;
   min-height: 88vh;
   max-height: 88vh;
   background: #bdbdbde1;
@@ -13,7 +13,6 @@
   cursor: pointer;
   transition: width 0.3s;
   position: relative;
-  overflow: hidden;
 }
 
 .item-acordeon.expandido {
@@ -79,6 +78,7 @@
   max-height: 88vh;
   margin-top: -22px;
   margin-left: 25px;
+  position: relative;
 }
 
 .item-acordeon.expandido .contenido-acordeon-horizontal {

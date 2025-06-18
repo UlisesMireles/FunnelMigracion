@@ -65,7 +65,7 @@
 .year-selector {
   position: absolute;
   top: 30px;
-  right: 23px;
+  right: 10px;
   z-index: 6000;
   background: transparent !important;
   border: none !important;

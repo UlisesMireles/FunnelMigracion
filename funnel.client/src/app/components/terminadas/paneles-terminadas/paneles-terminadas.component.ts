@@ -14,55 +14,54 @@ export class PanelesTerminadasComponent {
   permisoPerdidas: boolean = false;
   permisoCanceladas: boolean = false;
   permisoEliminadas: boolean = false;
-  ganadasExpandido = true;
-  perdidasExpandido = false;
-  canceladasExpandido = false;
-  eliminadasExpandido = false;
+  seccionExpandida: 'ganadas' | 'perdidas' | 'canceladas' | 'eliminadas' = 'ganadas';
   EnumPaginas = EnumPaginas;
   constructor(private readonly loginService:LoginService) { }
   ngOnInit() {
      this.consultarPermisosUsuario();
   }
-  toggleGanadas() {
-    if (!this.permisoGanadas) return;
-    if (this.ganadasExpandido) {
-      this.ganadasExpandido = false;
-      this.perdidasExpandido = true;
-    } else {
-      this.ganadasExpandido = true;
-      this.perdidasExpandido = false;
+  toggleSeccion(seccion: 'ganadas' | 'perdidas' | 'canceladas' | 'eliminadas') {
+  const orden: ('ganadas' | 'perdidas' | 'canceladas' | 'eliminadas')[] = [
+    'ganadas',
+    'perdidas',
+    'canceladas',
+    'eliminadas'
+  ];
+
+  const permisos = {
+    ganadas: this.permisoGanadas,
+    perdidas: this.permisoPerdidas,
+    canceladas: this.permisoCanceladas,
+    eliminadas: this.permisoEliminadas,
+  };
+
+  if (!permisos[seccion]) return;
+
+  // Si se hace clic en la sección ya abierta busca la siguiente
+  if (this.seccionExpandida === seccion) {
+    const index = orden.indexOf(seccion);
+
+    for (let i = index + 1; i < orden.length; i++) {
+      if (permisos[orden[i]]) {
+        this.seccionExpandida = orden[i];
+        return;
+      }
     }
-  }
-   togglePerdidas() {
-    if (!this.permisoPerdidas) return;
-    if (this.perdidasExpandido) {
-      this.perdidasExpandido = false;
-      this.canceladasExpandido = true;
-    } else {
-      this.perdidasExpandido = true;
-      this.canceladasExpandido = false;
+
+    // Si no hay ninguna después busca hacia arriba
+    for (let i = 0; i < index; i++) {
+      if (permisos[orden[i]]) {
+        this.seccionExpandida = orden[i];
+        return;
+      }
     }
+
+    this.seccionExpandida = seccion;
+
+  } else {
+    this.seccionExpandida = seccion;
   }
-   toggleCanceladas() {
-    if (!this.permisoCanceladas) return;
-    if (this.canceladasExpandido) {
-      this.canceladasExpandido = false;
-      this.eliminadasExpandido = true;
-    } else {
-      this.canceladasExpandido = true;
-      this.eliminadasExpandido = false;
-    }
-  }
-  toggleEliminadas() {
-    if (!this.permisoEliminadas) return;
-    if (this.eliminadasExpandido) {
-      this.eliminadasExpandido = false;
-      this.ganadasExpandido = true;
-    } else {
-      this.eliminadasExpandido = true;
-      this.ganadasExpandido = false;
-    }
-  }
+}
   consultarPermisosUsuario() {
     const permisos = this.loginService.obtenerPermisosUsuario();
     if (permisos && permisos.length > 0) {
@@ -72,7 +71,10 @@ export class PanelesTerminadasComponent {
         this.permisoGanadas = permisoServicios.subMenu.some((p:any) => p.pagina === EnumPaginas.GANADAS);
         this.permisoCanceladas = permisoServicios.subMenu.some((p:any) => p.pagina === EnumPaginas.CANCELADAS);
         this.permisoEliminadas = permisoServicios.subMenu.some((p:any) => p.pagina === EnumPaginas.ELIMINADAS);
-        this.perdidasExpandido = !this.permisoGanadas;
+        if (!this.permisoGanadas && !this.permisoPerdidas && !this.permisoCanceladas && !this.permisoEliminadas) {
+          this.permisoGanadas = true; 
+        }
+        
       }
     }
   }

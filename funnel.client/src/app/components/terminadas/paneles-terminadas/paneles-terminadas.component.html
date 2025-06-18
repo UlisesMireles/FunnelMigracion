@@ -1,0 +1,46 @@
+<div class="acordeon-horizontal d-flex" style="gap: 5px;">
+  <div class="item-acordeon" *ngIf="permisoGanadas"  [class.expandido]="ganadasExpandido">
+  <div class="encabezado-acordeon">
+    <button class="boton-toggle" (click)="toggleGanadas()">
+      <i [ngClass]="ganadasExpandido ? 'bi bi-chevron-left' : 'bi bi-chevron-right'"></i>
+    </button>
+    <span class="nombre-seccion">{{EnumPaginas.GANADAS}}</span>
+  </div>
+  <div class="contenido-acordeon-horizontal" style="margin-left: 35px;" *ngIf="ganadasExpandido">
+    <app-oportunidades-ganadas></app-oportunidades-ganadas>
+  </div>
+</div>
+ <div class="item-acordeon" *ngIf="permisoPerdidas" [class.expandido]="perdidasExpandido">
+    <div class="encabezado-acordeon">
+      <button class="boton-toggle" (click)="togglePerdidas()">
+        <i [ngClass]="perdidasExpandido ? 'bi bi-chevron-left' : 'bi bi-chevron-right'"></i>
+      </button>
+      <span class="nombre-seccion">{{EnumPaginas.PERDIDAS}}</span>
+    </div>
+     <div class="contenido-acordeon-horizontal" *ngIf="perdidasExpandido">
+    <app-oportunidades-perdidas></app-oportunidades-perdidas>
+  </div>
+</div>
+<div class="item-acordeon" *ngIf="permisoCanceladas" [class.expandido]="canceladasExpandido">
+    <div class="encabezado-acordeon">
+      <button class="boton-toggle" (click)="toggleCanceladas()">
+        <i [ngClass]="canceladasExpandido ? 'bi bi-chevron-left' : 'bi bi-chevron-right'"></i>
+      </button>
+      <span class="nombre-seccion">{{EnumPaginas.CANCELADAS}}</span>
+    </div>
+     <div class="contenido-acordeon-horizontal" *ngIf="canceladasExpandido">
+    <app-oportunidades-canceladas></app-oportunidades-canceladas>
+  </div>
+</div>
+<div class="item-acordeon" *ngIf="permisoEliminadas" [class.expandido]="eliminadasExpandido">
+    <div class="encabezado-acordeon">
+      <button class="boton-toggle" (click)="toggleEliminadas()">
+        <i [ngClass]="eliminadasExpandido ? 'bi bi-chevron-left' : 'bi bi-chevron-right'"></i>
+      </button>
+      <span class="nombre-seccion">{{EnumPaginas.ELIMINADAS}}</span>
+    </div>
+     <div class="contenido-acordeon-horizontal" *ngIf="eliminadasExpandido">
+    <app-oportunidades-eliminadas></app-oportunidades-eliminadas>
+  </div>
+</div>
+</div>

@@ -60,7 +60,13 @@ export class VerticalBarComponent {
 
         // Combinar: primero "Perfil", luego los permisos, luego "SALIR"
         this.ListaMenu = [perfil, ...result, salir];
-
+        this.ListaMenu = this.ListaMenu.map(menu =>
+          menu.nombre === EnumMenus.TERMINADAS
+            ? { ...menu, subMenu: [
+              { idPagina: 5, pagina: EnumPaginas.TERMINADAS, ruta: "/oportunidades-terminadas" }
+            ] }
+            : menu
+        );
         this.ListaMenu = this.ListaMenu.map(menu =>
           menu.nombre === EnumMenus.DASHBOARD
             ? { ...menu, subMenu: [], ruta: '/dashboard' }

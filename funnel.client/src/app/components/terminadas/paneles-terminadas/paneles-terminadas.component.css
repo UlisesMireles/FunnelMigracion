@@ -1,7 +1,7 @@
 .item-acordeon {
   width: 150px;
-  min-height: 88vh;
-  max-height: 88vh;
+  min-height: 90vh;
+  max-height: 90vh;
   background: #bdbdbde1;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -21,8 +21,8 @@
   max-width: 1200px;
   border-radius: 15px;
   background: transparent;
-  min-height: 88vh;
-  max-height: 88vh;
+  min-height: 90vh;
+  max-height: 90vh;
   overflow: hidden;
 }
 .item-acordeon.expandido .nombre-seccion {

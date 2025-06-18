@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, SimpleChanges, ChangeDetectorRef } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges, ChangeDetectorRef, ElementRef, ViewChild } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { OportunidadesService } from '../../../../services/oportunidades.service';
@@ -306,13 +306,19 @@ export class SeguimientoOportunidadesComponent {
       .replace(/```$/, '')
       .trim();
   }
+  banderaDictado: boolean = false;
   dictando = false;
   recognition: any;
   textoDictado: string = '';
-
+  @ViewChild('comentarioInput') comentarioInput!: ElementRef;
+  
   dictarComentario() {
     // Inicializa reconocimiento si no existe
+    this.banderaDictado = !this.banderaDictado;
     if (!this.recognition) {
+      if (this.comentarioInput) {
+        this.comentarioInput.nativeElement.focus();
+      }
       const SpeechRecognition = (window as any).SpeechRecognition ?? (window as any).webkitSpeechRecognition;
       if (!SpeechRecognition) {
         alert('Tu navegador no soporta reconocimiento de voz.');
@@ -320,11 +326,11 @@ export class SeguimientoOportunidadesComponent {
       }
       this.recognition = new SpeechRecognition();
       this.recognition.lang = 'es-MX';
-      this.recognition.continuous = false;
-      this.recognition.interimResults = false;
-      this.recognition.onresult = (event: any) => {
-        // Guarda solo el texto dictado en este ciclo
+      this.recognition.continuous = true;
+      this.recognition.interimResults = true;
+      this.recognition.onresult = (event: any) => {        
         this.textoDictado = event.results[0][0].transcript;
+        this.oportunidadForm.get('comentario')?.setValue(this.textoDictado);
       };
 
       this.recognition.onerror = (event: any) => {
@@ -335,7 +341,6 @@ export class SeguimientoOportunidadesComponent {
         this.dictando = false;
         const anterior = this.oportunidadForm.get('comentario')?.value ?? '';
         this.oportunidadForm.get('comentario')?.setValue(anterior + (anterior ? '. ' : '') + this.textoDictado);
-        console.log('Reconocimiento de voz finalizado, texto:', this.textoDictado);
       };
     }
 
@@ -347,6 +352,10 @@ export class SeguimientoOportunidadesComponent {
       this.recognition.stop();
       // El texto se coloca en onend
     }
+    if(!this.banderaDictado) {
+      this.recognition.stop();
+    }
+
   }
 }
 

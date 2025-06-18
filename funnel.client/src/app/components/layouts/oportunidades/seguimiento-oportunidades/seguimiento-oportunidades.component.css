@@ -433,7 +433,11 @@
 }
 
 .parpadea {
-  animation: parpadeo 1s infinite;
+  background-color: #47b984;
+  color: white;
+}
+.btn-dictado{
+  width: 53px;
 }
 
 @keyframes parpadeo {

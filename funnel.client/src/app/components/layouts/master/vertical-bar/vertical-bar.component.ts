@@ -68,21 +68,21 @@ export class VerticalBarComponent {
         );
         this.ListaMenu = this.ListaMenu.map(menu =>
           menu.nombre === EnumMenus.ADMINISTRACION
-            ? { ...menu, subMenu: [
+            ? { ...menu, ruta: "/prospectos-contactos", subMenu: [
               { idPagina: 9, pagina: EnumPaginas.PROSPECTOS_CONTACTOS, ruta: "/prospectos-contactos" }
             ] }
             : menu
         );
         this.ListaMenu = this.ListaMenu.map(menu =>
            menu.nombre === EnumMenus.USUARIOS
-            ? { ...menu, subMenu: [
+            ? { ...menu, ruta: "/usuarios-permisos", subMenu: [
               { idPagina: 11, pagina: EnumPaginas.USUARIOS_PERMISOS, ruta: "/usuarios-permisos" }
             ] }
             : menu
         );
         this.ListaMenu = this.ListaMenu.map(menu =>
           menu.nombre === EnumMenus.CONFIGURACION
-            ? { ...menu, subMenu: [
+            ? { ...menu, ruta: "/servicios-entregas", subMenu: [
               { idPagina: 13, pagina: EnumPaginas.SERVICIOS_ENTREGAS, ruta: "/servicios-entregas" }
             ] }
             : menu

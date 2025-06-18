@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, SimpleChanges, ChangeDetectorRef } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges, ChangeDetectorRef, ElementRef, ViewChild } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { OportunidadesService } from '../../../../services/oportunidades.service';
@@ -224,6 +224,13 @@ export class SeguimientoOportunidadesComponent {
       <p><b>Probabilidad:</b> ${this.oportunidad.probabilidad}%</p>
       <p><b>Ejecutivo:</b> ${this.oportunidad.nombreEjecutivo}</p>
       <p><b>Días sin actividad:</b> ${this.oportunidad.fechaModificacion}</p>
+      <p><b>Etapa original:</b> ${this.oportunidad.tooltipStage}</p>
+      <p><b>Dias en Etapa 1 (Calificacion de prospecto):</b> ${this.oportunidad.diasEtapa1}</p>
+      <p><b>Días en Etapa 2 (Investigacion de necesidad):</b> ${this.oportunidad.diasEtapa2}</p>
+      <p><b>Días en Etapa 3 (Elaboración de propuesta):</b> ${this.oportunidad.diasEtapa3}</p>
+      <p><b>Días en Etapa 4 (Presentación de propuesta):</b> ${this.oportunidad.diasEtapa4}</p>
+      <p><b>Días en Etapa 5 (Negociación):</b> ${this.oportunidad.diasEtapa5}</p>
+     
     `.trim();
 
     const pregunta = `Información de la oportunidad:\n\n${resumenOportunidad}\n\nHistorial de seguimiento:\n${historialTexto}`;
@@ -231,7 +238,7 @@ export class SeguimientoOportunidadesComponent {
     const body: ConsultaAsistenteDto = {
       exitoso: true,
       errorMensaje: '',
-      idBot: 1,
+      idBot: 5,
       pregunta: `${pregunta}`,
       fechaPregunta: new Date(),
       respuesta: '',
@@ -306,13 +313,19 @@ export class SeguimientoOportunidadesComponent {
       .replace(/```$/, '')
       .trim();
   }
+  banderaDictado: boolean = false;
   dictando = false;
   recognition: any;
   textoDictado: string = '';
-
+  @ViewChild('comentarioInput') comentarioInput!: ElementRef;
+  
   dictarComentario() {
     // Inicializa reconocimiento si no existe
+    this.banderaDictado = !this.banderaDictado;
     if (!this.recognition) {
+      if (this.comentarioInput) {
+        this.comentarioInput.nativeElement.focus();
+      }
       const SpeechRecognition = (window as any).SpeechRecognition ?? (window as any).webkitSpeechRecognition;
       if (!SpeechRecognition) {
         alert('Tu navegador no soporta reconocimiento de voz.');
@@ -320,11 +333,11 @@ export class SeguimientoOportunidadesComponent {
       }
       this.recognition = new SpeechRecognition();
       this.recognition.lang = 'es-MX';
-      this.recognition.continuous = false;
-      this.recognition.interimResults = false;
-      this.recognition.onresult = (event: any) => {
-        // Guarda solo el texto dictado en este ciclo
+      this.recognition.continuous = true;
+      this.recognition.interimResults = true;
+      this.recognition.onresult = (event: any) => {        
         this.textoDictado = event.results[0][0].transcript;
+        this.oportunidadForm.get('comentario')?.setValue(this.textoDictado);
       };
 
       this.recognition.onerror = (event: any) => {
@@ -335,7 +348,6 @@ export class SeguimientoOportunidadesComponent {
         this.dictando = false;
         const anterior = this.oportunidadForm.get('comentario')?.value ?? '';
         this.oportunidadForm.get('comentario')?.setValue(anterior + (anterior ? '. ' : '') + this.textoDictado);
-        console.log('Reconocimiento de voz finalizado, texto:', this.textoDictado);
       };
     }
 
@@ -347,6 +359,10 @@ export class SeguimientoOportunidadesComponent {
       this.recognition.stop();
       // El texto se coloca en onend
     }
+    if(!this.banderaDictado) {
+      this.recognition.stop();
+    }
+
   }
 }
 

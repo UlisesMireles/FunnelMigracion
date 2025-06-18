@@ -9,6 +9,8 @@ import{ ProspectoService } from '../../../services/prospecto.service';
 import { ClientesTopVeinte } from '../../../interfaces/prospecto';
 import { LoginService } from '../../../services/login.service';
 import { ColumnasDisponiblesComponent } from '../../utils/tablas/columnas-disponibles/columnas-disponibles.component';
+import { ConsultaAsistenteDto } from '../../../interfaces/asistentes/consultaAsistente';
+import { OpenIaService } from '../../../services/asistentes/openIA.service';
 
 @Component({
   selector: 'app-top-veinte',
@@ -30,9 +32,14 @@ export class TopVeinteComponent {
 
 
   loading: boolean = true;
+  loadingAsistente: boolean = false;
   insertar: boolean = false;
   modalVisible: boolean = false;
   selectedEstatus: any = null;
+  copiado: boolean = false;
+  visibleRespuesta = false;
+  respuestaAsistente: string = '';
+  maximizedRespuesta: boolean = false;
 
   EstatusDropdown = [
   { label: 'Todo', value: null },
@@ -45,6 +52,7 @@ export class TopVeinteComponent {
     { key: 'nombre', isCheck: true, valor: 'Nombre', groupHeader: '', isIgnore: false, tipoFormato: 'text' },
     { key: 'nombreSector', isCheck: true, valor: 'Sector de la industria', groupHeader: '', isIgnore: false, tipoFormato: 'text' },
     { key: 'ubicacionFisica', isCheck: true, valor: 'Ubicación Física', groupHeader: '', isIgnore: false, tipoFormato: 'text' },
+    { key: 'ultimaFechaRegistro', isCheck: true, valor: 'Ultimo Registro', groupHeader: '', isIgnore: false, tipoFormato: 'date' },
     { key: 'totalOportunidades', isCheck: true, valor: 'Oportunidades Totales', groupHeader: '', isIgnore: false, tipoFormato: 'number' },
     { key: 'ganadas', isCheck: true, valor: 'Total Ganadas', groupHeader: 'Ganadas', isIgnore: false, tipoFormato: 'number', colspan: 1, isSubHeader: true },
     { key: 'porcGanadas', isCheck: true, valor: '% Ganadas', groupHeader: 'Ganadas', isIgnore: false, tipoFormato: 'percent', colspan: 1, isSubHeader: true },
@@ -63,7 +71,7 @@ export class TopVeinteComponent {
   columnsTodasResp = JSON.stringify(this.lsTodasColumnas);
   disabledPdf: boolean = false;
 
-  constructor( private messageService: MessageService, private cdr: ChangeDetectorRef, private prospectoService: ProspectoService, private loginService: LoginService, public dialog: MatDialog) { }
+  constructor( private messageService: MessageService, private cdr: ChangeDetectorRef, private prospectoService: ProspectoService, private loginService: LoginService, public dialog: MatDialog, private openIaService: OpenIaService) { }
 
   ngOnInit(): void {
   this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
@@ -75,6 +83,7 @@ export class TopVeinteComponent {
     this.prospectoService.getTopVeinte(this.loginService.obtenerIdEmpresa()).subscribe({
       next: (result: ClientesTopVeinte[]) => {
         this.TopVeinteOriginal = result;
+        console.log(this.TopVeinteOriginal);
         this.selectedEstatus = 'Activo';
         this.cdr.detectChanges();
         this.loading = false;
@@ -248,9 +257,126 @@ export class TopVeinteComponent {
         porcCanceladas: '100%',
         eliminadas: '100%',
         porcEliminadas: '100%',
-        desEstatus: '100%'
+        desEstatus: '100%',
+        ultimaFechaRegistro: '100px',
     };
     return { width: widths[key] || 'auto' }; 
   }
+
+  enviarSeguimiento() {
+        const Datos = this.TopVeinteOriginal.map(item => ({
+        nombre: item.nombre,
+        sector: item.nombreSector,
+        ubicacion: item.ubicacionFisica,
+        totalOportunidades: item.totalOportunidades,
+        ganadas: item.ganadas,
+        porcGanadas: item.porcGanadas,
+        perdidas: item.perdidas,
+        porcPerdidas: item.porcPerdidas,
+        eliminadas: item.eliminadas,
+        porcEliminadas: item.porcEliminadas,
+        canceladas: item.canceladas,
+        porcCanceladas: item.porcCanceladas,
+        proceso: item.proceso,
+        ultimaFechaRegistro: item.ultimaFechaRegistro ? item.ultimaFechaRegistro : null,
+      }));
+
+      const historialTexto = Datos.map(c => {
+        return `
+        Nombre: ${c.nombre}
+        Sector: ${c.sector}
+        Ubicación: ${c.ubicacion}
+        Ultima Oportunidad registrada el día: ${c.ultimaFechaRegistro}
+        Total de Oportunidades: ${c.totalOportunidades}
+        - Ganadas: ${c.ganadas} (${c.porcGanadas}%)
+        - Perdidas: ${c.perdidas} (${c.porcPerdidas}%)
+        - Eliminadas: ${c.eliminadas} (${c.porcEliminadas}%)
+        - Canceladas: ${c.canceladas} (${c.porcCanceladas}%)
+        - En proceso: ${c.proceso}
+        -----------------------------`;
+          }).join('\n');
+
+        const pregunta = `A continuación se presenta un resumen de las oportunidades por empresa. Analiza los resultados y proporciona observaciones relevantes.
+        ${historialTexto}`;
+    
+        const body: ConsultaAsistenteDto = {
+          exitoso: true,
+          errorMensaje: '',
+          idBot: 6,
+          pregunta: `${pregunta}`,
+          fechaPregunta: new Date(),
+          respuesta: '',
+          fechaRespuesta: new Date(),
+          tokensEntrada: 0,
+          tokensSalida: 0,
+          idUsuario: this.loginService.obtenerIdUsuario(),
+          idTipoUsuario: 0,
+          idEmpresa: this.loginService.obtenerIdEmpresa(),
+          esPreguntaFrecuente: false,
+        };
+    
+        this.visibleRespuesta = true;
+        this.respuestaAsistente = ''; 
+        this.loadingAsistente = true;
+        
+        this.openIaService.AsistenteHistorico(body).subscribe({
+          next: res => {
+          this.visibleRespuesta = true;
+          this.respuestaAsistente = this.limpiarRespuesta(res.respuesta || 'No se recibió respuesta.');
+          this.loadingAsistente = false;
+          },
+          error: err => {
+            this.respuestaAsistente = 'Error al consultar al asistente: ' + err.message;
+          }
+        });
+  }
+
+  copiarTexto(): void {
+  if (!this.respuestaAsistente) return;
+
+  const tempElement = document.createElement('div');
+  tempElement.innerHTML = this.respuestaAsistente;
+
+  function getPlainText(element: HTMLElement): string {
+    let text = '';
+
+    element.childNodes.forEach(node => {
+      if (node.nodeType === Node.TEXT_NODE) {
+        // Texto normal
+        text += node.textContent;
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        const el = node as HTMLElement;
+        const tag = el.tagName.toLowerCase();
+
+        if (tag === 'p' || tag === 'div' || tag === 'br') {
+          text += getPlainText(el) + '\n';
+        } else if (tag === 'li') {
+          text += '- ' + getPlainText(el) + '\n';
+        } else if (tag === 'ul' || tag === 'ol') {
+          text += getPlainText(el) + '\n';
+        } else {
+          text += getPlainText(el);
+        }
+      }
+    });
+
+    return text;
+  }
+
+  const textoPlano = getPlainText(tempElement).trim();
+
+  navigator.clipboard.writeText(textoPlano).then(() => {
+    this.copiado = true;
+    setTimeout(() => this.copiado = false, 2000);
+  });
+}
+
+limpiarRespuesta(respuesta: string): string {
+  return respuesta
+    .replace(/```(?:\w+)?\s*([^]*?)```/g, (_, contenido) => contenido.trim())
+    .replace(/^```(?:\w+)?\s*/, '') 
+    .replace(/```$/, '')       
+    .trim();
+}
 
 }

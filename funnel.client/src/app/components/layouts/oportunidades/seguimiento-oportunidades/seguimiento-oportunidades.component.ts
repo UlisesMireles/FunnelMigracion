@@ -224,6 +224,13 @@ export class SeguimientoOportunidadesComponent {
       <p><b>Probabilidad:</b> ${this.oportunidad.probabilidad}%</p>
       <p><b>Ejecutivo:</b> ${this.oportunidad.nombreEjecutivo}</p>
       <p><b>Días sin actividad:</b> ${this.oportunidad.fechaModificacion}</p>
+      <p><b>Etapa original:</b> ${this.oportunidad.tooltipStage}</p>
+      <p><b>Dias en Etapa 1 (Calificacion de prospecto):</b> ${this.oportunidad.diasEtapa1}</p>
+      <p><b>Días en Etapa 2 (Investigacion de necesidad):</b> ${this.oportunidad.diasEtapa2}</p>
+      <p><b>Días en Etapa 3 (Elaboración de propuesta):</b> ${this.oportunidad.diasEtapa3}</p>
+      <p><b>Días en Etapa 4 (Presentación de propuesta):</b> ${this.oportunidad.diasEtapa4}</p>
+      <p><b>Días en Etapa 5 (Negociación):</b> ${this.oportunidad.diasEtapa5}</p>
+     
     `.trim();
 
     const pregunta = `Información de la oportunidad:\n\n${resumenOportunidad}\n\nHistorial de seguimiento:\n${historialTexto}`;
@@ -231,7 +238,7 @@ export class SeguimientoOportunidadesComponent {
     const body: ConsultaAsistenteDto = {
       exitoso: true,
       errorMensaje: '',
-      idBot: 1,
+      idBot: 5,
       pregunta: `${pregunta}`,
       fechaPregunta: new Date(),
       respuesta: '',

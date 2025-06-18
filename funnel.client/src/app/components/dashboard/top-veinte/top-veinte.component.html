@@ -13,7 +13,7 @@
             currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros"
             [columns]="lsColumnasAMostrar"
             [resizableColumns]="true" [reorderableColumns]="true"
-            [globalFilterFields]="['nombre', 'nombreSector', 'ubicacionFisica', 'totalOportunidades', 'ganadas', 'porcGanadas', 'perdidas', 'porcPerdidas', 'canceladas', 'porcCanceladas', 'eliminadas', 'porcEliminadas', 'proceso','desEstatus']"
+            [globalFilterFields]="['nombre', 'nombreSector', 'ubicacionFisica', 'totalOportunidades', 'ganadas', 'porcGanadas', 'perdidas', 'porcPerdidas', 'canceladas', 'porcCanceladas', 'eliminadas', 'porcEliminadas', 'proceso','desEstatus', 'ultimaFechaRegistro']"
             [tableStyle]="{'min-width': anchoTabla+ '%'}">
   
             <ng-template class="divAccionesTabla" #caption>
@@ -32,7 +32,12 @@
                 pTooltip="Descargar Excel" tooltipPosition="top" styleClass="custom-button add-button"
                 [ngStyle]="{'margin-right': '5px'}"/>
               
-                  
+                <button pButton severity="secondary"
+                (click)="enviarSeguimiento()" 
+                pTooltip="Analisis de seguimiento" tooltipPosition="top" class="icon-btn ml-2 ">
+                <i class="bi bi-stars"></i> 
+                 <span class="ia-button-text "> IA</span>
+              </button>
                 </div>
               </div>
             </ng-template>
@@ -42,6 +47,7 @@
                     <th rowspan="2">Nombre</th>
                     <th rowspan="2">Sector de la industria</th>
                     <th rowspan="2">Ubicación física</th>
+                    <th rowspan="2">Ultimo Registro</th>
                     <th rowspan="2">Oportunidades Totales</th>
             
                     <th colspan="2">Ganadas</th>
@@ -117,6 +123,14 @@
                             </ng-template>
                           </p-columnFilter>
                         </div>
+                        <div *ngSwitchCase="'date'">
+                            <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false">
+                                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                    <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
+                                        (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
+                                </ng-template>
+                            </p-columnFilter>
+                        </div>
                         <div *ngSwitchDefault>
                           <p-columnFilter type="text" field="{{def.key}}" [showMenu]="false"></p-columnFilter>
                         </div>
@@ -131,13 +145,14 @@
                   <td *ngFor="let def of lsColumnasAMostrar" [ngStyle]="{
                     'text-align': 
                       def.tipoFormato === 'percent' ? 'center' : 
-                      (def.tipoFormato === 'number' || def.tipoFormato === 'estatus') ? 'center' : 'left'
+                      (def.tipoFormato === 'number' || def.tipoFormato === 'estatus' || def.tipoFormato === 'date') ? 'center' : 'left'
                   }">
                     <ng-container [ngSwitch]="def.tipoFormato">
                       <span *ngSwitchCase="'text'">{{ rowData[def.key] }}</span>
                       <span *ngSwitchCase="'number'">{{ rowData[def.key] | number:'1.0-2' }}</span>
                       <span *ngSwitchCase="'percent'">{{ rowData[def.key] | number:'1.2-2' }}</span>
                       <span *ngSwitchCase="'estatus'">{{ rowData[def.key] }}</span>
+                      <span *ngSwitchCase="'date'">{{ rowData[def.key] | date:'dd/MM/yyyy' }}</span>
                       <span *ngSwitchDefault>{{ rowData[def.key] }}</span>
                     </ng-container>
                   </td>
@@ -167,3 +182,39 @@
       </div>
     </div>
 </div>
+
+<p-dialog 
+  header="Análisis Clientes Top 20 IA"
+  [(visible)]="visibleRespuesta"
+  [modal]="true"
+  [closable]="true"
+  [maximizable]="true"
+  [style]="{
+    width: maximizedRespuesta ? '100vw' : '50vw',
+    height: maximizedRespuesta ? '100vh' : 'auto'
+  }"
+  [ngClass]="{'maximized': maximizedRespuesta}"
+  (onHide)="maximizedRespuesta = false"
+  appendTo="body"
+  class="bodyDialog"
+  styleClass="custom-header-verde">
+
+  <ng-container *ngIf="!loadingAsistente; else cargando">
+    <div class="respuesta-html" [innerHTML]="respuestaAsistente"></div>
+    <button class="btn-copiar" (click)="copiarTexto()" pTooltip="Copiar" tooltipPosition="top">
+      <mat-icon [ngClass]="copiado ? 'icono-copiado' : ''">
+        {{ copiado ? 'check' : 'content_copy' }}
+      </mat-icon>
+    </button>
+  </ng-container>
+
+  <ng-template #cargando>
+    <div class="text-center" style="padding: 20px;">
+      <p>Generando respuesta...</p>
+      <div class="spinner-border text-primary" role="status" style="margin-top: 20px;">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+    </div>
+  </ng-template>
+</p-dialog>
+

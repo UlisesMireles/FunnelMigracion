@@ -35,7 +35,8 @@ export interface ClientesTopVeinte {
   porcPerdidas: number;     
   porcCanceladas: number;   
   porcEliminadas: number;   
-  idEmpresa?: number;       
+  idEmpresa?: number;  
+  ultimaFechaRegistro?: Date;     
 }
 export interface ProspectosCmb{
     idProspecto: number,

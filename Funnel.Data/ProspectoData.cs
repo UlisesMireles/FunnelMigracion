@@ -117,6 +117,7 @@ namespace Funnel.Data
                     dto.PorcPerdidas = ComprobarNulos.CheckDecimalNull(reader["PorcPerdidas"]);
                     dto.PorcCanceladas = ComprobarNulos.CheckDecimalNull(reader["PorcCanceladas"]);
                     dto.PorcEliminadas = ComprobarNulos.CheckDecimalNull(reader["PorcEliminadas"]);
+                    dto.UltimaFechaRegistro = ComprobarNulos.CheckDateTimeNull(reader["UltimaFecha"]);
 
                     result.Add(dto);
                 }

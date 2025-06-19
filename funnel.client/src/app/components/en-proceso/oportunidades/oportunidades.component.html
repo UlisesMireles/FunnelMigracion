@@ -28,7 +28,38 @@
         </a>
       </li>
     </ul>
- 
+
+    <div class="d-flex contenedor-etiquetas" *ngIf="titulo === 'Oportunidades Por Mes' || titulo === 'Oportunidades Por Etapa'">
+      <!-- Oportunidades en proceso -->
+      <div class="etiqueta bg-white shadow-md rounded-xl px-6 text-center">
+        <p class="titulo mb-0 color-tab-1">En proceso</p>
+        <p class="cantidad mb-0 color-tab-1">{{totalOportunidades}}</p>
+      </div>
+
+      <!-- Oportunidades abiertas en el mes -->
+      <div class="etiqueta bg-white shadow-md rounded-xl px-6 text-center">
+        <p class="titulo mb-0 color-tab-5">Abiertas en el mes</p>
+        <p class="cantidad mb-0 color-tab-5">{{totalOportunidadesMes}}</p>
+      </div>
+
+      <!-- Prospectos nuevos en el mes -->
+      <div class="etiqueta bg-white shadow-md rounded-xl px-6 text-center">
+        <p class="titulo mb-0 color-tab-3">Prospectos nuevos</p>
+        <p class="cantidad mb-0 color-tab-3">{{totalProspectosMes}}</p>
+      </div>
+
+      <!-- Prospectos nuevos en el mes -->
+      <div class="etiqueta bg-white shadow-md rounded-xl px-6 text-center ms-5">
+        <p class="titulo mb-0 color-tab-2">Ganadas en el mes</p>
+        <p class="cantidad mb-0 color-tab-2">{{totalGanadasMes}}</p>
+      </div>
+
+        <!-- Prospectos nuevos en el mes -->
+      <div class="etiqueta bg-white shadow-md rounded-xl px-6 text-center">
+        <p class="titulo mb-0 color-tab-4">Perdidas en el mes</p>
+        <p class="cantidad mb-0 color-tab-4">{{totalPerdidasMes}}</p>
+      </div>
+    </div>
        <!-- Contenido de las pestañas -->
        <div class="tab-content">
         <!-- Pestaña 1 -->
@@ -42,13 +73,15 @@
           </div>
         <p-table *ngIf="!loading" #dt [stripedRows]="true" [value]="oportunidades" dataKey="id" [rows]="10"
           [showCurrentPageReport]="false" [rowsPerPageOptions]="[10, 20, 50]" [paginator]="true" paginatorPosition="both"
-          [columns]="lsColumnasAMostrar"
+          [pageLinks]="1" 
+          currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros"
+          [columns]="lsColumnasAMostrar" 
           [resizableColumns]="true" [reorderableColumns]="true"
           [globalFilterFields]="['nombre','nombreSector','nombreOportunidad','abreviatura','stage','iniciales','nombreContacto','entrega','monto','probabilidadOriginal','probabilidad','montoNormalizado','fechaRegistro','diasFunnel','fechaEstimadaCierreOriginal','fechaModificacion']"
           [tableStyle]="{'min-width': anchoTabla + '%'}">
          
           <ng-template class="divAccionesTabla" #caption>
-            <div class="col-12" style="text-align: left; font-weight: bold; margin-top: 20px">
+            <div class="col-12" style="text-align: left; font-weight: bold; margin-top: 44px">
             </div>
             <div class="row">
               <div class="col inDivDatatableHeader" style="text-align:right; margin-right:5px">
@@ -190,16 +223,15 @@
                     <span *ngIf="def.key === 'nombreOportunidad'" pTooltip="{{rowData['nombreOportunidad']}}" tooltipPosition="top">
                         {{ rowData[def.key] }}
                     </span>
-                   <span *ngIf="def.key === 'nombreSector'">
-                    <a *ngIf="rowData[def.key] === 'Por Asignar'"  style="color: red; text-decoration: underline; cursor: pointer;"
-                      (click)="abrirModalSector(rowData)">
+                   <span *ngIf="def.key === 'nombreSector'"> 
+                    <button *ngIf="rowData[def.key] === 'Por Asignar'" (click)="abrirModalSector(rowData)"
+                      style="background-color: #f93e3e; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer;">
                       {{ rowData[def.key] }}
-                    </a>
+                    </button>
                     <span *ngIf="rowData[def.key] !== 'Por Asignar'">
                       {{ rowData[def.key] }}
                     </span>
                   </span>
-
                     <span *ngIf="def.key !== 'nombreContacto' && def.key !== 'iniciales' && def.key !== 'abreviatura' && def.key !== 'entrega' && def.key !== 'nombreOportunidad' && def.key !== 'nombreSector'">
                         {{ rowData[def.key] }}
                     </span>

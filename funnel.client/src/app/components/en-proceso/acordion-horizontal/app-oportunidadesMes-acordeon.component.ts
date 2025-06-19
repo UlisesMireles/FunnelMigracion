@@ -6,6 +6,8 @@ import { OportunidadesService } from '../../../services/oportunidades.service';
 import { baseOut } from '../../../interfaces/utils/utils/baseOut';
 import { LoginService } from '../../../services/login.service';
 import { ModalOportunidadesService } from '../../../services/modalOportunidades.service';
+import { environment } from '../../../../environments/environment';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-oportunidadesMes-acordeon',
@@ -34,18 +36,31 @@ export class OortunidadesMesAcordeonComponent {
   oportunidades: Oportunidad[] = [];
   seguimientoOportunidad: boolean = false;
 
+  private modalSubscription!: Subscription;
+  baseUrl: string = environment.baseURL;
   // Output para emitir resultados de la petición post (por ejemplo, para notificar a un padre)
   @Output() result: EventEmitter<baseOut> = new EventEmitter();
 
   // Inyección de servicios en el constructor
   constructor(
-    private oportunidadService: OportunidadesService,private readonly loginService: LoginService,private messageService: MessageService,private cdr: ChangeDetectorRef,
+    private oportunidadService: OportunidadesService, private readonly loginService: LoginService, private messageService: MessageService, private cdr: ChangeDetectorRef,
     private modalOportunidadesService: ModalOportunidadesService
   ) { }
 
   ngOnInit() {
     // Se obtiene la información de oportunidades por mes desde el servicio
     this.getOportunidadesPorMes();
+     this.modalSubscription = this.modalOportunidadesService.modalState$.subscribe((state) => {
+      //Valida si se emite un result Exitoso desde modal
+      if (state.result.id != -1 && state.result.result) {
+        this.getOportunidadesPorMes();
+      }
+    });
+  }
+  ngOnDestroy(): void {
+    if (this.modalSubscription) {
+      this.modalSubscription.unsubscribe();  // Desuscribimos al destruir el componente
+    }
   }
 
   // Método que consume el servicio para obtener las oportunidades por mes
@@ -55,9 +70,9 @@ export class OortunidadesMesAcordeonComponent {
       this.loginService.obtenerIdUsuario()
     ).subscribe({
       next: (result: OportunidadesPorMes[]) => {
-        console.log('Oportunidades por mes obtenidas:', result);
         // Asignamos el resultado a nuestro array 'elementos'
         this.elementos = [...result];
+
         // Aseguramos que cada mes tenga inicializado el arreglo de tarjetas
         this.elementos.forEach(mes => {
           if (!Array.isArray(mes.tarjetas)) {
@@ -121,7 +136,7 @@ export class OortunidadesMesAcordeonComponent {
     //console.log('Tarjeta en espera de confirmación:', this.tarjetaMovida);
 
 
-//****************ESTA LOGICA ES APRA CALCULAR FECHA */
+    //****************ESTA LOGICA ES APRA CALCULAR FECHA */
     // Usar las propiedades numéricas ya definidas en el objeto mes destino
     const mesDestinoNumero = mesDestino.mes;  // Ejemplo: 2 para febrero (si es 1-indexado)
     const anioDestino = mesDestino.anio;
@@ -139,9 +154,9 @@ export class OortunidadesMesAcordeonComponent {
     this.fechaSeleccionada = this.getUltimoDiaDelMes(mesDestinoNumero, anioDestino);
     console.log('Último día del mes destino:', this.fechaSeleccionada);
 
-//****************ESTA LOGICA ES APRA CALCULAR FECHA */
+    //****************ESTA LOGICA ES APRA CALCULAR FECHA */
 
-// Mostrar el modal de confirmación
+    // Mostrar el modal de confirmación
     this.mostrarModal = true;
   }
 
@@ -195,7 +210,7 @@ export class OortunidadesMesAcordeonComponent {
   actualizarExpansiones() {
     const total = this.elementos.length;
     this.elementos.forEach((mes, index) => {
-      mes.expandido = index >= total - 5;
+      mes.expandido = mes.tarjetas.length > 0;
     });
   }
 
@@ -250,80 +265,84 @@ export class OortunidadesMesAcordeonComponent {
   }
 
   // Suma todos los montos de las tarjetas del mes
-getTotalMonto(mes: OportunidadesPorMes): number {
-  return mes.tarjetas.reduce((acc, tarjeta) => acc + (tarjeta.monto || 0), 0);
-}
-
-// Suma todos los montos normalizados de las tarjetas del mes
-getTotalNormalizado(mes: OportunidadesPorMes): number {
-  return mes.tarjetas.reduce((acc, tarjeta) => acc + (tarjeta.montoNormalizado || 0), 0);
-}
-
-manejarResultado(result: baseOut) {
-  if (result.result) {
-    this.messageService.add({
-      severity: 'success',
-      summary: 'La operación se realizó con éxito.',
-      detail: result.errorMessage,
-    });
-    this.getOportunidadesPorMes();
-  } else {
-    this.messageService.add({
-      severity: 'error',
-      summary: 'Se ha producido un error.',
-      detail: result.errorMessage,
-    });
+  getTotalMonto(mes: OportunidadesPorMes): number {
+    return mes.tarjetas.reduce((acc, tarjeta) => acc + (tarjeta.monto || 0), 0);
   }
-}
-private crearNuevaLicencia(licencia: Tarjeta) {
-  return {
-    idOportunidad: licencia.idOportunidad,
-    nombreEmpresa: licencia.nombreEmpresa,
-    nombreAbrev: licencia.nombreAbrev,
-    nombreOportunidad: licencia.nombreOportunidad,
-    monto: licencia.monto,
-    probabilidad: licencia.probabilidad,
-    montoNormalizado: licencia.montoNormalizado,
-    imagen: licencia.imagen,
-    nombreEjecutivo: licencia.nombreEjecutivo,
-    iniciales: licencia.iniciales,
-    descripcion: licencia.descripcion,
-    fechaEstimadaCierre: licencia.fechaEstimadaCierre,
-    idTipoProyecto: licencia.idTipoProyecto,
-    nombreContacto: licencia.nombreContacto,
-    entrega: licencia.entrega,
-    fechaEstimadaCierreOriginal: licencia.fechaEstimadaCierreOriginal,
-    idEstatusOportunidad: licencia.idEstatusOportunidad,
-    comentario: licencia.comentario,
-    idProspecto: licencia.idProspecto,
-    idStage: licencia.idStage,
-    idTipoEntrega: licencia.idTipoEntrega,
-    idEjecutivo: licencia.idEjecutivo,
-    idContactoProspecto: licencia.idContactoProspecto,
-    totalComentarios: licencia.totalComentarios,
-    idEmpresa: this.loginService.obtenerIdEmpresa(),
-    idUsuario: this.loginService.obtenerIdUsuario(),
-    stage: licencia.stage,
-    nombre: licencia.nombre
-  };
-}
-actualiza(licencia: Tarjeta) {
+
+  // Suma todos los montos normalizados de las tarjetas del mes
+  getTotalNormalizado(mes: OportunidadesPorMes): number {
+    return mes.tarjetas.reduce((acc, tarjeta) => acc + (tarjeta.montoNormalizado || 0), 0);
+  }
+
+  manejarResultado(result: baseOut) {
+    if (result.result) {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'La operación se realizó con éxito.',
+        detail: result.errorMessage,
+      });
+      this.getOportunidadesPorMes();
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Se ha producido un error.',
+        detail: result.errorMessage,
+      });
+    }
+  }
+  private crearNuevaLicencia(licencia: Tarjeta) {
+    return {
+      idOportunidad: licencia.idOportunidad,
+      nombreEmpresa: licencia.nombreEmpresa,
+      nombreAbrev: licencia.nombreAbrev,
+      nombreOportunidad: licencia.nombreOportunidad,
+      monto: licencia.monto,
+      probabilidad: licencia.probabilidad,
+      montoNormalizado: licencia.montoNormalizado,
+      imagen: licencia.imagen,
+      nombreEjecutivo: licencia.nombreEjecutivo,
+      iniciales: licencia.iniciales,
+      descripcion: licencia.descripcion,
+      fechaEstimadaCierre: licencia.fechaEstimadaCierre,
+      idTipoProyecto: licencia.idTipoProyecto,
+      nombreContacto: licencia.nombreContacto,
+      entrega: licencia.entrega,
+      fechaEstimadaCierreOriginal: licencia.fechaEstimadaCierreOriginal,
+      idEstatusOportunidad: licencia.idEstatusOportunidad,
+      comentario: licencia.comentario,
+      idProspecto: licencia.idProspecto,
+      idStage: licencia.idStage,
+      idTipoEntrega: licencia.idTipoEntrega,
+      idEjecutivo: licencia.idEjecutivo,
+      idContactoProspecto: licencia.idContactoProspecto,
+      totalComentarios: licencia.totalComentarios,
+      idEmpresa: this.loginService.obtenerIdEmpresa(),
+      idUsuario: this.loginService.obtenerIdUsuario(),
+      stage: licencia.stage,
+      nombre: licencia.nombre
+    };
+  }
+  actualiza(licencia: Tarjeta) {
     this.oportunidadSeleccionada = licencia;
     this.insertar = false;
-    this.modalEditarVisible = true;   
+    this.modalEditarVisible = true;
     this.modalOportunidadesService
-    .openModal(true, false, [], licencia)
-    .subscribe((modalResult) => {
-      if (modalResult?.result) {
-        this.ngOnInit();
-      }
-    });
-}
+      .openModal(true, false, [], licencia)
+      .subscribe((modalResult) => {
+        if (modalResult?.result) {
+          this.ngOnInit();
+        }
+      });
+  }
 
-seguimiento(licencia: Tarjeta) {
-  this.oportunidadSeleccionada = licencia;
-  this.seguimientoOportunidad = true;
-  this.modalSeguimientoVisible = true;
-}
+  seguimiento(licencia: Tarjeta) {
+    this.oportunidadSeleccionada = licencia;
+    this.seguimientoOportunidad = true;
+    this.modalSeguimientoVisible = true;
+  }
 
+  private readonly cacheBuster = Date.now(); 
+  getImagen(imagen:string){
+    return `${this.baseUrl}/Fotografia/${imagen}?t=${this.cacheBuster}`;
+  }
 }

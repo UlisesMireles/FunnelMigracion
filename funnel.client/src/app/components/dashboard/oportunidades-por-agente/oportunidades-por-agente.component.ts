@@ -116,8 +116,9 @@ export class OportunidadesPorAgenteComponent {
 
     this.graficasService.obtenerGraficaAgentesData(request).subscribe({
       next: (response: GraficasDto[]) => {
-        const dataAGraficar = [this.graficasService.createPieData(response)];
-        const layOutGrafica = this.graficasService.createPieLayout();
+        const dataAGraficar = [this.graficasService.createBarData(response)];
+        const layOutGrafica = this.graficasService.createBarLayout();
+        layOutGrafica.margin = { t: 20, r: 20, b: 120, l: 50 };
         this.setGraficaData(3, 0, dataAGraficar, layOutGrafica);
       },
       error: (err: any) => console.error('Error al consultar la gráfica:', err)

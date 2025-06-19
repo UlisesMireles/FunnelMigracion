@@ -9,9 +9,9 @@
     <div class="col-4 menu-header-container">
       <div class="agregar btn-agregar-custom ms-2" (click)="toggleOptions()" (mouseenter)="showSubmenu()" (mouseleave)="hideSubmenu()">
         <!-- <p-splitbutton label="Agregar" [model]="items" raised severity="secondary" #splitBtn /> -->
-        <button class="btnAgregar float-end cursor-pointer"  > 
-          <i class="bi bi-plus" style="margin-left: -6px;"></i> 
-          <span class="ia-button-text"> ALTA</span>
+        <button class="btn-chat float-end cursor-pointer"  > 
+          <i class="bi bi-plus color-amarillo" style="margin-left: -6px;"></i> 
+          <span class="ia-button-text color-amarillo"> ALTA</span>
         </button>
         <ul *ngIf="optionsVisible" class="options-container" (click)="showSubmenu()" (mouseleave)="hideSubmenu()">
           <li class="option-btn" (click)="agregarOportunidad()">Oportunidad</li>
@@ -22,9 +22,9 @@
   
       <div class="chatbot ms-2">
         <!-- Botón de chat en el header-->
-        <button class="btn-chat" (click)="toggleChat()">
-          <i class="bi bi-stars color-amarillo"></i> 
-          <span class="ia-button-text color-amarillo"> IA</span>
+        <button class="btnAgregar" (click)="toggleChat()">
+          <i class="bi bi-stars"></i> 
+          <span class="ia-button-text "> IA</span>
         </button>
        <!-- Contenedor del chatbot -->
       <ng-container *ngIf="(asistenteService.asistenteObservable | async) === 1">

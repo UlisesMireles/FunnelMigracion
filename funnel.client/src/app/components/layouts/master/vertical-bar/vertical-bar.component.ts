@@ -5,6 +5,8 @@ import { PermisosService } from '../../../../services/permisos.service';
 import { LoginService } from '../../../../services/login.service';
 import { Permiso } from '../../../../interfaces/permisos';
 import { ModalService } from '../../../../services/modal-perfil.service';
+import { EnumPaginas } from '../../../../enums/enumPaginas';
+import { EnumMenus } from '../../../../enums/enumMenus';
 
 @Component({
   selector: 'app-vertical-bar',
@@ -58,10 +60,29 @@ export class VerticalBarComponent {
 
         // Combinar: primero "Perfil", luego los permisos, luego "SALIR"
         this.ListaMenu = [perfil, ...result, salir];
-
         this.ListaMenu = this.ListaMenu.map(menu =>
-          menu.nombre === 'DASHBOARD'
+          menu.nombre === EnumMenus.TERMINADAS
+            ? { ...menu, ruta: "/oportunidades-terminadas" , subMenu: [] }
+            : menu
+        );
+        this.ListaMenu = this.ListaMenu.map(menu =>
+          menu.nombre === EnumMenus.DASHBOARD
             ? { ...menu, subMenu: [], ruta: '/dashboard' }
+            : menu
+        );
+        this.ListaMenu = this.ListaMenu.map(menu =>
+          menu.nombre === EnumMenus.ADMINISTRACION
+            ? { ...menu, ruta: "/prospectos-contactos", subMenu: [] }
+            : menu
+        );
+        this.ListaMenu = this.ListaMenu.map(menu =>
+           menu.nombre === EnumMenus.USUARIOS
+            ? { ...menu, ruta: "/usuarios-permisos", subMenu: [ ] }
+            : menu
+        );
+        this.ListaMenu = this.ListaMenu.map(menu =>
+          menu.nombre === EnumMenus.CONFIGURACION
+            ? { ...menu, ruta: "/servicios-entregas", subMenu: [] }
             : menu
         );
       },

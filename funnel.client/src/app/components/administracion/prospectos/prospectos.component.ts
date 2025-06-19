@@ -45,16 +45,16 @@ EstatusDropdown = [
 
   lsColumnasAMostrar: any[] = [];
   lsTodasColumnas: any[] = [
-    {key:'nombre', isCheck: true, valor: 'Nombre', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text'},
-    {key: 'nombreSector', isCheck: true, valor: 'Sector de la industria', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
+    {key:'nombre', isCheck: true, valor: 'Prospecto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text'},
+    {key: 'nombreSector', isCheck: true, valor: 'Sector', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
     {key: 'ubicacionFisica', isCheck: true, valor: 'Ubicación Física', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
     {key: 'totalOportunidades', isCheck: true, valor: 'Op/todas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
     {key: 'ganadas', isCheck: true, valor: 'Ganadas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
     {key: 'porcEfectividad', isCheck: true, valor: '% Efectividad', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'decimal'},
-    {key: 'proceso', isCheck: true, valor: 'En Proceso', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
-    {key: 'perdidas', isCheck: true, valor: 'Perdidas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
-    {key: 'canceladas', isCheck: true, valor: 'Canceladas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
-    {key: 'eliminadas', isCheck: true, valor: 'Eliminadas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
+    {key: 'proceso', isCheck: false, valor: 'En Proceso', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
+    {key: 'perdidas', isCheck: false, valor: 'Perdidas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
+    {key: 'canceladas', isCheck: false, valor: 'Canceladas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
+    {key: 'eliminadas', isCheck: false, valor: 'Eliminadas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
     {key: 'desEstatus', isCheck: true, valor: 'Estatus', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'estatus'}
   ];
 
@@ -339,5 +339,18 @@ clear(table: Table) {
     
     return this.dt?.sortField === columnKey;
 }
-
+abrirModalSector(rowData: any) {
+    this.prospectoSeleccionado = rowData;
+    this.prospectoEdicion = { ...rowData };
+    this.insertar = false;
+    this.modalVisible = true;
+    this.desdeSector = true;
+    this.modalOportunidadesService
+      .openModalProspecto(true, false, [], rowData, { errorMessage: '', result: false, id: -1 }, true)
+      .subscribe((modalResult) => {
+        if (modalResult?.result.result === true) {
+          this.ngOnInit();
+        }
+      });
+  }
 }

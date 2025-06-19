@@ -377,7 +377,7 @@
 /* Asegurar que los botones se mantengan alineados */
 .icon-btn {
   min-width: 35px;
-  height: 35px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -422,4 +422,29 @@
 .respuesta-html strong {
   color: #2b2b2b;
 }
+.ia-button-text{
+  font-size: 12px;
+  margin-left: 3px;
+  font-weight: bold;
+  color: #47b984;
+}
+.bi-stars::before{
+  color: #47b984;
+}
 
+.parpadea {
+  background-color: #47b984;
+  color: white;
+}
+.parpadea:hover {
+  background-color: #76e0ae;
+  color: white;
+}
+.btn-dictado{
+  width: 53px;
+}
+
+@keyframes parpadeo {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}

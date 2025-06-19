@@ -19,6 +19,10 @@
     height: 779px;
     padding: 5px 10px;
     box-sizing: border-box;
+    width: 100%;
+    overflow: hidden;
+    margin-top: -59px;
+    margin-left: -10px;
   }
   
   .quadrant {
@@ -30,6 +34,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    overflow: hidden;
   }
   
   .card {
@@ -42,12 +48,14 @@
     text-align: center;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
     cursor: grab;
+    overflow: hidden;
   }
 .plot-container {
   height: 330px;
   max-height: 330px;
   overflow: hidden;
   position: relative;
+  width: 100%;
 }
 .plot-container plotly-plot {
   height: 100% !important;
@@ -57,8 +65,8 @@
 
 .year-selector {
   position: absolute;
-  top: 80px;
-  right: 30px;
+  top: 30px;
+  right: 10px;
   z-index: 6000;
   background: transparent !important;
   border: none !important;
@@ -79,4 +87,12 @@
 .selected-row {
     background-color: #1976d2 !important;
     color: #fff;
+}
+.header-graficas{
+  background: #bdbdbde1 !important;
+  /*background: linear-gradient(0deg, rgba(247, 106, 19, 1) 0%, rgba(200, 87, 24, 1) 35%, rgba(231, 91, 42, 1) 100%);*/
+  color: black;
+  border: none !important;
+  text-align: center;
+  font-size: 15px;
 }

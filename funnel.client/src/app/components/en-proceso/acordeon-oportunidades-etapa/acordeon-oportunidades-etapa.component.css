@@ -2,48 +2,102 @@
 .acordeon-horizontal {
     display: flex; /* Usa flexbox para organizar los elementos en fila */
     gap: 10px; /* Espacio de 10px entre cada elemento del acordeón */
-    overflow-x: auto; /* Permite scroll horizontal si el contenido excede el ancho */
     padding: 10px; /* Espacio interno de 10px en todos los lados */
     transition: background-color 0.3s ease-in-out; /* Transición suave para cambios en el fondo */
     padding-top: 50px !important; /* Aumenta el espacio superior para que el contenido se vea bien */
   }
   
   /* Efecto hover en cada item del acordeón */
-  .item-acordeon:hover {
-    background-color: rgba(0, 0, 0, 0.1); /* Cambia el fondo a un tono más oscuro al pasar el cursor */
+  /* .item-acordeon:hover {
+    background-color: rgba(0, 0, 0, 0.1); 
   }
-  
-  /* Cada item del acordeón (cada mes) */
+   */
+   
+
   .item-acordeon {
     width: 70px; /* Ancho inicial del item (colapsado) */
+    min-width: 70px;
     height: 73vh; /* Altura fija de 550px para el acordeón */
-    background: #f8f9fa; /* Color de fondo claro */
-    border: 1px solid #ccc; /* Borde gris claro */
+    background: #f8f9fa; 
+    border: 1px solid #ccc; 
     display: flex; /* Usa flexbox para organizar el contenido internamente */
     flex-direction: column; /* Organiza los elementos en columna */
     align-items: center; /* Centra horizontalmente el contenido */
     justify-content: space-between; /* Distribuye el contenido con espacio entre ellos */
-    padding: 10px 0; /* Espaciado interno de 10px */
+    
     cursor: pointer; /* Cambia el cursor para indicar interactividad */
     transition: width 0.3s ease-in-out; /* Transición suave para el cambio de ancho (cuando se expande) */
     position: relative; /* Posicionamiento relativo para posicionar elementos internos si es necesario */
     overflow: hidden; /* Oculta el contenido que se salga del contenedor */
+    border-radius: 10px;
+  }
+  .item-acordeon.expandido {
+    width: 70px; /* Ancho inicial del item (colapsado) */
+    height: 73vh; /* Altura fija de 550px para el acordeón */
+    background: #fff !important; 
+    border: 0 !important;  
+    display: flex; /* Usa flexbox para organizar el contenido internamente */
+    flex-direction: column; /* Organiza los elementos en columna */
+    align-items: center; /* Centra horizontalmente el contenido */
+    justify-content: space-between; /* Distribuye el contenido con espacio entre ellos */
+    
+    cursor: pointer; /* Cambia el cursor para indicar interactividad */
+    transition: width 0.3s ease-in-out; /* Transición suave para el cambio de ancho (cuando se expande) */
+    position: relative; /* Posicionamiento relativo para posicionar elementos internos si es necesario */
+    overflow: hidden; /* Oculta el contenido que se salga del contenedor */
+    border-radius: 10px;
   }
   
-  /* Cuando el item está expandido */
   .item-acordeon.expandido {
-    width: 20%; /* Ancho mayor para el estado expandido (ajusta según lo necesites) */
-    border-radius: 15px;
+    width: 25%; /* Ancho mayor para el estado expandido (ajusta según lo necesites) */
+    min-width: 215px;
+  }
+  
+  .item-acordeon-color-5-false {
+    background-color: #CAFFBF;
+  }
+  .item-acordeon-color-4-false {
+    background-color: #CAFFBF;
+  }
+  .item-acordeon-color-3-false {
+    background-color: #FDFFB6;
+  }
+  .item-acordeon-color-2-false {
+    background-color: #FFD6A5;
+  }
+  .item-acordeon-color-1-false {
+    background-color: #BDB2FF;
+  }
+  .item-acordeon-color-0-false{
+     background-color: #fdd2d2;
   }
   
   /* Encabezado del item (nombre del mes y botón) */
   .encabezado-acordeon {
-    display: flex;            /* Organiza en fila */
     align-items: center;      /* Centra verticalmente */
     gap: 10px;               /* Espacio entre botón y texto */
     width: 100%;             /* Ocupa todo el ancho */
+    padding: 10px;
+    border-radius: 10px;
   }
-  
+  .encabezado-5-true {
+    background-color: #CAFFBF;
+  }
+  .encabezado-4-true {
+    background-color: #CAFFBF;
+  }
+  .encabezado-3-true {
+    background-color: #FDFFB6;
+  }
+  .encabezado-2-true {
+    background-color: #FFD6A5;
+  }
+  .encabezado-1-true {
+    background-color: #BDB2FF;
+  }
+  .encabezado-0-true {
+    background-color: #fdd2d2;
+  }
   /* Botón de toggle para expandir/collapse */
   .boton-toggle {
     background: transparent;
@@ -59,7 +113,7 @@
   
 .boton-toggle.colapsado {
   margin-top: 0px;
-  transform: translateY(-15px); 
+  transform: translate(5px, -10px); 
   margin-left: -7px;
 }
 
@@ -88,17 +142,18 @@
     flex-direction: column; /* Organiza las tarjetas en columna */
     gap: 8px;               /* Espacio de 8px entre cada tarjeta */
     box-sizing: border-box; /* Incluye padding y border dentro de la altura definida */
+    margin-top: 21px;
   }
   
   /* Cada tarjeta individual */
   .tarjeta {
     background: #ffffff; /* Fondo blanco para cada tarjeta */
-    border-radius: 0px;  /* Sin redondeo en las esquinas */
+    border-radius: 15px;  
     padding: 10px;       /* Espaciado interno de 10px */
     text-align: center;  /* Centrado del texto */
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave para dar profundidad */
     padding-top: 0pX;    /* (Posible error tipográfico: "0pX" en lugar de "0px") */
-    border: black solid 1px !important; /* Borde negro de 1px, con !important para forzar la regla */
+    border: #9c9b9b solid 1px !important; 
   }
   
   /* Imagen interna de la tarjeta */
@@ -107,7 +162,7 @@
     border-radius: 5px;  /* Esquinas redondeadas con un radio de 5px */
   }
   .tarjeta-side{
-    padding-top:3px; 
+    padding-top:13px; 
     padding-left: 0 !important  ; 
     padding-right: 10px;
   }
@@ -153,7 +208,7 @@
     align-items: center;       /* Centra verticalmente los elementos dentro */
     justify-content: space-between; /* Distribuye el espacio entre el nombre y el contador */
     order: 2;
-    margin-left: -10px;
+    margin-left: 5px;
   }
   
   /* Estilo para el contador de tarjetas (número entre paréntesis) */
@@ -175,7 +230,6 @@
     width: 100%;                  /* Ocupa todo el ancho del contenedor */
     order: 2;
   }
-  
   /* En estado expandido, el contador se alinea a la derecha con margen */
   .item-acordeon.expandido .contador-tarjetas {
     margin: 0 8px 0 auto; /* Margen: 0 arriba, 8px a la derecha, 0 abajo y automático a la izquierda para empujar al final */
@@ -217,7 +271,7 @@
   
   /* Espaciado superior para la fila de la tarjeta */
   .tarjeta-row {
-    padding-top: 20px;
+    padding-top: 12px;
   }
   
   /* Estilo para el nombre de la empresa */
@@ -270,13 +324,10 @@
   }
   
   /* Estilos para la foto (círculo) de la tarjeta */
-  div.fotoTarjeta {
+  .fotoTarjeta {
     height: 41px;            /* Altura del círculo*/
     width: 41px;             /* Ancho del círculo*/
-    background-repeat: no-repeat; /* No repetir la imagen de fondo */
-    background-position: 50%;     /* Centrar la imagen de fondo */
     border-radius: 50%;      /* Hacer el contenedor circular */
-    background-size: 100% auto;  /* Ajustar el tamaño de la imagen de fondo */
   }
   .acordeon-horizontal.todos-expandidos .fotoTarjeta {
    height: 37px;            /* Altura del círculo: 55px */
@@ -399,18 +450,17 @@
     font-weight: 600;
     font-size: 1em;
     color: #08a742;
+     margin-left: 10px !important;
   }
   .total-row {
     display: flex;                /* Convierto la fila en un contenedor flex */
-    justify-content: flex-end;    /* Alinea los elementos al final (derecha) */
-    align-items: center;          /* Centra verticalmente los elementos */
     width: 100%;                  /* Ocupa todo el ancho del contenedor */
     margin-top: 5px;              /* Opcional: espacio superior */
     padding-right: 15px;
   }
   
   .total-row span {
-    margin-left: 15px;            /* Espacio entre los totales */
+    margin-left: 6px;            /* Espacio entre los totales */
     text-align: right;            /* Alinea el texto a la derecha */
     white-space: nowrap;          /* Evita que se rompa la línea */
   }
@@ -508,6 +558,7 @@
   text-align: left;
   flex: 1;
   min-width: 30px;
+  padding-left: 6px;
 }
 .todos-expandidos .fila-monto {
   display: flex;
@@ -540,7 +591,7 @@
   width: 50px;
 }
 ::-webkit-scrollbar {
-  width: 6px; /* Ancho de la barra de desplazamiento */
+  width: 5px; /* Ancho de la barra de desplazamiento */
 }
 
 #contenedor-tarjetas0::-webkit-scrollbar-thumb {
@@ -581,4 +632,13 @@
 }
 #contenedor-tarjetas4::-webkit-scrollbar-track {
   background: #bfecdc;
+}
+
+.titulo-acordeon{
+  grid-template-columns: repeat(2, 1fr); 
+}
+@media (max-width: 1300px) {
+  .nombre-mes {
+    font-size: 13px;;
+  }
 }

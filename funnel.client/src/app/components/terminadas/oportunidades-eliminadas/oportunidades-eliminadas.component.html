@@ -31,7 +31,8 @@
           <p>Cargando...</p>
         </div>
         <p-table *ngIf="!loading" #dt [stripedRows]="true" [value]="oportunidades" dataKey="id" [rows]="10"
-          [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 20, 50]" [paginator]="true" paginatorPosition="both"
+          [showCurrentPageReport]="false" [rowsPerPageOptions]="[10, 20, 50]" [paginator]="true" paginatorPosition="both"
+          [pageLinks]="1"
           currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros"
           [columns]="lsColumnasAMostrar"
           [autoLayout]="true" [reorderableColumns]="true" [resizableColumns]="true"
@@ -109,7 +110,7 @@
                         </p-columnFilter>
                       </div>
                       <div *ngSwitchCase="'date'">
-                        <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false">
+                        <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false" *ngIf="def.key !== 'fechaEstimadaCierre'">
                             <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                                 <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
                                     (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">

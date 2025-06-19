@@ -77,49 +77,6 @@ namespace Funnel.Data
         public async Task<BaseOut> GuardarImagen(List<IFormFile> imagen, UsuarioDto request)
         {
             BaseOut result = new BaseOut();
-            var formatosPermitidos = new List<string> { ".jpg", ".png", ".jpeg" };
-            string carpetaDestino = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Fotografia");
-
-            if (!Directory.Exists(carpetaDestino))
-            {
-                Directory.CreateDirectory(carpetaDestino);
-            }
-
-            if (imagen != null && imagen.Any())
-            {
-                foreach (var file in imagen)
-                {
-                    var extension = Path.GetExtension(file.FileName).ToLower();
-
-                    if (!formatosPermitidos.Contains(extension))
-                    {
-                        result.ErrorMessage = $"Formato de archivo {extension} no permitido.";
-                        result.Result = false;
-                        return result;
-                    }
-
-                    var nombreBase = $"{request.ApellidoPaterno}_{request.ApellidoMaterno}_{request.Nombre}";
-                    var nombreArchivoNuevo = $"{nombreBase}{extension}";
-                    var rutaArchivoNuevo = Path.Combine(carpetaDestino, nombreArchivoNuevo);
-
-                    foreach (var formato in formatosPermitidos)
-                    {
-                        var rutaAnterior = Path.Combine(carpetaDestino, $"{nombreBase}{formato}");
-                        if (File.Exists(rutaAnterior))
-                        {
-                            File.Delete(rutaAnterior);
-                        }
-                    }
-
-                    using (var stream = new FileStream(rutaArchivoNuevo, FileMode.Create))
-                    {
-                        await file.CopyToAsync(stream);
-                    }
-
-                    request.ArchivoImagen = nombreArchivoNuevo;
-                }
-            }
-
             try
             {
                 var insertaImagen = new UsuarioDto
@@ -144,11 +101,65 @@ namespace Funnel.Data
                 result.Result = resultado.Result;
                 result.ErrorMessage = resultado.ErrorMessage;
                 result.Id = resultado.Id;
+                request.IdUsuario = insertaImagen.Bandera == "INSERT" ? resultado.Id: insertaImagen.IdUsuario;
+
+                if (result.Result ?? false)
+                {
+                    string nombreArchivo = await ProcesarImagenesUsuarioAsync(imagen, request);
+                    if(!string.IsNullOrEmpty(nombreArchivo))
+                        await ActualizarFotoUsuario(result.Id, nombreArchivo);
+                }
             }
             catch (Exception ex)
             {
                 result.ErrorMessage = "Error al guardar el usuario: " + ex.Message;
                 result.Result = false;
+            }
+
+            return result;
+        }
+        private async Task<string> ProcesarImagenesUsuarioAsync(List<IFormFile> imagen, UsuarioDto request)
+        {
+            string result = "";
+            var formatosPermitidos = new List<string> { ".jpg", ".png", ".jpeg" };
+            string carpetaDestino = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Fotografia");
+
+            if (!Directory.Exists(carpetaDestino))
+            {
+                Directory.CreateDirectory(carpetaDestino);
+            }
+
+            if (imagen != null && imagen.Any())
+            {
+                foreach (var file in imagen)
+                {
+                    var extension = Path.GetExtension(file.FileName).ToLower();
+
+                    if (!formatosPermitidos.Contains(extension))
+                    {
+                        return "";
+                    }
+
+                    var nombreBase = $"{(request.ApellidoPaterno ?? "").Trim()}_{(request.ApellidoMaterno ?? "").Trim()}_{(request.Nombre ?? "").Trim()}_{request.IdUsuario.ToString().Trim()}";
+                    var nombreArchivoNuevo = $"{nombreBase.Replace(" ", "")}{extension}";
+                    var rutaArchivoNuevo = Path.Combine(carpetaDestino, nombreArchivoNuevo);
+
+                    foreach (var formato in formatosPermitidos)
+                    {
+                        var rutaAnterior = Path.Combine(carpetaDestino, $"{nombreBase}{formato}");
+                        if (File.Exists(rutaAnterior))
+                        {
+                            File.Delete(rutaAnterior);
+                        }
+                    }
+
+                    using (var stream = new FileStream(rutaArchivoNuevo, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+
+                    result = nombreArchivoNuevo;
+                }
             }
 
             return result;
@@ -193,7 +204,6 @@ namespace Funnel.Data
                     case "INSERT":
                         if (result.Id > 0)
                         {
-                            await ActualizarFotoUsuario(result.Id, request.ArchivoImagen);
                             result.ErrorMessage = "Usuario insertado correctamente.";
                             result.Result = true;
                         }
@@ -205,7 +215,6 @@ namespace Funnel.Data
                         break;
 
                     case "UPDATE":
-                        await ActualizarFotoUsuario(request.IdUsuario, request.ArchivoImagen);
                         result.ErrorMessage = "Usuario actualizado correctamente.";
                         result.Id = request.IdUsuario;
                         result.Result = true;

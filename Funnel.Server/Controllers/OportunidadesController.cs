@@ -161,5 +161,11 @@ namespace Funnel.Server.Controllers
             var pdf = await _oportunidadesService.GenerarReporteOportunidades(oportunidades, Directory.GetCurrentDirectory(), titulo, IdEmpresa);
             return File(pdf, "application/pdf", "OportunidadesEliminadas.pdf");
         }
+        [HttpGet("[action]/")]
+        public async Task<ActionResult<EtiquetasOportunidadesDto>> ConsultarEtiquetasOportunidades(int idEmpresa)
+        {
+            var result = await _oportunidadesService.ConsultarEtiquetas(idEmpresa);
+            return Ok(result);
+        }
     }
 }

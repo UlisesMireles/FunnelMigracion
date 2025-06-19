@@ -32,7 +32,7 @@ export class AdminDashboardComponent {
   consultarPermisosUsuario() {
     const permisos = this.loginService.obtenerPermisosUsuario();
     if (permisos && permisos.length > 0) {
-      const permisoDashboard = permisos.find(p => p.nombre === 'DASHBOARD');
+      const permisoDashboard = permisos.find(p => p.nombre === EnumPaginas.DASHBOARD);
       if(permisoDashboard){
         this.permisoOportunidadesGeneral = permisoDashboard.subMenu.some((p:any) => p.pagina === EnumPaginas.OPORTUNIDADES_GENERAL);
         this.permisoOportunidadesPorAgente = permisoDashboard.subMenu.some((p:any) => p.pagina === EnumPaginas.OPORTUNIDADES_POR_AGENTE);

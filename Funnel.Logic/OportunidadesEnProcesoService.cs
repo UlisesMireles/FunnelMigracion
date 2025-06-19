@@ -131,7 +131,7 @@ namespace Funnel.Logic
                         Monto = y.Monto,
                         Probabilidad = y.Probabilidad,
                         MontoNormalizado = y.MontoNormalizado,
-                        Imagen = y.Foto ?? "",
+                        Imagen = !string.IsNullOrEmpty(y.Foto) ? y.Foto : "persona_icono_principal.png",
                         NombreEjecutivo = y.NombreEjecutivo ?? "",
                         Iniciales = y.Iniciales ?? "",
                         Descripcion = y.Descripcion ?? "",
@@ -176,13 +176,14 @@ namespace Funnel.Logic
                     Tarjetas = oportunidades.Where(x => x.IdStage == item.Id).Select(y => new TarjetasDto
                     {
                         IdOportunidad = y.IdOportunidad,
+                        Nombre = y.Nombre ?? "Sin nombre",
                         NombreEmpresa = y.Nombre ?? "Sin nombre",
                         NombreAbrev = y.Abreviatura ?? "",
                         NombreOportunidad = y.NombreOportunidad ?? "",
                         Monto = y.Monto,
                         Probabilidad = y.Probabilidad,
                         MontoNormalizado = y.MontoNormalizado,
-                        Imagen = y.Foto ?? "",
+                        Imagen = !string.IsNullOrEmpty(y.Foto) ? y.Foto : "persona_icono_principal.png",
                         NombreEjecutivo = y.NombreEjecutivo ?? "",
                         Iniciales = y.Iniciales ?? "",
                         Descripcion = y.Descripcion ?? "",
@@ -393,6 +394,11 @@ namespace Funnel.Logic
 
 
             return pdfBytes;
+        }
+
+        public async Task<EtiquetasOportunidadesDto> ConsultarEtiquetas(int IdEmpresa)
+        {
+            return await _oportunidadesData.ConsultarEtiquetas(IdEmpresa);
         }
     }
 }

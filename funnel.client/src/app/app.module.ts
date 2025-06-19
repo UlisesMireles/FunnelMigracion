@@ -141,6 +141,10 @@ import { GraficasPorAgenteEliminadasComponent } from './components/terminadas/op
 import { GraficasPorAgenteCanceladasComponent } from './components/terminadas/oportunidades-canceladas/graficas-por-agente-canceladas/graficas-por-agente-canceladas.component';
 import { ModalOportunidadesPorTipoComponent } from './components/dashboard/oportunidades-general/modal-oportunidades-por-tipo/modal-oportunidades-por-tipo.component';
 import { ModalDetallesOportunidadesPorTipoComponent } from './components/dashboard/oportunidades-general/modal-detalles-oportunidades-por-tipo/modal-detalles-oportunidades-por-tipo.component';
+import { AcordeonProspectosContactosComponent } from './components/administracion/acordeon-prospectos-contactos/acordeon-prospectos-contactos.component';
+import { ServiciosEntregasComponent } from './components/catalogos/servicios-entregas/servicios-entregas.component';
+import { UsuariosPermisosComponent } from './components/catalogos/usuarios-permisos/usuarios-permisos.component';
+import { PanelesTerminadasComponent } from './components/terminadas/paneles-terminadas/paneles-terminadas.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -220,7 +224,11 @@ registerLocaleData(localeEs, 'es-MX');
     GraficasPorAgenteEliminadasComponent,
     GraficasPorAgenteCanceladasComponent,
     ModalOportunidadesPorTipoComponent,
-    ModalDetallesOportunidadesPorTipoComponent
+    ModalDetallesOportunidadesPorTipoComponent,
+    AcordeonProspectosContactosComponent,
+    ServiciosEntregasComponent,
+    UsuariosPermisosComponent,
+    PanelesTerminadasComponent
   ],
   imports: [
     BrowserModule,

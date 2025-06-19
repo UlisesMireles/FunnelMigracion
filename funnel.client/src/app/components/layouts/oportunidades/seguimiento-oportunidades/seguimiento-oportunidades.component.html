@@ -45,8 +45,9 @@
           <form [formGroup]="oportunidadForm">
             <div *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value === 1" class="seguimiento-area">
               <label class="seguimiento-label">Seguimiento:</label>
-              <textarea pInputText class="seguimiento-textarea" formControlName="comentario" 
+              <textarea pInputText class="seguimiento-textarea" formControlName="comentario" #comentarioInput
                 (input)="onComentarioInput()"  placeholder="Escribe un comentario de al menos 10 palabras"></textarea>
+                
               <div class="d-flex justify-content-between mt-1">
                 <div>
                   <small class="text-muted">
@@ -66,7 +67,11 @@
             </div>
             
             <div class="button-group-right">
-              <button pButton label="Añadir" (click)="guardarHistorial()" severity="secondary"
+              <button pButton severity="secondary" class="btn-dictado" (click)="dictarComentario()" pTooltip="Dictar por voz" tooltipPosition="top"
+              [ngClass]="{'parpadea': dictando}" *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value === 1">
+                <i class="bi bi-mic"></i>
+              </button>
+              <button pButton label="Añadir" (click)="guardarHistorial()" severity="secondary" class="[width: 53px;]"
                 *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value === 1"
                 [disabled]="!oportunidadForm.get('comentario')?.value"></button>
               
@@ -85,7 +90,8 @@
                 [disabled]="historialOportunidad.length === 0"
                 *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value === 1"
                 pTooltip="Analisis de seguimiento" tooltipPosition="top" class="icon-btn ml-2 ">
-                <i class="bi bi-robot" style="font-size: 15px;"></i>
+                <i class="bi bi-stars"></i> 
+                 <span class="ia-button-text "> IA</span>
               </button>
 
             </div>
@@ -126,7 +132,7 @@
 </p-dialog>
 
 <p-dialog 
-  header="Análisis de seguimiento"
+  header="Análisis de seguimiento IA"
   [(visible)]="visibleRespuesta"
   [modal]="true"
   [closable]="true"

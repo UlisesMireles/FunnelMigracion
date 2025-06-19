@@ -7,6 +7,7 @@ import { baseOut } from '../../../interfaces/utils/utils/baseOut';
 import { LoginService } from '../../../services/login.service';
 import { ModalOportunidadesService } from '../../../services/modalOportunidades.service';
 import { environment } from '../../../../environments/environment';
+import { Subscription } from 'rxjs';
 
 
 
@@ -35,6 +36,7 @@ export class AcordeonOportunidadesEtapaComponent {
   // Output para emitir resultados de la petición post (por ejemplo, para notificar a un padre)
   @Output() result: EventEmitter<baseOut> = new EventEmitter();
 
+  private modalSubscription!: Subscription;
   baseUrl: string = environment.baseURL;
   // 
   constructor(
@@ -43,7 +45,19 @@ export class AcordeonOportunidadesEtapaComponent {
   ) { }
 
   ngOnInit() {
+
     this.getOportunidadesPorEtapa();
+    this.modalSubscription = this.modalOportunidadesService.modalState$.subscribe((state) => {
+      //Valida si se emite un result Exitoso desde modal
+      if (state.result.id != -1 && state.result.result) {
+        this.getOportunidadesPorEtapa();
+      }
+    });
+  }
+  ngOnDestroy(): void {
+    if (this.modalSubscription) {
+      this.modalSubscription.unsubscribe();  // Desuscribimos al destruir el componente
+    }
   }
 
   getOportunidadesPorEtapa() {
@@ -285,8 +299,8 @@ export class AcordeonOportunidadesEtapaComponent {
     this.seguimientoOportunidad = true;
     this.modalSeguimientoVisible = true;
   }
-  private readonly cacheBuster = Date.now(); 
-  getImagen(imagen:string){
+  private readonly cacheBuster = Date.now();
+  getImagen(imagen: string) {
     return `${this.baseUrl}/Fotografia/${imagen}?t=${this.cacheBuster}`;
   }
 }

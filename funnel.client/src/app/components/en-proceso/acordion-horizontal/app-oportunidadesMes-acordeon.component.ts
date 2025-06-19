@@ -7,6 +7,7 @@ import { baseOut } from '../../../interfaces/utils/utils/baseOut';
 import { LoginService } from '../../../services/login.service';
 import { ModalOportunidadesService } from '../../../services/modalOportunidades.service';
 import { environment } from '../../../../environments/environment';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-oportunidadesMes-acordeon',
@@ -35,6 +36,7 @@ export class OortunidadesMesAcordeonComponent {
   oportunidades: Oportunidad[] = [];
   seguimientoOportunidad: boolean = false;
 
+  private modalSubscription!: Subscription;
   baseUrl: string = environment.baseURL;
   // Output para emitir resultados de la petición post (por ejemplo, para notificar a un padre)
   @Output() result: EventEmitter<baseOut> = new EventEmitter();
@@ -48,6 +50,17 @@ export class OortunidadesMesAcordeonComponent {
   ngOnInit() {
     // Se obtiene la información de oportunidades por mes desde el servicio
     this.getOportunidadesPorMes();
+     this.modalSubscription = this.modalOportunidadesService.modalState$.subscribe((state) => {
+      //Valida si se emite un result Exitoso desde modal
+      if (state.result.id != -1 && state.result.result) {
+        this.getOportunidadesPorMes();
+      }
+    });
+  }
+  ngOnDestroy(): void {
+    if (this.modalSubscription) {
+      this.modalSubscription.unsubscribe();  // Desuscribimos al destruir el componente
+    }
   }
 
   // Método que consume el servicio para obtener las oportunidades por mes

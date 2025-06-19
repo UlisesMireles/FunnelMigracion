@@ -108,8 +108,8 @@
                 <th *ngFor="let def of lsColumnasAMostrar" pSortableColumn="{{def.key}}" pReorderableColumn [class.sort-active]="isSorted(def.key)"
                 [ngClass]="{
                     'columna-etapa': def.key === 'stage','columna-tipo': def.key === 'abreviatura','columna-sector': def.key === 'nombreSector'
-                }">
-                    {{def.valor}}
+                }"(click)="def.key === 'fechaEstimadaCierreOriginal' ? onSortFechaCierre() : null">
+                   {{def.valor}}
                   <p-sortIcon field="{{def.key}}"></p-sortIcon>
                 </th>
                 <th></th>

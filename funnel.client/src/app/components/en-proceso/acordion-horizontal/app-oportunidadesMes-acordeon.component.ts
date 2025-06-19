@@ -36,6 +36,7 @@ export class OortunidadesMesAcordeonComponent {
   oportunidades: Oportunidad[] = [];
   seguimientoOportunidad: boolean = false;
 
+  modalDocumentosVisible: boolean = false;
   private modalSubscription!: Subscription;
   baseUrl: string = environment.baseURL;
   // Output para emitir resultados de la petición post (por ejemplo, para notificar a un padre)
@@ -335,12 +336,17 @@ export class OortunidadesMesAcordeonComponent {
       });
   }
 
-  seguimiento(licencia: Tarjeta) {
-    this.oportunidadSeleccionada = licencia;
+  seguimiento(oportunidad: Tarjeta) {
+    this.oportunidadSeleccionada = oportunidad;
     this.seguimientoOportunidad = true;
     this.modalSeguimientoVisible = true;
   }
 
+  documento(oportunidad: Oportunidad) {
+    this.oportunidadSeleccionada = oportunidad;
+    this.seguimientoOportunidad = true;
+    this.modalDocumentosVisible = true;
+  }
   private readonly cacheBuster = Date.now(); 
   getImagen(imagen:string){
     return `${this.baseUrl}/Fotografia/${imagen}?t=${this.cacheBuster}`;

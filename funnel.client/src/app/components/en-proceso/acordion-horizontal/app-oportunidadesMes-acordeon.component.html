@@ -48,6 +48,9 @@
               <p-button type="button" icon="bi bi-file-earmark-text fs-3" text (click)="seguimiento(tarjeta)"
                 pTooltip="Seguimiento" tooltipPosition="top" styleClass="blue-icon">
               </p-button>
+              <p-button type="button" icon="bi bi-folder2 fs-4" text (click)="documento(tarjeta)"
+                pTooltip="Documentos" tooltipPosition="top" styleClass="">
+              </p-button>
               <p-button styleClass="coloreditar-icon" (click)="actualiza(tarjeta)" pTooltip="Editar registro"
                 tooltipPosition="top">
                 <span class="custom-pencil">✏️</span>
@@ -124,3 +127,7 @@
   (result)="manejarResultado($event)" [insertar]="insertar" [oportunidades]="oportunidades"
   [oportunidad]="oportunidadSeleccionada">
 </app-seguimiento-oportunidades>
+<app-documentos-oportunidades [(visible)]="modalDocumentosVisible" [title]="'Documentos de '"
+  (result)="manejarResultado($event)" [insertar]="insertar" [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">
+</app-documentos-oportunidades>
+  

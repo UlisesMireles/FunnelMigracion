@@ -2,7 +2,6 @@
 .acordeon-horizontal {
     display: flex; /* Usa flexbox para organizar los elementos en fila */
     gap: 10px; /* Espacio de 10px entre cada elemento del acordeón */
-    overflow-x: auto; /* Permite scroll horizontal si el contenido excede el ancho */
     padding: 10px; /* Espacio interno de 10px en todos los lados */
     transition: background-color 0.3s ease-in-out; /* Transición suave para cambios en el fondo */
     padding-top: 50px !important; /* Aumenta el espacio superior para que el contenido se vea bien */
@@ -17,6 +16,7 @@
 
   .item-acordeon {
     width: 70px; /* Ancho inicial del item (colapsado) */
+    min-width: 70px;
     height: 73vh; /* Altura fija de 550px para el acordeón */
     background: #f8f9fa; 
     border: 1px solid #ccc; 
@@ -50,6 +50,7 @@
   
   .item-acordeon.expandido {
     width: 25%; /* Ancho mayor para el estado expandido (ajusta según lo necesites) */
+    min-width: 215px;
   }
   
   .item-acordeon-color-5-false {
@@ -229,7 +230,6 @@
     width: 100%;                  /* Ocupa todo el ancho del contenedor */
     order: 2;
   }
-  
   /* En estado expandido, el contador se alinea a la derecha con margen */
   .item-acordeon.expandido .contador-tarjetas {
     margin: 0 8px 0 auto; /* Margen: 0 arriba, 8px a la derecha, 0 abajo y automático a la izquierda para empujar al final */
@@ -324,13 +324,10 @@
   }
   
   /* Estilos para la foto (círculo) de la tarjeta */
-  div.fotoTarjeta {
+  .fotoTarjeta {
     height: 41px;            /* Altura del círculo*/
     width: 41px;             /* Ancho del círculo*/
-    background-repeat: no-repeat; /* No repetir la imagen de fondo */
-    background-position: 50%;     /* Centrar la imagen de fondo */
     border-radius: 50%;      /* Hacer el contenedor circular */
-    background-size: 100% auto;  /* Ajustar el tamaño de la imagen de fondo */
   }
   .acordeon-horizontal.todos-expandidos .fotoTarjeta {
    height: 37px;            /* Altura del círculo: 55px */
@@ -635,4 +632,13 @@
 }
 #contenedor-tarjetas4::-webkit-scrollbar-track {
   background: #bfecdc;
+}
+
+.titulo-acordeon{
+  grid-template-columns: repeat(2, 1fr); 
+}
+@media (max-width: 1300px) {
+  .nombre-mes {
+    font-size: 13px;;
+  }
 }

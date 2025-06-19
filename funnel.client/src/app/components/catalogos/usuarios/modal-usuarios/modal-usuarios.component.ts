@@ -115,7 +115,8 @@ export class ModalUsuariosComponent {
       if (this.usuario.archivoImagen) { 
         this.selectedFile = { name: this.usuario.archivoImagen } as File;
         this.selectedFileName = this.usuario.archivoImagen;
-        this.imagePreview = this.baseUrl + '/Fotografia/' + this.usuario.archivoImagen;
+        
+        this.imagePreview = `${this.baseUrl}/Fotografia/${this.usuario.archivoImagen}?t=${Date.now()}`;
   } else {
     this.imagePreview = this.rutaImgenDefault;
   }

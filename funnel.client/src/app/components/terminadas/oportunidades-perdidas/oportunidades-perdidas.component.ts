@@ -257,7 +257,8 @@ export class OportunidadesPerdidasComponent {
     dialogConfig.width = '50px';
 
     dialogConfig.data = {
-      todosColumnas: this.lsTodasColumnas
+      todosColumnas: this.lsTodasColumnas,
+      vista: 'terminadas'
     };
 
     dialogConfig.position = {

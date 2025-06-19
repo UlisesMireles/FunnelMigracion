@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit , HostListener } from '@angular/core';
+import { Component, Inject, OnInit , HostListener, Input } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-columnas-disponibles',
@@ -16,10 +16,13 @@ export class ColumnasDisponiblesComponent implements OnInit {
   modalPosition = { x: 0, y: 0 };
   columna1: any[] = [];
   columna2: any[] = [];
+  @Input() vista: string = '';
   
   constructor(public dialogRef: MatDialogRef<ColumnasDisponiblesComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
     this.listaColumnas = data.todosColumnas
     this.originalData = JSON.parse(JSON.stringify(data.todosColumnas));
+    this.vista = data.vista || '';
+    console.log (this.vista);
   }
 
 

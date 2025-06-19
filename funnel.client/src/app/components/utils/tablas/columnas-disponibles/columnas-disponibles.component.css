@@ -5,14 +5,22 @@
   display: block;
   width: 300px; 
   max-width: 85vw; 
-  border: #215388 solid 1px;
+  border: black solid 1px;
   position: fixed;
   overflow: hidden;
   transform: translate(var(--pos-x), var(--pos-y));
   box-sizing: border-box;
   z-index: 1000;
 }
-
+.listCheck h3 {
+  background: linear-gradient(0deg, rgba(247, 106, 19, 1) 0%, rgba(200, 87, 24, 1) 35%, rgba(231, 91, 42, 1) 100%);
+  color: white;
+  padding: 8px;
+  margin: -25px -25px 20px -25px; 
+  text-align: center;
+  font-weight: normal;
+  font-size: 1.7rem;
+}
 /* Estilo para el contenedor del botón de cierre */
 .close-container {
   position: absolute;
@@ -27,7 +35,7 @@
   background: transparent;
   font-size: 1.8rem;
   line-height: 1;
-  color: #FFFFFF;
+  color: black;
   padding: 0;
   margin: 0;
   width: 30px;
@@ -87,16 +95,6 @@ button.p-button-primary:hover {
   background: #164475;
 }
 
-.listCheck h3 {
-  background: linear-gradient(0deg, rgba(247, 106, 19, 1) 0%, rgba(200, 87, 24, 1) 35%, rgba(231, 91, 42, 1) 100%);
-  color: white;
-  padding: 8px;
-  margin: -25px -25px 20px -25px; 
-  text-align: center;
-  font-weight: normal;
-  font-size: 1.7rem;
-}
-
 .button-group {
   display: flex;
   gap: 10px;
@@ -153,4 +151,40 @@ button.p-button-primary:hover {
 .columna {
   flex: 1;
   min-width: 0; 
+}
+h3.terminadas {
+  background: #bdbdbde1 !important;
+  color: black !important;
+  padding: 8px !important;
+  margin: -25px -25px 20px -25px !important; 
+  text-align: center !important;
+  font-weight: normal !important;
+  font-size: 1.7rem !important;
+}
+h3.prospectos-contactos {
+  background: #FFD6A5 !important;
+  color: black !important;
+  padding: 8px !important;
+  margin: -25px -25px 20px -25px !important;
+  text-align: center !important;
+  font-weight: normal !important;
+  font-size: 1.7rem !important;
+}
+h3.usuarios {
+  background: #BDB2FF !important;
+  color: black !important;
+  padding: 8px !important;
+  margin: -25px -25px 20px -25px !important;
+  text-align: center !important;
+  font-weight: normal !important;
+  font-size: 1.7rem !important;
+}
+h3.servicios-entregas{
+  background: #FFADAD !important;
+  color: black !important;
+  padding: 8px !important;
+  margin: -25px -25px 20px -25px !important;
+  text-align: center !important;
+  font-weight: normal !important;
+  font-size: 1.7rem !important;
 }

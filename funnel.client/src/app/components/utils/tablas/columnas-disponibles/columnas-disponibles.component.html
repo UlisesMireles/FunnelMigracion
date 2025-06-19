@@ -8,16 +8,27 @@
   </h3>
 
   <div class="row">
-    <div *ngFor="let filtro of data.todosColumnas; let index = index">
-      <div *ngIf="!filtro.isIgnore" class="form-check">
-        <input class="check form-check-input cursorPointer" type="checkbox" [(ngModel)]="filtro.isCheck"
-          id="flexCheckChecked{{index}}">
-        <label class="form-check-label cursorPointer" for="flexCheckChecked{{index}}">
-          {{filtro.valor}}
-        </label>
-      </div>
+  <div class="columna">
+    <div *ngFor="let filtro of columna1; let index = index" class="form-check">
+      <input class="check form-check-input cursorPointer" type="checkbox" [(ngModel)]="filtro.isCheck"
+        [id]="'flexCheckChecked1_' + index">
+      <label class="form-check-label cursorPointer" [for]="'flexCheckChecked1_' + index">
+        {{filtro.valor}}
+      </label>
     </div>
   </div>
+
+  <div *ngIf="columna2.length > 0" class="columna">
+    <div *ngFor="let filtro of columna2; let index = index" class="form-check">
+      <input class="check form-check-input cursorPointer" type="checkbox" [(ngModel)]="filtro.isCheck"
+        [id]="'flexCheckChecked2_' + index">
+      <label class="form-check-label cursorPointer" [for]="'flexCheckChecked2_' + index">
+        {{filtro.valor}}
+      </label>
+    </div>
+  </div>
+</div>
+
 
   <div class="button-group">
     <button class="p-button-primary" (click)="aplicarFiltroParent()" [disabled]="!hasChanges()">Guardar</button>

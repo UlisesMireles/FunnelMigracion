@@ -3,8 +3,8 @@
   padding: 25px 25px 15px 25px; 
   border-radius: 8px; 
   display: block;
-  width: auto;
-  max-width: min(85vw, 300px); 
+  width: 300px; 
+  max-width: 85vw; 
   border: #215388 solid 1px;
   position: fixed;
   overflow: hidden;
@@ -16,8 +16,8 @@
 /* Estilo para el contenedor del botón de cierre */
 .close-container {
   position: absolute;
-  top: -1px;
-  right: 2px;
+  top: 6px;
+  right: 1px;
   z-index: 1;
 }
 
@@ -144,4 +144,13 @@ button.p-button-primary:hover {
 .p-button-primary:disabled:hover {
   background-color: #e9ecef !important;
 }
-  
+.row {
+  display: flex;
+  gap: 20px; 
+  justify-content: space-between;
+}
+
+.columna {
+  flex: 1;
+  min-width: 0; 
+}

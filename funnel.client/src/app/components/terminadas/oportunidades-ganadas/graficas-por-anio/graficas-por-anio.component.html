@@ -6,14 +6,16 @@
   <div class="quadrant p-0" *ngFor="let group of quadrants; let i = index" cdkDropList 
        [cdkDropListData]="group.cards" [cdkDropListConnectedTo]="dropListIds" 
        [id]="'dropList' + i" (cdkDropListDropped)="drop($event)">
+
     <div *ngFor="let card of group.cards; let j = index" class="card p-0" 
-         [class.maximized-card]="card.isMaximized"
-         [attr.data-id]="'card-'+i+'-'+j">
+         [ngClass]="{'maximized-card': card.maximizada}"
+         [attr.data-id]="card.id">
+         
       <div class="card-header header-graficas" cdkDrag>
         <h5 class="card-title">{{card.titulo}}</h5>
         <!-- Botón para maximizar/minimizar -->
         <button class="btn btn-sm btn-link maximize-btn" 
-                (click)="toggleMaximizar(i, j, $event)" 
+                (click)="toggleMaximizar(i, j)" 
                 [disabled]="!card.infoCargada"
                 [title]="card.isMaximized ? 'Minimizar' : 'Maximizar'">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" class="p-icon">

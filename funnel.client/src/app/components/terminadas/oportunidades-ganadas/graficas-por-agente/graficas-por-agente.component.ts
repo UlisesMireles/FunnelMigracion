@@ -168,42 +168,45 @@ onAnioChange(): void {
     }
   }
 toggleMaximizar(i: number, j: number, event: MouseEvent): void {
-  event.stopPropagation();
-  event.preventDefault();
+    event.stopPropagation();
+    event.preventDefault();
 
-  const card = this.quadrants[i].cards[j];
-  card.isMaximized = !card.isMaximized;
+    const card = this.quadrants[i].cards[j];
+    card.isMaximized = !card.isMaximized;
 
-  const cardId = `card-${i}-${j}`;
-  const cardElement = document.querySelector(`[data-id="${cardId}"]`) as HTMLElement;
+    const cardId = `card-${i}-${j}`;
+    const cardElement = document.querySelector(`[data-id="${cardId}"]`) as HTMLElement;
 
-  if (!cardElement) return;
+    if (!cardElement) return;
 
-const header = document.querySelector('header') as HTMLElement;
-  const sidebar = document.querySelector('.sidebar') as HTMLElement;
-  const footer = document.querySelector('footer') as HTMLElement;
-
-  if (card.isMaximized) {
-    // Ocultar elementos
-    if (header) header.style.display = 'none';
-    if (sidebar) sidebar.style.display = 'none';
-    if (footer) footer.style.display = 'none';
-
-    // Expandir la tarjeta
-    card.maximizedClass = 'fixed top-0 left-0 w-screen h-screen z-50 p-4 bg-white';
-  } else {
-    // Mostrar nuevamente
-    if (header) header.style.display = '';
-    if (sidebar) sidebar.style.display = '';
-    if (footer) footer.style.display = '';
-
-    // Restaurar tamaño de la tarjeta
-    card.maximizedClass = '';
-    
-    // Forzar redibujado de gráficas tras un pequeño retraso
-    setTimeout(() => {
-      window.dispatchEvent(new Event('resize'));
-    }, 200);
+    if (card.isMaximized) {
+      // Guardar posición original
+      const originalParent = cardElement.parentElement;
+      const nextSibling = cardElement.nextSibling;
+      
+      if (originalParent) {
+        this.originalParentElements.set(cardId, {
+          parent: originalParent,
+          nextSibling: nextSibling
+        });
+        
+        // Mover al body y aplicar estilos
+        document.body.appendChild(cardElement);
+        document.body.style.overflow = 'hidden';
+        cardElement.style.zIndex = '9999';
+      }
+    } else {
+      // Restaurar posición original
+      const originalPosition = this.originalParentElements.get(cardId);
+      if (originalPosition) {
+        if (originalPosition.nextSibling) {
+          originalPosition.parent.insertBefore(cardElement, originalPosition.nextSibling);
+        } else {
+          originalPosition.parent.appendChild(cardElement);
+        }
+        cardElement.style.zIndex = '';
+        document.body.style.overflow = '';
+      }
+    }
   }
-}
 }

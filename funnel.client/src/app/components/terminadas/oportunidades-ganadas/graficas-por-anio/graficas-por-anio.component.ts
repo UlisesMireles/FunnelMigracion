@@ -1,5 +1,6 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, Inject, Renderer2} from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { LoginService } from '../../../../services/login.service';
 import { GraficasService } from '../../../../services/graficas.service';
 import { GraficasDto, RequestGraficasDto, AniosDto } from '../../../../interfaces/graficas';
@@ -19,12 +20,14 @@ quadrants: { cards: any[] }[] = [];
   aniosDisponibles: { label: string, value: number }[] = [];
   anioSeleccionado!: number;
   loading: boolean = true;
-  private originalParentElements = new Map<string, { parent: Node, nextSibling: Node | null }>();
+  originalParentElements = new Map<string, { parent: Node, nextSibling: Node | null }>();
 
 
   constructor(
     private readonly graficasService: GraficasService,
-    private readonly sessionService: LoginService
+    private readonly sessionService: LoginService,
+    private renderer: Renderer2, @Inject(DOCUMENT) private document: Document
+
   ) {
     this.quadrants = [
     { cards: [this.graficasService.createCard(1, 'Gráfica Anual por Clientes', 'grafica')] },
@@ -169,46 +172,45 @@ obtenerAniosDisponibles(): void {
     }
   }
 
-  toggleMaximizar(i: number, j: number, event: MouseEvent): void {
-    event.stopPropagation();
-    event.preventDefault();
+  toggleMaximizar(quadrantIdx: number, cardIdx: number): void {
+  const card = this.quadrants[quadrantIdx].cards[cardIdx];
+  card.maximizada = !card.maximizada;
 
-    const card = this.quadrants[i].cards[j];
-    card.isMaximized = !card.isMaximized;
+  const cardId = card.id;
+  const cardElement = this.document.querySelector(`.card[data-id="${cardId}"]`) as HTMLElement;
 
-    const cardId = `card-${i}-${j}`;
-    const cardElement = document.querySelector(`[data-id="${cardId}"]`) as HTMLElement;
+  if (!cardElement) return;
 
-    if (!cardElement) return;
-
-    if (card.isMaximized) {
-      // Guardar posición original
-      const originalParent = cardElement.parentElement;
-      const nextSibling = cardElement.nextSibling;
+  if (card.maximizada) {
+    // Guarda la posición original antes de mover
+    const originalParent = cardElement.parentElement;
+    const nextSibling = cardElement.nextSibling;
+    
+    if (originalParent) {
+      this.originalParentElements.set(cardId, {
+        parent: originalParent,
+        nextSibling: nextSibling
+      });
       
-      if (originalParent) {
-        this.originalParentElements.set(cardId, {
-          parent: originalParent,
-          nextSibling: nextSibling
-        });
-        
-        // Mover al body y aplicar estilos
-        document.body.appendChild(cardElement);
-        document.body.style.overflow = 'hidden';
-        cardElement.style.zIndex = '9999';
+      // Mueve al final del body
+      this.renderer.appendChild(this.document.body, cardElement);
+    }
+  } else {
+    // Restaura a la posición original
+    const originalPosition = this.originalParentElements.get(cardId);
+    if (originalPosition) {
+      if (originalPosition.nextSibling) {
+        this.renderer.insertBefore(
+          originalPosition.parent,
+          cardElement,
+          originalPosition.nextSibling
+        );
+      } else {
+        this.renderer.appendChild(originalPosition.parent, cardElement);
       }
-    } else {
-      // Restaurar posición original
-      const originalPosition = this.originalParentElements.get(cardId);
-      if (originalPosition) {
-        if (originalPosition.nextSibling) {
-          originalPosition.parent.insertBefore(cardElement, originalPosition.nextSibling);
-        } else {
-          originalPosition.parent.appendChild(cardElement);
-        }
-        cardElement.style.zIndex = '';
-        document.body.style.overflow = '';
-      }
+      this.originalParentElements.delete(cardId);
     }
   }
 }
+}
+

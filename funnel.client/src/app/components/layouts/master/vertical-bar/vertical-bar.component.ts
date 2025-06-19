@@ -62,9 +62,7 @@ export class VerticalBarComponent {
         this.ListaMenu = [perfil, ...result, salir];
         this.ListaMenu = this.ListaMenu.map(menu =>
           menu.nombre === EnumMenus.TERMINADAS
-            ? { ...menu, ruta: "/oportunidades-terminadas" , subMenu: [
-              { idPagina: 5, pagina: EnumPaginas.TERMINADAS, ruta: "/oportunidades-terminadas" }
-            ] }
+            ? { ...menu, ruta: "/oportunidades-terminadas" , subMenu: [] }
             : menu
         );
         this.ListaMenu = this.ListaMenu.map(menu =>
@@ -74,23 +72,17 @@ export class VerticalBarComponent {
         );
         this.ListaMenu = this.ListaMenu.map(menu =>
           menu.nombre === EnumMenus.ADMINISTRACION
-            ? { ...menu, ruta: "/prospectos-contactos", subMenu: [
-              { idPagina: 9, pagina: EnumPaginas.PROSPECTOS_CONTACTOS, ruta: "/prospectos-contactos" }
-            ] }
+            ? { ...menu, ruta: "/prospectos-contactos", subMenu: [] }
             : menu
         );
         this.ListaMenu = this.ListaMenu.map(menu =>
            menu.nombre === EnumMenus.USUARIOS
-            ? { ...menu, ruta: "/usuarios-permisos", subMenu: [
-              { idPagina: 11, pagina: EnumPaginas.USUARIOS_PERMISOS, ruta: "/usuarios-permisos" }
-            ] }
+            ? { ...menu, ruta: "/usuarios-permisos", subMenu: [ ] }
             : menu
         );
         this.ListaMenu = this.ListaMenu.map(menu =>
           menu.nombre === EnumMenus.CONFIGURACION
-            ? { ...menu, ruta: "/servicios-entregas", subMenu: [
-              { idPagina: 13, pagina: EnumPaginas.SERVICIOS_ENTREGAS, ruta: "/servicios-entregas" }
-            ] }
+            ? { ...menu, ruta: "/servicios-entregas", subMenu: [] }
             : menu
         );
       },

@@ -364,18 +364,18 @@ export class SeguimientoOportunidadesComponent {
       };
 
       this.recognition.onend = () => {
-        console.log('Reconocimiento de voz finalizado');
+        this.oportunidadForm.get('comentario')?.setValue(this.textoDictado);
         this.dictando = false;
       };
     }
 
     if (!this.dictando) {
-      this.textoDictado = ''; // Limpia el texto temporal
+      this.textoDictado = '';
       this.dictando = true;
       this.recognition.start();
     } else {
       this.recognition.stop();
-      // El texto se coloca en onend
+      this.limpiarDictado();
     }
    
 

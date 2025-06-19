@@ -38,6 +38,7 @@ import { UsuarioPerfilComponent } from './components/usuario-perfil/usuario-perf
 import { AcordeonProspectosContactosComponent } from './components/administracion/acordeon-prospectos-contactos/acordeon-prospectos-contactos.component';
 import { ServiciosEntregasComponent } from './components/catalogos/servicios-entregas/servicios-entregas.component';
 import { UsuariosPermisosComponent } from './components/catalogos/usuarios-permisos/usuarios-permisos.component';
+import { PanelesTerminadasComponent } from './components/terminadas/paneles-terminadas/paneles-terminadas.component';
 const routes: Routes = [
   { path: '', component: LoginComponent, title: 'Login' },
   { path: 'login', component: LoginComponent, title: 'Login' },
@@ -64,6 +65,7 @@ const routes: Routes = [
   { path: 'usuarios-permisos', component: UsuariosPermisosComponent, title: 'Usuarios-Permisos', canActivate: [AuthGuard] },
   { path: 'tipos-entrega', component: TiposEntregaComponent, title: 'Tipos Entrega', canActivate: [AuthGuard] },
   { path: 'tipos-entrega-modal', component: ModalTiposEntregaComponent, title: 'Tipos Entrega', canActivate: [AuthGuard] },
+  {path: 'oportunidades-terminadas', component:PanelesTerminadasComponent, title: 'Oportunidades Terminadas', canActivate: [AuthGuard] },
   { path: 'oportunidades-ganadas', component: OportunidadesGanadasComponent, title: 'Oportunidades Ganadas', canActivate: [AuthGuard] },
   { path: 'oportunidades-eliminadas', component: OportunidadesEliminadasComponent, title: 'Oportunidades Eliminadas', canActivate: [AuthGuard] },
   { path: 'oportunidades-canceladas', component: OportunidadesCanceladasComponent, title: 'Oportunidades Canceladas', canActivate: [AuthGuard] },

@@ -21,22 +21,22 @@
           </div>
           <div class="row mb-2">
             <div class="col">
-              <label class="margen text-left">
-                {{ 'Oportunidad: ' + oportunidadForm.get('nombreOportunidad')?.value }}
+              <label class="oportunidad">
+                <span class="bold">Oportunidad:</span> {{ oportunidadForm.get('nombreOportunidad')?.value }}
               </label>
             </div>
           </div>
           <div class="row mb-2">
             <div class="col">
               <label class="margen text-left">
-                {{ 'Probabilidad: ' + oportunidadForm.get('probabilidad')?.value }}
+               <span class="bold">Etapa:</span> {{oportunidadForm.get('stage')?.value }}
               </label>
             </div>
           </div>
           <div class="row">
             <div class="col">
-              <label class="margen text-left">
-                {{ 'Monto: ' + (oportunidadForm.get('monto')?.value | currency:'MXN':'symbol':'1.2-2') }}
+              <label class="margen text-left" >
+               <span class = "bold">Monto:</span> {{ (oportunidadForm.get('monto')?.value | currency:'MXN':'symbol':'1.2-2') }}
               </label>
             </div>
           </div>

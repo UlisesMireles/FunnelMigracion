@@ -3,7 +3,26 @@
     font-size: 1.75rem;
     font-weight: bold;
   }
-  
+  .bold {
+  font-weight: bold;
+}
+.bodyDialog:not(.maximized) .oportunidad{
+  margin-top: 2px;
+  margin-right: 200px;
+  word-break: break-word;
+  white-space: normal;
+  min-width: 420px;
+  max-width: 420px; 
+
+}
+.bodyDialog.maximized .oportunidad {
+  margin-top: 2px;
+  margin-right: 200px;
+  word-break: break-word;
+  white-space: normal;
+  min-width: none;
+  max-width: none; 
+}
   .error-label {
     color: red;
     font-weight: bold;
@@ -225,6 +244,7 @@
   text-align: left !important;
   margin-top: 10px;
   white-space: nowrap;
+
 }
 
 .nombre-destacado {

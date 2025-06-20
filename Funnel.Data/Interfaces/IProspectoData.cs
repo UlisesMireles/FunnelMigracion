@@ -13,6 +13,8 @@ namespace Funnel.Data.Interfaces
         public Task<List<ProspectoDTO>> ConsultarProspectos(int IdEmpresa);
         public Task<BaseOut> GuardarProspecto(ProspectoDTO request);
         public Task<List<ComboSectoresDto>> ComboSectores();
-        Task<List<ProspectoDTO>> ConsultarTopVeinte(int IdEmpresa);
+        Task<List<ProspectoDTO>> ConsultarTopVeinte(int IdEmpresa, string Anio);
+        Task<List<AniosDto>> ConsultarAniosOportunidades(int idEmpresa);
+        Task<List<AniosDto>> ConsultarAniosGraficas(int idEmpresa);
     }
 }

@@ -11,6 +11,7 @@ namespace Funnel.Models.Dto
         public decimal Monto { get; set; }
         public decimal MontoNormalizado { get; set; }
         public decimal Valor { get; set; }
+        public decimal Valor2 { get; set; }
         public decimal Porcentaje { get; set; }
         public string? ColoreSerie { get; set; }
         public int Contador { get; set; }

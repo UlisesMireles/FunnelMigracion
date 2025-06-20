@@ -3,6 +3,7 @@ export interface GraficasDto {
     label?: string;
     monto: number;
     valor: number;
+    valor2: number;
     coloreSerie?: string;
     contador: number;
     area: number;

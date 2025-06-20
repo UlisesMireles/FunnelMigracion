@@ -49,7 +49,7 @@ export class OportunidadesComponent {
 
   loading: boolean = true;
 
-  titulo: string = 'Oportunidades en Proceso';
+  titulo: string = 'Oportunidades Por Etapa';
 
   prospectoSeleccionado!: Prospectos;
   prospectoEdicion: Prospectos | null = null;
@@ -108,6 +108,7 @@ export class OportunidadesComponent {
     this.cantidadOportunidades = Number(localStorage.getItem('cantidadOportunidades'));
     this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
     this.getOportunidades();
+    this.llenarEtiquetas();
     document.documentElement.style.fontSize = 12 + 'px';
     this.modalSubscription = this.modalOportunidadesService.modalState$.subscribe((state) => {
       if (!state.showModal) {
@@ -116,6 +117,7 @@ export class OportunidadesComponent {
       //Valida si se emite un result Exitoso desde modal
       if (state.result.id != -1 && state.result.result) {
         this.getOportunidades();
+        this.llenarEtiquetas();
       }
     });
     this.modalSubscription = this.modalOportunidadesService.modalProspectoState$.subscribe(state => {
@@ -126,6 +128,7 @@ export class OportunidadesComponent {
       }
       if (state.result.id != -1 && state.result.result) {
         this.getOportunidades();
+        this.llenarEtiquetas();
       }
     });
   }
@@ -141,6 +144,7 @@ export class OportunidadesComponent {
       next: (result: Oportunidad[]) => {      
         this.oportunidades = [...result];
         this.oportunidadesOriginal = [...result];
+        this.totalOportunidades = this.oportunidades.length;
         this.cdr.detectChanges();
         this.loading = false;
       },
@@ -157,7 +161,6 @@ export class OportunidadesComponent {
 
   llenarEtiquetas(): void {
     this.catalogoService.cargarProspectos(this.loginService.obtenerIdEmpresa());
-    let prospecto = this.catalogoService.obtenerProspectos();
     this.totalOportunidades = this.oportunidades.length;
     const hoy = new Date();
     this.totalOportunidadesMes = this.oportunidades
@@ -167,7 +170,7 @@ export class OportunidadesComponent {
         return fecha.getMonth() === hoy.getMonth() && fecha.getFullYear() === hoy.getFullYear();
       }).length;
     
-    this.oportunidadService.consultarEtiquetasOportunidades(this.loginService.obtenerIdEmpresa()).subscribe({
+    this.oportunidadService.consultarEtiquetasOportunidades(this.loginService.obtenerIdEmpresa(), this.loginService.obtenerIdUsuario()).subscribe({
       next: (result: any) => {
         this.totalOportunidadesMes = result.abiertasMes;
         this.totalProspectosMes = result.prospectosNuevos;

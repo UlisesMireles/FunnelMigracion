@@ -162,9 +162,9 @@ namespace Funnel.Server.Controllers
             return File(pdf, "application/pdf", "OportunidadesEliminadas.pdf");
         }
         [HttpGet("[action]/")]
-        public async Task<ActionResult<EtiquetasOportunidadesDto>> ConsultarEtiquetasOportunidades(int idEmpresa)
+        public async Task<ActionResult<EtiquetasOportunidadesDto>> ConsultarEtiquetasOportunidades(int idEmpresa, int IdUsuario)
         {
-            var result = await _oportunidadesService.ConsultarEtiquetas(idEmpresa);
+            var result = await _oportunidadesService.ConsultarEtiquetas(idEmpresa, IdUsuario);
             return Ok(result);
         }
     }

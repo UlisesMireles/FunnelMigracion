@@ -41,7 +41,6 @@
             <!-- Encabezado con título e ícono de edición -->
             <div class="card-header">
               <div class="fila-monto">
-                <label class="probabilidad">{{ tarjeta.probabilidad }}</label>
                 <label class="monto-normalizado">{{ tarjeta.montoNormalizado | currency:'MXN':'symbol':'1.0-0'
                   }}</label>
               </div>
@@ -51,7 +50,7 @@
               <p-button type="button" icon="bi bi-folder2 fs-4" text (click)="documento(tarjeta)"
                 pTooltip="Documentos" tooltipPosition="top" styleClass="">
               </p-button>
-              <p-button styleClass="coloreditar-icon" (click)="actualiza(tarjeta)" pTooltip="Editar registro"
+              <p-button styleClass="coloreditar-icon ms-2" (click)="actualiza(tarjeta)" pTooltip="Editar registro"
                 tooltipPosition="top">
                 <span class="custom-pencil">✏️</span>
               </p-button>

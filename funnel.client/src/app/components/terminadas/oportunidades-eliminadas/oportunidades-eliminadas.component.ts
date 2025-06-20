@@ -256,7 +256,7 @@ export class OportunidadesEliminadasComponent {
   
       dialogConfig.data = {
         todosColumnas: this.lsTodasColumnas,
-        vista: 'terminadas'
+        vista: 'canceladas-eliminadas'
       };
   
       dialogConfig.position = {

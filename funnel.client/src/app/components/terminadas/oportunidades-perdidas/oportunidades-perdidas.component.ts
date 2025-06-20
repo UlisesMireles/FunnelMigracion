@@ -258,7 +258,7 @@ export class OportunidadesPerdidasComponent {
 
     dialogConfig.data = {
       todosColumnas: this.lsTodasColumnas,
-      vista: 'terminadas'
+      vista: 'perdidas'
     };
 
     dialogConfig.position = {

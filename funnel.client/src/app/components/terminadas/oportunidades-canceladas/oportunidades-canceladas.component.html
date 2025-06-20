@@ -113,7 +113,7 @@
                             </p-columnFilter>
                           </div>
                           <div *ngSwitchCase="'date'">
-                            <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false">
+                            <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false" *ngIf="def.key !== 'fechaEstimadaCierre'">
                               <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                                 <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
                                   (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
@@ -247,7 +247,7 @@
         <!-- Pestaña 2 - Gráficas por Agente  -->
         <div class="tab-pane fade" id="porAgente">
           <div class="row" style="margin-top: 15px;">
-            <div class="col-12">
+            <div class="col-12"  style="margin-top: 5px;">
               <app-graficas-por-agente-canceladas></app-graficas-por-agente-canceladas>
             </div>
           </div>

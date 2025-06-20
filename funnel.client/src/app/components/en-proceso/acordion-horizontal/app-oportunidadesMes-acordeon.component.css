@@ -2,7 +2,6 @@
 .acordeon-horizontal {
   display: flex; /* Usa flexbox para organizar los elementos en fila */
   gap: 10px; /* Espacio de 10px entre cada elemento del acordeón */
-  overflow-x: auto; /* Permite scroll horizontal si el contenido excede el ancho */
   padding: 10px; /* Espacio interno de 10px en todos los lados */
   transition: background-color 0.3s ease-in-out; /* Transición suave para cambios en el fondo */
   padding-top: 50px !important; /* Aumenta el espacio superior para que el contenido se vea bien */
@@ -15,6 +14,7 @@
 
  .item-acordeon {
     width: 70px; /* Ancho inicial del item (colapsado) */
+    min-width: 70px;
     height: 73vh; /* Altura fija de 550px para el acordeón */
     background: #f8f9fa; 
     border: 1px solid #ccc; 
@@ -49,6 +49,7 @@
   /* Cuando el item está expandido */
   .item-acordeon.expandido {
     width: 25%; /* Ancho mayor para el estado expandido (ajusta según lo necesites) */
+    min-width: 215px;
   }
 
   .item-acordeon-color-5-false {
@@ -324,14 +325,11 @@ body {
 }
 
 /* Estilos para la foto (círculo) de la tarjeta */
-div.fotoTarjeta {
-  height: 37px;            /* Altura del círculo: 55px */
-  width: 37px;             /* Ancho del círculo: 55px */
-  background-repeat: no-repeat; /* No repetir la imagen de fondo */
-  background-position: 50%;     /* Centrar la imagen de fondo */
-  border-radius: 50%;      /* Hacer el contenedor circular */
-  background-size: 100% auto;  /* Ajustar el tamaño de la imagen de fondo */
-}
+.fotoTarjeta {
+   height: 41px;            /* Altura del círculo*/
+   width: 41px;             /* Ancho del círculo*/
+   border-radius: 50%;      /* Hacer el contenedor circular */
+ }
 
 /* Estilos para pantallas grandes (min-width: 1900px) */
 @media (min-width: 1900px) {
@@ -539,4 +537,12 @@ div.fotoTarjeta {
 }
 #contenedor-tarjetas4::-webkit-scrollbar-track {
   background: #bfecdc;
+}
+.titulo-acordeon{
+  grid-template-columns: repeat(2, 1fr); 
+}
+@media (max-width: 1300px) {
+  .nombre-mes {
+    font-size: 13px;;
+  }
 }

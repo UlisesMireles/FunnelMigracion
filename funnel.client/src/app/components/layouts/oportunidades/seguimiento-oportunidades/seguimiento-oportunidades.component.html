@@ -68,7 +68,7 @@
             
             <div class="button-group-right">
               <button pButton severity="secondary" class="btn-dictado" (click)="dictarComentario()" pTooltip="Dictar por voz" tooltipPosition="top"
-              [ngClass]="{'parpadea': dictando}">
+              [ngClass]="{'parpadea': dictando}" *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value === 1">
                 <i class="bi bi-mic"></i>
               </button>
               <button pButton label="Añadir" (click)="guardarHistorial()" severity="secondary" class="[width: 53px;]"

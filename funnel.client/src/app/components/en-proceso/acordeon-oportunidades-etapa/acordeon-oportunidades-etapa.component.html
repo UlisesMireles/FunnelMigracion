@@ -14,11 +14,18 @@
         <i [ngClass]="etapa.expandido ? 'bi bi-chevron-left' : 'bi bi-chevron-right'"></i>
       </button> -->
 
-      <!-- Nombre del mes y contador -->
-      <span class="nombre-mes">
+      <!-- <div class="col-12 text-start">
+        <span class="col-10 fs-5 fw-bold nombre-mes">
+          {{ etapa.nombre.substring(0,1).toUpperCase() + etapa.nombre.substring(1).toLowerCase() }}
+        </span>
+        <span class="col-2 fs-5 fw-bold float-end">({{ etapa.tarjetas.length }})</span>    
+      </div>
+       -->
+       <span class="nombre-mes">
         {{ etapa.nombre.substring(0,1).toUpperCase() + etapa.nombre.substring(1).toLowerCase() }}
         <span class="contador-tarjetas">({{ etapa.tarjetas.length }})</span>
       </span>
+
       <div class="total-row" *ngIf="etapa.expandido">
         <span id="lblTotalMes{{i}}" class="lblTotalMeses">
           {{ getTotalMonto(etapa) | currency:'MXN':'symbol':'1.0-0' }}
@@ -41,13 +48,15 @@
             <!-- Encabezado con título e ícono de edición -->
             <div class="card-header">
               <div class="fila-monto">
-                <label class="probabilidad">{{ tarjeta.probabilidad }}</label>
                 <label class="monto-normalizado">{{ tarjeta.monto | currency:'MXN':'symbol':'1.0-0' }}</label>
               </div>
               <p-button type="button" icon="bi bi-file-earmark-text fs-3" text (click)="seguimiento(tarjeta)"
                 pTooltip="Seguimiento" tooltipPosition="top" styleClass="blue-icon">
               </p-button>
-              <p-button styleClass="coloreditar-icon" (click)="actualiza(tarjeta)" pTooltip="Editar registro"
+              <p-button type="button" icon="bi bi-folder2 fs-4" text (click)="documento(tarjeta)"
+                pTooltip="Documentos" tooltipPosition="top" styleClass="folder-icon">
+              </p-button>
+              <p-button styleClass="coloreditar-icon ms-2" (click)="actualiza(tarjeta)" pTooltip="Editar registro"
                 tooltipPosition="top">
                 <span class="custom-pencil">✏️</span>
               </p-button>
@@ -64,9 +73,7 @@
             <div class="col-3 tarjeta-side">
               <!-- <label id='Abrev' class="nombre-abrev" title="{{ tarjeta.descripcion }}">{{ tarjeta.nombreAbrev
                 }}</label> -->
-              <div class="fotoTarjeta"
-                [ngStyle]="{'background-image': 'url(assets/Fotografia/' + (tarjeta.imagen) + ')', 'margin': 'auto'}"
-                [title]="tarjeta.nombreEjecutivo"></div>
+              <img class="fotoTarjeta margin-auto" [src]="getImagen(tarjeta.imagen)" [title]="tarjeta.nombreEjecutivo" alt="foto" />
               <p class="iniciales" 
                 [ngStyle]="tarjeta.iniciales && tarjeta.iniciales.length === 5 ? {'margin-left': '-6px'} : {}" 
                 title="{{ tarjeta.nombreEjecutivo }}">
@@ -84,3 +91,8 @@
   (result)="manejarResultado($event)" [insertar]="insertar" [oportunidades]="oportunidades"
   [oportunidad]="oportunidadSeleccionada">
 </app-seguimiento-oportunidades>
+
+<app-documentos-oportunidades [(visible)]="modalDocumentosVisible" [title]="'Documentos de '" 
+  (result)="manejarResultado($event)" [insertar]="insertar" [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">
+</app-documentos-oportunidades>
+  

@@ -116,7 +116,7 @@ seleccionarAgente(idAgente: number) {
 
     this.graficasService.obtenerGraficaAgentesPorAnioData(request).subscribe({
       next: (response: GraficasDto[]) => {
-        const dataAGraficar = [this.graficasService.createBarHorizontalNormalizadoData(response), this.graficasService.createBarHorizontalData(response)];
+        const dataAGraficar = [this.graficasService.createBarHorizontalData(response)];
         const layOutGrafica = this.graficasService.createBarHorizontalLayout();
         this.setGraficaData(1, 0, dataAGraficar, layOutGrafica);
       },

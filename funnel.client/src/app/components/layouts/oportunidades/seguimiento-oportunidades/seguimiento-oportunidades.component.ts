@@ -111,7 +111,7 @@ export class SeguimientoOportunidadesComponent {
   }
 
   guardarHistorial() {
-
+    this.limpiarDictado();
     this.validacionActiva = true;
 
     if (this.oportunidadForm.invalid) {
@@ -152,6 +152,7 @@ export class SeguimientoOportunidadesComponent {
   }
 
   exportExcel(idOportunidad: number) {
+    this.limpiarDictado();
     const dataExport = this.historialOportunidad.map(opportunity => ({
       NombreEjecutivo: opportunity.nombreEjecutivo,
       Fecha: opportunity.fechaRegistro,
@@ -167,6 +168,7 @@ export class SeguimientoOportunidadesComponent {
   }
 
   exportPdf(idOportunidad: number) {
+    this.limpiarDictado();
     this.disabledPdf = true;
     this.oportunidadService.descargarReporteSeguimientoOportunidades(idOportunidad, this.loginService.obtenerIdEmpresa(), this.loginService.obtenerEmpresa()).subscribe({
       next: (result: Blob) => {
@@ -204,6 +206,7 @@ export class SeguimientoOportunidadesComponent {
   }
 
   enviarSeguimiento() {
+    this.limpiarDictado();
     const comentarios = this.historialOportunidad.map(item => ({
       usuario: item.iniciales,
       fecha: item.fechaRegistro,
@@ -317,11 +320,17 @@ export class SeguimientoOportunidadesComponent {
   dictando = false;
   recognition: any;
   textoDictado: string = '';
+  textoGuardado: string = '';
   @ViewChild('comentarioInput') comentarioInput!: ElementRef;
-  
+
   dictarComentario() {
     // Inicializa reconocimiento si no existe
-    this.banderaDictado = !this.banderaDictado;
+    this.banderaDictado = !this.banderaDictado; 
+    if (!this.banderaDictado) {
+      this.dictando = false;
+      this.recognition.stop();
+      return;
+    }
     if (!this.recognition) {
       if (this.comentarioInput) {
         this.comentarioInput.nativeElement.focus();
@@ -335,34 +344,49 @@ export class SeguimientoOportunidadesComponent {
       this.recognition.lang = 'es-MX';
       this.recognition.continuous = true;
       this.recognition.interimResults = true;
-      this.recognition.onresult = (event: any) => {        
-        this.textoDictado = event.results[0][0].transcript;
-        this.oportunidadForm.get('comentario')?.setValue(this.textoDictado);
+
+      this.recognition.onstart = () => {
+        this.textoGuardado = this.oportunidadForm.get('comentario')?.value ?? '';
       };
 
+      this.recognition.onresult = (event: any) => {
+        let textoCompleto = this.textoGuardado ? this.textoGuardado + '. ' : '';
+        for (const result of event.results) {
+          textoCompleto += result[0].transcript;
+        }
+        this.textoDictado = textoCompleto;
+        this.oportunidadForm.get('comentario')?.setValue(this.textoDictado);
+      };
       this.recognition.onerror = (event: any) => {
         this.dictando = false;
+        this.recognition.stop();
+
       };
 
       this.recognition.onend = () => {
+        this.oportunidadForm.get('comentario')?.setValue(this.textoDictado);
         this.dictando = false;
-        const anterior = this.oportunidadForm.get('comentario')?.value ?? '';
-        this.oportunidadForm.get('comentario')?.setValue(anterior + (anterior ? '. ' : '') + this.textoDictado);
       };
     }
 
     if (!this.dictando) {
-      this.textoDictado = ''; // Limpia el texto temporal
+      this.textoDictado = '';
       this.dictando = true;
       this.recognition.start();
     } else {
       this.recognition.stop();
-      // El texto se coloca en onend
+      this.limpiarDictado();
     }
-    if(!this.banderaDictado) {
+   
+
+  }
+  limpiarDictado() {
+    this.textoDictado = '';
+    this.textoGuardado = '';
+    this.dictando = false;
+    if (this.recognition) {
       this.recognition.stop();
     }
-
   }
 }
 

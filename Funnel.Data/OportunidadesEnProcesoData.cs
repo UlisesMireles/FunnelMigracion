@@ -493,13 +493,14 @@ namespace Funnel.Data
             }
             return result;
         }
-        public async Task<EtiquetasOportunidadesDto> ConsultarEtiquetas(int IdEmpresa)
+        public async Task<EtiquetasOportunidadesDto> ConsultarEtiquetas(int IdEmpresa, int IdUsuario)
         {
             EtiquetasOportunidadesDto result = new EtiquetasOportunidadesDto();
             IList<ParameterSQl> list = new List<ParameterSQl>
             {
                 DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "ETIQUETAS_OPORTUNIDADES"),
-                DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, IdEmpresa)
+                DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, IdEmpresa),
+                DataBase.CreateParameterSql("@pEstatus", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, IdUsuario)
             };
             using (IDataReader reader = await DataBase.GetReaderSql("F_Catalogos", CommandType.StoredProcedure, list, _connectionString))
             {

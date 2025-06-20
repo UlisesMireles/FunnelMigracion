@@ -94,7 +94,14 @@
       <div class="col-12 col-md-6">
         <div class="form-group mb-3"   >
           <label for="monto" class="text-start w-100">Monto:</label>
-          <input  pInputText class="form-control text-start" formControlName="monto" type="number" />
+         <input
+            pInputText
+            class="form-control text-start"
+            type="text"
+            [value]="oportunidadForm.get('monto')?.value ? (oportunidadForm.get('monto')?.value | number:'1.0-0':'es-MX') : ''"
+            (input)="formatearMonto($event)"
+            formControlName="monto"
+          />
             <div class="text-danger position-absolute d-flex justify-content-between align-items-start w-100">
                 <ng-container *ngIf="oportunidadForm.get('monto')?.invalid && oportunidadForm.get('monto')?.touched">
                     <div *ngIf="oportunidadForm.get('monto')?.errors?.['required']">Debe agregar un monto.</div>

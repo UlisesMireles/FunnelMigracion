@@ -436,6 +436,10 @@
   background-color: #47b984;
   color: white;
 }
+.parpadea:hover {
+  background-color: #76e0ae;
+  color: white;
+}
 .btn-dictado{
   width: 53px;
 }

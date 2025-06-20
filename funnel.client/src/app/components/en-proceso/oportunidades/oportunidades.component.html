@@ -7,19 +7,20 @@
     <div class="col-12">
        <!-- Pestañas  -->
     <ul class="nav nav-tabs custom-tabs">
+      
       <li class="nav-item tab-item">
-        <a class="nav-link active" data-bs-toggle="tab" href="#lista" (click)="camTitulo(0)" pTooltip="Lista" tooltipPosition="top" >
-          <i class="bi bi-list color-tab-1"></i>
-        </a>
-      </li>
-      <li class="nav-item tab-item">
-        <a class="nav-link" data-bs-toggle="tab" href="#porEtapa" (click)="camTitulo(2)" pTooltip="Etapa" tooltipPosition="top">
+        <a class="nav-link active" data-bs-toggle="tab" href="#porEtapa" (click)="camTitulo(2)" pTooltip="Etapa" tooltipPosition="top">
           <i class="bi bi-calendar-check color-tab-2"></i>  
         </a>
       </li>
       <li class="nav-item tab-item">
         <a class="nav-link" data-bs-toggle="tab" href="#porMes" (click)="camTitulo(1)" pTooltip="Candelarización" tooltipPosition="top">
           <i class="bi bi-calendar color-tab-3"></i>
+        </a>
+      </li>
+      <li class="nav-item tab-item">
+        <a class="nav-link " data-bs-toggle="tab" href="#lista" (click)="camTitulo(0)" pTooltip="Lista" tooltipPosition="top" >
+          <i class="bi bi-list color-tab-1"></i>
         </a>
       </li>
       <li class="nav-item tab-item">
@@ -62,8 +63,27 @@
     </div>
        <!-- Contenido de las pestañas -->
        <div class="tab-content">
+
+         <!-- Oportunidades por Etapa -->
+       <div class="tab-pane fade active show" id="porEtapa">
+          <div class="row">
+            <div class="col-12">
+              <app-acordeon-oportunidades-etapa *ngIf="mostrarOportunidadesEtapa"></app-acordeon-oportunidades-etapa>
+            </div>
+          </div>
+        </div>
+        <!-- Oportunidades por Mes -->
+        <div class="tab-pane fade" id="porMes">
+          <div class="row">
+            <div class="col-12">
+               <app-oportunidadesMes-acordeon *ngIf="mostrarOportunidadesMes"></app-oportunidadesMes-acordeon>
+            </div>
+          </div>
+        </div>
+ 
+ 
         <!-- Pestaña 1 -->
-        <div class="tab-pane fade show active" id="lista">
+        <div class="tab-pane fade" id="lista">
          
         <div class="row contenedorTabla" *ngIf="mostrarLista">
            <div *ngIf="loading" class="spinner-container w-100 spinner-tabla ">
@@ -320,24 +340,7 @@
           </div>
         </div>
  
-        <!-- Oportunidades por Mes -->
-        <div class="tab-pane fade" id="porMes">
-          <div class="row">
-            <div class="col-12">
-               <app-oportunidadesMes-acordeon *ngIf="mostrarOportunidadesMes"></app-oportunidadesMes-acordeon>
-            </div>
-          </div>
-        </div>
- 
-        <!-- Oportunidades por Etapa -->
-       <div class="tab-pane fade" id="porEtapa">
-          <div class="row">
-            <div class="col-12">
-              <app-acordeon-oportunidades-etapa *ngIf="mostrarOportunidadesEtapa"></app-acordeon-oportunidades-etapa>
-            </div>
-          </div>
-        </div>
- 
+        
         <!--Estadísticas por Etapa -->
         <div class="tab-pane fade" id="estadisticas">
           <app-estadisticas-por-etapa *ngIf="mostrarEstadisticas"></app-estadisticas-por-etapa>

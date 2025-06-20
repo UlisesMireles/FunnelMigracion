@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit , HostListener } from '@angular/core';
+import { Component, Inject, OnInit , HostListener, Input } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-columnas-disponibles',
@@ -14,16 +14,30 @@ export class ColumnasDisponiblesComponent implements OnInit {
   isDragging = false;
   dragOffset = { x: 0, y: 0 };
   modalPosition = { x: 0, y: 0 };
-
+  columna1: any[] = [];
+  columna2: any[] = [];
+  @Input() vista: string = '';
+  
   constructor(public dialogRef: MatDialogRef<ColumnasDisponiblesComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
     this.listaColumnas = data.todosColumnas
     this.originalData = JSON.parse(JSON.stringify(data.todosColumnas));
+    this.vista = data.vista || '';
+    console.log (this.vista);
   }
 
 
   ngOnInit() {
-  }
+  const columnasFiltradas = this.listaColumnas.filter(c => !c.isIgnore);
+  const mitad = Math.ceil(columnasFiltradas.length / 2);
 
+  if (columnasFiltradas.length > 12) {
+    this.columna1 = columnasFiltradas.slice(0, mitad);
+    this.columna2 = columnasFiltradas.slice(mitad);
+  } else {
+    this.columna1 = columnasFiltradas;
+    this.columna2 = [];
+  }
+}
   cerrarModal(): void {
     this.data.todosColumnas.forEach((element: any, index: number) => {
     element.isCheck = this.originalData[index].isCheck;

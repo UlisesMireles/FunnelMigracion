@@ -22,7 +22,7 @@
        <!-- Contenido de las pestañas -->
       <div class="tab-content" style="padding-top: 5px;">
         <!-- Pestaña 1 -->
-        <div class="tab-pane fade show active" id="lista">
+        <div class="tab-pane fade show active" id="lista" style="margin-top: 5px;">
       <div class="row contenedorTabla">
         <div *ngIf="loading" class="loading-message" style="padding-top: 50px;">
           <div class="spinner-border text-primary" role="status">
@@ -109,7 +109,7 @@
                         </p-columnFilter>
                       </div>
                       <div *ngSwitchCase="'date'">
-                        <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false">
+                        <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false" *ngIf="def.key !== 'fechaEstimadaCierre'">
                             <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                                 <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
                                     (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
@@ -237,7 +237,7 @@
        <!-- Pestaña 2 - Gráficas por Agente -->
         <div class="tab-pane fade" id="porAgente">
           <div class="row">
-            <div class="col-12">
+            <div class="col-12"  style="margin-top: 5px;">
               <app-graficas-por-agente-perdidas></app-graficas-por-agente-perdidas>
             </div>
           </div>

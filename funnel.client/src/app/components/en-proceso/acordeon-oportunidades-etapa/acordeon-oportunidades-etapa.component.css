@@ -494,6 +494,9 @@
   ::ng-deep .blue-icon:hover {
     background: transparent !important;
   }
+  ::ng-deep.folder-icon:hover {
+    background: transparent !important;
+  }
   .badge {
     position: absolute;
     top: 7px;

@@ -134,9 +134,9 @@ export class OportunidadesService {
     return this.http.post(`${this.baseUrl}api/Oportunidades/DescargarReporteOportunidadesEliminadas`, data,
       { params: { idEmpresa: idEmpresa.toString() }, responseType: 'blob' });
   }
-  consultarEtiquetasOportunidades(idEmpresa: number): Observable<any> {
+  consultarEtiquetasOportunidades(idEmpresa: number, idUsuario: number): Observable<any> {
     return this.http.get(`${this.baseUrl}api/Oportunidades/ConsultarEtiquetasOportunidades`, {
-      params: { idEmpresa: idEmpresa.toString() }
+      params: { idEmpresa: idEmpresa.toString(), idUsuario: idUsuario}
     });
   }
 }

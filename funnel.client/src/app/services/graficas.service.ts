@@ -133,16 +133,15 @@ createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
     return {
       margin: { t: 0, b: 100, l: 0, r: 100 },
       height: 320,
-      showlegend: false
+      showlegend: showlegend
     };
   }
   createBarData(items: GraficasDto[]) {
     return {
       type: 'bar',
-      x: items.map(item => item.valor),
-      y: items.map(item => item.label ?? 'Sin etiqueta'),
-      text: items.map(item => item.valor.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })),
-      hovertemplate: 'Monto: <b>%{text}</b><extra></extra>',
+      y: items.map(item => item.valor),
+      x: items.map(item => item.label ?? 'Sin etiqueta'),
+      text: items.map(item => item.valor.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })), 
       name: 'Monto',
       marker: {
         color: items.map(item => '#1F77B4')
@@ -179,6 +178,9 @@ createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
   }
   createBarVerticalData(items: GraficasDto[], color: string, name: string, hovertemplate: string, text: string[],customdata: string[] , valor2: boolean) {
     return {
+      type: 'bar',
+      y: valor2 ? items.map(item => item.valor2) : items.map(item => item.valor),
+      x: items.map(item => item.label ?? 'Sin etiqueta'),
       text: text,
       customdata: customdata,
       hovertemplate: hovertemplate,
@@ -218,8 +220,8 @@ createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
   createBarGroupLayout() {
     return {
       barmode: 'group', 
-      margin: { l: 130, r: 40, b: 120, t: 30 }, 
-      height: 400
+      margin: { l: 130, r: 40, b: 100, t: 30 }, 
+      height: 320
 
     };
   }
@@ -234,14 +236,15 @@ createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
     }
   }
 
-   
   createBarPorcentajeData(items: GraficasDto[]) {
     return {
       type: 'bar',
       y: items.map(item => item.valor),
-      text: items.map(item => item.valor.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })),
-      textposition: 'auto',
-      hovertemplate: '<b>%{x}</b><br> (<b>%{customdata}</b><extra></extra>)',
+      x: items.map(item => item.label ?? 'Sin etiqueta'),
+      text: items.map(item => item.valor.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })), 
+      textposition: 'auto', 
+      hovertemplate: '<b>%{x}</b><br> (<b>%{customdata}</b><extra></extra>)', 
+      customdata: items.map(item => `${item.porcentaje?.toFixed(2) ?? 0}%`), 
       marker: {
         color: items.map(item => item.coloreSerie ?? this.getRandomColor())
       }
@@ -286,4 +289,5 @@ createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
       data
     );
   }
+  
 }

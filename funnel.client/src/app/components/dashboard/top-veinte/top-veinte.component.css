@@ -132,6 +132,8 @@
   ::ng-deep .custom-header-verde .p-dialog-header {
     background: #ecfdf5 !important;
     color: rgb(0, 0, 0);
+    border-top-left-radius: 15px !important; 
+    border-top-right-radius: 15px !important;
   }
   
   ::ng-deep .p-dialog .p-dialog-header .p-icon {

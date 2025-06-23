@@ -118,8 +118,9 @@ onAnioChange(): void {
 
     this.graficasService.obtenerGraficaAgentesPorAnioData(request).subscribe({
       next: (response: GraficasDto[]) => {
-        const dataAGraficar = this.graficasService.createBarHorizontalData(response);
+        const dataAGraficar = [this.graficasService.createBarHorizontalData(response)];
         console.log('Data a graficar:', dataAGraficar);
+        console.log( this.quadrants[1].cards[0]);
         const layOutGrafica = this.graficasService.createBarHorizontalLayout();
         this.setGraficaData(1, 0, dataAGraficar, layOutGrafica);
       },

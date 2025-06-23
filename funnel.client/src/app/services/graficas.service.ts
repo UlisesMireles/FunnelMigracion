@@ -115,7 +115,7 @@ createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
   createPieLayout() {
     return {
       margin: { t: 0, b: 100, l: 0, r: 100 },
-      height: 330,
+      height: 320,
       showlegend: false
     };
   }
@@ -165,22 +165,23 @@ createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
  createBarHorizontalLayout() {
     return {
       margin: { l: 130, r: 40, b: 100, t: 30 },
-      height: 400,
+      height: 320,
       
     };
   }
   createBarLayout() {
     return {
-      margin: { l: 50, r: 50, b: 160, t: 0 },
-      height: 400,
+      margin: { l: 50, r: 50, b: 120, t: 0 },
+      height: 320,
       
     };
   }
 
   createFunnelLayout() {
     return {
-      margin: { l: 50, r: 70, b: 100, t: 30 },
-      height: 400,
+      margin: { l: 50, r: 70, b: 60, t: 30 },
+      height: 320,
+      autosize: true,
       yaxis: { visible: false, showticklabels: false, showgrid: false, zeroline: false },
       xaxis: { visible: false, showticklabels: false, showgrid: false, zeroline: false }
     }

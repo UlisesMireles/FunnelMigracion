@@ -33,7 +33,6 @@
 
 .plot-container {
   height: 330px;
-  max-height: 330px;
   overflow: hidden;
   position: relative;
 }

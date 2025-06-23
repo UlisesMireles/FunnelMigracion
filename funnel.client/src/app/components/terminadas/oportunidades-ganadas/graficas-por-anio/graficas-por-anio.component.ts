@@ -1,9 +1,11 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Component, ViewEncapsulation, Inject, Renderer2} from '@angular/core';
+import { Component, ViewEncapsulation, Inject, Renderer2, ChangeDetectorRef} from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { LoginService } from '../../../../services/login.service';
 import { GraficasService } from '../../../../services/graficas.service';
 import { GraficasDto, RequestGraficasDto, AniosDto } from '../../../../interfaces/graficas';
+import * as Plotly from 'plotly.js-dist-min';
+
 @Component({
   selector: 'app-graficas-por-anio',
   standalone: false,
@@ -26,6 +28,7 @@ quadrants: { cards: any[] }[] = [];
   constructor(
     private readonly graficasService: GraficasService,
     private readonly sessionService: LoginService,
+    private readonly cdr: ChangeDetectorRef,
     private renderer: Renderer2, @Inject(DOCUMENT) private document: Document
 
   ) {
@@ -194,11 +197,42 @@ obtenerAniosDisponibles(): void {
       
       // Mueve al final del body
       this.renderer.appendChild(this.document.body, cardElement);
+      
+      // Ajustar el gráfico Plotly después de la animación/movimiento
+      setTimeout(() => {
+        const plotDiv = cardElement.querySelector('.js-plotly-plot') as HTMLElement;
+        if (plotDiv) {
+          const parentHeight = cardElement.clientHeight - 100;
+          const parentWidth = cardElement.clientWidth - 300;
+
+          Plotly.relayout(plotDiv, {
+            height: parentHeight,
+            width: parentWidth,
+            autosize: true
+          });
+
+          this.cdr.detectChanges();
+        }
+      }, 100);
     }
   } else {
     // Restaura a la posición original
     const originalPosition = this.originalParentElements.get(cardId);
     if (originalPosition) {
+      // Redimensionar el gráfico antes de moverlo de vuelta
+      const plotDiv = cardElement.querySelector('.js-plotly-plot') as HTMLElement;
+      if (plotDiv) {
+const parentWidth = (originalPosition.parent as HTMLElement).clientWidth;
+        Plotly.relayout(plotDiv, {
+          height: 320,
+          width: parentWidth,
+          autosize: true
+        });
+        Plotly.Plots.resize(plotDiv);
+
+        this.cdr.detectChanges();
+      }
+
       if (originalPosition.nextSibling) {
         this.renderer.insertBefore(
           originalPosition.parent,
@@ -213,4 +247,3 @@ obtenerAniosDisponibles(): void {
   }
 }
 }
-

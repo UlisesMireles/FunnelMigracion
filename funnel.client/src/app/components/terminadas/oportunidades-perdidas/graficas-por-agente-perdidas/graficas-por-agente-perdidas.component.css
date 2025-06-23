@@ -51,12 +51,11 @@
     overflow: hidden;
   }
 .plot-container {
-  height: 330px;
-  max-height: 330px;
+  height: 100%;
   overflow: hidden;
   position: relative;
-  width: 100%;
 }
+
 .plot-container plotly-plot {
   height: 100% !important;
   width: 100% !important;
@@ -111,7 +110,7 @@
 /* Estilos para gráficas maximizadas */
 .maximized-content .plot-container {
   width: 95% !important;
-  height: 95% !important;
+  height: 95vh !important;
   max-width: 1400px !important;
   max-height: 1000px !important;
   margin: auto !important;
@@ -174,7 +173,7 @@
   right: 10px;
   top: 5px;
   z-index: 1000;
-  color: #ffffff;
+  color: #000000;
   background: transparent;
   border-radius: 50%;
   width: 30px;

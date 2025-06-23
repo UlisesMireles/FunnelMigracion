@@ -1,10 +1,11 @@
 
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Component, ElementRef, ViewChildren , Renderer2, QueryList } from '@angular/core';
+import { Component, ElementRef, ViewChildren , Renderer2, QueryList, ChangeDetectorRef } from '@angular/core';
 import { LoginService } from '../../../services/login.service';
 import { GraficasService } from '../../../services/graficas.service';
 import { AgenteDto, GraficasDto, RequestGraficasDto } from '../../../interfaces/graficas';
 import { environment } from '../../../../environments/environment';
+import * as Plotly from 'plotly.js-dist-min';
 @Component({
   selector: 'app-oportunidades-por-agente',
   standalone: false,
@@ -26,7 +27,7 @@ export class OportunidadesPorAgenteComponent {
   }
   infoCargada: boolean = false;
 
-  constructor( private readonly graficasService: GraficasService,private readonly sessionService: LoginService, private renderer: Renderer2, private el: ElementRef) {
+  constructor( private readonly graficasService: GraficasService,private readonly sessionService: LoginService, private renderer: Renderer2, private el: ElementRef, private readonly cdr: ChangeDetectorRef,) {
     this.quadrants = [
       { cards: [this.graficasService.createCard(1, 'Consulta Agentes', 'tabla')] },
       { cards: [this.graficasService.createCard(2, 'Grafica por Agente - Clientes', 'grafica')] },
@@ -172,18 +173,52 @@ toggleMaximizar(i: number, j: number, event: MouseEvent): void {
       document.body.appendChild(cardElement);
       document.body.style.overflow = 'hidden';
       cardElement.style.zIndex = '9999';
+      
+      // Ajustar el tamaño del gráfico Plotly
+      setTimeout(() => {
+        const plotDiv = cardElement.querySelector('.js-plotly-plot') as HTMLElement;
+        if (plotDiv) {
+          const parentHeight = cardElement.clientHeight - 100;
+          const parentWidth = cardElement.clientWidth - 300;
+
+          Plotly.relayout(plotDiv, {
+            height: parentHeight,
+            width: parentWidth,
+            autosize: true
+          });
+          
+          this.cdr.detectChanges();
+        }
+      }, 100);
     }
   } else {
     // Restaurar posición original
     const originalPosition = this.originalParentElements.get(cardId);
     if (originalPosition) {
+      // Ajustar el gráfico Plotly al tamaño original
+      const plotDiv = cardElement.querySelector('.js-plotly-plot') as HTMLElement;
+      if (plotDiv) {
+        const parentWidth = originalPosition.parent.clientWidth;
+
+        Plotly.relayout(plotDiv, {
+          height: 320,
+          width: parentWidth,
+          autosize: true
+        });
+        Plotly.Plots.resize(plotDiv);
+
+        this.cdr.detectChanges();
+      }
+      
       if (originalPosition.nextSibling) {
         originalPosition.parent.insertBefore(cardElement, originalPosition.nextSibling);
       } else {
         originalPosition.parent.appendChild(cardElement);
       }
+      
       cardElement.style.zIndex = '';
       document.body.style.overflow = '';
+      this.originalParentElements.delete(cardId);
     }
   }
 }

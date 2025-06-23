@@ -32,31 +32,31 @@
 
     <div class="d-flex contenedor-etiquetas" *ngIf="titulo === 'Oportunidades Por Mes' || titulo === 'Oportunidades Por Etapa'">
       <!-- Oportunidades en proceso -->
-      <div class="etiqueta bg-white shadow-md rounded-xl px-6 text-center">
+      <div class="etiqueta bg-white shadow-md rounded-xl px-6 text-center etiqueta-default">
         <p class="titulo mb-0 color-tab-1">En proceso</p>
         <p class="cantidad mb-0 color-tab-1">{{totalOportunidades}}</p>
       </div>
 
       <!-- Oportunidades abiertas en el mes -->
-      <div class="etiqueta bg-white shadow-md rounded-xl px-6 text-center">
+      <div class="etiqueta bg-white shadow-md rounded-xl px-6 text-center etiqueta-default">
         <p class="titulo mb-0 color-tab-5">Abiertas en el mes</p>
         <p class="cantidad mb-0 color-tab-5">{{totalOportunidadesMes}}</p>
       </div>
 
       <!-- Prospectos nuevos en el mes -->
-      <div class="etiqueta bg-white shadow-md rounded-xl px-6 text-center">
+      <div class="etiqueta bg-white shadow-md rounded-xl px-6 text-center etiqueta-default">
         <p class="titulo mb-0 color-tab-3">Prospectos nuevos</p>
         <p class="cantidad mb-0 color-tab-3">{{totalProspectosMes}}</p>
       </div>
 
       <!-- Prospectos nuevos en el mes -->
-      <div class="etiqueta bg-white shadow-md rounded-xl px-6 text-center ms-5">
+      <div class="etiqueta bg-white shadow-md rounded-xl px-6 text-center etiqueta-ganadas">
         <p class="titulo mb-0 color-tab-2">Ganadas en el mes</p>
         <p class="cantidad mb-0 color-tab-2">{{totalGanadasMes}}</p>
       </div>
 
         <!-- Prospectos nuevos en el mes -->
-      <div class="etiqueta bg-white shadow-md rounded-xl px-6 text-center">
+      <div class="etiqueta bg-white shadow-md rounded-xl px-6 text-center etiqueta-perdidas">
         <p class="titulo mb-0 color-tab-4">Perdidas en el mes</p>
         <p class="cantidad mb-0 color-tab-4">{{totalPerdidasMes}}</p>
       </div>

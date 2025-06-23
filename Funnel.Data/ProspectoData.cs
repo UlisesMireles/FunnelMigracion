@@ -81,18 +81,19 @@ namespace Funnel.Data
             return result;
         }
 
-        public async Task<List<ProspectoDTO>> ConsultarTopVeinte(int IdEmpresa)
+        public async Task<List<ProspectoDTO>> ConsultarTopVeinte(int IdEmpresa, string Anio)
         {
             List<ProspectoDTO> result = new List<ProspectoDTO>();
             IList<ParameterSQl> list = new List<ParameterSQl>
     {
-        DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "SELECT-TOPVEINTE"),
+        DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "SELECT-TOPVEINTE-POR-ANIO"),
         DataBase.CreateParameterSql("@Nombre", SqlDbType.VarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, DBNull.Value),
         DataBase.CreateParameterSql("@UsbicacionFisica", SqlDbType.VarChar, 200, ParameterDirection.Input, false, null, DataRowVersion.Default, DBNull.Value),
         DataBase.CreateParameterSql("@IdProspecto", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, 0),
         DataBase.CreateParameterSql("@Estatus", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, 0),
         DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, IdEmpresa),
-        DataBase.CreateParameterSql("@pIdSector", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, 0)
+        DataBase.CreateParameterSql("@pIdSector", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, 0),
+        DataBase.CreateParameterSql("@pAnio", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, !string.IsNullOrEmpty(Anio) ? Anio : DBNull.Value),
     };
 
             using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoProspectos", CommandType.StoredProcedure, list, _connectionString))
@@ -119,6 +120,48 @@ namespace Funnel.Data
                     dto.PorcEliminadas = ComprobarNulos.CheckDecimalNull(reader["PorcEliminadas"]);
                     dto.UltimaFechaRegistro = ComprobarNulos.CheckDateTimeNull(reader["UltimaFecha"]);
 
+                    result.Add(dto);
+                }
+            }
+            return result;
+        }
+
+        public async Task<List<AniosDto>> ConsultarAniosOportunidades(int idEmpresa)
+        {
+            List<AniosDto> result = new List<AniosDto>();
+            IList<ParameterSQl> list = new List<ParameterSQl>
+            {
+                DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, "ANIOS-OPORTUNIDADES"),
+                DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, idEmpresa)
+            };
+            using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoProspectos", CommandType.StoredProcedure, list, _connectionString))
+            {
+                while (reader.Read())
+                {
+                    var dto = new AniosDto();
+                    dto.IdEmpresa = idEmpresa;
+                    dto.Anio = ComprobarNulos.CheckIntNull(reader["Anio"]);
+                    result.Add(dto);
+                }
+            }
+            return result;
+        }
+
+        public async Task<List<AniosDto>> ConsultarAniosGraficas(int idEmpresa)
+        {
+            List<AniosDto> result = new List<AniosDto>();
+            IList<ParameterSQl> list = new List<ParameterSQl>
+            {
+                DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, "ANIOS-TOP-20"),
+                DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, idEmpresa)
+            };
+            using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoProspectos", CommandType.StoredProcedure, list, _connectionString))
+            {
+                while (reader.Read())
+                {
+                    var dto = new AniosDto();
+                    dto.IdEmpresa = idEmpresa;
+                    dto.Anio = ComprobarNulos.CheckIntNull(reader["Anio"]);
                     result.Add(dto);
                 }
             }

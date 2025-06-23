@@ -22,9 +22,7 @@ export class ColumnasDisponiblesComponent implements OnInit {
     this.listaColumnas = data.todosColumnas
     this.originalData = JSON.parse(JSON.stringify(data.todosColumnas));
     this.vista = data.vista || '';
-    console.log (this.vista);
   }
-
 
   ngOnInit() {
   const columnasFiltradas = this.listaColumnas.filter(c => !c.isIgnore);

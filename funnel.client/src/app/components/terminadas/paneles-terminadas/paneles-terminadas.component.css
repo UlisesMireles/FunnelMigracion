@@ -15,6 +15,12 @@
   transition: width 0.3s;
   position: relative;
 }
+.item-acordeon.card-ganadas {
+  background: #CAFFBF;
+}
+.item-acordeon.card-perdidas {
+  background: #f93e3e;
+}
 
 .item-acordeon.expandido {
   width: 70%;

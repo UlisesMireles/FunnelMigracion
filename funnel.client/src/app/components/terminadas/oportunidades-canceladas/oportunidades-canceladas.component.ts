@@ -249,7 +249,7 @@ export class OportunidadesCanceladasComponent {  @ViewChild('dt') dt!: Table;
   
       dialogConfig.data = {
         todosColumnas: this.lsTodasColumnas,
-        vista: 'terminadas',
+        vista: 'canceladas-eliminadas',
         
       };
   

@@ -144,6 +144,7 @@ import { ModalDetallesOportunidadesPorTipoComponent } from './components/dashboa
 import { AcordeonProspectosContactosComponent } from './components/administracion/acordeon-prospectos-contactos/acordeon-prospectos-contactos.component';
 import { ServiciosEntregasComponent } from './components/catalogos/servicios-entregas/servicios-entregas.component';
 import { UsuariosPermisosComponent } from './components/catalogos/usuarios-permisos/usuarios-permisos.component';
+import { GraficasClientesTop20Component } from './components/dashboard/top-veinte/graficas-clientes-top20/graficas-clientes-top20.component';
 import { PanelesTerminadasComponent } from './components/terminadas/paneles-terminadas/paneles-terminadas.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
@@ -228,6 +229,7 @@ registerLocaleData(localeEs, 'es-MX');
     AcordeonProspectosContactosComponent,
     ServiciosEntregasComponent,
     UsuariosPermisosComponent,
+    GraficasClientesTop20Component,
     PanelesTerminadasComponent
   ],
   imports: [

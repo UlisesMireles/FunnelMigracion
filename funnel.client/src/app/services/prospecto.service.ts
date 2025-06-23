@@ -29,8 +29,20 @@ export class ProspectoService {
     return this.http.post<baseOut>(this.baseUrl+'api/Prospectos/GuardarProspecto', data);
   }
 
-  getTopVeinte(idEmpresa: number): Observable<any> {
+  getTopVeinte(idEmpresa: number, anio: string): Observable<any> {
     return this.http.get(`${this.baseUrl}api/Prospectos/ConsultarTopVeinte`, {
+      params: { idEmpresa: idEmpresa.toString(), anio : anio }
+    });
+  }
+
+  getAniosOportunidades(idEmpresa: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}api/Prospectos/ConsultarAniosOportunidades`, {
+      params: { idEmpresa: idEmpresa.toString() }
+    });
+  }
+
+  getAniosGraficas(idEmpresa: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}api/Prospectos/ConsultarAniosGraficas`, {
       params: { idEmpresa: idEmpresa.toString() }
     });
   }

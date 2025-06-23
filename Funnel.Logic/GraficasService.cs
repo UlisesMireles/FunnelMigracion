@@ -57,5 +57,10 @@ namespace Funnel.Logic
         {
             return await _graficasData.ObtenerDetalleOportunidadesTipo(idTipoProyecto, data);
         }
+
+        public async Task<List<GraficaDto>> ObtenerGraficaClientesTopVeinte(RequestGrafica data)
+        {
+            return await _graficasData.ObtenerGraficaClientesTopVeinte(data);
+        }
     }
 }

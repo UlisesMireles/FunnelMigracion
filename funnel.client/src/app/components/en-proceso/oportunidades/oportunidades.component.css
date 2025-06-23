@@ -405,7 +405,7 @@ th.sort-active p-sortIcon {
 
 ::ng-deep .fixed-width-oportunidad {
   width: 30% !important;
-  min-width: 280px !important;
+  min-width: 250px !important;
   white-space: normal !important;
   word-break: break-word !important;
   overflow-wrap: break-word !important;

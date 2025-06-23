@@ -4,7 +4,7 @@ import { AsistenteService } from '../../../../services/asistentes/asistente.serv
 import { ModalService } from '../../../../services/modal-perfil.service';
 import { Router } from '@angular/router';
 import { ModalOportunidadesService } from '../../../../services/modalOportunidades.service';
-import { Oportunidad } from '../../../../interfaces/oportunidades';
+import { Oportunidad, OportunidadesPorEtapa } from '../../../../interfaces/oportunidades';
 import { baseOut } from '../../../../interfaces/utils/utils/baseOut';
 import { Subscription } from 'rxjs';
 import { MenuItem, MessageService } from 'primeng/api';
@@ -13,6 +13,8 @@ import { Contacto } from '../../../../interfaces/contactos';
 import { SplitButton } from 'primeng/splitbutton';
 import { LoginService } from '../../../../services/login.service';
 import { CatalogoService } from '../../../../services/catalogo.service';
+import { ModalEtapasService } from '../../../../services/modalEtapas.service';
+import { OportunidadesService } from '../../../../services/oportunidades.service';
 @Component({
   selector: 'app-header',
   standalone: false,
@@ -33,6 +35,8 @@ export class HeaderComponent implements OnInit {
   private modalSubscription!: Subscription;
   private modalProspectosSubscription!: Subscription;
   private modalContactosSubscription!: Subscription;
+
+  modalVisibleEtapas: boolean = false;
 
   //Modal Oportunidades
   modalVisibleOportunidades: boolean = false;
@@ -58,9 +62,12 @@ export class HeaderComponent implements OnInit {
   
   private isDragging = false;
   private offset = { x: 0, y: 0 };
+  etapas: OportunidadesPorEtapa[] = [];
 
   constructor(public asistenteService: AsistenteService, private modalService: ModalService, private router: Router, private readonly catalogoService: CatalogoService,
-    private messageService: MessageService, private modalOportunidadesService: ModalOportunidadesService, private readonly authService: LoginService) {
+    private messageService: MessageService, private modalOportunidadesService: ModalOportunidadesService, private readonly authService: LoginService,
+    private oportunidadService: OportunidadesService, private modalEtapasService: ModalEtapasService
+  ) {
     this.items = [
       {
         label: 'Oportunidades',
@@ -185,6 +192,42 @@ export class HeaderComponent implements OnInit {
     }
   }
 
+  modalEtapas() {
+     this.getOportunidadesPorEtapa();
+  }
+
+  getOportunidadesPorEtapa() {
+  
+      const idUsuario = this.authService.obtenerIdUsuario();
+      const idEmpresa = this.authService.obtenerIdEmpresa();
+  
+      this.oportunidadService.getOportunidadesPorEtapa(idEmpresa, idUsuario).subscribe({
+        next: (result: OportunidadesPorEtapa[]) => {
+  
+          this.etapas = result.map(etapa => ({
+            ...etapa,
+            expandido: true, // Expandir todas las etapas por defecto
+            editandoNombre: false,
+            tarjetas: etapa.tarjetas || [],
+            orden: etapa.orden,
+            probabilidad: etapa.probabilidad,
+            idEmpresa: idUsuario,
+            idUsuario: idUsuario,
+            idStage: etapa.idStage
+          }));
+          this.modalEtapasService.openModal(true, this.etapas)
+        },
+        error: (error) => {
+          console.error('Error:', error);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Error al cargar oportunidades por etapa'
+          });
+        }
+      });
+    }
+
   agregarOportunidad() {
     this.modalOportunidadesService.openModal(true, true, [], {})
   }
@@ -291,6 +334,10 @@ export class HeaderComponent implements OnInit {
     this.modalOportunidadesService.closeModalContacto();
   }
 
+  onModalCloseEtapas() {
+    this.modalEtapasService.closeModal();
+  }
+
   manejarResultadoContactos(result: baseOut) {
     if (result.result) {
       this.messageService.add({
@@ -307,6 +354,25 @@ export class HeaderComponent implements OnInit {
       });
     }
   }
+
+   manejarResultadoEtapas(result: baseOut) {
+    if (result.result) {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'La operación se realizó con éxito.',
+        detail: result.errorMessage,
+      });
+      this.modalEtapasService.closeModal(result);
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Se ha producido un error.',
+        detail: result.errorMessage,
+      });
+    }
+  }
+
+
 startDrag(event: MouseEvent): void {
     const target = event.target as HTMLElement;
     if (!target.closest('.app-chat-header')) {

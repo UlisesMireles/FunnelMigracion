@@ -1,5 +1,8 @@
 <header class="page-header font-small blue" id="header">
   <div class="navbar col-12">
+    <div>
+      <button (click)="modalEtapas()"></button>
+    </div>
     <div class="col-3 logo-container">
     <img *ngIf="imagenEmpresaUrl" width="120" [src]="imagenEmpresaUrl" alt="logo SFS" 
      style="cursor: pointer;" (click)="navigateTo('/oportunidades')"
@@ -70,3 +73,7 @@
 <app-modal-contactos [(visible)]="modalVisibleContactos" [title]="'Editar Datos de '" (closeModal)="onModalCloseContactos()"
   (result)="manejarResultadoContactos($event)" [insertar]="insertar" [contactos]="contactos" [contacto]="contactoSeleccionado">
 </app-modal-contactos>
+
+<app-etapas [(visible)]="modalVisibleEtapas" (closeModal)="onModalCloseEtapas()"
+  (result)="manejarResultadoEtapas($event)">
+</app-etapas>

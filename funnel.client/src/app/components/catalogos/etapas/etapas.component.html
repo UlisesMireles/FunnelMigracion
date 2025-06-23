@@ -1,0 +1,58 @@
+<p-dialog [(visible)]="visible" [modal]="true" styleClass="custom-header-naranja" [closable]="true"
+    [style]="{ width: '50rem', height: 'auto' }" (onHide)="cerrar()" (onShow)="onDialogShow()" class="bodyDialog">
+    <ng-template pTemplate="header">
+        <label>
+            <h2>Administración de etapas</h2>
+        </label>
+    </ng-template>
+    <br>
+    <ng-template pTemplate="content">
+        <div cdkDropList [cdkDropListData]="etapas" (cdkDropListDropped)="dropEtapa($event)" class="lista-etapas">
+            <div *ngFor="let etapa of etapasActivas; let i = index" cdkDrag class="col-12 etapa-item">
+                <div class="col-1">
+                    <span cdkDragHandle class="handle">⋮⋮⋮</span>
+                </div>
+                <div class="col-9" *ngIf="!etapa.editandoNombre" style="text-align: left;">
+                    <span class="etapa-nombre">{{ etapa.nombre }}</span>
+                    <span class="etapa-probabilidad">{{ etapa.probabilidad }}%</span>
+
+                </div>
+                <div class="col-2" *ngIf="!etapa.editandoNombre">
+                    <button (click)="editarNombreEtapa(etapa)" class="boton-editar">✏️</button>
+                    <button (click)="eliminarEtapa(etapa)" class="boton-eliminar">❌</button>
+                </div>
+                <div *ngIf="etapa.editandoNombre" class="col-9 formulario-edicion">
+                    <input [(ngModel)]="etapa.nombre" placeholder="Nombre de la etapa" pInputText class="p-inputtext"
+                        style="width: 60%;" />
+                    <input [(ngModel)]="etapa.probabilidad" type="number" max="100" placeholder="Probabilidad"
+                        pInputText class="p-inputtext" />
+                </div>
+                <div class="col-2" *ngIf="etapa.editandoNombre">
+                    <button (click)="guardarNombreEtapa(etapa)" class="boton-guardar">💾</button>
+                </div>
+
+            </div>
+        </div>
+        <div class="boton-agregar-contenedor">
+            <button mat-button (click)="agregarEtapa()" class="boton-agregar">
+                +
+            </button>
+            <span class="texto-agregar">Agregar etapa</span>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button mat-button color="primary" class="btn-agregar-etapa"
+            (click)="toggleEditarOrdenEtapas()" [disabled]="!validaGuardar" >Guardar</button>
+        <button mat-button class="btn-agregar-etapa" (click)="cerrar()">Cancelar</button>
+
+    </ng-template>
+
+    <p-confirmDialog header="Confirmación"
+        [message]="'¿Estás seguro de que deseas eliminar esta etapa?'" [acceptLabel]="'Sí'" [rejectLabel]="'No'"
+        acceptButtonStyleClass="p-button-secondary">
+    </p-confirmDialog>
+
+    <div style="position: absolute; z-index:1102; text-align: center;">
+        <p-toast key="toast" position="bottom-center" [style]="{ height: '2vh' }"></p-toast>
+    </div>
+</p-dialog>

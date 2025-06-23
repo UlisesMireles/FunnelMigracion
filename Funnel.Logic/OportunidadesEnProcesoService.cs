@@ -173,6 +173,9 @@ namespace Funnel.Logic
                 {
                     Nombre = item.Concepto ?? "Sin etapa",
                     Anio = Convert.ToInt32(item.Stage),
+                    Probabilidad = item.Probabilidad,
+                    Orden = item.Orden,
+                    IdStage = item.Id,
                     Tarjetas = oportunidades.Where(x => x.IdStage == item.Id).Select(y => new TarjetasDto
                     {
                         IdOportunidad = y.IdOportunidad,

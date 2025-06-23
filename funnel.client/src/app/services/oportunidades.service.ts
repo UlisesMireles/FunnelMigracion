@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Oportunidad, RequestActualizarFechaEstimadaCierre, RequestActualizarEtapa, RequestOportunidad } from '../interfaces/oportunidades';
+import { Oportunidad, RequestActualizarFechaEstimadaCierre, RequestActualizarEtapa, RequestOportunidad, OportunidadesPorEtapa } from '../interfaces/oportunidades';
 import { baseOut } from '../interfaces/utils/utils/baseOut';
 
 @Injectable({
@@ -139,4 +139,9 @@ export class OportunidadesService {
       params: { idEmpresa: idEmpresa.toString(), idUsuario: idUsuario}
     });
   }
+
+  postGuardarEtapas(request: OportunidadesPorEtapa[]): Observable<any> {
+    return this.http.post(`${this.baseUrl}api/Etapas/GuardarEtapas`, request);
+  }
+
 }

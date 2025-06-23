@@ -13,7 +13,7 @@ import { AppComponent } from './app.component';
 
 import { MatInputModule } from '@angular/material/input';
 import Aura from '@primeng/themes/aura';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -146,6 +146,8 @@ import { ServiciosEntregasComponent } from './components/catalogos/servicios-ent
 import { UsuariosPermisosComponent } from './components/catalogos/usuarios-permisos/usuarios-permisos.component';
 import { GraficasClientesTop20Component } from './components/dashboard/top-veinte/graficas-clientes-top20/graficas-clientes-top20.component';
 import { PanelesTerminadasComponent } from './components/terminadas/paneles-terminadas/paneles-terminadas.component';
+import { EtapasComponent } from './components/catalogos/etapas/etapas.component';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -230,7 +232,8 @@ registerLocaleData(localeEs, 'es-MX');
     ServiciosEntregasComponent,
     UsuariosPermisosComponent,
     GraficasClientesTop20Component,
-    PanelesTerminadasComponent
+    PanelesTerminadasComponent,
+    EtapasComponent
   ],
   imports: [
     BrowserModule,
@@ -280,10 +283,12 @@ registerLocaleData(localeEs, 'es-MX');
     CardModule,
     FieldsetModule,
     ToggleSwitchModule,
-    MatExpansionModule
+    MatExpansionModule,
+    ConfirmDialogModule
 ],
   providers: [
     { provide: LOCALE_ID, useValue: 'es-MX' },
+    ConfirmationService,
     {
       provide: APP_INITIALIZER,
       useFactory: configurationProviderFactory,

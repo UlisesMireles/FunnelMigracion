@@ -23,13 +23,13 @@ export class GraficasService {
     return this.http.post<AgenteDto[]>(`${this.baseUrl}api/Graficas/ObtenerAgentes`, data);
   }
   obtenerAnios(idEmpresa: number, idEstatusOportunidad: number): Observable<any> {
-  return this.http.get(`${this.baseUrl}api/Graficas/Anios`, {
-    params: { 
-      IdEmpresa: idEmpresa.toString(),
-      IdEstatusOportunidad: idEstatusOportunidad.toString()
-    }
-  });
-}
+    return this.http.get(`${this.baseUrl}api/Graficas/Anios`, {
+      params: {
+        IdEmpresa: idEmpresa.toString(),
+        IdEstatusOportunidad: idEstatusOportunidad.toString()
+      }
+    });
+  }
   obtenerGraficaGanadasData(data: RequestGraficasDto): Observable<GraficasDto[]> {
     return this.http.post<GraficasDto[]>(`${this.baseUrl}api/Graficas/ObtenerGraficaGanadasAnio`, data);
   }
@@ -38,6 +38,10 @@ export class GraficasService {
   }
   obtenerGraficaAgentesPorAnioData(data: RequestGraficasDto): Observable<GraficasDto[]> {
     return this.http.post<GraficasDto[]>(`${this.baseUrl}api/Graficas/ObtenerGraficaAgentesPorAnio`, data);
+  }
+
+  obtenerGraficaClientesTopVeinteData(data: RequestGraficasDto): Observable<GraficasDto[]> {
+    return this.http.post<GraficasDto[]>(`${this.baseUrl}api/Graficas/ObtenerGraficaClientesTopVeinte`, data);
   }
   getRandomColor(): string {
     let color = '#';
@@ -96,6 +100,19 @@ createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
       }
     };
   }
+
+  createPieDataTop20(items: GraficasDto[]) {
+    return {
+      type: 'pie',
+      values: items.map(item => item.valor),
+      labels: items.map(item => item.label ?? 'Sin etiqueta'),
+      hovertemplate: '%{label}<br>(%{value}%<extra></extra>)',
+      automargin: true,
+      marker: {
+        color: items.map(item => item.coloreSerie ?? this.getRandomColor())
+      }
+    };
+  }
   createPieMontoData(items: GraficasDto[]) {
     return {
       type: 'pie',
@@ -112,20 +129,32 @@ createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
     };
   }
 
-  createPieLayout() {
+  createPieLayout(showlegend:boolean = false) {
     return {
       margin: { t: 0, b: 100, l: 0, r: 100 },
       height: 320,
       showlegend: false
     };
   }
-
+  createBarData(items: GraficasDto[]) {
+    return {
+      type: 'bar',
+      x: items.map(item => item.valor),
+      y: items.map(item => item.label ?? 'Sin etiqueta'),
+      text: items.map(item => item.valor.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })),
+      hovertemplate: 'Monto: <b>%{text}</b><extra></extra>',
+      name: 'Monto',
+      marker: {
+        color: items.map(item => '#1F77B4')
+      }
+    };
+  }
   createBarHorizontalData(items: GraficasDto[]) {
     return {
       type: 'bar',
       x: items.map(item => item.valor),
       y: items.map(item => item.label ?? 'Sin etiqueta'),
-      text: items.map(item => item.valor.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })), 
+      text: items.map(item => item.valor.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })),
       hovertemplate: 'Monto: <b>%{text}</b><extra></extra>',
       orientation: 'h',
       name: 'Monto',
@@ -140,7 +169,7 @@ createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
       x: items.map(item => item.montoNormalizado),
       y: items.map(item => item.label ?? 'Sin etiqueta'),
       hovertemplate: 'Monto Normalizado: <b>%{text}</b><extra></extra>',
-      text: items.map(item => item.valor.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })), 
+      text: items.map(item => item.valor.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })),
       name: 'Monto Normalizado',
       orientation: 'h',
       marker: {
@@ -148,32 +177,50 @@ createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
       }
     };
   }
-  
+  createBarVerticalData(items: GraficasDto[], color: string, name: string, hovertemplate: string, text: string[],customdata: string[] , valor2: boolean) {
+    return {
+      text: text,
+      customdata: customdata,
+      hovertemplate: hovertemplate,
+      textposition: "outside",
+      name: name,
+      marker: {
+        color: items.map(item => color ?? this.getRandomColor())
+      }
+    };
+  }
   createFunnelData(items: GraficasDto[]) {
     return {
       type: 'funnel',
-      x: [100,80,60,40,20],
+      x: [100, 80, 60, 40, 20],
       hovertemplate: '<b>%{text}</b><extra></extra>',
       text: items.map(item => '<b>' + item.label + '</b><br>' + item.valor.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })),
-      texttemplate:'%{text}',
+      texttemplate: '%{text}',
       textfont: { family: "Old Standard TT", size: 13, color: "black" },
       marker: {
         color: items.map(item => item.coloreSerie ?? this.getRandomColor())
       }
     };
   }
- createBarHorizontalLayout() {
+  createBarHorizontalLayout() {
     return {
       margin: { l: 130, r: 40, b: 100, t: 30 },
       height: 320,
-      
     };
   }
   createBarLayout() {
     return {
       margin: { l: 50, r: 50, b: 120, t: 0 },
       height: 320,
-      
+    };
+  }
+
+  createBarGroupLayout() {
+    return {
+      barmode: 'group', 
+      margin: { l: 130, r: 40, b: 120, t: 30 }, 
+      height: 400
+
     };
   }
 
@@ -187,69 +234,55 @@ createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
     }
   }
 
-  createBarData(items: GraficasDto[]) {
+   
+  createBarPorcentajeData(items: GraficasDto[]) {
     return {
       type: 'bar',
       y: items.map(item => item.valor),
-      x: items.map(item => item.label ?? 'Sin etiqueta'),
-      text: items.map(item => item.valor.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })), 
-      name: 'Monto',
+      text: items.map(item => item.valor.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })),
+      textposition: 'auto',
+      hovertemplate: '<b>%{x}</b><br> (<b>%{customdata}</b><extra></extra>)',
       marker: {
         color: items.map(item => item.coloreSerie ?? this.getRandomColor())
       }
     };
   }
-  createBarPorcentajeData(items: GraficasDto[]) {
-  return {
-    type: 'bar',
-    y: items.map(item => item.valor),
-    x: items.map(item => item.label ?? 'Sin etiqueta'),
-    text: items.map(item => item.valor.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })), 
-    textposition: 'auto', 
-    hovertemplate: '<b>%{x}</b><br> (<b>%{customdata}</b><extra></extra>)', 
-    customdata: items.map(item => `${item.porcentaje?.toFixed(2) ?? 0}%`), 
-    marker: {
-      color: items.map(item => item.coloreSerie ?? this.getRandomColor())
-    }
-  };
-}
   createBarNormalizadoData(items: GraficasDto[]) {
     return {
       type: 'bar',
       yield: items.map(item => item.montoNormalizado),
       x: items.map(item => item.label ?? 'Sin etiqueta'),
-      text: items.map(item => item.valor.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })), 
+      text: items.map(item => item.valor.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })),
       name: 'Monto Normalizado',
-    };
+    }
   }
-  
 
   obtenerOportunidadesPorSector(data: RequestGraficasDto): Observable<Sectores[]> {
     const requestData = {
       ...data,
-      bandera: 'SEL-AGENTE-SECTOR' 
+      bandera: 'SEL-AGENTE-SECTOR'
     };
     return this.http.post<Sectores[]>(`${this.baseUrl}api/Graficas/ObtenerOportunidadesPorSector`, requestData);
   }
 
   obtenerDetalleOportunidadesSector(idSector: number, data: RequestGraficasDto): Observable<SectoresDetalles[]> {
-      return this.http.post<SectoresDetalles[]>(
-        `${this.baseUrl}api/Graficas/ObtenerDetalleOportunidadesSector/${idSector}`, 
-        data
-      );
-    }
+    return this.http.post<SectoresDetalles[]>(
+      `${this.baseUrl}api/Graficas/ObtenerDetalleOportunidadesSector/${idSector}`,
+      data
+    );
+  }
 
   obtenerOportunidadesPorTipo(data: RequestGraficasDto): Observable<OportunidadesTipo[]> {
     const requestData = {
       ...data,
-      bandera: 'SEL-OPORTUNIDAD-STAGE' 
+      bandera: 'SEL-OPORTUNIDAD-STAGE'
     };
     return this.http.post<OportunidadesTipo[]>(`${this.baseUrl}api/Graficas/ObtenerOportunidadesPorTipo`, requestData);
   }
 
   obtenerDetalleOportunidadesTipo(idEtapa: number, data: RequestGraficasDto): Observable<OportunidadesTipoDetalles[]> {
     return this.http.post<OportunidadesTipoDetalles[]>(
-      `${this.baseUrl}api/Graficas/ObtenerDetalleOportunidadesTipo/${idEtapa}`, 
+      `${this.baseUrl}api/Graficas/ObtenerDetalleOportunidadesTipo/${idEtapa}`,
       data
     );
   }

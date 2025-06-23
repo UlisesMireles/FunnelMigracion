@@ -187,7 +187,7 @@
   background: rgba(255,255,255,0.9);
 }
 .header-graficas{
-  background: #bdbdbde1 !important;
+  background: #bdbdbde1 ;
   /*background: linear-gradient(0deg, rgba(247, 106, 19, 1) 0%, rgba(200, 87, 24, 1) 35%, rgba(231, 91, 42, 1) 100%);*/
   color: black;
   border: none !important;

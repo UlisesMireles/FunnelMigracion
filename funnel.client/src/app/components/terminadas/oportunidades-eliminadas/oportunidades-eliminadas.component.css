@@ -448,3 +448,16 @@ th.sort-active p-sortIcon {
 .custom-tabs .nav-link.active {
   color: #3c3e41 !important;
 }
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 20px;
+    height: 779px;
+    padding: 5px 10px;
+    box-sizing: border-box;
+    width: 100%;
+    overflow: hidden;
+    margin-top: -59px;
+    margin-left: -10px;
+  }

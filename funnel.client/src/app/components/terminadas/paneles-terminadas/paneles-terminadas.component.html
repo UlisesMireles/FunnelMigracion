@@ -1,5 +1,5 @@
 <div class="acordeon-horizontal d-flex" style="gap: 5px;">
-  <div class="item-acordeon" *ngIf="permisoGanadas" [class.expandido]="seccionExpandida === 'ganadas'">
+  <div class="item-acordeon card-ganadas" *ngIf="permisoGanadas" [class.expandido]="seccionExpandida === 'ganadas'">
     <div class="encabezado-acordeon">
       <button class="boton-toggle" (click)="toggleSeccion('ganadas')">
         <i [ngClass]="seccionExpandida === 'ganadas' ? 'bi bi-chevron-left' : 'bi bi-chevron-right'"></i>
@@ -10,7 +10,7 @@
       <app-oportunidades-ganadas></app-oportunidades-ganadas>
     </div>
   </div>
-  <div class="item-acordeon" *ngIf="permisoPerdidas" [class.expandido]="seccionExpandida === 'perdidas'">
+  <div class="item-acordeon card-perdidas" *ngIf="permisoPerdidas" [class.expandido]="seccionExpandida === 'perdidas'">
     <div class="encabezado-acordeon">
       <button class="boton-toggle" (click)="toggleSeccion('perdidas')">
         <i [ngClass]="seccionExpandida === 'perdidas' ? 'bi bi-chevron-left' : 'bi bi-chevron-right'"></i>

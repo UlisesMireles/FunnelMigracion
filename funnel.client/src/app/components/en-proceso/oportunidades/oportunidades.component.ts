@@ -69,13 +69,13 @@ export class OportunidadesComponent {
   totalProspectosMes: number = 0;
   totalGanadasMes: number = 0;
   totalPerdidasMes: number = 0;
-
+  fechaCierreSortOrder: number = 1;  
   lsTodasColumnas: any[] = [
     { key: 'idOportunidad', isCheck: false, valor: 'Id', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombre', isCheck: true, valor: 'Prospecto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreSector', isCheck: true, valor: 'Sector', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreOportunidad', isCheck: true, valor: 'Oportunidad', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'abreviatura', isCheck: false, valor: 'Tipo', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
+    //{ key: 'abreviatura', isCheck: false, valor: 'Tipo', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'stage', isCheck: true, valor: 'Etapa', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'numberFilter' },
     { key: 'iniciales', isCheck: true, valor: 'Ejecutivo', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreContacto', isCheck: true, valor: 'Contacto', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
@@ -533,6 +533,17 @@ export class OportunidadesComponent {
         }
       });
   }
+  onSortFechaCierre() {
+  if (this.dt.sortField === 'fechaEstimadaCierreOriginal') {
+    this.fechaCierreSortOrder = -this.fechaCierreSortOrder;
+  } else {
+    this.fechaCierreSortOrder = 1;
+  }
+  
+  this.dt.sortOrder = this.fechaCierreSortOrder;
+  this.dt.sortField = 'fechaEstimadaCierreOriginal';
+  this.dt.sortSingle();
+}
 }
 
 

@@ -129,13 +129,9 @@
   }
   
   /*Estilos modal*/
-  ::ng-deep .p-dialog .p-dialog-header {
+  ::ng-deep .custom-header-verde .p-dialog-header {
     background: #ecfdf5 !important;
     color: rgb(0, 0, 0);
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    height: 50px;
-    
   }
   
   ::ng-deep .p-dialog .p-dialog-header .p-icon {

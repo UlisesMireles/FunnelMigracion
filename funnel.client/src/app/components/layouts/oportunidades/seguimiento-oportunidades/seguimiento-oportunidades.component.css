@@ -468,3 +468,29 @@
   0%, 100% { opacity: 1; }
   50% { opacity: 0.3; }
 }
+/* Estilo para alinear horizontalmente los campos */
+.datos-oportunidad-horizontal {
+  display: flex;
+   flex-wrap: nowrap;
+  gap: 15px;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.datos-oportunidad-horizontal label {
+  margin: 0;
+  white-space: nowrap;
+}
+
+@media (max-width: 992px) {
+  .datos-oportunidad-horizontal {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+}
+
+.datos-oportunidad-vertical {
+  display: block;
+}
+

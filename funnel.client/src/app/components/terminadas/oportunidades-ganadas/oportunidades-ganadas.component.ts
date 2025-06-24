@@ -246,7 +246,7 @@ export class OportunidadesGanadasComponent {
   
       dialogConfig.data = {
         todosColumnas: this.lsTodasColumnas,
-        vista: 'terminadas'
+        vista: 'ganadas'
       };
   
       dialogConfig.position = {

@@ -21,7 +21,60 @@ h3.default {
   font-weight: normal;
   font-size: 1.7rem;
 }
-
+h3.canceladas-eliminadas {
+  background: #bdbdbde1 !important;
+  color: black !important;
+  padding: 8px !important;
+  margin: -25px -25px 20px -25px !important; 
+  text-align: center !important;
+  font-weight: normal !important;
+  font-size: 1.7rem !important;
+}
+h3.ganadas {
+  background: #CAFFBF !important;
+  color: black !important;
+  padding: 8px !important;
+  margin: -25px -25px 20px -25px !important;
+  text-align: center !important;
+  font-weight: normal !important;
+  font-size: 1.7rem !important;
+}
+h3.perdidas {
+  background: #f93e3e !important;
+  color: black !important;
+  padding: 8px !important;
+  margin: -25px -25px 20px -25px !important;
+  text-align: center !important;
+  font-weight: normal !important;
+  font-size: 1.7rem !important;
+}
+h3.prospectos-contactos {
+  background: #FFD6A5 !important;
+  color: black !important;
+  padding: 8px !important;
+  margin: -25px -25px 20px -25px !important;
+  text-align: center !important;
+  font-weight: normal !important;
+  font-size: 1.7rem !important;
+}
+h3.usuarios {
+  background: #BDB2FF !important;
+  color: black !important;
+  padding: 8px !important;
+  margin: -25px -25px 20px -25px !important;
+  text-align: center !important;
+  font-weight: normal !important;
+  font-size: 1.7rem !important;
+}
+h3.servicios-entregas{
+  background: #FFADAD !important;
+  color: black !important;
+  padding: 8px !important;
+  margin: -25px -25px 20px -25px !important;
+  text-align: center !important;
+  font-weight: normal !important;
+  font-size: 1.7rem !important;
+}
 /* Estilo para el contenedor del botón de cierre */
 .close-container {
   position: absolute;
@@ -152,40 +205,4 @@ button.p-button-primary:hover {
 .columna {
   flex: 1;
   min-width: 0; 
-}
-h3.terminadas {
-  background: #bdbdbde1 !important;
-  color: black !important;
-  padding: 8px !important;
-  margin: -25px -25px 20px -25px !important; 
-  text-align: center !important;
-  font-weight: normal !important;
-  font-size: 1.7rem !important;
-}
-h3.prospectos-contactos {
-  background: #FFD6A5 !important;
-  color: black !important;
-  padding: 8px !important;
-  margin: -25px -25px 20px -25px !important;
-  text-align: center !important;
-  font-weight: normal !important;
-  font-size: 1.7rem !important;
-}
-h3.usuarios {
-  background: #BDB2FF !important;
-  color: black !important;
-  padding: 8px !important;
-  margin: -25px -25px 20px -25px !important;
-  text-align: center !important;
-  font-weight: normal !important;
-  font-size: 1.7rem !important;
-}
-h3.servicios-entregas{
-  background: #FFADAD !important;
-  color: black !important;
-  padding: 8px !important;
-  margin: -25px -25px 20px -25px !important;
-  text-align: center !important;
-  font-weight: normal !important;
-  font-size: 1.7rem !important;
 }

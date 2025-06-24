@@ -220,7 +220,7 @@
                       (def.tipoFormato === 'number' || def.tipoFormato === 'date') ? 'center' : 'left'
                   }">
                 <ng-container *ngIf="def.key === 'nombre'">
-                  Total de registros: {{ getTotalCostPrimeNg(dt, def) }}
+                  Total de Registros: {{ getTotalCostPrimeNg(dt, def) }}
                 </ng-container>
                 <ng-container *ngIf="def.tipoFormato === 'currency'">
                   {{ getTotalCostPrimeNg(dt, def) | currency:'$':'symbol':'1.2-2' }}

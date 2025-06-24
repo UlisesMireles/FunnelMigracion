@@ -185,7 +185,7 @@
 
                   }">
                 <ng-container *ngIf="def.key === 'nombre'">
-                  Total de registros: {{ getTotalCostPrimeNg(dt, def) }}
+                  Total de Registros: {{ getTotalCostPrimeNg(dt, def) }}
                 </ng-container>
                 <ng-container *ngIf="def.tipoFormato === 'number' && def.key !== 'nombre'">
                   {{ getTotalCostPrimeNg(dt, def) | number:'1.0-0' }}

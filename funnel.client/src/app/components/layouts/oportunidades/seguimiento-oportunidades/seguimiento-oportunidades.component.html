@@ -187,7 +187,7 @@
     height: maximizedRespuesta ? '100vh' : 'auto'
   }"
   [ngClass]="{'maximized': maximizedRespuesta}"
-  (onHide)="maximizedRespuesta = false"
+  (onHide)="alCerrarDialogo()"
   appendTo="body"
   class="bodyDialog"
   styleClass="custom-header-verde">
@@ -198,6 +198,9 @@
       <mat-icon [ngClass]="copiado ? 'icono-copiado' : ''">
         {{ copiado ? 'check' : 'content_copy' }}
       </mat-icon>
+    </button>
+    <button class="btn-copiar" (click)="leerRespuesta()" pTooltip="{{ leyendo ? 'Detener lectura' : 'Escuchar respuesta' }}" tooltipPosition="top">
+      <mat-icon>{{ leyendo ? 'stop' : 'volume_up' }}</mat-icon>
     </button>
   </ng-container>
 

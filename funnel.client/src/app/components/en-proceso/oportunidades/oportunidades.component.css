@@ -529,7 +529,7 @@ th.sort-active p-sortIcon {
 
 .contenedor-etiquetas {
   position: absolute;
-  top: 70px;
+  top: 50px;
   left: 50%;
   transform: translate(-50%, -50%);
   justify-content: center;
@@ -537,11 +537,25 @@ th.sort-active p-sortIcon {
 }
 
 .etiqueta {
-  height: 60px;
+  height: 50px;
+  width: 137px;
   margin-left: 16px;
+  padding: 0 10px;
+  border-radius: 5px;
+}
+.etiqueta-ganadas{
+  border: 1px solid #1abc9c !important;
+}
+
+.etiqueta-perdidas{
+  border: 1px solid #e91e63 !important;
+}
+
+.etiqueta-default{
+  border: 1px solid #0056d2 !important;
 }
 .etiqueta p{
-  text-align: center;;
+  text-align: center;
   text-decoration: none;
   font-weight: bold;
   cursor: pointer;
@@ -554,9 +568,11 @@ th.sort-active p-sortIcon {
   font-size: 16px;
 }
 
-@media (max-width: 1270px) {
+@media (max-width: 1270px) {  
+  .etiqueta{
+    width: 97px
+  }
   .etiqueta > .titulo {
-    width: 97px;
     font-size: 11px;
     text-decoration: none;
     font-weight: bold;
@@ -570,7 +586,7 @@ th.sort-active p-sortIcon {
   }
   .contenedor-etiquetas {
     position: absolute;
-    top: 70px;
+    top: 50px;
     left: 66%;
     transform: translate(-50%, -50%);
     justify-content: center;
@@ -590,3 +606,7 @@ th.sort-active p-sortIcon {
   justify-content: flex-start !important;
   margin-top: 1.6rem;
 }
+.columna-etiqueta{
+  min-width: 100px;
+}
+

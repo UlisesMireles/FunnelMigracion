@@ -146,10 +146,6 @@ th.sort-active p-sortIcon {
   height: calc(100vh - 60px) !important;
 }
 
-::ng-deep .p-datatable .p-datatable-tbody > tr:nth-child(even) {
-  background-color: #f8f9fa; 
-}
-
 ::ng-deep .p-datatable .p-datatable-tbody > tr:nth-child(odd) {
   background-color: white; 
 }

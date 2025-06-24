@@ -9,7 +9,7 @@
           </div>
           <p>Cargando...</p>
         </div>
-        <p-table *ngIf="!loading" #dt [stripedRows]="true" [value]="usuarios" dataKey="id" [rows]="10"
+        <p-table *ngIf="!loading" #dt [value]="usuarios" dataKey="id" [rows]="10"
           [showCurrentPageReport]="false" [rowsPerPageOptions]="[10, 20, 50]" [paginator]="true" paginatorPosition="both"
           [pageLinks]="1"
           currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros"
@@ -152,7 +152,7 @@
                   <td></td>
                   <td *ngFor="let def of lsColumnasAMostrar">
                     <ng-container *ngIf="def.key === 'nombre'">
-                      Total de registros: {{ getTotalCostPrimeNg(dt, def) }}
+                      Total de Registros: {{ getTotalCostPrimeNg(dt, def) }}
                     </ng-container>
                   </td>
                 </tr>

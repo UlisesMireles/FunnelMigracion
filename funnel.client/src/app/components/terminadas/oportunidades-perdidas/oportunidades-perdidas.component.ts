@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { LazyLoadEvent } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { MessageService } from 'primeng/api';
@@ -43,7 +43,7 @@ export class OportunidadesPerdidasComponent {
   months: string[] = [];
   selectedMonth: string = "Todos los Meses";
   titulo: string = 'Oportunidades Perdidas';
-
+  @Output() headerClicked = new EventEmitter<void>();
   lsColumnasAMostrar: any[] = [
    
   ];
@@ -57,7 +57,7 @@ export class OportunidadesPerdidasComponent {
     { key: 'stage', isCheck: false, valor: 'Etapa', isIgnore: true, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'iniciales', isCheck: true, valor: 'Ejecutivo', isIgnore: true, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreContacto', isCheck: false, valor: 'Contacto', isIgnore: true, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'monto', isCheck: true, valor: 'Monto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'number' },
+    { key: 'monto', isCheck: true, valor: 'Monto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
     { key: 'probabilidad', isCheck: false, valor: 'Prob', isIgnore: true, isTotal: false, groupColumn: false, tipoFormato: 'text' },
    // { key: 'montoNormalizado', isCheck: false, valor: 'Monto', isIgnore: true, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
     { key: 'fechaRegistro', isCheck: false, valor: 'Fecha Inicio', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
@@ -429,5 +429,8 @@ isSorted(columnKey: string): boolean {
 }
   esNumero(cadena: string): boolean {
     return !isNaN(Number(cadena)) && cadena.trim() !== '';
+  }
+onHeaderClick() {
+    this.headerClicked.emit();
   }
 }

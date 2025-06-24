@@ -133,7 +133,8 @@ createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
     return {
       margin: { t: 0, b: 100, l: 0, r: 100 },
       height: 320,
-      showlegend: showlegend
+      showlegend: showlegend,
+      autosize: true
     };
   }
   createBarData(items: GraficasDto[]) {
@@ -208,12 +209,14 @@ createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
     return {
       margin: { l: 130, r: 40, b: 100, t: 30 },
       height: 320,
+      autosize: true
     };
   }
   createBarLayout() {
     return {
       margin: { l: 50, r: 50, b: 120, t: 0 },
       height: 320,
+      autosize: true
     };
   }
 
@@ -221,7 +224,8 @@ createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
     return {
       barmode: 'group', 
       margin: { l: 130, r: 40, b: 100, t: 30 }, 
-      height: 320
+      height: 320,
+      autosize: true
 
     };
   }

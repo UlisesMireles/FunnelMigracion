@@ -253,7 +253,10 @@
   color: #413939;
   margin-right: 200px;
   margin-top: 10px;
-  white-space: nowrap;
+  word-break: break-word;
+  white-space: normal;
+  min-width: 230px;
+  max-width: 420px; 
 }
 .d-flex {
   display: flex;

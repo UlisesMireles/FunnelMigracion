@@ -201,7 +201,7 @@ export class GraficasClientesTop20Component {
           const plotDiv = cardElement.querySelector('.js-plotly-plot') as HTMLElement;
           if (plotDiv) {
             Plotly.relayout(plotDiv, {
-              width: plotWrapper.clientWidth -300,
+              width: plotWrapper.clientWidth -500,
               height: plotWrapper.clientHeight -100,
               autosize: true
             });

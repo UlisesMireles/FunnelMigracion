@@ -21,7 +21,7 @@
                             <h5 class="card-title">{{card.titulo}}</h5>
                             <!-- Botón para maximizar/minimizar -->
                             <button class="btn btn-sm btn-link maximize-btn" 
-                                    (click)="toggleMaximizar(i, j, $event)" 
+                                    (click)="ToggleMaximizar(i, j, $event)" 
                                     [disabled]="card.tipo === 'grafica' && !card.infoCargada"
                                     [title]="card.isMaximized ? 'Minimizar' : 'Maximizar'">
                               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" class="p-icon">

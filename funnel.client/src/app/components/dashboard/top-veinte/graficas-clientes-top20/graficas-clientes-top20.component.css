@@ -75,15 +75,15 @@
 /* Estilos para tarjetas maximizadas */
 .maximized-card {
   position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100vw !important;
-  height: 100vh !important;
-  z-index: 1050 !important;
-  margin: 0 !important;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   background-color: white;
-  box-shadow: 0 0 20px rgba(0,0,0,0.5);
-  transform: none !important;
+  z-index: 9999;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .maximized-content {
@@ -153,5 +153,10 @@
 
 body {
   position: relative !important;
+}
+
+.card:not(.maximized-card) .plot-container {
+  height: 330px !important;
+  max-height: 330px !important;
 }
 

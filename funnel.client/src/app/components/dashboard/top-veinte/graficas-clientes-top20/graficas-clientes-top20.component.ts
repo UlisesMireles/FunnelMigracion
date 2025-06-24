@@ -8,6 +8,13 @@ import { ProspectoService } from '../../../../services/prospecto.service';
 import { MessageService } from 'primeng/api';
 import * as Plotly from 'plotly.js-dist-min';
 
+interface OriginalCardPosition {
+  parent: Node;
+  nextSibling: Node | null;
+  originalStyle: string | null;
+  modalElement?: HTMLElement;
+}
+
 @Component({
   selector: 'app-graficas-clientes-top20',
   standalone: false,
@@ -25,8 +32,7 @@ export class GraficasClientesTop20Component {
 
   yearsGrafica: string[] = [];
   selectedYear: string = 'Todos los Años';
-  private originalParentElements = new Map<string, { parent: Node, nextSibling: Node | null }>();
-
+  originalParentElements: Map<string, OriginalCardPosition> = new Map();
 
   constructor(private messageService: MessageService, private readonly graficasService: GraficasService, private prospectoService: ProspectoService, private loginService: LoginService, private readonly sessionService: LoginService, private readonly cdr: ChangeDetectorRef) {
     this.quadrants = [
@@ -138,113 +144,113 @@ export class GraficasClientesTop20Component {
     this.consultarGraficaPorcentajeOportunidadesGanadas()
   }
 
-  toggleMaximizar(i: number, j: number, event: MouseEvent): void {
+ ToggleMaximizar(i: number, j: number, event: MouseEvent): void {
   event.stopPropagation();
   event.preventDefault();
 
   const card = this.quadrants[i].cards[j];
   card.isMaximized = !card.isMaximized;
 
-  const componentId = 'graficas-clientes-top20';
-  const cardId = `${componentId}-card-${i}-${j}`;
+  const cardId = `graficas-clientes-top20-card-${i}-${j}`;
   const cardElement = document.querySelector(`[data-id="${cardId}"]`) as HTMLElement;
-
   if (!cardElement) return;
 
   if (card.isMaximized) {
-    const overlay = document.createElement('div');
-    overlay.id = `${cardId}-overlay`;
-    overlay.style.position = 'fixed';
-    overlay.style.top = '0';
-    overlay.style.left = '0';
-    overlay.style.width = '100vw';
-    overlay.style.height = '100vh';
-    overlay.style.backgroundColor = 'rgba(0,0,0,0.5)';
-    overlay.style.zIndex = '9998';
-    overlay.style.display = 'flex';
-    overlay.style.justifyContent = 'center';
-    overlay.style.alignItems = 'center';
-    document.body.appendChild(overlay);
+    const originalParent = cardElement.parentElement;
+    const nextSibling = cardElement.nextSibling;
 
-    const clonedCard = cardElement.cloneNode(true) as HTMLElement;
-    const maximizeBtn = clonedCard.querySelector('.maximize-btn');
-
-    if (maximizeBtn) {
-      maximizeBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-        this.toggleMaximizar(i, j, e as MouseEvent);
+    if (originalParent) {
+      this.originalParentElements.set(cardId, {
+        parent: originalParent,
+        nextSibling,
+        originalStyle: cardElement.getAttribute('style')
       });
-    }
 
-    clonedCard.id = `${cardId}-maximized`;
-    clonedCard.style.position = 'fixed';
-    clonedCard.style.top = '50%';
-    clonedCard.style.left = '50%';
-    clonedCard.style.transform = 'translate(-50%, -50%)';
-    clonedCard.style.width = '100vw';
-    clonedCard.style.height = '100vh';
-    clonedCard.style.zIndex = '9999';
-    clonedCard.style.backgroundColor = 'white';
-    clonedCard.style.borderRadius = '8px';
-    clonedCard.style.boxShadow = '0 0 20px rgba(0,0,0,0.3)';
-    clonedCard.style.overflow = 'auto';
+      const modalContainer = document.createElement('div');
+      modalContainer.className = 'maximized-card';
 
-    overlay.appendChild(clonedCard);
-    card.maximizedElements = { overlay, clonedCard };
+      const modalHeader = document.createElement('div');
+      modalHeader.className = 'card-header';
 
+      const title = document.createElement('h5');
+      title.textContent = card.title || 'Gráfica';
+      title.style.margin = '0';
+      modalHeader.appendChild(title);
 
-    setTimeout(() => {
-      const plotlyComponent = clonedCard.querySelector('plotly-plot') as any;
-      if (plotlyComponent?.shadowRoot) {
-        const plotDiv = plotlyComponent.shadowRoot.querySelector('.js-plotly-plot') as HTMLElement;
+      const closeButton = document.createElement('button');
+      closeButton.innerHTML = '&times;';
+      closeButton.className = 'maximize-btn';
+      closeButton.addEventListener('click', () => this.ToggleMaximizar(i, j, event));
+      modalHeader.appendChild(closeButton);
+
+      modalContainer.appendChild(modalHeader);
+
+      const modalContent = document.createElement('div');
+      modalContent.className = 'maximized-content';
+
+      const plotWrapper = document.createElement('div');
+      plotWrapper.className = 'plot-wrapper';
+
+      plotWrapper.appendChild(cardElement);
+      modalContent.appendChild(plotWrapper);
+      modalContainer.appendChild(modalContent);
+      document.body.appendChild(modalContainer);
+      document.body.style.overflow = 'hidden';
+
+      setTimeout(() => {
+        const plotDiv = cardElement.querySelector('.js-plotly-plot') as HTMLElement;
         if (plotDiv) {
-          const ancho = clonedCard.clientWidth;
-          const alto = clonedCard.clientHeight - 60;
-
-          plotDiv.style.width = `${ancho}px`;
-          plotDiv.style.height = `${alto}px`;
-
           Plotly.relayout(plotDiv, {
-            width: ancho,
-            height: alto,
+            width: plotWrapper.clientWidth,
+            height: plotWrapper.clientHeight,
             autosize: true
-          }).then(() => {
-            Plotly.Plots.resize(plotDiv);
           });
+          Plotly.Plots.resize(plotDiv);
         }
-      }
-    }, 300);
-  } else {
-    if (card.maximizedElements) {
-      const { overlay, clonedCard } = card.maximizedElements;
-      if (overlay?.parentNode) {
-        overlay.parentNode.removeChild(overlay);
-      }
-      if (clonedCard?.parentNode) {
-        clonedCard.parentNode.removeChild(clonedCard);
-      }
-      delete card.maximizedElements;
+      }, 100);
     }
 
-    setTimeout(() => {
-      const plotlyComponent = cardElement.querySelector('plotly-plot') as any;
-      if (plotlyComponent?.shadowRoot) {
-        const plotDiv = plotlyComponent.shadowRoot.querySelector('.js-plotly-plot') as HTMLElement;
-        if (plotDiv) {
-          plotDiv.style.width = '100%';
-          plotDiv.style.height = '330px';
+  } else {
+    const originalPosition = this.originalParentElements?.get(cardId);
+    if (originalPosition) {
+      const { parent, nextSibling, originalStyle } = originalPosition;
 
+      const modal = document.querySelector('.maximized-card');
+      if (modal) document.body.removeChild(modal);
+
+      if (nextSibling) {
+        parent.insertBefore(cardElement, nextSibling);
+      } else {
+        parent.appendChild(cardElement);
+      }
+
+      if (originalStyle !== null) {
+        cardElement.setAttribute('style', originalStyle);
+      } else {
+        cardElement.removeAttribute('style');
+      }
+
+      cardElement.classList.remove('maximized-card', 'maximized-content', 'plot-wrapper');
+      document.body.style.overflow = '';
+
+      setTimeout(() => {
+        const plotDiv = cardElement.querySelector('.js-plotly-plot') as HTMLElement;
+        if (plotDiv) {
           Plotly.relayout(plotDiv, {
             width: cardElement.clientWidth,
             height: 330,
-            autosize: true
-          }).then(() => {
-            Plotly.Plots.resize(plotDiv);
+            autosize: true,
+            margin: {
+              t: 40,
+              l: 60,
+              r: 60,
+              b: 80
+            }
           });
+          Plotly.Plots.resize(plotDiv);
         }
-      }
-    }, 300);
+      }, 100);
+    }
   }
 }
 }

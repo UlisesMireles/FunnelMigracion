@@ -71,3 +71,92 @@
               0 0.5px 0 currentColor, 
               0 -0.5px 0 currentColor;
 }
+
+/* Estilos para tarjetas maximizadas */
+.maximized-card {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
+  z-index: 9999;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.maximized-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 56px);
+  width: 100%;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.maximized-content .plot-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.maximized-content plotly-plot {
+  width: 95% !important;
+  height: 95% !important;
+  max-width: 1400px !important;
+  max-height: 1000px !important;
+  margin: auto !important;
+  display: block;
+}
+
+/* Estilos para el botón de maximizar */
+.maximize-btn {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 1000;
+  color: #ffffff;
+  background: transparent;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.maximize-btn:hover {
+  color: #495057;
+  background: rgba(255,255,255,0.9);
+}
+
+/* Estilos para el header de la tarjeta */
+.card-header {
+  background-color: #e9ecef;
+  padding: 10px 15px;
+  border-bottom: 1px solid #dee2e6;
+  cursor: move;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.maximized-card .card-header {
+  cursor: default;
+}
+
+body {
+  position: relative !important;
+}
+
+.card:not(.maximized-card) .plot-container {
+  height: 330px !important;
+  max-height: 330px !important;
+}
+

@@ -1,9 +1,10 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { LoginService } from '../../../../services/login.service';
 import { GraficasService } from '../../../../services/graficas.service';
 import { AgenteDto, GraficasDto, RequestGraficasDto, AniosDto } from '../../../../interfaces/graficas';
-import { environment } from '../../../../../environments/environment'
+import { environment } from '../../../../../environments/environment';
+import * as Plotly from 'plotly.js-dist-min';
 
 @Component({
   selector: 'app-graficas-por-agente',
@@ -24,7 +25,8 @@ quadrants: { cards: any[] }[] = [];
   anioSeleccionado!: number;
   loading: boolean = true;
   agenteSeleccionadoId: number | null = null;
-  constructor( private readonly graficasService: GraficasService,private readonly sessionService: LoginService) {
+  private originalParentElements = new Map<string, { parent: HTMLElement, nextSibling: Node | null }>();
+  constructor( private readonly graficasService: GraficasService,private readonly sessionService: LoginService,     private readonly cdr: ChangeDetectorRef) {
     this.quadrants = [
       { cards: [this.graficasService.createCardPorAnio(1, 'Consulta Agentes', 'tabla')] },
       { cards: [this.graficasService.createCardPorAnio(2, 'Grafica por Agente - Clientes (Seleccione un Agente)', 'grafica')] },
@@ -119,6 +121,7 @@ onAnioChange(): void {
       next: (response: GraficasDto[]) => {
         const dataAGraficar = [this.graficasService.createBarHorizontalData(response)];
         console.log('Data a graficar:', dataAGraficar);
+        console.log( this.quadrants[1].cards[0]);
         const layOutGrafica = this.graficasService.createBarHorizontalLayout();
         this.setGraficaData(1, 0, dataAGraficar, layOutGrafica);
       },
@@ -167,4 +170,67 @@ onAnioChange(): void {
       }
     }
   }
+toggleMaximizar(i: number, j: number, event: MouseEvent): void {
+  event.stopPropagation();
+  event.preventDefault();
+
+  const card = this.quadrants[i].cards[j];
+  card.isMaximized = !card.isMaximized;
+
+  const cardId = `card-${i}-${j}`;
+  const cardElement = document.querySelector(`[data-id="${cardId}"]`) as HTMLElement;
+
+  if (!cardElement) return;
+
+  if (card.isMaximized) {
+    // Guardar posición original
+    const originalParent = cardElement.parentElement;
+    const nextSibling = cardElement.nextSibling;
+
+    if (originalParent) {
+      this.originalParentElements.set(cardId, {
+        parent: originalParent,
+        nextSibling: nextSibling
+      });
+
+      // Mover al body y aplicar estilos originales (que ya funcionaban)
+      document.body.appendChild(cardElement);
+      document.body.style.overflow = 'hidden';
+      cardElement.style.zIndex = '9999';
+
+      const plotDiv = cardElement.querySelector('.js-plotly-plot') as HTMLElement;
+      if (plotDiv) {
+        setTimeout(() => {
+          Plotly.relayout(plotDiv, {
+            width: cardElement.clientWidth - 200,
+            height: cardElement.clientHeight - 100,
+            autosize: true
+          });
+          Plotly.Plots.resize(plotDiv);
+        }, 100);
+      }
+    }
+  } else {
+    const originalPosition = this.originalParentElements.get(cardId);
+    if (originalPosition) {
+      if (originalPosition.nextSibling) {
+        originalPosition.parent.insertBefore(cardElement, originalPosition.nextSibling);
+      } else {
+        originalPosition.parent.appendChild(cardElement);
+      }
+      cardElement.style.zIndex = '';
+      document.body.style.overflow = '';
+
+      const plotDiv = cardElement.querySelector('.js-plotly-plot') as HTMLElement;
+      if (plotDiv) {
+        Plotly.relayout(plotDiv, {
+          width: originalPosition.parent.clientWidth,
+          height: 320,
+          autosize: true
+        });
+        Plotly.Plots.resize(plotDiv);
+      }
+    }
+  }
+}
 }

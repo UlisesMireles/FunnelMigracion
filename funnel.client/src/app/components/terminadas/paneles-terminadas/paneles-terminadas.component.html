@@ -1,6 +1,6 @@
 <div class="acordeon-horizontal d-flex" style="gap: 5px;">
   <div class="item-acordeon card-ganadas" *ngIf="permisoGanadas" [class.expandido]="seccionExpandida === 'ganadas'">
-    <div class="encabezado-acordeon" (click)="toggleSeccion('perdidas')">
+    <div class="encabezado-acordeon" (click)="toggleSeccion('ganadas')">
       <button class="boton-toggle" (click)="toggleSeccion('ganadas')">
         <i [ngClass]="seccionExpandida === 'ganadas' ? 'bi bi-chevron-left' : 'bi bi-chevron-right'"></i>
       </button>
@@ -22,7 +22,7 @@
     </div>
   </div>
   <div class="item-acordeon" *ngIf="permisoCanceladas" [class.expandido]="seccionExpandida === 'canceladas'">
-    <div class="encabezado-acordeon" (click)="toggleSeccion('perdidas')">
+    <div class="encabezado-acordeon" (click)="toggleSeccion('canceladas')">
       <button class="boton-toggle" (click)="toggleSeccion('canceladas')">
         <i [ngClass]="seccionExpandida === 'canceladas' ? 'bi bi-chevron-left' : 'bi bi-chevron-right'"></i>
       </button>
@@ -33,7 +33,7 @@
     </div>
   </div>
   <div class="item-acordeon" *ngIf="permisoEliminadas" [class.expandido]="seccionExpandida === 'eliminadas'">
-    <div class="encabezado-acordeon" (click)="toggleSeccion('perdidas')">
+    <div class="encabezado-acordeon" (click)="toggleSeccion('eliminadas')">
       <button class="boton-toggle" (click)="toggleSeccion('eliminadas')">
         <i [ngClass]="seccionExpandida === 'eliminadas' ? 'bi bi-chevron-left' : 'bi bi-chevron-right'"></i>
       </button>

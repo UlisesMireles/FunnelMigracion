@@ -25,7 +25,7 @@ quadrants: { cards: any[] }[] = [];
   anioSeleccionado!: number;
   loading: boolean = true;
   agenteSeleccionadoId: number | null = null;
-  private originalParentElements = new Map<string, { parent: Node, nextSibling: Node | null }>();
+  private originalParentElements = new Map<string, { parent: HTMLElement, nextSibling: Node | null }>();
 
   constructor( private readonly graficasService: GraficasService,private readonly sessionService: LoginService, private readonly cdr: ChangeDetectorRef,) {
     this.quadrants = [
@@ -202,8 +202,8 @@ onAnioChange(): void {
       if (plotDiv) {
         setTimeout(() => {
           Plotly.relayout(plotDiv, {
-            width: cardElement.clientWidth,
-            height: cardElement.clientHeight,
+            width: cardElement.clientWidth - 200,
+            height: cardElement.clientHeight - 100,
             autosize: true
           });
           Plotly.Plots.resize(plotDiv);
@@ -227,7 +227,7 @@ onAnioChange(): void {
       const plotDiv = cardElement.querySelector('.js-plotly-plot') as HTMLElement;
       if (plotDiv) {
         Plotly.relayout(plotDiv, {
-          width: cardElement.clientWidth,
+          width: originalPosition.parent.clientWidth,
           height: 320,
           autosize: true
         });

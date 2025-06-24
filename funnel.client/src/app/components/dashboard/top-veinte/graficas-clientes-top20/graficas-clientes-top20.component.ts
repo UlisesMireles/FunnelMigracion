@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef  } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { environment } from '../../../../../environments/environment';
 import { GraficasService } from '../../../../services/graficas.service';
 import { LoginService } from '../../../../services/login.service';
@@ -9,7 +9,7 @@ import { MessageService } from 'primeng/api';
 import * as Plotly from 'plotly.js-dist-min';
 
 interface OriginalCardPosition {
-  parent: Node;
+  parent: HTMLElement;
   nextSibling: Node | null;
   originalStyle: string | null;
   modalElement?: HTMLElement;
@@ -51,7 +51,7 @@ export class GraficasClientesTop20Component {
       next: (result: any[]) => {
         this.yearsGrafica = result.map((item: any) => item.anio.toString());
         this.yearsGrafica.unshift("Todos los Años");
-        console.log("anios",this.yearsGrafica)
+        console.log("anios", this.yearsGrafica)
         this.consultarGraficaOportunidadesPorSector()
         this.consultarGraficaPorcentajeOportunidadesGanadas()
       },
@@ -144,113 +144,107 @@ export class GraficasClientesTop20Component {
     this.consultarGraficaPorcentajeOportunidadesGanadas()
   }
 
- ToggleMaximizar(i: number, j: number, event: MouseEvent): void {
-  event.stopPropagation();
-  event.preventDefault();
+  ToggleMaximizar(i: number, j: number, event: MouseEvent): void {
+    event.stopPropagation();
+    event.preventDefault();
 
-  const card = this.quadrants[i].cards[j];
-  card.isMaximized = !card.isMaximized;
+    const card = this.quadrants[i].cards[j];
+    card.isMaximized = !card.isMaximized;
 
-  const cardId = `graficas-clientes-top20-card-${i}-${j}`;
-  const cardElement = document.querySelector(`[data-id="${cardId}"]`) as HTMLElement;
-  if (!cardElement) return;
+    const cardId = `graficas-clientes-top20-card-${i}-${j}`;
+    const cardElement = document.querySelector(`[data-id="${cardId}"]`) as HTMLElement;
+    if (!cardElement) return;
 
-  if (card.isMaximized) {
-    const originalParent = cardElement.parentElement;
-    const nextSibling = cardElement.nextSibling;
+    if (card.isMaximized) {
+      const originalParent = cardElement.parentElement;
+      const nextSibling = cardElement.nextSibling;
 
-    if (originalParent) {
-      this.originalParentElements.set(cardId, {
-        parent: originalParent,
-        nextSibling,
-        originalStyle: cardElement.getAttribute('style')
-      });
+      if (originalParent) {
+        this.originalParentElements.set(cardId, {
+          parent: originalParent,
+          nextSibling,
+          originalStyle: cardElement.getAttribute('style')
+        });
 
-      const modalContainer = document.createElement('div');
-      modalContainer.className = 'maximized-card';
+        const modalContainer = document.createElement('div');
+        modalContainer.className = 'maximized-card';
 
-      const modalHeader = document.createElement('div');
-      modalHeader.className = 'card-header';
+        const modalHeader = document.createElement('div');
+        modalHeader.className = 'card-header';
 
-      const title = document.createElement('h5');
-      title.textContent = card.title || 'Gráfica';
-      title.style.margin = '0';
-      modalHeader.appendChild(title);
+        const title = document.createElement('h5');
+        title.textContent = card.title || 'Gráfica';
+        title.style.margin = '0';
+        modalHeader.appendChild(title);
 
-      const closeButton = document.createElement('button');
-      closeButton.innerHTML = '&times;';
-      closeButton.className = 'maximize-btn';
-      closeButton.addEventListener('click', () => this.ToggleMaximizar(i, j, event));
-      modalHeader.appendChild(closeButton);
+        const closeButton = document.createElement('button');
+        closeButton.innerHTML = '&times;';
+        closeButton.className = 'maximize-btn';
+        closeButton.addEventListener('click', () => this.ToggleMaximizar(i, j, event));
+        modalHeader.appendChild(closeButton);
 
-      modalContainer.appendChild(modalHeader);
+        modalContainer.appendChild(modalHeader);
 
-      const modalContent = document.createElement('div');
-      modalContent.className = 'maximized-content';
+        const modalContent = document.createElement('div');
+        modalContent.className = 'maximized-content';
 
-      const plotWrapper = document.createElement('div');
-      plotWrapper.className = 'plot-wrapper';
+        const plotWrapper = document.createElement('div');
+        plotWrapper.className = 'plot-wrapper';
 
-      plotWrapper.appendChild(cardElement);
-      modalContent.appendChild(plotWrapper);
-      modalContainer.appendChild(modalContent);
-      document.body.appendChild(modalContainer);
-      document.body.style.overflow = 'hidden';
+        plotWrapper.appendChild(cardElement);
+        modalContent.appendChild(plotWrapper);
+        modalContainer.appendChild(modalContent);
+        document.body.appendChild(modalContainer);
+        document.body.style.overflow = 'hidden';
 
-      setTimeout(() => {
+        setTimeout(() => {
+          const plotDiv = cardElement.querySelector('.js-plotly-plot') as HTMLElement;
+          if (plotDiv) {
+            Plotly.relayout(plotDiv, {
+              width: plotWrapper.clientWidth -300,
+              height: plotWrapper.clientHeight -100,
+              autosize: true
+            });
+            Plotly.Plots.resize(plotDiv);
+          }
+        }, 100);
+      }
+
+    } else {
+      const originalPosition = this.originalParentElements?.get(cardId);
+      if (originalPosition) {
         const plotDiv = cardElement.querySelector('.js-plotly-plot') as HTMLElement;
         if (plotDiv) {
           Plotly.relayout(plotDiv, {
-            width: plotWrapper.clientWidth,
-            height: plotWrapper.clientHeight,
-            autosize: true
-          });
-          Plotly.Plots.resize(plotDiv);
-        }
-      }, 100);
-    }
-
-  } else {
-    const originalPosition = this.originalParentElements?.get(cardId);
-    if (originalPosition) {
-      const { parent, nextSibling, originalStyle } = originalPosition;
-
-      const modal = document.querySelector('.maximized-card');
-      if (modal) document.body.removeChild(modal);
-
-      if (nextSibling) {
-        parent.insertBefore(cardElement, nextSibling);
-      } else {
-        parent.appendChild(cardElement);
-      }
-
-      if (originalStyle !== null) {
-        cardElement.setAttribute('style', originalStyle);
-      } else {
-        cardElement.removeAttribute('style');
-      }
-
-      cardElement.classList.remove('maximized-card', 'maximized-content', 'plot-wrapper');
-      document.body.style.overflow = '';
-
-      setTimeout(() => {
-        const plotDiv = cardElement.querySelector('.js-plotly-plot') as HTMLElement;
-        if (plotDiv) {
-          Plotly.relayout(plotDiv, {
-            width: cardElement.clientWidth,
-            height: 330,
+            width: originalPosition.parent.clientWidth,
+            height: 320,
             autosize: true,
-            margin: {
-              t: 40,
-              l: 60,
-              r: 60,
-              b: 80
-            }
           });
           Plotly.Plots.resize(plotDiv);
+
+          this.cdr.detectChanges();
         }
-      }, 100);
+        const modal = document.querySelector('.maximized-card');
+        if (modal) document.body.removeChild(modal);
+
+        if (originalPosition.nextSibling) {
+          originalPosition.parent.insertBefore(cardElement, originalPosition.nextSibling);
+        } else {
+          originalPosition.parent.appendChild(cardElement);
+        }
+
+        if (originalPosition.originalStyle !== null) {
+          cardElement.setAttribute('style', originalPosition.originalStyle);
+        } else {
+          cardElement.removeAttribute('style');
+        }
+
+        cardElement.classList.remove('maximized-card', 'maximized-content', 'plot-wrapper');
+        document.body.style.overflow = '';
+
+
+        this.originalParentElements.delete(cardId);
+      }
     }
   }
-}
 }

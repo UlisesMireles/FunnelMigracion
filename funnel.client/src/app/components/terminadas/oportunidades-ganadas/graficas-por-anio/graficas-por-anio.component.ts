@@ -22,7 +22,7 @@ quadrants: { cards: any[] }[] = [];
   aniosDisponibles: { label: string, value: number }[] = [];
   anioSeleccionado!: number;
   loading: boolean = true;
-  originalParentElements = new Map<string, { parent: Node, nextSibling: Node | null }>();
+  originalParentElements = new Map<string, { parent: HTMLElement, nextSibling: Node | null }>();
 
 
   constructor(
@@ -203,7 +203,7 @@ obtenerAniosDisponibles(): void {
         const plotDiv = cardElement.querySelector('.js-plotly-plot') as HTMLElement;
         if (plotDiv) {
           const parentHeight = cardElement.clientHeight - 100;
-          const parentWidth = cardElement.clientWidth - 300;
+          const parentWidth = cardElement.clientWidth - 200;
 
           Plotly.relayout(plotDiv, {
             height: parentHeight,
@@ -222,7 +222,7 @@ obtenerAniosDisponibles(): void {
       // Redimensionar el gráfico antes de moverlo de vuelta
       const plotDiv = cardElement.querySelector('.js-plotly-plot') as HTMLElement;
       if (plotDiv) {
-const parentWidth = (originalPosition.parent as HTMLElement).clientWidth;
+        const parentWidth = originalPosition.parent.clientWidth;
         Plotly.relayout(plotDiv, {
           height: 320,
           width: parentWidth,

@@ -468,29 +468,30 @@
   0%, 100% { opacity: 1; }
   50% { opacity: 0.3; }
 }
-/* Estilo para alinear horizontalmente los campos */
-.datos-oportunidad-horizontal {
+.datos-oportunidad-linea,
+.datos-oportunidad-linea-superior,
+.datos-oportunidad-linea-inferior {
   display: flex;
-   flex-wrap: nowrap;
   gap: 15px;
   align-items: center;
-  margin-bottom: 15px;
 }
 
-.datos-oportunidad-horizontal label {
+.datos-oportunidad-linea label,
+.datos-oportunidad-linea-superior label,
+.datos-oportunidad-linea-inferior label {
   margin: 0;
   white-space: nowrap;
 }
 
 @media (max-width: 992px) {
-  .datos-oportunidad-horizontal {
+  .datos-oportunidad-linea,
+  .datos-oportunidad-linea-superior,
+  .datos-oportunidad-linea-inferior {
     flex-direction: column;
     align-items: flex-start;
     gap: 5px;
   }
 }
-
 .datos-oportunidad-vertical {
   display: block;
 }
-

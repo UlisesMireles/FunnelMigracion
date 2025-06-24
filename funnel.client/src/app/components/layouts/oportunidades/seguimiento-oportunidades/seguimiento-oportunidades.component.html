@@ -12,20 +12,24 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-6">
-         <div *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value !== 1" class="datos-oportunidad-horizontal">
-          <label class="nombre-destacado ">
-            {{ 'Prospecto: ' + oportunidadForm.get('nombre')?.value }}
-          </label>
-          <label class="oportunidad" style="margin-top: 3px;">
-            <span class="bold">Oportunidad:</span> {{ oportunidadForm.get('nombreOportunidad')?.value }}
-          </label>
-          <label style="margin-top: 3px;">
-            <span class="bold">Etapa:</span> {{oportunidadForm.get('stage')?.value }}
-          </label>
-          <label style="margin-top: 3px;">
-            <span class="bold">Monto:</span> {{ (oportunidadForm.get('monto')?.value | currency:'MXN':'symbol':'1.2-2') }}
-          </label>
+        <div *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value !== 1" class="datos-oportunidad-container">
+        <div *ngIf="opCorta()" class="datos-oportunidad-linea">
+          <label class="nombre-destacado">{{ 'Prospecto: ' + oportunidadForm.get('nombre')?.value }}</label>
+          <label class="oportunidad"><span class="bold">Oportunidad:</span> {{ oportunidadForm.get('nombreOportunidad')?.value }}</label>
+          <label><span class="bold">Etapa:</span> {{ oportunidadForm.get('stage')?.value }}</label>
+          <label><span class="bold">Monto:</span> {{ oportunidadForm.get('monto')?.value | currency:'MXN':'symbol':'1.2-2' }}</label>
         </div>
+        <div *ngIf="!opCorta()">
+          <div class="datos-oportunidad-linea-superior">
+            <label class="nombre-destacado">{{ 'Prospecto: ' + oportunidadForm.get('nombre')?.value }}</label>
+            <label class="oportunidad"><span class="bold">Oportunidad:</span> {{ oportunidadForm.get('nombreOportunidad')?.value }}</label>
+          </div>
+          <div class="datos-oportunidad-linea-inferior">
+            <label><span class="bold">Etapa:</span> {{ oportunidadForm.get('stage')?.value }}</label>
+            <label><span class="bold">Monto:</span> {{ oportunidadForm.get('monto')?.value | currency:'MXN':'symbol':'1.2-2' }}</label>
+          </div>
+        </div>
+      </div>
           <div *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value === 1" class="datos-oportunidad-vertical">
             <div class="row mb-2">
               <div class="col">

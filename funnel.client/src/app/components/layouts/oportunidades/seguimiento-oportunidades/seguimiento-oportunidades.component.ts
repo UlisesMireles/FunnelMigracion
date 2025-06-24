@@ -49,6 +49,7 @@ export class SeguimientoOportunidadesComponent {
   copiado: boolean = false;
 
   historialOportunidad: Oportunidad[] = [];
+  
 
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() closeModal: EventEmitter<void> = new EventEmitter();
@@ -389,5 +390,9 @@ export class SeguimientoOportunidadesComponent {
       this.recognition.stop();
     }
   }
+  opCorta(): boolean {
+  const nombreOportunidad = this.oportunidadForm.get('nombreOportunidad')?.value;
+  return nombreOportunidad && nombreOportunidad.length <= 80;
+}
 }
 

@@ -43,7 +43,7 @@
   width: 100%;
 }
 
-.boton-toggle {
+/*.boton-toggle {
   background: transparent;
   border: none;
   cursor: pointer;
@@ -53,7 +53,7 @@
   order: 1;
   align-self: flex-start;
   margin-top: -10px;
-}
+}*/
 
 .nombre-seccion {
   writing-mode: vertical-rl;
@@ -63,7 +63,7 @@
   font-size: 14px;
   text-align: center;
   order: 2;
-  margin-left: -10px;
+  margin-left: 15px;
   margin-top: 5px;
   transition: writing-mode 0.3s, transform 0.3s;
 }
@@ -83,7 +83,6 @@
   overflow-y: auto;
   min-height: 88vh;
   max-height: 88vh;
-  margin-top: -22px;
   margin-left: 25px;
   position: relative;
 }

@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { LazyLoadEvent } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { MessageService } from 'primeng/api';
@@ -41,6 +41,7 @@ export class OportunidadesCanceladasComponent {  @ViewChild('dt') dt!: Table;
   months: string[] = [];
   selectedMonth: string = "Todos los Meses";
   titulo: string = 'Oportunidades Canceladas';
+  @Output() headerClicked = new EventEmitter<void>();
   lsColumnasAMostrar: any[] = [
    
   ];
@@ -417,5 +418,8 @@ export class OportunidadesCanceladasComponent {  @ViewChild('dt') dt!: Table;
 }
   esNumero(cadena: string): boolean {
     return !isNaN(Number(cadena)) && cadena.trim() !== '';
+  }
+onHeaderClick() {
+    this.headerClicked.emit();
   }
 }

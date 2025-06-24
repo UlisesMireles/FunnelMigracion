@@ -54,7 +54,7 @@ export class OportunidadesCanceladasComponent {  @ViewChild('dt') dt!: Table;
     { key: 'stage', isCheck: false, valor: 'Etapa', isIgnore: true, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'iniciales', isCheck: true, valor: 'Ejecutivo', isIgnore: true, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreContacto', isCheck: false, valor: 'Contacto', isIgnore: true, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'monto', isCheck: true, valor: 'Monto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'number' },
+    { key: 'monto', isCheck: true, valor: 'Monto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
     { key: 'probabilidad', isCheck: false, valor: 'Prob', isIgnore: true, isTotal: false, groupColumn: false, tipoFormato: 'text' },
    // { key: 'montoNormalizado', isCheck: false, valor: 'Monto Normalizado', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
     { key: 'fechaRegistro', isCheck: false, valor: 'Fecha Inicio', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },

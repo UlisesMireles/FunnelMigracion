@@ -101,7 +101,7 @@
                         </p-columnFilter>
                       </div>
                       <div *ngSwitchCase="'currency'">
-                        <p-columnFilter type="numeric" field="{{def.key}}" [showButtons]="false" [maxFractionDigits]="7">
+                        <p-columnFilter type="numeric" field="{{def.key}}" *ngIf="def.key !== 'monto'" [showButtons]="false" [maxFractionDigits]="7">
                           <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                               <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
                                   (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">

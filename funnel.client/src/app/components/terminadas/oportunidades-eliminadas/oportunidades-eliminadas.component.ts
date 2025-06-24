@@ -56,7 +56,7 @@ export class OportunidadesEliminadasComponent {
     { key: 'stage', isCheck: false, valor: 'Etapa', isIgnore: true, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'iniciales', isCheck: true, valor: 'Ejecutivo', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'nombreEjecutivo', isCheck: false, valor: 'Ejecutivo', isIgnore: true, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'monto', isCheck: true, valor: 'Monto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'number' },
+    { key: 'monto', isCheck: true, valor: 'Monto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
     { key: 'probabilidad', isCheck: false, valor: 'Probabilidad', isIgnore: true, isTotal: false, groupColumn: false, tipoFormato: 'text' },
     { key: 'fechaRegistro', isCheck: false, valor: 'Fecha Inicio', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
     { key: 'fechaEstimadaCierre', isCheck: true, valor: 'Fecha Cierre', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },

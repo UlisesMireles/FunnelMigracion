@@ -51,11 +51,9 @@
     overflow: hidden;
   }
 .plot-container {
-  height: 330px;
-  max-height: 330px;
+  height: 100%;
   overflow: hidden;
   position: relative;
-  width: 100%;
 }
 .plot-container plotly-plot {
   height: 100% !important;
@@ -87,6 +85,104 @@
 .selected-row {
     background-color: #1976d2 !important;
     color: #fff;
+}
+/* Estilos para maximizado */
+.maximized-card {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10000;
+  background-color: white;
+  overflow: auto;
+}
+
+.maximized-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Estilos para gráficas maximizadas */
+.maximized-content .plot-container {
+  width: 95% !important;
+  height: 95vh !important;
+  max-width: 1400px !important;
+  max-height: 1000px !important;
+  margin: auto !important;
+}
+
+/* Estilos específicos para la tabla cuando está maximizada */
+.maximized-card .table-container {
+  width: 100% !important;
+  height: calc(100vh - 60px) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.maximized-card .table-wrapper {
+  width: 100% !important;
+  height: 100% !important;
+  overflow: auto !important;
+}
+
+.maximized-card .p-table {
+  width: 100% !important;
+  min-height: 100% !important;
+}
+
+.maximized-card .p-table table {
+  width: 100% !important;
+}
+
+.maximized-card .p-table-wrapper {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Tabla en tarjeta minimizada */
+.card .table-container {
+  max-height: 280px;
+  overflow-y: auto;
+  padding: 0.5rem;
+}
+
+.card .table-wrapper {
+  width: 100%;
+}
+
+.card .p-table {
+  width: 100%;
+  table-layout: fixed;
+  word-wrap: break-word;
+}
+
+.card .p-table-wrapper {
+  overflow-x: auto;
+}
+
+.maximize-btn {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  z-index: 1000;
+  color: #000000;
+  background: transparent;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.maximize-btn:hover {
+  color: #495057;
+  background: rgba(255,255,255,0.9);
 }
 .header-graficas{
   background: #bdbdbde1 ;

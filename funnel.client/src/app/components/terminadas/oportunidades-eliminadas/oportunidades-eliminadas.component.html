@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-12" style="text-align: left; margin-top: 14px; margin-left: 10px; padding-left: 0">
+    <div class="col-12" style="text-align: left; margin-top: 14px; margin-left: 10px; padding-left: 0" (click)="onHeaderClick()">
       <h3>{{titulo}}</h3>
     </div>
    
@@ -29,7 +29,7 @@
           </div>
           <p>Cargando...</p>
         </div>
-        <p-table *ngIf="!loading" #dt [stripedRows]="true" [value]="oportunidades" dataKey="id" [rows]="10"
+        <p-table *ngIf="!loading" #dt [value]="oportunidades" dataKey="id" [rows]="10"
           [showCurrentPageReport]="false" [rowsPerPageOptions]="[10, 20, 50]" [paginator]="true" paginatorPosition="both"
           [pageLinks]="1"
           currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros"

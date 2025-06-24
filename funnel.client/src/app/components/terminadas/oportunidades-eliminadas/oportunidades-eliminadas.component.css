@@ -437,11 +437,9 @@ th.sort-active p-sortIcon {
   color: #084298 !important;  
 }
 .custom-tabs {
-  display: inline-flex;
   border-bottom: 1px solid #dee2e6;
   position: absolute;
-  left: 46px;
-  top: 40px; 
+  top: 38px; 
   z-index: 2;
 }
 

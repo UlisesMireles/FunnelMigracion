@@ -3,7 +3,26 @@
     font-size: 1.75rem;
     font-weight: bold;
   }
-  
+  .bold {
+  font-weight: bold;
+}
+.bodyDialog:not(.maximized) .oportunidad{
+  margin-top: 2px;
+  margin-right: 200px;
+  word-break: break-word;
+  white-space: normal;
+  min-width: 420px;
+  max-width: 420px; 
+
+}
+.bodyDialog.maximized .oportunidad {
+  margin-top: 2px;
+  margin-right: 200px;
+  word-break: break-word;
+  white-space: normal;
+  min-width: none;
+  max-width: none; 
+}
   .error-label {
     color: red;
     font-weight: bold;
@@ -225,15 +244,19 @@
   text-align: left !important;
   margin-top: 10px;
   white-space: nowrap;
+
 }
 
 .nombre-destacado {
   font-size: 1.5rem; 
   font-weight: bold; 
   color: #413939;
-  margin-right: 200px;
+  margin-right: 90px;
   margin-top: 10px;
-  white-space: nowrap;
+  word-break: break-word;
+  white-space: normal;
+  min-width: 230px;
+  max-width: 420px; 
 }
 .d-flex {
   display: flex;
@@ -447,4 +470,51 @@
 @keyframes parpadeo {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.3; }
+}
+.datos-oportunidad-linea,
+.datos-oportunidad-linea-superior,
+.datos-oportunidad-linea-intermedia,
+.datos-oportunidad-linea-inferior {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.datos-oportunidad-linea label,
+.datos-oportunidad-linea-superior label,
+.datos-oportunidad-linea-intermedia label,
+.datos-oportunidad-linea-inferior label {
+  margin: 0;
+  white-space: nowrap;
+}
+
+.datos-oportunidad-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+@media (max-width: 992px) {
+  .datos-oportunidad-linea,
+  .datos-oportunidad-linea-superior,
+  .datos-oportunidad-linea-intermedia,
+  .datos-oportunidad-linea-inferior {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+  
+  .datos-oportunidad-vertical {
+    gap: 10px;
+  }
+}
+
+.nombre-destacado {
+  font-weight: bold;
+  color: #333;
+}
+
+.oportunidad {
+  color: #555;
 }

@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
 import { LazyLoadEvent } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { MessageService } from 'primeng/api';
@@ -42,7 +42,7 @@ export class OportunidadesEliminadasComponent {
   selectedMonth: string = "Todos los Meses";
   titulo: string = 'Oportunidades Eliminadas';
   loading: boolean = true;
-
+  @Output() headerClicked = new EventEmitter<void>();
   lsColumnasAMostrar: any[] = [
    
   ];
@@ -421,5 +421,8 @@ export class OportunidadesEliminadasComponent {
 }
   esNumero(cadena: string): boolean {
     return !isNaN(Number(cadena)) && cadena.trim() !== '';
+  }
+onHeaderClick() {
+    this.headerClicked.emit();
   }
 }

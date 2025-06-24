@@ -51,6 +51,7 @@ export class SeguimientoOportunidadesComponent {
 
 
   historialOportunidad: Oportunidad[] = [];
+  
 
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() closeModal: EventEmitter<void> = new EventEmitter();
@@ -66,7 +67,8 @@ export class SeguimientoOportunidadesComponent {
       idEjecutivo: [this.oportunidad.idEjecutivo],
       comentario: ['', [Validators.required, this.validarComentario]],
       idEmpresa: [this.loginService.obtenerIdEmpresa(), Validators.required],
-      probabilidad: [this.oportunidad.probabilidad],
+      stage: [this.oportunidad.stage],
+      //probabilidad: [this.oportunidad.probabilidad],
       idEstatusOportunidad: [this.oportunidad.idEstatusOportunidad],
       tooltipStage: [this.oportunidad.tooltipStage],
       idUsuario: [this.loginService.obtenerIdUsuario()],
@@ -454,5 +456,12 @@ export class SeguimientoOportunidadesComponent {
   }
 
 
+lonOp(): boolean {
+  const nombreOportunidad = this.oportunidadForm.get('nombreOportunidad')?.value;
+  return nombreOportunidad && nombreOportunidad.length <= 80;
 }
 
+lonPros(): boolean {
+  const nombreProspecto = this.oportunidadForm.get('nombre')?.value;
+  return nombreProspecto && nombreProspecto.length <= 50;
+}}

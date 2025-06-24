@@ -473,28 +473,48 @@
 }
 .datos-oportunidad-linea,
 .datos-oportunidad-linea-superior,
+.datos-oportunidad-linea-intermedia,
 .datos-oportunidad-linea-inferior {
   display: flex;
   gap: 15px;
   align-items: center;
+  margin-bottom: 5px;
 }
 
 .datos-oportunidad-linea label,
 .datos-oportunidad-linea-superior label,
+.datos-oportunidad-linea-intermedia label,
 .datos-oportunidad-linea-inferior label {
   margin: 0;
   white-space: nowrap;
 }
 
+.datos-oportunidad-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
 @media (max-width: 992px) {
   .datos-oportunidad-linea,
   .datos-oportunidad-linea-superior,
+  .datos-oportunidad-linea-intermedia,
   .datos-oportunidad-linea-inferior {
     flex-direction: column;
     align-items: flex-start;
     gap: 5px;
   }
+  
+  .datos-oportunidad-vertical {
+    gap: 10px;
+  }
 }
-.datos-oportunidad-vertical {
-  display: block;
+
+.nombre-destacado {
+  font-weight: bold;
+  color: #333;
+}
+
+.oportunidad {
+  color: #555;
 }

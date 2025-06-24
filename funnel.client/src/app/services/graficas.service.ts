@@ -134,7 +134,8 @@ export class GraficasService {
     return {
       margin: { t: 0, b: 100, l: 0, r: 100 },
       height: 330,
-      showlegend: showlegend
+      showlegend: showlegend,
+      autosize: true
     };
   }
 
@@ -200,14 +201,14 @@ export class GraficasService {
     return {
       margin: { l: 130, r: 40, b: 100, t: 30 },
       height: 400,
-
+      autosize: true
     };
   }
   createBarLayout() {
     return {
       margin: { l: 50, r: 50, b: 160, t: 0 },
       height: 400,
-
+      autosize: true
     };
   }
 
@@ -215,8 +216,8 @@ export class GraficasService {
     return {
       barmode: 'group', 
       margin: { l: 130, r: 40, b: 120, t: 30 }, 
-      height: 400
-
+      height: 400,
+      autosize: true
     };
   }
 
@@ -224,6 +225,7 @@ export class GraficasService {
     return {
       margin: { l: 50, r: 70, b: 100, t: 30 },
       height: 400,
+      autosize: true,
       yaxis: { visible: false, showticklabels: false, showgrid: false, zeroline: false },
       xaxis: { visible: false, showticklabels: false, showgrid: false, zeroline: false }
     }

@@ -8,7 +8,7 @@
           </div>
           <p>Cargando...</p>
         </div>
-        <p-table *ngIf="!loading" #dt [stripedRows]="true" [value]="topveinte" dataKey="id" [rows]="10"
+        <p-table *ngIf="!loading" #dt [stripedRows]="false"  [value]="topveinte" dataKey="id" [rows]="10"
           [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 20, 50]" [paginator]="false"
           paginatorPosition="both" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros"
           [columns]="lsColumnasAMostrar" [resizableColumns]="true" [reorderableColumns]="true"

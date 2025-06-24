@@ -12,35 +12,82 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-6">
-          <div class="row mb-2">
-            <div class="col">
-              <label class="margen text-left nombre-destacado">
-                {{ 'Prospecto: ' + oportunidadForm.get('nombre')?.value }}
-              </label>
-            </div>
+        <div *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value !== 1" class="datos-oportunidad-container">
+        <!--Todos son cortos -->
+        <div *ngIf="lonPros() && lonOp()" class="datos-oportunidad-linea">
+          <label class="nombre-destacado">{{ 'Prospecto: ' + oportunidadForm.get('nombre')?.value }}</label>
+          <label class="oportunidad"><span class="bold">Oportunidad:</span> {{ oportunidadForm.get('nombreOportunidad')?.value }}</label>
+          <label><span class="bold">Etapa:</span> {{ oportunidadForm.get('stage')?.value }}</label>
+          <label><span class="bold">Monto:</span> {{ oportunidadForm.get('monto')?.value | currency:'MXN':'symbol':'1.2-2' }}</label>
+        </div>
+        <!--Prospecto largo y oportunidad corta -->
+        <div *ngIf="!lonPros() && lonOp()" class="datos-oportunidad-vertical">
+          <div class="datos-oportunidad-linea-superior">
+            <label class="nombre-destacado">{{ 'Prospecto: ' + oportunidadForm.get('nombre')?.value }}</label>
           </div>
-          <div class="row mb-2">
-            <div class="col">
-              <label class="margen text-left">
-                {{ 'Oportunidad: ' + oportunidadForm.get('nombreOportunidad')?.value }}
-              </label>
-            </div>
+          <div class="datos-oportunidad-linea-inferior">
+            <label class="oportunidad"><span class="bold">Oportunidad:</span> {{ oportunidadForm.get('nombreOportunidad')?.value }}</label>
+            <label><span class="bold">Etapa:</span> {{ oportunidadForm.get('stage')?.value }}</label>
+            <label><span class="bold">Monto:</span> {{ oportunidadForm.get('monto')?.value | currency:'MXN':'symbol':'1.2-2' }}</label>
           </div>
-          <div class="row mb-2">
-            <div class="col">
-              <label class="margen text-left">
-                {{ 'Probabilidad: ' + oportunidadForm.get('probabilidad')?.value }}
-              </label>
-            </div>
+        </div>
+        <!--Prospecto largo y oportunidad larga -->
+        <div *ngIf="!lonPros() && !lonOp()" class="datos-oportunidad-vertical">
+          <div class="datos-oportunidad-linea-superior">
+            <label class="nombre-destacado">{{ 'Prospecto: ' + oportunidadForm.get('nombre')?.value }}</label>
           </div>
-          <div class="row">
-            <div class="col">
-              <label class="margen text-left">
-                {{ 'Monto: ' + (oportunidadForm.get('monto')?.value | currency:'MXN':'symbol':'1.2-2') }}
-              </label>
+          <div class="datos-oportunidad-linea-intermedia">
+            <label class="oportunidad"><span class="bold">Oportunidad:</span> {{ oportunidadForm.get('nombreOportunidad')?.value }}</label>
+          </div>
+          <div class="datos-oportunidad-linea-inferior">
+            <label><span class="bold">Etapa:</span> {{ oportunidadForm.get('stage')?.value }}</label>
+            <label><span class="bold">Monto:</span> {{ oportunidadForm.get('monto')?.value | currency:'MXN':'symbol':'1.2-2' }}</label>
+          </div>
+        </div>
+        <!-- Prospecto corto y oportunidad larga -->
+        <div *ngIf="lonPros() && !lonOp()" class="datos-oportunidad-vertical">
+          <div class="datos-oportunidad-linea-superior">
+            <label class="nombre-destacado">{{ 'Prospecto: ' + oportunidadForm.get('nombre')?.value }}</label>
+            <label class="oportunidad"><span class="bold">Oportunidad:</span> {{ oportunidadForm.get('nombreOportunidad')?.value }}</label>
+          </div>
+          <div class="datos-oportunidad-linea-inferior">
+            <label><span class="bold">Etapa:</span> {{ oportunidadForm.get('stage')?.value }}</label>
+            <label><span class="bold">Monto:</span> {{ oportunidadForm.get('monto')?.value | currency:'MXN':'symbol':'1.2-2' }}</label>
+          </div>
+        </div>
+      </div>
+          <div *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value === 1" class="datos-oportunidad-vertical">
+            <div class="row mb-2">
+              <div class="col">
+                <label class="margen text-left nombre-destacado">
+                  {{ 'Prospecto: ' + oportunidadForm.get('nombre')?.value }}
+                </label>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col">
+                <label class="oportunidad">
+                  <span class="bold">Oportunidad:</span> {{ oportunidadForm.get('nombreOportunidad')?.value }}
+                </label>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col">
+                <label class="margen text-left">
+                 <span class="bold">Etapa:</span> {{oportunidadForm.get('stage')?.value }}
+                </label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <label class="margen text-left" >
+                 <span class = "bold">Monto:</span> {{ (oportunidadForm.get('monto')?.value | currency:'MXN':'symbol':'1.2-2') }}
+                </label>
+              </div>
             </div>
           </div>
         </div>
+        
         <div class="col-md-6 seguimiento-container">
           <form [formGroup]="oportunidadForm">
             <div *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value === 1" class="seguimiento-area">
@@ -77,14 +124,13 @@
               
               <button pButton label="Salir" (click)="close()" severity="secondary"
                 *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value === 1"></button>
-
-        <!--      <button pButton severity="secondary" [disabled]="disabledPdf" 
+              
+              <!--<button pButton severity="secondary" [disabled]="disabledPdf" 
                 (click)="exportPdf(oportunidadForm.get('idOportunidad')?.value)"
                 [disabled]="historialOportunidad.length === 0"
                 pTooltip="Descargar PDF" tooltipPosition="top" class="icon-btn">
                 <i class="bi bi-filetype-pdf"></i>
               </button> -->
-              
               <button pButton severity="secondary"
                 (click)="enviarSeguimiento()" 
                 [disabled]="historialOportunidad.length === 0"
@@ -93,36 +139,35 @@
                 <i class="bi bi-stars"></i> 
                  <span class="ia-button-text "> IA</span>
               </button>
-
             </div>
           </form>
         </div>
       </div>
       
-<div class="row mt-3">
-  <div class="col-sm-12" *ngIf="historialOportunidad.length > 0; else noComments">
-    <div class="table-responsive">
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Usuario</th>
-            <th>Fecha</th>
-            <th style="min-width: 150px;">Comentario</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of historialOportunidad">
-            <td class="text-left">{{ item.iniciales }}</td>
-            <td class="text-left">{{ item.fechaRegistro | date:'dd/MM/yyyy' }}</td>
-            <td class="text-left comentario-cell">
-              {{ item.comentario }}
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
+      <div class="row mt-3">
+        <div class="col-sm-12" *ngIf="historialOportunidad.length > 0; else noComments">
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Usuario</th>
+                  <th>Fecha</th>
+                  <th style="min-width: 150px;">Comentario</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of historialOportunidad">
+                  <td class="text-left">{{ item.iniciales }}</td>
+                  <td class="text-left">{{ item.fechaRegistro | date:'dd/MM/yyyy' }}</td>
+                  <td class="text-left comentario-cell">
+                    {{ item.comentario }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   </ng-template>
 

@@ -23,7 +23,7 @@
   </div>
   <div class="item-acordeon" *ngIf="permisoCanceladas" [class.expandido]="seccionExpandida === 'canceladas'">
     <div class="encabezado-acordeon" (click)="toggleSeccion('canceladas')">
-      <!--<button class="boton-toggle" (click)="toggleSeccion('canceladas')">
+      <!--<button class="boton-toggle" (click)="toggleSeccion('canceladas')">      
         <i [ngClass]="seccionExpandida === 'canceladas' ? 'bi bi-chevron-left' : 'bi bi-chevron-right'"></i>
       </button>-->
       <span class="nombre-seccion">{{ EnumPaginas.CANCELADAS }}</span>

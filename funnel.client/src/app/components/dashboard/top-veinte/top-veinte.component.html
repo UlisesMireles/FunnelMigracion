@@ -196,6 +196,9 @@
         {{ copiado ? 'check' : 'content_copy' }}
       </mat-icon>
     </button>
+    <button class="btn-copiar" (click)="leerRespuesta()" pTooltip="{{ leyendo ? 'Detener lectura' : 'Escuchar respuesta' }}" tooltipPosition="top">
+      <mat-icon>{{ leyendo ? 'stop' : 'volume_up' }}</mat-icon>
+    </button>
   </ng-container>
 
   <ng-template #cargando>

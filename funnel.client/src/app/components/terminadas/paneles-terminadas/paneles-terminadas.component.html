@@ -1,20 +1,20 @@
 <div class="acordeon-horizontal d-flex" style="gap: 5px;">
   <div class="item-acordeon card-ganadas" *ngIf="permisoGanadas" [class.expandido]="seccionExpandida === 'ganadas'">
-    <div class="encabezado-acordeon" (click)="toggleSeccion('perdidas')">
-      <button class="boton-toggle" (click)="toggleSeccion('ganadas')">
+    <div class="encabezado-acordeon" (click)="toggleSeccion('ganadas')">
+      <!--<button class="boton-toggle" (click)="toggleSeccion('ganadas')">
         <i [ngClass]="seccionExpandida === 'ganadas' ? 'bi bi-chevron-left' : 'bi bi-chevron-right'"></i>
-      </button>
+      </button>-->
       <span class="nombre-seccion">{{ EnumPaginas.GANADAS }}</span>
     </div>
-    <div class="contenido-acordeon-horizontal" *ngIf="seccionExpandida === 'ganadas'" style="margin-left: 35px;">
+    <div class="contenido-acordeon-horizontal" *ngIf="seccionExpandida === 'ganadas'" >
       <app-oportunidades-ganadas></app-oportunidades-ganadas>
     </div>
   </div>
   <div class="item-acordeon card-perdidas" *ngIf="permisoPerdidas" [class.expandido]="seccionExpandida === 'perdidas'">
     <div class="encabezado-acordeon" (click)="toggleSeccion('perdidas')">
-      <button class="boton-toggle" (click)="toggleSeccion('perdidas')">
+      <!--<button class="boton-toggle" (click)="toggleSeccion('perdidas')">
         <i [ngClass]="seccionExpandida === 'perdidas' ? 'bi bi-chevron-left' : 'bi bi-chevron-right'"></i>
-      </button>
+      </button>-->
       <span class="nombre-seccion">{{ EnumPaginas.PERDIDAS }}</span>
     </div>
     <div class="contenido-acordeon-horizontal" *ngIf="seccionExpandida === 'perdidas'">
@@ -22,10 +22,10 @@
     </div>
   </div>
   <div class="item-acordeon" *ngIf="permisoCanceladas" [class.expandido]="seccionExpandida === 'canceladas'">
-    <div class="encabezado-acordeon" (click)="toggleSeccion('perdidas')">
-      <button class="boton-toggle" (click)="toggleSeccion('canceladas')">
+    <div class="encabezado-acordeon" (click)="toggleSeccion('canceladas')">
+      <!--<button class="boton-toggle" (click)="toggleSeccion('canceladas')">
         <i [ngClass]="seccionExpandida === 'canceladas' ? 'bi bi-chevron-left' : 'bi bi-chevron-right'"></i>
-      </button>
+      </button>-->
       <span class="nombre-seccion">{{ EnumPaginas.CANCELADAS }}</span>
     </div>
     <div class="contenido-acordeon-horizontal" *ngIf="seccionExpandida === 'canceladas'">
@@ -33,10 +33,10 @@
     </div>
   </div>
   <div class="item-acordeon" *ngIf="permisoEliminadas" [class.expandido]="seccionExpandida === 'eliminadas'">
-    <div class="encabezado-acordeon" (click)="toggleSeccion('perdidas')">
-      <button class="boton-toggle" (click)="toggleSeccion('eliminadas')">
+    <div class="encabezado-acordeon" (click)="toggleSeccion('eliminadas')">
+      <!--<button class="boton-toggle" (click)="toggleSeccion('eliminadas')">
         <i [ngClass]="seccionExpandida === 'eliminadas' ? 'bi bi-chevron-left' : 'bi bi-chevron-right'"></i>
-      </button>
+      </button>-->
       <span class="nombre-seccion">{{ EnumPaginas.ELIMINADAS }}</span>
     </div>
     <div class="contenido-acordeon-horizontal" *ngIf="seccionExpandida === 'eliminadas'">

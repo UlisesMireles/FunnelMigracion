@@ -16,6 +16,7 @@ export class PanelesTerminadasComponent {
   permisoEliminadas: boolean = false;
   seccionExpandida: 'ganadas' | 'perdidas' | 'canceladas' | 'eliminadas' = 'ganadas';
   EnumPaginas = EnumPaginas;
+  
   constructor(private readonly loginService:LoginService) { }
   ngOnInit() {
      this.consultarPermisosUsuario();

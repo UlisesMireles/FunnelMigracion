@@ -440,7 +440,7 @@ th.sort-active p-sortIcon {
   display: inline-flex;
   border-bottom: 1px solid #dee2e6;
   position: absolute;
-  left: 46px;
+  left: 15px;
   top: 40px; 
   z-index: 2;
 }

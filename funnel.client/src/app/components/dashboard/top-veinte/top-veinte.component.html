@@ -186,7 +186,7 @@
   [maximizable]="true" [style]="{
     width: maximizedRespuesta ? '100vw' : '50vw',
     height: maximizedRespuesta ? '100vh' : 'auto'
-  }" [ngClass]="{'maximized': maximizedRespuesta}" (onHide)="maximizedRespuesta = false" appendTo="body"
+  }" [ngClass]="{'maximized': maximizedRespuesta}" (onHide)="alCerrarDialogo()" appendTo="body"
   class="bodyDialog" styleClass="custom-header-verde">
 
   <ng-container *ngIf="!loadingAsistente; else cargando">

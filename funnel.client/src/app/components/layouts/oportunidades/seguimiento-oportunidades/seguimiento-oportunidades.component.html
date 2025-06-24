@@ -142,7 +142,7 @@
     height: maximizedRespuesta ? '100vh' : 'auto'
   }"
   [ngClass]="{'maximized': maximizedRespuesta}"
-  (onHide)="maximizedRespuesta = false"
+  (onHide)="alCerrarDialogo()"
   appendTo="body"
   class="bodyDialog"
   styleClass="custom-header-verde">

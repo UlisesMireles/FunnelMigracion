@@ -444,6 +444,15 @@ export class SeguimientoOportunidadesComponent {
       window.speechSynthesis.speak(utterance);
     }
   }
+  alCerrarDialogo(): void {
+    this.maximizedRespuesta = false;
+
+    if (this.leyendo) {
+      window.speechSynthesis.cancel();
+      this.leyendo = false;
+    }
+  }
+
 
 }
 

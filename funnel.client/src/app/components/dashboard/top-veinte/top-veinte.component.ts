@@ -413,58 +413,67 @@ export class TopVeinteComponent {
   }
   
   leerRespuesta(): void {
-  if (this.leyendo) {
-    window.speechSynthesis.cancel();
-    this.leyendo = false;
-  } else {
-    if (!this.respuestaAsistente) return;
+    if (this.leyendo) {
+      window.speechSynthesis.cancel();
+      this.leyendo = false;
+    } else {
+      if (!this.respuestaAsistente) return;
 
-    const tempElement = document.createElement('div');
-    tempElement.innerHTML = this.respuestaAsistente;
+      const tempElement = document.createElement('div');
+      tempElement.innerHTML = this.respuestaAsistente;
 
-    function getPlainText(element: HTMLElement): string {
-      let text = '';
-      element.childNodes.forEach(node => {
-        if (node.nodeType === Node.TEXT_NODE) {
-          text += node.textContent;
-        } else if (node.nodeType === Node.ELEMENT_NODE) {
-          const el = node as HTMLElement;
-          const tag = el.tagName.toLowerCase();
+      function getPlainText(element: HTMLElement): string {
+        let text = '';
+        element.childNodes.forEach(node => {
+          if (node.nodeType === Node.TEXT_NODE) {
+            text += node.textContent;
+          } else if (node.nodeType === Node.ELEMENT_NODE) {
+            const el = node as HTMLElement;
+            const tag = el.tagName.toLowerCase();
 
-          if (tag === 'p' || tag === 'div' || tag === 'br') {
-            text += getPlainText(el) + '\n';
-          } else if (tag === 'li') {
-            text += '- ' + getPlainText(el) + '\n';
-          } else {
-            text += getPlainText(el);
+            if (tag === 'p' || tag === 'div' || tag === 'br') {
+              text += getPlainText(el) + '\n';
+            } else if (tag === 'li') {
+              text += '- ' + getPlainText(el) + '\n';
+            } else {
+              text += getPlainText(el);
+            }
           }
-        }
-      });
-      return text;
+        });
+        return text;
+      }
+
+      const textoPlano = getPlainText(tempElement).trim();
+
+      const utterance = new SpeechSynthesisUtterance(textoPlano);
+      utterance.lang = 'es-MX';
+      utterance.rate = 1;
+      utterance.pitch = 1;
+      utterance.volume = 1;
+
+      this.leyendo = true;
+
+      utterance.onend = () => {
+        this.leyendo = false;
+      };
+
+      utterance.onerror = () => {
+        this.leyendo = false;
+      };
+
+      window.speechSynthesis.cancel(); 
+      window.speechSynthesis.speak(utterance);
     }
-
-    const textoPlano = getPlainText(tempElement).trim();
-
-    const utterance = new SpeechSynthesisUtterance(textoPlano);
-    utterance.lang = 'es-MX';
-    utterance.rate = 1;
-    utterance.pitch = 1;
-    utterance.volume = 1;
-
-    this.leyendo = true;
-
-    utterance.onend = () => {
-      this.leyendo = false;
-    };
-
-    utterance.onerror = () => {
-      this.leyendo = false;
-    };
-
-    window.speechSynthesis.cancel(); 
-    window.speechSynthesis.speak(utterance);
   }
-}
+  alCerrarDialogo(): void {
+    this.maximizedRespuesta = false;
+
+    if (this.leyendo) {
+      window.speechSynthesis.cancel();
+      this.leyendo = false;
+    }
+  }
+
 
 
 }

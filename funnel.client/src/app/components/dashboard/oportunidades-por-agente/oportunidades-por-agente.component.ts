@@ -179,7 +179,7 @@ toggleMaximizar(i: number, j: number, event: MouseEvent): void {
         const plotDiv = cardElement.querySelector('.js-plotly-plot') as HTMLElement;
         if (plotDiv) {
           const parentHeight = cardElement.clientHeight - 100;
-          const parentWidth = cardElement.clientWidth - 300;
+          const parentWidth = cardElement.clientWidth - 500;
 
           Plotly.relayout(plotDiv, {
             height: parentHeight,

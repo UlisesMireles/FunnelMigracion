@@ -217,7 +217,9 @@
 
               <ng-template pTemplate="footer" let-columns #footer>
                 <tr class="custom-footer">
-                  <td *ngFor="let def of lsColumnasAMostrar" [ngStyle]="{
+                  <td *ngFor="let def of lsColumnasAMostrar"
+                  [ngClass]="{'total-registros-cell': def.key === 'nombre'}" 
+                  [ngStyle]="{
                     'text-align': 
                       def.tipoFormato === 'currency' ? 'right' : 
                       (def.tipoFormato === 'number' || def.tipoFormato === 'date') ? 'center' : 'left'

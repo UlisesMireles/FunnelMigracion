@@ -191,7 +191,7 @@
     padding: 0px !important;
     font-weight: bold;
     font-size: 12.5px !important;
-    background: #E1DAC7 !important;
+    background: #e4fdff !important;
   }
   
   :host ::ng-deep .custom-header2 input,
@@ -318,4 +318,8 @@ th.sort-active p-sortIcon {
   min-height: 26px !important;   /* Altura mínima pero puede expandirse */
   white-space: normal !important;
   padding: 8px 5px !important;   /* Espacio interno */
+}
+
+.total-registros-cell {
+  padding-left: 3px !important;  
 }

@@ -37,7 +37,7 @@
         </div>
         <p-table *ngIf="!loading" #dt [value]="oportunidades" dataKey="id" [rows]="10"
           [showCurrentPageReport]="false" [rowsPerPageOptions]="[10, 20, 50]" [paginator]="true" paginatorPosition="both"
-          [pageLinks]="1" 
+          [pageLinks]="1"  [paginatorDropdownAppendTo]="'body'"
           currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros"
           [columns]="lsColumnasAMostrar"
           [autoLayout]="false" [reorderableColumns]="true" [resizableColumns]="true"

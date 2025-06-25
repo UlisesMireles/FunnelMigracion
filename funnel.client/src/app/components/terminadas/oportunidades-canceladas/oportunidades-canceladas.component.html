@@ -33,7 +33,7 @@
             </div>
             <p-table *ngIf="!loading" #dt [value]="oportunidadesCanceladas" dataKey="id"
               [rows]="10" [showCurrentPageReport]="false" [rowsPerPageOptions]="[10, 20, 50]" [paginator]="true"
-              paginatorPosition="both"
+              paginatorPosition="both"  [paginatorDropdownAppendTo]="'body'"
               currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros"
               [columns]="lsColumnasAMostrar" [resizableColumns]="true" [reorderableColumns]="true"
               [globalFilterFields]="['nombre','nombreSector','nombreOportunidad','abreviatura','stage','iniciales','nombreContacto','entrega','monto','probabilidadOriginal','probabilidad','montoNormalizado','fechaRegistro','diasFunnelOriginal','fechaEstimadaCierreOriginal','fechaModificacion']"

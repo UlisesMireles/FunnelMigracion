@@ -144,6 +144,7 @@
           <ng-template pTemplate="footer" let-columns #footer>
             <tr class="custom-footer">
               <td *ngFor="let def of lsColumnasAMostrar"
+              [ngClass]="{'total-registros-cell': def.key === 'nombreCompleto'}"
               [ngStyle]="{
                 'text-align': def.key ===  'desEstatus' ? 'center' : 'left',
                 'width': def.key === 'estatus' ? '50px' :

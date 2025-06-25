@@ -320,3 +320,7 @@ th.sort-active p-sortIcon {
   white-space: normal !important;
   padding: 8px 5px !important;   /* Espacio interno */
 }
+
+.total-registros-cell {
+  padding-left: 3px !important;  
+}

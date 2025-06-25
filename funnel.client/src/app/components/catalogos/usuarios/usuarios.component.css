@@ -323,3 +323,6 @@ th.sort-active p-sortIcon {
   background-color: #f5f5f5;
 }
 
+.total-registros-cell {
+  padding-left: 3px !important;  
+}

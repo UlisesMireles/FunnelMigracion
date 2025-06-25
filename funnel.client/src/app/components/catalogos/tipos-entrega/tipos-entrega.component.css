@@ -311,3 +311,7 @@ th.sort-active p-sortIcon {
               0 0.5px 0 currentColor,
               0 -0.5px 0 currentColor;
 }
+
+.total-registros-cell {
+  padding-left: 3px !important;  
+}

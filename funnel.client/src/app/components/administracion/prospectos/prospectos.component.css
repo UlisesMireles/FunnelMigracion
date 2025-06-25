@@ -327,3 +327,7 @@ th.sort-active p-sortIcon {
   min-width: 95px !important;
   max-width: 95px !important;
 }
+
+.total-registros-cell {
+  padding-left: 3px !important;  
+}

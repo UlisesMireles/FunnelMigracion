@@ -610,3 +610,6 @@ th.sort-active p-sortIcon {
   min-width: 100px;
 }
 
+.total-registros-cell {
+  padding-left: 3px !important;  
+}

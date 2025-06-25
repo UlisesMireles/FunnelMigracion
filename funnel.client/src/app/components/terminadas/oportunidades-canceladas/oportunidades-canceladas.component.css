@@ -455,5 +455,7 @@ th.sort-active p-sortIcon {
   color: #3c3e41 !important;
 }
 
-
+.total-registros-cell {
+  padding-left: 3px !important;  
+}
 

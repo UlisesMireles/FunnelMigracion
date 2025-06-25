@@ -459,3 +459,7 @@ th.sort-active p-sortIcon {
     margin-top: -59px;
     margin-left: -10px;
   }
+
+  .total-registros-cell {
+  padding-left: 3px !important;  
+}

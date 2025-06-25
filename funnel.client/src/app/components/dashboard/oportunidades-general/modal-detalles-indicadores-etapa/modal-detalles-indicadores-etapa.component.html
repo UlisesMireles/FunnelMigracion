@@ -81,7 +81,8 @@
         </ng-template>
         <ng-template pTemplate="footer" let-columns>
         <tr class="custom-footer">
-            <td *ngFor="let def of lsColumnasAMostrar">
+            <td *ngFor="let def of lsColumnasAMostrar"
+            [ngClass]="{'total-registros-cell': def.key === 'nombre'}">
             <ng-container *ngIf="def.tipoFormato === 'currency'">
                 <div style="text-align: right; font-weight: bold;">
                 {{ calcularSumaMontos() | currency:'MXN':'symbol':'1.2-2' }}

@@ -455,3 +455,7 @@ color: #272722 !important;
 .custom-tabs .nav-link.active {
   color: #3c3e41 !important;
 }
+
+.total-registros-cell {
+  padding-left: 3px !important;  
+}

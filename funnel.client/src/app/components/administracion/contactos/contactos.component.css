@@ -209,7 +209,7 @@ div.inDivDatatableHeader>p-button>button.p-button {
   padding: 0px !important;
   font-weight: bold;
   font-size: 12.5px !important;
-  background: #E1DAC7 !important;
+  background: #e4fdff!important;
 }
 
 :host ::ng-deep .custom-header2 input,

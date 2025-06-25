@@ -178,3 +178,7 @@ th.sort-active p-sortIcon {
 ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
   background: inherit !important;
 }
+
+.total-registros-cell {
+  padding-left: 3px !important;  
+}

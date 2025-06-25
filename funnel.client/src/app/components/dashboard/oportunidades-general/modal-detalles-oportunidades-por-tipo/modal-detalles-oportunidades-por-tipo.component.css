@@ -159,3 +159,7 @@ th.sort-active p-sortIcon {
   background-color: #e9ecef;
   font-weight: bold;
 }
+
+.total-registros-cell {
+  padding-left: 7px !important;  
+}

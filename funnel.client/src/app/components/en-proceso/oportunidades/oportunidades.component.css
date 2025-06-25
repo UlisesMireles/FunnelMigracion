@@ -66,7 +66,6 @@ div.inDivDatatableHeader>p-button>button.p-button {
   background: rgb(247, 106, 19);
   background: linear-gradient(0deg, rgba(247, 106, 19, 1) 0%, rgba(200, 87, 24, 1) 35%, rgba(231, 91, 42, 1) 100%);
   color: white;
-  border: 0.1px solid #872B07;
   text-align: center;
   font-size: 15px;
 }
@@ -214,7 +213,7 @@ div.inDivDatatableHeader>p-button>button.p-button {
   padding: 0px !important;
   font-weight: bold;
   font-size: 12.5px !important;
-  background: #E1DAC7 !important;
+  background: #e4fdff !important;
 }
 
 :host ::ng-deep .custom-header2 input,
@@ -610,3 +609,6 @@ th.sort-active p-sortIcon {
   min-width: 100px;
 }
 
+.total-registros-cell {
+  padding-left: 3px !important;  
+}

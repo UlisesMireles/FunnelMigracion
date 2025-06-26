@@ -1,3 +1,7 @@
+<div class="year-selector">
+  <p-dropdown [options]="aniosDisponibles" [(ngModel)]="anioSeleccionado" (onChange)="onAnioChange()" [disabled]="loading">
+  </p-dropdown>
+</div>
 <div class="grid-container">
     <div class="quadrant p-0" *ngFor="let group of quadrants; let i = index" cdkDropList [cdkDropListData]="group.cards"
         [cdkDropListConnectedTo]="dropListIds" [id]="'cardList' + i" (cdkDropListDropped)="drop($event)">

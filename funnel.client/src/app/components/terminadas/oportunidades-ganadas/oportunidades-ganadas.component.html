@@ -7,13 +7,9 @@
     <div class="col-12">
        <!-- Pestañas  -->
     <ul class="nav nav-tabs custom-tabs">
+      
       <li class="nav-item">
-        <a class="nav-link active" data-bs-toggle="tab" href="#lista"  pTooltip="Lista" tooltipPosition="top" >
-          <i class="bi bi-list"></i>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="tab"  href="#porAnio" pTooltip="Gráficas por año" tooltipPosition="top">
+        <a class="nav-link active" data-bs-toggle="tab"  href="#porAnio" pTooltip="Gráficas por año" tooltipPosition="top">
           <i class="bi bi-bar-chart-line"></i>
         </a>
       </li>
@@ -22,12 +18,17 @@
           <i class="bi bi-pie-chart"></i>  
         </a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#lista"  pTooltip="Lista" tooltipPosition="top" >
+          <i class="bi bi-list"></i>
+        </a>
+      </li>
     </ul>
  
        <!-- Contenido de las pestañas -->
        <div class="tab-content">
         <!-- Pestaña 1 -->
-        <div class="tab-pane fade show active" id="lista"  style="margin-top: 5px;">
+        <div class="tab-pane fade " id="lista"  style="margin-top: 5px;">
         <div class="row contenedorTabla">
         <div *ngIf="loading" class="loading-message" style="padding-top: 50px;">
           <div class="spinner-border text-primary" role="status">
@@ -37,7 +38,7 @@
         </div>
         <p-table *ngIf="!loading" #dt [value]="oportunidades" dataKey="id" [rows]="10"
           [showCurrentPageReport]="false" [rowsPerPageOptions]="[10, 20, 50]" [paginator]="true" paginatorPosition="both"
-          [pageLinks]="1" 
+          [pageLinks]="1" [paginatorDropdownAppendTo]="'body'"
           currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros"
           [columns]="lsColumnasAMostrar"
           [autoLayout]="false" [reorderableColumns]="true" [resizableColumns]="true"
@@ -214,6 +215,7 @@
           <ng-template pTemplate="footer" let-columns #footer>
             <tr class="custom-footer">
               <td *ngFor="let def of lsColumnasAMostrar" 
+                  [ngClass]="{'total-registros-cell': def.key === 'nombre'}"
                   [ngStyle]="{
                     'text-align': 
                       def.tipoFormato === 'currency' ? 'right' : 
@@ -242,7 +244,7 @@
       </div>
         </div>
        <!-- Gráficas por Año -->
-       <div class="tab-pane fade" id="porAnio">
+       <div class="tab-pane fade show active" id="porAnio">
           <div class="row" >
             <div class="col-12" style="margin-top: 5px;">
               <app-graficas-por-anio></app-graficas-por-anio>

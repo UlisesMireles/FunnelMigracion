@@ -230,7 +230,7 @@
     padding: 0px !important;
     font-weight: bold;
     font-size: 12.5px !important;
-    background: #E1DAC7 !important;
+    background: #e4fdff !important;
   }
   
   :host ::ng-deep .custom-header2 input,
@@ -453,4 +453,8 @@ th.sort-active p-sortIcon {
 
 .custom-tabs .nav-link.active {
   color: #3c3e41 !important;
+}
+
+.total-registros-cell {
+  padding-left: 3px !important;  
 }

@@ -1,6 +1,7 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-12" style="text-align: left; margin-top: 14px; margin-left: 10px; padding-left: 0" (click)="onHeaderClick()">
+    <div class="col-12" style="text-align: left; margin-top: 14px; margin-left: 10px; padding-left: 0"
+      (click)="onHeaderClick()">
       <h3>{{titulo}}</h3>
     </div>
 
@@ -8,14 +9,14 @@
       <!-- Pestañas  -->
       <ul class="nav nav-tabs custom-tabs">
         <li class="nav-item">
-          <a class="nav-link active" data-bs-toggle="tab" href="#lista" pTooltip="Lista" tooltipPosition="top">
-            <i class="bi bi-list"></i>
+          <a class="nav-link active" data-bs-toggle="tab" href="#porAgente" pTooltip="Gráficas por agente"
+            tooltipPosition="top">
+            <i class="bi bi-pie-chart"></i>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" data-bs-toggle="tab" href="#porAgente" pTooltip="Gráficas por agente"
-            tooltipPosition="top">
-            <i class="bi bi-pie-chart"></i>
+          <a class="nav-link" data-bs-toggle="tab" href="#lista" pTooltip="Lista" tooltipPosition="top">
+            <i class="bi bi-list"></i>
           </a>
         </li>
       </ul>
@@ -23,7 +24,7 @@
       <!-- Contenido de las pestañas -->
       <div class="tab-content" style="padding-top: 75px;">
         <!-- Pestaña 1 -->
-        <div class="tab-pane fade show active" id="lista">
+        <div class="tab-pane fade" id="lista">
           <div class="row contenedorTabla">
             <div *ngIf="loading" class="loading-message" style="padding-top: 50px;">
               <div class="spinner-border text-primary" role="status">
@@ -31,9 +32,9 @@
               </div>
               <p>Cargando...</p>
             </div>
-            <p-table *ngIf="!loading" #dt [value]="oportunidadesCanceladas" dataKey="id"
-              [rows]="10" [showCurrentPageReport]="false" [rowsPerPageOptions]="[10, 20, 50]" [paginator]="true"
-              paginatorPosition="both"
+            <p-table *ngIf="!loading" #dt [value]="oportunidadesCanceladas" dataKey="id" [rows]="10"
+              [showCurrentPageReport]="false" [rowsPerPageOptions]="[10, 20, 50]" [paginator]="true"
+              paginatorPosition="both" [paginatorDropdownAppendTo]="'body'"
               currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros"
               [columns]="lsColumnasAMostrar" [resizableColumns]="true" [reorderableColumns]="true"
               [globalFilterFields]="['nombre','nombreSector','nombreOportunidad','abreviatura','stage','iniciales','nombreContacto','entrega','monto','probabilidadOriginal','probabilidad','montoNormalizado','fechaRegistro','diasFunnelOriginal','fechaEstimadaCierreOriginal','fechaModificacion']"
@@ -104,8 +105,8 @@
                             </p-columnFilter>
                           </div>
                           <div *ngSwitchCase="'currency'">
-                            <p-columnFilter type="numeric" field="{{def.key}}" *ngIf="def.key !== 'monto'" [showButtons]="false"
-                              [maxFractionDigits]="7">
+                            <p-columnFilter type="numeric" field="{{def.key}}" *ngIf="def.key !== 'monto'"
+                              [showButtons]="false" [maxFractionDigits]="7">
                               <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                                 <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
                                   (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
@@ -113,7 +114,8 @@
                             </p-columnFilter>
                           </div>
                           <div *ngSwitchCase="'date'">
-                            <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false" *ngIf="def.key !== 'fechaEstimadaCierre'">
+                            <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false"
+                              *ngIf="def.key !== 'fechaEstimadaCierre'">
                               <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                                 <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
                                   (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
@@ -216,7 +218,9 @@
 
               <ng-template pTemplate="footer" let-columns #footer>
                 <tr class="custom-footer">
-                  <td *ngFor="let def of lsColumnasAMostrar" [ngStyle]="{
+                  <td *ngFor="let def of lsColumnasAMostrar" 
+                  [ngClass]="{'total-registros-cell': def.key === 'nombre'}"
+                  [ngStyle]="{
                     'text-align': 
                       def.tipoFormato === 'currency' ? 'right' : 
                       (def.tipoFormato === 'number' || def.tipoFormato === 'date') ? 'center' : 'left'
@@ -245,9 +249,9 @@
           </div>
         </div>
         <!-- Pestaña 2 - Gráficas por Agente  -->
-        <div class="tab-pane fade" id="porAgente">
+        <div class="tab-pane fade show active" id="porAgente">
           <div class="row" style="margin-top: 15px;">
-            <div class="col-12"  style="margin-top: 5px;">
+            <div class="col-12" style="margin-top: 5px;">
               <app-graficas-por-agente-canceladas></app-graficas-por-agente-canceladas>
             </div>
           </div>

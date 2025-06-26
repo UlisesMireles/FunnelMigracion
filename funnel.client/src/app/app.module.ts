@@ -146,7 +146,11 @@ import { ServiciosEntregasComponent } from './components/catalogos/servicios-ent
 import { UsuariosPermisosComponent } from './components/catalogos/usuarios-permisos/usuarios-permisos.component';
 import { GraficasClientesTop20Component } from './components/dashboard/top-veinte/graficas-clientes-top20/graficas-clientes-top20.component';
 import { PanelesTerminadasComponent } from './components/terminadas/paneles-terminadas/paneles-terminadas.component';
-
+import { CalendarioComponent } from './components/calendario/calendario.component';
+import { SchedulerModule } from '@progress/kendo-angular-scheduler';
+import { IntlModule } from "@progress/kendo-angular-intl";
+import '@progress/kendo-angular-intl/locales/es/all';
+import { EditCalendarioService } from './services/edit-calendario.service';
 PlotlyModule.plotlyjs = PlotlyJS;
 
 if (PlotlyJS.register) {
@@ -159,7 +163,7 @@ export function configurationProviderFactory(provider: PrimeNgConfiguracionServi
   return () => provider.load();
 }
 
-registerLocaleData(localeEs, 'es-MX');
+registerLocaleData(localeEs);
 
 @NgModule({
   declarations: [
@@ -230,7 +234,8 @@ registerLocaleData(localeEs, 'es-MX');
     ServiciosEntregasComponent,
     UsuariosPermisosComponent,
     GraficasClientesTop20Component,
-    PanelesTerminadasComponent
+    PanelesTerminadasComponent,
+    CalendarioComponent
   ],
   imports: [
     BrowserModule,
@@ -280,10 +285,12 @@ registerLocaleData(localeEs, 'es-MX');
     CardModule,
     FieldsetModule,
     ToggleSwitchModule,
-    MatExpansionModule
+    MatExpansionModule,
+    SchedulerModule,
+    IntlModule
 ],
   providers: [
-    { provide: LOCALE_ID, useValue: 'es-MX' },
+    { provide: LOCALE_ID, useValue: "es-MX" },
     {
       provide: APP_INITIALIZER,
       useFactory: configurationProviderFactory,
@@ -300,6 +307,7 @@ registerLocaleData(localeEs, 'es-MX');
       }
     }),
     MessageService,
+    EditCalendarioService
   ],
   bootstrap: [AppComponent],
 

@@ -39,6 +39,9 @@ import { AcordeonProspectosContactosComponent } from './components/administracio
 import { ServiciosEntregasComponent } from './components/catalogos/servicios-entregas/servicios-entregas.component';
 import { UsuariosPermisosComponent } from './components/catalogos/usuarios-permisos/usuarios-permisos.component';
 import { PanelesTerminadasComponent } from './components/terminadas/paneles-terminadas/paneles-terminadas.component';
+import { CalendarioComponent } from './components/calendario/calendario.component';
+
+
 const routes: Routes = [
   { path: '', component: LoginComponent, title: 'Login' },
   { path: 'login', component: LoginComponent, title: 'Login' },
@@ -86,6 +89,7 @@ const routes: Routes = [
   { path: 'herramientas', component: AdministracionHerramientasComponent, title: 'Herramientas', canActivate: [AuthGuard] },
  // { path: 'dashboard-general', component: AdminDashboardComponent, title: 'Dashboard General', canActivate: [AuthGuard]},
   { path: 'dashboard', component: AdminDashboardComponent, title: 'Dashboard General', canActivate: [AuthGuard]},
+  { path: 'calendario', component: CalendarioComponent, title: 'Calendario', canActivate: [AuthGuard]}
 ];
 
 

@@ -292,7 +292,8 @@ export class DocumentosOportunidadesComponent {
                 this.messageService.add({
                     severity: 'error',
                     summary: 'Error',
-                    detail: `No se pudo descargar es posible que no esté disponible`
+                    detail: `No se pudo descargar es posible que no esté disponible`,
+                    key: 'toast'
                 });
             }
           });

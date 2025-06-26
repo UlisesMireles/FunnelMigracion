@@ -182,7 +182,8 @@ export class ContactosComponent {
     dialogConfig.width = '50px';
 
     dialogConfig.data = {
-      todosColumnas: this.lsTodasColumnas
+      todosColumnas: this.lsTodasColumnas,
+      vista: 'prospectos-contactos',
     };
 
     dialogConfig.position = {

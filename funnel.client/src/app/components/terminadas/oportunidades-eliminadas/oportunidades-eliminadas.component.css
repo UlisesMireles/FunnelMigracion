@@ -74,10 +74,9 @@
   }
   
   .custom-header th {
-    background: rgb(247, 106, 19);
-    background: linear-gradient(0deg, rgba(247, 106, 19, 1) 0%, rgba(200, 87, 24, 1) 35%, rgba(231, 91, 42, 1) 100%);
-    color: white;
-    border: 0.1px solid #872B07;
+    background: #bdbdbde1;
+    /*background: linear-gradient(0deg, rgba(247, 106, 19, 1) 0%, rgba(200, 87, 24, 1) 35%, rgba(231, 91, 42, 1) 100%);*/
+    color: black;
     text-align: center;
     font-size: 15px;
   }
@@ -224,7 +223,7 @@
     padding: 0px !important;
     font-weight: bold;
     font-size: 12.5px !important;
-    background: #E1DAC7 !important;
+    background: #e4fdff !important;
   }
   
   :host ::ng-deep .custom-header2 input,
@@ -438,14 +437,29 @@ th.sort-active p-sortIcon {
   color: #084298 !important;  
 }
 .custom-tabs {
-  display: inline-flex;
   border-bottom: 1px solid #dee2e6;
   position: absolute;
-  left: 46px;
-  top: 40px; 
+  top: 38px; 
   z-index: 2;
 }
 
 .custom-tabs .nav-link.active {
   color: #3c3e41 !important;
+}
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 20px;
+    height: 779px;
+    padding: 5px 10px;
+    box-sizing: border-box;
+    width: 100%;
+    overflow: hidden;
+    margin-top: -59px;
+    margin-left: -10px;
+  }
+
+  .total-registros-cell {
+  padding-left: 3px !important;  
 }

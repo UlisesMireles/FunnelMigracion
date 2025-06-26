@@ -21,5 +21,6 @@ namespace Funnel.Models.Dto
         public int MaximoTokens { get; set; }
         public decimal Creditos { get; set; }
         public string RutaDocumento { get; set; } = string.Empty;
+        public string? Prompt { get; set; } = string.Empty;
     }
 }

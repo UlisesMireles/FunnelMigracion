@@ -38,7 +38,6 @@ export class PermisosComponent {
   getPermisos() {
     this.permisosService.getPermisos(this.loginService.obtenerIdEmpresa()).subscribe({
       next: (result: Permiso[]) => {
-        console.log(result);
         this.permisos = result;
         this.agrupadosPermisos = this.obtenerMenusAgrupados(); 
         this.cdr.detectChanges();

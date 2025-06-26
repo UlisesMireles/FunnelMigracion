@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
 import { LazyLoadEvent } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { MessageService } from 'primeng/api';
@@ -42,7 +42,7 @@ export class OportunidadesEliminadasComponent {
   selectedMonth: string = "Todos los Meses";
   titulo: string = 'Oportunidades Eliminadas';
   loading: boolean = true;
-
+  @Output() headerClicked = new EventEmitter<void>();
   lsColumnasAMostrar: any[] = [
    
   ];
@@ -63,11 +63,11 @@ export class OportunidadesEliminadasComponent {
     { key: 'fechaEstimadaCierreOriginal', isCheck: false, valor: 'Cierre Estimado', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
     { key: 'diasFunnelOriginal', isCheck: true, valor: 'Días Funnel', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
     { key: 'comentario', isCheck: false, valor: 'Último Comentario', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'diasEtapa1', isCheck: true, valor: 'Etapa 1', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'number' },
-    { key: 'diasEtapa2', isCheck: true, valor: 'Etapa 2', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'number' },
-    { key: 'diasEtapa3', isCheck: true, valor: 'Etapa 3', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'number' },
-    { key: 'diasEtapa4', isCheck: true, valor: 'Etapa 4', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'number' },
-    { key: 'diasEtapa5', isCheck: true, valor: 'Etapa 5', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'number' },
+    { key: 'diasEtapa1', isCheck: false, valor: 'Etapa 1', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'number' },
+    { key: 'diasEtapa2', isCheck: false, valor: 'Etapa 2', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'number' },
+    { key: 'diasEtapa3', isCheck: false, valor: 'Etapa 3', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'number' },
+    { key: 'diasEtapa4', isCheck: false, valor: 'Etapa 4', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'number' },
+    { key: 'diasEtapa5', isCheck: false, valor: 'Etapa 5', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'number' },
   ];
 
   columnsAMostrarResp: string = JSON.stringify(this.lsColumnasAMostrar);
@@ -255,7 +255,8 @@ export class OportunidadesEliminadasComponent {
       dialogConfig.width = '50px';
   
       dialogConfig.data = {
-        todosColumnas: this.lsTodasColumnas
+        todosColumnas: this.lsTodasColumnas,
+        vista: 'canceladas-eliminadas'
       };
   
       dialogConfig.position = {
@@ -420,5 +421,8 @@ export class OportunidadesEliminadasComponent {
 }
   esNumero(cadena: string): boolean {
     return !isNaN(Number(cadena)) && cadena.trim() !== '';
+  }
+onHeaderClick() {
+    this.headerClicked.emit();
   }
 }

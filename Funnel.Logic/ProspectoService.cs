@@ -38,9 +38,9 @@ namespace Funnel.Logic
             return await _ProspectoData.ConsultarProspectos(IdEmpresa);
         }
 
-        public async Task<List<ProspectoDTO>> ConsultarTopVeinte(int IdEmpresa)
+        public async Task<List<ProspectoDTO>> ConsultarTopVeinte(int IdEmpresa, string Anio)
         {
-            return await _ProspectoData.ConsultarTopVeinte(IdEmpresa);
+            return await _ProspectoData.ConsultarTopVeinte(IdEmpresa, Anio);
         }
 
         public async Task<BaseOut> GuardarProspecto(ProspectoDTO request)
@@ -280,6 +280,16 @@ namespace Funnel.Logic
 
 
             return pdfBytes;
+        }
+
+        public async Task<List<AniosDto>> ConsultarAniosOportunidades(int idEmpresa)
+        {
+            return await _ProspectoData.ConsultarAniosOportunidades(idEmpresa);
+        }
+
+        public async Task<List<AniosDto>> ConsultarAniosGraficas(int idEmpresa)
+        {
+            return await _ProspectoData.ConsultarAniosGraficas(idEmpresa);
         }
     }
 }

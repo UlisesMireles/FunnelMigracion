@@ -488,4 +488,18 @@ onChangeProspecto() {
     });
   }
 }
+  formatearMonto(event: any) {
+    const input = event.target;
+    // Solo números
+    let valorNumerico = input.value.replace(/[^0-9]/g, '');
+
+    // Actualiza el form control con el valor numérico (como número, no string)
+    this.oportunidadForm.get('monto')?.setValue(valorNumerico ? parseInt(valorNumerico, 10) : null, { emitEvent: false });
+
+    // Formatea para mostrar en el input
+    let valorFormateado = valorNumerico ? parseInt(valorNumerico, 10).toLocaleString('es-MX') : '';
+
+    // Actualiza solo el input visualmente (esto no afecta el form control)
+    input.value = valorFormateado;
+  }
 }

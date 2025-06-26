@@ -52,15 +52,13 @@
   background: #F0F0F0 !important;
 }
 
-.p-dialog .p-dialog-header {
-  background: rgb(247, 106, 19);
-  background: linear-gradient(0deg, rgba(247, 106, 19, 1) 0%, rgba(200, 87, 24, 1) 35%, rgba(231, 91, 42, 1) 100%);
-  color: white;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  height: 50px;
-  padding: 0.5rem 1rem;
-}
+  ::ng-deep .custom-header-naranja .p-dialog-header {
+    background: rgb(247, 106, 19) !important;
+    background: linear-gradient(0deg, rgba(247, 106, 19, 1) 0%, rgba(200, 87, 24, 1) 35%, rgba(231, 91, 42, 1) 100%) !important;
+    color: rgb(0, 0, 0);
+    border-top-left-radius: 15px !important; 
+    border-top-right-radius: 15px !important; 
+  }
 
 .titulo-dialogo {
   font-size: 1.5rem;
@@ -148,10 +146,6 @@ th.sort-active p-sortIcon {
   height: calc(100vh - 60px) !important;
 }
 
-::ng-deep .p-datatable .p-datatable-tbody > tr:nth-child(even) {
-  background-color: #f8f9fa; 
-}
-
 ::ng-deep .p-datatable .p-datatable-tbody > tr:nth-child(odd) {
   background-color: white; 
 }
@@ -168,4 +162,8 @@ th.sort-active p-sortIcon {
 .custom-footer td.text-right {
   text-align: right !important;
   padding-right: 1rem !important;
+}
+
+.total-registros-cell {
+  padding-left: 5px !important;  
 }

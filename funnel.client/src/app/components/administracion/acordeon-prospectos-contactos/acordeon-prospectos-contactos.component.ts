@@ -42,10 +42,8 @@ export class AcordeonProspectosContactosComponent {
   }
   consultarPermisosUsuario() {
     const permisos = this.loginService.obtenerPermisosUsuario();
-    console.log('permisos', permisos);
     if (permisos && permisos.length > 0) {
       const permisoProspectos = permisos.find(p => p.nombre === EnumMenus.ADMINISTRACION);
-      console.log('permisoProspectos', permisoProspectos);
       if(permisoProspectos){
         this.permisoContactos = permisoProspectos.subMenu.some((p:any) => p.pagina === EnumPaginas.CONTACTOS);
         this.permisoProspectos = permisoProspectos.subMenu.some((p:any) => p.pagina === EnumPaginas.PROSPECTOS);

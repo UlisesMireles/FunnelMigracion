@@ -154,7 +154,8 @@ export class TipoServiciosComponent {
         dialogConfig.width = '50px';
     
         dialogConfig.data = {
-          todosColumnas: this.lsTodasColumnas
+          todosColumnas: this.lsTodasColumnas,
+          vista: 'servicios-entregas'
         };
     
         dialogConfig.position = {

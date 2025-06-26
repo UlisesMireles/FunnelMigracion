@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, SimpleChanges, ChangeDetectorRef} from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges, ChangeDetectorRef, ElementRef, ViewChild } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { OportunidadesService } from '../../../../services/oportunidades.service';
@@ -17,7 +17,7 @@ import { ConsultaAsistenteDto } from '../../../../interfaces/asistentes/consulta
 export class SeguimientoOportunidadesComponent {
 
   get isTerminado(): boolean {
-    return this.oportunidadForm.get('idEstatusOportunidad')?.value !== 1; 
+    return this.oportunidadForm.get('idEstatusOportunidad')?.value !== 1;
   }
 
   constructor(private oportunidadService: OportunidadesService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder, private cdr: ChangeDetectorRef, private openIaService: OpenIaService) { }
@@ -47,8 +47,11 @@ export class SeguimientoOportunidadesComponent {
 
 
   copiado: boolean = false;
+  leyendo: boolean = false;
+
 
   historialOportunidad: Oportunidad[] = [];
+  
 
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() closeModal: EventEmitter<void> = new EventEmitter();
@@ -64,7 +67,8 @@ export class SeguimientoOportunidadesComponent {
       idEjecutivo: [this.oportunidad.idEjecutivo],
       comentario: ['', [Validators.required, this.validarComentario]],
       idEmpresa: [this.loginService.obtenerIdEmpresa(), Validators.required],
-      probabilidad: [this.oportunidad.probabilidad],
+      //stage: [this.oportunidad.stage],
+      //probabilidad: [this.oportunidad.probabilidad],
       idEstatusOportunidad: [this.oportunidad.idEstatusOportunidad],
       tooltipStage: [this.oportunidad.tooltipStage],
       idUsuario: [this.loginService.obtenerIdUsuario()],
@@ -111,7 +115,7 @@ export class SeguimientoOportunidadesComponent {
   }
 
   guardarHistorial() {
-
+    this.limpiarDictado();
     this.validacionActiva = true;
 
     if (this.oportunidadForm.invalid) {
@@ -151,7 +155,8 @@ export class SeguimientoOportunidadesComponent {
     });
   }
 
-  exportExcel(idOportunidad: number) { 
+  exportExcel(idOportunidad: number) {
+    this.limpiarDictado();
     const dataExport = this.historialOportunidad.map(opportunity => ({
       NombreEjecutivo: opportunity.nombreEjecutivo,
       Fecha: opportunity.fechaRegistro,
@@ -167,6 +172,7 @@ export class SeguimientoOportunidadesComponent {
   }
 
   exportPdf(idOportunidad: number) {
+    this.limpiarDictado();
     this.disabledPdf = true;
     this.oportunidadService.descargarReporteSeguimientoOportunidades(idOportunidad, this.loginService.obtenerIdEmpresa(), this.loginService.obtenerEmpresa()).subscribe({
       next: (result: Blob) => {
@@ -204,7 +210,8 @@ export class SeguimientoOportunidadesComponent {
   }
 
   enviarSeguimiento() {
-  const comentarios = this.historialOportunidad.map(item => ({
+    this.limpiarDictado();
+    const comentarios = this.historialOportunidad.map(item => ({
       usuario: item.iniciales,
       fecha: item.fechaRegistro,
       comentario: item.comentario
@@ -224,6 +231,13 @@ export class SeguimientoOportunidadesComponent {
       <p><b>Probabilidad:</b> ${this.oportunidad.probabilidad}%</p>
       <p><b>Ejecutivo:</b> ${this.oportunidad.nombreEjecutivo}</p>
       <p><b>Días sin actividad:</b> ${this.oportunidad.fechaModificacion}</p>
+      <p><b>Etapa original:</b> ${this.oportunidad.tooltipStage}</p>
+      <p><b>Dias en Etapa 1 (Calificacion de prospecto):</b> ${this.oportunidad.diasEtapa1}</p>
+      <p><b>Días en Etapa 2 (Investigacion de necesidad):</b> ${this.oportunidad.diasEtapa2}</p>
+      <p><b>Días en Etapa 3 (Elaboración de propuesta):</b> ${this.oportunidad.diasEtapa3}</p>
+      <p><b>Días en Etapa 4 (Presentación de propuesta):</b> ${this.oportunidad.diasEtapa4}</p>
+      <p><b>Días en Etapa 5 (Negociación):</b> ${this.oportunidad.diasEtapa5}</p>
+     
     `.trim();
 
     const pregunta = `Información de la oportunidad:\n\n${resumenOportunidad}\n\nHistorial de seguimiento:\n${historialTexto}`;
@@ -231,7 +245,7 @@ export class SeguimientoOportunidadesComponent {
     const body: ConsultaAsistenteDto = {
       exitoso: true,
       errorMensaje: '',
-      idBot: 1,
+      idBot: 5,
       pregunta: `${pregunta}`,
       fechaPregunta: new Date(),
       respuesta: '',
@@ -245,9 +259,9 @@ export class SeguimientoOportunidadesComponent {
     };
 
     this.visibleRespuesta = true;
-    this.respuestaAsistente = ''; 
+    this.respuestaAsistente = '';
     this.loading = true;
-    
+
     this.openIaService.AsistenteHistorico(body).subscribe({
       next: res => {
         this.visibleRespuesta = true;
@@ -259,53 +273,195 @@ export class SeguimientoOportunidadesComponent {
       }
     });
   }
- copiarTexto(): void {
-  if (!this.respuestaAsistente) return;
+  copiarTexto(): void {
+    if (!this.respuestaAsistente) return;
 
-  const tempElement = document.createElement('div');
-  tempElement.innerHTML = this.respuestaAsistente;
+    const tempElement = document.createElement('div');
+    tempElement.innerHTML = this.respuestaAsistente;
 
-  function getPlainText(element: HTMLElement): string {
-    let text = '';
+    function getPlainText(element: HTMLElement): string {
+      let text = '';
 
-    element.childNodes.forEach(node => {
-      if (node.nodeType === Node.TEXT_NODE) {
-        // Texto normal
-        text += node.textContent;
-      } else if (node.nodeType === Node.ELEMENT_NODE) {
-        const el = node as HTMLElement;
-        const tag = el.tagName.toLowerCase();
+      element.childNodes.forEach(node => {
+        if (node.nodeType === Node.TEXT_NODE) {
+          // Texto normal
+          text += node.textContent;
+        } else if (node.nodeType === Node.ELEMENT_NODE) {
+          const el = node as HTMLElement;
+          const tag = el.tagName.toLowerCase();
 
-        if (tag === 'p' || tag === 'div' || tag === 'br') {
-          text += getPlainText(el) + '\n';
-        } else if (tag === 'li') {
-          text += '- ' + getPlainText(el) + '\n';
-        } else if (tag === 'ul' || tag === 'ol') {
-          text += getPlainText(el) + '\n';
-        } else {
-          text += getPlainText(el);
+          if (tag === 'p' || tag === 'div' || tag === 'br') {
+            text += getPlainText(el) + '\n';
+          } else if (tag === 'li') {
+            text += '- ' + getPlainText(el) + '\n';
+          } else if (tag === 'ul' || tag === 'ol') {
+            text += getPlainText(el) + '\n';
+          } else {
+            text += getPlainText(el);
+          }
         }
-      }
-    });
+      });
 
-    return text;
+      return text;
+    }
+
+    const textoPlano = getPlainText(tempElement).trim();
+
+    navigator.clipboard.writeText(textoPlano).then(() => {
+      this.copiado = true;
+      setTimeout(() => this.copiado = false, 2000);
+    });
   }
 
-  const textoPlano = getPlainText(tempElement).trim();
+  limpiarRespuesta(respuesta: string): string {
+    return respuesta
+      .replace(/```(?:\w+)?\s*([^]*?)```/g, (_, contenido) => contenido.trim())
+      .replace(/^```(?:\w+)?\s*/, '')
+      .replace(/```$/, '')
+      .trim();
+  }
+  banderaDictado: boolean = false;
+  dictando = false;
+  recognition: any;
+  textoDictado: string = '';
+  textoGuardado: string = '';
+  @ViewChild('comentarioInput') comentarioInput!: ElementRef;
 
-  navigator.clipboard.writeText(textoPlano).then(() => {
-    this.copiado = true;
-    setTimeout(() => this.copiado = false, 2000);
-  });
+  dictarComentario() {
+    // Inicializa reconocimiento si no existe
+    this.banderaDictado = !this.banderaDictado; 
+    if (!this.banderaDictado) {
+      this.dictando = false;
+      this.recognition.stop();
+      return;
+    }
+    if (!this.recognition) {
+      if (this.comentarioInput) {
+        this.comentarioInput.nativeElement.focus();
+      }
+      const SpeechRecognition = (window as any).SpeechRecognition ?? (window as any).webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        alert('Tu navegador no soporta reconocimiento de voz.');
+        return;
+      }
+      this.recognition = new SpeechRecognition();
+      this.recognition.lang = 'es-MX';
+      this.recognition.continuous = true;
+      this.recognition.interimResults = true;
+
+      this.recognition.onstart = () => {
+        this.textoGuardado = this.oportunidadForm.get('comentario')?.value ?? '';
+      };
+
+      this.recognition.onresult = (event: any) => {
+        let textoCompleto = this.textoGuardado ? this.textoGuardado + '. ' : '';
+        for (const result of event.results) {
+          textoCompleto += result[0].transcript;
+        }
+        this.textoDictado = textoCompleto;
+        this.oportunidadForm.get('comentario')?.setValue(this.textoDictado);
+      };
+      this.recognition.onerror = (event: any) => {
+        this.dictando = false;
+        this.recognition.stop();
+
+      };
+
+      this.recognition.onend = () => {
+        this.oportunidadForm.get('comentario')?.setValue(this.textoDictado);
+        this.dictando = false;
+      };
+    }
+
+    if (!this.dictando) {
+      this.textoDictado = '';
+      this.dictando = true;
+      this.recognition.start();
+    } else {
+      this.recognition.stop();
+      this.limpiarDictado();
+    }
+   
+
+  }
+  limpiarDictado() {
+    this.textoDictado = '';
+    this.textoGuardado = '';
+    this.dictando = false;
+    if (this.recognition) {
+      this.recognition.stop();
+    }
+  }
+    
+  leerRespuesta(): void {
+    if (this.leyendo) {
+      window.speechSynthesis.cancel();
+      this.leyendo = false;
+    } else {
+      if (!this.respuestaAsistente) return;
+
+      const tempElement = document.createElement('div');
+      tempElement.innerHTML = this.respuestaAsistente;
+
+      function getPlainText(element: HTMLElement): string {
+        let text = '';
+        element.childNodes.forEach(node => {
+          if (node.nodeType === Node.TEXT_NODE) {
+            text += node.textContent;
+          } else if (node.nodeType === Node.ELEMENT_NODE) {
+            const el = node as HTMLElement;
+            const tag = el.tagName.toLowerCase();
+
+            if (tag === 'p' || tag === 'div' || tag === 'br') {
+              text += getPlainText(el) + '\n';
+            } else if (tag === 'li') {
+              text += '- ' + getPlainText(el) + '\n';
+            } else {
+              text += getPlainText(el);
+            }
+          }
+        });
+        return text;
+      }
+
+      const textoPlano = getPlainText(tempElement).trim();
+
+      const utterance = new SpeechSynthesisUtterance(textoPlano);
+      utterance.lang = 'es-MX';
+      utterance.rate = 1;
+      utterance.pitch = 1;
+      utterance.volume = 1;
+
+      this.leyendo = true;
+
+      utterance.onend = () => {
+        this.leyendo = false;
+      };
+
+      utterance.onerror = () => {
+        this.leyendo = false;
+      };
+
+      window.speechSynthesis.cancel(); 
+      window.speechSynthesis.speak(utterance);
+    }
+  }
+  alCerrarDialogo(): void {
+    this.maximizedRespuesta = false;
+
+    if (this.leyendo) {
+      window.speechSynthesis.cancel();
+      this.leyendo = false;
+    }
+  }
+
+
+lonOp(): boolean {
+  const nombreOportunidad = this.oportunidadForm.get('nombreOportunidad')?.value;
+  return nombreOportunidad && nombreOportunidad.length <= 80;
 }
 
-limpiarRespuesta(respuesta: string): string {
-  return respuesta
-    .replace(/```(?:\w+)?\s*([^]*?)```/g, (_, contenido) => contenido.trim())
-    .replace(/^```(?:\w+)?\s*/, '') 
-    .replace(/```$/, '')       
-    .trim();
-}
-
-}
-
+lonPros(): boolean {
+  const nombreProspecto = this.oportunidadForm.get('nombre')?.value;
+  return nombreProspecto && nombreProspecto.length <= 50;
+}}

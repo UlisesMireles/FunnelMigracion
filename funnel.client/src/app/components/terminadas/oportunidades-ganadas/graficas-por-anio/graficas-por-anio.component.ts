@@ -1,8 +1,11 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, Inject, Renderer2, ChangeDetectorRef} from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { LoginService } from '../../../../services/login.service';
 import { GraficasService } from '../../../../services/graficas.service';
 import { GraficasDto, RequestGraficasDto, AniosDto } from '../../../../interfaces/graficas';
+import * as Plotly from 'plotly.js-dist-min';
+
 @Component({
   selector: 'app-graficas-por-anio',
   standalone: false,
@@ -19,10 +22,15 @@ quadrants: { cards: any[] }[] = [];
   aniosDisponibles: { label: string, value: number }[] = [];
   anioSeleccionado!: number;
   loading: boolean = true;
+  originalParentElements = new Map<string, { parent: HTMLElement, nextSibling: Node | null }>();
+
 
   constructor(
     private readonly graficasService: GraficasService,
-    private readonly sessionService: LoginService
+    private readonly sessionService: LoginService,
+    private readonly cdr: ChangeDetectorRef,
+    private renderer: Renderer2, @Inject(DOCUMENT) private document: Document
+
   ) {
     this.quadrants = [
     { cards: [this.graficasService.createCard(1, 'Gráfica Anual por Clientes', 'grafica')] },
@@ -166,4 +174,76 @@ obtenerAniosDisponibles(): void {
       }
     }
   }
+
+  toggleMaximizar(quadrantIdx: number, cardIdx: number): void {
+  const card = this.quadrants[quadrantIdx].cards[cardIdx];
+  card.maximizada = !card.maximizada;
+
+  const cardId = card.id;
+  const cardElement = this.document.querySelector(`.card[data-id="${cardId}"]`) as HTMLElement;
+
+  if (!cardElement) return;
+
+  if (card.maximizada) {
+    // Guarda la posición original antes de mover
+    const originalParent = cardElement.parentElement;
+    const nextSibling = cardElement.nextSibling;
+    
+    if (originalParent) {
+      this.originalParentElements.set(cardId, {
+        parent: originalParent,
+        nextSibling: nextSibling
+      });
+      
+      // Mueve al final del body
+      this.renderer.appendChild(this.document.body, cardElement);
+      
+      // Ajustar el gráfico Plotly después de la animación/movimiento
+      setTimeout(() => {
+        const plotDiv = cardElement.querySelector('.js-plotly-plot') as HTMLElement;
+        if (plotDiv) {
+          const parentHeight = cardElement.clientHeight - 100;
+          const parentWidth = cardElement.clientWidth - 200;
+
+          Plotly.relayout(plotDiv, {
+            height: parentHeight,
+            width: parentWidth,
+            autosize: true
+          });
+
+          this.cdr.detectChanges();
+        }
+      }, 100);
+    }
+  } else {
+    // Restaura a la posición original
+    const originalPosition = this.originalParentElements.get(cardId);
+    if (originalPosition) {
+      // Redimensionar el gráfico antes de moverlo de vuelta
+      const plotDiv = cardElement.querySelector('.js-plotly-plot') as HTMLElement;
+      if (plotDiv) {
+        const parentWidth = originalPosition.parent.clientWidth;
+        Plotly.relayout(plotDiv, {
+          height: 320,
+          width: parentWidth,
+          autosize: true
+        });
+        Plotly.Plots.resize(plotDiv);
+
+        this.cdr.detectChanges();
+      }
+
+      if (originalPosition.nextSibling) {
+        this.renderer.insertBefore(
+          originalPosition.parent,
+          cardElement,
+          originalPosition.nextSibling
+        );
+      } else {
+        this.renderer.appendChild(originalPosition.parent, cardElement);
+      }
+      this.originalParentElements.delete(cardId);
+    }
+  }
+}
 }

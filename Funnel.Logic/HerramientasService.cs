@@ -177,7 +177,7 @@ namespace Funnel.Logic
             BaseOut result = new BaseOut();
             if (Correos.Count > 0)
             {
-                string correos = String.Join(",", Correos);
+                string correos = String.Join(";", Correos);
                 return await _herramientasData.EnvioCorreosReporteSeguimiento(IdEmpresa, IdReporte, correos);
             }
             result.ErrorMessage = "Error al enviar correos: No se selecciono ningun correo electrónico.";
@@ -189,7 +189,7 @@ namespace Funnel.Logic
         {
             string correos = "";
             if (request.Correos.Count > 0)
-                correos = String.Join(",", request.Correos);
+                correos = String.Join(";", request.Correos);
             return await _herramientasData.GuardarDiasReportesEstatus(request, correos);
         }
     }

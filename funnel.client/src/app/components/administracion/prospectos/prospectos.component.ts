@@ -45,8 +45,8 @@ EstatusDropdown = [
 
   lsColumnasAMostrar: any[] = [];
   lsTodasColumnas: any[] = [
-    {key:'nombre', isCheck: true, valor: 'Nombre', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text'},
-    {key: 'nombreSector', isCheck: true, valor: 'Sector de la industria', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
+    {key:'nombre', isCheck: true, valor: 'Prospecto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text'},
+    {key: 'nombreSector', isCheck: true, valor: 'Sector', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
     {key: 'ubicacionFisica', isCheck: true, valor: 'Ubicación Física', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text'},
     {key: 'totalOportunidades', isCheck: true, valor: 'Op/todas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
     {key: 'ganadas', isCheck: true, valor: 'Ganadas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
@@ -193,7 +193,8 @@ clear(table: Table) {
       dialogConfig.width = '50px';
   
       dialogConfig.data = {
-        todosColumnas: this.lsTodasColumnas
+        todosColumnas: this.lsTodasColumnas,
+        vista: 'prospectos-contactos',
       };
   
       dialogConfig.position = {
@@ -339,5 +340,18 @@ clear(table: Table) {
     
     return this.dt?.sortField === columnKey;
 }
-
+abrirModalSector(rowData: any) {
+    this.prospectoSeleccionado = rowData;
+    this.prospectoEdicion = { ...rowData };
+    this.insertar = false;
+    this.modalVisible = true;
+    this.desdeSector = true;
+    this.modalOportunidadesService
+      .openModalProspecto(true, false, [], rowData, { errorMessage: '', result: false, id: -1 }, true)
+      .subscribe((modalResult) => {
+        if (modalResult?.result.result === true) {
+          this.ngOnInit();
+        }
+      });
+  }
 }

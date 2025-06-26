@@ -1,10 +1,11 @@
 
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChildren , Renderer2, QueryList, ChangeDetectorRef } from '@angular/core';
 import { LoginService } from '../../../services/login.service';
 import { GraficasService } from '../../../services/graficas.service';
 import { AgenteDto, GraficasDto, RequestGraficasDto } from '../../../interfaces/graficas';
 import { environment } from '../../../../environments/environment';
+import * as Plotly from 'plotly.js-dist-min';
 @Component({
   selector: 'app-oportunidades-por-agente',
   standalone: false,
@@ -16,13 +17,17 @@ export class OportunidadesPorAgenteComponent {
   baseUrl: string = environment.baseURL;
   agentes: AgenteDto[] = [];
   agenteSeleccionadoId: number | null = null;
+  @ViewChildren('cardElement') cardElements!: QueryList<ElementRef>;
+  originalParentElements = new Map<string, { parent: HTMLElement, nextSibling: Node | null }>();
+
+
 
   get dropListIds() {
     return this.quadrants.map((_, index) => `cardList${index}`);
   }
   infoCargada: boolean = false;
 
-  constructor( private readonly graficasService: GraficasService,private readonly sessionService: LoginService) {
+  constructor( private readonly graficasService: GraficasService,private readonly sessionService: LoginService, private renderer: Renderer2, private el: ElementRef, private readonly cdr: ChangeDetectorRef,) {
     this.quadrants = [
       { cards: [this.graficasService.createCard(1, 'Consulta Agentes', 'tabla')] },
       { cards: [this.graficasService.createCard(2, 'Grafica por Agente - Clientes', 'grafica')] },
@@ -141,4 +146,80 @@ export class OportunidadesPorAgenteComponent {
       }
     }
   }
+toggleMaximizar(i: number, j: number, event: MouseEvent): void {
+  event.stopPropagation();
+  event.preventDefault();
+
+  const card = this.quadrants[i].cards[j];
+  card.isMaximized = !card.isMaximized;
+
+  const cardId = `card-${i}-${j}`;
+  const cardElement = document.querySelector(`[data-id="${cardId}"]`) as HTMLElement;
+
+  if (!cardElement) return;
+
+  if (card.isMaximized) {
+    // Guardar posición original
+    const originalParent = cardElement.parentElement;
+    const nextSibling = cardElement.nextSibling;
+    
+    if (originalParent) {
+      this.originalParentElements.set(cardId, {
+        parent: originalParent,
+        nextSibling: nextSibling
+      });
+      
+      // Mover al body y aplicar estilos
+      document.body.appendChild(cardElement);
+      document.body.style.overflow = 'hidden';
+      cardElement.style.zIndex = '9999';
+      
+      // Ajustar el tamaño del gráfico Plotly
+      setTimeout(() => {
+        const plotDiv = cardElement.querySelector('.js-plotly-plot') as HTMLElement;
+        if (plotDiv) {
+          const parentHeight = cardElement.clientHeight - 100;
+          const parentWidth = cardElement.clientWidth - 500;
+
+          Plotly.relayout(plotDiv, {
+            height: parentHeight,
+            width: parentWidth,
+            autosize: true
+          });
+          
+          this.cdr.detectChanges();
+        }
+      }, 100);
+    }
+  } else {
+    // Restaurar posición original
+    const originalPosition = this.originalParentElements.get(cardId);
+    if (originalPosition) {
+      // Ajustar el gráfico Plotly al tamaño original
+      const plotDiv = cardElement.querySelector('.js-plotly-plot') as HTMLElement;
+      if (plotDiv) {
+        const parentWidth = originalPosition.parent.clientWidth;
+
+        Plotly.relayout(plotDiv, {
+          height: 320,
+          width: parentWidth,
+          autosize: true
+        });
+        Plotly.Plots.resize(plotDiv);
+
+        this.cdr.detectChanges();
+      }
+      
+      if (originalPosition.nextSibling) {
+        originalPosition.parent.insertBefore(cardElement, originalPosition.nextSibling);
+      } else {
+        originalPosition.parent.appendChild(cardElement);
+      }
+      
+      cardElement.style.zIndex = '';
+      document.body.style.overflow = '';
+      this.originalParentElements.delete(cardId);
+    }
+  }
+}
 }

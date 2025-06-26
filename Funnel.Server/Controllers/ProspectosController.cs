@@ -42,9 +42,23 @@ namespace Funnel.Server.Controllers
         }
 
         [HttpGet("[action]/")]
-        public async Task<ActionResult<List<ProspectoDTO>>> ConsultarTopVeinte(int IdEmpresa)
+        public async Task<ActionResult<List<ProspectoDTO>>> ConsultarTopVeinte(int IdEmpresa, string Anio = "")
         {
-            var respuesta = await _prospectosService.ConsultarTopVeinte(IdEmpresa);
+            var respuesta = await _prospectosService.ConsultarTopVeinte(IdEmpresa, Anio);
+            return Ok(respuesta);
+        }
+
+        [HttpGet("[action]/")]
+        public async Task<ActionResult<List<AniosDto>>> ConsultarAniosOportunidades(int IdEmpresa)
+        {
+            var respuesta = await _prospectosService.ConsultarAniosOportunidades(IdEmpresa);
+            return Ok(respuesta);
+        }
+
+        [HttpGet("[action]/")]
+        public async Task<ActionResult<List<AniosDto>>> ConsultarAniosGraficas(int IdEmpresa)
+        {
+            var respuesta = await _prospectosService.ConsultarAniosGraficas(IdEmpresa);
             return Ok(respuesta);
         }
 
@@ -58,7 +72,10 @@ namespace Funnel.Server.Controllers
         [HttpPost("[action]/")]
         public async Task<ActionResult> DescargarReporteTop20([FromBody] ProspectosReporteDTO prospectos, int IdEmpresa)
         {
-            var pdf = await _prospectosService.GenerarReporteTop20(prospectos, Directory.GetCurrentDirectory(), "Reporte de Clientes Top 20", IdEmpresa);
+            var titulo = prospectos.Anio.Contains("Todos") ? "Reporte Top 20 de clientes de Todos los Años" :
+               "Reporte Top 20 de clientes del Año " + prospectos.Anio;
+
+            var pdf = await _prospectosService.GenerarReporteTop20(prospectos, Directory.GetCurrentDirectory(), titulo, IdEmpresa);
             return File(pdf, "application/pdf", "ClientesTop20.pdf");
         }
     }

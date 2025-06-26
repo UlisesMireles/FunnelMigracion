@@ -433,3 +433,6 @@ strong {
 .font-size-md {
   font-size: 12px !important;
 }
+::ng-deep .custom-error-message{
+  z-index: 1102 !important;
+}

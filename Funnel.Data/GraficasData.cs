@@ -74,7 +74,7 @@ namespace Funnel.Data
                     while (reader.Read())
                     {
                         var dto = new GraficaDto();
-                       
+
                         if (data.Bandera == "SEL-AGENTE-CLIENTES")
                         {
                             dto.Label = ComprobarNulos.CheckStringNull(reader["Nombre"]);
@@ -119,15 +119,15 @@ namespace Funnel.Data
                     while (reader.Read())
                     {
                         var dto = new AgenteDto();
-                        
+
                         dto.IdAgente = ComprobarNulos.CheckIntNull(reader["IdUsuario"]);
                         dto.Nombre = ComprobarNulos.CheckStringNull(reader["NombreCompleto"]);
                         dto.TotalAgente = ComprobarNulos.CheckDecimalNull(reader["TotalAgente"]);
                         dto.MontoNormalizado = ComprobarNulos.CheckDecimalNull(reader["MontoNormalizado"]);
                         dto.ArchivoImagen = ComprobarNulos.CheckStringNull(reader["ArchivoImagen"]);
 
-                       result.Add(dto);
-                       
+                        result.Add(dto);
+
                     }
                 }
             }
@@ -139,7 +139,7 @@ namespace Funnel.Data
 
             return result;
         }
-       public async Task<List<AniosDto>> Anios(int idEmpresa, int idEstatusOportunidad)
+        public async Task<List<AniosDto>> Anios(int idEmpresa, int idEstatusOportunidad)
         {
             List<AniosDto> result = new List<AniosDto>();
             IList<ParameterSQl> list = new List<ParameterSQl>
@@ -159,45 +159,45 @@ namespace Funnel.Data
             }
             return result;
         }
-     public async Task<List<SectorDto>> ObtenerOportunidadesPorSector(RequestGrafica data)
-    {
-        List<SectorDto> result = new List<SectorDto>();
-        IList<ParameterSQl> list = new List<ParameterSQl>
+        public async Task<List<SectorDto>> ObtenerOportunidadesPorSector(RequestGrafica data)
+        {
+            List<SectorDto> result = new List<SectorDto>();
+            IList<ParameterSQl> list = new List<ParameterSQl>
     {
     DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, data.IdEmpresa),
     DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "SEL-AGENTE-SECTOR"),
     DataBase.CreateParameterSql("@IdUsuario", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, data.IdUsuario ?? 0)
     };
- 
-        try
-        {
-            using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoUsuarios", CommandType.StoredProcedure, list, _connectionString))
+
+            try
             {
-                while (reader.Read())
+                using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoUsuarios", CommandType.StoredProcedure, list, _connectionString))
                 {
-                    var dto = new SectorDto
+                    while (reader.Read())
                     {
-                        IdSector = ComprobarNulos.CheckIntNull(reader["IdSector"]),
-                        NombreSector = ComprobarNulos.CheckStringNull(reader["Descripcion"]), 
-                        Monto = ComprobarNulos.CheckDecimalNull(reader["Monto"]),
-                        MontoNormalizado = ComprobarNulos.CheckDecimalNull(reader["MontoNormalizado"])
-                    };
-                    result.Add(dto);
+                        var dto = new SectorDto
+                        {
+                            IdSector = ComprobarNulos.CheckIntNull(reader["IdSector"]),
+                            NombreSector = ComprobarNulos.CheckStringNull(reader["Descripcion"]),
+                            Monto = ComprobarNulos.CheckDecimalNull(reader["Monto"]),
+                            MontoNormalizado = ComprobarNulos.CheckDecimalNull(reader["MontoNormalizado"])
+                        };
+                        result.Add(dto);
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al obtener oportunidades por sector. Detalle: {ex.Message}", ex);
+            }
+
+            return result;
         }
-        catch (Exception ex)
+
+        public async Task<List<OportunidadSectorDto>> ObtenerDetalleOportunidadesSector(int idSector, RequestGrafica data)
         {
-            throw new Exception($"Error al obtener oportunidades por sector. Detalle: {ex.Message}", ex);
-        }
- 
-        return result;
-    }
- 
-    public async Task<List<OportunidadSectorDto>> ObtenerDetalleOportunidadesSector(int idSector, RequestGrafica data)
-    {
-        List<OportunidadSectorDto> result = new List<OportunidadSectorDto>();
-        IList<ParameterSQl> list = new List<ParameterSQl>
+            List<OportunidadSectorDto> result = new List<OportunidadSectorDto>();
+            IList<ParameterSQl> list = new List<ParameterSQl>
 {
     DataBase.CreateParameterSql("@pIdEstatusOportunidad", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, 1),
     DataBase.CreateParameterSql("@pStage", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, -1),
@@ -205,39 +205,39 @@ namespace Funnel.Data
     DataBase.CreateParameterSql("@pIdUsuario", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, data.IdUsuario ?? 0),
     DataBase.CreateParameterSql("@pIdSector", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, idSector)
 };
- 
-        try
-        {
-            using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoOportunidadesPorSector", CommandType.StoredProcedure, list, _connectionString))
+
+            try
             {
-                while (reader.Read())
+                using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoOportunidadesPorSector", CommandType.StoredProcedure, list, _connectionString))
                 {
-                    var dto = new OportunidadSectorDto
+                    while (reader.Read())
                     {
-                        IdOportunidad = ComprobarNulos.CheckIntNull(reader["IdOportunidad"]),
-                        NombreProspecto = ComprobarNulos.CheckStringNull(reader["Nombre"]),
-                        NombreOportunidad = ComprobarNulos.CheckStringNull(reader["NombreOportunidad"]),
-                        TipoProyecto = ComprobarNulos.CheckStringNull(reader["Descripcion"]),
-                        Ejecutivo = ComprobarNulos.CheckStringNull(reader["NombreEjecutivo"]),
-                        Monto = ComprobarNulos.CheckDecimalNull(reader["Monto"]),
-                        FechaEstimadaCierre = ComprobarNulos.CheckStringNull(reader["FechaEstimadaCierre"]),
-                        MontoNormalizado = ComprobarNulos.CheckDecimalNull(reader["MontoNormalizado"]),
-                        Probabilidad = ComprobarNulos.CheckStringNull(reader["Probabilidad"]),
-                        Stage = ComprobarNulos.CheckStringNull(reader["Stage"]),
-                        TipoProyectoAbreviatura = ComprobarNulos.CheckStringNull(reader["Abreviatura"]),
-                        Iniciales = ComprobarNulos.CheckStringNull(reader["Iniciales"]),
-                    };
-                    result.Add(dto);
+                        var dto = new OportunidadSectorDto
+                        {
+                            IdOportunidad = ComprobarNulos.CheckIntNull(reader["IdOportunidad"]),
+                            NombreProspecto = ComprobarNulos.CheckStringNull(reader["Nombre"]),
+                            NombreOportunidad = ComprobarNulos.CheckStringNull(reader["NombreOportunidad"]),
+                            TipoProyecto = ComprobarNulos.CheckStringNull(reader["Descripcion"]),
+                            Ejecutivo = ComprobarNulos.CheckStringNull(reader["NombreEjecutivo"]),
+                            Monto = ComprobarNulos.CheckDecimalNull(reader["Monto"]),
+                            FechaEstimadaCierre = ComprobarNulos.CheckStringNull(reader["FechaEstimadaCierre"]),
+                            MontoNormalizado = ComprobarNulos.CheckDecimalNull(reader["MontoNormalizado"]),
+                            Probabilidad = ComprobarNulos.CheckStringNull(reader["Probabilidad"]),
+                            Stage = ComprobarNulos.CheckStringNull(reader["Stage"]),
+                            TipoProyectoAbreviatura = ComprobarNulos.CheckStringNull(reader["Abreviatura"]),
+                            Iniciales = ComprobarNulos.CheckStringNull(reader["Iniciales"]),
+                        };
+                        result.Add(dto);
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener detalle de oportunidades por sector", ex);
+            }
+
+            return result;
         }
-        catch (Exception ex)
-        {
-            throw new Exception("Error al obtener detalle de oportunidades por sector", ex);
-        }
- 
-        return result;
-    }
         public async Task<List<GraficaDto>> ObtenerGraficaGanadasAnio(RequestGrafica data)
         {
             List<GraficaDto> result = new List<GraficaDto>();
@@ -454,6 +454,55 @@ namespace Funnel.Data
             catch (Exception ex)
             {
                 throw new Exception("Error al obtener detalle de oportunidades por tipo de proyecto", ex);
+            }
+
+            return result;
+        }
+
+        public async Task<List<GraficaDto>> ObtenerGraficaClientesTopVeinte(RequestGrafica data)
+        {
+            List<GraficaDto> result = new List<GraficaDto>();
+            IList<ParameterSQl> list = new List<ParameterSQl>
+            {
+                DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, data.Bandera ?? ""),
+                DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, data.IdEmpresa),
+                DataBase.CreateParameterSql("@pAnio", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, data.Anio != null ? data.Anio : DBNull.Value),
+            };
+            try
+            {
+                using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoProspectos", CommandType.StoredProcedure, list, _connectionString))
+                {
+                    while (reader.Read())
+                    {
+                        var dto = new GraficaDto();
+
+                        if (data.Bandera == "SELECT-TOPDIEZ-CLIENTES-ORDER")
+                        {
+                            dto.Label = ComprobarNulos.CheckStringNull(reader["Nombre"]);
+                            dto.Valor = ComprobarNulos.CheckDecimalNull(reader["OportunidadesSolicitadas"]);
+                            dto.Valor2 = ComprobarNulos.CheckDecimalNull(reader["Ganadas"]);
+                            dto.ColoreSerie = "#b94d0a";
+                            dto.Porcentaje = ComprobarNulos.CheckDecimalNull(reader["PorcGanadas"]);
+
+                            result.Add(dto);
+                        }
+                        else
+                        {
+                            dto.Label = ComprobarNulos.CheckStringNull(reader["NombreSector"]);
+                            dto.Valor = ComprobarNulos.CheckDecimalNull(reader["Porcentaje"]);
+                            dto.Porcentaje = ComprobarNulos.CheckDecimalNull(reader["Porcentaje"]);
+
+                            result.Add(dto);
+                        }
+
+                            
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener la gráfica de clientes top mejor porcentaje ganadas", ex);
+
             }
 
             return result;

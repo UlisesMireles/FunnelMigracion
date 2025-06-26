@@ -12,6 +12,7 @@ import { Prospectos } from '../../../../interfaces/prospecto';
 import { Contacto } from '../../../../interfaces/contactos';
 import { SplitButton } from 'primeng/splitbutton';
 import { LoginService } from '../../../../services/login.service';
+import { CatalogoService } from '../../../../services/catalogo.service';
 @Component({
   selector: 'app-header',
   standalone: false,
@@ -58,7 +59,7 @@ export class HeaderComponent implements OnInit {
   private isDragging = false;
   private offset = { x: 0, y: 0 };
 
-  constructor(public asistenteService: AsistenteService, private modalService: ModalService, private router: Router,
+  constructor(public asistenteService: AsistenteService, private modalService: ModalService, private router: Router, private readonly catalogoService: CatalogoService,
     private messageService: MessageService, private modalOportunidadesService: ModalOportunidadesService, private readonly authService: LoginService) {
     this.items = [
       {
@@ -265,6 +266,7 @@ export class HeaderComponent implements OnInit {
   }
 
   onModalCloseProspectos() {
+    this.catalogoService.cargarProspectos(this.authService.obtenerIdEmpresa());
     this.modalOportunidadesService.closeModalProspecto();
   }
 

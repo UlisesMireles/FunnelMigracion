@@ -29,5 +29,6 @@ namespace Funnel.Models.Dto
         public decimal PorcEliminadas { get; set; }
 
         public decimal PorcEfectividad { get; set; }
+        public DateTime? UltimaFechaRegistro { get; set; }
     }
 }

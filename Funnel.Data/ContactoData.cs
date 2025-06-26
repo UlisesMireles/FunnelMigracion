@@ -71,6 +71,7 @@ namespace Funnel.Data
             BaseOut result = new BaseOut();
             try
             {
+                int idContacto = 0;
                 IList<ParameterSQl> list = new List<ParameterSQl>
                 {
                     DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Bandera ?? (object)DBNull.Value),
@@ -88,7 +89,7 @@ namespace Funnel.Data
                 {
                     while (reader.Read())
                     {
-
+                        idContacto = ComprobarNulos.CheckIntNull(reader["IdContactoProspecto"]);
                     }
 
                 }   
@@ -96,7 +97,7 @@ namespace Funnel.Data
                 {
                     case "INSERT":
                         result.ErrorMessage = "Contacto insertado correctamente.";
-                        result.Id = 1;
+                        result.Id = idContacto;
                         result.Result = true;
                         break;
                     case "UPDATE":

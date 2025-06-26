@@ -13,6 +13,7 @@ import { CatalogoService } from '../../../../services/catalogo.service';
 import { ModalOportunidadesService } from '../../../../services/modalOportunidades.service';
 import { Subscription } from 'rxjs';
 import { Contacto } from '../../../../interfaces/contactos';
+import { Prospectos } from '../../../../interfaces/prospecto';
 
 @Component({
   selector: 'app-modal-oportunidades',
@@ -52,24 +53,30 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
   modalVisibleContactos: boolean = false;
   contactoSeleccionado!: Contacto;
   
+  contactosFiltrados: any[] = [];
+  busquedaContacto: string | null = '';
+  contactosSeleccionado: boolean = false;  
+  registraContacto: boolean = true;
+
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() closeModal: EventEmitter<void> = new EventEmitter();
   @Output() result: EventEmitter<baseOut> = new EventEmitter();
 
   nombreProspecto: string = '';
   validaGuadar: boolean = false;
-  banderaContacto: boolean = true;
+  banderaContacto: boolean = false;
   informacionOportunidad: Oportunidad = {};
-  
+  prospectoAgregado!: Prospectos;
+
   inicializarFormulario() {
     this.modalSubscription = this.modalOportunidadesService.modalState$.subscribe((state) => {
       this.visible = state.showModal;
       this.insertar = state.insertar;
     });
     let valoresIniciales: Record<string, any>;
+    this.prospectosFiltrados = this.prospectos;
     if (this.insertar) {
       this.informacionOportunidad = { probabilidad: '0', idEstatus: 1 };
-      this.banderaContacto = true;
       this.oportunidadForm = this.fb.group({
         idOportunidad: [0],
         idProspecto: [null, Validators.required],
@@ -80,13 +87,14 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
         idTipoEntrega: ['', Validators.required],
         fechaEstimadaCierreOriginal: ['', Validators.required],
         idEjecutivo: ['', Validators.required],
-        idContactoProspecto: ['', Validators.required],
+        idContactoProspecto: [null, Validators.required],
         comentario: ['', [Validators.required, Validators.minLength(10)]],
         idEmpresa: [this.loginService.obtenerIdEmpresa()],
         probabilidad: ['0'],
         bandera: ['INS-OPORTUNIDAD'],
         idEstatus: [1]
       });
+      this.oportunidadForm.get('idContactoProspecto')?.disable();
 
       valoresIniciales = this.oportunidadForm.getRawValue();
 
@@ -98,7 +106,6 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
 
     } else {
       this.informacionOportunidad = this.oportunidad;
-      this.banderaContacto = false;
       this.nombreProspecto = this.oportunidad.nombre ?? '';
       this.oportunidadForm = this.fb.group({
         bandera: ['UPD-OPORTUNIDAD'],
@@ -118,6 +125,7 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
         idEstatus: [this.oportunidad.idEstatusOportunidad]
       });
 
+      this.oportunidadForm.get('idContactoProspecto')?.enable();
       valoresIniciales = this.oportunidadForm.getRawValue();
 
 
@@ -172,7 +180,7 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
 
 
 filtrarProspectos(event: any) {
-  const valorBusqueda = event.target.value.toLowerCase();
+  const valorBusqueda = event.filter.toLowerCase();
   this.busquedaProspecto = valorBusqueda;
   this.prospectoSeleccionado = false;
   if (valorBusqueda.length > 0) {
@@ -180,24 +188,85 @@ filtrarProspectos(event: any) {
       prospecto.nombre.toLowerCase().includes(valorBusqueda)
     );
   } else {
-    this.prospectosFiltrados = [];
+    this.prospectosFiltrados = this.prospectos;
+  }
+}
+
+filtrarContactos(event: any) {
+  const valorBusqueda = event.filter.toLowerCase();
+  this.busquedaContacto = valorBusqueda;
+  this.contactosSeleccionado = false;
+  if (valorBusqueda.length > 0) {
+    this.contactosFiltrados = this.contactos.filter(contacto => 
+      contacto.nombreCompleto.toLowerCase().includes(valorBusqueda)
+    );
+  } else {
+    this.contactosFiltrados = this.contactos;
   }
 }
 
 seleccionarProspecto(prospecto: any) {
-  this.oportunidadForm.get('idProspecto')?.setValue(prospecto.id);
-  this.busquedaProspecto = prospecto.nombre;
-  this.prospectosFiltrados = [];
+  if(prospecto != null)
+  {
+    this.oportunidadForm.get('idProspecto')?.setValue(prospecto.id);
+    this.busquedaProspecto = prospecto.nombre;
+  }
+  else
+  {
+    this.busquedaProspecto = "";
+  }
+  
+  this.prospectosFiltrados = this.prospectos;
   this.prospectoSeleccionado = true;
   this.cdr.detectChanges();
   this.onChangeProspecto(); 
+}
+
+seleccionarContactos(contacto: any) {
+  if(contacto != null)
+  {
+    this.oportunidadForm.get('idContactoProspecto')?.setValue(contacto.idContactoProspecto);
+    this.busquedaContacto = contacto.nombreCompleto;
+  }
+  else
+  {
+    this.busquedaContacto = "";
+  }
+  
+  this.contactosFiltrados = this.contactos;
+  this.contactosSeleccionado = true;
+  this.cdr.detectChanges();
+  this.onChangeProspecto(); 
+}
+
+agregarProspecto() {
+    this.prospectoAgregado = {
+      bandera: '',
+      idProspecto: 0,
+      nombre: this.busquedaProspecto,
+      ubicacionFisica: '',
+      estatus: 0,
+      desEstatus: '',
+      nombreSector: '',
+      idSector: 0,
+      totalOportunidades: 0,
+      proceso: 0,
+      ganadas: 0,
+      perdidas: 0,
+      canceladas: 0,
+      eliminadas: 0,
+      idEmpresa: 0,
+      porcEfectividad: 0,
+    };
+    this.modalOportunidadesService.openModalProspecto(true, true, [], this.prospectoAgregado)
+
 }
 
 onChangeProspecto() {
   const idProspecto = this.oportunidadForm.get('idProspecto')?.value;
   if (idProspecto > 0) {
     this.contactos = this.catalogoService.obtenerContactos(idProspecto);
-    this.banderaContacto = false;
+    this.oportunidadForm.get('idContactoProspecto')?.enable();
     const prospectoSeleccionado = this.prospectos.find(p => p.id === idProspecto);
     if (prospectoSeleccionado) {
       this.busquedaProspecto = prospectoSeleccionado.nombre;
@@ -206,9 +275,17 @@ onChangeProspecto() {
     if (this.contactos.length === 1) {
       this.oportunidadForm.get('idContactoProspecto')?.setValue(this.contactos[0].idContactoProspecto);
     }
+    if(this.contactos.length == 0)
+    {
+      this.banderaContacto = true;
+      this.registraContacto = false;
+    }
   } else {
-    this.banderaContacto = true;
+    this.oportunidadForm.get('idContactoProspecto')?.disable();
     this.busquedaProspecto = '';
+    this.busquedaContacto = null;
+    this.registraContacto = true;
+    this.banderaContacto = false;
   }
   this.cdr.detectChanges();
 }
@@ -235,7 +312,6 @@ onChangeProspecto() {
   }
 
   cargarDatos() {
-    this.banderaContacto = true;
     this.prospectos = this.catalogoService.obtenerProspectos();
     this.servicios = this.catalogoService.obtenerServicios();
     this.etapas = this.catalogoService.obtenerEtapas();
@@ -286,7 +362,6 @@ onChangeProspecto() {
     this.busquedaProspecto = '';
     this.prospectosFiltrados = [];
     this.prospectoSeleccionado = false;
-    this.banderaContacto = true;
     this.visible = false;
     this.modalOportunidadesService.closeModal();
     this.visibleChange.emit(this.visible);
@@ -420,7 +495,7 @@ onChangeProspecto() {
    
     this.contactoSeleccionado = {
       idContactoProspecto: 0,
-      nombre: '',
+      nombre: this.busquedaContacto || '',
       apellidos: '',
       telefono: '',
       correoElectronico: '',
@@ -461,7 +536,6 @@ onChangeProspecto() {
     setTimeout(() => {
     this.contactos = this.catalogoService.obtenerContactos(idProspecto);
 
-    this.banderaContacto = false;
 
  const contactoNuevo = this.contactos.find(c => c.idContactoProspecto === result.id);
   if (contactoNuevo) {
@@ -469,6 +543,9 @@ onChangeProspecto() {
   } else if (this.contactos.length === 1) {
     this.oportunidadForm.get('idContactoProspecto')?.setValue(this.contactos[0].idContactoProspecto);
   } 
+  this.oportunidadForm.get('idContactoProspecto')?.enable();
+  this.busquedaContacto = contactoNuevo?.nombreCompleto;
+  this.banderaContacto = false;
  
    this.cdr.detectChanges();
 }, 500);
@@ -476,7 +553,6 @@ onChangeProspecto() {
     } else {
       this.busquedaProspecto = '';
       this.contactos = [];
-      this.banderaContacto = true;
       this.oportunidadForm.get('idContactoProspecto')?.setValue(null);
       this.cdr.detectChanges();
     }

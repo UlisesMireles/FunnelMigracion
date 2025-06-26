@@ -205,9 +205,11 @@
                   </p-button>
                   <span class="badge">{{ rowData.totalArchivos || 0}}</span>
                 </div>
+                <ng-container *ngIf="esAdministrador()">
                 <p-button styleClass="coloreditar-icon" (click)="actualiza(rowData)" pTooltip="Editar registro" tooltipPosition="top">
                   <span class="custom-pencil">✏️</span> 
                 </p-button>
+                </ng-container>
               </td>
             </tr>
           </ng-template>

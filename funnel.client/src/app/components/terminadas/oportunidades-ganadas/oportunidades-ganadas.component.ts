@@ -188,9 +188,18 @@ export class OportunidadesGanadasComponent {
     }
 
     actualiza(licencia: Oportunidad) {
-      this.oportunidadSeleccionada = licencia;
-      this.insertar = false;
-      this.modalVisible = true;
+        if (!this.esAdministrador()) {
+            this.messageService.add({
+                severity: 'warn',
+                summary: 'Acceso denegado',
+                detail: 'Solo administradores pueden editar',
+            });
+            return;
+        }
+        
+        this.oportunidadSeleccionada = licencia;
+        this.insertar = false;
+        this.modalVisible = true;
     }
 
     seguimiento(licencia: Oportunidad) {
@@ -423,5 +432,10 @@ esNumero(cadena: string): boolean {
 onHeaderClick() {
     this.headerClicked.emit();
   }
+
+esAdministrador(): boolean {
+  const rolAdmin = 1; 
+    return this.loginService.obtenerRolUsuario() === rolAdmin;
+}
 
 }

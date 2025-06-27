@@ -72,7 +72,7 @@ export class ModalProspectosComponent {
     let valoresIniciales: Record<string, any>;
     if(this.insertar){
       this.informacionProspecto = {idProspecto: 0,
-        nombre: "",
+        nombre: this.prospecto?.nombre ?? "",
         ubicacionFisica: "",
         estatus: 0,
         desEstatus: "",
@@ -91,7 +91,7 @@ export class ModalProspectosComponent {
 
       this.prospectoForm = this.fb.group({
         idProspecto: [0],
-        nombre: ['', [
+        nombre: [this.prospecto?.nombre ?? "", [
             Validators.required,
             Validators.maxLength(50),
             // Validators.pattern('^[a-zA-ZÀ-ÿ0-9\\s]+$')

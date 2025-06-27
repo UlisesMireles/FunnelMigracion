@@ -67,7 +67,7 @@ export class ModalContactosComponent {
       this.informacionContactos = {idContactoProspecto: 0,
         bandera: '',
         nombreCompleto: '',
-        nombre: '',
+        nombre: this.contacto?.nombre ?? '',
         apellidos: '',
         telefono: '',
         correoElectronico: '',
@@ -78,7 +78,7 @@ export class ModalContactosComponent {
         idEmpresa: 0};
       this.contactoForm = this.fb.group({
         idContactoProspecto: [0],
-        nombre: ['', [
+        nombre: [this.contacto?.nombre ?? '', [
             Validators.required,
             Validators.maxLength(50),
             Validators.pattern('^[a-zA-ZÀ-ÿ\\s]+$')

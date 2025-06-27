@@ -422,4 +422,9 @@ export class OportunidadesCanceladasComponent {  @ViewChild('dt') dt!: Table;
 onHeaderClick() {
     this.headerClicked.emit();
   }
+
+esAdministrador(): boolean {
+  const rolAdmin = 1; 
+    return this.loginService.obtenerRolUsuario() === rolAdmin;
+}
 }

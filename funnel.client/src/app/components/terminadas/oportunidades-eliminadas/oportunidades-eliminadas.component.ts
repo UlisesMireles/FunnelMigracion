@@ -425,4 +425,9 @@ export class OportunidadesEliminadasComponent {
 onHeaderClick() {
     this.headerClicked.emit();
   }
+
+esAdministrador(): boolean {
+  const rolAdmin = 1; 
+    return this.loginService.obtenerRolUsuario() === rolAdmin;
+}
 }

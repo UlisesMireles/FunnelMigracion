@@ -200,10 +200,11 @@
                       </p-button>
                       <span class="badge">{{ rowData.totalComentarios || 0 }}</span>
                     </div>
-                    <p-button styleClass="coloreditar-icon" (click)="actualiza(rowData)" pTooltip="Editar registro"
-                      tooltipPosition="top">
-                      <span class="custom-pencil">✏️</span>
+                    <ng-container *ngIf="esAdministrador()">
+                    <p-button styleClass="coloreditar-icon" (click)="actualiza(rowData)" pTooltip="Editar registro" tooltipPosition="top">
+                      <span class="custom-pencil">✏️</span> 
                     </p-button>
+                    </ng-container>
                   </td>
                 </tr>
               </ng-template>

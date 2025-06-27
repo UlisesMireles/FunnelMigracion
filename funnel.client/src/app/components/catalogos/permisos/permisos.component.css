@@ -18,15 +18,15 @@
 }
 
 .menu-header {
-    background-color: #e1dac7 !important;
+    background-color: #e4fdff !important;
     font-weight: bold;
     padding: 0% !important;
 }
 
 .menu-header td {
-    background-color: #e1dac7 !important;
+    background-color: #e4fdff !important;
     padding: 0% !important;
-    border-bottom: 1px solid #c4b99f !important;
+    border-bottom: 1px solid #e4fdff !important;
 }
 
 .table-sm th {

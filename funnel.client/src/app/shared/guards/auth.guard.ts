@@ -17,7 +17,7 @@ export class AuthGuard implements CanActivate {
     }
 
     const timeDiff = Date.now() - parseInt(lastActivity);
-    console.log("timeDiff", timeDiff / (40 * 60 * 1000));
+    console.log("timeDiff", timeDiff / ( 60 * 1000));
     if (timeDiff > 40 * 60 * 1000) { // 30 minutos
       this.authService.logout();
       return false;

@@ -49,7 +49,6 @@ export class SeguimientoOportunidadesComponent {
   copiado: boolean = false;
   leyendo: boolean = false;
 
-
   historialOportunidad: Oportunidad[] = [];
   
 
@@ -325,7 +324,7 @@ export class SeguimientoOportunidadesComponent {
   recognition: any;
   textoDictado: string = '';
   textoGuardado: string = '';
-  @ViewChild('comentarioInput') comentarioInput!: ElementRef;
+  @ViewChild('comentarioInput') comentarioInput!: ElementRef<HTMLTextAreaElement>;
 
   dictarComentario() {
     // Inicializa reconocimiento si no existe
@@ -360,6 +359,7 @@ export class SeguimientoOportunidadesComponent {
         }
         this.textoDictado = textoCompleto;
         this.oportunidadForm.get('comentario')?.setValue(this.textoDictado);
+        this.scrollComentarioToEnd();
       };
       this.recognition.onerror = (event: any) => {
         this.dictando = false;
@@ -455,13 +455,20 @@ export class SeguimientoOportunidadesComponent {
     }
   }
 
+  scrollComentarioToEnd() {
+    const textarea = this.comentarioInput?.nativeElement;
+    if (textarea) {
+      textarea.scrollTop = textarea.scrollHeight;
+    }
+  }
 
-lonOp(): boolean {
-  const nombreOportunidad = this.oportunidadForm.get('nombreOportunidad')?.value;
-  return nombreOportunidad && nombreOportunidad.length <= 80;
+  lonOp(): boolean {
+    const nombreOportunidad = this.oportunidadForm.get('nombreOportunidad')?.value;
+    return nombreOportunidad && nombreOportunidad.length <= 80;
+  }
+
+  lonPros(): boolean {
+    const nombreProspecto = this.oportunidadForm.get('nombre')?.value;
+    return nombreProspecto && nombreProspecto.length <= 50;
+  }
 }
-
-lonPros(): boolean {
-  const nombreProspecto = this.oportunidadForm.get('nombre')?.value;
-  return nombreProspecto && nombreProspecto.length <= 50;
-}}

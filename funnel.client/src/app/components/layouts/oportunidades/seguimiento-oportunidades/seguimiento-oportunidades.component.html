@@ -13,49 +13,23 @@
       <div class="row">
         <div class="col-md-6">
         <div *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value !== 1" class="datos-oportunidad-container">
-        <!--Todos son cortos -->
-        <div *ngIf="lonPros() && lonOp()" class="datos-oportunidad-linea">
-          <label class="nombre-destacado">{{ 'Prospecto: ' + oportunidadForm.get('nombre')?.value }}</label>
-          <label class="oportunidad"><span class="bold">Oportunidad:</span> {{ oportunidadForm.get('nombreOportunidad')?.value }}</label>
-          <label><span class="bold">Etapa:</span> {{ oportunidadForm.get('tooltipStage')?.value?.split(' - ')[1] }}</label>
-          <label><span class="bold">Monto:</span> {{ oportunidadForm.get('monto')?.value | currency:'MXN':'symbol':'1.2-2' }}</label>
+       <div class="datos-oportunidad-vertical">
+        <div class="datos-oportunidad-linea">
+          <label class="nombre-destacado">
+            {{ 'Prospecto: ' + oportunidadForm.get('nombre')?.value }}
+          </label>
         </div>
-        <!--Prospecto largo y oportunidad corta -->
-        <div *ngIf="!lonPros() && lonOp()" class="datos-oportunidad-vertical">
-          <div class="datos-oportunidad-linea-superior">
-            <label class="nombre-destacado">{{ 'Prospecto: ' + oportunidadForm.get('nombre')?.value }}</label>
-          </div>
-          <div class="datos-oportunidad-linea-inferior">
-            <label class="oportunidad"><span class="bold">Oportunidad:</span> {{ oportunidadForm.get('nombreOportunidad')?.value }}</label>
-            <label><span class="bold">Etapa:</span> {{ oportunidadForm.get('tooltipStage')?.value?.split(' - ')[1] }}</label>
-            <label><span class="bold">Monto:</span> {{ oportunidadForm.get('monto')?.value | currency:'MXN':'symbol':'1.2-2' }}</label>
-          </div>
+        <div class="datos-oportunidad-linea">
+          <label class="oportunidad">
+            <span class="bold">Oportunidad:</span>
+            {{ oportunidadForm.get('nombreOportunidad')?.value }}
+          </label>
+          <label>
+            <span class="bold">Monto:</span>
+            {{ oportunidadForm.get('monto')?.value | currency:'MXN':'symbol':'1.2-2' }}
+          </label>
         </div>
-        <!--Prospecto largo y oportunidad larga -->
-        <div *ngIf="!lonPros() && !lonOp()" class="datos-oportunidad-vertical">
-          <div class="datos-oportunidad-linea-superior">
-            <label class="nombre-destacado">{{ 'Prospecto: ' + oportunidadForm.get('nombre')?.value }}</label>
-          </div>
-          <div class="datos-oportunidad-linea-intermedia">
-            <label class="oportunidad"><span class="bold">Oportunidad:</span> {{ oportunidadForm.get('nombreOportunidad')?.value }}</label>
-          </div>
-          <div class="datos-oportunidad-linea-inferior">
-            <label><span class="bold">Etapa:</span> {{ oportunidadForm.get('tooltipStage')?.value?.split(' - ')[1] }}</label>
-            <label><span class="bold">Monto:</span> {{ oportunidadForm.get('monto')?.value | currency:'MXN':'symbol':'1.2-2' }}</label>
-          </div>
-        </div>
-        <!-- Prospecto corto y oportunidad larga -->
-        <div *ngIf="lonPros() && !lonOp()" class="datos-oportunidad-vertical">
-          <div class="datos-oportunidad-linea-superior">
-            <label class="nombre-destacado">{{ 'Prospecto: ' + oportunidadForm.get('nombre')?.value }}</label>
-            <label class="oportunidad"><span class="bold">Oportunidad:</span> {{ oportunidadForm.get('nombreOportunidad')?.value }}</label>
-          </div>
-          <div class="datos-oportunidad-linea-inferior">
-            <label><span class="bold">Etapa:</span> {{ oportunidadForm.get('tooltipStage')?.value?.split(' - ')[1] }}</label>
-            <label><span class="bold">Monto:</span> {{ oportunidadForm.get('monto')?.value | currency:'MXN':'symbol':'1.2-2' }}</label>
-          </div>
-        </div>
-      </div>
+         </div></div>
           <div *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value === 1" class="datos-oportunidad-vertical">
             <div class="row mb-2">
               <div class="col">

@@ -471,20 +471,14 @@
   0%, 100% { opacity: 1; }
   50% { opacity: 0.3; }
 }
-.datos-oportunidad-linea,
-.datos-oportunidad-linea-superior,
-.datos-oportunidad-linea-intermedia,
-.datos-oportunidad-linea-inferior {
+.datos-oportunidad-linea{
   display: flex;
   gap: 15px;
   align-items: center;
   margin-bottom: 5px;
 }
 
-.datos-oportunidad-linea label,
-.datos-oportunidad-linea-superior label,
-.datos-oportunidad-linea-intermedia label,
-.datos-oportunidad-linea-inferior label {
+.datos-oportunidad-linea label {
   margin: 0;
   white-space: nowrap;
 }
@@ -496,10 +490,7 @@
 }
 
 @media (max-width: 992px) {
-  .datos-oportunidad-linea,
-  .datos-oportunidad-linea-superior,
-  .datos-oportunidad-linea-intermedia,
-  .datos-oportunidad-linea-inferior {
+  .datos-oportunidad-linea {
     flex-direction: column;
     align-items: flex-start;
     gap: 5px;

@@ -49,7 +49,6 @@ export class SeguimientoOportunidadesComponent {
   copiado: boolean = false;
   leyendo: boolean = false;
 
-
   historialOportunidad: Oportunidad[] = [];
   
 
@@ -325,7 +324,7 @@ export class SeguimientoOportunidadesComponent {
   recognition: any;
   textoDictado: string = '';
   textoGuardado: string = '';
-  @ViewChild('comentarioInput') comentarioInput!: ElementRef;
+  @ViewChild('comentarioInput') comentarioInput!: ElementRef<HTMLTextAreaElement>;
 
   dictarComentario() {
     // Inicializa reconocimiento si no existe
@@ -360,6 +359,7 @@ export class SeguimientoOportunidadesComponent {
         }
         this.textoDictado = textoCompleto;
         this.oportunidadForm.get('comentario')?.setValue(this.textoDictado);
+        this.scrollComentarioToEnd();
       };
       this.recognition.onerror = (event: any) => {
         this.dictando = false;
@@ -454,4 +454,13 @@ export class SeguimientoOportunidadesComponent {
       this.leyendo = false;
     }
   }
+
+
+  scrollComentarioToEnd() {
+    const textarea = this.comentarioInput?.nativeElement;
+    if (textarea) {
+      textarea.scrollTop = textarea.scrollHeight;
+    }
+  }
+
 }

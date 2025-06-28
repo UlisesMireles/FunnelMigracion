@@ -65,9 +65,9 @@
         <div class="col-md-6 seguimiento-container">
           <form [formGroup]="oportunidadForm">
             <div *ngIf="oportunidadForm.get('idEstatusOportunidad')?.value === 1" class="seguimiento-area">
-              <label class="seguimiento-label">Seguimiento:</label>
+              <label class="seguimiento-label" for="comentario">Seguimiento:</label>
               <textarea pInputText class="seguimiento-textarea" formControlName="comentario" #comentarioInput
-                (input)="onComentarioInput()"  placeholder="Escribe un comentario de al menos 10 palabras"></textarea>
+                (input)="onComentarioInput(); scrollComentarioToEnd();"  placeholder="Escribe un comentario de al menos 10 palabras"></textarea>
                 
               <div class="d-flex justify-content-between mt-1">
                 <div>

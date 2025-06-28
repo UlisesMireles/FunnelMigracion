@@ -39,6 +39,7 @@ import { AcordeonProspectosContactosComponent } from './components/administracio
 import { ServiciosEntregasComponent } from './components/catalogos/servicios-entregas/servicios-entregas.component';
 import { UsuariosPermisosComponent } from './components/catalogos/usuarios-permisos/usuarios-permisos.component';
 import { PanelesTerminadasComponent } from './components/terminadas/paneles-terminadas/paneles-terminadas.component';
+import { InicioNuevoComponent } from './components/inicio/inicio-nuevo/inicio-nuevo.component';
 const routes: Routes = [
   { path: '', component: LoginComponent, title: 'Login' },
   { path: 'login', component: LoginComponent, title: 'Login' },
@@ -47,6 +48,7 @@ const routes: Routes = [
   { path: 'cambiar-contrasena', component: CambiarContrasenaComponent, title: 'Cambiar Contraseña', canActivate: [AuthGuard] },
   { path: 'two-factor', component: DobleAutenticacionComponent, title: 'Autenticación' },
   { path: 'recuperar-contrasena', component: OlvidasteContrasenaComponent, title: 'Recuperar contraseña' },
+  {path: 'inicio-nuevo', component: InicioNuevoComponent, title: 'Inicio Nuevo'},
   /*{ path: 'prospectos', component: ProspectosComponent, title: 'Prospectos', canActivate: [AuthGuard] },
   { path: 'contactos', component: ContactosComponent, title: 'Contactos', canActivate: [AuthGuard] },*/
   //{ path: 'tipos-servicios', component: TipoServiciosComponent, title: 'Tipos Servicios ', canActivate: [AuthGuard] },

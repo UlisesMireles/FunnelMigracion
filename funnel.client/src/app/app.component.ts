@@ -16,7 +16,7 @@ interface WeatherForecast {
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
-  login: boolean = false;
+  inicioNuevo: boolean = false;
   dobleAutenticacion: boolean = false;
   politicaPrivacidad: boolean = false;
   terminosCondiciones: boolean = false;
@@ -25,11 +25,11 @@ export class AppComponent implements OnInit {
   ngOnInit() {
 
     this.router.events.subscribe(() => {
-      if (this.router.url === '/' || this.router.url === '/recuperar-contrasena' || this.router.url === '/login' || this.router.url === '/two-factor' || this.router.url ==='/politica-privacidad' || this.router.url ==='/terminos-condiciones') {
-        this.login = true;
+      if (this.router.url === '/' || this.router.url === '/recuperar-contrasena' || this.router.url === '/inicio-nuevo' || this.router.url === '/two-factor' || this.router.url ==='/politica-privacidad' || this.router.url ==='/terminos-condiciones') {
+        this.inicioNuevo = true;
       }
       else {
-        this.login = false;
+        this.inicioNuevo = false;
       }
       this.dobleAutenticacion = this.router.url === '/two-factor';
       this.politicaPrivacidad = this.router.url === '/politica-privacidad';

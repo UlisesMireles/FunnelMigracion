@@ -1,1 +1,285 @@
-<p>inicio-nuevo works!</p>
+<body>
+  <main>
+    <div class="navbar">
+      <nav class="text-center m-auto">
+        <img width="150" [src]="baseUrl + '/assets/img/logotipo-glupoint.png'" alt="logo SFS" class="m-auto">
+        <button *ngIf="showIniciarSesion" class="iniciarSesion float-end" (click)="openLoginModal()">Iniciar Sesión</button>
+      </nav>
+    </div>
+      
+      <!-- Features Section -->
+<div class="features-section" style="background: white; padding: 80px 0;">
+  <div class="container">
+    <h2 class="section-title">Todo lo que necesitas para vender más</h2>
+    <p class="section-subtitle">Funcionalidades diseñadas para cada etapa de tu proceso comercial</p>
+
+    <!-- Primera fila: 3 tarjetas -->
+    <div class="row">
+      <div class="col-md-4 mb-4">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="bi bi-person-check"></i>
+          </div>
+          <h3>Calificación de prospectos</h3>
+          <p>Se realiza una llamada o visita inicial para analizar las necesidades del cliente.</p>
+        </div>
+      </div>
+
+      <div class="col-md-4 mb-4">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="bi bi-search"></i>
+          </div>
+          <h3>Investigación de necesidades</h3>
+          <p>Se confirma la solución o producto que mejor se ajusta al cliente, identificando a la persona que toma las decisiones y posibles aliados.</p>
+        </div>
+      </div>
+
+      <div class="col-md-4 mb-4">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="bi bi-file-earmark-text"></i>
+          </div>
+          <h3>Elaboración de Propuestas</h3>
+          <p>Se cuantifican los criterios de compra y se definen los objetivos de venta, con un conocimiento profundo del presupuesto y la competencia.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Segunda fila: 2 tarjetas centradas -->
+    <div class="row justify-content-center">
+      <div class="col-md-4 mb-4">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="bi bi-journal-check"></i>
+          </div>
+          <h3>Presentación de propuestas</h3>
+          <p>Se entregan las propuestas, asegurando que las necesidades del cliente han sido entendidas y todas las objeciones han sido resueltas.</p>
+        </div>
+      </div>
+
+      <div class="col-md-4 mb-4">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="bi bi-arrow-left-right"></i>
+          </div>
+          <h3>Negociación</h3>
+          <p>La propuesta se encuentra entre las finalistas, y la negociación se lleva a cabo con la persona que toma la decisión.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      <!-- Testimonials Section -->
+      <div class="testimonials-section" style="background-color: #f8f9fa; padding: 80px 0;">
+        <div class="container">
+          <h2 class="section-title">Lo que dicen nuestros clientes</h2>
+          
+          <div class="row">
+            <div class="col-md-6 mb-4">
+              <div class="testimonial-card">
+                <div class="testimonial-content">
+                  "Implementamos SFS y en 3 meses aumentamos nuestras ventas un 180%. La visibilidad del funnel es increíble."
+                </div>
+                <div class="testimonial-author">
+                  <img [src]="baseUrl + '/assets/img/testimonial1.jpg'" alt="Carlos Méndez" class="author-avatar">
+                  <div class="author-info">
+                    <strong>Carlos Méndez</strong>
+                    <span>Director Comercial, TechSolutions</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-md-6 mb-4">
+              <div class="testimonial-card">
+                <div class="testimonial-content">
+                  "¡Una herramienta imprescindible!"
+                </div>
+                <div class="testimonial-author">
+                  <img [src]="baseUrl + '/assets/img/testimonial2.jpg'" alt="Ana Rodríguez" class="author-avatar">
+                  <div class="author-info">
+                    <strong>Ana Rodríguez</strong>
+                    <span>Gerente de Ventas, Consultoría Alpha</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Pricing Section -->
+      <div class="pricing-section" style="padding: 80px 0;">
+        <div class="container">
+          <h2 class="section-title">Planes a tu medida</h2>
+          <p class="section-subtitle">Elige el que mejor se adapte a tus necesidades</p>
+          
+          <div class="row">
+            <div class="col-md-4 mb-4">
+              <div class="pricing-card">
+                <div class="pricing-header">
+                  <h3>Gratuita</h3>
+                  <div class="price">$0<span></span></div>
+                  <small>Ideal para emprendedores</small>
+                </div>
+                <ul class="pricing-features">
+                  <li><i class="bi bi-check"></i> Funcionalidades básicas</li>
+                  <li><i class="bi bi-check"></i> </li>
+                  <li><i class="bi bi-check"></i> </li>
+                  <li><i class="bi bi-check"></i> </li>
+                </ul>
+                <button class="btn btn-primary">Prueba Gratis</button>
+              </div>
+            </div>
+            
+            <div class="col-md-4 mb-4">
+              <div class="pricing-card featured">
+                <div class="pricing-header">
+                  <h3>Premium</h3>
+                  <div class="price">$20 dólares<span></span></div>
+                  <small>Recomendado para PYMES</small>
+                  <div class="popular-badge">POPULAR</div>
+                </div>
+                <ul class="pricing-features">
+                  <li><i class="bi bi-check"></i> 20 usuarios</li>
+                  <li><i class="bi bi-check"></i> 100 oportunidades activas</li>
+                  <li><i class="bi bi-check"></i> </li>
+                  <li><i class="bi bi-check"></i> </li>
+                  <li><i class="bi bi-check"></i> </li>
+                </ul>
+                <button class="btn btn-outline-primary">Empezar</button>
+              </div>
+            </div>
+            
+            <div class="col-md-4 mb-4">
+              <div class="pricing-card">
+                <div class="pricing-header">
+                  <h3>Platinum</h3>
+                  <div class="price">$50 dólares</div>
+                  <small>Para equipos grandes</small>
+                </div>
+                <ul class="pricing-features">
+                  <li><i class="bi bi-check"></i> 50 usuarios</li>
+                  <li><i class="bi bi-check"></i> 200 oportunidades activas</li>
+                  <li><i class="bi bi-check"></i> </li>
+                  <li><i class="bi bi-check"></i> </li>
+                  <li><i class="bi bi-check"></i> </li>
+                </ul>
+                <button class="btn btn-outline-primary">Empezar</button>
+              </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Final CTA Section -->
+      <div class="cta-section" style="background: linear-gradient(135deg, #1a2980 0%, #26d0ce 100%); padding: 80px 0; color: white;">
+        <div class="container text-center">
+          <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">¿Listo para transformar tus ventas?</h2>
+          <p style="font-size: 1.25rem; margin-bottom: 2rem;">Únete a más empresas que ya están creciendo con SFS</p>
+          
+          <div class="d-flex justify-content-center gap-3">
+            <button class="btn btn-light btn-lg" (click)="toggleRegisterForm()">Regístrate Gratis</button>
+          </div>
+        </div>
+      </div>
+      
+      <p-toast position="center"></p-toast>
+    </div>
+    <!-- Modal Login -->
+    <div *ngIf="isLoginModalOpen" class="custom-modal-1" style="overflow-y: auto">
+      <div class="modal-dialog custom-modal-dialog-1 modal-dialog-centered modal-lg">
+        <div class="modal-content" style="max-height: 423px;">
+          <div class="modal-header justify-content-center">
+            <img width="100" [src]="baseUrl + '/assets/img/SFS login.png'" alt="logo SFS">
+
+            <i class="bi bi-x-lg float-end close" (click)="closeLoginModal()"></i>
+
+          </div>
+          <div class="row modal-body custom-modal-body-1" style="padding: 25px 0; max-height: 470px; display: flex; ">
+
+            <!-- Sección de inicio de sesión -->
+            <div class="login-section col-lg-6 col-md-12 col-12 col-sm-12" style="padding-right: 25px !important;">
+              <h5 class="text-center" style="font-size: 1.6rem; font-weight: 600; color: #1a73e8;">Acceso al Sistema</h5>
+              <br />
+              <form [formGroup]="loginForm" class="text-center border border-light formLogin">
+                <div class="input-group mb-4">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+                  </div>
+                  <input type="text" class="form-control" placeholder="usuario" formControlName="usuario" />
+                </div>
+                <div class="input-group mb-4 pass">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                  </div>
+                  <input 
+                    [type]="showPassword ? 'text' : 'password'" 
+                    class="form-control" 
+                    placeholder="contraseña" 
+                    formControlName="password"
+                  />
+                  <span class="input-group-text toggle-password" (click)="togglePasswordVisibility()">
+                    <i class="bi" [class.bi-eye-slash]="!showPassword" [class.bi-eye]="showPassword"></i>
+                  </span>
+                </div>
+                <div class="input-group btn-l">
+                  <button class="btn btn-login btn-lg btn-block form-control" (click)="login()">Iniciar Sesión</button>
+                </div>
+                <div class="text-center" *ngIf="errorMessage">
+                  <p style="color: #a94442;">{{ errorMessage }}</p>
+                </div>
+                <div class="text-center" style="padding: 2%;">
+                  <a (click)="openResetModal()" style="font-size: 17px; color: #2f8ce6; cursor: pointer;">¿Olvidaste tu contraseña?</a>
+                </div>
+              </form>
+            </div>
+             <!-- Línea divisoria -->
+            <!--<div class="divisor"></div>-->
+            <!-- Sección de información -->
+            <div class="col-lg-6 col-md-12 col-12 col-sm-12" style="border-left: 1px solid #878080fa;padding-left: 25px !important;">
+              <h2 class="mt-3" style="font-size: 2rem; font-weight: 700; color: #1a73e8;">Cada fase te acerca a mayores ingresos.</h2>
+              <br />
+              <p style="text-align: justify; font-size: 1rem; line-height: 1.6; color: #444;">¿No tienes una cuenta?</p>
+              <div class="input-group btn-l">
+                <button class="btn btn-reg btn-lg btn-block form-control" (click)="closeLoginModal()">Regístrate ahora</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-3 chatbot">
+      
+      <button class="btn-chat" (click)="toggleChat()">
+        <i class="bi bi-chat-fill"></i> 
+      </button>
+      
+      <ng-container *ngIf="(asistenteService.asistenteBienvenidaObservable | async) === 1">
+        <div id="chat-container" class="chatbot-window" #chatContainer>
+          <app-asistente-bienvenida></app-asistente-bienvenida>
+        </div>
+      </ng-container>
+    </div> 
+        
+    <!-- Footer -->
+    <footer class="footer" style="background: #1a2980; color: white; padding: 60px 0 30px;">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-3 mb-4">
+            <div class="footer-brand">
+              <img width="150" [src]="baseUrl + '/assets/img/logotipo-glupoint.png'" alt="logo SFS">
+              <p>La plataforma de ventas más completa para equipos ambiciosos.</p>
+              <div class="social-links">
+                <a href="#" style="color: white;"><i class="bi bi-facebook"></i></a>
+                <a href="#" style="color: white;"><i class="bi bi-linkedin"></i></a>
+                <a href="#" style="color: white;"><i class="bi bi-twitter"></i></a>
+                <a href="#" style="color: white;"><i class="bi bi-instagram"></i></a>
+              </div>
+            </div>
+          </div></div>
+      </div>
+    </footer>
+  </main>
+</body>

@@ -49,6 +49,8 @@ import { PoliticaPrivacidadComponent } from './components/inicio/legal/politica-
 import { TerminosCondicionesComponent } from './components/inicio/legal/terminos-condiciones/terminos-condiciones.component';
 import { OlvidasteContrasenaComponent } from './components/inicio/olvidaste-contrasena/olvidaste-contrasena.component';
 import { CambiarContrasenaComponent } from './components/inicio/cambiar-contrasena/cambiar-contrasena.component';
+import { InicioNuevoComponent } from './components/inicio/inicio-nuevo/inicio-nuevo.component';
+
 
 // En Proceso
 import { OportunidadesComponent } from './components/en-proceso/oportunidades/oportunidades.component';
@@ -230,7 +232,8 @@ registerLocaleData(localeEs, 'es-MX');
     ServiciosEntregasComponent,
     UsuariosPermisosComponent,
     GraficasClientesTop20Component,
-    PanelesTerminadasComponent
+    PanelesTerminadasComponent,
+    InicioNuevoComponent
   ],
   imports: [
     BrowserModule,

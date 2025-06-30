@@ -566,8 +566,7 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
 
         this.catalogoService.cargarContactos(this.loginService.obtenerIdEmpresa());
         setTimeout(() => {
-          this.contactos = this.catalogoService.obtenerContactos(prospecto);
-
+          this.contactos = this.catalogoService.obtenerContactos(prospecto.id);
 
           const contactoNuevo = this.contactos.find(c => c.idContactoProspecto === result.id);
           if (contactoNuevo) {

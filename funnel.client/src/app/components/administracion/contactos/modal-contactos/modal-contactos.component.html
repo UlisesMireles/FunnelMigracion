@@ -9,7 +9,7 @@
 >
   <ng-template pTemplate="header">
     <label class="margen">
-      {{ insertar ? 'Nuevo Contacto' : title + ' ' + contactoForm.get('nombre')?.value }}
+      {{ insertarContacto ? 'Nuevo Contacto' : title + ' ' + contactoForm.get('nombre')?.value }}
     </label>
     
   </ng-template>
@@ -81,7 +81,7 @@
         </div>
       </div>     
 
-      <div class="row inptSpace" *ngIf="!insertar">
+      <div class="row inptSpace" *ngIf="!insertarContacto">
         <div class="col-sm-4 lbl">
           <label for="estatus">Estatus: </label>
         </div>
@@ -94,8 +94,8 @@
   </ng-template>
 
   <ng-template pTemplate="footer">
-    <button *ngIf="!insertar" pButton label="Actualizar" (click)="guardarContacto()" severity="secondary" [disabled]="!validaGuadar"></button>
-    <button *ngIf="insertar" pButton label="Agregar" (click)="guardarContacto()" severity="secondary" [disabled]="!validaGuadar"></button>
+    <button *ngIf="!insertarContacto" pButton label="Actualizar" (click)="guardarContacto()" severity="secondary" [disabled]="!validaGuadar"></button>
+    <button *ngIf="insertarContacto" pButton label="Agregar" (click)="guardarContacto()" severity="secondary" [disabled]="!validaGuadar"></button>
     <button pButton label="Cancelar" (click)="close()" severity="secondary"></button>
   </ng-template>
 </p-dialog>

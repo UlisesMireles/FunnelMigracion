@@ -455,6 +455,7 @@ export class SeguimientoOportunidadesComponent {
     }
   }
 
+
   scrollComentarioToEnd() {
     const textarea = this.comentarioInput?.nativeElement;
     if (textarea) {
@@ -462,13 +463,4 @@ export class SeguimientoOportunidadesComponent {
     }
   }
 
-  lonOp(): boolean {
-    const nombreOportunidad = this.oportunidadForm.get('nombreOportunidad')?.value;
-    return nombreOportunidad && nombreOportunidad.length <= 80;
-  }
-
-  lonPros(): boolean {
-    const nombreProspecto = this.oportunidadForm.get('nombre')?.value;
-    return nombreProspecto && nombreProspecto.length <= 50;
-  }
 }

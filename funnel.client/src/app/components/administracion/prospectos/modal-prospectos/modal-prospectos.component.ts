@@ -24,7 +24,7 @@ export class ModalProspectosComponent {
   @Input() prospectos: Prospectos[] = [];
   @Input() title: string = 'Modal';
   @Input() visible: boolean = false;
-  @Input() insertar: boolean = false;
+  @Input() insertarProspecto: boolean = false;
   request!: RequestProspecto;
 
   prospectoActivo: boolean = false;
@@ -70,7 +70,7 @@ export class ModalProspectosComponent {
   inicializarFormulario() {
     let idEmpresa = this.loginService.obtenerIdEmpresa();
     let valoresIniciales: Record<string, any>;
-    if(this.insertar){
+    if(this.insertarProspecto){
       this.informacionProspecto = {idProspecto: 0,
         nombre: this.prospecto?.nombre ?? "",
         ubicacionFisica: "",

@@ -29,6 +29,8 @@ export class HeaderComponent implements OnInit {
   optionsVisible: boolean = false;
 
   insertar: boolean = false;
+  insertarContacto: boolean = false;
+  insertarProspecto: boolean = false;
 
   private modalSubscription!: Subscription;
   private modalProspectosSubscription!: Subscription;
@@ -138,7 +140,7 @@ export class HeaderComponent implements OnInit {
     //Suscripcion a servicio de modal de prospectos, recibe datos para el despliegue del modal
     this.modalProspectosSubscription = this.modalOportunidadesService.modalProspectoState$.subscribe((state) => {
       this.modalVisibleProspectos = state.showModal;
-      this.insertar = state.insertar;
+      this.insertarProspecto = state.insertarProspecto;
       this.prospectos = state.prospectos;
       this.prospectoSeleccionado = state.prospectoSeleccionado;
     });
@@ -146,7 +148,7 @@ export class HeaderComponent implements OnInit {
     //Suscripcion a servicio de modal de contactos, recibe datos para el despliegue del modal
     this.modalContactosSubscription = this.modalOportunidadesService.modalContactoState$.subscribe((state) => {
       this.modalVisibleContactos = state.showModal;
-      this.insertar = state.insertar;
+      this.insertarContacto = state.insertarContacto;
       this.contactos = state.contactos;
       this.contactoSeleccionado = state.contactoSeleccionado;
     });

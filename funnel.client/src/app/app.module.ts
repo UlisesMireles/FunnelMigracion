@@ -50,6 +50,7 @@ import { TerminosCondicionesComponent } from './components/inicio/legal/terminos
 import { OlvidasteContrasenaComponent } from './components/inicio/olvidaste-contrasena/olvidaste-contrasena.component';
 import { CambiarContrasenaComponent } from './components/inicio/cambiar-contrasena/cambiar-contrasena.component';
 import { InicioNuevoComponent } from './components/inicio/inicio-nuevo/inicio-nuevo.component';
+import { RegistroComponent } from './components/inicio/registro/registro.component';
 
 
 // En Proceso
@@ -233,7 +234,8 @@ registerLocaleData(localeEs, 'es-MX');
     UsuariosPermisosComponent,
     GraficasClientesTop20Component,
     PanelesTerminadasComponent,
-    InicioNuevoComponent
+    InicioNuevoComponent,
+    RegistroComponent
   ],
   imports: [
     BrowserModule,

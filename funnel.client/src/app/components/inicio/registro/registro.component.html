@@ -1,0 +1,187 @@
+<div class="funnel-container">
+  <div class="container-fluid h-100 p-0">
+    <div class="row g-0" style="min-height: 100vh;">
+      <div class="col-lg-6 d-none d-lg-flex align-items-center justify-content-center bg-light position-relative" style="min-height: 100vh;">
+        <img [src]="baseUrl + '/assets/img/PMAGRISES.png'" alt="Imagen descriptiva" class="img-fluid h-100 w-100" style="object-fit: cover;">
+        <div class="position-absolute bottom-0 start-0 p-4 text-white" style="background: rgba(0,0,0,0.5); width: 100%;">
+          <h3 class="mb-3">Bienvenido a Glupoint</h3>
+          <p class="mb-0">Únete a nuestra plataforma y descubre todas las funcionalidades que tenemos para ti.</p>
+        </div>
+      </div>
+      
+      <!-- Columna derecha para el formulario -->
+      <div class="col-lg-6 d-flex align-items-center justify-content-center py-5" style="min-height: 100vh;">
+        <div class="login-div w-100 px-3" style="max-width: 500px;">
+          <section class="login-form resultados p-4 p-md-5 rounded-3 shadow-sm bg-white">
+            <div class="logo-veriq text-center mb-4">
+              <h2 class="mb-3" style="color: #2c3e50; font-weight: 700;">Regístrate</h2>
+              <p class="text-muted">Completa el formulario para crear tu cuenta</p>
+            </div>
+            
+            <div class="demo-container">
+              <form class="form-signin register-form" name="formRegistrar" id="formRegistrar" [formGroup]="aFormGroup">
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <div class="form-floating">
+                      <input type="text" id="txtNombre" formControlName="nombre" 
+                        [ngClass]="{'is-invalid': aFormGroup.get('nombre')?.invalid && aFormGroup.get('nombre')?.touched}"
+                        class="form-control" placeholder="Nombre" maxlength="100">
+                      <label for="txtNombre" class="form-label">Nombre*</label>
+                      <div *ngIf="aFormGroup.get('nombre')?.invalid && aFormGroup.get('nombre')?.touched" class="invalid-feedback">
+                        <ng-container *ngIf="aFormGroup.get('nombre')?.errors?.['required']">
+                          El nombre es requerido.
+                        </ng-container>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col-md-6">
+                    <div class="form-floating">
+                      <input type="text" id="txtApellidos" formControlName="apellido"
+                      [ngClass]="{'is-invalid': aFormGroup.get('apellido')?.invalid && aFormGroup.get('apellido')?.touched}"
+                      class="form-control" placeholder="Apellido" maxlength="200">
+                      <label for="txtApellidos" class="form-label">Apellido*</label>
+                      <div *ngIf="aFormGroup.get('apellido')?.invalid && aFormGroup.get('apellido')?.touched" class="invalid-feedback">
+                        <ng-container *ngIf="aFormGroup.get('apellido')?.errors?.['required']">
+                          El apellido es requerido.
+                        </ng-container>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col-md-6">
+                    <div class="form-floating">
+                      <input type="email" id="txtCorreo" formControlName="correo" 
+                      [ngClass]="{'is-invalid': aFormGroup.get('correo')?.invalid && aFormGroup.get('correo')?.touched}"
+                      class="form-control" placeholder="Correo electrónico" maxlength="500">
+                      <label for="txtCorreo" class="form-label">Correo*</label>
+                      <div *ngIf="aFormGroup.get('correo')?.invalid && aFormGroup.get('correo')?.touched" class="invalid-feedback">
+                        <ng-container *ngIf="aFormGroup.get('correo')?.errors?.['required']">
+                          El correo es requerido.
+                        </ng-container>
+                        <ng-container *ngIf="aFormGroup.get('correo')?.errors?.['email']">
+                          Ingrese un correo válido.
+                        </ng-container>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col-md-6">
+                    <div class="form-floating">
+                      <input type="text" id="txtTelefono" formControlName="telefono" 
+                      [ngClass]="{'is-invalid': aFormGroup.get('telefono')?.invalid && aFormGroup.get('telefono')?.touched}"
+                      class="form-control" placeholder="Teléfono" (input)="soloNumeros($event)" maxlength="11">
+                      <label for="txtTelefono" class="form-label">Teléfono*</label>
+                      <div *ngIf="aFormGroup.get('telefono')?.invalid && aFormGroup.get('telefono')?.touched" class="invalid-feedback">
+                        <ng-container *ngIf="aFormGroup.get('telefono')?.errors?.['required']">
+                          El teléfono es requerido.
+                        </ng-container>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col-md-6">
+                    <div class="form-floating">
+                      <input type="text" id="txtEmpresa" formControlName="empresa" 
+                      [ngClass]="{'is-invalid': aFormGroup.get('empresa')?.invalid && aFormGroup.get('empresa')?.touched}"
+                      class="form-control" placeholder="Empresa" maxlength="200">
+                      <label for="txtEmpresa" class="form-label">Empresa*</label>
+                      <div *ngIf="aFormGroup.get('empresa')?.invalid && aFormGroup.get('empresa')?.touched" class="invalid-feedback">
+                        <ng-container *ngIf="aFormGroup.get('empresa')?.errors?.['required']">
+                          La empresa es requerida.
+                        </ng-container>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col-md-6">
+                    <div class="form-floating">
+                      <input type="text" id="txtSitio" formControlName="urlSitio" 
+                      [ngClass]="{'is-invalid': aFormGroup.get('urlSitio')?.invalid && aFormGroup.get('urlSitio')?.touched}"
+                      class="form-control" placeholder="URL del sitio web" maxlength="200">
+                      <label for="txtSitio" class="form-label">URL del sitio web</label>
+                      <div *ngIf="aFormGroup.get('urlSitio')?.invalid && aFormGroup.get('urlSitio')?.touched" class="invalid-feedback">
+                        <ng-container *ngIf="aFormGroup.get('urlSitio')?.errors?.['pattern']">
+                          Por favor, ingrese una URL válida.
+                        </ng-container>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col-12">
+                    <div class="form-floating">
+                      <select id="cmbxNumEmpleado" class="form-select" 
+                      [ngClass]="{'is-invalid': aFormGroup.get('noEmpleados')?.invalid && aFormGroup.get('noEmpleados')?.touched}"
+                      formControlName="noEmpleados">
+                        <option value="">Selecciona una opción</option>
+                        <option value="1-10">1-10</option>
+                        <option value="11-50">11-50</option>
+                        <option value="51-100">51-100</option>
+                        <option value="101-500">101-500</option>
+                        <option value="500+">500+</option>
+                      </select>
+                      <label for="cmbxNumEmpleado" class="form-label">Número de empleados*</label>
+                      <div *ngIf="aFormGroup.get('noEmpleados')?.invalid && aFormGroup.get('noEmpleados')?.touched" class="invalid-feedback">
+                        <ng-container *ngIf="aFormGroup.get('noEmpleados')?.errors?.['required']">
+                          El núm. de empleados es requerido.
+                        </ng-container>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col-12">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="chkPrivacyTerms" formControlName="privacidadTerminos" 
+                      [ngClass]="{'is-invalid': aFormGroup.get('privacidadTerminos')?.invalid && aFormGroup.get('privacidadTerminos')?.touched}">
+                      <label class="form-check-label" for="chkPrivacyTerms">
+                        Declaro que he leído y acepto la
+                        <a [href]="baseUrl + '/politica-privacidad'" target="_blank" rel="noopener noreferrer" class="text-primary text-decoration-none">Política de privacidad</a>
+                        y los
+                        <a [href]="baseUrl + '/terminos-condiciones'" target="_blank" rel="noopener noreferrer" class="text-primary text-decoration-none">Términos y Condiciones</a>
+                        de Glupoint.
+                      </label>
+                      <div *ngIf="aFormGroup.get('privacidadTerminos')?.invalid && aFormGroup.get('privacidadTerminos')?.touched" class="invalid-feedback d-block">
+                        <ng-container *ngIf="aFormGroup.get('privacidadTerminos')?.errors?.['required'] || aFormGroup.get('privacidadTerminos')?.errors?.['requiredTrue']">
+                          Debe aceptar la política de privacidad y términos.
+                        </ng-container>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col-12">
+                    <ngx-recaptcha2 #captchaElem
+                                    [siteKey]="siteKey"
+                                    (reset)="handleReset()"
+                                    (expire)="handleExpire()"
+                                    (load)="handleLoad()"
+                                    (success)="handleSuccess($event)"
+                                    [useGlobalDomain]="false"
+                                    formControlName="recaptcha"
+                                    [ngClass]="{'is-invalid': aFormGroup.get('recaptcha')?.invalid && aFormGroup.get('recaptcha')?.touched}">
+                    </ngx-recaptcha2>
+                    <div *ngIf="aFormGroup.get('recaptcha')?.invalid && aFormGroup.get('recaptcha')?.touched" class="invalid-feedback d-block">
+                      <ng-container *ngIf="aFormGroup.get('recaptcha')?.errors?.['required']">
+                        Verificación de captcha obligatoria.
+                      </ng-container>
+                    </div>
+                  </div>
+                  
+                  <div class="col-12 mt-3">
+                    <button type="submit" class="btn btn-primary w-100 py-2 fw-bold" (click)="guardarInformacion($event)">
+                      Registrar
+                    </button>
+                  </div>
+                </div>
+              </form>
+              
+              <div class="text-center mt-3">
+                <p class="text-muted mb-0">¿Ya tienes una cuenta? <a  [href]="baseUrl + '/login'"  class="text-primary text-decoration-none">Inicia sesión</a></p>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<p-toast position="center"></p-toast>

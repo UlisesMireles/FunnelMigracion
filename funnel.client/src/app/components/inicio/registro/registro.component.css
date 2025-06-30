@@ -1,8 +1,11 @@
 .funnel-container{
     width: 100vw; 
-    min-height: 100vh; 
+    height: 100vh; 
     background: #f8f9fa;
-}.logo-veriq {
+    overflow-x: hidden !important;
+    overflow-y: auto;
+}
+.logo-veriq {
     background-color: #AFABAB;
     text-align: center;
     height: 65px;
@@ -11,3 +14,10 @@
     background-size: 170px 87px;
     border-radius: 6px 6px 0px 0px;
 }
+.login-form {
+    margin-top: -30px; 
+  }
+.text-muted{
+    margin-top: -20px;
+}
+

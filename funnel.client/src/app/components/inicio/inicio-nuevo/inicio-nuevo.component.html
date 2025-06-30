@@ -3,7 +3,11 @@
     <div class="navbar">
       <nav class="text-center m-auto">
         <img width="150" [src]="baseUrl + '/assets/img/logotipo-glupoint.png'" alt="logo SFS" class="m-auto">
-        <button *ngIf="showIniciarSesion" class="iniciarSesion float-end" (click)="openLoginModal()">Iniciar Sesión</button>
+        <div class="float-end">
+  <button *ngIf="showIniciarSesion" class="iniciarSesion me-2" (click)="openLoginModal()">Iniciar Sesión</button>
+  <button *ngIf="showIniciarSesion" class="iniciarSesion me-2" (click)="openRegisterModal()">Registrarse</button>
+</div>
+
       </nav>
     </div>
     <!-- Features Section-->
@@ -73,122 +77,160 @@
       </div>
     </div>
   </div></div>
-      <!-- Testimonials Section -->
-      <div class="testimonials-section" style="background-color: #f8f9fa; padding: 80px 0;">
-        <div class="container">
-          <h2 class="section-title">Lo que dicen nuestros clientes</h2>
-          
-          <div class="row">
-            <div class="col-md-6 mb-4">
-              <div class="testimonial-card">
-                <div class="testimonial-content">
-                  "Implementamos SFS y en 3 meses aumentamos nuestras ventas un 180%. La visibilidad del funnel es increíble."
-                </div>
-                <div class="testimonial-author">
-                  <img [src]="baseUrl + '/assets/img/testimonial1.jpg'" alt="Carlos Méndez" class="author-avatar">
-                  <div class="author-info">
-                    <strong>Carlos Méndez</strong>
-                    <span>Director Comercial, TechSolutions</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div class="col-md-6 mb-4">
-              <div class="testimonial-card">
-                <div class="testimonial-content">
-                  "¡Una herramienta imprescindible!"
-                </div>
-                <div class="testimonial-author">
-                  <img [src]="baseUrl + '/assets/img/testimonial2.jpg'" alt="Ana Rodríguez" class="author-avatar">
-                  <div class="author-info">
-                    <strong>Ana Rodríguez</strong>
-                    <span>Gerente de Ventas, Consultoría Alpha</span>
-                  </div>
-                </div>
-              </div>
+ <!-- Testimonials Section - -->
+<div class="testimonials-section">
+  <div class="testimonial-decoration" style="position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: rgba(13, 110, 253, 0.1); border-radius: 50%;"></div>
+  <div class="testimonial-decoration" style="position: absolute; bottom: -100px; left: -100px; width: 300px; height: 300px; background: rgba(25, 135, 84, 0.1); border-radius: 50%;"></div>
+  
+  <div class="container position-relative" style="z-index: 1;">
+    <h2 class="section-title text-center mb-5" style="font-size: 2.5rem; font-weight: 700; color: #212529; position: relative;">
+      Lo que dicen nuestros clientes
+    </h2>
+    
+    <div class="row g-4 justify-content-center">
+      <div class="col-lg-5 col-md-6">
+        <div class="testimonial-card shadow-lg">
+          <div class="testimonial-content">
+            <i class="fas fa-quote-left"></i>
+            "Implementamos esta solución y en 3 meses aumentamos nuestras ventas un 180%. La visibilidad es increíble y nos permitió optimizar nuestros recursos como nunca antes."
+          </div>
+          <div class="testimonial-author d-flex align-items-center">
+            <img [src]="baseUrl + '/assets/img/Carlos.jpg'" alt="Carlos Méndez" class="author-avatar" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 3px solid #0d6efd;">
+            <div class="author-info ms-3">
+              <strong style="display: block; font-size: 1.1rem; color: #212529;">Carlos Méndez</strong>
+              <span style="font-size: 0.9rem; color: #6c757d;">Director Comercial, TechSolutions</span>
             </div>
           </div>
         </div>
       </div>
       
-      <!-- Pricing Section -->
-      <div class="pricing-section" style="padding: 80px 0;">
-        <div class="container">
-          <h2 class="section-title">Planes a tu medida</h2>
-          <p class="section-subtitle">Elige el que mejor se adapte a tus necesidades</p>
-          
-          <div class="row">
-            <div class="col-md-4 mb-4">
-              <div class="pricing-card">
-                <div class="pricing-header">
-                  <h3>Gratuita</h3>
-                  <div class="price">$0<span></span></div>
-                  <small>Ideal para emprendedores</small>
-                </div>
-                <ul class="pricing-features">
-                  <li><i class="bi bi-check"></i> Funcionalidades básicas</li>
-                  <li><i class="bi bi-check"></i> </li>
-                  <li><i class="bi bi-check"></i> </li>
-                  <li><i class="bi bi-check"></i> </li>
-                </ul>
-                <button class="btn btn-primary">Prueba Gratis</button>
-              </div>
+      <div class="col-lg-5 col-md-6">
+        <div class="testimonial-card shadow-lg" style="border-left: 5px solid #198754;">
+          <div class="testimonial-content">
+            <i class="fas fa-quote-left"></i>
+            "¡Una herramienta imprescindible! Desde que comenzamos a usarlo, nuestro equipo de ventas ha mejorado su productividad en un 65% y la satisfacción del cliente ha aumentado notablemente."
+          </div>
+          <div class="testimonial-author d-flex align-items-center">
+            <img [src]="baseUrl + '/assets/img/Ana.jpg'" alt="Ana Rodríguez" class="author-avatar" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 3px solid #198754;">
+            <div class="author-info ms-3">
+              <strong style="display: block; font-size: 1.1rem; color: #212529;">Ana Rodríguez</strong>
+              <span style="font-size: 0.9rem; color: #6c757d;">Gerente de Ventas, Consultoría Alpha</span>
             </div>
-            
-            <div class="col-md-4 mb-4">
-              <div class="pricing-card featured">
-                <div class="pricing-header">
-                  <h3>Premium</h3>
-                  <div class="price">$20 dólares<span></span></div>
-                  <small>Recomendado para PYMES</small>
-                  <div class="popular-badge">POPULAR</div>
-                </div>
-                <ul class="pricing-features">
-                  <li><i class="bi bi-check"></i> 20 usuarios</li>
-                  <li><i class="bi bi-check"></i> 100 oportunidades activas</li>
-                  <li><i class="bi bi-check"></i> </li>
-                  <li><i class="bi bi-check"></i> </li>
-                  <li><i class="bi bi-check"></i> </li>
-                </ul>
-                <button class="btn btn-outline-primary">Empezar</button>
-              </div>
-            </div>
-            
-            <div class="col-md-4 mb-4">
-              <div class="pricing-card">
-                <div class="pricing-header">
-                  <h3>Platinum</h3>
-                  <div class="price">$50 dólares</div>
-                  <small>Para equipos grandes</small>
-                </div>
-                <ul class="pricing-features">
-                  <li><i class="bi bi-check"></i> 50 usuarios</li>
-                  <li><i class="bi bi-check"></i> 200 oportunidades activas</li>
-                  <li><i class="bi bi-check"></i> </li>
-                  <li><i class="bi bi-check"></i> </li>
-                  <li><i class="bi bi-check"></i> </li>
-                </ul>
-                <button class="btn btn-outline-primary">Empezar</button>
-              </div>
           </div>
         </div>
       </div>
-      
-      <!-- Final CTA Section -->
-      <div class="cta-section" style="background: linear-gradient(135deg, #1a2980 0%, #26d0ce 100%); padding: 80px 0; color: white; margin-top: 10px;">
-        <div class="container text-center">
-          <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">¿Listo para transformar tus ventas?</h2>
-          <p style="font-size: 1.25rem; margin-bottom: 2rem;">Únete a más empresas que ya están creciendo con SFS</p>
-          
-          <div class="d-flex justify-content-center gap-3">
-            <button class="btn btn-light btn-lg" (click)="toggleRegisterForm()">Regístrate Gratis</button>
-          </div>
-        </div>
-      </div>
-      
-      <p-toast position="center"></p-toast>
     </div>
+    
+    <div class="text-center mt-5">
+      <button class="btn btn-primary btn-lg" style="padding: 12px 30px; border-radius: 50px; font-weight: 600; box-shadow: 0 5px 15px rgba(13, 110, 253, 0.3);">
+        <i class="fas fa-comment-dots me-2"></i> Ver más testimonios
+      </button>
+    </div>
+  </div>
+</div>
+      <!-- Pricing Section -->
+<section class="pricing-section" style="padding: 100px 0; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="section-title display-4 fw-bold mb-3" style="color: #2c3e50;">Planes a tu medida</h2>
+      <p class="section-subtitle lead text-muted">Elige el paquete que mejor se adapte a las necesidades de tu negocio</p>
+    </div>
+    
+    <div class="row g-4 justify-content-center">
+      <div class="col-lg-4 col-md-6">
+        <div class="pricing-card card h-100 border-0 shadow-sm hover-effect">
+          <div class="card-body p-4">
+            <div class="pricing-header text-center py-4">
+              <h3 class="fw-bold mb-3" style="color: #3498db;">Básico</h3>
+              <div class="price display-3 fw-bold mb-2" style="color: #2c3e50;">$0</div>
+              <p class="text-muted mb-4">Ideal para emprendedores</p>
+            </div>
+           <ul class="pricing-features list-unstyled mb-4 text-start ps-0">
+          <li class="mb-3 d-flex align-items-start">
+            <i class="bi bi-check-circle-fill text-success me-2"></i>
+            <span>Funcionalidades básicas</span>
+          </li>
+          <li class="mb-3 d-flex align-items-start">
+            <i class="bi bi-check-circle-fill text-success me-2"></i>
+            <span>Hasta 5 usuarios</span>
+          </li>
+          <li class="mb-3 d-flex align-items-start">
+            <i class="bi bi-check-circle-fill text-success me-2"></i>
+            <span>10 oportunidades activas</span>
+          </li>
+          <li class="mb-3 d-flex align-items-start">
+            <i class="bi bi-check-circle-fill text-success me-2"></i>
+            <span>Soporte por correo electrónico</span>
+          </li>
+        </ul>
+          </div>
+          <div class="card-footer bg-transparent border-0 pb-4 text-center">
+            <button class="btn btn-lg btn-outline-primary px-4">Prueba Gratis</button>
+          </div>
+        </div>
+      </div>
+            <div class="col-lg-4 col-md-6">
+        <div class="pricing-card card h-100 border-0 shadow-lg featured-plan" style="border: 2px solid #3498db !important;">
+          <div class="popular-badge bg-primary text-white py-2 px-3 fw-bold">MÁS POPULAR</div>
+          <div class="card-body p-4">
+            <div class="pricing-header text-center py-4">
+              <h3 class="fw-bold mb-3" style="color: #3498db;">Premium</h3>
+              <div class="price display-3 fw-bold mb-2" style="color: #2c3e50;">$20<span class="fs-6 fw-normal">/mes</span></div>
+              <p class="text-muted mb-4">Recomendado para PYMES</p>
+            </div>
+            <ul class="pricing-features list-unstyled mb-4 ps-0 text-start">
+            <li class="mb-3 d-flex align-items-start">
+              <i class="bi bi-check-circle-fill text-success me-2"></i>
+              <span>20 usuarios incluidos</span>
+            </li>
+            <li class="mb-3 d-flex align-items-start">
+              <i class="bi bi-check-circle-fill text-success me-2"></i>
+              <span>100 oportunidades activas</span>
+            </li>
+            <li class="mb-3 d-flex align-items-start">
+              <i class="bi bi-check-circle-fill text-success me-2"></i>
+              <span>Informes avanzados</span>
+            </li>
+            <li class="mb-3 d-flex align-items-start">
+              <i class="bi bi-check-circle-fill text-success me-2"></i>
+              <span>Soporte prioritario 24/5</span>
+            </li>
+            <li class="mb-3 d-flex align-items-start">
+              <i class="bi bi-check-circle-fill text-success me-2"></i>
+              <span>Integraciones API</span>
+            </li>
+          </ul>
+          </div>
+          <div class="card-footer bg-transparent border-0 pb-4 text-center">
+            <button class="btn btn-lg btn-primary px-4">Empezar Ahora</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="pricing-card card h-100 border-0 shadow-sm hover-effect">
+          <div class="card-body p-4">
+            <div class="pricing-header text-center py-4">
+              <h3 class="fw-bold mb-3" style="color: #3498db;">Platinum</h3>
+              <div class="price display-3 fw-bold mb-2" style="color: #2c3e50;">$50<span class="fs-6 fw-normal">/mes</span></div>
+              <p class="text-muted mb-4">Para equipos grandes</p>
+            </div>
+            <ul class="pricing-features list-unstyled mb-4">
+              <li class="mb-3 d-flex align-items-start"><i class="bi bi-check-circle-fill text-success me-2"></i> 50 usuarios incluidos</li>
+              <li class="mb-3 d-flex align-items-start"><i class="bi bi-check-circle-fill text-success me-2"></i> 200 oportunidades activas</li>
+              <li class="mb-3 d-flex align-items-start"><i class="bi bi-check-circle-fill text-success me-2"></i> Informes personalizados</li>
+              <li class="mb-3 d-flex align-items-start"><i class="bi bi-check-circle-fill text-success me-2"></i> Soporte 24/7</li>
+              <li class="mb-3 d-flex align-items-start"><i class="bi bi-check-circle-fill text-success me-2"></i> Entrenamiento personalizado</li>
+            </ul>
+          </div>
+          <div class="card-footer bg-transparent border-0 pb-4 text-center">
+            <button class="btn btn-lg btn-outline-primary px-4">Empezar Ahora</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
     <!-- Modal Login -->
     <div *ngIf="isLoginModalOpen" class="custom-modal-1" style="overflow-y: auto">
       <div class="modal-dialog custom-modal-dialog-1 modal-dialog-centered modal-lg">
@@ -277,10 +319,10 @@
       </div>
       <div class="col-md-9 mb-4">
         <div class="social-links" style="display: flex; justify-content: flex-end; gap: 20px;">
-          <a href="#" style="color: white; font-size: 24px;"><i class="bi bi-facebook"></i></a>
-          <a href="#" style="color: white; font-size: 24px;"><i class="bi bi-linkedin"></i></a>
-          <a href="#" style="color: white; font-size: 24px;"><i class="bi bi-twitter"></i></a>
-          <a href="#" style="color: white; font-size: 24px;"><i class="bi bi-instagram"></i></a>
+          <a href="https://www.facebook.com/eisei.innovation/" style="color: white; font-size: 24px;"><i class="bi bi-facebook"></i></a>
+          <a href="https://www.linkedin.com/company/grupo-empresarial-eisei/" style="color: white; font-size: 24px;"><i class="bi bi-linkedin"></i></a>
+          <a href="https://x.com/eiseiinnovation" style="color: white; font-size: 24px;"><i class="bi bi-twitter"></i></a>
+          <!--<a href="#" style="color: white; font-size: 24px;"><i class="bi bi-instagram"></i></a>-->
         </div>
       </div>
     </div>

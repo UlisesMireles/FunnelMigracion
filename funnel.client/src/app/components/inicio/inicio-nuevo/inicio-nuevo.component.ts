@@ -37,7 +37,6 @@ export class InicioNuevoComponent implements OnInit {
   resetErrorMessage: SafeHtml = '';
   showIniciarSesion: Boolean = false;
   showPassword = false;
-  showRegisterForm = false;
   public backgroundImg: SafeStyle = "";
   informacionRegistro: SolicitudRegistroSistema = {nombre: '',
     apellido: '',
@@ -307,7 +306,7 @@ export class InicioNuevoComponent implements OnInit {
       this.asistenteService.asistenteBienvenidaSubject.next(-1);
     }
   }
-   toggleRegisterForm() {
-    this.showRegisterForm = !this.showRegisterForm;
+ openRegisterModal() {
+    this.isResetModalOpen = true;
   }
 }

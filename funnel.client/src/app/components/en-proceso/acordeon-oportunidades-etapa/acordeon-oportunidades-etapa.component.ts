@@ -80,7 +80,6 @@ export class AcordeonOportunidadesEtapaComponent {
         this.connectedDropLists = this.etapas.map((_, i) => `ListEtapa${i}`);
         this.cantidadExpandidos = this.etapas.filter(etapa => etapa.expandido).length;
         this.loading = false;
-        console.log('Oportunidades por etapa cargadas:', this.etapas);
         this.cdr.detectChanges();
       },
       error: (error) => {
@@ -136,7 +135,6 @@ export class AcordeonOportunidadesEtapaComponent {
 
     // 5. Asignar el ID para la actualización
     this.idOportunidadTarjeta = this.tarjetaMovida.tarjeta.idOportunidad;
-    console.log(`Movimiento iniciado - Oportunidad: ${this.idOportunidadTarjeta}, Nueva etapa: ${etapaDestino.idStage}`);
 
     // 6. Actualizar en el backend
     this.actualizarEtapaEnBackend();
@@ -207,7 +205,6 @@ export class AcordeonOportunidadesEtapaComponent {
       this.tarjetaMovida.indexOrigen
     );
 
-    console.log('Movimiento revertido');
     this.cdr.detectChanges();
   }
 

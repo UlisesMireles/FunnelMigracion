@@ -73,3 +73,32 @@ export interface OportunidadesTipoDetalles {
     probabilidad: string;
     stage: string;
 }
+
+export interface OportunidadAgenteCliente {
+  idOportunidad: number;
+  nombreProspecto: string;
+  nombreOportunidad: string;
+  nombreAbreviado: string;
+  tipoProyecto: string;
+  tipoProyectoAbreviatura: string;
+  entrega: string;
+  entregaDescripcion: string;
+  iniciales: string;
+  nombreEjecutivo: string;
+  monto: number;
+  probabilidad: string;
+  fechaModificacion: number;
+  comentario: string;
+  montoNormalizado: number;
+  fechaRegistro: string;
+  abreviaturaEstatus: string;
+  descripcionEstatus: string;
+  decProbabilidad: number;
+  idEjecutivo: number;
+  fechaEstimadaCierreUpd: string;
+  fechaEstimadaCierre: string;
+  probabilidadOriginal: string;
+  idEstatusOportunidad: number;
+  idStage: number;
+  stage: string;
+}

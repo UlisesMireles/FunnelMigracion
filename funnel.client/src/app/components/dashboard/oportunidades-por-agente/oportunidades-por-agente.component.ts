@@ -19,6 +19,7 @@ export class OportunidadesPorAgenteComponent {
   agenteSeleccionadoId: number | null = null;
   @ViewChildren('cardElement') cardElements!: QueryList<ElementRef>;
   originalParentElements = new Map<string, { parent: HTMLElement, nextSibling: Node | null }>();
+  modalAgenteClienteVisible: boolean = false;
 
 
 
@@ -221,5 +222,15 @@ toggleMaximizar(i: number, j: number, event: MouseEvent): void {
       this.originalParentElements.delete(cardId);
     }
   }
+}
+
+openAgenteClienteModal() {
+  if (this.agenteSeleccionadoId) {
+    this.modalAgenteClienteVisible = true;
+  }
+}
+
+onModalAgenteClienteClose() {
+  this.modalAgenteClienteVisible = false;
 }
 }

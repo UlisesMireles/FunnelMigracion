@@ -66,8 +66,18 @@
                       [layout]="card.grafica.layout"
                       [config]="card.grafica.config">
           </plotly-plot>
+          <div *ngIf="card.tipo === 'grafica' && card.titulo === 'Grafica por Agente - Clientes' && !card.isMaximized" 
+              class="position-absolute bottom-10 start-0 p-2">
+            <a href="javascript:void(0)" (click)="openAgenteClienteModal()" class="text-primary">Ver detalles</a>       
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+
+<app-modal-oportunidades-por-agente-clientes
+  [(visible)]="modalAgenteClienteVisible"
+  (closeModal)="onModalAgenteClienteClose()">
+</app-modal-oportunidades-por-agente-clientes>

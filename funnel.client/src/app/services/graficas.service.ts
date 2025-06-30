@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { GraficasDto, RequestGraficasDto, AgenteDto, Sectores, SectoresDetalles, OportunidadesTipo, OportunidadesTipoDetalles } from '../interfaces/graficas';
+import { GraficasDto, RequestGraficasDto, AgenteDto, Sectores, SectoresDetalles, OportunidadesTipo, OportunidadesTipoDetalles, OportunidadAgenteCliente } from '../interfaces/graficas';
 
 @Injectable({
   providedIn: 'root'
@@ -293,5 +293,16 @@ createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
       data
     );
   }
+
+  obtenerOportunidadesPorAgenteClientes(data: RequestGraficasDto): Observable<OportunidadAgenteCliente[]> {
+  const requestData = {
+    ...data,
+    bandera: 'SEL-OPORTUNIDADES-AGENTE'
+  };
+  return this.http.post<OportunidadAgenteCliente[]>(
+    `${this.baseUrl}api/Graficas/ObtenerOportunidadesPorAgenteClientes`, 
+    requestData
+  );
+}
   
 }

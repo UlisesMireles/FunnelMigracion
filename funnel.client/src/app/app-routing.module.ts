@@ -28,6 +28,7 @@ import { ModalOportunidadesPorSectorComponent } from './components/dashboard/opo
 import { ModalDetallesOportunidadesPorSectorComponent } from './components/dashboard/oportunidades-general/modal-detalles-oportunidades-por-sector/modal-detalles-oportunidades-por-sector.component';
 import { ModalDetallesOportunidadesPorTipoComponent } from './components/dashboard/oportunidades-general/modal-detalles-oportunidades-por-tipo/modal-detalles-oportunidades-por-tipo.component';
 import { ModalOportunidadesPorTipoComponent } from './components/dashboard/oportunidades-general/modal-oportunidades-por-tipo/modal-oportunidades-por-tipo.component';
+import { ModalOportunidadesPorAgenteClientesComponent } from './components/dashboard/oportunidades-por-agente/modal-oportunidades-por-agente-clientes/modal-oportunidades-por-agente-clientes.component';
 
 import { PermisosComponent } from './components/catalogos/permisos/permisos.component';
 import { AdministracionHerramientasComponent } from './components/herramientas/administracion-herramientas/administracion-herramientas.component';
@@ -78,6 +79,7 @@ const routes: Routes = [
   { path: 'modal-detalles-oportunidades-por-sector', component: ModalDetallesOportunidadesPorSectorComponent, title: 'Detalles Oportunidades Por Sector', canActivate: [AuthGuard] },
   { path: 'modal-oportunidades-por-tipo', component: ModalOportunidadesPorTipoComponent, title: 'Oportunidades Por Tipo', canActivate: [AuthGuard] },
   { path: 'modal-detalles-oportunidades-por-tipo', component: ModalDetallesOportunidadesPorTipoComponent, title: 'Detalles Oportunidades Por Tipo', canActivate: [AuthGuard] },
+  { path: 'modal-oportunidades-por-agente-clientes', component: ModalOportunidadesPorAgenteClientesComponent, title: 'Oportunidades Por Agente Clientes', canActivate: [AuthGuard] }, 
 
   //{ path: 'permisos', component: PermisosComponent, title: 'Permisos', canActivate: [AuthGuard] },
   //{ path: 'top-veinte', component: AdminDashboardComponent, title: 'Top Veinte', canActivate: [AuthGuard] },

@@ -146,6 +146,7 @@ import { ServiciosEntregasComponent } from './components/catalogos/servicios-ent
 import { UsuariosPermisosComponent } from './components/catalogos/usuarios-permisos/usuarios-permisos.component';
 import { GraficasClientesTop20Component } from './components/dashboard/top-veinte/graficas-clientes-top20/graficas-clientes-top20.component';
 import { PanelesTerminadasComponent } from './components/terminadas/paneles-terminadas/paneles-terminadas.component';
+import { ModalOportunidadesPorAgenteClientesComponent } from './components/dashboard/oportunidades-por-agente/modal-oportunidades-por-agente-clientes/modal-oportunidades-por-agente-clientes.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -230,7 +231,8 @@ registerLocaleData(localeEs, 'es-MX');
     ServiciosEntregasComponent,
     UsuariosPermisosComponent,
     GraficasClientesTop20Component,
-    PanelesTerminadasComponent
+    PanelesTerminadasComponent,
+    ModalOportunidadesPorAgenteClientesComponent
   ],
   imports: [
     BrowserModule,

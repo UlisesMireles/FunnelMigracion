@@ -19,7 +19,7 @@ export class AuthInterceptor implements HttpInterceptor {
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
           // La sesión ha expirado
-          this.authService.handleSessionExpired();
+          //this.authService.handleSessionExpired();
         }
         return throwError(() => error);
       })

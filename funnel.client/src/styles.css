@@ -175,3 +175,6 @@
 .p-paginator {
   justify-content: flex-start !important;
 }
+.p-datatable-tbody > tr:hover{
+  background-color: #f8fafc !important;
+}

@@ -9,7 +9,7 @@
           </div>
           <p>Cargando...</p>
         </div>
-        <p-table *ngIf="!loading" #dt [stripedRows]="true" [value]="usuarios" dataKey="id" [rows]="10"
+        <p-table *ngIf="!loading" #dt [value]="usuarios" dataKey="id" [rows]="10"
           [showCurrentPageReport]="false" [rowsPerPageOptions]="[10, 20, 50]" [paginator]="true" paginatorPosition="both"
           [pageLinks]="1"
           currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros"
@@ -149,8 +149,8 @@
             </ng-template>
             <ng-template pTemplate="footer" let-columns #footer>
               <tr class="custom-footer">
-                  <td></td>
-                  <td *ngFor="let def of lsColumnasAMostrar">
+                  <td *ngFor="let def of lsColumnasAMostrar"
+                  [ngClass]="{'total-registros-cell': def.key === 'nombre'}">
                     <ng-container *ngIf="def.key === 'nombre'">
                       Total de Registros: {{ getTotalCostPrimeNg(dt, def) }}
                     </ng-container>

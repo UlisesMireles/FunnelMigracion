@@ -35,7 +35,7 @@ export class LoginService {
     if (currentUser && lastActivity) {
       const timeDiff = Date.now() - parseInt(lastActivity);
       if (timeDiff > this.sessionTimeout) {
-        this.logout();
+        this.logout('La sesión ha expirado: login service');
       } else {
         this.currentUserSubject.next(JSON.parse(currentUser));
         this.startSessionTimer();
@@ -69,6 +69,7 @@ export class LoginService {
           sessionStorage.setItem('IdTipoUsuario', user.idRol);
           sessionStorage.setItem('IdEmpresa', user.idEmpresa);
           sessionStorage.setItem('Empresa', user.Empresa);
+          sessionStorage.setItem('SesionId', user.sesionId);
           this.catalogoService.cargarCatalogos(user.idEmpresa);
           this.cargarPermisosUsuario(user.idRol, user.idEmpresa);
           this.startSessionTimer();
@@ -98,7 +99,7 @@ export class LoginService {
     }
 
     this.timer = setTimeout(() => {
-      this.logout();
+      this.logout('La sesión ha expirado: login service startSessionTimer');
     }, this.sessionTimeout);
   }
 
@@ -106,8 +107,11 @@ export class LoginService {
     localStorage.setItem('lastActivity', Date.now().toString());
     this.startSessionTimer();
   }
-  logout(): void {
-    this.http.post(`${this.baseUrl}api/Login/Logout`, {}, { responseType: 'text' })
+  logout(motivo: string): void {
+    const sesionId = sessionStorage.getItem('SesionId') ?? '';
+    let data = { idUsuario: this.obtenerIdUsuario(), idEmpresa: this.obtenerIdEmpresa(), sesionId: sesionId, motivoCerrarSesion: motivo, usuario: '', password: ''};
+    console.log(data);
+    this.http.post(`${this.baseUrl}api/Login/Logout`, data, { responseType: 'text' })
       .pipe(
         finalize(() => {
           localStorage.removeItem('currentUser');
@@ -138,12 +142,12 @@ export class LoginService {
 
   handleSessionExpired(): void {
     console.log('La sesión ha expirado');
-    this.logout();
+    this.logout('La sesión ha expirado: handleSessionExpired');
   }
 
   verificarSesion() {
     if (!localStorage.getItem('currentUser')) {
-      this.logout();
+      this.logout('No se encuentra usuario activo');
       this.router.navigate(['/']);
     }
   }

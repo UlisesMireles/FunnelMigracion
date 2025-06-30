@@ -66,7 +66,6 @@ div.inDivDatatableHeader>p-button>button.p-button {
   background: rgb(247, 106, 19);
   background: linear-gradient(0deg, rgba(247, 106, 19, 1) 0%, rgba(200, 87, 24, 1) 35%, rgba(231, 91, 42, 1) 100%);
   color: white;
-  border: 0.1px solid #872B07;
   text-align: center;
   font-size: 15px;
 }
@@ -214,7 +213,7 @@ div.inDivDatatableHeader>p-button>button.p-button {
   padding: 0px !important;
   font-weight: bold;
   font-size: 12.5px !important;
-  background: #E1DAC7 !important;
+  background: #e4fdff !important;
 }
 
 :host ::ng-deep .custom-header2 input,
@@ -608,4 +607,72 @@ th.sort-active p-sortIcon {
 }
 .columna-etiqueta{
   min-width: 100px;
+}
+
+.total-registros-cell {
+  padding-left: 3px !important;  
+}
+
+#btnAgregarProspectoContacto {
+    display: inline-flex;
+    cursor: pointer;
+    user-select: none;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    color: black;
+    background: #ecfdf5;
+    border: 1px solid #ecfdf5;
+    padding-block: var(--p-button-padding-y);
+    padding-inline: var(--p-button-padding-x);
+    font-size: 1rem;
+    font-family: inherit;
+    font-feature-settings: inherit;
+    transition: background var(--p-button-transition-duration), color var(--p-button-transition-duration), border-color var(--p-button-transition-duration), outline-color var(--p-button-transition-duration), box-shadow var(--p-button-transition-duration);
+    border-radius: var(--p-button-border-radius);
+    outline-color: transparent;
+    gap: var(--p-button-gap);
+    font-size: var(--p-button-sm-font-size);
+    padding-block: var(--p-button-sm-padding-y);
+    padding-inline: var(--p-button-sm-padding-x);
+}
+
+#btnAgregarProspectoContacto:not(:disabled):hover {
+    background: #d4f7e7;
+    border: 1px solid #d4f7e7;
+    color: black;
+}
+
+
+.btnAgregarProspectoContacto {
+    display: inline-flex;
+    cursor: pointer;
+    user-select: none;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    color: black;
+    background: #ecfdf5;
+    border: 1px solid #ecfdf5;
+    padding-block: var(--p-button-padding-y);
+    padding-inline: var(--p-button-padding-x);
+    font-size: 1rem;
+    font-family: inherit;
+    font-feature-settings: inherit;
+    transition: background var(--p-button-transition-duration), color var(--p-button-transition-duration), border-color var(--p-button-transition-duration), outline-color var(--p-button-transition-duration), box-shadow var(--p-button-transition-duration);
+    border-radius: var(--p-button-border-radius);
+    outline-color: transparent;
+    gap: var(--p-button-gap);
+    font-size: var(--p-button-sm-font-size);
+    padding-block: var(--p-button-sm-padding-y);
+    padding-inline: var(--p-button-sm-padding-x);
+    margin-left: 4px;
+}
+
+.btnAgregarProspectoContacto:not(:disabled):hover {
+    background: #d4f7e7;
+    border: 1px solid #d4f7e7;
+    color: black;
 }

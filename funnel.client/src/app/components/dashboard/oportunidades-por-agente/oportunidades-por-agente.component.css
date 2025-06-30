@@ -1,60 +1,151 @@
-.loader{
-    width: 50px;
-    height: 50px;
-    border: 8px solid #dddddd;
-    border-radius: 50%;
-    border-top-color: #2d90f4;
-    animation: spin 1s linear infinite;
+/* Loader */
+.loader {
+  width: 50px;
+  height: 50px;
+  border: 8px solid #dddddd;
+  border-radius: 50%;
+  border-top-color: #2d90f4;
+  animation: spin 1s linear infinite;
 }
-@keyframes spin{
-    to{
-        transform: rotate(360deg);
-    }
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
+
+/* Layout general */
 .grid-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    gap: 20px;
-    height: 779px;
-    padding: 5px 10px;
-    box-sizing: border-box;
-  }
-  
-  .quadrant {
-    border: 2px solid #ccc;
-    border-radius: 12px;
-    background-color: #f9f9f9;
-    padding: 15px;
-    min-height: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .card {
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 20px;
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-    cursor: grab;
-  }
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 20px;
+  height: 779px;
+  padding: 5px 10px;
+  box-sizing: border-box;
+  overflow: visible !important;
+}
+
+.quadrant {
+  border: 2px solid #ccc;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+  padding: 15px;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible !important;
+}
+
+.card {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  cursor: grab;
+  transition: all 0.3s ease;
+}
+
+/* Solo tabla minimizada con scroll */
+.card:not(.maximized-card) .table-container {
+  max-height: 280px;
+  overflow-y: auto;
+  padding: 0.5rem;
+}
+
+.card .table-wrapper {
+  width: 100%;
+}
+
+.card .p-table {
+  width: 100%;
+  table-layout: fixed;
+  word-wrap: break-word;
+}
+
+.card .p-table-wrapper {
+  overflow-x: auto;
+}
+
+/* Gráficas */
 .plot-container {
   height: 330px;
-  max-height: 330px;
   overflow: hidden;
   position: relative;
 }
+
 .plot-container plotly-plot {
   height: 100% !important;
   width: 100% !important;
   display: block;
 }
+
 .selected-row {
-    background-color: #1976d2 !important;
-    color: #fff;
+  background-color: #1976d2 !important;
+  color: #fff;
+}
+
+/* Maximizado general */
+.maximized-card {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10000;
+  background-color: white;
+  overflow: auto;
+}
+
+.maximized-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Gráficas maximizadas */
+.maximized-content .plot-container {
+  width: 95% !important;
+  height: 95% !important;
+  max-width: 1400px !important;
+  max-height: 1000px !important;
+  margin: auto !important;
+}
+
+/* Tabla maximizada SIN scroll */
+.maximized-card .table-container {
+  width: 100% !important;
+  height: auto !important;
+  padding: 10px 15px !important;
+  margin: 0 !important;
+  overflow: visible !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+}
+
+.maximized-card .table-wrapper {
+  width: 100% !important;
+  height: auto !important;
+  overflow: visible !important;
+}
+
+.maximized-card .p-table {
+  width: 100% !important;
+  min-height: auto !important;
+}
+
+.maximized-card .p-table table {
+  width: 100% !important;
+}
+
+.maximized-card .p-table-wrapper {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
 }

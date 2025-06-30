@@ -8,7 +8,7 @@
           </div>
           <p>Cargando...</p>
         </div>
-        <p-table *ngIf="!loading" #dt [stripedRows]="true" [value]="topveinte" dataKey="id" [rows]="10"
+        <p-table *ngIf="!loading" #dt [stripedRows]="false"  [value]="topveinte" dataKey="id" [rows]="10"
           [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 20, 50]" [paginator]="false"
           paginatorPosition="both" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros"
           [columns]="lsColumnasAMostrar" [resizableColumns]="true" [reorderableColumns]="true"
@@ -186,7 +186,7 @@
   [maximizable]="true" [style]="{
     width: maximizedRespuesta ? '100vw' : '50vw',
     height: maximizedRespuesta ? '100vh' : 'auto'
-  }" [ngClass]="{'maximized': maximizedRespuesta}" (onHide)="maximizedRespuesta = false" appendTo="body"
+  }" [ngClass]="{'maximized': maximizedRespuesta}" (onHide)="alCerrarDialogo()" appendTo="body"
   class="bodyDialog" styleClass="custom-header-verde">
 
   <ng-container *ngIf="!loadingAsistente; else cargando">
@@ -195,6 +195,9 @@
       <mat-icon [ngClass]="copiado ? 'icono-copiado' : ''">
         {{ copiado ? 'check' : 'content_copy' }}
       </mat-icon>
+    </button>
+    <button class="btn-copiar" (click)="leerRespuesta()" pTooltip="{{ leyendo ? 'Detener lectura' : 'Escuchar respuesta' }}" tooltipPosition="top">
+      <mat-icon>{{ leyendo ? 'stop' : 'volume_up' }}</mat-icon>
     </button>
   </ng-container>
 

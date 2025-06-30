@@ -86,10 +86,10 @@
 <!-- Modal Bootstrap -->
 <div class="modal fade show d-block ModalRegistrarFecha" *ngIf="mostrarModal" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
+    <div class="modal-content contenido-modal">
 
       <!-- Header de la Modal con el título y botón "X" para cerrar -->
-      <div class="modal-header">
+      <div class="modal-header encabezado-naranja">
         <h5 class="modal-title">Fecha Estimada de Cierre</h5>
         <button type="button" class="btn-close" (click)="cancelar()" aria-label="Cerrar"></button>
       </div>
@@ -100,9 +100,9 @@
         <input type="hidden" [(ngModel)]="idOportunidadTarjeta">
 
         <!-- Selector de Fecha usando ng-bootstrap -->
-        <div class="mb-3">
+        <div class="input-group mt-4 mb-2 m-auto w-75">
           <!-- Campo de fecha con ngModel -->
-          <input type="date" [(ngModel)]="fechaSeleccionada" />
+          <input class="form-control" type="date" [(ngModel)]="fechaSeleccionada" />
         </div>
       </div>
 

@@ -66,12 +66,12 @@
 
 <!-- Modal de prospectos -->
 <app-modal-prospectos [(visible)]="modalVisibleProspectos" [title]="'Editar Datos de '" (closeModal)="onModalCloseProspectos()"
-  (result)="manejarResultadoProspectos($event)" [insertar]="insertar" [prospectos]="prospectos" [prospecto]="prospectoSeleccionado">
+  (result)="manejarResultadoProspectos($event)" [insertarProspecto]="insertarProspecto" [prospectos]="prospectos" [prospecto]="prospectoSeleccionado">
 </app-modal-prospectos>
 
 <!-- Modal de contactos -->
 <app-modal-contactos [(visible)]="modalVisibleContactos" [title]="'Editar Datos de '" (closeModal)="onModalCloseContactos()"
-  (result)="manejarResultadoContactos($event)" [insertar]="insertar" [contactos]="contactos" [contacto]="contactoSeleccionado">
+  (result)="manejarResultadoContactos($event)" [insertarContacto]="insertarContacto" [contactos]="contactos" [contacto]="contactoSeleccionado">
 </app-modal-contactos>
 
 <app-etapas [(visible)]="modalVisibleEtapas" (closeModal)="onModalCloseEtapas()"

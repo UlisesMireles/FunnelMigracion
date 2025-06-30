@@ -47,8 +47,10 @@ export class SeguimientoOportunidadesComponent {
 
 
   copiado: boolean = false;
+  leyendo: boolean = false;
 
   historialOportunidad: Oportunidad[] = [];
+  
 
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() closeModal: EventEmitter<void> = new EventEmitter();
@@ -64,7 +66,8 @@ export class SeguimientoOportunidadesComponent {
       idEjecutivo: [this.oportunidad.idEjecutivo],
       comentario: ['', [Validators.required, this.validarComentario]],
       idEmpresa: [this.loginService.obtenerIdEmpresa(), Validators.required],
-      probabilidad: [this.oportunidad.probabilidad],
+      //stage: [this.oportunidad.stage],
+      //probabilidad: [this.oportunidad.probabilidad],
       idEstatusOportunidad: [this.oportunidad.idEstatusOportunidad],
       tooltipStage: [this.oportunidad.tooltipStage],
       idUsuario: [this.loginService.obtenerIdUsuario()],
@@ -321,7 +324,7 @@ export class SeguimientoOportunidadesComponent {
   recognition: any;
   textoDictado: string = '';
   textoGuardado: string = '';
-  @ViewChild('comentarioInput') comentarioInput!: ElementRef;
+  @ViewChild('comentarioInput') comentarioInput!: ElementRef<HTMLTextAreaElement>;
 
   dictarComentario() {
     // Inicializa reconocimiento si no existe
@@ -356,6 +359,7 @@ export class SeguimientoOportunidadesComponent {
         }
         this.textoDictado = textoCompleto;
         this.oportunidadForm.get('comentario')?.setValue(this.textoDictado);
+        this.scrollComentarioToEnd();
       };
       this.recognition.onerror = (event: any) => {
         this.dictando = false;
@@ -388,5 +392,81 @@ export class SeguimientoOportunidadesComponent {
       this.recognition.stop();
     }
   }
+    
+  leerRespuesta(): void {
+    if (this.leyendo) {
+      window.speechSynthesis.cancel();
+      this.leyendo = false;
+    } else {
+      if (!this.respuestaAsistente) return;
+
+      const tempElement = document.createElement('div');
+      tempElement.innerHTML = this.respuestaAsistente;
+
+      function getPlainText(element: HTMLElement): string {
+        let text = '';
+        element.childNodes.forEach(node => {
+          if (node.nodeType === Node.TEXT_NODE) {
+            text += node.textContent;
+          } else if (node.nodeType === Node.ELEMENT_NODE) {
+            const el = node as HTMLElement;
+            const tag = el.tagName.toLowerCase();
+
+            if (tag === 'p' || tag === 'div' || tag === 'br') {
+              text += getPlainText(el) + '\n';
+            } else if (tag === 'li') {
+              text += '- ' + getPlainText(el) + '\n';
+            } else {
+              text += getPlainText(el);
+            }
+          }
+        });
+        return text;
+      }
+
+      const textoPlano = getPlainText(tempElement).trim();
+
+      const utterance = new SpeechSynthesisUtterance(textoPlano);
+      utterance.lang = 'es-MX';
+      utterance.rate = 1;
+      utterance.pitch = 1;
+      utterance.volume = 1;
+
+      this.leyendo = true;
+
+      utterance.onend = () => {
+        this.leyendo = false;
+      };
+
+      utterance.onerror = () => {
+        this.leyendo = false;
+      };
+
+      window.speechSynthesis.cancel(); 
+      window.speechSynthesis.speak(utterance);
+    }
+  }
+  alCerrarDialogo(): void {
+    this.maximizedRespuesta = false;
+
+    if (this.leyendo) {
+      window.speechSynthesis.cancel();
+      this.leyendo = false;
+    }
+  }
+
+
+  scrollComentarioToEnd() {
+    const textarea = this.comentarioInput?.nativeElement;
+    if (textarea) {
+      textarea.scrollTop = textarea.scrollHeight;
+    }
+  }
+lonOp(): boolean {
+  const nombreOportunidad = this.oportunidadForm.get('nombreOportunidad')?.value;
+  console.log('longitud oportunidad:', nombreOportunidad.length);
+  return !!nombreOportunidad && nombreOportunidad.length > 120;
+
 }
 
+}

@@ -7,17 +7,17 @@
         <div class="col-12">
             <!-- Pestañas  -->
             <ul class="nav nav-tabs custom-tabs">
-                <li class="nav-item" *ngIf="permisoOportunidadesGeneral">
-                    <a class="nav-link" [class.active]="activeTab === 0" data-bs-toggle="tab"
-                        href="#OportunidadesGeneral" (click)="cambioPestana(0)" pTooltip="Oportunidades General"
+                <li class="nav-item" *ngIf="permisoOportunidadesGeneral" pTooltip="Oportunidades General"
                         tooltipPosition="top">
+                    <a class="nav-link" [class.active]="activeTab === 0" data-bs-toggle="tab"
+                        href="#OportunidadesGeneral" (click)="cambioPestana(0)" >
                         <i class="bi bi-list"></i><span class="title-tab">{{EnumPaginas.OPORTUNIDADES_GENERAL}}</span>
                     </a>
                 </li>
-                <li class="nav-item" *ngIf="permisoOportunidadesPorAgente">
-                    <a class="nav-link" [class.active]="activeTab === 1" data-bs-toggle="tab"
-                        href="#OportunidadesPorAgente" (click)="cambioPestana(1)" pTooltip="Candelarización"
+                <li class="nav-item" *ngIf="permisoOportunidadesPorAgente" pTooltip="Oportunidades por Agente"
                         tooltipPosition="top">
+                    <a class="nav-link" [class.active]="activeTab === 1" data-bs-toggle="tab"
+                        href="#OportunidadesPorAgente" (click)="cambioPestana(1)" >
                         <i class="bi bi-calendar"></i><span
                             class="title-tab">{{EnumPaginas.OPORTUNIDADES_POR_AGENTE}}</span>
                     </a>

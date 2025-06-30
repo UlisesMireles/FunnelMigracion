@@ -91,7 +91,7 @@
               <span class="visually-hidden">Cargando...</span>
             </div>
           </div>
-        <p-table *ngIf="!loading" #dt [stripedRows]="true" [value]="oportunidades" dataKey="id" [rows]="10"
+        <p-table *ngIf="!loading" #dt [value]="oportunidades" dataKey="id" [rows]="10"
           [showCurrentPageReport]="false" [rowsPerPageOptions]="[10, 20, 50]" [paginator]="true" paginatorPosition="both"
           [pageLinks]="1" 
           currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros"
@@ -264,7 +264,7 @@
                 </span>
                  
                   <span *ngSwitchCase="'currency'">
-                    {{ rowData[def.key] | currency:'$':'symbol':'1.2-2' }}
+                    {{ rowData[def.key] | currency:'$':'symbol':'1.0-0' }}
                   </span>
                  
                   <span *ngSwitchCase="'number'">
@@ -312,19 +312,20 @@
           <ng-template pTemplate="footer" let-columns #footer>
             <tr class="custom-footer">
               <td *ngFor="let def of lsColumnasAMostrar"
-                  [ngStyle]="{
-                    'text-align':
-                      def.tipoFormato === 'currency' ? 'right' :
-                      (def.tipoFormato === 'number' || def.tipoFormato === 'date') ? 'center' : 'left'
-                  }">
-                <ng-container *ngIf="def.key === 'nombre'">
-                  Total de Registros: {{ getTotalCostPrimeNg(dt, def) }}
-                </ng-container>
+                [ngClass]="{'total-registros-cell': def.key === 'nombre'}"
+                [ngStyle]="{
+                  'text-align':
+                    def.tipoFormato === 'currency' ? 'right' :
+                    (def.tipoFormato === 'number' || def.tipoFormato === 'date') ? 'center' : 'left'
+                }">
+              <ng-container *ngIf="def.key === 'nombre'">
+                Total de Registros: {{ getTotalCostPrimeNg(dt, def) }}
+              </ng-container>
                 <ng-container *ngIf="def.tipoFormato === 'currency'">
-                  {{ getTotalCostPrimeNg(dt, def) | currency:'$':'symbol':'1.2-2' }}
+                  {{ getTotalCostPrimeNg(dt, def) | currency:'$':'symbol':'1.0-0' }}
                 </ng-container>
                 <ng-container *ngIf="def.tipoFormato !== 'currency' && def.key !== 'nombre' && def.key !== 'idOportunidad'">
-                  {{ getTotalCostPrimeNg(dt, def) | number: '1.0-2' }}
+                  {{ getTotalCostPrimeNg(dt, def) | number: '1.0-0' }}
                 </ng-container>
               </td>
               <td></td>

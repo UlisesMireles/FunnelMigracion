@@ -24,7 +24,7 @@ export class ModalContactosComponent {
   @Input() contactos: Contacto[]=[];
   @Input() title: string = 'Modal';
   @Input() visible: boolean = false;
-  @Input() insertar: boolean = false;
+  @Input() insertarContacto: boolean = false;
   @Input() lecturaProspecto: boolean = false;
   request!: RequestPContacto;
 
@@ -63,11 +63,11 @@ export class ModalContactosComponent {
   inicializarFormulario() {
     let idEmpresa = this.loginService.obtenerIdEmpresa();
     let valoresIniciales: Record<string, any>;
-    if (this.insertar) {
+    if (this.insertarContacto) {
       this.informacionContactos = {idContactoProspecto: 0,
         bandera: '',
         nombreCompleto: '',
-        nombre: '',
+        nombre: this.contacto?.nombre ?? '',
         apellidos: '',
         telefono: '',
         correoElectronico: '',
@@ -78,7 +78,7 @@ export class ModalContactosComponent {
         idEmpresa: 0};
       this.contactoForm = this.fb.group({
         idContactoProspecto: [0],
-        nombre: ['', [
+        nombre: [this.contacto?.nombre ?? '', [
             Validators.required,
             Validators.maxLength(50),
             Validators.pattern('^[a-zA-ZÀ-ÿ\\s]+$')
@@ -167,7 +167,7 @@ export class ModalContactosComponent {
     this.visible = false;
     this.visibleChange.emit(this.visible);
     this.closeModal.emit();
-    if (this.insertar) {
+    if (this.insertarContacto) {
     this.inicializarFormulario();
     }
   }
@@ -180,7 +180,7 @@ export class ModalContactosComponent {
     }
     this.contactoForm.controls['estatus'].setValue(this.contactoForm.value.estatus ? 1 : 0);
     this.contactoForm.controls['idEmpresa'].setValue(this.loginService.obtenerIdEmpresa());
-    this.contactoForm.controls['bandera'].setValue(this.insertar ? 'INSERT' : 'UPDATE');
+    this.contactoForm.controls['bandera'].setValue(this.insertarContacto ? 'INSERT' : 'UPDATE');
 
     this.informacionContactos = {
       ...this.informacionContactos,

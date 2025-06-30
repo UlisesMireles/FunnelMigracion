@@ -15,7 +15,7 @@
   [draggable]="true"
   [resizable]="false"
   [blockScroll]="true"
-  class="bodyDialog">
+  styleClass="custom-header-naranja">
   
   <ng-template pTemplate="header">
     <div class="dialog-header-content">
@@ -63,7 +63,8 @@
         
         <ng-template pTemplate="footer">
           <tr class="custom-footer">
-            <td *ngFor="let def of lsColumnasAMostrar">
+            <td *ngFor="let def of lsColumnasAMostrar"
+            [ngClass]="{'total-registros-cell': def.key === 'descripcion'}">
               <ng-container *ngIf="def.tipoFormato === 'currency'">
                 <div style="text-align: right; font-weight: bold;">
                   <span *ngIf="def.key === 'montoNormalizado'">

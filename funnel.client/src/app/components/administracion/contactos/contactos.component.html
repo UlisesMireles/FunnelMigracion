@@ -9,7 +9,7 @@
           </div>
           <p>Cargando...</p>
         </div>
-        <p-table *ngIf="!loading" #dt [stripedRows]="true" [value]="contactos" dataKey="id" [rows]="10"
+        <p-table *ngIf="!loading" #dt [value]="contactos" dataKey="id" [rows]="10"
           [showCurrentPageReport]="false" [rowsPerPageOptions]="[10, 20, 50]" [paginator]="true" paginatorPosition="both"
           [pageLinks]="1" 
           currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros"
@@ -144,6 +144,7 @@
           <ng-template pTemplate="footer" let-columns #footer>
             <tr class="custom-footer">
               <td *ngFor="let def of lsColumnasAMostrar"
+              [ngClass]="{'total-registros-cell': def.key === 'nombreCompleto'}"
               [ngStyle]="{
                 'text-align': def.key ===  'desEstatus' ? 'center' : 'left',
                 'width': def.key === 'estatus' ? '50px' :

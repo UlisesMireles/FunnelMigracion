@@ -15,7 +15,7 @@
   [draggable]="true"
   [resizable]="false"
   [blockScroll]="true"
-  class="bodyDialog">
+  styleClass="custom-header-naranja">
   
   <ng-template pTemplate="header">
     <div class="dialog-header-content">
@@ -59,7 +59,7 @@
         
         <ng-template pTemplate="footer">
         <tr class="custom-footer">
-            <td colspan="4">Total de Oportunidades: {{ oportunidades.length }}</td>
+            <td colspan="4" class = "total-registros-cell">Total de Oportunidades: {{ oportunidades.length }}</td>
             <td class="text-right">{{ calcularSumaMontos() | currency:'MXN':'symbol':'1.2-2' }}</td>
             <td colspan="3"></td>
         </tr>

@@ -52,40 +52,39 @@ export class GraficasService {
     return color;
   }
 
-  createCard(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
-    return {
-      id,
-      titulo,
-      tipo,
-      infoCargada: false,
-      grafica: {
-        data: [],
-        layout: {},
-        config: {
-          displaylogo: false, responsive: true, locale: 'es-ES', scrollZoom: true, displayModeBar: true,
-          modeBarButtonsToRemove: ['pan2d', 'select2d', 'lasso2d', 'resetScale2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d', 'zoom2d', 'sendDataToCloud', 'editInChartStudio', 'zoom3d', 'pan3d', 'orbitRotation', 'tableRotation', 'resetCameraDefault3d', 'resetCameraLastSave3d']
-        }
-      },
-      tabla: []
-    };
-  }
-  createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
-    return {
-      id,
-      titulo,
-      tipo,
-      infoCargada: false,
-      grafica: {
-        data: [],
-        layout: {},
-        config: {
-          displaylogo: false, responsive: true, locale: 'es-ES', scrollZoom: false, displayModeBar: true,
-          modeBarButtonsToRemove: ['sendDataToCloud', 'editInChartStudio', 'zoom2d', 'pan2d', 'select2d', 'lasso2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d', 'resetScale2d', 'hoverClosestCartesian', 'hoverCompareCartesian', 'toggleSpikelines']
-        }
-      },
-      tabla: []
-    };
-  }
+ createCard(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
+  return {
+    id,
+    titulo,
+    tipo,
+    infoCargada: false,
+    maximizada: false, 
+    grafica: {
+      data: [],
+      layout: {},
+      config: { displaylogo: false, responsive: true, locale: 'es-ES', scrollZoom: true, displayModeBar: true,
+        modeBarButtonsToRemove: ['pan2d','select2d','lasso2d','resetScale2d','zoomIn2d','zoomOut2d', 'autoScale2d', 'zoom2d', 'sendDataToCloud', 'editInChartStudio', 'zoom3d', 'pan3d', 'orbitRotation', 'tableRotation', 'resetCameraDefault3d', 'resetCameraLastSave3d']
+       }
+    },
+    tabla:[]
+  };
+}
+createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
+  return {
+    id,
+    titulo,
+    tipo,
+    infoCargada: false,
+    grafica: {
+      data: [],
+      layout: {},
+      config: { displaylogo: false, responsive: true, locale: 'es-ES', scrollZoom: false, displayModeBar: true,
+      modeBarButtonsToRemove: ['sendDataToCloud', 'editInChartStudio', 'zoom2d', 'pan2d', 'select2d', 'lasso2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d', 'resetScale2d', 'hoverClosestCartesian', 'hoverCompareCartesian', 'toggleSpikelines']
+       }
+    },
+    tabla:[]
+  };
+}
 
 
   createPieData(items: GraficasDto[]) {
@@ -133,11 +132,23 @@ export class GraficasService {
   createPieLayout(showlegend:boolean = false) {
     return {
       margin: { t: 0, b: 100, l: 0, r: 100 },
-      height: 330,
-      showlegend: showlegend
+      height: 320,
+      showlegend: showlegend,
+      autosize: true
     };
   }
-
+  createBarData(items: GraficasDto[]) {
+    return {
+      type: 'bar',
+      y: items.map(item => item.valor),
+      x: items.map(item => item.label ?? 'Sin etiqueta'),
+      text: items.map(item => item.valor.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })), 
+      name: 'Monto',
+      marker: {
+        color: items.map(item => '#1F77B4')
+      }
+    };
+  }
   createBarHorizontalData(items: GraficasDto[]) {
     return {
       type: 'bar',
@@ -166,7 +177,6 @@ export class GraficasService {
       }
     };
   }
-
   createBarVerticalData(items: GraficasDto[], color: string, name: string, hovertemplate: string, text: string[],customdata: string[] , valor2: boolean) {
     return {
       type: 'bar',
@@ -182,7 +192,6 @@ export class GraficasService {
       }
     };
   }
-
   createFunnelData(items: GraficasDto[]) {
     return {
       type: 'funnel',
@@ -199,57 +208,47 @@ export class GraficasService {
   createBarHorizontalLayout() {
     return {
       margin: { l: 130, r: 40, b: 100, t: 30 },
-      height: 400,
-
+      height: 320,
+      autosize: true
     };
   }
   createBarLayout() {
     return {
-      margin: { l: 50, r: 50, b: 160, t: 0 },
-      height: 400,
-
+      margin: { l: 50, r: 50, b: 120, t: 0 },
+      height: 320,
+      autosize: true
     };
   }
 
   createBarGroupLayout() {
     return {
       barmode: 'group', 
-      margin: { l: 130, r: 40, b: 120, t: 30 }, 
-      height: 400
+      margin: { l: 130, r: 40, b: 100, t: 30 }, 
+      height: 320,
+      autosize: true
 
     };
   }
 
   createFunnelLayout() {
     return {
-      margin: { l: 50, r: 70, b: 100, t: 30 },
-      height: 400,
+      margin: { l: 50, r: 70, b: 60, t: 30 },
+      height: 320,
+      autosize: true,
       yaxis: { visible: false, showticklabels: false, showgrid: false, zeroline: false },
       xaxis: { visible: false, showticklabels: false, showgrid: false, zeroline: false }
     }
   }
 
-  createBarData(items: GraficasDto[]) {
-    return {
-      type: 'bar',
-      y: items.map(item => item.valor),
-      x: items.map(item => item.label ?? 'Sin etiqueta'),
-      text: items.map(item => item.valor.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })),
-      name: 'Monto',
-      marker: {
-        color: items.map(item => item.coloreSerie ?? this.getRandomColor())
-      }
-    };
-  }
   createBarPorcentajeData(items: GraficasDto[]) {
     return {
       type: 'bar',
       y: items.map(item => item.valor),
       x: items.map(item => item.label ?? 'Sin etiqueta'),
-      text: items.map(item => item.valor.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })),
-      textposition: 'auto',
-      hovertemplate: '<b>%{x}</b><br> (<b>%{customdata}</b><extra></extra>)',
-      customdata: items.map(item => `${item.porcentaje?.toFixed(2) ?? 0}%`),
+      text: items.map(item => item.valor.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })), 
+      textposition: 'auto', 
+      hovertemplate: '<b>%{x}</b><br> (<b>%{customdata}</b><extra></extra>)', 
+      customdata: items.map(item => `${item.porcentaje?.toFixed(2) ?? 0}%`), 
       marker: {
         color: items.map(item => item.coloreSerie ?? this.getRandomColor())
       }
@@ -262,9 +261,8 @@ export class GraficasService {
       x: items.map(item => item.label ?? 'Sin etiqueta'),
       text: items.map(item => item.valor.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })),
       name: 'Monto Normalizado',
-    };
+    }
   }
-
 
   obtenerOportunidadesPorSector(data: RequestGraficasDto): Observable<Sectores[]> {
     const requestData = {
@@ -295,4 +293,5 @@ export class GraficasService {
       data
     );
   }
+  
 }

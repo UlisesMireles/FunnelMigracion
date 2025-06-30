@@ -278,7 +278,8 @@ export class AcordeonOportunidadesEtapaComponent {
       totalComentarios: licencia.totalComentarios,
       idEmpresa: this.loginService.obtenerIdEmpresa(),
       idUsuario: this.loginService.obtenerIdUsuario(),
-      stage: licencia.stage
+      stage: licencia.stage,
+      tooltipStage: licencia.tooltipStage
     };
   }
 

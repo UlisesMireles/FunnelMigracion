@@ -142,13 +142,13 @@
     flex-direction: column; /* Organiza las tarjetas en columna */
     gap: 8px;               /* Espacio de 8px entre cada tarjeta */
     box-sizing: border-box; /* Incluye padding y border dentro de la altura definida */
-    margin-top: 21px;
+    margin-top: 3px;
   }
   
   /* Cada tarjeta individual */
   .tarjeta {
     background: #ffffff; /* Fondo blanco para cada tarjeta */
-    border-radius: 15px;  
+    border-radius: 10px;  
     padding: 10px;       /* Espaciado interno de 10px */
     text-align: center;  /* Centrado del texto */
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave para dar profundidad */

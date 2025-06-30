@@ -24,7 +24,7 @@ export class ModalProspectosComponent {
   @Input() prospectos: Prospectos[] = [];
   @Input() title: string = 'Modal';
   @Input() visible: boolean = false;
-  @Input() insertar: boolean = false;
+  @Input() insertarProspecto: boolean = false;
   request!: RequestProspecto;
 
   prospectoActivo: boolean = false;
@@ -70,9 +70,9 @@ export class ModalProspectosComponent {
   inicializarFormulario() {
     let idEmpresa = this.loginService.obtenerIdEmpresa();
     let valoresIniciales: Record<string, any>;
-    if(this.insertar){
+    if(this.insertarProspecto){
       this.informacionProspecto = {idProspecto: 0,
-        nombre: "",
+        nombre: this.prospecto?.nombre ?? "",
         ubicacionFisica: "",
         estatus: 0,
         desEstatus: "",
@@ -91,7 +91,7 @@ export class ModalProspectosComponent {
 
       this.prospectoForm = this.fb.group({
         idProspecto: [0],
-        nombre: ['', [
+        nombre: [this.prospecto?.nombre ?? "", [
             Validators.required,
             Validators.maxLength(50),
             // Validators.pattern('^[a-zA-ZÀ-ÿ0-9\\s]+$')

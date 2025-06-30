@@ -50,5 +50,6 @@ namespace Funnel.Models.Dto
         public int? TotalComentarios { get; set; }
         public string? Stage { get; set; }
         public string? Nombre { get; set; }
+        public string? TooltipStage { get; set; }
     }
 }

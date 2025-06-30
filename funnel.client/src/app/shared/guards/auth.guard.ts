@@ -10,17 +10,20 @@ export class AuthGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     const currentUser = localStorage.getItem('currentUser');
     const lastActivity = localStorage.getItem('lastActivity');
+    console.log("lastActivity antes", parseInt(lastActivity ?? '0') / (40 * 60 * 1000));
     if (!currentUser || !lastActivity) {
       this.router.navigate(['/login']);
       return false;
     }
 
     const timeDiff = Date.now() - parseInt(lastActivity);
-    if (timeDiff > 30 * 60 * 1000) { // 30 minutos
-      this.authService.logout();
+    console.log("timeDiff", timeDiff / ( 60 * 1000));
+    if (timeDiff > 40 * 60 * 1000) { // 30 minutos
+      this.authService.logout('La sesión ha expirado: guard');
       return false;
     }
     this.authService.resetTimer();
+    console.log("lastActivity", parseInt(localStorage.getItem('lastActivity') ?? '0')/ (40 * 60 * 1000));
     return true;
   }
 }

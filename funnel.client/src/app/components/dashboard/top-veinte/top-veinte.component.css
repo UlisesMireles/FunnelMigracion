@@ -129,13 +129,11 @@
   }
   
   /*Estilos modal*/
-  ::ng-deep .p-dialog .p-dialog-header {
+  ::ng-deep .custom-header-verde .p-dialog-header {
     background: #ecfdf5 !important;
     color: rgb(0, 0, 0);
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    height: 50px;
-    
+    border-top-left-radius: 15px !important; 
+    border-top-right-radius: 15px !important;
   }
   
   ::ng-deep .p-dialog .p-dialog-header .p-icon {
@@ -194,7 +192,7 @@
     padding: 0px !important;
     font-weight: bold;
     font-size: 12.5px !important;
-    background: #E1DAC7 !important;
+    background: #e4fdff !important;
     height: 20px !important;
   }
   

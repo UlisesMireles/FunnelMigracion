@@ -387,21 +387,23 @@ namespace Funnel.Data
             return result;
         }
 
-        public async Task<BaseOut> RegistrarIngresoUsuario(int IdUsuario, int IdEmpresa)
+        public async Task<BaseOut> RegistrarIngresoUsuario(string Bandera, int IdUsuario, int IdEmpresa, string SesionId, string MotivoCierre)
         {
             BaseOut result = new BaseOut();
             try
             {
                 IList<ParameterSQl> list = new List<ParameterSQl>
                 {
-                    DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "INSERT" ),
+                    DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, Bandera ),
                     DataBase.CreateParameterSql("@pIdUsuario", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, IdUsuario ),
                     DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, IdEmpresa ),
+                    DataBase.CreateParameterSql("@pSesionId", SqlDbType.VarChar, 500, ParameterDirection.Input, false,null, DataRowVersion.Default, SesionId ),
+                    DataBase.CreateParameterSql("@pMotivoCierre", SqlDbType.VarChar, 1000, ParameterDirection.Input, false,null, DataRowVersion.Default, MotivoCierre ),
                 };
 
                 // Ejecutar el SP sin leer datos
                 using (IDataReader reader = await DataBase.GetReaderSql("F_IngresosFunnel", CommandType.StoredProcedure, list, _connectionString))
-                result.ErrorMessage = "Prospecto insertado correctamente.";
+                result.ErrorMessage = SesionId;
                 result.Id = 1;
                 result.Result = true;
 

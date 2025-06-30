@@ -342,7 +342,7 @@ startDrag(event: MouseEvent): void {
   };
 
   logout() {
-    this.authService.logout();
+    this.authService.logout('Sesión cerrada por el usuario');
     this.router.navigate(['/login']);
   }
 }

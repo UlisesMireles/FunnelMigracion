@@ -6,71 +6,73 @@
         <button *ngIf="showIniciarSesion" class="iniciarSesion float-end" (click)="openLoginModal()">Iniciar Sesión</button>
       </nav>
     </div>
-      
-      <!-- Features Section -->
-<div class="features-section" style="background: white; padding: 80px 0;">
-  <div class="container">
-    <h2 class="section-title">Todo lo que necesitas para vender más</h2>
-    <p class="section-subtitle">Funcionalidades diseñadas para cada etapa de tu proceso comercial</p>
+    <!-- Features Section-->
+<div class="features-section" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); padding: 100px 0; position: relative; overflow: hidden;">
+  <div class="container position-relative">
+    <!-- Section Header -->
+    <div class="text-center mb-5" data-aos="fade-up">
+      <h2 class="section-title display-5 fw-bold mb-3" style="background: linear-gradient(90deg, #2c3e50, #4ca1af); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Todo lo que necesitas para vender más</h2>
+      <p class="section-subtitle text-muted">Funcionalidades diseñadas para cada etapa de tu proceso comercial con tecnología de última generación</p>
+    </div>
 
-    <!-- Primera fila: 3 tarjetas -->
-    <div class="row">
-      <div class="col-md-4 mb-4">
-        <div class="feature-card">
-          <div class="feature-icon">
-            <i class="bi bi-person-check"></i>
+    <!-- Features Grid -->
+    <div class="row g-4">
+      <!-- Feature 1 -->
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="feature-card h-100 p-4 rounded-4 shadow-sm border-0 bg-white" style="transition: all 0.3s ease; border-left: 4px solid #4e54c8 !important;">
+          <div class="feature-icon mb-4" style="width: 60px; height: 60px; background: linear-gradient(135deg, #4e54c8 0%, #8f94fb 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+            <i class="bi bi-person-check fs-3 text-white"></i>
           </div>
-          <h3>Calificación de prospectos</h3>
-          <p>Se realiza una llamada o visita inicial para analizar las necesidades del cliente.</p>
+          <h3 class="h4 mb-3" style="color: #2c3e50;">Calificación de prospectos</h3>
+          <p class="text-muted mb-0">Se realiza una llamada o visita inicial para analizar las necesidades del cliente.</p>
         </div>
       </div>
 
-      <div class="col-md-4 mb-4">
-        <div class="feature-card">
-          <div class="feature-icon">
-            <i class="bi bi-search"></i>
+      <!-- Feature 2 -->
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+        <div class="feature-card h-100 p-4 rounded-4 shadow-sm border-0 bg-white" style="transition: all 0.3s ease; border-left: 4px solid #11998e !important;">
+          <div class="feature-icon mb-4" style="width: 60px; height: 60px; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+            <i class="bi bi-search fs-3 text-white"></i>
           </div>
-          <h3>Investigación de necesidades</h3>
-          <p>Se confirma la solución o producto que mejor se ajusta al cliente, identificando a la persona que toma las decisiones y posibles aliados.</p>
+          <h3 class="h4 mb-3" style="color: #2c3e50;">Investigación de necesidades</h3>
+          <p class="text-muted mb-0">Se confirma la solución o producto que mejor se ajusta al cliente, identificando a la persona que toma las decisiones y posibles aliados.</p>
         </div>
       </div>
 
-      <div class="col-md-4 mb-4">
-        <div class="feature-card">
-          <div class="feature-icon">
-            <i class="bi bi-file-earmark-text"></i>
+      <!-- Feature 3 -->
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+        <div class="feature-card h-100 p-4 rounded-4 shadow-sm border-0 bg-white" style="transition: all 0.3s ease; border-left: 4px solid #f46b45 !important;">
+          <div class="feature-icon mb-4" style="width: 60px; height: 60px; background: linear-gradient(135deg, #f46b45 0%, #eea849 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+            <i class="bi bi-file-earmark-text fs-3 text-white"></i>
           </div>
-          <h3>Elaboración de Propuestas</h3>
-          <p>Se cuantifican los criterios de compra y se definen los objetivos de venta, con un conocimiento profundo del presupuesto y la competencia.</p>
+          <h3 class="h4 mb-3" style="color: #2c3e50;">Elaboración de Propuestas</h3>
+          <p class="text-muted mb-0">Se cuantifican los criterios de compra y se definen los objetivos de venta, con un conocimiento profundo del presupuesto y la competencia.</p>
+        </div>
+      </div>
+
+      <!-- Feature 4 -  -->
+      <div class="col-lg-6 col-md-6" data-aos="fade-up" data-aos-delay="400">
+        <div class="feature-card h-100 p-4 rounded-4 shadow-sm border-0 bg-white" style="transition: all 0.3s ease; border-left: 4px solid #a770ef !important;">
+          <div class="feature-icon mb-4" style="width: 60px; height: 60px; background: linear-gradient(135deg, #a770ef 0%, #cf8bf3 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+            <i class="bi bi-journal-check fs-3 text-white"></i>
+          </div>
+          <h3 class="h4 mb-3" style="color: #2c3e50;">Presentación de propuestas</h3>
+          <p class="text-muted mb-0">Se entregan las propuestas, asegurando que las necesidades del cliente han sido entendidas y todas las objeciones han sido resueltas.</p>
+        </div>
+      </div>
+
+      <!-- Feature 5 -  -->
+      <div class="col-lg-6 col-md-6" data-aos="fade-up" data-aos-delay="500">
+        <div class="feature-card h-100 p-4 rounded-4 shadow-sm border-0 bg-white" style="transition: all 0.3s ease; border-left: 4px solid #4776E6 !important;">
+          <div class="feature-icon mb-4" style="width: 60px; height: 60px; background: linear-gradient(135deg, #4776E6 0%, #8E54E9 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+            <i class="bi bi-arrow-left-right fs-3 text-white"></i>
+          </div>
+          <h3 class="h4 mb-3" style="color: #2c3e50;">Negociación estratégica</h3>
+          <p class="text-muted mb-0">La propuesta se encuentra entre las finalistas, y la negociación se lleva a cabo con la persona que toma la decisión.</p>
         </div>
       </div>
     </div>
-
-    <!-- Segunda fila: 2 tarjetas centradas -->
-    <div class="row justify-content-center">
-      <div class="col-md-4 mb-4">
-        <div class="feature-card">
-          <div class="feature-icon">
-            <i class="bi bi-journal-check"></i>
-          </div>
-          <h3>Presentación de propuestas</h3>
-          <p>Se entregan las propuestas, asegurando que las necesidades del cliente han sido entendidas y todas las objeciones han sido resueltas.</p>
-        </div>
-      </div>
-
-      <div class="col-md-4 mb-4">
-        <div class="feature-card">
-          <div class="feature-icon">
-            <i class="bi bi-arrow-left-right"></i>
-          </div>
-          <h3>Negociación</h3>
-          <p>La propuesta se encuentra entre las finalistas, y la negociación se lleva a cabo con la persona que toma la decisión.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
+  </div></div>
       <!-- Testimonials Section -->
       <div class="testimonials-section" style="background-color: #f8f9fa; padding: 80px 0;">
         <div class="container">
@@ -174,7 +176,7 @@
       </div>
       
       <!-- Final CTA Section -->
-      <div class="cta-section" style="background: linear-gradient(135deg, #1a2980 0%, #26d0ce 100%); padding: 80px 0; color: white;">
+      <div class="cta-section" style="background: linear-gradient(135deg, #1a2980 0%, #26d0ce 100%); padding: 80px 0; color: white; margin-top: 10px;">
         <div class="container text-center">
           <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">¿Listo para transformar tus ventas?</h2>
           <p style="font-size: 1.25rem; margin-bottom: 2rem;">Únete a más empresas que ya están creciendo con SFS</p>
@@ -264,22 +266,25 @@
     </div> 
         
     <!-- Footer -->
-    <footer class="footer" style="background: #1a2980; color: white; padding: 60px 0 30px;">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-3 mb-4">
-            <div class="footer-brand">
-              <img width="150" [src]="baseUrl + '/assets/img/logotipo-glupoint.png'" alt="logo SFS">
-              <p>La plataforma de ventas más completa para equipos ambiciosos.</p>
-              <div class="social-links">
-                <a href="#" style="color: white;"><i class="bi bi-facebook"></i></a>
-                <a href="#" style="color: white;"><i class="bi bi-linkedin"></i></a>
-                <a href="#" style="color: white;"><i class="bi bi-twitter"></i></a>
-                <a href="#" style="color: white;"><i class="bi bi-instagram"></i></a>
-              </div>
-            </div>
-          </div></div>
+ <footer class="footer" style="background: #1a2980; color: white; padding: 60px 0 30px;">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-3 mb-4">
+        <div class="footer-brand">
+          <img width="150" [src]="baseUrl + '/assets/img/logotipo-glupoint.png'" alt="logo SFS">
+          <p>La plataforma de ventas más completa para equipos ambiciosos.</p>
+        </div>
       </div>
-    </footer>
+      <div class="col-md-9 mb-4">
+        <div class="social-links" style="display: flex; justify-content: flex-end; gap: 20px;">
+          <a href="#" style="color: white; font-size: 24px;"><i class="bi bi-facebook"></i></a>
+          <a href="#" style="color: white; font-size: 24px;"><i class="bi bi-linkedin"></i></a>
+          <a href="#" style="color: white; font-size: 24px;"><i class="bi bi-twitter"></i></a>
+          <a href="#" style="color: white; font-size: 24px;"><i class="bi bi-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
   </main>
 </body>

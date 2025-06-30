@@ -41,8 +41,8 @@ import { UsuariosPermisosComponent } from './components/catalogos/usuarios-permi
 import { PanelesTerminadasComponent } from './components/terminadas/paneles-terminadas/paneles-terminadas.component';
 import { InicioNuevoComponent } from './components/inicio/inicio-nuevo/inicio-nuevo.component';
 const routes: Routes = [
-  { path: '', component: LoginComponent, title: 'Login' },
-  { path: 'login', component: LoginComponent, title: 'Login' },
+  { path: '', component: InicioNuevoComponent, title: 'Login' },
+  //{ path: 'login', component: LoginComponent, title: 'Login' },
   {path: 'politica-privacidad', component: PoliticaPrivacidadComponent, title: 'Politica Privacidad' },
   {path: 'terminos-condiciones', component: TerminosCondicionesComponent, title: 'Terminos y Condiciones' },
   { path: 'cambiar-contrasena', component: CambiarContrasenaComponent, title: 'Cambiar Contraseña', canActivate: [AuthGuard] },

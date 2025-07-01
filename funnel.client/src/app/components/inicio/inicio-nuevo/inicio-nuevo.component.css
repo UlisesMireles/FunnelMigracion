@@ -21,7 +21,7 @@
   .navbar img {
     max-width: 100%;
     height: auto;
-    margin-right: 20px;
+    margin-left: 25px !important;
     justify-content: center;
     align-items: center;
   }
@@ -30,6 +30,15 @@
   color: #06143dd7;
   border: none;
   padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+}
+.registro{
+  background-color: white;
+  color: #06143dd7;
+  border: none;
+  padding: 13px 20px;
   cursor: pointer;
   border-radius: 5px;
   font-weight: bold;
@@ -670,39 +679,17 @@ label {
     margin-bottom: 3rem;
     color: #666;
   }
-  
-  .feature-card {
-    background: white;
-    border-radius: 12px;
-    padding: 30px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-    height: 100%;
-    transition: transform 0.3s ease;
+  .features-section{
+    background: linear-gradient(135deg, #f5f7fa 0%, #f0f4f8 100%); 
+    padding: 100px 0; 
+    position: relative; overflow: hidden;
   }
-  
-  .feature-card:hover {
-    transform: translateY(-5px) !important;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
-  }
-  
-  .feature-icon {
-    width: 60px;
-    height: 60px;
-    background: linear-gradient(135deg, #1a2980 0%, #26d0ce 100%);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 20px;
-    color: white;
-    font-size: 1.5rem;
-  }
-  
-  .feature-card h3 {
-    font-size: 1.5rem;
-    margin-bottom: 15px;
-    color: #1a2980;
-  }
+  .timeline-line{
+  position: absolute; 
+  height: 4px; 
+  background: linear-gradient(90deg, #4e54c8, #8f94fb, #11998e, #38ef7d, #f46b45, #eea849, #a770ef, #4776E6); width: 90%; left: 5%; top: 100px; border-radius: 10px;
+ }
+
   .testimonials-section{
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); 
     padding: 100px 0; 
@@ -761,6 +748,14 @@ label {
   .pricing-features li:last-child {
     border-bottom: none;
   }
+  .pricing-section{
+    padding: 100px 0; 
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  }
+  .section-title{
+    color: #2c3e50;
+    margin-top: -50px;
+  }
   
   .footer{
     margin-top: -89px;
@@ -788,6 +783,7 @@ label {
       justify-content: center !important;
     }
   }
+  
 /* ESTILOS DEL ASISTENTE */
 .btn-chat {
   position: fixed; /* <-- Cambiado de absolute a fixed */

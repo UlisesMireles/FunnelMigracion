@@ -4,79 +4,103 @@
       <nav class="text-center m-auto">
         <img width="150" [src]="baseUrl + '/assets/img/logotipo-glupoint.png'" alt="logo SFS" class="m-auto">
         <div class="float-end">
-  <button *ngIf="showIniciarSesion" class="iniciarSesion me-2" (click)="openLoginModal()">Iniciar Sesión</button>
-  <a [href]="baseUrl + '/registro'" class="iniciarSesion me-2" style="text-decoration: none;">Registrarse</a>
-</div>
-
+        <button *ngIf="showIniciarSesion" class="iniciarSesion me-2" (click)="openLoginModal()">Iniciar Sesión</button>
+        <a [href]="baseUrl + '/registro'" class="registro me-2" style="text-decoration: none;">Registrarse</a>
+        </div>
       </nav>
     </div>
-    <!-- Features Section-->
-<div class="features-section" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); padding: 100px 0; position: relative; overflow: hidden;">
-  <div class="container position-relative">
-    <!-- Section Header -->
-    <div class="text-center mb-5" data-aos="fade-up">
-      <h2 class="section-title display-5 fw-bold mb-3" style="background: linear-gradient(90deg, #2c3e50, #4ca1af); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Todo lo que necesitas para vender más</h2>
-      <p class="section-subtitle text-muted">Funcionalidades diseñadas para cada etapa de tu proceso comercial con tecnología de última generación</p>
+    <!-- Features Section -->
+    <div class="features-section">
+      <div class="container position-relative">
+        <!-- Section Header -->
+        <div class="text-center mb-5" data-aos="fade-up">
+          <h2 class="section-title display-5 fw-bold mb-3" style="background: linear-gradient(90deg, #2c3e50, #4ca1af); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Tu proceso de ventas, optimizado</h2>
+          <p class="section-subtitle text-muted">Seguimiento visual de cada etapa con herramientas integradas para maximizar tus resultados</p>
+        </div>
+
+    <!-- Process Timeline -->
+    <div class="process-timeline position-relative">
+      <!-- Timeline Line -->
+      <div class="timeline-line"></div>
+      
+      <!-- Process Steps -->
+      <div class="row g-5 justify-content-center">
+        <!-- Step 1 -->
+        <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
+          <div class="process-step text-center p-4 position-relative" style="margin-top: 80px;">
+            <div class="step-number" style="width: 60px; height: 60px; background: linear-gradient(135deg, #4e54c8 0%, #8f94fb 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: white; font-weight: bold; font-size: 1.5rem; box-shadow: 0 10px 20px rgba(78, 84, 200, 0.3);">1</div>
+            <div class="step-content bg-white p-4 rounded-4 shadow" style="border-top: 5px solid #4e54c8;">
+              <div class="step-icon mb-3">
+                <i class="bi bi-person-check fs-2" style="color: #4e54c8;"></i>
+              </div>
+              <h3 class="h5 mb-3" style="color: #4e54c8;">Calificación de prospectos</h3>
+              <p class="text-muted mb-0 small">Se realiza una llamada o visita inicial para analizar las necesidades del cliente.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
+          <div class="process-step text-center p-4 position-relative" style="margin-top: 40px;">
+            <div class="step-number" style="width: 60px; height: 60px; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: white; font-weight: bold; font-size: 1.5rem; box-shadow: 0 10px 20px rgba(17, 153, 142, 0.3);">2</div>
+            <div class="step-content bg-white p-4 rounded-4 shadow" style="border-top: 5px solid #11998e;">
+              <div class="step-icon mb-3">
+                <i class="bi bi-search fs-2" style="color: #11998e;"></i>
+              </div>
+              <h3 class="h5 mb-3" style="color: #11998e;">Investigación de necesidades</h3>
+              <p class="text-muted mb-0 small">Se confirma la solución o producto que mejor se ajusta al cliente, identificando a la persona que toma las decisiones y posibles aliados.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
+          <div class="process-step text-center p-4 position-relative">
+            <div class="step-number" style="width: 60px; height: 60px; background: linear-gradient(135deg, #f46b45 0%, #eea849 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: white; font-weight: bold; font-size: 1.5rem; box-shadow: 0 10px 20px rgba(244, 107, 69, 0.3);">3</div>
+            <div class="step-content bg-white p-4 rounded-4 shadow" style="border-top: 5px solid #f46b45;">
+              <div class="step-icon mb-3">
+                <i class="bi bi-file-earmark-text fs-2" style="color: #f46b45;"></i>
+              </div>
+              <h3 class="h5 mb-3" style="color: #f46b45;">Elaboración de Propuestas</h3>
+              <p class="text-muted mb-0 small">Se cuantifican los criterios de compra y se definen los objetivos de venta, con un conocimiento profundo del presupuesto y la competencia.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="400">
+          <div class="process-step text-center p-4 position-relative" style="margin-top: 40px;">
+            <div class="step-number" style="width: 60px; height: 60px; background: linear-gradient(135deg, #a770ef 0%, #cf8bf3 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: white; font-weight: bold; font-size: 1.5rem; box-shadow: 0 10px 20px rgba(167, 112, 239, 0.3);">4</div>
+            <div class="step-content bg-white p-4 rounded-4 shadow" style="border-top: 5px solid #a770ef;">
+              <div class="step-icon mb-3">
+                <i class="bi bi-journal-check fs-2" style="color: #a770ef;"></i>
+              </div>
+              <h3 class="h5 mb-3" style="color: #a770ef;">Presentación de propuestas</h3>
+              <p class="text-muted mb-0 small">La propuesta se encuentra entre las finalistas, y la negociación se lleva a cabo con la persona que toma la decisión.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 5 -->
+        <div class="col-lg-4 col-md-6 mx-auto" data-aos="fade-up" data-aos-delay="500">
+          <div class="process-step text-center p-4 position-relative" style="margin-top: 80px;">
+            <div class="step-number" style="margin-top: -150px !important; width: 80px; height: 80px; background: linear-gradient(135deg, #4776E6 0%, #8E54E9 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: white; font-weight: bold; font-size: 2rem; box-shadow: 0 15px 30px rgba(71, 118, 230, 0.4);">5</div>
+            <div class="step-content bg-white p-4 rounded-4 shadow-lg" style="border-top: 5px solid #4776E6; transform: scale(1.05);">
+              <div class="step-icon mb-3">
+                <i class="bi bi-arrow-left-right fs-2" style="color: #4776E6;"></i>
+              </div>
+              <h3 class="h5 mb-3" style="color: #4776E6;">Negociación</h3>
+              <p class="text-muted mb-0 small">La propuesta se encuentra entre las finalistas, y la negociación se lleva a cabo con la persona que toma la decisión.</p>
+              <div class="mt-3">
+                <span class="badge rounded-pill" style="background: linear-gradient(135deg, #4776E6 0%, #8E54E9 100%); color: white;">Etapa clave</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <!-- Features Grid -->
-    <div class="row g-4">
-      <!-- Feature 1 -->
-      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-        <div class="feature-card h-100 p-4 rounded-4 shadow-sm border-0 bg-white" style="transition: all 0.3s ease; border-left: 4px solid #4e54c8 !important;">
-          <div class="feature-icon mb-4" style="width: 60px; height: 60px; background: linear-gradient(135deg, #4e54c8 0%, #8f94fb 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-            <i class="bi bi-person-check fs-3 text-white"></i>
-          </div>
-          <h3 class="h4 mb-3" style="color: #2c3e50;">Calificación de prospectos</h3>
-          <p class="text-muted mb-0">Se realiza una llamada o visita inicial para analizar las necesidades del cliente.</p>
-        </div>
-      </div>
-
-      <!-- Feature 2 -->
-      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-        <div class="feature-card h-100 p-4 rounded-4 shadow-sm border-0 bg-white" style="transition: all 0.3s ease; border-left: 4px solid #11998e !important;">
-          <div class="feature-icon mb-4" style="width: 60px; height: 60px; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-            <i class="bi bi-search fs-3 text-white"></i>
-          </div>
-          <h3 class="h4 mb-3" style="color: #2c3e50;">Investigación de necesidades</h3>
-          <p class="text-muted mb-0">Se confirma la solución o producto que mejor se ajusta al cliente, identificando a la persona que toma las decisiones y posibles aliados.</p>
-        </div>
-      </div>
-
-      <!-- Feature 3 -->
-      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-        <div class="feature-card h-100 p-4 rounded-4 shadow-sm border-0 bg-white" style="transition: all 0.3s ease; border-left: 4px solid #f46b45 !important;">
-          <div class="feature-icon mb-4" style="width: 60px; height: 60px; background: linear-gradient(135deg, #f46b45 0%, #eea849 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-            <i class="bi bi-file-earmark-text fs-3 text-white"></i>
-          </div>
-          <h3 class="h4 mb-3" style="color: #2c3e50;">Elaboración de Propuestas</h3>
-          <p class="text-muted mb-0">Se cuantifican los criterios de compra y se definen los objetivos de venta, con un conocimiento profundo del presupuesto y la competencia.</p>
-        </div>
-      </div>
-
-      <!-- Feature 4 -  -->
-      <div class="col-lg-6 col-md-6" data-aos="fade-up" data-aos-delay="400">
-        <div class="feature-card h-100 p-4 rounded-4 shadow-sm border-0 bg-white" style="transition: all 0.3s ease; border-left: 4px solid #a770ef !important;">
-          <div class="feature-icon mb-4" style="width: 60px; height: 60px; background: linear-gradient(135deg, #a770ef 0%, #cf8bf3 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-            <i class="bi bi-journal-check fs-3 text-white"></i>
-          </div>
-          <h3 class="h4 mb-3" style="color: #2c3e50;">Presentación de propuestas</h3>
-          <p class="text-muted mb-0">Se entregan las propuestas, asegurando que las necesidades del cliente han sido entendidas y todas las objeciones han sido resueltas.</p>
-        </div>
-      </div>
-
-      <!-- Feature 5 -  -->
-      <div class="col-lg-6 col-md-6" data-aos="fade-up" data-aos-delay="500">
-        <div class="feature-card h-100 p-4 rounded-4 shadow-sm border-0 bg-white" style="transition: all 0.3s ease; border-left: 4px solid #4776E6 !important;">
-          <div class="feature-icon mb-4" style="width: 60px; height: 60px; background: linear-gradient(135deg, #4776E6 0%, #8E54E9 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-            <i class="bi bi-arrow-left-right fs-3 text-white"></i>
-          </div>
-          <h3 class="h4 mb-3" style="color: #2c3e50;">Negociación estratégica</h3>
-          <p class="text-muted mb-0">La propuesta se encuentra entre las finalistas, y la negociación se lleva a cabo con la persona que toma la decisión.</p>
-        </div>
-      </div>
-    </div>
-  </div></div>
+  </div>
+</div>
  <!-- Testimonials Section - -->
 <div class="testimonials-section">
   <div class="testimonial-decoration" style="position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: rgba(13, 110, 253, 0.1); border-radius: 50%;"></div>
@@ -129,10 +153,10 @@
   </div>
 </div>
       <!-- Pricing Section -->
-<section class="pricing-section" style="padding: 100px 0; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+<section class="pricing-section">
   <div class="container">
     <div class="text-center mb-5">
-      <h2 class="section-title display-4 fw-bold mb-3" style="color: #2c3e50;">Planes a tu medida</h2>
+      <h2 class="section-title display-4 fw-bold mb-3">Planes a tu medida</h2>
       <p class="section-subtitle lead text-muted">Elige el paquete que mejor se adapte a las necesidades de tu negocio</p>
     </div>
     
@@ -294,8 +318,46 @@
         </div>
       </div>
     </div>
+     <div *ngIf="isResetModalOpen" class="modal-overlay" (click)="closeLoginModal()"></div>
+
+    <!-- Modal ResetPassword -->
+    <div *ngIf="isResetModalOpen" class="custom-modal">
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+          <div class="modal-header justify-content-center">
+            <img width="100" [src]="baseUrl + '/assets/img/SFS login.png'" alt="logo SFS">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeResetModal()"
+              style="font-size: 2rem; position: absolute; right: -30px; top: -20px; color: #000; opacity: 1; padding: 0.5rem; background: transparent; border: none; cursor: pointer;">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <br />
+            <h5 style="font-size: 1.6rem; text-align: center; line-height: 1.3; font-weight: 600; color: #1a73e8;">Recuperar Contraseña</h5>
+            <div class="input-group mb-4" style="margin-top: 18px;">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-fill  "></i></span>
+              </div>
+              <input type="text" class="form-control" placeholder="usuario" [(ngModel)]="resetUsername" />
+            </div>
+            <div class="input-group mb-3" style="margin-bottom: 10px;">
+              <button class="btn btn-login btn-lg btn-block form-control" (click)="resetPassword()">Enviar</button>
+            </div>
+            <div class="input-group mb-4" style="margin-bottom: 10px;">
+              <button class="btn btn-light btn-lg btn-block form-control" (click)="openLoginModal()">Regresar</button>
+            </div>
+            <div style="text-align: center">
+              <p *ngIf="resetErrorMessage" style="color: #a94442;">{{ resetErrorMessage }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+<div style="position: absolute; top: 100%; left: 50%; transform: translateX(-50%); margin-top: 9%; width: 100%;">
+    <p-toast key="reset-toast" position="bottom-center" [style]="{ height: '2vh' }"></p-toast>
+  </div>
+</div>    
+    <!-- Chatbot Bienvenida-->
     <div class="col-3 chatbot">
-      
       <button class="btn-chat" (click)="toggleChat()">
         <i class="bi bi-chat-fill"></i> 
       </button>

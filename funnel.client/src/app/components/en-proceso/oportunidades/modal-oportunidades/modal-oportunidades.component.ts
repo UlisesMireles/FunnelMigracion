@@ -560,12 +560,14 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
 
 
       if (prospecto.id > 0) {
-        if (!this.oportunidadForm.get('idProspecto')?.value) {
-          this.oportunidadForm.get('idProspecto')?.setValue(prospecto);
-        }
 
         this.catalogoService.cargarContactos(this.loginService.obtenerIdEmpresa());
         setTimeout(() => {
+
+          if (!this.oportunidadForm.get('idProspecto')?.value) {
+            this.oportunidadForm.get('idProspecto')?.setValue(prospecto);
+          }
+
           this.contactos = this.catalogoService.obtenerContactos(prospecto.id);
 
           const contactoNuevo = this.contactos.find(c => c.idContactoProspecto === result.id);
@@ -577,7 +579,7 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
           this.oportunidadForm.get('idContactoProspecto')?.enable();
           this.busquedaContacto = contactoNuevo?.nombreCompleto;
           this.banderaContacto = false;
-
+          this.registraContacto = true;
           this.cdr.detectChanges();
         }, 500);
 

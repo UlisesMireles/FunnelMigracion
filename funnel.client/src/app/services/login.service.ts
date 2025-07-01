@@ -12,7 +12,7 @@ import { Usuarios } from '../interfaces/usuarios';
 import { EstadoChatService } from './asistentes/estado-chat.service';
 import { PermisosService } from './permisos.service';
 /*import { EstadoChatService } from './asistentes/estado-chat.service';*/
-
+import { Subject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -20,7 +20,7 @@ export class LoginService {
   baseUrl: string = environment.baseURL;
   private currentUserSubject = new BehaviorSubject<any>(null);
   public currentUser: Observable<Usuario>;
-
+  public sessionWarning$ = new Subject<void>();
   private sessionTimeout = 40 * 60 * 1000;
   private timer: any;
   constructor(private http: HttpClient, private router: Router, private readonly catalogoService: CatalogoService, 
@@ -97,7 +97,11 @@ export class LoginService {
     if (this.timer) {
       clearTimeout(this.timer);
     }
-
+    const warningTime = this.sessionTimeout - (2 * 60 * 1000);
+    setTimeout(() => {
+      this.sessionWarning$.next();
+    }, warningTime);
+    
     this.timer = setTimeout(() => {
       this.logout('La sesión ha expirado: login service startSessionTimer');
     }, this.sessionTimeout);
@@ -110,7 +114,7 @@ export class LoginService {
   logout(motivo: string): void {
     const sesionId = sessionStorage.getItem('SesionId') ?? '';
     let data = { idUsuario: this.obtenerIdUsuario(), idEmpresa: this.obtenerIdEmpresa(), sesionId: sesionId, motivoCerrarSesion: motivo, usuario: '', password: ''};
-    console.log(data);
+    
     this.http.post(`${this.baseUrl}api/Login/Logout`, data, { responseType: 'text' })
       .pipe(
         finalize(() => {

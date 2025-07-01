@@ -3,11 +3,26 @@
   <app-menu *ngIf="!login"></app-menu>
 
   <app-login *ngIf="login && !dobleAutenticacion && !politicaPrivacidad && !terminosCondiciones "></app-login>
-  <app-doble-autenticacion *ngIf="dobleAutenticacion" ></app-doble-autenticacion>
-  <app-politica-privacidad *ngIf="politicaPrivacidad" ></app-politica-privacidad>
-  <app-terminos-condiciones *ngIf="terminosCondiciones" ></app-terminos-condiciones>
+  <app-doble-autenticacion *ngIf="dobleAutenticacion"></app-doble-autenticacion>
+  <app-politica-privacidad *ngIf="politicaPrivacidad"></app-politica-privacidad>
+  <app-terminos-condiciones *ngIf="terminosCondiciones"></app-terminos-condiciones>
   <!--<div *ngIf="dobleAutenticacion" class="container-fluid">
     <router-outlet></router-outlet>
   </div>-->
   <app-footer *ngIf="login"></app-footer>
+
+  <p-dialog header="¡Atención!" [(visible)]="showSessionWarning" [modal]="true" [closable]="false"
+    [dismissableMask]="false" [style]="{width: '350px'}">
+    <div class="text-center">
+      <p>Quedan <b>2 minutos</b> para que tu sesión expire.<br>
+        ¿Sigues ahí?</p>
+      <div style="font-size:2rem; margin: 1rem 0;">
+        {{ countdownMinutes }}:{{ countdownSeconds < 10 ? '0' + countdownSeconds : countdownSeconds }} </div>
+          <div class="d-flex justify-content-end gap-2">
+            <button pButton type="button" label="Aquí sigo" (click)="onSessionContinue()"
+              class="p-button-success"></button>
+            <button pButton type="button" label="Cancelar" (click)="onSessionCancel()" class="p-button-danger"></button>
+          </div>
+      </div>
+  </p-dialog>
 </div>

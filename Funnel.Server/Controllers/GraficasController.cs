@@ -99,5 +99,19 @@ namespace Funnel.Server.Controllers
             var result = await _graficasService.ObtenerOportunidadesPorAgenteClientes(data);
             return Ok(result);
         }
+   
+    [HttpPost("[action]/")]
+        public async Task<ActionResult<List<TipoOportunidadAgenteDto>>> ObtenerOportunidadesPorAgenteTipo(RequestGrafica data)
+        {
+            var result = await _graficasService.ObtenerOportunidadesPorAgenteTipo(data);
+            return Ok(result);
+        }
+
+        [HttpPost("[action]/{idAgente}/{idTipoOporAgente}")]
+        public async Task<ActionResult<List<DetalleOportunidadTipoAgenteDto>>> ObtenerDetalleOportunidadesTipoAgente(int idAgente, int idTipoOporAgente, RequestGrafica data)
+        {
+            var result = await _graficasService.ObtenerDetalleOportunidadesTipoAgente(idAgente, idTipoOporAgente, data);
+            return Ok(result);
+        }
     }
 }

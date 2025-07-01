@@ -102,3 +102,4 @@ export interface OportunidadAgenteCliente {
   idStage: number;
   stage: string;
 }
+

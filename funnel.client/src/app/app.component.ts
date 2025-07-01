@@ -28,7 +28,6 @@ export class AppComponent implements OnInit {
   constructor(private http: HttpClient, private router: Router, private readonly loginService: LoginService) { }
 
   ngOnInit() {
-
     this.router.events.subscribe(() => {
       if (this.router.url === '/' || this.router.url === '/recuperar-contrasena' || this.router.url === '/login' || this.router.url === '/two-factor' || this.router.url === '/politica-privacidad' || this.router.url === '/terminos-condiciones') {
         this.login = true;
@@ -42,7 +41,6 @@ export class AppComponent implements OnInit {
 
     });
     this.loginService.sessionWarning$.subscribe(() => {
-      // Aquí abre tu modal, por ejemplo usando un servicio de PrimeNG, Angular Material, etc.
       this.showSessionWarning = true;
       this.startCountdown();
     });
@@ -79,5 +77,7 @@ export class AppComponent implements OnInit {
     clearInterval(this.countdownInterval);
     this.loginService.logout('Sesión cancelada por el usuario');
   }
-  title = 'Funnel';
+  close() {
+    this.showSessionWarning = false;
+  }
 }

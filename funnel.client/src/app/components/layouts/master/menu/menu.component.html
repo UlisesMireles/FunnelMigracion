@@ -1,0 +1,23 @@
+<mat-sidenav-container class="containerSideNav">
+  <!-- Barra lateral (siempre visible) -->
+  <mat-sidenav
+    id="sidenav"
+    mode="side"
+    [opened]="true"
+    class="sidenav"
+    [style.width.px]="isExpanded ? 130 : 30">
+    <div class="contentSidenav">
+      <app-vertical-bar
+        class="menuAdmin"
+        (toggleSidebar)="onSidebarToggle($event)">
+      </app-vertical-bar>
+    </div>
+  </mat-sidenav>
+
+  <!-- Contenido principal (se mueve automáticamente) -->
+  <mat-sidenav-content class="content" [style.margin-left.px]="isExpanded ? 130 : 30">
+    <div class="tituloAdmin">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

@@ -1,0 +1,52 @@
+<div class="row d-flex justify-content-center logoMenu"> 
+    <div class="col-auto vertical-center perfilClass">
+      <div class="row pb-4 d-table">
+        <i class="col-auto bi bi-person-circle fs-50 p-0 "  style="cursor: pointer;"></i>
+        <span class="col-auto align-middle fs-20" *ngIf="this.sideNavService.getToggleValue"  style="cursor: pointer;">*</span>
+      </div>
+    </div>
+  </div>
+  <ul class="side-menu">
+    <li *ngFor="let menu of ListaMenu; index as i">
+      <!-- menu collapsado con tooltip -->
+      <a *ngIf="menu.path !== '/' && !this.sideNavService.getToggleValue"
+        [ngClass]="this.sideNavService.getToggleValue ? 'side-menu__item' : 'side-menu__item_closed'"
+        [routerLink]="menu.path" routerLinkActive="active" [matTooltip]="menu.tooltip" matTooltipPosition="right">
+        <i class="bi {{menu.icono}}" aria-hidden="true"></i>
+        <span class="side-menu__label" *ngIf="this.sideNavService.getToggleValue">{{menu.nombre}}</span>
+      </a>
+      <!-- menu expandido con tooltip -->
+      <a *ngIf="menu.path !== '/' && this.sideNavService.getToggleValue"
+        [ngClass]="this.sideNavService.getToggleValue ? 'side-menu__item' : 'side-menu__item_closed'"
+        [routerLink]="menu.path" routerLinkActive="active">
+        <i class="bi {{menu.icono}}" aria-hidden="true"></i>
+        <span class="side-menu__label" *ngIf="this.sideNavService.getToggleValue">{{menu.nombre}}</span>
+      </a>
+      <!-- menu salir collapsado con tooltip -->
+      <a *ngIf="menu.path === '/' && !this.sideNavService.getToggleValue"
+        [ngClass]="this.sideNavService.getToggleValue ? 'side-menu__item' : 'side-menu__item_closed'" (click)="logout()"
+        [matTooltip]="menu.tooltip" matTooltipPosition="right">
+        <i class="bi {{menu.icono}}" aria-hidden="true"></i>
+        <span class="side-menu__label" *ngIf="this.sideNavService.getToggleValue">{{menu.nombre}}</span>
+      </a>
+      <!-- menu expandido salir con tooltip -->
+      <a *ngIf="menu.path === '/' && this.sideNavService.getToggleValue"
+        [ngClass]="this.sideNavService.getToggleValue ? 'side-menu__item' : 'side-menu__item_closed'" (click)="logout()">
+        <i class="bi {{menu.icono}}" aria-hidden="true"></i>
+        <span class="side-menu__label" *ngIf="this.sideNavService.getToggleValue">{{menu.nombre}}</span>
+      </a>
+    </li>
+    <!-- Texto de información -->
+    <li class="side-menu__footer">
+      <div class="side-menu__footer-text" [matTooltip]="getFooterTooltip()" matTooltipPosition="right">
+        <span *ngIf="this.sideNavService.getToggleValue">
+          Administrador de OpenAl<br>
+          isanchez.financiero&#64;gmail.com<br>
+        </span>
+        <span *ngIf="!this.sideNavService.getToggleValue">
+          <i class="bi bi-info-circle"></i>
+        </span>
+      </div>
+    </li>
+
+  </ul> 

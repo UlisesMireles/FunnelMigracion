@@ -1,0 +1,71 @@
+<div class="sidebar" [class.expanded]="isExpanded">
+
+  <!-- Botón de Scroll Arriba (Solo aparece si hay scroll) -->
+  <!-- <button class="scroll-btn up-btn" *ngIf="isScrollable" (mouseenter)="scrollUp()" (mouseleave)="stopScroll()">
+    <i class="bi bi-chevron-up"></i>
+  </button> -->
+
+  <!-- Contenedor del Menú con Scroll -->
+  <div class="menu-container" #menuList>
+    <ul class="menu">
+      <!-- <li class="menu-item-perfil" *ngIf="ListaMenu[0]" (mouseenter)="showSubmenu(0)" (mouseleave)="hideSubmenu()" (click)="navigateTo(ListaMenu[0].ruta)">
+        <i [ngClass]="ListaMenu[0].icono" [title]="ListaMenu[0].tooltip" class="large-icon"></i>
+        <span *ngIf="isExpanded">{{ ListaMenu[0].nombre }}</span>
+      </li> -->
+
+      <li class="menu-item" *ngFor="let item of ListaMenu.slice(1); let i = index" (mouseenter)="showSubmenu(i)"
+        (mouseleave)="hideSubmenu()" (click)="navigateTo(item.ruta)">
+        <i [ngClass]="item.icono" [title]="item.tooltip"
+        [ngStyle]="{
+                    'font-size': item.nombre === 'SALIR' ? '22px' : '20px',
+                    'color': item.colorIcono}"></i>
+        <span *ngIf="isExpanded">{{ item.nombre }}</span>
+
+        <!-- Solo mostrar submenú si existe y tiene elementos -->
+        <ul class="submenu visible" [ngStyle]="item.subMenu.length > 2 ? {'transform': 'translateY(40%)'}: {'transform': 'translateY(33%)'}" 
+          [ngClass]="isExpanded ? 'subMenuExpanded' : ''" *ngIf="item.subMenu && item.subMenu.length > 0 && hoveredMenu === i" >
+          <!-- Encabezado con el nombre del menú como título -->
+          <!-- <li class="submenu-header">{{ item.pagina }}</li> -->
+
+          <li *ngFor="let subItem of item.subMenu" class="submenu-item" [routerLink]="subItem.ruta">
+            <a>{{ subItem.pagina }}</a>
+
+            <!-- 🟠 Icono y tooltip si hasIcon es true -->
+            <span *ngIf="subItem.hasIcon" class="icono-naranja">
+              <i class="bi bi-arrow-up-circle-fill"></i>
+              <span class="tooltip">{{ subItem.tooltipMessage }}</span>
+            </span>
+          </li>
+
+
+        </ul>
+      </li>
+    </ul>
+    <div class="expand-btn-container" (mouseenter)="showTooltip = true" (mouseleave)="showTooltip = false">
+      <div class="expand-btn" (click)="toggleMenu()" (mouseenter)="showTooltip = true"
+        (mouseleave)="showTooltip = false">
+        <i class="bi bi-chevron-left"></i>
+        <i class="bi bi-chevron-right"></i>
+        <!-- <i class="bi" [ngClass]="isExpanded ? 'bi-chevron-left' : 'bi-chevron-right'"></i> -->
+      </div>
+      <div class="tooltip-box" *ngIf="showTooltip">
+        {{ isExpanded ? 'Contraer la navegación' : 'Ampliar la navegación' }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Botón de Scroll Abajo (Solo aparece si hay scroll) -->
+  <!-- <button class="scroll-btn down-btn" *ngIf="isScrollable" (mouseenter)="scrollDown()" (mouseleave)="stopScroll()">
+    <i class="bi bi-chevron-down"></i>
+  </button> -->
+
+  <!-- <div class="separator"></div> -->
+  <!-- Botón de Expandir -->
+
+</div>
+
+
+<p-toast position="center"></p-toast>
+<div class="w-100">
+  <app-usuario-perfil [(visible)]="modalVisible" [title]="'Perfil'" class="estiloPerfilMenu"></app-usuario-perfil>
+</div>

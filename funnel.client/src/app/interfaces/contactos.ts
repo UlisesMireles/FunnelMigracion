@@ -1,0 +1,26 @@
+export interface Contacto {
+    idContactoProspecto: number;
+    nombreCompleto: string;
+    nombre: string;
+    apellidos: string;
+    telefono: string;
+    correoElectronico: string;
+    estatus: number;
+    desEstatus: string;
+    prospecto: string;
+    idProspecto: number;
+    idEmpresa: number;
+    bandera: string;
+}
+
+export interface RequestPContacto {
+    bandera: string;
+    idContactoProspecto?: number;
+    nombre: string;
+    apellidos: string;
+    telefono: string;
+    correoElectronico: string;
+    estatus: number;
+    idProspecto: number;
+    idEmpresa: number;
+}

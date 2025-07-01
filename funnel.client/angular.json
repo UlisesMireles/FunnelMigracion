@@ -31,13 +31,10 @@
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
-              {
-                "glob": "**/*",
-                "input": "public",
-                "src/favicon.ico",
-                "src/assets"
-              }
-            ],
+              "src/favicon.ico",
+              "src/assets"
+            ]
+            ,
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/bootstrap-icons/font/bootstrap-icons.css",
@@ -64,8 +61,8 @@
               ],
               "fileReplacements": [
                 {
-                  "replace": "src/enviroment/enviroment.ts",
-                  "with": "src/enviroment/environment.prod.ts"
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
                 }
               ],
               "outputHashing": "all",
@@ -93,8 +90,8 @@
               ],
               "fileReplacements": [
                 {
-                  "replace": "src/enviroment/enviroment.ts",
-                  "with": "src/enviroment/environment.qa.ts"
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.qa.ts"
                 }
               ],
               "outputHashing": "all",

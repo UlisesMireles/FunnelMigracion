@@ -1,1 +1,180 @@
-/* You can add global styles to this file, and also import other style files */
+@import 'material-icons/iconfont/material-icons.css';
+
+.success-snackbar {
+  /* padding-bottom: 5px !important; */
+  /* padding-top: 5px !important; */
+  border-radius: 9px !important;
+  min-height: 38px !important;
+  background: #6EB74B !important;
+  margin-top: 500px !important;
+  /* opacity: 0.65 !important; */
+}
+
+.error-snackbar {
+  /* padding-bottom: 5px !important; */
+  /* padding-top: 5px !important; */
+  border-radius: 9px !important;
+  min-height: 38px !important;
+  background: #FF8F43 !important;
+}
+
+.warning-snackbar {
+  /* padding-bottom: 5px !important; */
+  /* padding-top: 5px !important; */
+  border-radius: 9px !important;
+  min-height: 38px !important;
+  background: #FFC600 !important;
+  color: black !important;
+}
+
+.default-snackbar {
+  /* padding-bottom: 5px !important; */
+  /* padding-top: 5px !important; */
+  border-radius: 9px !important;
+  min-height: 38px !important;
+  background: #0053f1 !important;
+  opacity: 0.65 !important;
+}
+
+.mat-mdc-snack-bar-container .mat-mdc-button.mat-mdc-snack-bar-action:not(:disabled) {
+  --mat-text-button-state-layer-color: rgb(33 37 41 / 21%) !important;
+}
+
+.mat-mdc-dialog-surface {
+  border-radius: var(--mdc-dialog-container-shape, var(--mat-sys-corner-extra-large, 9px)) !important;
+  background-color: transparent !important;
+}
+
+.p-select-option:hover {
+  background: lightgrey;
+}
+
+.p-select:hover {
+  background: lightgrey;
+}
+
+.estiloComentario {
+  resize: none;
+  height: 60px !important;
+}
+
+.p-dialog-content {
+  overflow-x: hidden !important;
+  overflow-y: auto !important;     
+}
+
+.p-splitbutton-button.p-button {
+  width: 63px!important;
+}
+
+.p-tieredmenu {
+  min-width: 101px !important;
+  background-color: rgba(16, 61, 102, 0.5) !important;
+  border: 0 !important;
+  transition: background-color 0.3s;
+  
+}
+
+.p-tieredmenu,
+.p-tieredmenu * {
+  color: #fff !important;
+}
+
+.p-tieredmenu-item-link:hover {
+  background: rgb(38, 89, 137, 0.8) !important;
+  color: #ffffff !important;
+  border-radius: 2.5px;
+}
+
+.p-tieredmenu-item-content {
+  content: none !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+
+.p-splitbutton {
+  box-shadow: none !important;
+}
+.mat-mdc-chip-set .mdc-evolution-chip-set__chips {
+    min-width: 100%;
+    margin-left: -8px;
+    margin-right: 0;
+    border: #1976d2 1px;
+    color: #1976d2;
+    cursor: pointer;
+}
+
+.mat-mdc-chip:hover {
+  background-color: #1976d2 !important;
+  color: #ffffff !important;
+}
+.p-button-icon-only.p-button-rounded{
+ width: 30px !important;
+  height: 30px !important;
+}
+.p-datatable-inline-filter {
+  gap: 0 !important;
+}
+
+.custom-button {
+  background: #f4f4f4 !important;
+  color: #495057 !important;
+  border-radius: 6px !important;
+  min-width: 20px;
+  min-height: 20px;
+
+}
+ .btn-seleccionar {
+    background: #ededed;
+    color: #475569;
+    border: 1px solid #ededed; 
+    padding: 5px 15px;
+    font-size: 14px; 
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease; 
+  }
+  
+  /* Efecto hover */
+  .btn-seleccionar:hover {
+    background: #d4d4d4; 
+    border-color: #d4d4d4; 
+    color: #475569;
+  }
+
+
+.spinner-tabla{
+  position: absolute;
+  z-index: 500;
+  transform: translate(-14px, 100px);
+}
+.spinner-tarjeta{
+  position: absolute;
+  transform: translate(-14px, 60px);
+}
+
+
+.my-custom-table .p-datatable-tbody > tr {
+    background-color: white !important;
+}
+.my-custom-table .p-datatable-tbody > tr.selected-row {
+    background-color: #1976d2 !important;
+    color: #fff;
+}
+.custom-header th:first-child {
+  border-top-left-radius: 8px !important;
+}
+.custom-header th:last-child {
+  border-top-right-radius: 8px !important;
+}
+.custom-footer td:first-child {
+  border-bottom-left-radius: 8px !important;
+}
+.custom-footer td:last-child {
+  border-bottom-right-radius: 8px !important;
+}
+.p-paginator {
+  justify-content: flex-start !important;
+}
+.p-datatable-tbody > tr:hover{
+  background-color: #f8fafc !important;
+}

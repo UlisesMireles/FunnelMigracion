@@ -1,0 +1,128 @@
+<div class="scrollable-div" #scrollMe [scrollTop]="scrollMe.scrollHeight">
+  <div *ngIf="mostrarMensajeCopiado" class="mensaje-flotante">
+    {{ mensajeCopiadoTexto }}
+  </div>
+  <div class="chat-historial" *ngFor="let chat of chatHistorial">
+    <div class="chat-row" [ngClass]="{'filtroFaq' : 'row-reverse', 'revisarCategorias' : 'row-reverse'}[chat.rol]">
+      <ng-container [ngSwitch]="chat.rol">
+        <ng-container *ngSwitchCase="'cargando'">
+        </ng-container>
+      </ng-container>
+      <ng-container [ngSwitch]="chat.rol">
+        <ng-container *ngSwitchCase="'asistente'" style="vertical-align: middle;">
+          <div class="hstack">
+            <div class="vstack">
+              <label class="labelAsistente ps-2" *ngIf="chat.rol === 'asistente'">Asistente Funnel</label>
+              <div class="chat-bubble ai-bubble formatoMensajes vstack" [innerHTML]="chat.mensaje">
+              </div>
+              <button class="btn-copiar" [ngClass]="{'btn-copiar-tema-operacion': asistenteSeleccionado.idBot == 4}"
+              (click)="copiarRespuesta(chat.mensaje)" matTooltip="Copiar respuesta"  *ngIf="mostrarBotonCopiar(chat)">
+              <mat-icon>content_copy</mat-icon>
+              </button>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngSwitchCase="'usuario'">
+          <div class="vstack row-reverse">
+            <label class="labelAsistente ps-2" *ngIf="chat.rol === 'asistente'">Asistente Funnel</label>
+            <div class="chat-bubble human-bubble formatoMensajes"
+              [ngClass]="{ 'human-bubbleTemaAsistenteOperacion': asistenteSeleccionado.idBot == 4}"
+              [innerHTML]="chat.mensaje" style="white-space:pre-wrap">
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngSwitchCase="'asistentes'" [ngTemplateOutlet]="asistentes"></ng-container>
+        <ng-container *ngSwitchCase="'categorias'" [ngTemplateOutlet]="categorias"></ng-container>
+        <ng-container *ngSwitchCase="'preguntasPorCat'" [ngTemplateOutlet]="preguntasPorCat"></ng-container>
+        <ng-container *ngSwitchCase="'revisarCategorias'" [ngTemplateOutlet]="revisarCategorias"></ng-container>
+        <ng-container *ngSwitchDefault [ngTemplateOutlet]="cargando"></ng-container>
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+<div class="chatbot-message-box" [class.active]="loadOpciones"  
+  [class.has-options]="loadOpciones"  data-role="chatbot">
+  <input type="text" class="chatbot-input" [(ngModel)]="pregunta" placeholder="¿Cómo puedo ayudarte el día de hoy?"
+    (keydown.enter)="consultaMensajeOpenIa()">
+  <mat-icon matSuffix class="iconoChatBot me-2"
+    [ngClass]="{'iconoChatBotTemaAsistenteOperacion': asistenteSeleccionado.idBot == 4}"
+    (click)="resetConversation()" matTooltip="Eliminar historial" style="cursor: pointer; margin-top: 1px; ">delete</mat-icon>
+  <button class="enviarMensaje"  [disabled]="!this.pregunta.trim()">
+    <mat-icon matSuffix class="ms-2 iconoChatBot"  style="margin-top: 4px;"
+      [ngClass]="{'iconoChatBotTemaAsistenteOperacion': asistenteSeleccionado.idBot == 4}"
+      (click)="consultaMensajeOpenIa()">send</mat-icon>
+  </button>
+</div>
+
+<ng-template #cargando>
+  <div class="chat-bubble ai-bubble">
+    <div class="lds-ellipsis ">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #asistentes>
+  <mat-chip-listbox class="row d-flex justify-content-end asistenteClass m-0 pb-2 ps-0 pe-0"
+    aria-label="Seleccion asistente">
+    <mat-chip class="col-auto colorChip"
+      [ngClass]="{'colorChipTemaAsistenteOperacion': asistenteSeleccionado.idBot == 4}"
+      *ngFor="let asistente of lsAsistentesPorCategoria" (click)="obtenCategoriasPorAsistente(asistente)">
+      <small>
+        <b>
+          {{asistente.asistente}}
+        </b>
+      </small>
+    </mat-chip>
+  </mat-chip-listbox>
+</ng-template>
+
+<ng-template #categorias>
+  <div class="row m-0 ps-4">
+    <mat-chip-listbox class="col-auto m-0 pb-2 ps-0 pe-0 " aria-label="Seleccion Categoria"
+      *ngFor="let categoriaPreguntas of lsCategoriaPreguntas">
+      <mat-chip class="colorChip"
+        [ngClass]="{'colorChipTemaAsistenteOperacion': asistenteSeleccionado.idBot == 4}"
+        (click)="seleccionCategoria(categoriaPreguntas)">
+        <small>
+          <b>
+            {{categoriaPreguntas.descripcion}}
+          </b>
+        </small>
+      </mat-chip>
+    </mat-chip-listbox>
+  </div>
+</ng-template>
+
+<ng-template #preguntasPorCat>
+  <div class="row m-0 ps-2" style="width: 100%;">
+    <div class="col-auto m-0 pb-2 ps-0 pe-0 filtroFaqClass">
+      <div *ngFor="let preguntaFaq of lsPreguntasPorCategoria | yaSePregunto" 
+           class="custom-chip colorChip"
+           [ngClass]="{'colorChipTemaAsistenteOperacion': asistenteSeleccionado.idBot == 4}"
+           (click)="seleccionPregunta(preguntaFaq)">
+        {{preguntaFaq.pregunta}}
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #revisarCategorias>
+  <div class="row m-0 ps-4 justify-content-end">
+    <mat-chip-listbox class="col-auto m-0 pb-2 ps-0 pe-0" aria-label="Seleccion" *ngFor="let rt of lsRevisarCategorias">
+      <mat-chip class="colorChip"
+        [ngClass]="{'colorChipTemaAsistenteOperacion': asistenteSeleccionado.idBot == 4}"
+        (click)="seleccionRevisarCategorias(rt)">
+        <small>
+          <b>
+            {{rt}}
+          </b>
+        </small>
+      </mat-chip>
+    </mat-chip-listbox>
+  </div>
+</ng-template>

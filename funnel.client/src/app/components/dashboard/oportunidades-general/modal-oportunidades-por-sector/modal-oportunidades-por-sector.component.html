@@ -1,0 +1,86 @@
+<p-dialog 
+  appendTo="body"
+  [(visible)]="visible" 
+  [modal]="true" 
+  [closable]="true" 
+  [maximizable]="true"
+  [style]="{
+    width: maximized ? '100vw' : '80rem',
+    height: maximized ? '100vh' : 'auto'
+  }"
+  [ngClass]="{'maximized': maximized}"
+  (onHide)="close()"
+  (onShow)="onDialogShow()"
+  [baseZIndex]="1100"
+  [draggable]="true"
+  [resizable]="false"
+  [blockScroll]="true"
+  styleClass="custom-header-naranja">
+  
+  <ng-template pTemplate="header">
+    <div class="dialog-header-content">
+      <label class="margen titulo-dialogo">
+        Oportunidades por Sector
+      </label>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="content">
+    <div class="contenedor-tabla-dialogo">
+      <p-table #dt [value]="sectores" [paginator]="true" [rows]="10" 
+  [rowsPerPageOptions]="[10, 25, 50]" [totalRecords]="sectores.length"
+  styleClass="tabla-estilizada">
+
+  <ng-template pTemplate="header" let-columns>
+    <tr class="custom-header">
+      <th *ngFor="let def of lsColumnasAMostrar" pSortableColumn="{{def.key}}" 
+        [ngClass]="{'sort-active': isSorted(def.key)}">
+        {{def.valor}}
+        <p-sortIcon field="{{def.key}}"></p-sortIcon>
+      </th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-rowData>
+    <tr class="fila-datos">
+      <td *ngFor="let def of lsColumnasAMostrar">
+        <ng-container [ngSwitch]="def.tipoFormato">
+          <span *ngSwitchCase="'text'">
+            <a *ngIf="def.key === 'nombreSector'" 
+            href="javascript:void(0)" 
+            (click)="abrirDetalleSector(rowData.idSector); $event.stopPropagation()" 
+            class="enlace-sector">
+            {{ rowData[def.key] }}
+            </a>
+            <span *ngIf="def.key !== 'nombreSector'">{{ rowData[def.key] }}</span>
+          </span>
+          <span *ngSwitchCase="'currency'">{{ rowData[def.key] | currency:'MXN':'symbol':'1.2-2'}}</span>
+          <span *ngSwitchCase="'percent'">{{ rowData[def.key] | percent:'1.2-2' }}</span>
+        </ng-container>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <tr class="custom-footer">
+      <td *ngFor="let def of lsColumnasAMostrar"
+      [ngClass]="{'total-registros-cell': def.key === 'nombreSector'}">
+        <ng-container *ngIf="def.tipoFormato === 'currency'">
+          <div style="text-align: right; font-weight: bold;">
+            <span *ngIf="def.key === 'montoNormalizado'">
+              {{ calcularSumaMontosNormalizados() | currency:'MXN':'symbol':'1.2-2' }}
+            </span>
+            <span *ngIf="def.key === 'monto'">
+              {{ calcularSumaMontos() | currency:'MXN':'symbol':'1.2-2' }}
+            </span>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="def.key === 'nombreSector'">
+          Total de Sectores: {{ sectores.length }}
+        </ng-container>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+    </div>
+  </ng-template>
+</p-dialog>

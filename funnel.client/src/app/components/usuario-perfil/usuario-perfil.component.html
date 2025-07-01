@@ -1,0 +1,21 @@
+<div class="float-end" id="modalPerfil" *ngIf="visible" (click)="onModalClick($event)">
+  
+    <!-- <span class="user-name" (click)="toggleUserPanel($event)" style="cursor: pointer;">
+      <i class="bi bi-person-circle"></i> {{nombreUsuario}}
+    </span> -->
+
+    <div class="user-panel float-end" [class.show]="visible">
+      <div class="user-header">
+        <img [src]="rutaImgen" alt="Usuario" (error)="mostrarImagenDefault($event)" class="user-image" />
+        <h5>{{nombre}}</h5>
+      </div>
+      <div class="user-actions">
+        <button type="button" (click)="goToMiCuenta()" class="btn btn-cancel btnmenuuser">
+          Perfil
+         </button>
+        <a [href]="baseUrlAssets + '/politica-privacidad'" target="_blank"class="btn btn-cancel btnmenuuser btnPoliticas" [title]="'Ir a Politicas de Privacidad'"> 
+          Politica Privacidad
+        </a>
+      </div>
+    </div>
+</div>

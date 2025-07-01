@@ -1,0 +1,191 @@
+.loader{
+    width: 50px;
+    height: 50px;
+    border: 8px solid #dddddd;
+    border-radius: 50%;
+    border-top-color: #2d90f4;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin{
+    to{
+        transform: rotate(360deg);
+    }
+}
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 20px;
+    height: 779px;
+    padding: 5px 10px;
+    box-sizing: border-box;
+    margin-top: -55px;;
+    margin-left: 1px;
+  }
+  
+  .quadrant {
+    border: 2px solid #ccc;
+    border-radius: 12px;
+    background-color: #f9f9f9;
+    padding: 15px;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .card {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    cursor: grab;
+  }
+.plot-container {
+  height: 330px;
+  max-height: 330px;
+  overflow: hidden;
+  position: relative;
+}
+.plot-container plotly-plot {
+  height: 100% !important;
+  width: 100% !important;
+  display: block;
+}
+
+.year-selector {
+  position: absolute;
+  top: 40px;
+  right: 30px;
+  z-index: 6000;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 5px;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+}
+@media (max-width: 600px) {
+  .year-selector {
+    left: 5px;
+    top: 5px;
+    padding: 8px 5px;
+    font-size: 14px;
+  }
+}
+.selected-row {
+    background-color: #1976d2 !important;
+    color: #fff;
+}
+
+/* Estilos para maximizado */
+.maximized-card {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10000;
+  background-color: white;
+  overflow: auto;
+}
+
+.maximized-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Estilos para gráficas maximizadas */
+.maximized-content .plot-container {
+  width: 95% !important;
+  height: 95vh !important;
+  max-width: 1400px !important;
+  max-height: 1000px !important;
+  margin: auto !important;
+}
+
+/* Estilos específicos para la tabla cuando está maximizada */
+.maximized-card .table-container {
+  width: 100% !important;
+  height: calc(100vh - 60px) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.maximized-card .table-wrapper {
+  width: 100% !important;
+  height: 100% !important;
+  overflow: auto !important;
+}
+
+.maximized-card .p-table {
+  width: 100% !important;
+  min-height: 100% !important;
+}
+
+.maximized-card .p-table table {
+  width: 100% !important;
+}
+
+.maximized-card .p-table-wrapper {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Tabla en tarjeta minimizada */
+.card .table-container {
+  max-height: 280px;
+  overflow-y: auto;
+  padding: 0.5rem;
+}
+
+.card .table-wrapper {
+  width: 100%;
+}
+
+.card .p-table {
+  width: 100%;
+  table-layout: fixed;
+  word-wrap: break-word;
+}
+
+.card .p-table-wrapper {
+  overflow-x: auto;
+}
+
+.maximize-btn {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  z-index: 1000;
+  color: #000000;
+  background: transparent;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.maximize-btn:hover {
+  color: #495057;
+  background: rgba(255,255,255,0.9);
+}
+.header-graficas{
+  background: #bdbdbde1 ;
+  /*background: linear-gradient(0deg, rgba(247, 106, 19, 1) 0%, rgba(200, 87, 24, 1) 35%, rgba(231, 91, 42, 1) 100%);*/
+  color: black;
+  border: none !important;
+  text-align: center;
+  font-size: 15px;
+}

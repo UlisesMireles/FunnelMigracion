@@ -1,0 +1,60 @@
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [closable]="true"
+  [style]="{ width: '35rem', height: 'auto' }"
+  (onHide)="close()"
+  (onShow)="onDialogShow()"
+  class="bodyDialog"
+>
+
+  <ng-template pTemplate="header">
+    <label class="margen">
+      {{ insertar ? 'Nuevo Tipo de Entrega' : title + ' ' + tipoEntregaForm.get('descripcion')?.value }}
+    </label>
+  </ng-template>
+  <br>
+  <ng-template pTemplate="content">
+    <form [formGroup]="tipoEntregaForm">
+
+      <div class="row">
+        <div class="col-sm-4 lbl">
+          <label for="descripcion">Descripción: </label>
+        </div>
+        <div class="col-sm-8">
+          <input pInputText class="inptSize" formControlName="descripcion" />
+          <span *ngIf="tipoEntregaForm.get('descripcion')?.invalid && tipoEntregaForm.get('descripcion')?.touched" class="text-danger"><br>
+            <ng-container *ngIf="tipoEntregaForm.get('descripcion')?.errors?.['required']">El nombre del tipo de entrega es obligatorio.</ng-container>
+          </span>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-sm-4 lbl">
+          <label for="abreviatura">Abreviatura: </label>
+        </div>
+        <div class="col-sm-8">
+          <input pInputText class="inptSize" formControlName="abreviatura" />
+          <span *ngIf="tipoEntregaForm.get('abreviatura')?.invalid && tipoEntregaForm.get('abreviatura')?.touched" class="text-danger"><br>
+            <ng-container *ngIf="tipoEntregaForm.get('abreviatura')?.errors?.['required']">La abreviatura del tipo de entrega es obligatoria.</ng-container>
+          </span>
+        </div>
+      </div>
+      <div class="row" *ngIf="!insertar">
+        <div class="col-sm-4" style="margin-left: -39px">
+          <label for="estatus">Estatus: </label>
+        </div>
+        <div class="col-sm-8" style="width: 58%; margin-left: -40px">
+          <p-checkbox formControlName="estatus" [binary]="true"></p-checkbox>
+          <span style="padding-left: 6px !important;">Activo</span>
+        </div>
+      </div>
+  </form>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button *ngIf="!insertar" pButton label="Actualizar" (click)="guardarTipoEntrega()" [disabled]="tipoEntregaForm.pristine || tipoEntregaForm.invalid" severity="secondary"></button>
+    <button *ngIf="insertar" pButton label="Agregar" (click)="guardarTipoEntrega()" [disabled]="tipoEntregaForm.pristine || tipoEntregaForm.invalid" severity="secondary"></button>
+    <button pButton label="Cancelar" (click)="close()" severity="secondary"></button>
+  </ng-template>
+</p-dialog>

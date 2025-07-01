@@ -1,0 +1,236 @@
+<div *ngIf="loading" class="loading-message" style="padding-top: 100px;">
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando...</span>
+    </div>
+    <p>Cargando...</p>
+</div>
+<div *ngIf="!loading" class="row">
+
+    <div class="col-lg-4 col-md-6">
+        <div class="cardEjecucionProcesos">
+            <p-card
+                [style]="{ 'min-height': '425px' , 'box-shadow' : '0 6px 12px rgba(0,0,0,.175)', 'margin-bottom': '50px'  }">
+                <ng-template #title>
+                    <p class="tituloCardTexto">Reporte de Seguimiento</p>                      
+                    <p class="tituloCardTexto">Oportunidades Por Semana</p>
+                </ng-template>
+                <p-fieldset legend="Proceso Automático" [style]="{ 'margin-bottom': '10px'  }">
+                    <div class="row">
+                        <div class="col-sm-4 lbl-opt">
+                            <label for="estatus">Estatus: </label>
+                        </div>
+                        <div class="col-sm-8 inptSpaceEstatus">
+                            <p-toggleswitch [(ngModel)]="esatusSemana"/>
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class="col-sm-4 lbl-opt">
+                            <label for="tiposUsuario">Correos Automáticos: </label>
+                        </div>
+                        <div class="col-sm-8 ">
+                            <div style="display: block; width: 100%;">
+                                <p-multiselect [options]="correosUsuariosActivos" [(ngModel)]="correosSelAutoSemana"
+                                    [filter]="true" [filterBy]="'nombre,correoElectronico'"
+                                    placeholder="Selecione Correos" styleClass="multiselect-full-width">
+                                    <ng-template let-item pTemplate="item">
+                                        {{ item.nombre }} - {{ item.correoElectronico }}
+                                    </ng-template>
+
+                                    <ng-template let-selectedItems pTemplate="selectedItems">
+                                        <span *ngIf="selectedItems?.length">{{ selectedItems.length }} correos
+                                            seleccionados</span>
+                                    </ng-template>
+                                </p-multiselect>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex-rp gap-4 mt-4">
+                        <p-button severity="secondary" (click)="guardarProcesoAutomaticoSemana(idReporteSemana)"
+                            label="Guardar" class="w-full" styleClass="w-full" [disabled]="validaCambiosAutoSemana()" />
+                    </div>
+                </p-fieldset>
+                <p-fieldset legend="Envío Inmediato">
+                    <div class="row ">
+                        <div class="col-sm-4 lbl-opt">
+                            <label for="tiposUsuario">Correos Inmediatos: </label>
+                        </div>
+                        <div class="col-sm-8 ">
+                            <div style="display: block; width: 100%;">
+                                <p-multiselect [options]="correosUsuariosActivos" [(ngModel)]="correosSelImediataSemana"
+                                    [filter]="true" [filterBy]="'nombre,correoElectronico'"
+                                    placeholder="Selecione Correos" styleClass="multiselect-full-width"
+                                    #correosSelSelImediataSemana="ngModel">
+                                    <ng-template let-item pTemplate="item">
+                                        {{ item.nombre }} - {{ item.correoElectronico }}
+                                    </ng-template>
+
+                                    <ng-template let-selectedItems pTemplate="selectedItems">
+                                        <span *ngIf="selectedItems?.length">{{ selectedItems.length }} correos
+                                            seleccionados</span>
+                                    </ng-template>
+                                </p-multiselect>
+                                <!-- <span *ngIf="correosSelSelImediataSemana.invalid && correosSelSelImediataSemana.touched"
+                                class="text-danger validaSelect">
+                                <ng-container *ngIf="correosSelSelImediataSemana.errors?.['required']">Debe
+                                    seleccionar al menos un correo.</ng-container>
+                            </span> -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex-rp gap-4 mt-4">
+                        <p-button severity="secondary" (click)="enviarCorreoInmediatoSemana(idReporteSemana)"
+                            [disabled]="!correosSelImediataSemana || correosSelImediataSemana.length === 0"
+                            label="Enviar" styleClass="btn-acciones-test" />
+                    </div>
+                </p-fieldset>
+
+            </p-card>
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-md-6">
+        <div class="cardEjecucionProcesos">
+            <p-card
+                [style]="{ 'min-height': '425px' , 'box-shadow' : '0 6px 12px rgba(0,0,0,.175)', 'margin-bottom': '50px'  }">
+                <ng-template #title>
+                    <p class="tituloCardTexto">Reporte de Seguimiento</p>
+                    <p class="tituloCardTexto">Oportunidades Diario</p>
+                </ng-template>
+
+                <p-fieldset legend="Proceso Automático" [style]="{ 'margin-bottom': '10px'  }">
+                    <div class="row">
+                        <div class="col-sm-4 lbl-opt">
+                            <label for="estatus">Estatus: </label>
+                        </div>
+                        <div class="col-sm-8 inptSpaceEstatus">
+                            <p-toggleswitch [(ngModel)]="esatusDiario"/>
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class="col-sm-4 lbl-opt">
+                            <label for="tiposUsuario">Correos Automáticos: </label>
+                        </div>
+                        <div class="col-sm-8 ">
+                            <div style="display: block; width: 100%;">
+                                <p-multiselect [options]="correosUsuariosActivos" [(ngModel)]="correosSelAutoDiario"
+                                    [filter]="true" [filterBy]="'nombre,correoElectronico'"
+                                    placeholder="Selecione Correos" styleClass="multiselect-full-width">
+                                    <ng-template let-item pTemplate="item">
+                                        {{ item.nombre }} - {{ item.correoElectronico }}
+                                    </ng-template>
+
+                                    <ng-template let-selectedItems pTemplate="selectedItems">
+                                        <span *ngIf="selectedItems?.length">{{ selectedItems.length }} correos
+                                            seleccionados</span>
+                                    </ng-template>
+                                </p-multiselect>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex-rp gap-4 mt-4">
+                        <p-button severity="secondary" label="Guardar"
+                            (click)="guardarProcesoAutomaticoDiario(idReporteDiario)" class="w-full" styleClass="w-full"
+                            [disabled]="validaCambiosAutoDiario()" />
+                    </div>
+                </p-fieldset>
+
+                <p-fieldset legend="Envío Inmediato">
+                    <div class="row ">
+                        <div class="col-sm-4 lbl-opt">
+                            <label for="tiposUsuario">Correos Inmediatos: </label>
+                        </div>
+                        <div class="col-sm-8 ">
+                            <div style="display: block; width: 100%;">
+                                <p-multiselect [options]="correosUsuariosActivos" [(ngModel)]="correosSelImediataDiario"
+                                    [filter]="true" [filterBy]="'nombre,correoElectronico'"
+                                    placeholder="Selecione Correos" styleClass="multiselect-full-width"
+                                    #correosSelSelImediataDiario="ngModel">
+                                    <ng-template let-item pTemplate="item">
+                                        {{ item.nombre }} - {{ item.correoElectronico }}
+                                    </ng-template>
+
+                                    <ng-template let-selectedItems pTemplate="selectedItems">
+                                        <span *ngIf="selectedItems?.length">{{ selectedItems.length }} correos
+                                            seleccionados</span>
+                                    </ng-template>
+                                </p-multiselect>
+                                <!-- <span *ngIf="correosSelSelImediataDiario.invalid && correosSelSelImediataDiario.touched"
+                                class="text-danger validaSelect">
+                                <ng-container *ngIf="correosSelSelImediataDiario.errors?.['required']">Debe
+                                    seleccionar al menos un correo.</ng-container>
+                            </span> -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex-rp gap-4 mt-4">
+                        <p-button severity="secondary" label="Enviar"
+                            (click)="enviarCorreoInmediatoDiario(idReporteDiario)"
+                            [disabled]="!correosSelImediataDiario || correosSelImediataDiario.length === 0"
+                            styleClass="btn-acciones-test" />
+                    </div>
+                </p-fieldset>
+
+            </p-card>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+        <div class="cardEjecucionProcesos">
+            <p-card
+                [style]="{ 'min-height': '425px' , 'box-shadow' : '0 6px 12px rgba(0,0,0,.175)', 'margin-bottom': '50px'  }">
+                <ng-template #title>
+                    <p class="tituloCardTexto">Recordatorio</p>
+                    <p class="tituloCardTexto">Inactividad Oportunidades</p> 
+                </ng-template>
+
+                <p-fieldset legend="Proceso Automático">
+                    <div class="row">
+                        <div class="col-sm-4 lbl-opt">
+                            <label for="estatus">Estatus: </label>
+                        </div>
+                        <div class="col-sm-8 inptSpaceEstatus">
+                            <p-toggleswitch [(ngModel)]="esatusInactividad"/>
+                        </div>
+                    </div>
+
+                    <div class="row inptSpace">
+                        <div class="col-sm-4 lbl-opt">
+                            <label for="diasInactividad">Dias Inactividad: </label>
+                        </div>
+                        <div class="col-sm-8 inptSpace">
+                            <input pInputText class="inptDias" [(ngModel)]="diasInactividad" type="number"
+                                #diasInpInactividad="ngModel" required min="1" />
+                            <span *ngIf="diasInpInactividad.invalid && diasInpInactividad.touched"
+                                class="text-danger validaInput">
+                                <ng-container>El número de dias debe ser mayor a 0.</ng-container>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="row inptSpace">
+                        <div class="col-sm-4 lbl-opt">
+                            <label for="diasFechaVencida">Dias por Fecha Vencida: </label>
+                        </div>
+                        <div class="col-sm-8 inptSpace">
+                            <input pInputText class="inptDias" [(ngModel)]="diasFechaVencida" type="number"
+                                #diasInpFechaVencida="ngModel" required min="1" />
+                            <span *ngIf="diasInpFechaVencida.invalid && diasInpFechaVencida.touched"
+                                class="text-danger validaInput">
+                                <ng-container>El número de dias debe ser mayor a 0.</ng-container>
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="flex-rp gap-4 mt-4">
+                        <p-button severity="secondary" label="Guardar" class="w-full" styleClass="w-full"
+                            [disabled]="diasInactividad <= 0 || diasFechaVencida <= 0 || diasInpInactividad.invalid || diasInpFechaVencida.invalid || validaCambiosInactividad()"
+                            (click)="guardarProcesoAutomaticoRecordatorio(idReporteInactividad)" />
+                    </div>
+                </p-fieldset>
+
+            </p-card>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,72 @@
+<header class="page-header font-small blue" id="header">
+  <div class="navbar col-12">
+    <div class="col-3 logo-container">
+    <img *ngIf="imagenEmpresaUrl" width="120" [src]="imagenEmpresaUrl" alt="logo SFS" 
+     style="cursor: pointer;" (click)="navigateTo('/oportunidades')"
+     [class.logo-empresa]="!esLogoDefault">   
+     <span class="spanNombre">{{ licencia }}</span>
+    </div>
+    <div class="col-4 menu-header-container">
+      <div class="agregar btn-agregar-custom ms-2" (click)="toggleOptions()" (mouseenter)="showSubmenu()" (mouseleave)="hideSubmenu()">
+        <!-- <p-splitbutton label="Agregar" [model]="items" raised severity="secondary" #splitBtn /> -->
+        <button class="btn-chat float-end cursor-pointer"  > 
+          <i class="bi bi-plus color-amarillo" style="margin-left: -6px;"></i> 
+          <span class="ia-button-text color-amarillo"> ALTA</span>
+        </button>
+        <ul *ngIf="optionsVisible" class="options-container" (click)="showSubmenu()" (mouseleave)="hideSubmenu()">
+          <li class="option-btn" (click)="agregarOportunidad()">Oportunidad</li>
+          <li class="option-btn" (click)="agregarProspecto()">Prospecto</li>
+          <li class="option-btn" (click)="agregarContacto()">Contacto</li>
+        </ul> 
+      </div>
+  
+      <div class="chatbot ms-2">
+        <!-- Botón de chat en el header-->
+        <button class="btnAgregar" (click)="toggleChat()">
+          <i class="bi bi-stars"></i> 
+          <span class="ia-button-text "> IA</span>
+        </button>
+       <!-- Contenedor del chatbot -->
+      <ng-container *ngIf="(asistenteService.asistenteObservable | async) === 1">
+      <div id="chat-container" class="chatbot-window" #chatContainer (mousedown)="startDrag($event)">
+      <app-asistente-operacion></app-asistente-operacion>
+      </div>
+      </ng-container>
+      </div>
+      <!-- Perfil (el primero de derecha a izquierda) -->
+      <div class="perfil ms-2" style="justify-content: end;">
+        <button class="menu-item-perfil" (click)="navigateTo('/perfil')">
+          <i class="bi bi-person-circle large-icon" [title]="'Perfil'"></i>
+          <span class="spanNombre">{{ nombreUsuario }}</span>
+        </button>
+      </div>
+      <div class="ms-2" style="justify-content: end;">
+        <button class="menu-item-logout" (click)="logout()">
+          <i class="bi bi-box-arrow-right large-icon" [title]="'Cerrar Sesión'"></i>
+        </button>
+      </div>
+    </div>
+    
+
+    <!-- Logo (el último de derecha a izquierda) -->
+    
+  </div>
+</header>
+
+<!-- Componente de chat -->
+<!-- <app-chat *ngIf="isChatOpen"></app-chat> -->
+
+<!-- Modal de oportunidades -->
+<app-modal-oportunidades [(visible)]="modalVisibleOportunidades" [title]="'Editar Datos de '" (closeModal)="onModalCloseOportunidades()"
+(result)="manejarResultadoOportunidades($event)" [insertar]="insertar" [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">
+</app-modal-oportunidades>
+
+<!-- Modal de prospectos -->
+<app-modal-prospectos [(visible)]="modalVisibleProspectos" [title]="'Editar Datos de '" (closeModal)="onModalCloseProspectos()"
+  (result)="manejarResultadoProspectos($event)" [insertarProspecto]="insertarProspecto" [prospectos]="prospectos" [prospecto]="prospectoSeleccionado">
+</app-modal-prospectos>
+
+<!-- Modal de contactos -->
+<app-modal-contactos [(visible)]="modalVisibleContactos" [title]="'Editar Datos de '" (closeModal)="onModalCloseContactos()"
+  (result)="manejarResultadoContactos($event)" [insertarContacto]="insertarContacto" [contactos]="contactos" [contacto]="contactoSeleccionado">
+</app-modal-contactos>

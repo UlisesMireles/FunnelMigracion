@@ -1,0 +1,98 @@
+<div *ngIf="loading" class="spinner-container w-100 spinner-tarjeta">
+  <div class="spinner-border" role="status">
+    <span class="visually-hidden">Cargando...</span>
+  </div>
+</div>
+<div *ngIf="!loading" class="acordeon-horizontal d-flex" [class.todos-expandidos]="cantidadExpandidos >= 5"
+  [class.cuatro-expandidos]="cantidadExpandidos === 4">
+
+  <div *ngFor="let etapa of etapas; let i = index" class="item-acordeon" [class.expandido]="etapa.expandido" [ngClass]="'item-acordeon-color-' + i + '-' +  etapa.expandido">
+    <div class="encabezado-acordeon" [ngClass]="'encabezado-' + i + '-' +  etapa.expandido" (click)="alternarItem(etapa, $event)">
+      <!-- Botón a la izquierda del nombre del mes -->
+      <!-- <button class="boton-toggle" [ngClass]="etapa.expandido ? 'expandido' : 'colapsado'"
+        (click)="alternarItem(etapa, $event)">
+        <i [ngClass]="etapa.expandido ? 'bi bi-chevron-left' : 'bi bi-chevron-right'"></i>
+      </button> -->
+
+      <!-- <div class="col-12 text-start">
+        <span class="col-10 fs-5 fw-bold nombre-mes">
+          {{ etapa.nombre.substring(0,1).toUpperCase() + etapa.nombre.substring(1).toLowerCase() }}
+        </span>
+        <span class="col-2 fs-5 fw-bold float-end">({{ etapa.tarjetas.length }})</span>    
+      </div>
+       -->
+       <span class="nombre-mes">
+        {{ etapa.nombre.substring(0,1).toUpperCase() + etapa.nombre.substring(1).toLowerCase() }}
+        <span class="contador-tarjetas">({{ etapa.tarjetas.length }})</span>
+      </span>
+
+      <div class="total-row" *ngIf="etapa.expandido">
+        <span id="lblTotalMes{{i}}" class="lblTotalMeses">
+          {{ getTotalMonto(etapa) | currency:'MXN':'symbol':'1.0-0' }}
+        </span>
+        <span id="lblNormalizadoMes{{i}}" class="lblNormalizadoMeses">
+          {{ getTotalNormalizado(etapa) | currency:'MXN':'symbol':'1.0-0' }}
+        </span>
+      </div>
+
+    </div>
+
+    <!-- Solo se muestra cuando el mes está expandido -->
+
+    <div *ngIf="etapa.expandido" cdkDropList #ListEtapa="cdkDropList" cdkDropListSortingDisabled
+      [cdkDropListData]="etapa.tarjetas" [cdkDropListConnectedTo]="connectedDropLists" class="contenido-acordeon"
+      [id]="'ListEtapa' + i" (cdkDropListDropped)="drop($event, etapa)">
+      <div class="contenedor-tarjetas" [id]="'contenedor-tarjetas' + i">
+        <div *ngFor="let tarjeta of etapa.tarjetas" cdkDrag [cdkDragData]="tarjeta" class="tarjeta">
+          <div class="row">
+            <!-- Encabezado con título e ícono de edición -->
+            <div class="card-header">
+              <div class="fila-monto">
+                <label class="monto-normalizado">{{ tarjeta.monto | currency:'MXN':'symbol':'1.0-0' }}</label>
+              </div>
+              <p-button type="button" icon="bi bi-file-earmark-text fs-3" text (click)="seguimiento(tarjeta)"
+                pTooltip="Seguimiento" tooltipPosition="top" styleClass="blue-icon">
+              </p-button>
+              <p-button type="button" icon="bi bi-folder2 fs-4" text (click)="documento(tarjeta)"
+                pTooltip="Documentos" tooltipPosition="top" styleClass="folder-icon">
+              </p-button>
+              <p-button styleClass="coloreditar-icon ms-2" (click)="actualiza(tarjeta)" pTooltip="Editar registro"
+                tooltipPosition="top">
+                <span class="custom-pencil">✏️</span>
+              </p-button>
+            </div>
+            <div class="col-9 tarjeta-row" id="Div + {{idOportunidadTarjeta}}">
+              <div class="row justify-content-between">
+                <label id="cliente" class="nombre-empresa"
+                  [ngClass]="getClaseNombreEmpresa(tarjeta.nombreEmpresa, tarjeta.nombreAbrev)">
+                  {{ tarjeta.nombreEmpresa }}
+                </label>
+              </div>
+              <label id="NombreOportunidad" class="nombre-oportunidad">{{ tarjeta.nombreOportunidad }}</label>
+            </div>
+            <div class="col-3 tarjeta-side">
+              <!-- <label id='Abrev' class="nombre-abrev" title="{{ tarjeta.descripcion }}">{{ tarjeta.nombreAbrev
+                }}</label> -->
+              <img class="fotoTarjeta margin-auto" [src]="getImagen(tarjeta.imagen)" [title]="tarjeta.nombreEjecutivo" alt="foto" />
+              <p class="iniciales" 
+                [ngStyle]="tarjeta.iniciales && tarjeta.iniciales.length === 5 ? {'margin-left': '-6px'} : {}" 
+                title="{{ tarjeta.nombreEjecutivo }}">
+                {{ tarjeta.iniciales }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-seguimiento-oportunidades [(visible)]="modalSeguimientoVisible" [title]="'Seguimiento de '"
+  (result)="manejarResultado($event)" [insertar]="insertar" [oportunidades]="oportunidades"
+  [oportunidad]="oportunidadSeleccionada">
+</app-seguimiento-oportunidades>
+
+<app-documentos-oportunidades [(visible)]="modalDocumentosVisible" [title]="'Documentos de '" 
+  (result)="manejarResultado($event)" [insertar]="insertar" [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">
+</app-documentos-oportunidades>
+  

@@ -1,0 +1,389 @@
+/* ESTILOS GENERALES DEL HEADER */
+#header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(to right, #103d66, #1a4e80, #2a6fa9, #3e90d1, #5ab1f2);
+  color: white;
+  z-index: 1000;
+  height: 50px;
+}
+
+#header img {
+  height: auto;
+  max-height: 120px; 
+  width: auto;
+  max-width: 120px;
+  object-fit: contain;
+}
+
+#header img.logo-empresa {
+  max-height: 100% !important;  
+  max-width: 120px !important; 
+  width: auto !important;      
+  height: auto !important;     
+  object-fit: contain !important;
+  padding: 2px 0 !important;
+}
+
+.navbar > div:first-child {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  max-height: 50px; 
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0px;
+  position: relative;    
+  padding: 0px 10px;
+  gap: 10px; 
+  margin-right: 10px;
+}
+
+.navbar > div {
+  display: flex;
+  align-items: center;
+}
+
+
+
+.btn-chat {
+  width: 100px;
+  height: 30px;
+  background: rgb(247, 106, 19);
+  background: linear-gradient(0deg, rgba(247, 106, 19, 1) 0%, rgba(200, 87, 24, 1) 35%, rgba(231, 91, 42, 1) 100%);
+  color: #ffffff;
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 5px;
+  border: 0;
+  transition: background 0.3s, color 0.3s; /* transición suave */
+}
+
+.btn-chat:hover {
+  background: rgb(186, 114, 69);
+}
+
+/* .btn-chat:hover i {
+  color: #000000;      
+} */
+
+.btn-chat i {
+  font-size: 18px;      
+  border: none;
+}
+
+.ia-button-text{
+  font-size: 12px;
+  margin-left: 9px;
+  font-weight: bold;
+}
+.chatbot-window {
+  width: 490px;
+  height: 550px;
+  background: white !important;
+  position: fixed;
+  top: 50px;
+  right: 20px;
+  border-radius: 10px;
+  overflow: visible !important;
+  z-index: 5000;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  /*cursor: move;*/
+}
+
+::ng-deep .chatbot-window .app-chat-header {
+  background: linear-gradient(to right, #ecfdf5, #ecfdf5) !important;
+  color: black !important;
+  padding: 10px 15px;
+  margin: 0;
+}
+
+::ng-deep .chatbot-window .app-chat-header *,
+::ng-deep .chatbot-window .app-chat-header h2,
+::ng-deep .chatbot-window .app-chat-header h6,
+::ng-deep .chatbot-window .app-chat-header small,
+::ng-deep .chatbot-window .app-chat-header i,
+::ng-deep .chatbot-window .app-chat-version {
+  color: rgb(0, 0, 0) !important;
+}
+
+::ng-deep .chatbot-window .containerAsistente {
+  color: #000000 !important;
+}
+
+::ng-deep .chatbot-window .app-chatBotAsistenteOperacion,
+::ng-deep .chatbot-window .mensaje,
+::ng-deep .chatbot-window .message,
+::ng-deep .chatbot-window .contenedor-mensajes,
+::ng-deep .chatbot-window .welcome-text,
+::ng-deep .chatbot-window .options-list,
+::ng-deep .chatbot-window .input-container {
+  color: #000000 !important;
+  background-color: #ffffff !important;
+}
+
+::ng-deep .chatbot-window .burbuja-mensaje {
+  background-color: #f8f9fa !important;
+  border: 1px solid #e0e0e0 !important;
+  color: #000000 !important;
+}
+
+::ng-deep .chatbot-window input,
+::ng-deep .chatbot-window textarea {
+  color: #000000 !important;
+  background-color: #ffffff !important;
+  border: 1px solid #cccccc !important;
+}
+
+@media only screen and (max-width: 600px) {
+  .chatbot-window {
+    width: 90%;
+    height: 70%;
+    top: 60px;
+    right: 5%;
+  }
+
+  .btn-chat {
+    width: 45px;
+    height: 45px;
+    right: 10px;
+  }
+
+  .logo-container {
+    left: 20px;
+    transform: none;
+  }
+}
+
+.chatbot-window[hidden] {
+  display: none !important;
+}
+
+
+.chatbot-window-preguntas {
+  position: fixed;
+  width: 280px;
+  /* Ancho un poco mayor */
+  height: auto;
+  /* Altura automática */
+  max-height: 500px;
+  /* Altura máxima con scroll */
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  top: 70px;
+  right: 300px;
+  /* Posición relativa al chatbot */
+  z-index: 1001;
+  padding: 15px;
+  overflow-y: visible !important;
+  overflow-x: visible !important;
+  border: 1px solid #e0e0e0;
+}
+
+.faq-button-container {
+  position: fixed;
+  z-index: 1000000;
+  margin-top: 72px !important;
+  margin-left: -32px;
+}
+
+.faq-button {
+  position: absolute;
+  background-color: #4682b4;
+  border-top-left-radius: 27%;
+  border-top-right-radius: 0%;
+  border-bottom-right-radius: 0%;
+  border-bottom-left-radius: 27%;
+  width: 31px;
+  height: 37px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+}
+
+.faq-button mat-icon {
+  color: white;
+  font-size: 24px;
+}
+
+.faq-button:hover {
+  background-color: #00509e;
+  cursor: pointer;
+}
+
+.mat-standard-chip.mat-chip-with-trailing-icon {
+  padding: 7px 6px 7px 0;
+}
+
+.cerrar-preguntas {
+  margin: -25px -10px;
+  position: relative;
+  top: 12px;
+  left: 220px;
+}
+
+.a-small {
+  font-weight: 600;
+  padding: 10px 0;
+}
+
+.a-small:hover {
+  color: var(--bs-navbar-brand-hover-color);
+}
+
+.large-icon {
+  font-size: 20px;
+  margin-right: 4px;
+  color: #fff;
+  position: absolute;
+  display: contents;
+}
+
+.menu-item-perfil {
+  width: auto;
+  min-width: 100px;
+  height: 30px;
+  background: rgb(247, 106, 19);
+  background: linear-gradient(0deg, rgba(247, 106, 19, 1) 0%, rgba(200, 87, 24, 1) 35%, rgba(231, 91, 42, 1) 100%);
+  color: #ffffff;
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 5px;
+  border: 0;
+}
+.menu-item-perfil:hover {
+  background: rgb(186, 114, 69);
+}
+.menu-item-logout{
+  height: 30px;
+  cursor: pointer;
+  border-radius: 5px;
+  background-color: transparent;
+  border: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.menu-item-logout i{
+  color: #fff;
+  font-size: 30px;
+  -webkit-text-stroke: 1px;
+}
+.spanNombre {
+  color: white;
+  padding-left: 6px;
+}
+
+.btnAgregar {
+  width: 100px;
+  height: 30px;
+  background: rgb(247, 106, 19);
+  background: linear-gradient(0deg, rgba(247, 106, 19, 1) 0%, rgba(200, 87, 24, 1) 35%, rgba(231, 91, 42, 1) 100%);
+  color: #8ee3bc;
+  z-index: 1001;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 12px;
+  border: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.btnAgregar i {
+  font-size: 18px;      
+  border: none;
+  color: #8ee3bc;
+}
+.btnAgregar:hover {
+  background-color: #e4e4e4;
+}
+
+.estiloPerfilMenu {
+  position: fixed;
+  margin-left: 17vw;
+  margin-top: -7vh;
+}
+
+.options-container {
+  position: absolute;
+  top: 40px;
+  background-color: rgba(16, 61, 102, 0.5) !important;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 0px;
+  z-index: 100;
+  width: 100px;
+}
+
+.option-btn {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  text-align: left;
+  border: none; 
+  cursor: pointer;
+  color: white;
+}
+
+.option-btn:hover {
+  background-color: rgba(16, 61, 102, 0.5);  /* C cambio de color */
+  color: white;
+}
+
+::ng-deep .btn-agregar-custom .p-splitbutton .p-button,
+::ng-deep .btn-agregar-custom .p-splitbutton .p-splitbutton-menubutton {
+  min-width: 40px !important;
+  background: rgb(247, 106, 19);
+  background: linear-gradient(0deg, rgba(247, 106, 19, 1) 0%, rgba(200, 87, 24, 1) 35%, rgba(231, 91, 42, 1) 100%);
+  color: white;
+  border: 0;
+  text-align: left;
+  font-size: 12px;
+  height: 30px;
+}
+.menu-header-container{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.color-amarillo{
+  color:rgb(255, 238, 88);
+}
+
+
+/* Bordes y separación de los elementos del submenú */
+.submenu button {
+  padding: 6px 7px;
+  list-style: none;
+  cursor: pointer;
+  transition: background 0.3s;
+  border-bottom: none;
+  text-align: left !important;
+}
+
+/* Último elemento sin borde */
+.option-btn button:last-child {
+  border-bottom: none;
+}
+.option-btn button:hover {
+  background-color: rgba(16, 61, 102, 0.5);  
+  color: white; 
+}

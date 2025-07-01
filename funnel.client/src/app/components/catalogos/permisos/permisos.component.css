@@ -1,0 +1,63 @@
+.table-sm th, .table-sm td { 
+    padding: 4px !important;  
+    font-size: 11px;         
+    white-space: nowrap;     
+    border-bottom: 1px solid #ccc !important;
+}
+
+.table-sm th, .table-sm td:not(:nth-child(n+2)) {
+    text-align: left !important;
+}
+
+.table-sm th:nth-child(n+2) {
+    text-align: center !important;
+}
+
+.table-sm td:nth-child(n+2) {
+    text-align: center !important;
+}
+
+.menu-header {
+    background-color: #e4fdff !important;
+    font-weight: bold;
+    padding: 0% !important;
+}
+
+.menu-header td {
+    background-color: #e4fdff !important;
+    padding: 0% !important;
+    border-bottom: 1px solid #e4fdff !important;
+}
+
+.table-sm th {
+    background: #BDB2FF;
+    /*background: linear-gradient(0deg, rgba(247, 106, 19, 1) 0%, rgba(200, 87, 24, 1) 35%, rgba(231, 91, 42, 1) 100%);*/
+    color: black;
+    font-size: 12px;
+}
+
+.col-12 h3 {
+    position: relative;
+    top: -20px;  
+  }
+.table-sm thead tr:first-child th:first-child {
+  border-top-left-radius: 9px;
+}
+
+.table-sm thead tr:first-child th:last-child {
+  border-top-right-radius: 8px;
+}
+
+.table-sm tfoot tr:last-child th:first-child {
+  border-bottom-left-radius: 8px;
+}
+
+.table-sm tfoot tr:last-child th:last-child {
+  border-bottom-right-radius: 8px;
+}
+.table.table-sm {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  border-radius: 8px !important;
+  overflow: hidden;
+}

@@ -1,0 +1,154 @@
+<p-dialog 
+  appendTo="body" styleClass="custom-header-naranja"
+  [(visible)]="visible" 
+  [modal]="true" 
+  [closable]="true" 
+  [maximizable]="true"
+  [style]="{
+    width: maximized ? '100vw' : '70rem',
+    height: maximized ? '100vh' :  '45rem'
+  }" 
+  [ngClass]="{'maximized': maximized}"
+  (onHide)="close()" 
+  (onShow)="onDialogShow()" 
+  class="bodyDialog"
+  >
+
+  <ng-template pTemplate="header">
+    <label class="margen">
+      {{ 'HISTÓRICO DE DOCUMENTOS' }}
+    </label>
+  </ng-template>
+
+  <ng-template pTemplate="content">
+    <div class="row">
+      <div>
+        <label class="margen text-left nombre-destacado">
+          <h2>{{ 'Prospecto: ' + nombre }}</h2>
+        </label>
+      </div>
+    </div>
+    <div>
+        <label class="margen ">
+          <h4>{{ 'Documentos de: ' + nombreOportunidad }}</h4>
+        </label>
+    </div>
+    
+    <br />
+    <form [formGroup]="oportunidadForm">
+      <div class="row align-items-center g-0" *ngIf="!isTerminado">
+        <div class="col-sm-12 d-flex flex-nowrap align-items-center"> 
+          <div class="col-sm-10 pe-2 d-flex flex-nowrap align-items-center"> 
+            <ng-container *ngIf="subirArchivos">
+              <div class="d-flex flex-nowrap w-100 align-items-center">
+                <div class="col-sm-3 pe-2">
+                  <label class="margen text-nowrap">Agregar Documento:</label>
+                </div>
+                
+                <div class="col-sm-6 pe-2">
+                  <div class="selected-files-container text-truncate"> 
+                    <div class="file-list">
+                      <ng-container *ngIf="archivosSeleccionados?.length; else noFiles">
+                        <div class="file-item" *ngFor="let file of archivosSeleccionados; let i = index">
+                          <span class="file-name text-truncate">{{ file.name }}</span>
+                          <button type="button" class="remove-file-btn" (click)="eliminarArchivoSeleccionado(i)">
+                            <i class="bi bi-x"></i>
+                          </button>
+                        </div>
+                      </ng-container>
+                      <ng-template #noFiles>
+                        <div class="file-item text-muted" style="width: 270px;">No hay archivos seleccionados</div>
+                      </ng-template>
+                    </div>
+                  </div>
+                </div>
+                
+               <div class="col-sm-2">
+                  <input #fileInput type="file" class="d-none" 
+                         (change)="onFileChange($event)" multiple
+                         accept=".doc, .docx, .pdf, .xls, .xlsx, .ppt, .pptx, .rar, .zip">
+                  <button pButton label="Elegir archivos" 
+                          class="p-button-secondary text-nowrap"
+                          (click)="fileInput.click()"></button>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+          <div #buttonGroup class="button-group botones-accion" style="margin-left:-50px;" 
+          *ngIf="!isTerminado && subirArchivos">
+            <button pButton label="Guardar" (click)="guardarDocumento()" 
+                    severity="secondary" [disabled]="!archivosSeleccionados.length"></button>
+            <button pButton label="Salir" (click)="close()" severity="secondary"></button>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="d-flex justify-content-between mt-1 " *ngIf="!isEnProceso && 
+    (!isTerminado || (isTerminado && historialOportunidad.length > 0))">
+      <small class="text-muted font-size-md" [innerHTML]="'Estos archivos estarán disponibles hasta el día <strong>' 
+        + (fechaLimite | date:'dd/MM/yyyy') + '</strong>'">
+      </small>
+      <small class="text-muted font-size-md" *ngIf="diasRestantes !== null">
+        Días Restantes: {{ diasRestantes }}
+      </small>
+    </div>   
+    <div class="row mt-3">
+      <div class="col-sm-12" *ngIf="historialOportunidad.length > 0; else noComments">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Usuario</th>
+              <th>Fecha</th>
+              <th>Nombre Documento</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of historialOportunidad" 
+                [class.archivo-eliminado]="item.diasParaEliminacion">
+              <td class="text-left">{{ item.iniciales }}</td>
+              <td class="text-left">{{ item.fechaRegistro | date:'dd/MM/yyyy' }}</td>
+              <td class="text-left">{{ item.nombreArchivoFormateado }}</td>
+              <td>
+                <ng-container *ngIf="!isInactivoBloqueado(item)">
+                  <p-button type="button" icon="bi bi-download" text 
+                            (click)="descargarArchivo(item)"/>
+                </ng-container>
+              </td>
+              <td>
+                <ng-container *ngIf="!isInactivoBloqueado(item)">
+                  <ng-container *ngIf="!item.diasParaEliminacion">
+                    <p-button type="button" icon="bi bi-trash" text  
+                              (click)="eliminarArchivo(item)"
+                              pTooltip="Eliminar archivo"
+                              tooltipPosition="top"/>
+                  </ng-container>
+                  
+                  <ng-container *ngIf="item.diasParaEliminacion && item.diasParaEliminacion !== '0'">
+                    <div class="restore-button-container">
+                      <p-button type="button" icon="bi bi-arrow-counterclockwise" text  
+                                (click)="recuperarArchivo(item)"
+                                pTooltip="Recuperar archivo (se eliminará en {{item.diasParaEliminacion}} día(s))"
+                                tooltipPosition="top"
+                                styleClass="p-button-success"/>
+                      <span class="days-badge">{{item.diasParaEliminacion}}</span>
+                    </div>
+                  </ng-container>
+                </ng-container>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </ng-template>    
+
+  <ng-template #noComments>
+    <p class="text-center">Sin Archivos</p>
+  </ng-template>
+
+  <div style="position: absolute; z-index:1102; text-align: center;">
+    <p-toast key="toast" position="bottom-center" [style]="{ height: '2vh' }"></p-toast>
+  </div>
+</p-dialog>

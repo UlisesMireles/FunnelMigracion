@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { GraficasDto, RequestGraficasDto, AgenteDto, Sectores, SectoresDetalles, OportunidadesTipo, OportunidadesTipoDetalles, OportunidadAgenteCliente, TipoOportunidadAgente } from '../interfaces/graficas';
+import { GraficasDto, RequestGraficasDto, AgenteDto, Sectores, SectoresDetalles, OportunidadesTipo, OportunidadesTipoDetalles, OportunidadAgenteCliente, TipoOportunidadAgente, DetalleTipoOportunidadAgente } from '../interfaces/graficas';
 
 @Injectable({
   providedIn: 'root'
@@ -316,5 +316,15 @@ obtenerOportunidadesPorAgenteTipo(data: RequestGraficasDto): Observable<TipoOpor
     requestData
   );
 }
-  
+
+obtenerDetalleOportunidadesTipoAgente(
+  idAgente: number, 
+  idTipoOporAgente: number, 
+  data: RequestGraficasDto
+): Observable<DetalleTipoOportunidadAgente[]> {
+  return this.http.post<DetalleTipoOportunidadAgente[]>(
+    `${this.baseUrl}api/Graficas/ObtenerDetalleOportunidadesTipoAgente/${idAgente}/${idTipoOporAgente}`,
+    data
+  );
+}
 }

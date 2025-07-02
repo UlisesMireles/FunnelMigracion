@@ -45,7 +45,16 @@
           <tr class="fila-datos">
             <td *ngFor="let def of lsColumnasAMostrar">
             <ng-container [ngSwitch]="def.format">
-            <span *ngSwitchCase="'text'">{{ rowData[def.key] }}</span>
+            <span *ngSwitchCase="'text'">
+            <ng-container *ngIf="def.key === 'descripcion'; else otroTexto">
+                <a href="#" (click)="abrirModalDetalle(rowData.idTipoOporAgente); $event.preventDefault()">
+                {{ rowData[def.key] }}
+                </a>
+            </ng-container>
+            <ng-template #otroTexto>
+                {{ rowData[def.key] }}
+            </ng-template>
+            </span>
             <span *ngSwitchCase="'currency'">{{ rowData[def.key] | currency:'MXN':'symbol':'1.2-2' }}</span>
             <span *ngSwitchCase="'percent'">{{ (rowData[def.key] / 100) | percent:'1.2-2' }}</span>
             </ng-container>
@@ -81,3 +90,12 @@
     </div>
   </ng-template>
 </p-dialog>
+
+
+<app-modal-oportunidades-por-agente-detalle-tipo
+  [(visible)]="modalDetalleVisible"
+  [idAgente]="idAgente!"
+  [idTipoOporAgente]="idTipoOporAgenteSeleccionado!"
+  [nombreTipoOportunidad]="nombreTipoSeleccionado"
+  (closeModal)="cerrarModalDetalle()">
+</app-modal-oportunidades-por-agente-detalle-tipo>

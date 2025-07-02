@@ -14,6 +14,13 @@ export class ModalOportunidadesPorAgenteTipoComponent {
   @Output() visibleChange = new EventEmitter<boolean>();
   @Output() closeModal = new EventEmitter<void>();
   @Input() idAgente: number | null = null;
+  @Input() idTipoOporAgente!: number;
+  nombreTipoSeleccionado: string = '';
+  
+  
+
+  modalDetalleVisible: boolean = false;
+  idTipoOporAgenteSeleccionado: number | null = null;
 
   oportunidades: TipoOportunidadAgente[] = [];
   loading: boolean = true;
@@ -89,5 +96,18 @@ constructor(
 
     onDialogShow() {
     this.cargarOportunidades();
+  }
+
+  abrirModalDetalle(idTipo: number) {
+    this.idTipoOporAgenteSeleccionado = idTipo;
+    const tipoSeleccionado = this.oportunidades.find(op => op.idTipoOporAgente === idTipo);
+    this.nombreTipoSeleccionado = tipoSeleccionado?.descripcion || '';
+    this.modalDetalleVisible = true;   
+    this.visible = false;               
+  }
+
+  cerrarModalDetalle() {
+    this.modalDetalleVisible = false;  
+    this.visible = true;                
   }
 }

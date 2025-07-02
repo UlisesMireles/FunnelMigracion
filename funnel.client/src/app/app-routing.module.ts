@@ -49,7 +49,7 @@ const routes: Routes = [
   { path: 'cambiar-contrasena', component: CambiarContrasenaComponent, title: 'Cambiar Contraseña', canActivate: [AuthGuard] },
   { path: 'two-factor', component: DobleAutenticacionComponent, title: 'Autenticación' },
   { path: 'recuperar-contrasena', component: OlvidasteContrasenaComponent, title: 'Recuperar contraseña' },
-  {path: 'inicio-nuevo', component: InicioNuevoComponent, title: 'Inicio Nuevo'},
+  {path: 'login', component: InicioNuevoComponent, title: 'Inicio Nuevo'},
   {path: 'registro', component: RegistroComponent, title: 'Registro'},
   /*{ path: 'prospectos', component: ProspectosComponent, title: 'Prospectos', canActivate: [AuthGuard] },
   { path: 'contactos', component: ContactosComponent, title: 'Contactos', canActivate: [AuthGuard] },*/

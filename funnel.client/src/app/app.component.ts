@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.router.events.subscribe(() => {
-      if (this.router.url === '/' || this.router.url === '/recuperar-contrasena' || this.router.url === '/inicio-nuevo' || this.router.url === '/two-factor' || this.router.url ==='/politica-privacidad' || this.router.url ==='/terminos-condiciones' || this.router.url ==='/registro') {
+      if (this.router.url === '/' || this.router.url === '/login' || this.router.url === '/recuperar-contrasena' || this.router.url === '/inicio-nuevo' || this.router.url === '/two-factor' || this.router.url ==='/politica-privacidad' || this.router.url ==='/terminos-condiciones' || this.router.url ==='/registro') {
         this.inicioNuevo = true;
         this.dobleAutenticacion = this.router.url === '/two-factor';
         this.politicaPrivacidad = this.router.url === '/politica-privacidad';

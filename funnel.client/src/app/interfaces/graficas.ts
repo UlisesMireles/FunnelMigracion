@@ -103,3 +103,10 @@ export interface OportunidadAgenteCliente {
   stage: string;
 }
 
+export interface TipoOportunidadAgente {
+  idTipoOporAgente: number;
+  descripcion: string;
+  monto: number;
+  montoNormalizado: number;
+  porcentaje: number;
+}

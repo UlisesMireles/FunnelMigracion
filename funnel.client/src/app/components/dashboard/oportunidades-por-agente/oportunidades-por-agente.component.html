@@ -70,6 +70,10 @@
               class="position-absolute bottom-10 start-0 p-2">
             <a href="javascript:void(0)" (click)="openAgenteClienteModal()" class="text-primary">Ver detalles</a>       
           </div>
+          <div *ngIf="card.tipo === 'grafica' && card.titulo === 'Grafica por Agente - Tipo Oportunidad' && !card.isMaximized" 
+              class="position-absolute bottom-10 start-0 p-2">
+          <a href="javascript:void(0)" (click)="openAgenteTipoModal()" class="text-primary">Ver detalles</a>       
+        </div>
         </div>
       </div>
     </div>
@@ -81,3 +85,10 @@
   [(visible)]="modalAgenteClienteVisible"
   (closeModal)="onModalAgenteClienteClose()">
 </app-modal-oportunidades-por-agente-clientes>
+
+<app-modal-oportunidades-por-agente-tipo
+  [visible]="modalAgenteTipoVisible"
+  (visibleChange)="modalAgenteTipoVisible = $event"
+  (closeModal)="onModalAgenteTipoClose()"
+  [idAgente]="agenteSeleccionadoId">
+</app-modal-oportunidades-por-agente-tipo>

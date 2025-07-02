@@ -29,6 +29,7 @@ import { ModalDetallesOportunidadesPorSectorComponent } from './components/dashb
 import { ModalDetallesOportunidadesPorTipoComponent } from './components/dashboard/oportunidades-general/modal-detalles-oportunidades-por-tipo/modal-detalles-oportunidades-por-tipo.component';
 import { ModalOportunidadesPorTipoComponent } from './components/dashboard/oportunidades-general/modal-oportunidades-por-tipo/modal-oportunidades-por-tipo.component';
 import { ModalOportunidadesPorAgenteClientesComponent } from './components/dashboard/oportunidades-por-agente/modal-oportunidades-por-agente-clientes/modal-oportunidades-por-agente-clientes.component';
+import { ModalOportunidadesPorAgenteTipoComponent } from './components/dashboard/oportunidades-por-agente/modal-oportunidades-por-agente-tipo/modal-oportunidades-por-agente-tipo.component';
 
 import { PermisosComponent } from './components/catalogos/permisos/permisos.component';
 import { AdministracionHerramientasComponent } from './components/herramientas/administracion-herramientas/administracion-herramientas.component';
@@ -80,7 +81,7 @@ const routes: Routes = [
   { path: 'modal-oportunidades-por-tipo', component: ModalOportunidadesPorTipoComponent, title: 'Oportunidades Por Tipo', canActivate: [AuthGuard] },
   { path: 'modal-detalles-oportunidades-por-tipo', component: ModalDetallesOportunidadesPorTipoComponent, title: 'Detalles Oportunidades Por Tipo', canActivate: [AuthGuard] },
   { path: 'modal-oportunidades-por-agente-clientes', component: ModalOportunidadesPorAgenteClientesComponent, title: 'Oportunidades Por Agente Clientes', canActivate: [AuthGuard] }, 
-
+  { path: 'modal-oportunidades-por-agente-tipo', component: ModalOportunidadesPorAgenteTipoComponent, title: 'Oportunidades Por Agente Tipo', canActivate: [AuthGuard] },
   //{ path: 'permisos', component: PermisosComponent, title: 'Permisos', canActivate: [AuthGuard] },
   //{ path: 'top-veinte', component: AdminDashboardComponent, title: 'Top Veinte', canActivate: [AuthGuard] },
   { path: 'perfil', component: UsuarioPerfilComponent, title: 'Perfil', canActivate: [AuthGuard] },

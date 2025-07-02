@@ -147,6 +147,7 @@ import { UsuariosPermisosComponent } from './components/catalogos/usuarios-permi
 import { GraficasClientesTop20Component } from './components/dashboard/top-veinte/graficas-clientes-top20/graficas-clientes-top20.component';
 import { PanelesTerminadasComponent } from './components/terminadas/paneles-terminadas/paneles-terminadas.component';
 import { ModalOportunidadesPorAgenteClientesComponent } from './components/dashboard/oportunidades-por-agente/modal-oportunidades-por-agente-clientes/modal-oportunidades-por-agente-clientes.component';
+import { ModalOportunidadesPorAgenteTipoComponent } from './components/dashboard/oportunidades-por-agente/modal-oportunidades-por-agente-tipo/modal-oportunidades-por-agente-tipo.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -232,7 +233,8 @@ registerLocaleData(localeEs, 'es-MX');
     UsuariosPermisosComponent,
     GraficasClientesTop20Component,
     PanelesTerminadasComponent,
-    ModalOportunidadesPorAgenteClientesComponent
+    ModalOportunidadesPorAgenteClientesComponent,
+    ModalOportunidadesPorAgenteTipoComponent
   ],
   imports: [
     BrowserModule,

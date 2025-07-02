@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { GraficasDto, RequestGraficasDto, AgenteDto, Sectores, SectoresDetalles, OportunidadesTipo, OportunidadesTipoDetalles, OportunidadAgenteCliente } from '../interfaces/graficas';
+import { GraficasDto, RequestGraficasDto, AgenteDto, Sectores, SectoresDetalles, OportunidadesTipo, OportunidadesTipoDetalles, OportunidadAgenteCliente, TipoOportunidadAgente } from '../interfaces/graficas';
 
 @Injectable({
   providedIn: 'root'
@@ -301,6 +301,18 @@ createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
   };
   return this.http.post<OportunidadAgenteCliente[]>(
     `${this.baseUrl}api/Graficas/ObtenerOportunidadesPorAgenteClientes`, 
+    requestData
+  );
+}
+
+
+obtenerOportunidadesPorAgenteTipo(data: RequestGraficasDto): Observable<TipoOportunidadAgente[]> {
+  const requestData = {
+    ...data,
+    bandera: 'SEL-TIPO-OPOR-AGENTE'
+  };
+  return this.http.post<TipoOportunidadAgente[]>(
+    `${this.baseUrl}api/Graficas/ObtenerOportunidadesPorAgenteTipo`, 
     requestData
   );
 }

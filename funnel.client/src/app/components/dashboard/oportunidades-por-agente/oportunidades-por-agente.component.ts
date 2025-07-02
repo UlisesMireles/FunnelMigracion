@@ -20,6 +20,7 @@ export class OportunidadesPorAgenteComponent {
   @ViewChildren('cardElement') cardElements!: QueryList<ElementRef>;
   originalParentElements = new Map<string, { parent: HTMLElement, nextSibling: Node | null }>();
   modalAgenteClienteVisible: boolean = false;
+  modalAgenteTipoVisible = false;
 
 
 
@@ -233,4 +234,15 @@ openAgenteClienteModal() {
 onModalAgenteClienteClose() {
   this.modalAgenteClienteVisible = false;
 }
+
+openAgenteTipoModal() {
+  if (this.agenteSeleccionadoId) {
+    this.modalAgenteTipoVisible = true;
+  }
 }
+
+onModalAgenteTipoClose() {
+  this.modalAgenteTipoVisible = false;
+}
+}
+

@@ -71,7 +71,7 @@ ngOnInit(): void {
   document.documentElement.style.fontSize = 12 + 'px';
   this.modalSubscription = this.modalOportunidadesService.modalProspectoState$.subscribe((state) => {
     this.desdeSector = state.desdeSector;
-    this.insertar = state.insertar;
+    this.insertar = state.insertarProspecto;
     if (!state.showModal) {
       this.prospectoEdicion = null;
     }

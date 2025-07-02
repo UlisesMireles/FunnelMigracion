@@ -264,7 +264,7 @@
                 </span>
                  
                   <span *ngSwitchCase="'currency'">
-                    {{ rowData[def.key] | currency:'$':'symbol':'1.2-2' }}
+                    {{ rowData[def.key] | currency:'$':'symbol':'1.0-0' }}
                   </span>
                  
                   <span *ngSwitchCase="'number'">
@@ -322,10 +322,10 @@
                 Total de Registros: {{ getTotalCostPrimeNg(dt, def) }}
               </ng-container>
                 <ng-container *ngIf="def.tipoFormato === 'currency'">
-                  {{ getTotalCostPrimeNg(dt, def) | currency:'$':'symbol':'1.2-2' }}
+                  {{ getTotalCostPrimeNg(dt, def) | currency:'$':'symbol':'1.0-0' }}
                 </ng-container>
                 <ng-container *ngIf="def.tipoFormato !== 'currency' && def.key !== 'nombre' && def.key !== 'idOportunidad'">
-                  {{ getTotalCostPrimeNg(dt, def) | number: '1.0-2' }}
+                  {{ getTotalCostPrimeNg(dt, def) | number: '1.0-0' }}
                 </ng-container>
               </td>
               <td></td>

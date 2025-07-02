@@ -149,7 +149,8 @@ namespace Funnel.Logic
                         IdContactoProspecto = y.IdContactoProspecto,
                         TotalComentarios = y.TotalComentarios,
                         Stage = y.Stage,
-                        Nombre = y.Nombre ?? "Sin nombre"
+                        Nombre = y.Nombre ?? "Sin nombre",
+                        TooltipStage = y.TooltipStage
 
 
 
@@ -199,7 +200,8 @@ namespace Funnel.Logic
                         IdTipoEntrega = y.IdTipoEntrega,
                         IdEjecutivo = y.IdEjecutivo,
                         IdContactoProspecto = y.IdContactoProspecto,
-                        TotalComentarios = y.TotalComentarios
+                        TotalComentarios = y.TotalComentarios,
+                        TooltipStage = y.TooltipStage
 
                     }).ToList()
                 });

@@ -112,6 +112,7 @@ export interface Tarjeta {
   idEmpresa?: number;
   stage?: string;
   nombre?: string;
+  tooltipStage?: string;
 }
 
 export  interface OportunidadesPorMes {

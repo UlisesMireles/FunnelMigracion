@@ -24,7 +24,10 @@ namespace Funnel.Server.Controllers
             {
                 HttpContext.Session.SetString("User", usr.Usuario);
                 if (respuesta.Result == true && respuesta.IdEmpresa != null)
-                    await _loginService.RegistrarIngresoUsuario(respuesta.IdUsuario, (int)respuesta.IdEmpresa);
+                {
+                    var ingresoUsuario = await _loginService.RegistrarIngresoUsuario("INSERT", respuesta.IdUsuario, (int)respuesta.IdEmpresa, "", "");
+                    respuesta.SesionId = ingresoUsuario.ErrorMessage;
+                }
             }
             return Ok(respuesta);
         }
@@ -37,9 +40,13 @@ namespace Funnel.Server.Controllers
         }
 
         [HttpPost("[action]/")]
-        public IActionResult Logout()
+        public IActionResult Logout(UsuarioLoginDto data)
         {
             HttpContext.Session.Clear();
+            if (!string.IsNullOrEmpty(data.SesionId))
+            {
+                _loginService.RegistrarIngresoUsuario("UPDATE", data.IdUsuario, data.IdEmpresa ?? 0, data.SesionId, data.MotivoCerrarSesion ?? "");
+            }  
             return Ok("Sesión cerrada.");
         }
 

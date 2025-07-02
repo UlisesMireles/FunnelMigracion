@@ -37,6 +37,9 @@ export class AppComponent implements OnInit {
         this.terminosCondiciones = this.router.url === '/terminos-condiciones';
         this.registro = this.router.url === '/registro';
       }
+      else{
+        this.inicioNuevo = false;
+      }
 
     });
     this.loginService.sessionWarning$.subscribe(() => {

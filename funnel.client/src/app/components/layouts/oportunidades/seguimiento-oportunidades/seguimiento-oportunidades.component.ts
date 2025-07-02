@@ -464,7 +464,6 @@ export class SeguimientoOportunidadesComponent {
   }
 lonOp(): boolean {
   const nombreOportunidad = this.oportunidadForm.get('nombreOportunidad')?.value;
-  console.log('longitud oportunidad:', nombreOportunidad.length);
   return !!nombreOportunidad && nombreOportunidad.length > 120;
 
 }

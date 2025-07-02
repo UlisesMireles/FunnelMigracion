@@ -134,15 +134,12 @@ export class OortunidadesMesAcordeonComponent {
     // Guardamos también la tarjeta en espera (para usar su idOportunidad luego)
     this.tarjetaEnEspera = this.tarjetaMovida;
 
-    //console.log('Tarjeta en espera de confirmación:', this.tarjetaMovida);
-
 
     //****************ESTA LOGICA ES APRA CALCULAR FECHA */
     // Usar las propiedades numéricas ya definidas en el objeto mes destino
     const mesDestinoNumero = mesDestino.mes;  // Ejemplo: 2 para febrero (si es 1-indexado)
     const anioDestino = mesDestino.anio;
 
-    //console.log('Mes destino:', mesDestino.nombre, 'Número del mes destino:', mesDestinoNumero, 'Año destino:', anioDestino);
 
     // Validar que el mes destino y el año sean correctos
     if (mesDestinoNumero < 1 || mesDestinoNumero > 12 || anioDestino < 1000 || anioDestino > 9999) {
@@ -153,7 +150,6 @@ export class OortunidadesMesAcordeonComponent {
 
     // Calcular el último día del mes destino usando la función getUltimoDiaDelMes
     this.fechaSeleccionada = this.getUltimoDiaDelMes(mesDestinoNumero, anioDestino);
-    console.log('Último día del mes destino:', this.fechaSeleccionada);
 
     //****************ESTA LOGICA ES APRA CALCULAR FECHA */
 
@@ -170,7 +166,6 @@ export class OortunidadesMesAcordeonComponent {
 
   // Método para cancelar el movimiento (cierra el modal y resetea la tarjeta movida)
   cancelar() {
-    console.log('Movimiento cancelado');
     this.tarjetaMovida = null;
     this.mostrarModal = false;
   }
@@ -185,12 +180,10 @@ export class OortunidadesMesAcordeonComponent {
         this.tarjetaMovida.indexOrigen,
         this.tarjetaMovida.indexDestino
       );
-      console.log('Movimiento confirmado:', this.tarjetaMovida);
 
       // Asignar el idOportunidad de la tarjeta arrastrada a la variable idOportunidadTarjeta
       if (this.tarjetaEnEspera && this.tarjetaEnEspera.tarjeta) {
         this.idOportunidadTarjeta = this.tarjetaEnEspera.tarjeta.idOportunidad;//con esto asigno el id a la tarjeta q voy a guardar
-        console.log("Número de oportunidad asignado:", this.idOportunidadTarjeta);
       } else {
         console.warn("No hay tarjeta en espera.");
       }
@@ -243,7 +236,6 @@ export class OortunidadesMesAcordeonComponent {
       idUsuario: this.loginService.obtenerIdUsuario(),
     };
 
-    //console.log("RequestActualizarFechaEstimadaCierre:", request);
 
     this.oportunidadService.postOportunidadPorMesTarjeta(request).subscribe({
       next: (result: baseOut) => {
@@ -251,7 +243,6 @@ export class OortunidadesMesAcordeonComponent {
         this.result.emit(result);
         // Actualizar la lista de oportunidades
         this.getOportunidadesPorMes();
-        //console.log("getOportunidadesPorMes actualizado");
       },
       error: (error: baseOut) => {
         // Mostrar mensaje de error con MessageService de PrimeNG
@@ -260,7 +251,6 @@ export class OortunidadesMesAcordeonComponent {
           summary: 'Se ha producido un error.',
           detail: error.errorMessage,
         });
-        //console.log("error.errorMessage:" + error.errorMessage);
       },
     });
   }

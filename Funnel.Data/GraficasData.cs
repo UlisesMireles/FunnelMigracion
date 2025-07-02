@@ -663,5 +663,102 @@ namespace Funnel.Data
 
             return result;
         }
+        public async Task<List<TipoSectorAgenteDto>> ObtenerOportunidadesPorSectorPorAgente(RequestGrafica data)
+        {
+            List<TipoSectorAgenteDto> result = new List<TipoSectorAgenteDto>();
+            IList<ParameterSQl> parameters = new List<ParameterSQl>
+        {
+            DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, data.IdEmpresa),
+            DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, "SEL-AGENTE-SECTOR-PERSONAL"),
+            DataBase.CreateParameterSql("@IdUsuario", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, data.IdUsuario ?? 0)
+        };
+
+            try
+            {
+                using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoUsuarios", CommandType.StoredProcedure, parameters, _connectionString))
+                {
+                    while (reader.Read())
+                    {
+                        var dto = new TipoSectorAgenteDto
+                        {
+                            IdSector = ComprobarNulos.CheckIntNull(reader["IdSector"]),
+                            Descripcion = ComprobarNulos.CheckStringNull(reader["Descripcion"]),  
+                            Monto = ComprobarNulos.CheckDecimalNull(reader["Monto"]),
+                            MontoNormalizado = ComprobarNulos.CheckDecimalNull(reader["MontoNormalizado"]),
+                            Porcentaje = ComprobarNulos.CheckDecimalNull(reader["Porcentaje"])
+                        };
+                        result.Add(dto);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al obtener oportunidades por sector por agente. Detalle: {ex.Message}", ex);
+            }
+
+            return result;
+        }
+
+        public async Task<List<DetalleSectorAgenteDto>> ObtenerDetallesPorSectorPorAgente(int idAgente, int idSector, RequestGrafica data)
+        {
+            List<DetalleSectorAgenteDto> result = new List<DetalleSectorAgenteDto>();
+            IList<ParameterSQl> parameters = new List<ParameterSQl>
+        {
+            DataBase.CreateParameterSql("@pIdEstatusOportunidad", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, 1),
+            DataBase.CreateParameterSql("@pStage", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, -1),
+            DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, data.IdEmpresa),
+            DataBase.CreateParameterSql("@pIdAgente", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, idAgente),
+            DataBase.CreateParameterSql("@pIdUsuario", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, data.IdUsuario ?? 0),
+            DataBase.CreateParameterSql("@pIdSector", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, idSector)
+        };
+
+            try
+            {
+                using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoOportunidadesPorSectorAgente", CommandType.StoredProcedure, parameters, _connectionString))
+                {
+                    while (reader.Read())
+                    {
+                        var dto = new DetalleSectorAgenteDto
+                        {
+                            NombreSector = ComprobarNulos.CheckStringNull(reader["NombreSector"]),
+                            IdOportunidad = ComprobarNulos.CheckIntNull(reader["IdOportunidad"]),
+                            NombreProspecto = ComprobarNulos.CheckStringNull(reader["Nombre"]),
+                            NombreOportunidad = ComprobarNulos.CheckStringNull(reader["NombreOportunidad"]),
+                            NombreAbreviado = ComprobarNulos.CheckStringNull(reader["NombreAbreviado"]),
+                            TipoProyectoAbreviatura = ComprobarNulos.CheckStringNull(reader["Abreviatura"]),
+                            TipoProyecto = ComprobarNulos.CheckStringNull(reader["Descripcion"]),
+                            Iniciales = ComprobarNulos.CheckStringNull(reader["Iniciales"]),
+                            NombreEjecutivo = ComprobarNulos.CheckStringNull(reader["NombreEjecutivo"]),
+                            Monto = ComprobarNulos.CheckDecimalNull(reader["Monto"]),
+                            Probabilidad = ComprobarNulos.CheckStringNull(reader["Probabilidad"]),
+                            FechaModificacion = ComprobarNulos.CheckIntNull(reader["FechaModificacion"]),
+                            Comentario = ComprobarNulos.CheckStringNull(reader["Comentario"]),
+                            MontoNormalizado = ComprobarNulos.CheckDecimalNull(reader["MontoNormalizado"]),
+                            FechaRegistro = ComprobarNulos.CheckStringNull(reader["FechaRegistro"]),
+                            AbreviaturaEstatus = ComprobarNulos.CheckStringNull(reader["AbreviaturaEstatus"]),
+                            DescripcionEstatus = ComprobarNulos.CheckStringNull(reader["DescripcionEstatus"]),
+                            ProbabilidadDecimal = ComprobarNulos.CheckDecimalNull(reader["decProbabilidad"]),
+                            IdEjecutivo = ComprobarNulos.CheckIntNull(reader["IdEjecutivo"]),
+                            FechaEstimadaCierre = ComprobarNulos.CheckStringNull(reader["FechaEstimadaCierre"]),
+                            ProbabilidadOriginal = ComprobarNulos.CheckStringNull(reader["ProbabilidadOriginal"]),
+                            DiasFunnel = ComprobarNulos.CheckIntNull(reader["DiasFunnel"]),
+                            IdEstatusOportunidad = ComprobarNulos.CheckIntNull(reader["IdEstatusOportunidad"]),
+                            IdStage = ComprobarNulos.CheckIntNull(reader["IdStage"]),
+                            Stage = ComprobarNulos.CheckStringNull(reader["Stage"]),
+                            TooltipStage = ComprobarNulos.CheckStringNull(reader["TooltipStage"]),
+                            TotalComentarios = ComprobarNulos.CheckIntNull(reader["TotalComentarios"]),
+                            IdTipoProyecto = ComprobarNulos.CheckIntNull(reader["IdTipoProyecto"])
+                        };
+                        result.Add(dto);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener detalles por sector por agente", ex);
+            }
+
+            return result;
+        }
     }
 }

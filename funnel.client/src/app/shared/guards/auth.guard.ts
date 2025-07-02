@@ -16,7 +16,7 @@ export class AuthGuard implements CanActivate {
     }
 
     const timeDiff = Date.now() - parseInt(lastActivity);
-    if (timeDiff > 40 * 60 * 1000) { 
+    if (timeDiff > 30 * 60 * 1000) { 
       this.authService.logout('La sesión ha expirado: guard');
       return false;
     }

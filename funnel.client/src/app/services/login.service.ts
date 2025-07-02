@@ -21,7 +21,7 @@ export class LoginService {
   private currentUserSubject = new BehaviorSubject<any>(null);
   public currentUser: Observable<Usuario>;
   public sessionWarning$ = new Subject<void>();
-  private sessionTimeout = 40 * 60 * 1000;
+  private sessionTimeout = 30 * 60 * 1000;
   private timer: any;
   constructor(private http: HttpClient, private router: Router, private readonly catalogoService: CatalogoService, 
     private readonly permisosService: PermisosService, private estadoChatService: EstadoChatService) {

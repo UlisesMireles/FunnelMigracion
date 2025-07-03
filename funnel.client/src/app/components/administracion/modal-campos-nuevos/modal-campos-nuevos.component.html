@@ -1,0 +1,47 @@
+<p-dialog [(visible)]="visible" [modal]="true" styleClass="custom-header-naranja" [closable]="true"
+    [style]="{ width: '70rem' }" (onHide)="cerrar()" (onShow)="onDialogShow()" class="bodyDialog">
+
+    <ng-template pTemplate="header">
+        <h2>Editar campos de {{ pantalla }}</h2>
+    </ng-template>
+
+    <ng-template pTemplate="content">
+        <div class="row grid">
+            <div class="col-6">
+                <h4>Información de {{ pantalla }}</h4>
+                <div cdkDropList id="camposAdicionalesList" [cdkDropListData]="camposAdicionales"
+                    [cdkDropListConnectedTo]="['camposNoUtilizadosList']" class="drop-list"
+                    (cdkDropListDropped)="dropCampo($event)">
+                    <div *ngFor="let campo of camposAdicionales; trackBy: trackByCampo" cdkDrag [cdkDragData]="campo"
+                        class="campo-item">
+                        <span cdkDragHandle class="handle">⋮⋮⋮</span>
+                        {{ campo.etiqueta }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <h4>Campos no utilizados</h4>
+                <input type="text" placeholder="Buscar campo..." [(ngModel)]="filtroCampoNoUtilizado"
+                    class="input-busqueda" />
+                <div cdkDropList id="camposNoUtilizadosList" [cdkDropListData]="camposNoUtilizados"
+                    [cdkDropListConnectedTo]="['camposAdicionalesList']" class="drop-list"
+                    (cdkDropListDropped)="dropCampo($event)">
+                    <div *ngFor="let campo of camposNoUtilizadosFiltrados(); trackBy: trackByCampo" cdkDrag
+                        [cdkDragData]="campo" class="campo-item">
+                        <span cdkDragHandle class="handle">⋮⋮⋮</span>
+                        {{ campo.etiqueta }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button mat-button color="primary" (click)="guardarCamposAdicionales()" class="btn-agregar-etapa">Guardar</button>
+        <button mat-button class="btn-agregar-etapa" (click)="cerrar()">Cancelar</button>
+    </ng-template>
+
+    <div style="position: absolute; z-index:1102; text-align: center;">
+        <p-toast key="toast" position="bottom-center" [style]="{ height: '2vh' }"></p-toast>
+    </div>
+</p-dialog>

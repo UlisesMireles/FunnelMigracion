@@ -44,4 +44,16 @@ export class ContactosService {
     return this.http.post(`${this.baseUrl}api/Contacto/DescargarReporteContactos`, data,
       { params: { idEmpresa: idEmpresa.toString() }, responseType: 'blob' });
   }
+
+   getCamposAdicionales(idEmpresa: number, idUsuario: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}api/InputsAdicionales/ConsultarInputsAdicionales`, {
+      params: { idUsuario: idUsuario.toString(), idEmpresa: idEmpresa.toString() }
+    });
+  }
+
+  getCamposAdicionalesPorCatalogo(idEmpresa: number, tipoCatalogo: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}api/InputsAdicionales/ConsultarInputsPorCatalogo`, {
+      params: { tipoCatalogo: tipoCatalogo, idEmpresa: idEmpresa.toString() }
+    });
+  }
 }

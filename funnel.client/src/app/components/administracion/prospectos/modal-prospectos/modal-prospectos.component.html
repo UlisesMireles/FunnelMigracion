@@ -11,6 +11,8 @@
   <label class="margen">
     {{ insertarProspecto ? 'Nuevo Prospecto' : title + ' ' + prospectoForm.get('nombre')?.value }}
   </label>
+  <p-button label="" icon="bi bi-check" severity="secondary" (click)="modalCamposAdicionales()" pTooltip="Modal"
+                tooltipPosition="top" styleClass="custom-button add-button" [ngStyle]="{'margin-right': '5px'}" />
 </ng-template>
 <br>
 <ng-template pTemplate="content">
@@ -78,3 +80,7 @@
   <button pButton label="Cancelar" (click)="close()" severity="secondary"></button>
 </ng-template>
 </p-dialog>
+
+<app-modal-campos-nuevos [(visible)]="modalVisibleCamposAdicionales" (closeModal)="onModalCloseCamposAdicionales()"
+  (result)="manejarResultadoCamposAdicionales($event)">
+</app-modal-campos-nuevos>

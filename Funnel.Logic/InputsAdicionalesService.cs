@@ -40,6 +40,12 @@ namespace Funnel.Logic
             BaseOut result = new BaseOut();
             if (listaInputs.Count > 0)
             {
+                listaInputs.Where(v => v.Modificado).ToList().ForEach(v =>
+                {
+                    v.Activo = false;
+                    v.Orden = 0;
+                });
+
                 return await _inputsAdicionalesData.GuardarInputsAdicionales(listaInputs);
             }
             result.ErrorMessage = "Error al guardar inputs adicionales: No se seleccionaron inputs.";

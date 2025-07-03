@@ -102,6 +102,7 @@ namespace Funnel.Data
                     dto.IdInput = ComprobarNulos.CheckIntNull(reader["IdInput"]);
                     dto.Nombre = ComprobarNulos.CheckStringNull(reader["Nombre"]);
                     dto.Etiqueta = ComprobarNulos.CheckStringNull(reader["Etiqueta"]);
+                    dto.Requerido = ComprobarNulos.CheckBooleanNull(reader["Requerido"]);
                     dto.TipoCampo = ComprobarNulos.CheckStringNull(reader["TipoCampo"]);
                     dto.RCatalogoInputId = ComprobarNulos.CheckIntNull(reader["RCatalogoInputId"]);
                     dto.Orden = ComprobarNulos.CheckIntNull(reader["Orden"]);

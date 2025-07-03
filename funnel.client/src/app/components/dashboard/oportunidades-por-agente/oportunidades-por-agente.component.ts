@@ -21,6 +21,7 @@ export class OportunidadesPorAgenteComponent {
   originalParentElements = new Map<string, { parent: HTMLElement, nextSibling: Node | null }>();
   modalAgenteClienteVisible: boolean = false;
   modalAgenteTipoVisible = false;
+  modalAgenteSectorVisible: boolean = false;
 
 
 
@@ -243,6 +244,16 @@ openAgenteTipoModal() {
 
 onModalAgenteTipoClose() {
   this.modalAgenteTipoVisible = false;
+}
+
+openAgenteSectorModal() {
+  if (this.agenteSeleccionadoId) {
+    this.modalAgenteSectorVisible = true;
+  }
+}
+
+onModalAgenteSectorClose() {
+  this.modalAgenteSectorVisible = false;
 }
 }
 

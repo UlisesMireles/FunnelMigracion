@@ -149,6 +149,8 @@ import { PanelesTerminadasComponent } from './components/terminadas/paneles-term
 import { ModalOportunidadesPorAgenteClientesComponent } from './components/dashboard/oportunidades-por-agente/modal-oportunidades-por-agente-clientes/modal-oportunidades-por-agente-clientes.component';
 import { ModalOportunidadesPorAgenteTipoComponent } from './components/dashboard/oportunidades-por-agente/modal-oportunidades-por-agente-tipo/modal-oportunidades-por-agente-tipo.component';
 import { ModalOportunidadesPorAgenteDetalleTipoComponent } from './components/dashboard/oportunidades-por-agente/modal-oportunidades-por-agente-detalle-tipo/modal-oportunidades-por-agente-detalle-tipo.component';
+import { ModalOportunidadesPorAgenteSectorComponent } from './components/dashboard/oportunidades-por-agente/modal-oportunidades-por-agente-sector/modal-oportunidades-por-agente-sector.component';
+import { ModalOportunidadesPorAgenteDetalleSectorComponent } from './components/dashboard/oportunidades-por-agente/modal-oportunidades-por-agente-detalle-sector/modal-oportunidades-por-agente-detalle-sector.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -236,7 +238,9 @@ registerLocaleData(localeEs, 'es-MX');
     PanelesTerminadasComponent,
     ModalOportunidadesPorAgenteClientesComponent,
     ModalOportunidadesPorAgenteTipoComponent,
-    ModalOportunidadesPorAgenteDetalleTipoComponent
+    ModalOportunidadesPorAgenteDetalleTipoComponent,
+    ModalOportunidadesPorAgenteSectorComponent,
+    ModalOportunidadesPorAgenteDetalleSectorComponent
   ],
   imports: [
     BrowserModule,

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { GraficasDto, RequestGraficasDto, AgenteDto, Sectores, SectoresDetalles, OportunidadesTipo, OportunidadesTipoDetalles, OportunidadAgenteCliente, TipoOportunidadAgente, DetalleTipoOportunidadAgente } from '../interfaces/graficas';
+import { GraficasDto, RequestGraficasDto, AgenteDto, Sectores, SectoresDetalles, OportunidadesTipo, OportunidadesTipoDetalles, OportunidadAgenteCliente, TipoOportunidadAgente, DetalleTipoOportunidadAgente, TipoSectorAgente , DetalleSectorAgente} from '../interfaces/graficas';
 
 @Injectable({
   providedIn: 'root'
@@ -324,6 +324,28 @@ obtenerDetalleOportunidadesTipoAgente(
 ): Observable<DetalleTipoOportunidadAgente[]> {
   return this.http.post<DetalleTipoOportunidadAgente[]>(
     `${this.baseUrl}api/Graficas/ObtenerDetalleOportunidadesTipoAgente/${idAgente}/${idTipoOporAgente}`,
+    data
+  );
+}
+
+obtenerOportunidadesPorSectorPorAgente(data: RequestGraficasDto): Observable<TipoSectorAgente[]> {
+  const requestData = {
+    ...data,
+    bandera: 'SEL-AGENTE-SECTOR-PERSONAL'  
+  };
+  return this.http.post<TipoSectorAgente[]>(
+    `${this.baseUrl}api/Graficas/ObtenerOportunidadesPorSectorPorAgente`,
+    requestData
+  );
+}
+
+obtenerDetalleOportunidadesSectorAgente(
+  idAgente: number,
+  idSector: number,
+  data: RequestGraficasDto
+): Observable<DetalleSectorAgente[]> {
+  return this.http.post<DetalleSectorAgente[]>(
+    `${this.baseUrl}api/Graficas/ObtenerDetallesPorSectorPorAgente/${idAgente}/${idSector}`,
     data
   );
 }

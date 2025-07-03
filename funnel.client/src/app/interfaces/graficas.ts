@@ -141,3 +141,42 @@ export interface DetalleTipoOportunidadAgente  {
   totalComentarios: number;
   idTipoProyecto: number;
 }
+
+export interface TipoSectorAgente {
+  idSector: number;
+  descripcion: string;
+  monto: number;
+  montoNormalizado: number;
+  porcentaje: number;
+}
+
+export interface DetalleSectorAgente {
+  idOportunidad: number;
+  nombreSector: string;
+  nombreProspecto: string;
+  nombreOportunidad: string;
+  nombreAbreviado: string;
+  tipoProyectoAbreviatura: string;
+  tipoProyecto: string;
+  iniciales: string;
+  nombreEjecutivo: string;
+  monto: number;
+  probabilidad: string;
+  fechaModificacion: number;
+  comentario: string;
+  montoNormalizado: number;
+  fechaRegistro: string;
+  abreviaturaEstatus: string;
+  descripcionEstatus: string;
+  probabilidadDecimal: number;
+  idEjecutivo: number;
+  fechaEstimadaCierre: string;
+  probabilidadOriginal: string;
+  diasFunnel: number;
+  idEstatusOportunidad: number;
+  idStage: number;
+  stage: string;
+  tooltipStage: string;
+  totalComentarios: number;
+  idTipoProyecto: number;
+}

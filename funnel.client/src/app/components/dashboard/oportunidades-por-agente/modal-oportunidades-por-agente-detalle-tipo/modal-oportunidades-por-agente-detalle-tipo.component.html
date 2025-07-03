@@ -48,9 +48,15 @@
         <ng-template pTemplate="body" let-oportunidad>
           <tr class="fila-datos">
             <td>{{ oportunidad.nombreProspecto }}</td>
-            <td>{{ oportunidad.nombreOportunidad }}</td>
-            <td>{{ oportunidad.tipoProyectoAbreviatura }}</td>
-            <td>{{ oportunidad.iniciales }}</td>
+            <td>{{ oportunidad.nombreOportunidad }}</td>      
+            <td pTooltip="{{ oportunidad.tipoProyecto }}" tooltipPosition="top">
+              {{ oportunidad.tipoProyectoAbreviatura }}
+            </td>
+            <td 
+              pTooltip="{{ oportunidad.nombreEjecutivo }}" 
+              tooltipPosition="top">
+              {{ oportunidad.iniciales }}
+            </td>
             <td>{{ oportunidad.monto | currency:'MXN':'symbol':'1.2-2' }}</td>
             <td>{{ oportunidad.fechaEstimadaCierre}}</td>
           </tr>

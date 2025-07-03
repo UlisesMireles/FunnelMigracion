@@ -25,9 +25,9 @@ namespace Funnel.Logic
         }
         public async Task<List<AniosDto>> Anios(int IdEmpresa, int IdEstatusOportunidad)
         {
-            return await _graficasData.Anios( IdEmpresa, IdEstatusOportunidad);
+            return await _graficasData.Anios(IdEmpresa, IdEstatusOportunidad);
         }
-        public async Task<List<GraficaDto>>ObtenerGraficaGanadasAnio(RequestGrafica data)
+        public async Task<List<GraficaDto>> ObtenerGraficaGanadasAnio(RequestGrafica data)
         {
             return await _graficasData.ObtenerGraficaGanadasAnio(data);
         }
@@ -61,6 +61,30 @@ namespace Funnel.Logic
         public async Task<List<GraficaDto>> ObtenerGraficaClientesTopVeinte(RequestGrafica data)
         {
             return await _graficasData.ObtenerGraficaClientesTopVeinte(data);
+        }
+        public async Task<List<OportunidadAgenteClienteDto>> ObtenerOportunidadesPorAgenteClientes(RequestGrafica data)
+        {
+            return await _graficasData.ObtenerOportunidadesPorAgenteClientes(data);
+        }
+
+        public async Task<List<TipoOportunidadAgenteDto>> ObtenerOportunidadesPorAgenteTipo(RequestGrafica data)
+        {
+            return await _graficasData.ObtenerOportunidadesPorAgenteTipo(data);
+        }
+
+        public async Task<List<DetalleOportunidadTipoAgenteDto>> ObtenerDetalleOportunidadesTipoAgente(int idAgente, int idTipoOporAgente, RequestGrafica data)
+        {
+            return await _graficasData.ObtenerDetalleOportunidadesTipoAgente(idAgente, idTipoOporAgente, data);
+        }
+
+        public async Task<List<TipoSectorAgenteDto>> ObtenerOportunidadesPorSectorPorAgente(RequestGrafica data)
+        {
+            return await _graficasData.ObtenerOportunidadesPorSectorPorAgente(data);
+        }
+
+        public async Task<List<DetalleSectorAgenteDto>> ObtenerDetallesPorSectorPorAgente(int idAgente, int idSector, RequestGrafica data)
+        {
+            return await _graficasData.ObtenerDetallesPorSectorPorAgente(idAgente, idSector, data);
         }
     }
 }

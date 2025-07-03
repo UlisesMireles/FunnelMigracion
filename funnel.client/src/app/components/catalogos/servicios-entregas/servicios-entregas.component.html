@@ -1,24 +1,24 @@
 <div class="acordeon-horizontal d-flex" style="gap: 5px;">
-  <div class="item-acordeon" *ngIf="permisoServicios"  [class.expandido]="serviciosExpandido">
-  <div class="encabezado-acordeon">
-    <button class="boton-toggle" (click)="toggleServicios()">
+  <div class="item-acordeon" *ngIf="permisoServicios"  [class.expandido]="seccionExpandida === 'servicios'">
+  <div class="encabezado-acordeon" (click)="toggleSeccion('servicios')">
+    <!--<button class="boton-toggle" (click)="toggleServicios()">
       <i [ngClass]="serviciosExpandido ? 'bi bi-chevron-left' : 'bi bi-chevron-right'"></i>
-    </button>
+    </button>-->
     <span class="nombre-seccion">{{EnumPaginas.SERVICIOS}}</span>
   </div>
-  <div class="contenido-acordeon-horizontal" style="margin-left: 35px;" *ngIf="serviciosExpandido">
-    <app-tipo-servicios></app-tipo-servicios>
+  <div class="contenido-acordeon-horizontal" style="margin-left: 35px;" *ngIf="seccionExpandida === 'servicios'">
+    <app-tipo-servicios (headerClicked)="toggleSeccion('servicios')"></app-tipo-servicios>
   </div>
 </div>
- <div class="item-acordeon" *ngIf="permisoEntregas" [class.expandido]="entregasExpandido">
-    <div class="encabezado-acordeon">
-      <button class="boton-toggle" (click)="toggleEntregas()">
+ <div class="item-acordeon" *ngIf="permisoEntregas"  [class.expandido]="seccionExpandida === 'entregas'">
+    <div class="encabezado-acordeon" (click)="toggleSeccion('entregas')">
+      <!--<button class="boton-toggle" (click)="toggleEntregas()">
         <i [ngClass]="entregasExpandido ? 'bi bi-chevron-left' : 'bi bi-chevron-right'"></i>
-      </button>
+      </button>-->
       <span class="nombre-seccion">{{EnumPaginas.ENTREGAS}}</span>
     </div>
-     <div class="contenido-acordeon-horizontal" *ngIf="entregasExpandido">
-    <app-tipos-entrega></app-tipos-entrega>
+     <div class="contenido-acordeon-horizontal" *ngIf="seccionExpandida === 'entregas'">
+    <app-tipos-entrega (headerClicked)="toggleSeccion('entregas')"></app-tipos-entrega>
   </div>
 </div>
 </div>

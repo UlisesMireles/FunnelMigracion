@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { TipoEntrega} from '../../../interfaces/tipo-entrega';
 import { TipoEntregaService } from '../../../services/tipo-entrega.service';
 import { Table } from 'primeng/table';
@@ -30,7 +30,7 @@ export class TiposEntregaComponent {
   anchoTabla = 100
   isDescargando = false;
   disabletiposEntrega = true;
-
+  @Output() headerClicked = new EventEmitter<void>();
   EstatusDropdown = [
     { label: 'Todo', value: null },
     { label: 'Activo', value: 'Activo' },
@@ -286,6 +286,8 @@ clear(table: Table) {
     
       return this.dt?.sortField === columnKey;
   }
-
+  onHeaderClick() {
+    this.headerClicked.emit();
+  }
 }
 

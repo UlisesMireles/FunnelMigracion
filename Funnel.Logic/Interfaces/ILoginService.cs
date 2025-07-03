@@ -15,8 +15,7 @@ namespace Funnel.Logic.Interfaces
         public Task<BaseOut> ReenviarCodigo(string correo);
 
         public Task<BaseOut> GuardarImagen(int idUsuario, IFormFile imagen, UsuarioDto request);
-
-        public Task<BaseOut> RegistrarIngresoUsuario(int IdUsuario, int IdEmpresa);
+        public Task<BaseOut> RegistrarIngresoUsuario(string Bandera, int IdUsuario, int IdEmpresa, string SesionId, string MotivoCierre);
         public Task<EmpresaDTO> ObtenerImagenEmpresa(int IdEmpresa);
     }
 }

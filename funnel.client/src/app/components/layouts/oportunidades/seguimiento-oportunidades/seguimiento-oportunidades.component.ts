@@ -66,7 +66,7 @@ export class SeguimientoOportunidadesComponent {
       idEjecutivo: [this.oportunidad.idEjecutivo],
       comentario: ['', [Validators.required, this.validarComentario]],
       idEmpresa: [this.loginService.obtenerIdEmpresa(), Validators.required],
-      //stage: [this.oportunidad.stage],
+      stage: [this.oportunidad.stage],
       //probabilidad: [this.oportunidad.probabilidad],
       idEstatusOportunidad: [this.oportunidad.idEstatusOportunidad],
       tooltipStage: [this.oportunidad.tooltipStage],
@@ -464,7 +464,6 @@ export class SeguimientoOportunidadesComponent {
   }
 lonOp(): boolean {
   const nombreOportunidad = this.oportunidadForm.get('nombreOportunidad')?.value;
-  console.log('longitud oportunidad:', nombreOportunidad.length);
   return !!nombreOportunidad && nombreOportunidad.length > 120;
 
 }

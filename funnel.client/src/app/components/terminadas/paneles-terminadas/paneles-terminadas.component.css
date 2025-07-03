@@ -85,6 +85,7 @@
   max-height: 88vh;
   margin-left: 25px;
   position: relative;
+  margin-top: 5px;
 }
 
 .item-acordeon.expandido .contenido-acordeon-horizontal {

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { Usuarios } from '../../../interfaces/usuarios';
 import { UsuariosService } from '../../../services/usuarios.service';
 import { Table } from 'primeng/table';
@@ -33,7 +33,7 @@ export class UsuariosComponent {
   insertar: boolean = true;
   modalVisible: boolean = false;
   disabledPdf: boolean = false;
-
+  @Output() headerClicked = new EventEmitter<void>();
   
 
   EstatusDropdown = [
@@ -333,5 +333,8 @@ clear(table: Table) {
   isSorted(columnKey: string): boolean {
     
     return this.dt?.sortField === columnKey;  
+  }
+  onHeaderClick() {
+    this.headerClicked.emit();
   }
 }

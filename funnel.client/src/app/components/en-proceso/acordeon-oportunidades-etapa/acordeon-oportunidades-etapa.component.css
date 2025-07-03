@@ -272,6 +272,7 @@
   /* Espaciado superior para la fila de la tarjeta */
   .tarjeta-row {
     padding-top: 12px;
+    padding-bottom: 10px;
   }
   
   /* Estilo para el nombre de la empresa */

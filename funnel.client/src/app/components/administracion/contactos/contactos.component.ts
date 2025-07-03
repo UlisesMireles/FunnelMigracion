@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { LazyLoadEvent } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { MessageService } from 'primeng/api';
@@ -37,7 +37,7 @@ export class ContactosComponent {
 
   insertar: boolean = false;
   modalVisible: boolean = false;
-
+  @Output() headerClicked = new EventEmitter<void>();
   EstatusDropdown = [
     { label: 'Todo', value: null },
     { label: 'Activo', value: 'Activo' },
@@ -325,4 +325,7 @@ isSorted(columnKey: string): boolean {
     
   return this.dt?.sortField === columnKey;
 }
+onHeaderClick() {
+    this.headerClicked.emit();
+  }
 }

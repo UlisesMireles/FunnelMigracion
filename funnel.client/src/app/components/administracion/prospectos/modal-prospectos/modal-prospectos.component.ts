@@ -6,12 +6,13 @@ import { Prospectos } from '../../../../interfaces/prospecto';
 import { ProspectoService } from '../../../../services/prospecto.service';
 import { baseOut } from '../../../../interfaces/utils/utils/baseOut';
 import { LoginService } from '../../../../services/login.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalOportunidadesService } from '../../../../services/modalOportunidades.service';
 import { Subscription } from 'rxjs';
 import { CamposAdicionales } from '../../../../interfaces/campos-adicionales';
 import { ContactosService } from '../../../../services/contactos.service';
 import { ModalCamposAdicionalesService } from '../../../../services/modalCamposAdicionales.service';
+import { InpoutAdicionalData } from '../../../../interfaces/input-adicional-data';
 
 @Component({
   selector: 'app-modal-prospectos',
@@ -20,9 +21,7 @@ import { ModalCamposAdicionalesService } from '../../../../services/modalCamposA
   styleUrl: './modal-prospectos.component.css'
 })
 export class ModalProspectosComponent {
-  constructor(private prospectoService: ProspectoService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder, private cdr: ChangeDetectorRef,
-    private modalOportunidadesService: ModalOportunidadesService, private modalCamposAdicionalesService: ModalCamposAdicionalesService, private contactosService: ContactosService
-  ) { }
+
   @Input() prospecto!: Prospectos;
   @Input() prospectos: Prospectos[] = [];
   @Input() title: string = 'Modal';
@@ -31,9 +30,18 @@ export class ModalProspectosComponent {
   request!: RequestProspecto;
 
   prospectoActivo: boolean = false;
-  prospectoForm!: FormGroup;
+  prospectoForm: FormGroup;
   sectores: any[] = [];
   desdeSector: boolean = false;
+
+  //Variables Inputs Adicionales
+  formInfoAdicionales: FormGroup;
+  inputInfoAdicionales: InpoutAdicionalData[] = [];
+  validaGuadarAdicionales: boolean = false;
+  get formArrayInfoAdicional(): FormArray {
+    return this.formInfoAdicionales.controls["formArrayInfoAdicional"] as FormArray;
+  }
+  idReferencia: number = 0;
 
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter();
@@ -62,12 +70,20 @@ export class ModalProspectosComponent {
   camposAdicionales: CamposAdicionales[] = [];
   camposAdicionalesPorCatalogo: CamposAdicionales[] = [];
   modalVisibleCamposAdicionales: boolean = false;
-  
+
+  constructor(private prospectoService: ProspectoService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder, private cdr: ChangeDetectorRef,
+    private modalOportunidadesService: ModalOportunidadesService, private modalCamposAdicionalesService: ModalCamposAdicionalesService, private contactosService: ContactosService
+  ) {
+    this.formInfoAdicionales = this.fb.group({});
+    this.prospectoForm = this.fb.group({});
+  }
+
   ngOnInit() {
     this.modalOportunidadesService.modalProspectoState$.subscribe(state => {
       this.desdeSector = state.desdeSector;
     });
     this.inicializarFormulario()
+    this.inicializarFormularioAdicional()
 
   }
   // ngOnChanges(changes: SimpleChanges) {
@@ -79,6 +95,7 @@ export class ModalProspectosComponent {
     let idEmpresa = this.loginService.obtenerIdEmpresa();
     let valoresIniciales: Record<string, any>;
     if (this.insertarProspecto) {
+      this.idReferencia = 0;
       this.informacionProspecto = {
         idProspecto: 0,
         nombre: this.prospecto?.nombre ?? "",
@@ -126,6 +143,7 @@ export class ModalProspectosComponent {
       this.validaGuadar = false;
       this.cdr.detectChanges();
     } else {
+      this.idReferencia = this.prospecto.idProspecto;
       this.informacionProspecto = this.prospecto;
       this.prospectoForm = this.fb.group({
         idProspecto: [this.prospecto?.idProspecto],
@@ -155,103 +173,104 @@ export class ModalProspectosComponent {
       this.validaGuadar = false;
       this.cdr.detectChanges();
     }
+    this.getInputsAdicionalesData();
 
   }
 
   onModalCloseCamposAdicionales() {
-      this.modalCamposAdicionalesService.closeModal();
+    this.modalCamposAdicionalesService.closeModal();
+  }
+
+  manejarResultadoCamposAdicionales(result: baseOut) {
+    if (result.result) {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'La operación se realizó con éxito.',
+        detail: result.errorMessage,
+      });
+      this.modalCamposAdicionalesService.closeModal(result);
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Se ha producido un error.',
+        detail: result.errorMessage,
+      });
     }
-  
-    manejarResultadoCamposAdicionales(result: baseOut) {
-      if (result.result) {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'La operación se realizó con éxito.',
-          detail: result.errorMessage,
-        });
-        this.modalCamposAdicionalesService.closeModal(result);
-      } else {
+  }
+
+  modalCamposAdicionales() {
+    this.getCamposAdicionales();
+  }
+
+  getCamposAdicionales() {
+
+    const idUsuario = this.loginService.obtenerIdUsuario();
+    const idEmpresa = this.loginService.obtenerIdEmpresa();
+
+    this.contactosService.getCamposAdicionales(idEmpresa, idUsuario).subscribe({
+      next: (result: CamposAdicionales[]) => {
+
+        this.camposAdicionales = result.map(campos => ({
+          ...campos,
+          idInput: campos.idInput,
+          nombre: campos.nombre,
+          etiqueta: campos.etiqueta,
+          requerido: campos.requerido,
+          tipoCampo: campos.tipoCampo,
+          rCatalogoInputId: campos.rCatalogoInputId,
+          tipoCatalogoInput: campos.tipoCatalogoInput,
+          orden: campos.orden,
+          idEmpresa: idEmpresa,
+          idUsuario: idUsuario,
+          modificado: false
+        }));
+
+        this.consultarCamposAdicionalesPorCatalogo(idEmpresa, idUsuario);
+      },
+      error: (error) => {
+        console.error('Error:', error);
         this.messageService.add({
           severity: 'error',
-          summary: 'Se ha producido un error.',
-          detail: result.errorMessage,
+          summary: 'Error',
+          detail: 'Error al cargar informacion de campos adicionales'
         });
       }
-    }
-  
-    modalCamposAdicionales() {
-       this.getCamposAdicionales();
-    }
-  
-    getCamposAdicionales() {
-      
-          const idUsuario = this.loginService.obtenerIdUsuario();
-          const idEmpresa = this.loginService.obtenerIdEmpresa();
-      
-          this.contactosService.getCamposAdicionales(idEmpresa, idUsuario).subscribe({
-            next: (result: CamposAdicionales[]) => {
-      
-              this.camposAdicionales = result.map(campos => ({
-                ...campos,
-                idInput: campos.idInput,
-                nombre: campos.nombre,
-                etiqueta: campos.etiqueta,
-                requerido: campos.requerido,
-                tipoCampo: campos.tipoCampo,
-                rCatalogoInputId: campos.rCatalogoInputId,
-                tipoCatalogoInput: campos.tipoCatalogoInput,
-                orden: campos.orden,
-                idEmpresa: idEmpresa,
-                idUsuario: idUsuario,
-                modificado: false
-              }));
-  
-              this.consultarCamposAdicionalesPorCatalogo(idEmpresa, idUsuario);
-            },
-            error: (error) => {
-              console.error('Error:', error);
-              this.messageService.add({
-                severity: 'error',
-                summary: 'Error',
-                detail: 'Error al cargar informacion de campos adicionales'
-              });
-            }
-          });
-        }
-  
-    
-    consultarCamposAdicionalesPorCatalogo(idEmpresa: number, idUsuario: number) {
-  
-        this.contactosService.getCamposAdicionalesPorCatalogo(idEmpresa, "Prospectos").subscribe({
-              next: (result: CamposAdicionales[]) => {
-        
-                this.camposAdicionalesPorCatalogo = result.map(campos => ({
-                  ...campos,
-                  idInput: campos.idInput,
-                  nombre: campos.nombre,
-                  etiqueta: campos.etiqueta,
-                  requerido: campos.requerido,
-                  tipoCampo: campos.tipoCampo,
-                  rCatalogoInputId: campos.rCatalogoInputId,
-                  tipoCatalogoInput: campos.tipoCatalogoInput,
-                  orden: campos.orden,
-                  idEmpresa: idEmpresa,
-                  idUsuario: idUsuario,
-                  modificado: false
-                }));
-                this.modalCamposAdicionalesService.openModal(true, this.camposAdicionales, this.camposAdicionalesPorCatalogo, "Prospectos")
-              },
-              error: (error) => {
-                console.error('Error:', error);
-                this.messageService.add({
-                  severity: 'error',
-                  summary: 'Error',
-                  detail: 'Error al cargar informacion de campos adicionales'
-                });
-              }
-            });
-    }
-  
+    });
+  }
+
+
+  consultarCamposAdicionalesPorCatalogo(idEmpresa: number, idUsuario: number) {
+
+    this.contactosService.getCamposAdicionalesPorCatalogo(idEmpresa, "Prospectos").subscribe({
+      next: (result: CamposAdicionales[]) => {
+
+        this.camposAdicionalesPorCatalogo = result.map(campos => ({
+          ...campos,
+          idInput: campos.idInput,
+          nombre: campos.nombre,
+          etiqueta: campos.etiqueta,
+          requerido: campos.requerido,
+          tipoCampo: campos.tipoCampo,
+          rCatalogoInputId: campos.rCatalogoInputId,
+          tipoCatalogoInput: campos.tipoCatalogoInput,
+          orden: campos.orden,
+          idEmpresa: idEmpresa,
+          idUsuario: idUsuario,
+          modificado: false
+        }));
+        this.modalCamposAdicionalesService.openModal(true, this.camposAdicionales, this.camposAdicionalesPorCatalogo, "Prospectos")
+      },
+      error: (error) => {
+        console.error('Error:', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error al cargar informacion de campos adicionales'
+        });
+      }
+    });
+  }
+
 
   validarCambios(valoresIniciales: any, cambios: any) {
     const valoresActuales = cambios;
@@ -300,12 +319,17 @@ export class ModalProspectosComponent {
 
   guardarProspecto() {
     if (this.prospectoForm.invalid) {
+      this.prospectoForm.markAllAsTouched();
       this.mostrarToastError();
-      console.log(this.prospectoForm.errors);
-      console.log(this.prospectoForm.controls['nombre'].errors);
-      console.log(this.prospectoForm.controls['ubicacionFisica'].errors);
       return;
     }
+
+    if ((this.formInfoAdicionales.invalid && this.inputInfoAdicionales.length > 0)) {
+      this.formInfoAdicionales.markAllAsTouched();
+      this.mostrarToastError();
+      return;
+    }
+
     this.prospectoForm.controls['estatus'].setValue(this.prospectoForm.value.estatus ? 1 : 0);
     this.prospectoForm.controls['bandera'].setValue(this.prospectoForm.value.bandera);
     this.prospectoForm.controls['idEmpresa'].setValue(this.loginService.obtenerIdEmpresa());
@@ -324,13 +348,112 @@ export class ModalProspectosComponent {
 
     this.prospectoService.postInsertProspecto(this.informacionProspecto).subscribe({
       next: (result: baseOut) => {
-        this.result.emit(result);
-        this.close();
+        if (this.inputInfoAdicionales.length > 0) {
+          this.guardarInformacionAdicional(result)
+        }
+        else {
+          this.result.emit(result);
+          this.close();
+        }
       },
       error: (error: baseOut) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Se ha producido un error.',
+          detail: error.errorMessage,
+        });
+      },
+    });
+  }
+
+  getInputsAdicionalesData() {
+    this.prospectoService.getInputsAdicionalesData(this.loginService.obtenerIdEmpresa(), 'PROSPECTOS', this.idReferencia).subscribe({
+      next: (result) => {
+        this.inputInfoAdicionales = result;
+        this.formArrayInfoAdicional.clear();
+        if (this.inputInfoAdicionales.length > 0) {
+          this.agregarElementosFormulario();
+        }
+      },
+      error: (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Se ha producido un error.',
+          detail: error.errorMessage,
+        });
+      },
+    });
+  }
+
+  inicializarFormularioAdicional() {
+    this.formInfoAdicionales = this.fb.group({
+      formArrayInfoAdicional: this.fb.array([])
+    })
+  }
+
+  agregarElementosFormulario() {
+    let valoresIniciales: Record<string, any>;
+
+    this.inputInfoAdicionales.forEach(v => {
+      let config: any = {
+        idInput: [v.idInput],
+        etiqueta: [v.etiqueta],
+        tipoCampo: [v.tipoCampo],
+        idInputData: [v.idInputData]
+      }
+      let arrayValidadores = []
+      if (v.requerido) {
+        arrayValidadores.push(Validators.required)
+      }
+      config.valor = [v.valor, arrayValidadores]
+      let formCredito = this.fb.group(config)
+
+      this.formArrayInfoAdicional.push(formCredito)
+    })
+
+
+    valoresIniciales = this.formInfoAdicionales.getRawValue();
+    this.formInfoAdicionales.valueChanges.subscribe((changes) => {
+      this.validarCambiosAdicionales(valoresIniciales, changes);
+    });
+    this.validaGuadarAdicionales = false;
+  }
+
+  validarCambiosAdicionales(valoresIniciales: any, cambios: any) {
+    const valoresActuales = cambios;
+
+    if (this.formInfoAdicionales.dirty) {
+      this.validaGuadarAdicionales = true;
+    }
+    const valoresRegresaron = this.compararValores(valoresIniciales, valoresActuales);
+    if (valoresRegresaron) {
+      this.validaGuadarAdicionales = false;
+    }
+  }
+
+  guardarInformacionAdicional(resultContacto: baseOut) {
+    //Establecer los valores a array de inputs adicionales, y el id de referencia del conctacto
+    if (this.insertarProspecto) {
+      this.idReferencia = resultContacto.id
+    }
+    this.formArrayInfoAdicional.controls.forEach((control) => {
+      let filtro = this.inputInfoAdicionales.find(x => x.idInput == control.get('idInput')?.value);
+      if (filtro) {
+        filtro.valor = control.get('valor')?.value;
+        filtro.idReferencia = this.idReferencia
+      }
+
+    })
+
+    this.prospectoService.guardarInputsAdicionalesData(this.inputInfoAdicionales).subscribe({
+      next: () => {
+        this.result.emit(resultContacto);
+        this.close();
+      },
+      error: (error: baseOut) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Se guardado correctamente el contacto pero no se puedo guardar información adicional. Se ha producido un error.',
           detail: error.errorMessage,
         });
       },

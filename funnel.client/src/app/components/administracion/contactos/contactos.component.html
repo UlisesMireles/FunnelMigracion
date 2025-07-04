@@ -2,17 +2,19 @@
   <div class="row" style="margin-left: 0px;">
     <div class="col-12">
       <div class="row contenedorTabla">
-        <div *ngIf="loading" class="loading-message"
-          style="padding-top: 50px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <div *ngIf="loading" class="loading-message" 
+            style="padding-top: 50px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
           <div class="spinner-border text-primary" role="status">
             <span class="visually-hidden">Cargando...</span>
           </div>
           <p>Cargando...</p>
         </div>
-        <p-table *ngIf="!loading" #dt [value]="contactos" dataKey="id" [rows]="10" [showCurrentPageReport]="false"
-          [rowsPerPageOptions]="[10, 20, 50]" [paginator]="true" paginatorPosition="both" [pageLinks]="1"
+        <p-table *ngIf="!loading" #dt [value]="contactos" dataKey="id" [rows]="10"
+          [showCurrentPageReport]="false" [rowsPerPageOptions]="[10, 20, 50]" [paginator]="true" paginatorPosition="both"
+          [pageLinks]="1" 
           currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros"
-          [columns]="lsColumnasAMostrar" [resizableColumns]="true" [reorderableColumns]="true"
+          [columns]="lsColumnasAMostrar"
+          [resizableColumns]="true" [reorderableColumns]="true"
           [globalFilterFields]="['nombreCompleto','correoElectronico', 'prospecto', 'desEstatus']"
           [tableStyle]="{'min-width': anchoTabla+ '%'}">
 
@@ -23,40 +25,39 @@
             <div class="row">
               <div class="col inDivDatatableHeader" style="text-align:right; margin-right:5px">
                 <p-button label="" icon="bi bi-arrow-clockwise" (click)="clear(dt)" severity="secondary"
-                  pTooltip="Refrescar" tooltipPosition="top" styleClass="custom-button refresh-button"
-                  [ngStyle]="{'margin-right': '5px'}" />
-                <p-button [disabled]="disabledPdf" label="" icon="bi bi-filetype-pdf" severity="secondary"
-                  (click)="exportPdf(dt)" pTooltip="Descargar PDF" tooltipPosition="top"
-                  styleClass="custom-button download-button" [ngStyle]="{'margin-right': '5px'}" />
-                <p-button label="" icon="bi bi-download" severity="secondary" (click)="exportExcel(dt)"
-                  pTooltip="Descargar Excel" tooltipPosition="top" styleClass="custom-button add-button"
-                  [ngStyle]="{'margin-right': '5px'}" />
-                <p-button label="" icon="bi-list" (click)="agregarColumna($event)" severity="secondary"
-                  pTooltip="Agregar columna" tooltipPosition="top" styleClass="custom-button column-button"
-                  [ngStyle]="{'margin-right': '5px'}" />
-                <p-button label="" icon="bi bi-plus" severity="secondary" (click)="inserta()" pTooltip="Añadir nuevo"
-                  tooltipPosition="top" styleClass="custom-button add-button" [ngStyle]="{'margin-right': '5px'}" />
-                  <p-button label="" icon="bi bi-check" severity="secondary" (click)="modalCamposAdicionales()" pTooltip="Modal"
-                  tooltipPosition="top" styleClass="custom-button add-button" [ngStyle]="{'margin-right': '5px'}" />
+                pTooltip="Refrescar" tooltipPosition="top" styleClass="custom-button refresh-button"
+                [ngStyle]="{'margin-right': '5px'}" />
+                <p-button [disabled]="disabledPdf" label="" icon="bi bi-filetype-pdf" severity="secondary" (click)="exportPdf(dt)" 
+                pTooltip="Descargar PDF" tooltipPosition="top" styleClass="custom-button download-button"
+                [ngStyle]="{'margin-right': '5px'}"/>
+                <p-button label="" icon="bi bi-download" severity="secondary" (click)="exportExcel(dt)"  
+                pTooltip="Descargar Excel" tooltipPosition="top" styleClass="custom-button add-button"
+                [ngStyle]="{'margin-right': '5px'}"/>
+                <p-button label="" icon="bi-list" (click)="agregarColumna($event)" severity="secondary"  
+                pTooltip="Agregar columna" tooltipPosition="top" styleClass="custom-button column-button"
+                [ngStyle]="{'margin-right': '5px'}"/>
+                <p-button label="" icon="bi bi-plus" severity="secondary" (click)="inserta()"  
+                  pTooltip="Añadir nuevo" tooltipPosition="top" styleClass="custom-button add-button"
+                  [ngStyle]="{'margin-right': '5px'}"/>
               </div>
             </div>
           </ng-template>
           <ng-template pTemplate="header" let-columns>
             <tr class="custom-header">
-              <th *ngFor="let def of lsColumnasAMostrar" pSortableColumn="{{def.key}}" pReorderableColumn
-                [class.sort-active]="isSorted(def.key)" style="text-align: center;">
-                {{def.valor}}
-                <p-sortIcon field="{{def.key}}"></p-sortIcon>
-              </th>
-              <th></th>
+                <th *ngFor="let def of lsColumnasAMostrar" pSortableColumn="{{def.key}}" pReorderableColumn [class.sort-active]="isSorted(def.key)" style="text-align: center;">
+                    {{def.valor}}
+                  <p-sortIcon field="{{def.key}}"></p-sortIcon>
+                </th>
+                <th></th> 
             </tr>
             <tr>
               <th *ngFor="let def of lsColumnasAMostrar" style="min-width: 30%;">
                 <ng-container *ngIf="def.groupColumn">
                   <p-columnFilter field="{{def.key}}" matchMode="in" [showMenu]="false">
                     <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                      <p-multiSelect [ngModel]="value" [options]="obtenerArregloFiltros(contactos, def.key)"
-                        placeholder="" (onChange)="filter($event.value)">
+                      <p-multiSelect [ngModel]="value"
+                        [options]="obtenerArregloFiltros(contactos, def.key)" placeholder=""
+                        (onChange)="filter($event.value)">
                         <ng-template let-option pTemplate="item">
                           <div class="p-multiselect-representative-option">
                             <span class="ml-1">{{option}}</span>
@@ -120,12 +121,12 @@
                   def.tipoFormato === 'estatus' ? 'center' :
                   def.key === 'telefono' ? 'center' : 'left'
               }">
-
+                
                 <ng-container [ngSwitch]="def.tipoFormato">
                   <span *ngSwitchCase="'text'">{{ rowData[def.key] }}</span>
                   <div *ngSwitchCase="'currency'">
                     <p-columnFilter type="numeric" field="{{def.key}}" [showButtons]="false"
-                      [maxFractionDigits]="7"></p-columnFilter>
+                        [maxFractionDigits]="7"></p-columnFilter>
                   </div>
                   <span *ngSwitchCase="'number'">{{ rowData[def.key] | number:'1.0-2' }}</span>
                   <span *ngSwitchCase="'date'">{{ rowData[def.key] | date:'dd/MM/yyyy' }}</span>
@@ -133,8 +134,7 @@
                 </ng-container>
               </td>
               <td [ngStyle]="{'width': '20px', 'text-align': 'center'}">
-                <p-button styleClass="coloreditar-icon" (click)="actualiza(rowData)" pTooltip="Editar registro"
-                  tooltipPosition="top">
+                <p-button styleClass="coloreditar-icon" (click)="actualiza(rowData)" pTooltip="Editar registro" tooltipPosition="top">
                   <span class="custom-pencil">✏️</span>
                 </p-button>
               </td>
@@ -144,7 +144,8 @@
           <ng-template pTemplate="footer" let-columns #footer>
             <tr class="custom-footer">
               <td *ngFor="let def of lsColumnasAMostrar"
-                [ngClass]="{'total-registros-cell': def.key === 'nombreCompleto'}" [ngStyle]="{
+              [ngClass]="{'total-registros-cell': def.key === 'nombreCompleto'}"
+              [ngStyle]="{
                 'text-align': def.key ===  'desEstatus' ? 'center' : 'left',
                 'width': def.key === 'estatus' ? '50px' :
                       def.key === 'telefono' ? '200px' : 
@@ -175,7 +176,3 @@
 <!-- <app-modal-contactos [(visible)]="modalVisible" [title]="'Editar Datos de '" (closeModal)="onModalClose()"
   (result)="manejarResultado($event)" [insertar]="insertar" [contactos]="contactos" [contacto]="contactoSeleccionado">
 </app-modal-contactos> -->
-
-<app-modal-campos-nuevos [(visible)]="modalVisibleCamposAdicionales" (closeModal)="onModalCloseCamposAdicionales()"
-  (result)="manejarResultadoCamposAdicionales($event)">
-</app-modal-campos-nuevos>

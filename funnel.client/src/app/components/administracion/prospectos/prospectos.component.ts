@@ -146,7 +146,7 @@ onModalCloseCamposAdicionales() {
         const idUsuario = this.loginService.obtenerIdUsuario();
         const idEmpresa = this.loginService.obtenerIdEmpresa();
     
-        this.contactosService.getCamposAdicionales(idEmpresa, idUsuario).subscribe({
+        this.contactosService.getCamposAdicionales(idEmpresa, "prospectos").subscribe({
           next: (result: CamposAdicionales[]) => {
     
             this.camposAdicionales = result.map(campos => ({

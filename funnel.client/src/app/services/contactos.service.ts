@@ -45,9 +45,9 @@ export class ContactosService {
       { params: { idEmpresa: idEmpresa.toString() }, responseType: 'blob' });
   }
 
-   getCamposAdicionales(idEmpresa: number, idUsuario: number): Observable<any> {
+   getCamposAdicionales(idEmpresa: number, tipoCatalogo: string): Observable<any> {
     return this.http.get(`${this.baseUrl}api/InputsAdicionales/ConsultarInputsAdicionales`, {
-      params: { idUsuario: idUsuario.toString(), idEmpresa: idEmpresa.toString() }
+      params: { idEmpresa: idEmpresa.toString(), tipoCatalogo: tipoCatalogo }
     });
   }
 

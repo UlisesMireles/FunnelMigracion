@@ -17,6 +17,5 @@ namespace Funnel.Models.Dto
         public string TipoCatalogoInput { get; set; }
         public int Orden { get; set; }
         public bool Activo { get; set; }
-        public bool Modificado { get; set; }
     }
 }

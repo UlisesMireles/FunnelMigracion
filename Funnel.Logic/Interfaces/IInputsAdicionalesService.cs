@@ -10,7 +10,7 @@ namespace Funnel.Logic.Interfaces
 {
     public interface IInputsAdicionalesService
     {
-        Task<List<InputAdicionalDTO>> ConsultarInputsAdicionales(int IdEmpresa);
+        Task<List<InputAdicionalDTO>> ConsultarInputsAdicionales(int IdEmpresa, string TipoCatalogo);
         Task<List<InputAdicionalDTO>> ConsultarInputsPorCatalogo(int IdEmpresa, string TipoCatalogo);
         Task<List<InputAdicionalDataDTO>> ConsultarDataInputsAdicionales(int IdEmpresa, string TipoCatalogo, int IdReferencia);
         Task<BaseOut> GuardarInputsAdicionales(List<InputAdicionalDTO> listaInputs);

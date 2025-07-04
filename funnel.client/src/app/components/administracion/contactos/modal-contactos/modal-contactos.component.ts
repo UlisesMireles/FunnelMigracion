@@ -54,6 +54,7 @@ export class ModalContactosComponent {
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() closeModal: EventEmitter<void> = new EventEmitter();
   @Output() result: EventEmitter<baseOut> = new EventEmitter();
+  @Output() activarModalInputsAdicionales: EventEmitter<any> = new EventEmitter();
 
   constructor(private contactosService: ContactosService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder, private cdr: ChangeDetectorRef) {
     this.formInfoAdicionales = this.fb.group({});
@@ -359,5 +360,19 @@ export class ModalContactosComponent {
   }
   get formArrayInfoAdicional(): FormArray {
     return this.formInfoAdicionales.controls["formArrayInfoAdicional"] as FormArray;
+  }
+
+
+  abrirModalInputsAdicionales() {
+    //Deberias cerrar el modal de contactos, enviar emmit, y pasar parametro que es del modal de contactos
+    let obj = {
+      tipoCatalogo: "Contactos",
+      pantalla: "Contactos",
+      insertar: this.insertarContacto,
+      referencia: this.contacto
+    }
+    this.activarModalInputsAdicionales.emit(obj);
+    this.close();
+
   }
 }

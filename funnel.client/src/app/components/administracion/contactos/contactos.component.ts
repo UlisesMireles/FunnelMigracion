@@ -151,7 +151,7 @@ export class ContactosComponent {
         const idUsuario = this.loginService.obtenerIdUsuario();
         const idEmpresa = this.loginService.obtenerIdEmpresa();
     
-        this.contactosService.getCamposAdicionales(idEmpresa, idUsuario).subscribe({
+        this.contactosService.getCamposAdicionales(idEmpresa, "contactos").subscribe({
           next: (result: CamposAdicionales[]) => {
     
             this.camposAdicionales = result.map(campos => ({

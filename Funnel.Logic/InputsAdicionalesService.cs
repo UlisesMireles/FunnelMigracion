@@ -20,9 +20,9 @@ namespace Funnel.Logic
             _inputsAdicionalesData = inputsAdicionalesData;
         }
 
-        public async Task<List<InputAdicionalDTO>> ConsultarInputsAdicionales(int IdEmpresa)
+        public async Task<List<InputAdicionalDTO>> ConsultarInputsAdicionales(int IdEmpresa, string TipoCatalogo)
         {
-            return await _inputsAdicionalesData.ConsultarInputsAdicionales(IdEmpresa);
+            return await _inputsAdicionalesData.ConsultarInputsAdicionales(IdEmpresa, TipoCatalogo);
         }
 
         public async Task<List<InputAdicionalDTO>> ConsultarInputsPorCatalogo(int IdEmpresa, string TipoCatalogo)
@@ -40,12 +40,6 @@ namespace Funnel.Logic
             BaseOut result = new BaseOut();
             if (listaInputs.Count > 0)
             {
-                listaInputs.Where(v => v.Modificado).ToList().ForEach(v =>
-                {
-                    v.Activo = false;
-                    v.Orden = 0;
-                });
-
                 return await _inputsAdicionalesData.GuardarInputsAdicionales(listaInputs);
             }
             result.ErrorMessage = "Error al guardar inputs adicionales: No se seleccionaron inputs.";

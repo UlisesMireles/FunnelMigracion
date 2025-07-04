@@ -18,9 +18,9 @@ namespace Funnel.Server.Controllers
         }
 
         [HttpGet("[action]/")]
-        public async Task<ActionResult<List<InputAdicionalDTO>>> ConsultarInputsAdicionales(int IdEmpresa)
+        public async Task<ActionResult<List<InputAdicionalDTO>>> ConsultarInputsAdicionales(int IdEmpresa, string TipoCatalogo)
         {
-            var respuesta = await _inputsAdicionalesService.ConsultarInputsAdicionales(IdEmpresa);
+            var respuesta = await _inputsAdicionalesService.ConsultarInputsAdicionales(IdEmpresa, TipoCatalogo);
             return Ok(respuesta);
         }
 

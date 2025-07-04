@@ -95,56 +95,56 @@ export class ModalCamposNuevosComponent {
     );
   }
 
-dropCampo(event: CdkDragDrop<any[]>) {
-  const draggedItem = event.item.data;
+  dropCampo(event: CdkDragDrop<any[]>) {
+    const draggedItem = event.item.data;
 
-  if (event.previousContainer === event.container) {
-    moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-  } else {
-    const sourceList = event.previousContainer.data;
-    const targetList = event.container.data;
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      const sourceList = event.previousContainer.data;
+      const targetList = event.container.data;
 
-    const realIndex = sourceList.findIndex(item => item.idInput === draggedItem.idInput);
+      const realIndex = sourceList.findIndex(item => item.idInput === draggedItem.idInput);
 
-    if (realIndex > -1) {
-      const [itemToMove] = sourceList.splice(realIndex, 1);
-      if (
-        event.previousContainer.id === 'camposAdicionalesList' &&
-        event.container.id === 'camposNoUtilizadosList'
-      ) {
-        itemToMove.orden = 0;
-        itemToMove.activo = false;
-        itemToMove.tipoCatalogoInput = this.pantalla;
+      if (realIndex > -1) {
+        const [itemToMove] = sourceList.splice(realIndex, 1);
+        if (
+          event.previousContainer.id === 'camposAdicionalesList' &&
+          event.container.id === 'camposNoUtilizadosList'
+        ) {
+          itemToMove.orden = 0;
+          itemToMove.activo = false;
+          itemToMove.tipoCatalogoInput = this.pantalla;
+        }
+        targetList.splice(event.currentIndex, 0, itemToMove);
       }
-      targetList.splice(event.currentIndex, 0, itemToMove);
+      this.filtroCampoNoUtilizado = '';
     }
-    this.filtroCampoNoUtilizado = '';
-  }
-  this.camposAdicionales.forEach((campo, index) => {
-    campo.activo = true;
-    campo.orden = index + 1; 
-    campo.tipoCatalogoInput = this.pantalla;
-  });
+    this.camposAdicionales.forEach((campo, index) => {
+      campo.activo = true;
+      campo.orden = index + 1;
+      campo.tipoCatalogoInput = this.pantalla;
+    });
 
-  this.cdr.detectChanges();
-}
+    this.cdr.detectChanges();
+  }
 
   trackByCampo(index: number, campo: any): any {
     return campo.idInput;
   }
 
   guardarCamposAdicionales() {
-    let listaFinalCamposAdicionales = [...this.camposAdicionales];
-    const camposNoUtilizados = this.camposNoUtilizados.find(campo => campo.rCatalogoInputId !== 0);
-    if(camposNoUtilizados)
-    {
-      listaFinalCamposAdicionales.push(camposNoUtilizados)
-    }
+    let listaFinalCamposAdicionales: CamposAdicionales[] = [];
+    const camposNoUtilizados = this.camposNoUtilizados.filter(campo => campo.rCatalogoInputId !== 0);
+    if (camposNoUtilizados.length > 0)
+      listaFinalCamposAdicionales = [...this.camposAdicionales, ...camposNoUtilizados];
+    else
+      listaFinalCamposAdicionales = [...this.camposAdicionales];
 
     this.camposAdicionalesMetodosService.postCamposAdicionales(listaFinalCamposAdicionales).subscribe({
       next: (result: baseOut) => {
         this.result.emit(result);
-        this.cerrar();
+        //this.cerrar();
       },
       error: (error) => {
         this.messageService.add({

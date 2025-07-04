@@ -20,13 +20,14 @@ namespace Funnel.Data
             _connectionString = configuration.GetConnectionString("FunelDatabase");
         }
 
-        public async Task<List<InputAdicionalDTO>> ConsultarInputsAdicionales(int IdEmpresa)
+        public async Task<List<InputAdicionalDTO>> ConsultarInputsAdicionales(int IdEmpresa, string TipoCatalogo)
         {
             List<InputAdicionalDTO> result = new List<InputAdicionalDTO>();
             IList<ParameterSQl> list = new List<ParameterSQl>
                 {
                     DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "SEL-INPUTS" ),
                     DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, IdEmpresa ),
+                    DataBase.CreateParameterSql("@pTipoCatalogoInput", SqlDbType.VarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, TipoCatalogo )
                 };
             using (IDataReader reader = await DataBase.GetReaderSql("F_InputsAdicionales", CommandType.StoredProcedure, list, _connectionString))
             {
@@ -39,10 +40,10 @@ namespace Funnel.Data
                     dto.Etiqueta = ComprobarNulos.CheckStringNull(reader["Etiqueta"]);
                     dto.Requerido = ComprobarNulos.CheckBooleanNull(reader["Requerido"]);
                     dto.TipoCampo = ComprobarNulos.CheckStringNull(reader["TipoCampo"]);
-                    dto.RCatalogoInputId = 0;
+                    dto.RCatalogoInputId = ComprobarNulos.CheckIntNull(reader["RCatalogoInputId"]);
+                    dto.Activo = ComprobarNulos.CheckBooleanNull(reader["Activo"]);
                     dto.TipoCatalogoInput = "";
                     dto.Orden = 0;
-                    dto.Activo = true;
 
 
                     result.Add(dto);

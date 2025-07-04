@@ -11,8 +11,6 @@ import { LoginService } from '../../../../services/login.service';
 
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { InpoutAdicionalData } from '../../../../interfaces/input-adicional-data';
-import { CamposAdicionales } from '../../../../interfaces/campos-adicionales';
-import { ModalCamposAdicionalesService } from '../../../../services/modalCamposAdicionales.service';
 
 
 @Component({
@@ -57,13 +55,7 @@ export class ModalContactosComponent {
   @Output() closeModal: EventEmitter<void> = new EventEmitter();
   @Output() result: EventEmitter<baseOut> = new EventEmitter();
 
-  camposAdicionales: CamposAdicionales[] = [];
-  camposAdicionalesPorCatalogo: CamposAdicionales[] = [];
-  modalVisibleCamposAdicionales: boolean = false;
-
-  constructor(private contactosService: ContactosService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder, private cdr: ChangeDetectorRef,
-    private modalCamposAdicionalesService: ModalCamposAdicionalesService
-  ) {
+  constructor(private contactosService: ContactosService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder, private cdr: ChangeDetectorRef) {
     this.formInfoAdicionales = this.fb.group({});
     this.contactoForm = this.fb.group({});
   }
@@ -285,101 +277,6 @@ export class ModalContactosComponent {
     this.formInfoAdicionales = this.fb.group({
       formArrayInfoAdicional: this.fb.array([])
     })
-  }
-
-  modalCamposAdicionales() {
-    this.getCamposAdicionales();
-  }
-
-  getCamposAdicionales() {
-
-    const idUsuario = this.loginService.obtenerIdUsuario();
-    const idEmpresa = this.loginService.obtenerIdEmpresa();
-
-    this.contactosService.getCamposAdicionales(idEmpresa, idUsuario).subscribe({
-      next: (result: CamposAdicionales[]) => {
-
-        this.camposAdicionales = result.map(campos => ({
-          ...campos,
-          idInput: campos.idInput,
-          nombre: campos.nombre,
-          etiqueta: campos.etiqueta,
-          requerido: campos.requerido,
-          tipoCampo: campos.tipoCampo,
-          rCatalogoInputId: campos.rCatalogoInputId,
-          tipoCatalogoInput: campos.tipoCatalogoInput,
-          orden: campos.orden,
-          idEmpresa: idEmpresa,
-          idUsuario: idUsuario,
-          modificado: false
-        }));
-
-        this.consultarCamposAdicionalesPorCatalogo(idEmpresa, idUsuario);
-      },
-      error: (error) => {
-        console.error('Error:', error);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error al cargar informacion de campos adicionales'
-        });
-      }
-    });
-  }
-
-
-  consultarCamposAdicionalesPorCatalogo(idEmpresa: number, idUsuario: number) {
-
-    this.contactosService.getCamposAdicionalesPorCatalogo(idEmpresa, "Contactos").subscribe({
-      next: (result: CamposAdicionales[]) => {
-
-        this.camposAdicionalesPorCatalogo = result.map(campos => ({
-          ...campos,
-          idInput: campos.idInput,
-          nombre: campos.nombre,
-          etiqueta: campos.etiqueta,
-          requerido: campos.requerido,
-          tipoCampo: campos.tipoCampo,
-          rCatalogoInputId: campos.rCatalogoInputId,
-          tipoCatalogoInput: campos.tipoCatalogoInput,
-          orden: campos.orden,
-          idEmpresa: idEmpresa,
-          idUsuario: idUsuario,
-          modificado: false
-        }));
-        this.modalCamposAdicionalesService.openModal(true, this.camposAdicionales, this.camposAdicionalesPorCatalogo, "Contactos")
-      },
-      error: (error) => {
-        console.error('Error:', error);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error al cargar informacion de campos adicionales'
-        });
-      }
-    });
-  }
-
-  manejarResultadoCamposAdicionales(result: baseOut) {
-    if (result.result) {
-      this.messageService.add({
-        severity: 'success',
-        summary: 'La operación se realizó con éxito.',
-        detail: result.errorMessage,
-      });
-      this.modalCamposAdicionalesService.closeModal(result);
-    } else {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Se ha producido un error.',
-        detail: result.errorMessage,
-      });
-    }
-  }
-
-
-  onModalCloseCamposAdicionales() {
-    this.modalCamposAdicionalesService.closeModal();
   }
 
   agregarElementosFormulario() {

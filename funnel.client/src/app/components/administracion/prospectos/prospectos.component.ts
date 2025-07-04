@@ -12,6 +12,9 @@ import { Prospectos } from '../../../interfaces/prospecto';
 import { LoginService } from '../../../services/login.service';
 import { ModalOportunidadesService } from '../../../services/modalOportunidades.service';
 import { Subscription } from 'rxjs';
+import { CamposAdicionales } from '../../../interfaces/campos-adicionales';
+import { ModalCamposAdicionalesService } from '../../../services/modalCamposAdicionales.service';
+import { ContactosService } from '../../../services/contactos.service';
 @Component({
   selector: 'app-prospectos',
   standalone: false,
@@ -62,8 +65,13 @@ EstatusDropdown = [
   columnsTodasResp = JSON.stringify(this.lsTodasColumnas);
   private modalSubscription!: Subscription;
   disabledPdf: boolean = false;
+  camposAdicionales: CamposAdicionales[] = [];
+  camposAdicionalesPorCatalogo: CamposAdicionales[] = [];
+  modalVisibleCamposAdicionales: boolean = false;
 
-  constructor( private messageService: MessageService, private cdr: ChangeDetectorRef, private prospectoService: ProspectoService, private loginService: LoginService, public dialog: MatDialog, private modalOportunidadesService: ModalOportunidadesService) { }
+  constructor( private messageService: MessageService, private cdr: ChangeDetectorRef, private prospectoService: ProspectoService, private loginService: LoginService, public dialog: MatDialog, private modalOportunidadesService: ModalOportunidadesService,
+    private modalCamposAdicionalesService: ModalCamposAdicionalesService, private contactosService: ContactosService
+  ) { }
 
 ngOnInit(): void {
   this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
@@ -107,6 +115,101 @@ getProspectos() {
     },
   });
 }
+
+onModalCloseCamposAdicionales() {
+    this.modalCamposAdicionalesService.closeModal();
+  }
+
+  manejarResultadoCamposAdicionales(result: baseOut) {
+    if (result.result) {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'La operación se realizó con éxito.',
+        detail: result.errorMessage,
+      });
+      this.modalCamposAdicionalesService.closeModal(result);
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Se ha producido un error.',
+        detail: result.errorMessage,
+      });
+    }
+  }
+
+  modalCamposAdicionales() {
+     this.getCamposAdicionales();
+  }
+
+  getCamposAdicionales() {
+    
+        const idUsuario = this.loginService.obtenerIdUsuario();
+        const idEmpresa = this.loginService.obtenerIdEmpresa();
+    
+        this.contactosService.getCamposAdicionales(idEmpresa, idUsuario).subscribe({
+          next: (result: CamposAdicionales[]) => {
+    
+            this.camposAdicionales = result.map(campos => ({
+              ...campos,
+              idInput: campos.idInput,
+              nombre: campos.nombre,
+              etiqueta: campos.etiqueta,
+              requerido: campos.requerido,
+              tipoCampo: campos.tipoCampo,
+              rCatalogoInputId: campos.rCatalogoInputId,
+              tipoCatalogoInput: campos.tipoCatalogoInput,
+              orden: campos.orden,
+              idEmpresa: idEmpresa,
+              idUsuario: idUsuario,
+              modificado: false
+            }));
+
+            this.consultarCamposAdicionalesPorCatalogo(idEmpresa, idUsuario);
+          },
+          error: (error) => {
+            console.error('Error:', error);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Error al cargar informacion de campos adicionales'
+            });
+          }
+        });
+      }
+
+  
+  consultarCamposAdicionalesPorCatalogo(idEmpresa: number, idUsuario: number) {
+
+      this.contactosService.getCamposAdicionalesPorCatalogo(idEmpresa, "Prospectos").subscribe({
+            next: (result: CamposAdicionales[]) => {
+      
+              this.camposAdicionalesPorCatalogo = result.map(campos => ({
+                ...campos,
+                idInput: campos.idInput,
+                nombre: campos.nombre,
+                etiqueta: campos.etiqueta,
+                requerido: campos.requerido,
+                tipoCampo: campos.tipoCampo,
+                rCatalogoInputId: campos.rCatalogoInputId,
+                tipoCatalogoInput: campos.tipoCatalogoInput,
+                orden: campos.orden,
+                idEmpresa: idEmpresa,
+                idUsuario: idUsuario,
+                modificado: false
+              }));
+              this.modalCamposAdicionalesService.openModal(true, this.camposAdicionales, this.camposAdicionalesPorCatalogo, "Contactos")
+            },
+            error: (error) => {
+              console.error('Error:', error);
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Error al cargar informacion de campos adicionales'
+              });
+            }
+          });
+  }
+
 FiltrarPorEstatus() {
   
   this.prospectos = this.selectedEstatus === null

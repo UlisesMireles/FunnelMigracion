@@ -16,5 +16,10 @@ namespace Funnel.Logic.Interfaces
         Task<List<TipoProyectoDto>> ObtenerOportunidadesPorTipo(RequestGrafica data);
         Task<List<OportunidadTipoDto>> ObtenerDetalleOportunidadesTipo(int idTipoProyecto, RequestGrafica data);
         Task<List<GraficaDto>> ObtenerGraficaClientesTopVeinte(RequestGrafica data);
+        Task<List<OportunidadAgenteClienteDto>> ObtenerOportunidadesPorAgenteClientes(RequestGrafica data);
+        Task<List<TipoOportunidadAgenteDto>> ObtenerOportunidadesPorAgenteTipo(RequestGrafica data);
+        Task<List<DetalleOportunidadTipoAgenteDto>> ObtenerDetalleOportunidadesTipoAgente(int idAgente, int idTipoOporAgente, RequestGrafica data);
+        Task<List<TipoSectorAgenteDto>> ObtenerOportunidadesPorSectorPorAgente(RequestGrafica data);
+        Task<List<DetalleSectorAgenteDto>> ObtenerDetallesPorSectorPorAgente(int idAgente, int idSector, RequestGrafica data);
     }
 }

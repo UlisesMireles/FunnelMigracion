@@ -1,0 +1,94 @@
+<!-- modal-indicadores-agente-cliente.component.html -->
+<p-dialog 
+  appendTo="body"
+  [(visible)]="visible" 
+  [modal]="true" 
+  [closable]="true" 
+  [maximizable]="true"
+  [style]="{
+    width: maximized ? '100vw' : '80rem',
+    height: maximized ? '100vh' : 'auto'
+  }"
+  [ngClass]="{'maximized': maximized}"
+  (onHide)="close()"
+  (onShow)="onDialogShow()"
+  [baseZIndex]="1100"
+  [draggable]="true"
+  [resizable]="false"
+  [blockScroll]="true"
+  styleClass="custom-header-naranja">
+  
+  <ng-template pTemplate="header">
+    <div class="dialog-header-content">
+      <label class="margen titulo-dialogo">
+        Oportunidades por Agente - Cliente
+      </label>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="content">
+    <div class="contenedor-tabla-dialogo">
+      <p-table #dt [value]="oportunidades" [paginator]="true" [rows]="10" 
+        [rowsPerPageOptions]="[10, 25, 50]" [totalRecords]="oportunidades.length"
+        styleClass="tabla-estilizada">
+        
+        <ng-template pTemplate="header" let-columns>
+          <tr class="custom-header">
+            <th *ngFor="let def of lsColumnasAMostrar" pSortableColumn="{{def.key}}" 
+              [ngClass]="{'sort-active': isSorted(def.key)}">
+              {{def.valor}}
+              <p-sortIcon field="{{def.key}}"></p-sortIcon>
+            </th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-rowData>
+          <tr class="fila-datos">
+            <td *ngFor="let def of lsColumnasAMostrar">
+              <ng-container [ngSwitch]="def.tipoFormato">
+                <span *ngSwitchCase="'text'">
+                  <span *ngIf="def.key === 'iniciales'"
+                        pTooltip="{{rowData['nombreEjecutivo']}}" 
+                        tooltipPosition="top">
+                    {{ rowData[def.key] }}
+                  </span>
+                  
+                  <span *ngIf="def.key === 'tipoProyectoAbreviatura'"
+                        pTooltip="{{rowData['tipoProyecto']}}" 
+                        tooltipPosition="top">
+                    {{ rowData[def.key] }}
+                  </span>
+                  
+                  <span *ngIf="def.key !== 'iniciales' && def.key !== 'tipoProyectoAbreviatura'">
+                    {{ rowData[def.key] }}
+                  </span>
+                </span>
+                
+                <span *ngSwitchCase="'currency'">{{ rowData[def.key] | currency:'MXN':'symbol':'1.2-2'}}</span>
+                <span *ngSwitchCase="'date'" >
+                  {{ rowData[def.key] | date:'dd/MM/yyyy' }}
+                </span>
+              </ng-container>
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="footer" let-columns>
+          <tr class="custom-footer">
+            <td *ngFor="let def of lsColumnasAMostrar"
+              [ngClass]="{'total-registros-cell': def.key === 'nombreProspecto'}">
+              <ng-container *ngIf="def.tipoFormato === 'currency'">
+                <div style="text-align: right; font-weight: bold;">
+                  {{ calcularSumaMontos() | currency:'MXN':'symbol':'1.2-2' }}
+                </div>
+              </ng-container>
+              <ng-container *ngIf="def.key === 'nombreProspecto'">
+                Total de Registros: {{ oportunidades.length }}
+              </ng-container>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </ng-template>
+</p-dialog>

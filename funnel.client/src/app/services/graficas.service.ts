@@ -62,7 +62,7 @@ export class GraficasService {
     grafica: {
       data: [],
       layout: {},
-      config: { displaylogo: false, responsive: true, locale: 'es-ES', scrollZoom: true, displayModeBar: true,
+      config: { displaylogo: false, responsive: true, locale: 'es-MX', scrollZoom: true, displayModeBar: true,
         modeBarButtonsToRemove: ['pan2d','select2d','lasso2d','resetScale2d','zoomIn2d','zoomOut2d', 'autoScale2d', 'zoom2d', 'sendDataToCloud', 'editInChartStudio', 'zoom3d', 'pan3d', 'orbitRotation', 'tableRotation', 'resetCameraDefault3d', 'resetCameraLastSave3d']
        }
     },
@@ -94,6 +94,8 @@ createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
       labels: items.map(item => item.label ?? 'Sin etiqueta'),
       textposition: "outside",
       textinfo: "label+percent",
+      texttemplate: '%{label}<br>$%{value:,.0f}',
+      hovertemplate: '%{label}<br>$%{value:,.0f}<extra></extra>', 
       automargin: true,
       marker: {
         color: items.map(item => item.coloreSerie ?? this.getRandomColor())
@@ -118,10 +120,10 @@ createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
       type: 'pie',
       values: items.map(item => item.valor),
       labels: items.map(item => item.label ?? 'Sin etiqueta'),
-      text: items.map(item => item.valor.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })),
+      text: items.map(item => '$' + Math.round(item.valor).toLocaleString('es-MX')),
       textposition: "outside",
       textinfo: "label+text",
-      hovertemplate: '%{label}<br>(%{percent}<extra></extra>)',
+      hovertemplate: '%{label}<br><b>%{text}</b><extra></extra>',
       automargin: true,
       marker: {
         color: items.map(item => item.coloreSerie ?? this.getRandomColor())
@@ -142,8 +144,9 @@ createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
       type: 'bar',
       y: items.map(item => item.valor),
       x: items.map(item => item.label ?? 'Sin etiqueta'),
-      text: items.map(item => item.valor.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })), 
+      text: items.map(item => '$' + Math.round(item.valor).toLocaleString('es-MX')),
       name: 'Monto',
+      hovertemplate: '%{x}<br><b>%{text}</b><extra></extra>',
       marker: {
         color: items.map(item => '#1F77B4')
       }
@@ -154,7 +157,7 @@ createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
       type: 'bar',
       x: items.map(item => item.valor),
       y: items.map(item => item.label ?? 'Sin etiqueta'),
-      text: items.map(item => item.valor.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })),
+      text: items.map(item => '$' + Math.round(item.valor).toLocaleString('es-MX')),
       hovertemplate: 'Monto: <b>%{text}</b><extra></extra>',
       orientation: 'h',
       name: 'Monto',
@@ -168,9 +171,8 @@ createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
       type: 'bar',
       x: items.map(item => item.montoNormalizado),
       y: items.map(item => item.label ?? 'Sin etiqueta'),
-      hovertemplate: 'Monto Normalizado: <b>%{text}</b><extra></extra>',
-      text: items.map(item => item.valor.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })),
-      name: 'Monto Normalizado',
+      hovertemplate: '%{x}<br><b>%{text}</b><extra></extra>',
+      text: items.map(item => '$' + Math.round(item.valor).toLocaleString('es-MX')),      name: 'Monto Normalizado',
       orientation: 'h',
       marker: {
         color: items.map(item => item.coloreSerie ?? this.getRandomColor())
@@ -197,7 +199,7 @@ createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
       type: 'funnel',
       x: [100, 80, 60, 40, 20],
       hovertemplate: '<b>%{text}</b><extra></extra>',
-      text: items.map(item => '<b>' + item.label + '</b><br>' + item.valor.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })),
+      text: items.map(item => '<b>' + item.label + '</b><br>$' + Math.round(item.valor).toLocaleString('es-MX')),
       texttemplate: '%{text}',
       textfont: { family: "Old Standard TT", size: 13, color: "black" },
       marker: {
@@ -245,9 +247,8 @@ createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
       type: 'bar',
       y: items.map(item => item.valor),
       x: items.map(item => item.label ?? 'Sin etiqueta'),
-      text: items.map(item => item.valor.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })), 
-      textposition: 'auto', 
-      hovertemplate: '<b>%{x}</b><br> (<b>%{customdata}</b><extra></extra>)', 
+      text: items.map(item => '$' + Math.round(item.valor).toLocaleString('es-MX')),      textposition: 'auto', 
+      hovertemplate: 'Monto: <b>%{text}</b><extra></extra>',
       customdata: items.map(item => `${item.porcentaje?.toFixed(2) ?? 0}%`), 
       marker: {
         color: items.map(item => item.coloreSerie ?? this.getRandomColor())

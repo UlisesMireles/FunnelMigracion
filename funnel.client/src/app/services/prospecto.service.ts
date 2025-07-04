@@ -5,6 +5,7 @@ import{ Observable } from 'rxjs';
 
 import { Prospectos, RequestProspecto } from '../interfaces/prospecto';
 import { baseOut } from '../interfaces/utils/utils/baseOut';
+import { InpoutAdicionalData } from '../interfaces/input-adicional-data';
 @Injectable({
   providedIn: 'root'
 })
@@ -18,6 +19,14 @@ export class ProspectoService {
       params: { idEmpresa: idEmpresa.toString() }
     });
   }
+
+  getInputsAdicionalesData(idEmpresa: number, tipoCatalogo: string, idReferencia:number): Observable<InpoutAdicionalData[]> {
+    return this.http.get<InpoutAdicionalData[]>(`${this.baseUrl}api/InputsAdicionales/ConsultarDataInputsAdicionales`, {
+      params: { idEmpresa: idEmpresa.toString(), tipoCatalogo: tipoCatalogo, idReferencia: idReferencia }
+    });
+  }
+
+  
   getSectores(idEmpresa: number): Observable<any>{
     return this.http.get(`${this.baseUrl}api/Prospectos/ComboSectores`, {
       params: { idEmpresa: idEmpresa.toString() }
@@ -25,8 +34,11 @@ export class ProspectoService {
   }
 
   postInsertProspecto(data: Prospectos): Observable <baseOut>{
-    console.log(data);
     return this.http.post<baseOut>(this.baseUrl+'api/Prospectos/GuardarProspecto', data);
+  }
+
+  guardarInputsAdicionalesData(data: InpoutAdicionalData[]): Observable <baseOut>{
+    return this.http.post<baseOut>(this.baseUrl+'api/InputsAdicionales/GuardarInputsAdicionalesData', data);
   }
 
   getTopVeinte(idEmpresa: number, anio: string): Observable<any> {

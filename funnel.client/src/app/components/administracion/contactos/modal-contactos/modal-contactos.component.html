@@ -5,9 +5,6 @@
       {{ insertarContacto ? 'Nuevo Contacto' : title + ' ' + contactoForm.get('nombre')?.value }}
     </label>
 
-    <p-button label="" icon="bi bi-check" severity="secondary" (click)="modalCamposAdicionales()" pTooltip="Modal"
-      tooltipPosition="top" styleClass="custom-button add-button" [ngStyle]="{'margin-right': '5px'}" />
-
   </ng-template>
   <br>
   <ng-template pTemplate="content">
@@ -104,25 +101,22 @@
 
     <!-- Inputs Info Adicionales -->
 
-    <form [formGroup]="formInfoAdicionales" style="margin-top: 10px; margin-bottom: 10px;"
-      [hidden]="inputInfoAdicionales.length == 0">
+    <form [formGroup]="formInfoAdicionales" style="margin-top: 10px; margin-bottom: 10px;" [hidden]="inputInfoAdicionales.length == 0">
       <h5 style="margin: 0px 0px;font-size: 1.15rem;">Información Adicional</h5>
       <div formArrayName="formArrayInfoAdicional">
-        <div [formGroupName]="i" class="row inptSpace"
-          *ngFor="let creditoForm of formArrayInfoAdicional.controls; let i = index">
-          <div class="col-sm-4 lbl">
-            <label for="nombre">{{creditoForm.get('etiqueta')?.value}}: </label>
-          </div>
-          <div class="col-sm-8 inptSpace">
-            <input pInputText class="inptSize" formControlName="valor" />
-            <span *ngIf="creditoForm.get('valor')?.invalid && creditoForm.get('valor')?.touched"
-              class="text-danger"><br>
-              <ng-container
-                *ngIf="creditoForm.get('valor')?.errors?.['required']">{{creditoForm.get('etiqueta')?.value}} es
-                obligatorio.</ng-container>
-            </span>
+        <div [formGroupName]="i" class="row inptSpace" *ngFor="let creditoForm of formArrayInfoAdicional.controls; let i = index">
+            <div class="col-sm-4 lbl">
+              <label for="nombre">{{creditoForm.get('etiqueta')?.value}}: </label>
+            </div>
+            <div class="col-sm-8 inptSpace">
+              <input pInputText class="inptSize" formControlName="valor" />
+              <span *ngIf="creditoForm.get('valor')?.invalid && creditoForm.get('valor')?.touched"
+                class="text-danger"><br>
+                <ng-container *ngIf="creditoForm.get('valor')?.errors?.['required']">{{creditoForm.get('etiqueta')?.value}} es
+                  obligatorio.</ng-container>
+              </span>
 
-          </div>
+            </div>
 
 
         </div>
@@ -141,7 +135,3 @@
     <button pButton label="Cancelar" (click)="close()" severity="secondary"></button>
   </ng-template>
 </p-dialog>
-
-<app-modal-campos-nuevos [(visible)]="modalVisibleCamposAdicionales" (closeModal)="onModalCloseCamposAdicionales()"
-  (result)="manejarResultadoCamposAdicionales($event)">
-</app-modal-campos-nuevos>

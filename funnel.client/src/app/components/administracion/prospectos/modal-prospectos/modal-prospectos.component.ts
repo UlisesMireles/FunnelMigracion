@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter,Input, Output, SimpleChanges } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { RequestProspecto } from '../../../../interfaces/prospecto';
 import { BaseOut } from '../../../../interfaces/utils/baseOut';
@@ -9,9 +9,6 @@ import { LoginService } from '../../../../services/login.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalOportunidadesService } from '../../../../services/modalOportunidades.service';
 import { Subscription } from 'rxjs';
-import { CamposAdicionales } from '../../../../interfaces/campos-adicionales';
-import { ContactosService } from '../../../../services/contactos.service';
-import { ModalCamposAdicionalesService } from '../../../../services/modalCamposAdicionales.service';
 
 @Component({
   selector: 'app-modal-prospectos',
@@ -20,8 +17,8 @@ import { ModalCamposAdicionalesService } from '../../../../services/modalCamposA
   styleUrl: './modal-prospectos.component.css'
 })
 export class ModalProspectosComponent {
-  constructor(private prospectoService: ProspectoService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder, private cdr: ChangeDetectorRef,
-    private modalOportunidadesService: ModalOportunidadesService, private modalCamposAdicionalesService: ModalCamposAdicionalesService, private contactosService: ContactosService
+  constructor (private prospectoService: ProspectoService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder, private cdr: ChangeDetectorRef,
+  private modalOportunidadesService: ModalOportunidadesService
   ) { }
   @Input() prospecto!: Prospectos;
   @Input() prospectos: Prospectos[] = [];
@@ -34,14 +31,13 @@ export class ModalProspectosComponent {
   prospectoForm!: FormGroup;
   sectores: any[] = [];
   desdeSector: boolean = false;
-
+  
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter();
   @Output() result: EventEmitter<baseOut> = new EventEmitter();
 
   validaGuadar: boolean = false;
-  informacionProspecto: Prospectos = {
-    idProspecto: 0,
+  informacionProspecto: Prospectos = {idProspecto: 0,
     nombre: "",
     ubicacionFisica: "",
     estatus: 0,
@@ -59,16 +55,12 @@ export class ModalProspectosComponent {
     porcEfectividad: 0
   };
 
-  camposAdicionales: CamposAdicionales[] = [];
-  camposAdicionalesPorCatalogo: CamposAdicionales[] = [];
-  modalVisibleCamposAdicionales: boolean = false;
-  
   ngOnInit() {
     this.modalOportunidadesService.modalProspectoState$.subscribe(state => {
       this.desdeSector = state.desdeSector;
     });
     this.inicializarFormulario()
-
+    
   }
   // ngOnChanges(changes: SimpleChanges) {
   //   if (changes['prospecto'] && this.prospecto) {
@@ -78,9 +70,8 @@ export class ModalProspectosComponent {
   inicializarFormulario() {
     let idEmpresa = this.loginService.obtenerIdEmpresa();
     let valoresIniciales: Record<string, any>;
-    if (this.insertarProspecto) {
-      this.informacionProspecto = {
-        idProspecto: 0,
+    if(this.insertarProspecto){
+      this.informacionProspecto = {idProspecto: 0,
         nombre: this.prospecto?.nombre ?? "",
         ubicacionFisica: "",
         estatus: 0,
@@ -101,16 +92,16 @@ export class ModalProspectosComponent {
       this.prospectoForm = this.fb.group({
         idProspecto: [0],
         nombre: [this.prospecto?.nombre ?? "", [
-          Validators.required,
-          Validators.maxLength(50),
-          // Validators.pattern('^[a-zA-ZÀ-ÿ0-9\\s]+$')
-        ]
+            Validators.required,
+            Validators.maxLength(50),
+            // Validators.pattern('^[a-zA-ZÀ-ÿ0-9\\s]+$')
+          ]
         ],
         ubicacionFisica: ['', [
-          Validators.required,
-          Validators.maxLength(50),
-          Validators.pattern('^[a-zA-ZÀ-ÿ\\s]+$')
-        ]
+            Validators.required,
+            Validators.maxLength(50),
+            Validators.pattern('^[a-zA-ZÀ-ÿ\\s]+$')
+          ]
         ],
         idSector: [null, Validators.required],
         estatus: [true],
@@ -120,26 +111,26 @@ export class ModalProspectosComponent {
 
       valoresIniciales = this.prospectoForm.getRawValue();
 
-      this.prospectoForm.valueChanges.subscribe((changes) => {
-        this.validarCambios(valoresIniciales, changes);
-      });
-      this.validaGuadar = false;
-      this.cdr.detectChanges();
-    } else {
+        this.prospectoForm.valueChanges.subscribe((changes) => {
+          this.validarCambios(valoresIniciales, changes);
+        });
+        this.validaGuadar = false;
+        this.cdr.detectChanges(); 
+    }else{
       this.informacionProspecto = this.prospecto;
       this.prospectoForm = this.fb.group({
         idProspecto: [this.prospecto?.idProspecto],
         nombre: [this.prospecto?.nombre, [
-          Validators.required,
-          Validators.maxLength(50),
-          // Validators.pattern('^[a-zA-ZÀ-ÿ\\s]+$')
-        ]
+            Validators.required,
+            Validators.maxLength(50),
+            // Validators.pattern('^[a-zA-ZÀ-ÿ\\s]+$')
+          ]
         ],
         ubicacionFisica: [this.prospecto?.ubicacionFisica, [
-          Validators.required,
-          Validators.maxLength(50),
-          Validators.pattern('^[a-zA-ZÀ-ÿ\\s]+$')
-        ]
+            Validators.required,
+            Validators.maxLength(50),
+            Validators.pattern('^[a-zA-ZÀ-ÿ\\s]+$')
+          ]
         ],
         idSector: [this.prospecto?.idSector, Validators.required],
         estatus: [this.prospecto?.estatus === 1 ? true : false],
@@ -149,109 +140,14 @@ export class ModalProspectosComponent {
 
       valoresIniciales = this.prospectoForm.getRawValue();
 
-      this.prospectoForm.valueChanges.subscribe((changes) => {
-        this.validarCambios(valoresIniciales, changes);
-      });
-      this.validaGuadar = false;
-      this.cdr.detectChanges();
-    }
-
-  }
-
-  onModalCloseCamposAdicionales() {
-      this.modalCamposAdicionalesService.closeModal();
-    }
-  
-    manejarResultadoCamposAdicionales(result: baseOut) {
-      if (result.result) {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'La operación se realizó con éxito.',
-          detail: result.errorMessage,
+        this.prospectoForm.valueChanges.subscribe((changes) => {
+          this.validarCambios(valoresIniciales, changes);
         });
-        this.modalCamposAdicionalesService.closeModal(result);
-      } else {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Se ha producido un error.',
-          detail: result.errorMessage,
-        });
-      }
+        this.validaGuadar = false;
+        this.cdr.detectChanges(); 
     }
-  
-    modalCamposAdicionales() {
-       this.getCamposAdicionales();
-    }
-  
-    getCamposAdicionales() {
-      
-          const idUsuario = this.loginService.obtenerIdUsuario();
-          const idEmpresa = this.loginService.obtenerIdEmpresa();
-      
-          this.contactosService.getCamposAdicionales(idEmpresa, idUsuario).subscribe({
-            next: (result: CamposAdicionales[]) => {
-      
-              this.camposAdicionales = result.map(campos => ({
-                ...campos,
-                idInput: campos.idInput,
-                nombre: campos.nombre,
-                etiqueta: campos.etiqueta,
-                requerido: campos.requerido,
-                tipoCampo: campos.tipoCampo,
-                rCatalogoInputId: campos.rCatalogoInputId,
-                tipoCatalogoInput: campos.tipoCatalogoInput,
-                orden: campos.orden,
-                idEmpresa: idEmpresa,
-                idUsuario: idUsuario,
-                modificado: false
-              }));
-  
-              this.consultarCamposAdicionalesPorCatalogo(idEmpresa, idUsuario);
-            },
-            error: (error) => {
-              console.error('Error:', error);
-              this.messageService.add({
-                severity: 'error',
-                summary: 'Error',
-                detail: 'Error al cargar informacion de campos adicionales'
-              });
-            }
-          });
-        }
-  
     
-    consultarCamposAdicionalesPorCatalogo(idEmpresa: number, idUsuario: number) {
-  
-        this.contactosService.getCamposAdicionalesPorCatalogo(idEmpresa, "Prospectos").subscribe({
-              next: (result: CamposAdicionales[]) => {
-        
-                this.camposAdicionalesPorCatalogo = result.map(campos => ({
-                  ...campos,
-                  idInput: campos.idInput,
-                  nombre: campos.nombre,
-                  etiqueta: campos.etiqueta,
-                  requerido: campos.requerido,
-                  tipoCampo: campos.tipoCampo,
-                  rCatalogoInputId: campos.rCatalogoInputId,
-                  tipoCatalogoInput: campos.tipoCatalogoInput,
-                  orden: campos.orden,
-                  idEmpresa: idEmpresa,
-                  idUsuario: idUsuario,
-                  modificado: false
-                }));
-                this.modalCamposAdicionalesService.openModal(true, this.camposAdicionales, this.camposAdicionalesPorCatalogo, "Prospectos")
-              },
-              error: (error) => {
-                console.error('Error:', error);
-                this.messageService.add({
-                  severity: 'error',
-                  summary: 'Error',
-                  detail: 'Error al cargar informacion de campos adicionales'
-                });
-              }
-            });
-    }
-  
+  }
 
   validarCambios(valoresIniciales: any, cambios: any) {
     const valoresActuales = cambios;
@@ -271,7 +167,7 @@ export class ModalProspectosComponent {
     return valoresInicialesJson === valoresActualesJson;
   }
 
-  onDialogShow() {
+  onDialogShow(){
     this.cargarSectores();
   }
 
@@ -291,14 +187,14 @@ export class ModalProspectosComponent {
       }
     });
   }
-
+  
   close() {
     this.visible = false;
     this.visibleChange.emit(this.visible);
     this.closeModal.emit();
   }
 
-  guardarProspecto() {
+    guardarProspecto() {
     if (this.prospectoForm.invalid) {
       this.mostrarToastError();
       console.log(this.prospectoForm.errors);
@@ -307,8 +203,8 @@ export class ModalProspectosComponent {
       return;
     }
     this.prospectoForm.controls['estatus'].setValue(this.prospectoForm.value.estatus ? 1 : 0);
-    this.prospectoForm.controls['bandera'].setValue(this.prospectoForm.value.bandera);
-    this.prospectoForm.controls['idEmpresa'].setValue(this.loginService.obtenerIdEmpresa());
+     this.prospectoForm.controls['bandera'].setValue(this.prospectoForm.value.bandera);
+     this.prospectoForm.controls['idEmpresa'].setValue(this.loginService.obtenerIdEmpresa());
 
     this.informacionProspecto = {
       ...this.informacionProspecto,
@@ -320,7 +216,7 @@ export class ModalProspectosComponent {
       estatus: this.prospectoForm.get('estatus')?.value,
       idEmpresa: this.prospectoForm.get('idEmpresa')?.value
     }
-
+   
 
     this.prospectoService.postInsertProspecto(this.informacionProspecto).subscribe({
       next: (result: baseOut) => {
@@ -337,7 +233,7 @@ export class ModalProspectosComponent {
     });
   }
 
-
+  
 
   mostrarToastError() {
     this.messageService.add({

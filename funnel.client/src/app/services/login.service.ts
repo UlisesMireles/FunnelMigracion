@@ -21,8 +21,11 @@ export class LoginService {
   private currentUserSubject = new BehaviorSubject<any>(null);
   public currentUser: Observable<Usuario>;
   public sessionWarning$ = new Subject<void>();
-  private sessionTimeout = 40 * 60 * 1000;
+  private sessionTimeout = 30 * 60 * 1000;
   private timer: any;
+  private warningTime: any;
+  public sessionReset$ = new Subject<void>();
+
   constructor(private http: HttpClient, private router: Router, private readonly catalogoService: CatalogoService, 
     private readonly permisosService: PermisosService, private estadoChatService: EstadoChatService) {
     this.currentUser = this.currentUserSubject.asObservable();
@@ -97,10 +100,13 @@ export class LoginService {
     if (this.timer) {
       clearTimeout(this.timer);
     }
-    const warningTime = this.sessionTimeout - (2 * 60 * 1000);
-    setTimeout(() => {
+    if(this.warningTime){
+      clearTimeout(this.warningTime);
+    }
+    const _warningTime = this.sessionTimeout - (2 * 60 * 1000);
+    this.warningTime = setTimeout(() => {
       this.sessionWarning$.next();
-    }, warningTime);
+    }, _warningTime);
     
     this.timer = setTimeout(() => {
       this.logout('La sesión ha expirado: login service startSessionTimer');
@@ -110,6 +116,7 @@ export class LoginService {
   resetTimer() {
     localStorage.setItem('lastActivity', Date.now().toString());
     this.startSessionTimer();
+    this.sessionReset$.next();
   }
   logout(motivo: string): void {
     const sesionId = sessionStorage.getItem('SesionId') ?? '';

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { LazyLoadEvent } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { MessageService } from 'primeng/api';
@@ -35,11 +35,11 @@ export class ContactosComponent {
 
   selectedEstatus: string = 'Activo';
   loading: boolean = true;
-  
+
 
   insertar: boolean = false;
   modalVisible: boolean = false;
-
+  @Output() headerClicked = new EventEmitter<void>();
   EstatusDropdown = [
     { label: 'Todo', value: null },
     { label: 'Activo', value: 'Activo' },
@@ -143,76 +143,76 @@ export class ContactosComponent {
   }
 
   modalCamposAdicionales() {
-     this.getCamposAdicionales();
+    this.getCamposAdicionales();
   }
 
-   getCamposAdicionales() {
-    
-        const idUsuario = this.loginService.obtenerIdUsuario();
-        const idEmpresa = this.loginService.obtenerIdEmpresa();
-    
-        this.contactosService.getCamposAdicionales(idEmpresa, "contactos").subscribe({
-          next: (result: CamposAdicionales[]) => {
-    
-            this.camposAdicionales = result.map(campos => ({
-              ...campos,
-              idInput: campos.idInput,
-              nombre: campos.nombre,
-              etiqueta: campos.etiqueta,
-              requerido: campos.requerido,
-              tipoCampo: campos.tipoCampo,
-              rCatalogoInputId: campos.rCatalogoInputId,
-              tipoCatalogoInput: campos.tipoCatalogoInput,
-              orden: campos.orden,
-              idEmpresa: idEmpresa,
-              idUsuario: idUsuario,
-              modificado: false
-            }));
+  getCamposAdicionales() {
 
-            this.consultarCamposAdicionalesPorCatalogo(idEmpresa, idUsuario);
-          },
-          error: (error) => {
-            console.error('Error:', error);
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: 'Error al cargar informacion de campos adicionales'
-            });
-          }
+    const idUsuario = this.loginService.obtenerIdUsuario();
+    const idEmpresa = this.loginService.obtenerIdEmpresa();
+
+    this.contactosService.getCamposAdicionales(idEmpresa, "contactos").subscribe({
+      next: (result: CamposAdicionales[]) => {
+
+        this.camposAdicionales = result.map(campos => ({
+          ...campos,
+          idInput: campos.idInput,
+          nombre: campos.nombre,
+          etiqueta: campos.etiqueta,
+          requerido: campos.requerido,
+          tipoCampo: campos.tipoCampo,
+          rCatalogoInputId: campos.rCatalogoInputId,
+          tipoCatalogoInput: campos.tipoCatalogoInput,
+          orden: campos.orden,
+          idEmpresa: idEmpresa,
+          idUsuario: idUsuario,
+          modificado: false
+        }));
+
+        this.consultarCamposAdicionalesPorCatalogo(idEmpresa, idUsuario);
+      },
+      error: (error) => {
+        console.error('Error:', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error al cargar informacion de campos adicionales'
         });
       }
+    });
+  }
 
-  
+
   consultarCamposAdicionalesPorCatalogo(idEmpresa: number, idUsuario: number) {
 
-      this.contactosService.getCamposAdicionalesPorCatalogo(idEmpresa, "Contactos").subscribe({
-            next: (result: CamposAdicionales[]) => {
-      
-              this.camposAdicionalesPorCatalogo = result.map(campos => ({
-                ...campos,
-                idInput: campos.idInput,
-                nombre: campos.nombre,
-                etiqueta: campos.etiqueta,
-                requerido: campos.requerido,
-                tipoCampo: campos.tipoCampo,
-                rCatalogoInputId: campos.rCatalogoInputId,
-                tipoCatalogoInput: campos.tipoCatalogoInput,
-                orden: campos.orden,
-                idEmpresa: idEmpresa,
-                idUsuario: idUsuario,
-                modificado: false
-              }));
-              this.modalCamposAdicionalesService.openModal(true, this.camposAdicionales, this.camposAdicionalesPorCatalogo, "Contactos")
-            },
-            error: (error) => {
-              console.error('Error:', error);
-              this.messageService.add({
-                severity: 'error',
-                summary: 'Error',
-                detail: 'Error al cargar informacion de campos adicionales'
-              });
-            }
-          });
+    this.contactosService.getCamposAdicionalesPorCatalogo(idEmpresa, "Contactos").subscribe({
+      next: (result: CamposAdicionales[]) => {
+
+        this.camposAdicionalesPorCatalogo = result.map(campos => ({
+          ...campos,
+          idInput: campos.idInput,
+          nombre: campos.nombre,
+          etiqueta: campos.etiqueta,
+          requerido: campos.requerido,
+          tipoCampo: campos.tipoCampo,
+          rCatalogoInputId: campos.rCatalogoInputId,
+          tipoCatalogoInput: campos.tipoCatalogoInput,
+          orden: campos.orden,
+          idEmpresa: idEmpresa,
+          idUsuario: idUsuario,
+          modificado: false
+        }));
+        this.modalCamposAdicionalesService.openModal(true, this.camposAdicionales, this.camposAdicionalesPorCatalogo, "Contactos")
+      },
+      error: (error) => {
+        console.error('Error:', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error al cargar informacion de campos adicionales'
+        });
+      }
+    });
   }
 
   manejarResultado(result: baseOut) {
@@ -249,8 +249,8 @@ export class ContactosComponent {
     }
   }
 
-  
-onModalCloseCamposAdicionales() {
+
+  onModalCloseCamposAdicionales() {
     this.modalCamposAdicionalesService.closeModal();
   }
 
@@ -312,15 +312,15 @@ onModalCloseCamposAdicionales() {
   exportExcel(table: Table) {
     let lsColumnasAMostrar = this.lsColumnasAMostrar.filter(col => col.isCheck);
     let columnasAMostrarKeys = lsColumnasAMostrar.map(col => col.key);
-  
+
     let dataExport = (table.filteredValue || table.value || []).map(row => {
       return columnasAMostrarKeys.reduce((acc, key) => {
         acc[key] = row[key];
         return acc;
       }, {} as { [key: string]: any });
     });
-  
-  
+
+
     import('xlsx').then(xlsx => {
       const hojadeCalculo: import('xlsx').WorkSheet = xlsx.utils.json_to_sheet(dataExport);
       const libro: import('xlsx').WorkBook = xlsx.utils.book_new();
@@ -351,7 +351,7 @@ onModalCloseCamposAdicionales() {
     this.disabledPdf = true;
 
 
-    this.contactosService.descargarReporteContactos(data,this.loginService.obtenerIdEmpresa()).subscribe({
+    this.contactosService.descargarReporteContactos(data, this.loginService.obtenerIdEmpresa()).subscribe({
       next: (result: Blob) => {
         const url = window.URL.createObjectURL(result);
         const link = document.createElement('a');
@@ -380,7 +380,7 @@ onModalCloseCamposAdicionales() {
     }
 
     const registrosVisibles = table.filteredValue ? table.filteredValue : this.contactos;
-  
+
     if (def.key === 'nombreCompleto') {
       return registrosVisibles.length;
     }
@@ -396,11 +396,11 @@ onModalCloseCamposAdicionales() {
 
   getVisibleTotal(campo: string, dt: any): number {
     const registrosVisibles = dt.filteredValue ? dt.filteredValue : this.contactos;
-  
+
     if (campo === 'nombreCompleto') {
       return registrosVisibles.length;
     }
-  
+
     return registrosVisibles.reduce(
       (acc: number, empresa: Contacto) =>
         acc + (Number(empresa[campo as keyof Contacto] || 0)),
@@ -415,17 +415,20 @@ onModalCloseCamposAdicionales() {
 
   getColumnWidth(key: string): object {
     const widths: { [key: string]: string } = {
-        nombreCompleto: '100%',
-        telefono: '100%',
-        correoElectronico: '100%',
-        prospecto: '100%',
-        desEstatus: '100%',
+      nombreCompleto: '100%',
+      telefono: '100%',
+      correoElectronico: '100%',
+      prospecto: '100%',
+      desEstatus: '100%',
     };
     return { width: widths[key] || 'auto' };
-}
-isSorted(columnKey: string): boolean {
-    
-  return this.dt?.sortField === columnKey;
-}
+  }
+  isSorted(columnKey: string): boolean {
 
+    return this.dt?.sortField === columnKey;
+  }
+
+  onHeaderClick() {
+    this.headerClicked.emit();
+  }
 }

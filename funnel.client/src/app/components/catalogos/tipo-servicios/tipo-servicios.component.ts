@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { TipoServicio } from '../../../interfaces/tipoServicio';
 import { TipoServicioService } from '../../../services/tipo-servicio.service';
 import { Table } from 'primeng/table';
@@ -33,7 +33,7 @@ export class TipoServiciosComponent {
 
   insertar: boolean = false;
   modalVisible: boolean = false;
-
+  @Output() headerClicked = new EventEmitter<void>();
 
   EstatusDropdown = [
     { label: 'Todo', value: null },
@@ -293,7 +293,9 @@ export class TipoServiciosComponent {
     
         return this.dt?.sortField === columnKey;
     }
-  
+    onHeaderClick() {
+    this.headerClicked.emit();
+  }
   }
   
 

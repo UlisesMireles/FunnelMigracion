@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 //PrimeNG
 import { LazyLoadEvent } from 'primeng/api';
 import { Table } from 'primeng/table';
@@ -39,7 +39,7 @@ export class ProspectosComponent {
   modalVisible: boolean = false;
   selectedEstatus: any = null;
   desdeSector = false;
-
+  @Output() headerClicked = new EventEmitter<void>();
 EstatusDropdown = [
   { label: 'Todo', value: null },
   { label: 'Activo', value: 'Activo' },
@@ -456,5 +456,8 @@ abrirModalSector(rowData: any) {
           this.ngOnInit();
         }
       });
+  }
+  onHeaderClick() {
+    this.headerClicked.emit();
   }
 }

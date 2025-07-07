@@ -7,6 +7,12 @@
      <span class="spanNombre">{{ licencia }}</span>
     </div>
     <div class="col-4 menu-header-container">
+      <div>
+        Sesión expira en: {{ sessionCountdownMinutes }}:{{ sessionCountdownSeconds < 10 ? '0' + sessionCountdownSeconds : sessionCountdownSeconds }}
+      </div>
+      <div class="ms-2">
+        Inactividad: {{ sessionCountdownMinutesInactividad }}:{{ sessionCountdownSecondsInactividad < 10 ? '0' + sessionCountdownSecondsInactividad : sessionCountdownSecondsInactividad }}
+      </div>
       <div class="agregar btn-agregar-custom ms-2" (click)="toggleOptions()" (mouseenter)="showSubmenu()" (mouseleave)="hideSubmenu()">
         <!-- <p-splitbutton label="Agregar" [model]="items" raised severity="secondary" #splitBtn /> -->
         <button class="btn-chat float-end cursor-pointer"  > 

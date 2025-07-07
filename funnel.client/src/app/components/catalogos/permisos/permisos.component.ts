@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { Permiso, PermisoSeleccionado} from '../../../interfaces/permisos';
 import { baseOut } from '../../../interfaces/utils/utils/baseOut';
 import { LoginService } from '../../../services/login.service';
@@ -21,7 +21,7 @@ export class PermisosComponent {
   agrupadosPermisos: any[] = [];
   loading: boolean = true;
   hayCambios: boolean = false; 
-
+  @Output() headerClicked = new EventEmitter<void>();
   constructor(
     private permisosService: PermisosService,
     private messageService: MessageService,
@@ -139,5 +139,8 @@ export class PermisosComponent {
 
   onPermisoChange() {
     this.hayCambios = true;
+  }
+  onHeaderClick() {
+    this.headerClicked.emit();
   }
 }

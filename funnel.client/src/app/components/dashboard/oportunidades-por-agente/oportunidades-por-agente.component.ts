@@ -19,6 +19,9 @@ export class OportunidadesPorAgenteComponent {
   agenteSeleccionadoId: number | null = null;
   @ViewChildren('cardElement') cardElements!: QueryList<ElementRef>;
   originalParentElements = new Map<string, { parent: HTMLElement, nextSibling: Node | null }>();
+  modalAgenteClienteVisible: boolean = false;
+  modalAgenteTipoVisible = false;
+  modalAgenteSectorVisible: boolean = false;
 
 
 
@@ -222,4 +225,35 @@ toggleMaximizar(i: number, j: number, event: MouseEvent): void {
     }
   }
 }
+
+openAgenteClienteModal() {
+  if (this.agenteSeleccionadoId) {
+    this.modalAgenteClienteVisible = true;
+  }
 }
+
+onModalAgenteClienteClose() {
+  this.modalAgenteClienteVisible = false;
+}
+
+openAgenteTipoModal() {
+  if (this.agenteSeleccionadoId) {
+    this.modalAgenteTipoVisible = true;
+  }
+}
+
+onModalAgenteTipoClose() {
+  this.modalAgenteTipoVisible = false;
+}
+
+openAgenteSectorModal() {
+  if (this.agenteSeleccionadoId) {
+    this.modalAgenteSectorVisible = true;
+  }
+}
+
+onModalAgenteSectorClose() {
+  this.modalAgenteSectorVisible = false;
+}
+}
+

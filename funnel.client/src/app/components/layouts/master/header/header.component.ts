@@ -69,6 +69,14 @@ export class HeaderComponent implements OnInit {
 
   private isDragging = false;
   private offset = { x: 0, y: 0 };
+  sessionCountdownMinutes: number = 0;
+  sessionCountdownSeconds: number = 0;
+  private sessionCountdownInterval: any;
+
+
+  sessionCountdownMinutesInactividad: number = 0;
+  sessionCountdownSecondsInactividad: number = 0;
+  private sessionCountdownIntervalInactividad: any;
 
   constructor(
     public asistenteService: AsistenteService,
@@ -105,6 +113,9 @@ export class HeaderComponent implements OnInit {
     if (this.asistenteSubscription) {
       this.asistenteSubscription.unsubscribe();
     }
+    if (this.sessionCountdownInterval) {
+      clearInterval(this.sessionCountdownInterval);
+    }
   }
   toggleChat(): void {
     this.asistenteSubscription = this.asistenteService.asistenteObservable.subscribe(value => {
@@ -133,6 +144,10 @@ export class HeaderComponent implements OnInit {
     this.optionsVisible = true;
   }
   ngOnInit(): void {
+    this.startSessionCountdown();
+    this.authService.sessionReset$.subscribe(() => {
+      this.startSessionCountdown();
+    });
     this.asistenteService.asistenteSubject.next(-1);
     this.cargarImagenEmpresa();
     const perfil = {
@@ -472,5 +487,50 @@ export class HeaderComponent implements OnInit {
   logout() {
     this.authService.logout('Sesión cerrada por el usuario');
     this.router.navigate(['/login']);
+  }
+
+  startSessionCountdown() {
+    // sessionTimeout está en milisegundos
+    let remaining = this.authService['sessionTimeout'] / 1000; // en segundos
+    let remainingInactividad = remaining - (2 * 60); // 2 minutos antes de la expiración
+
+    if (this.sessionCountdownInterval) {
+      clearInterval(this.sessionCountdownInterval);
+    }
+
+    this.updateCountdownDisplay(remaining);
+
+    if (this.sessionCountdownIntervalInactividad) {
+      clearInterval(this.sessionCountdownIntervalInactividad);
+    }
+
+    this.updateCountdownDisplay(remainingInactividad);
+
+    this.sessionCountdownInterval = setInterval(() => {
+      remaining--;
+      this.updateCountdownDisplay(remaining);
+
+      if (remaining <= 0) {
+        clearInterval(this.sessionCountdownInterval);
+      }
+    }, 1000);
+
+    this.sessionCountdownIntervalInactividad = setInterval(() => {
+      remainingInactividad--;
+      this.updateCountdownDisplayInactividad(remainingInactividad);
+
+      if (remainingInactividad <= 0) {
+        clearInterval(this.sessionCountdownIntervalInactividad);
+      }
+    }, 1000);
+  }
+
+  updateCountdownDisplay(remainingSeconds: number) {
+    this.sessionCountdownMinutes = Math.floor(remainingSeconds / 60);
+    this.sessionCountdownSeconds = remainingSeconds % 60;
+  }
+  updateCountdownDisplayInactividad(remainingSeconds: number) {
+    this.sessionCountdownMinutesInactividad = Math.floor(remainingSeconds / 60);
+    this.sessionCountdownSecondsInactividad = remainingSeconds % 60;
   }
 }

@@ -15,6 +15,7 @@ export class ModalOportunidadesPorAgenteClientesComponent {
   @Input() visible: boolean = false;
   @Output() visibleChange = new EventEmitter<boolean>();
   @Output() closeModal = new EventEmitter<void>();
+  @Input() idAgente: number | null = null;
 
   oportunidades: OportunidadAgenteCliente[] = [];
   loading: boolean = true;
@@ -36,13 +37,16 @@ export class ModalOportunidadesPorAgenteClientesComponent {
   ) {}
 
   onDialogShow() {
-    this.cargarOportunidades();
+    if (this.idAgente) {
+      this.cargarOportunidades();
+    }
   }
 
   cargarOportunidades() {
+    if (!this.idAgente) return;
     const requestData: RequestGraficasDto = {
       idEmpresa: this.loginService.obtenerIdEmpresa(),
-      idUsuario: this.loginService.obtenerIdUsuario(),
+      idUsuario: this.idAgente,
       idEstatusOportunidad: 1,
     };
 

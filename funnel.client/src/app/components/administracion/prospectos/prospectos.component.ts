@@ -384,6 +384,12 @@ abrirModalSector(rowData: any) {
         <p><b>Total de oportunidades:</b> ${this.prospectoSeleccionado. totalOportunidades}</p>
         <p><b>Oportunidades Ganadas:</b> $${this.prospectoSeleccionado.ganadas}</p>
         <p><b>Porcentaje de efectividad:</b> ${this.prospectoSeleccionado.porcEfectividad}%</p>
+        <p><b>PromDiasEtapa1:</b> ${this.prospectoSeleccionado.diasEtapa1} días</p>
+        <p><b>PromDiasEtapa2:</b> ${this.prospectoSeleccionado.diasEtapa2} días</p>
+        <p><b>PromDiasEtapa3:</b> ${this.prospectoSeleccionado.diasEtapa3} días</p>
+        <p><b>PromDiasEtapa4:</b> ${this.prospectoSeleccionado.diasEtapa4} días</p>
+        <p><b>PromDiasEtapa5:</b> ${this.prospectoSeleccionado.diasEtapa5} días</p>
+        <p><b>Días sin actividad:</b> ${this.prospectoSeleccionado.diasSinActividad} días</p>
         
       `.trim();
   

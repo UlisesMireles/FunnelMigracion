@@ -154,12 +154,12 @@ inserta() {
     eliminadas: 0,
     idEmpresa: 0,
     porcEfectividad: 0,
-    diasEtapa1: 0,
-    diasEtapa2: 0,
-    diasEtapa3: 0,
-    diasEtapa4: 0,
-    diasEtapa5: 0,
-    diasSinActividad: 0};
+    promDiasEtapa1: 0,
+    promDiasEtapa2: 0,
+    promDiasEtapa3: 0,
+    promDiasEtapa4: 0,
+    promDiasEtapa5: 0,
+    promDiasSinActividad: 0};
   this.modalOportunidadesService.openModalProspecto(true, true, [], this.prospectoSeleccionado)
   this.insertar = true;
   this.modalVisible = true;
@@ -378,18 +378,17 @@ abrirModalSector(rowData: any) {
   }
   calificarProspecto(licencia: Prospectos) {
       this.prospectoSeleccionado = licencia;
-      console.log(this.prospectoSeleccionado);
       const resumenProspecto = `
         <p><b>Nombre prospecto:</b> ${this.prospectoSeleccionado.nombre}</p>
         <p><b>Total de oportunidades:</b> ${this.prospectoSeleccionado. totalOportunidades}</p>
         <p><b>Oportunidades Ganadas:</b> $${this.prospectoSeleccionado.ganadas}</p>
         <p><b>Porcentaje de efectividad:</b> ${this.prospectoSeleccionado.porcEfectividad}%</p>
-        <p><b>PromDiasEtapa1:</b> ${this.prospectoSeleccionado.diasEtapa1} días</p>
-        <p><b>PromDiasEtapa2:</b> ${this.prospectoSeleccionado.diasEtapa2} días</p>
-        <p><b>PromDiasEtapa3:</b> ${this.prospectoSeleccionado.diasEtapa3} días</p>
-        <p><b>PromDiasEtapa4:</b> ${this.prospectoSeleccionado.diasEtapa4} días</p>
-        <p><b>PromDiasEtapa5:</b> ${this.prospectoSeleccionado.diasEtapa5} días</p>
-        <p><b>Días sin actividad:</b> ${this.prospectoSeleccionado.diasSinActividad} días</p>
+        <p><b>Promedio ías Etapa 1:</b> ${this.prospectoSeleccionado.promDiasEtapa1} días</p>
+        <p><b>Promedio Días Etapa 2:</b> ${this.prospectoSeleccionado.promDiasEtapa2} días</p>
+        <p><b>Promedio Días Etapa 3:</b> ${this.prospectoSeleccionado.promDiasEtapa3} días</p>
+        <p><b>Promedio Días Etapa 4:</b> ${this.prospectoSeleccionado.promDiasEtapa4} días</p>
+        <p><b>Promedio Días Etapa 5:</b> ${this.prospectoSeleccionado.promDiasEtapa5} días</p>
+        <p><b>Promedio Días sin actividad:</b> ${this.prospectoSeleccionado.promDiasSinActividad} días</p>
         
       `.trim();
   

@@ -15,6 +15,12 @@ export interface Prospectos {
     eliminadas: number;
     idEmpresa: number;
     porcEfectividad: number;
+    diasEtapa1: number;
+    diasEtapa2: number;
+    diasEtapa3: number;
+    diasEtapa4: number;
+    diasEtapa5: number;
+    diasSinActividad: number;
 }
 
 export interface ClientesTopVeinte {

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 //PrimeNG
 import { LazyLoadEvent } from 'primeng/api';
 import { Table } from 'primeng/table';
@@ -12,6 +12,10 @@ import { Prospectos } from '../../../interfaces/prospecto';
 import { LoginService } from '../../../services/login.service';
 import { ModalOportunidadesService } from '../../../services/modalOportunidades.service';
 import { Subscription } from 'rxjs';
+import { OpenIaService } from '../../../services/asistentes/openIA.service';
+import { ConsultaAsistenteDto } from '../../../interfaces/asistentes/consultaAsistente';
+import { Oportunidad, RequestOportunidad } from '../../../interfaces/oportunidades';
+
 @Component({
   selector: 'app-prospectos',
   standalone: false,
@@ -30,6 +34,7 @@ export class ProspectosComponent {
   prospectosOriginal: Prospectos[] = [];
   prospectoSeleccionado!: Prospectos;
   prospectoEdicion: Prospectos | null = null;
+  @Input() prospecto!: Prospectos;
 
   loading: boolean = true;
   insertar: boolean = false;
@@ -37,6 +42,13 @@ export class ProspectosComponent {
   selectedEstatus: any = null;
   desdeSector = false;
   @Output() headerClicked = new EventEmitter<void>();
+  copiado: boolean = false;
+  leyendo: boolean = false;
+  @Input() oportunidad!: Oportunidad;
+  visibleRespuesta = false;
+  respuestaAsistente: string = '';
+  maximizedRespuesta: boolean = false;
+  loadingAsistente: boolean = false;
 EstatusDropdown = [
   { label: 'Todo', value: null },
   { label: 'Activo', value: 'Activo' },
@@ -63,7 +75,7 @@ EstatusDropdown = [
   private modalSubscription!: Subscription;
   disabledPdf: boolean = false;
 
-  constructor( private messageService: MessageService, private cdr: ChangeDetectorRef, private prospectoService: ProspectoService, private loginService: LoginService, public dialog: MatDialog, private modalOportunidadesService: ModalOportunidadesService) { }
+  constructor( private messageService: MessageService, private cdr: ChangeDetectorRef, private prospectoService: ProspectoService, private loginService: LoginService, public dialog: MatDialog, private modalOportunidadesService: ModalOportunidadesService, private openIaService: OpenIaService) { }
 
 ngOnInit(): void {
   this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
@@ -96,6 +108,7 @@ getProspectos() {
       this.cdr.detectChanges();
       this.loading = false;
       this.FiltrarPorEstatus();
+      console.log(this.prospectosOriginal);
     },
     error: (error) => {
       this.messageService.add({
@@ -140,7 +153,13 @@ inserta() {
     canceladas: 0,
     eliminadas: 0,
     idEmpresa: 0,
-    porcEfectividad: 0,};
+    porcEfectividad: 0,
+    diasEtapa1: 0,
+    diasEtapa2: 0,
+    diasEtapa3: 0,
+    diasEtapa4: 0,
+    diasEtapa5: 0,
+    diasSinActividad: 0};
   this.modalOportunidadesService.openModalProspecto(true, true, [], this.prospectoSeleccionado)
   this.insertar = true;
   this.modalVisible = true;
@@ -356,5 +375,158 @@ abrirModalSector(rowData: any) {
   }
   onHeaderClick() {
     this.headerClicked.emit();
+  }
+  calificarProspecto(licencia: Prospectos) {
+      this.prospectoSeleccionado = licencia;
+      console.log(this.prospectoSeleccionado);
+      const resumenProspecto = `
+        <p><b>Nombre prospecto:</b> ${this.prospectoSeleccionado.nombre}</p>
+        <p><b>Total de oportunidades:</b> ${this.prospectoSeleccionado. totalOportunidades}</p>
+        <p><b>Oportunidades Ganadas:</b> $${this.prospectoSeleccionado.ganadas}</p>
+        <p><b>Porcentaje de efectividad:</b> ${this.prospectoSeleccionado.porcEfectividad}%</p>
+        
+      `.trim();
+  
+      const pregunta = `Información del prospecto:\n\n${resumenProspecto}`;
+  
+      const body: ConsultaAsistenteDto = {
+        exitoso: true,
+        errorMensaje: '',
+        idBot: 7,
+        pregunta: `${pregunta}`,
+        fechaPregunta: new Date(),
+        respuesta: '',
+        fechaRespuesta: new Date(),
+        tokensEntrada: 0,
+        tokensSalida: 0,
+        idUsuario: this.loginService.obtenerIdUsuario(),
+        idTipoUsuario: 0,
+        idEmpresa: this.loginService.obtenerIdEmpresa(),
+        esPreguntaFrecuente: false,
+      };
+  
+      this.visibleRespuesta = true;
+      this.respuestaAsistente = '';
+      this.loadingAsistente = true;
+
+  
+      this.openIaService.AsistenteHistorico(body).subscribe({
+        next: res => {
+          this.visibleRespuesta = true;
+          this.respuestaAsistente = this.limpiarRespuesta(res.respuesta || 'No se recibió respuesta.');
+           this.loadingAsistente = false;
+        },
+        error: err => {
+          this.respuestaAsistente = 'Error al consultar al asistente: ' + err.message;
+        }
+      });
+    }
+    copiarTexto(): void {
+      if (!this.respuestaAsistente) return;
+  
+      const tempElement = document.createElement('div');
+      tempElement.innerHTML = this.respuestaAsistente;
+  
+      function getPlainText(element: HTMLElement): string {
+        let text = '';
+  
+        element.childNodes.forEach(node => {
+          if (node.nodeType === Node.TEXT_NODE) {
+            // Texto normal
+            text += node.textContent;
+          } else if (node.nodeType === Node.ELEMENT_NODE) {
+            const el = node as HTMLElement;
+            const tag = el.tagName.toLowerCase();
+  
+            if (tag === 'p' || tag === 'div' || tag === 'br') {
+              text += getPlainText(el) + '\n';
+            } else if (tag === 'li') {
+              text += '- ' + getPlainText(el) + '\n';
+            } else if (tag === 'ul' || tag === 'ol') {
+              text += getPlainText(el) + '\n';
+            } else {
+              text += getPlainText(el);
+            }
+          }
+        });
+  
+        return text;
+      }
+  
+      const textoPlano = getPlainText(tempElement).trim();
+  
+      navigator.clipboard.writeText(textoPlano).then(() => {
+        this.copiado = true;
+        setTimeout(() => this.copiado = false, 2000);
+      });
+    }
+  
+    limpiarRespuesta(respuesta: string): string {
+      return respuesta
+        .replace(/```(?:\w+)?\s*([^]*?)```/g, (_, contenido) => contenido.trim())
+        .replace(/^```(?:\w+)?\s*/, '')
+        .replace(/```$/, '')
+        .trim();
+}
+leerRespuesta(): void {
+    if (this.leyendo) {
+      window.speechSynthesis.cancel();
+      this.leyendo = false;
+    } else {
+      if (!this.respuestaAsistente) return;
+
+      const tempElement = document.createElement('div');
+      tempElement.innerHTML = this.respuestaAsistente;
+
+      function getPlainText(element: HTMLElement): string {
+        let text = '';
+        element.childNodes.forEach(node => {
+          if (node.nodeType === Node.TEXT_NODE) {
+            text += node.textContent;
+          } else if (node.nodeType === Node.ELEMENT_NODE) {
+            const el = node as HTMLElement;
+            const tag = el.tagName.toLowerCase();
+
+            if (tag === 'p' || tag === 'div' || tag === 'br') {
+              text += getPlainText(el) + '\n';
+            } else if (tag === 'li') {
+              text += '- ' + getPlainText(el) + '\n';
+            } else {
+              text += getPlainText(el);
+            }
+          }
+        });
+        return text;
+      }
+
+      const textoPlano = getPlainText(tempElement).trim();
+
+      const utterance = new SpeechSynthesisUtterance(textoPlano);
+      utterance.lang = 'es-MX';
+      utterance.rate = 1;
+      utterance.pitch = 1;
+      utterance.volume = 1;
+
+      this.leyendo = true;
+
+      utterance.onend = () => {
+        this.leyendo = false;
+      };
+
+      utterance.onerror = () => {
+        this.leyendo = false;
+      };
+
+      window.speechSynthesis.cancel(); 
+      window.speechSynthesis.speak(utterance);
+    }
+  }
+  alCerrarDialogo(): void {
+    this.maximizedRespuesta = false;
+
+    if (this.leyendo) {
+      window.speechSynthesis.cancel();
+      this.leyendo = false;
+    }
   }
 }

@@ -52,7 +52,13 @@ export class ModalProspectosComponent {
     eliminadas: 0,
     idEmpresa: 0,
     bandera: "",
-    porcEfectividad: 0
+    porcEfectividad: 0,
+    diasEtapa1: 0,
+    diasEtapa2: 0,
+    diasEtapa3: 0,
+    diasEtapa4: 0,
+    diasEtapa5: 0,
+    diasSinActividad: 0
   };
 
   ngOnInit() {
@@ -86,7 +92,13 @@ export class ModalProspectosComponent {
         eliminadas: 0,
         idEmpresa: 0,
         bandera: "",
-        porcEfectividad: 0
+        porcEfectividad: 0,
+        diasEtapa1: 0,
+        diasEtapa2: 0,
+        diasEtapa3: 0,
+        diasEtapa4: 0,
+        diasEtapa5: 0,
+        diasSinActividad: 0
       };
 
       this.prospectoForm = this.fb.group({

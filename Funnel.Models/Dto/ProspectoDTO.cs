@@ -29,6 +29,13 @@ namespace Funnel.Models.Dto
         public decimal PorcEliminadas { get; set; }
 
         public decimal PorcEfectividad { get; set; }
+        public int PromDiasEtapa1 { get; set; }
+        public int PromDiasEtapa2 { get; set; }
+        public int PromDiasEtapa3 { get; set; }
+        public int PromDiasEtapa4 { get; set; }
+        public int PromDiasEtapa5 { get; set; }
+        public int PromDiasSinActividad { get; set; }
         public DateTime? UltimaFechaRegistro { get; set; }
+
     }
 }

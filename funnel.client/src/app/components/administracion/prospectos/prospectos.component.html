@@ -169,6 +169,11 @@
                 <p-button styleClass="coloreditar-icon" (click)="actualiza(rowData)" pTooltip="Editar registro" tooltipPosition="top">
                   <span class="custom-pencil">✏️</span> 
                 </p-button>
+                <button pButton severity="secondary" (click)="calificarProspecto(rowData)" pTooltip="Calificar Prospecto"
+                  tooltipPosition="top" class="icon-btn ml-2 ">
+                  <i class="bi bi-stars"></i>
+                  <!--<span class="ia-button-text "> IA</span>-->
+                </button>
               </td>
             </tr>
           </ng-template>
@@ -211,4 +216,42 @@
 <!-- <app-modal-prospectos [(visible)]="modalVisible" [title]="'Editar Datos de '" (closeModal)="onModalClose()"
   (result)="manejarResultado($event)" [insertar]="insertar" [prospectos]="prospectos" [prospecto]="prospectoSeleccionado">
 </app-modal-prospectos> -->
+<p-dialog 
+  header="Calificación de prospecto por IA"
+  [(visible)]="visibleRespuesta"
+  [modal]="true"
+  [closable]="true"
+  [maximizable]="true"
+  [style]="{
+    width: maximizedRespuesta ? '100vw' : '50vw',
+    height: maximizedRespuesta ? '100vh' : 'auto'
+  }"
+  [ngClass]="{'maximized': maximizedRespuesta}"
+  (onHide)="alCerrarDialogo()"
+  appendTo="body"
+  class="bodyDialog"
+  styleClass="custom-header-verde">
+
+  <ng-container  *ngIf="!loadingAsistente; else cargando">
+    <div class="respuesta-html" [innerHTML]="respuestaAsistente"></div>
+    <button class="btn-copiar" (click)="copiarTexto()" pTooltip="Copiar" tooltipPosition="top">
+      <mat-icon [ngClass]="copiado ? 'icono-copiado' : ''">
+        {{ copiado ? 'check' : 'content_copy' }}
+      </mat-icon>
+    </button>
+    <button class="btn-copiar" (click)="leerRespuesta()" pTooltip="{{ leyendo ? 'Detener lectura' : 'Escuchar respuesta' }}" tooltipPosition="top">
+      <mat-icon>{{ leyendo ? 'stop' : 'volume_up' }}</mat-icon>
+    </button>
+  </ng-container>
+
+  <ng-template #cargando>
+    <div class="text-center" style="padding: 20px;">
+      <p>Generando respuesta...</p>
+      <div class="spinner-border text-primary" role="status" style="margin-top: 20px;">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+    </div>
+  </ng-template>
+</p-dialog>
+
 

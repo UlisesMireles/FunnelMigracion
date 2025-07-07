@@ -329,6 +329,9 @@
   margin-left: 3px;
   font-weight: bold;
   color: #47b984;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important
 }
 .bi-stars::before{
   color: #47b984;

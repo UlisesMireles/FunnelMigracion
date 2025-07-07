@@ -74,6 +74,12 @@ namespace Funnel.Data
                     dto.Canceladas = ComprobarNulos.CheckIntNull(reader["Canceladas"]);
                     dto.Eliminadas = ComprobarNulos.CheckIntNull(reader["Eliminadas"]);
                     dto.PorcEfectividad = ComprobarNulos.CheckDecimalNull(reader["PorcEfectividad"]);
+                    dto.PromDiasEtapa1 = ComprobarNulos.CheckIntNull(reader["PromDiasEtapa1"]);
+                    dto.PromDiasEtapa2 = ComprobarNulos.CheckIntNull(reader["PromDiasEtapa2"]);
+                    dto.PromDiasEtapa3 = ComprobarNulos.CheckIntNull(reader["PromDiasEtapa3"]);
+                    dto.PromDiasEtapa4 = ComprobarNulos.CheckIntNull(reader["PromDiasEtapa4"]);
+                    dto.PromDiasEtapa5 = ComprobarNulos.CheckIntNull(reader["PromDiasEtapa5"]);
+                    dto.PromDiasSinActividad = ComprobarNulos.CheckIntNull(reader["PromDiasSinActividad"]);
 
                     result.Add(dto);
                 }

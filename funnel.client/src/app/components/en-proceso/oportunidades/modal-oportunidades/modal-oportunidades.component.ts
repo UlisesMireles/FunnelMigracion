@@ -269,6 +269,12 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
       eliminadas: 0,
       idEmpresa: 0,
       porcEfectividad: 0,
+      diasEtapa1: 0,
+      diasEtapa2: 0,
+      diasEtapa3: 0,
+      diasEtapa4: 0,
+      diasEtapa5: 0,
+      diasSinActividad: 0
     };
     this.modalOportunidadesService.openModalProspectoOportunidades(true, true, [], this.prospectoAgregado)
 

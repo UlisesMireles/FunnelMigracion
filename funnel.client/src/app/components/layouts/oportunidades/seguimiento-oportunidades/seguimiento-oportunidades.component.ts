@@ -48,6 +48,8 @@ export class SeguimientoOportunidadesComponent {
 
   copiado: boolean = false;
   leyendo: boolean = false;
+  textoLimpio: string = '';
+
 
   historialOportunidad: Oportunidad[] = [];
   
@@ -264,7 +266,7 @@ export class SeguimientoOportunidadesComponent {
     this.openIaService.AsistenteHistorico(body).subscribe({
       next: res => {
         this.visibleRespuesta = true;
-        this.respuestaAsistente = this.limpiarRespuesta(res.respuesta || 'No se recibió respuesta.');
+        this.respuestaAsistente = this.limpiarRespuesta(res.respuesta || 'No se recibió respuesta.',  this.oportunidad.fechaModificacion || 0);
         this.loading = false;
       },
       error: err => {
@@ -312,13 +314,29 @@ export class SeguimientoOportunidadesComponent {
     });
   }
 
-  limpiarRespuesta(respuesta: string): string {
-    return respuesta
+  limpiarRespuesta(respuesta: string, diasSinActividad: number): string {
+    let textoLimpio = respuesta
       .replace(/```(?:\w+)?\s*([^]*?)```/g, (_, contenido) => contenido.trim())
       .replace(/^```(?:\w+)?\s*/, '')
       .replace(/```$/, '')
       .trim();
+
+      if (diasSinActividad <= 15) {
+        // Eliminar el mensaje aunque venga dentro de un <span> o con estilos
+        textoLimpio = textoLimpio.replace(
+          /<span[^>]*?>\s*Se solicita actualizar este seguimiento dado que tiene más de 15 días sin actividad\.?\s*<\/span>/gi,
+          ''
+        );
+
+        // También eliminar si viene sin etiquetas HTML
+        textoLimpio = textoLimpio.replace(
+          /Se solicita actualizar este seguimiento dado que tiene más de 15 días sin actividad\.?/gi,
+          ''
+        );
+      }
+    return textoLimpio;
   }
+  
   banderaDictado: boolean = false;
   dictando = false;
   recognition: any;

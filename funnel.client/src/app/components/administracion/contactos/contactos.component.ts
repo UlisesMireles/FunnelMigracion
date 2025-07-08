@@ -59,9 +59,6 @@ export class ContactosComponent {
   columnsTodasResp: string = JSON.stringify(this.lsTodasColumnas);
   private modalSubscription!: Subscription;
   disabledPdf: boolean = false;
-  camposAdicionales: CamposAdicionales[] = [];
-  camposAdicionalesPorCatalogo: CamposAdicionales[] = [];
-  modalVisibleCamposAdicionales: boolean = false;
 
 
   constructor(
@@ -70,8 +67,7 @@ export class ContactosComponent {
     private cdr: ChangeDetectorRef,
     private readonly loginService: LoginService,
     public dialog: MatDialog,
-    private modalOportunidadesService: ModalOportunidadesService,
-    private modalCamposAdicionalesService: ModalCamposAdicionalesService
+    private modalOportunidadesService: ModalOportunidadesService
   ) { }
 
   ngOnInit(): void {
@@ -142,79 +138,6 @@ export class ContactosComponent {
     this.contactoEdicion = null;
   }
 
-  modalCamposAdicionales() {
-    this.getCamposAdicionales();
-  }
-
-  getCamposAdicionales() {
-
-    const idUsuario = this.loginService.obtenerIdUsuario();
-    const idEmpresa = this.loginService.obtenerIdEmpresa();
-
-    this.contactosService.getCamposAdicionales(idEmpresa, "contactos").subscribe({
-      next: (result: CamposAdicionales[]) => {
-
-        this.camposAdicionales = result.map(campos => ({
-          ...campos,
-          idInput: campos.idInput,
-          nombre: campos.nombre,
-          etiqueta: campos.etiqueta,
-          requerido: campos.requerido,
-          tipoCampo: campos.tipoCampo,
-          rCatalogoInputId: campos.rCatalogoInputId,
-          tipoCatalogoInput: campos.tipoCatalogoInput,
-          orden: campos.orden,
-          idEmpresa: idEmpresa,
-          idUsuario: idUsuario,
-          modificado: false
-        }));
-
-        this.consultarCamposAdicionalesPorCatalogo(idEmpresa, idUsuario);
-      },
-      error: (error) => {
-        console.error('Error:', error);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error al cargar informacion de campos adicionales'
-        });
-      }
-    });
-  }
-
-
-  consultarCamposAdicionalesPorCatalogo(idEmpresa: number, idUsuario: number) {
-
-    this.contactosService.getCamposAdicionalesPorCatalogo(idEmpresa, "Contactos").subscribe({
-      next: (result: CamposAdicionales[]) => {
-
-        this.camposAdicionalesPorCatalogo = result.map(campos => ({
-          ...campos,
-          idInput: campos.idInput,
-          nombre: campos.nombre,
-          etiqueta: campos.etiqueta,
-          requerido: campos.requerido,
-          tipoCampo: campos.tipoCampo,
-          rCatalogoInputId: campos.rCatalogoInputId,
-          tipoCatalogoInput: campos.tipoCatalogoInput,
-          orden: campos.orden,
-          idEmpresa: idEmpresa,
-          idUsuario: idUsuario,
-          modificado: false
-        }));
-        this.modalCamposAdicionalesService.openModal(true, this.camposAdicionales, this.camposAdicionalesPorCatalogo, "Contactos")
-      },
-      error: (error) => {
-        console.error('Error:', error);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error al cargar informacion de campos adicionales'
-        });
-      }
-    });
-  }
-
   manejarResultado(result: baseOut) {
     if (result.result) {
       this.messageService.add({
@@ -232,27 +155,6 @@ export class ContactosComponent {
     }
   }
 
-  manejarResultadoCamposAdicionales(result: baseOut) {
-    if (result.result) {
-      this.messageService.add({
-        severity: 'success',
-        summary: 'La operación se realizó con éxito.',
-        detail: result.errorMessage,
-      });
-      this.modalCamposAdicionalesService.closeModal(result);
-    } else {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Se ha producido un error.',
-        detail: result.errorMessage,
-      });
-    }
-  }
-
-
-  onModalCloseCamposAdicionales() {
-    this.modalCamposAdicionalesService.closeModal();
-  }
 
   FiltrarPorEstatus() {
     this.contactos = this.selectedEstatus === null

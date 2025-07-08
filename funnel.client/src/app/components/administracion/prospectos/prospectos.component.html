@@ -39,8 +39,6 @@
                 <p-button label="" icon="bi bi-plus" severity="secondary" (click)="inserta()"  
                   pTooltip="Añadir nuevo" tooltipPosition="top" styleClass="custom-button add-button"
                   [ngStyle]="{'margin-right': '5px'}"/>
-                <p-button label="" icon="bi bi-check" severity="secondary" (click)="modalCamposAdicionales()" pTooltip="Modal"
-                tooltipPosition="top" styleClass="custom-button add-button" [ngStyle]="{'margin-right': '5px'}" />
               </div>
             </div>
           </ng-template>
@@ -214,7 +212,4 @@
   (result)="manejarResultado($event)" [insertar]="insertar" [prospectos]="prospectos" [prospecto]="prospectoSeleccionado">
 </app-modal-prospectos> -->
 
-<app-modal-campos-nuevos [(visible)]="modalVisibleCamposAdicionales" (closeModal)="onModalCloseCamposAdicionales()"
-  (result)="manejarResultadoCamposAdicionales($event)">
-</app-modal-campos-nuevos>
 

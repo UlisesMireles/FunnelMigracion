@@ -393,7 +393,7 @@ export class SeguimientoOportunidadesComponent {
     }
   }
     
-  leerRespuesta(): void {
+ leerRespuesta(): void {
     if (this.leyendo) {
       window.speechSynthesis.cancel();
       this.leyendo = false;
@@ -428,9 +428,18 @@ export class SeguimientoOportunidadesComponent {
 
       const utterance = new SpeechSynthesisUtterance(textoPlano);
       utterance.lang = 'es-MX';
-      utterance.rate = 1;
-      utterance.pitch = 1;
+      utterance.rate = 1.1;
+      utterance.pitch = 1.2;
       utterance.volume = 1;
+
+      const vocesDisponibles = window.speechSynthesis.getVoices();
+      const vozSabina = vocesDisponibles.find(voz =>
+        voz.name === "Microsoft Dalia Online (Natural) - Spanish (Mexico)"
+      );
+
+      if (vozSabina) {
+        utterance.voice = vozSabina;
+      }
 
       this.leyendo = true;
 

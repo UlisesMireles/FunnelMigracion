@@ -12,6 +12,9 @@ import { Prospectos } from '../../../interfaces/prospecto';
 import { LoginService } from '../../../services/login.service';
 import { ModalOportunidadesService } from '../../../services/modalOportunidades.service';
 import { Subscription } from 'rxjs';
+import { CamposAdicionales } from '../../../interfaces/campos-adicionales';
+import { ModalCamposAdicionalesService } from '../../../services/modalCamposAdicionales.service';
+import { ContactosService } from '../../../services/contactos.service';
 @Component({
   selector: 'app-prospectos',
   standalone: false,
@@ -63,7 +66,8 @@ EstatusDropdown = [
   private modalSubscription!: Subscription;
   disabledPdf: boolean = false;
 
-  constructor( private messageService: MessageService, private cdr: ChangeDetectorRef, private prospectoService: ProspectoService, private loginService: LoginService, public dialog: MatDialog, private modalOportunidadesService: ModalOportunidadesService) { }
+  constructor( private messageService: MessageService, private cdr: ChangeDetectorRef, private prospectoService: ProspectoService, private loginService: LoginService, public dialog: MatDialog, private modalOportunidadesService: ModalOportunidadesService
+  ) { }
 
 ngOnInit(): void {
   this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
@@ -107,6 +111,7 @@ getProspectos() {
     },
   });
 }
+
 FiltrarPorEstatus() {
   
   this.prospectos = this.selectedEstatus === null

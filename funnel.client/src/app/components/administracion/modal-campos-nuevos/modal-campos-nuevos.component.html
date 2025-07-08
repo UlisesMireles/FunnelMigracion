@@ -37,7 +37,7 @@
     </ng-template>
 
     <ng-template pTemplate="footer">
-        <button mat-button color="primary" (click)="guardarCamposAdicionales()" class="btn-agregar-etapa">Guardar</button>
+        <button mat-button color="primary" [disabled]="!validaGuadar" (click)="guardarCamposAdicionales()" class="btn-agregar-etapa">Guardar</button>
         <button mat-button class="btn-agregar-etapa" (click)="cerrar()">Cancelar</button>
     </ng-template>
 

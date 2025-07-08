@@ -31,9 +31,11 @@ export class ModalCamposNuevosComponent {
 
 
   camposAdicionales: CamposAdicionales[] = [];
+  camposAdicionalesOriginal: CamposAdicionales[] = [];
 
   camposNoUtilizados: CamposAdicionales[] = [];
   connectedDropLists: string[] = [];
+  validaGuadar: boolean = false;
 
   constructor(private readonly camposAdicionalesService: ModalCamposAdicionalesService,
     private readonly loginService: LoginService,
@@ -74,6 +76,7 @@ export class ModalCamposNuevosComponent {
       if (state.showModal) {
         this.pantalla = state.pantalla;
         this.camposAdicionales = state.camposPorCatalogo;
+        this.camposAdicionalesOriginal = [...this.camposAdicionales];
         this.camposNoUtilizados = state.campos.filter(campo => !this.camposAdicionales.find(adicional => adicional.idInput === campo.idInput))
         this.connectedDropLists = this.camposAdicionales.map((_, i) => `ListEtapa${i}`);
       }
@@ -96,6 +99,7 @@ export class ModalCamposNuevosComponent {
   }
 
   dropCampo(event: CdkDragDrop<any[]>) {
+    console.log("cambios")
     const draggedItem = event.item.data;
 
     if (event.previousContainer === event.container) {
@@ -127,10 +131,26 @@ export class ModalCamposNuevosComponent {
     });
 
     this.cdr.detectChanges();
+    this.validarCambios();
   }
 
   trackByCampo(index: number, campo: any): any {
     return campo.idInput;
+  }
+
+  validarCambios() {
+    const valoresRegresaron = this.compararValores(this.camposAdicionalesOriginal, this.camposAdicionales);
+    if (valoresRegresaron) 
+      this.validaGuadar = false;
+    else
+      this.validaGuadar = true;
+    
+  }
+
+  compararValores(valoresIniciales: any[], valoresActuales: any[]) {
+    let valoresInicialesJson = JSON.stringify(valoresIniciales);
+    let valoresActualesJson = JSON.stringify(valoresActuales);
+    return valoresInicialesJson === valoresActualesJson;
   }
 
   guardarCamposAdicionales() {

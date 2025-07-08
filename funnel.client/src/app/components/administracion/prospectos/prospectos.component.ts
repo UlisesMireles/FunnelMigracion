@@ -14,6 +14,9 @@ import { ModalOportunidadesService } from '../../../services/modalOportunidades.
 import { Subscription } from 'rxjs';
 import { EnumTablas } from '../../../enums/enumTablas';
 import { ConfiguracionTablaService } from '../../../services/configuracion-tabla.service';
+import { CamposAdicionales } from '../../../interfaces/campos-adicionales';
+import { ModalCamposAdicionalesService } from '../../../services/modalCamposAdicionales.service';
+import { ContactosService } from '../../../services/contactos.service';
 @Component({
   selector: 'app-prospectos',
   standalone: false,
@@ -56,6 +59,7 @@ export class ProspectosComponent {
   constructor(private messageService: MessageService, private cdr: ChangeDetectorRef, private prospectoService: ProspectoService,
     private loginService: LoginService, public dialog: MatDialog, private readonly configuracionColumnasService: ConfiguracionTablaService,
     private modalOportunidadesService: ModalOportunidadesService) { }
+
 
   ngOnInit(): void {
     this.configuracionColumnasService.obtenerColumnasAMostrar(EnumTablas.Prospectos).subscribe({
@@ -113,21 +117,7 @@ export class ProspectosComponent {
       },
     });
   }
-  FiltrarPorEstatus() {
 
-    this.prospectos = this.selectedEstatus === null
-      ? [...this.prospectosOriginal]
-      : [...this.prospectosOriginal.filter((x) => x.desEstatus === this.selectedEstatus)];
-
-    this.prospectos.sort((a, b) => b.totalOportunidades - a.totalOportunidades);
-
-    if (this.dt) {
-      this.dt.first = 0;
-      this.dt.sortField = 'totalOportunidades';
-      this.dt.sortOrder = -1;
-      this.dt.reset();
-    }
-  }
   // eventosBotones
   inserta() {
     this.prospectoSeleccionado = {
@@ -179,6 +169,21 @@ export class ProspectosComponent {
         summary: 'Se ha producido un error.',
         detail: result.errorMessage,
       });
+    }
+  }
+  FiltrarPorEstatus() {
+
+    this.prospectos = this.selectedEstatus === null
+      ? [...this.prospectosOriginal]
+      : [...this.prospectosOriginal.filter((x) => x.desEstatus === this.selectedEstatus)];
+
+    this.prospectos.sort((a, b) => b.totalOportunidades - a.totalOportunidades);
+
+    if (this.dt) {
+      this.dt.first = 0;
+      this.dt.sortField = 'totalOportunidades';
+      this.dt.sortOrder = -1;
+      this.dt.reset();
     }
   }
   clear(table: Table) {

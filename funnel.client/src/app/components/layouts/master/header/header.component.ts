@@ -13,6 +13,9 @@ import { Contacto } from '../../../../interfaces/contactos';
 import { SplitButton } from 'primeng/splitbutton';
 import { LoginService } from '../../../../services/login.service';
 import { CatalogoService } from '../../../../services/catalogo.service';
+import { ContactosService } from '../../../../services/contactos.service';
+import { CamposAdicionales } from '../../../../interfaces/campos-adicionales';
+import { ModalCamposAdicionalesService } from '../../../../services/modalCamposAdicionales.service';
 @Component({
   selector: 'app-header',
   standalone: false,
@@ -55,23 +58,36 @@ export class HeaderComponent implements OnInit {
   items: MenuItem[];
   @ViewChild('splitBtn') splitButton!: SplitButton;
   esLogoDefault = false;
-  imagenEmpresaUrl: string | null = null; 
+  imagenEmpresaUrl: string | null = null;
   @ViewChild('chatContainer') chatContainer!: ElementRef;
-  
+
+  //Modal Campos Adicionales
+  camposAdicionales: CamposAdicionales[] = [];
+  camposAdicionalesPorCatalogo: CamposAdicionales[] = [];
+  modalVisibleCamposAdicionales: boolean = false;
+  informacionReferenciaCatalgo: any = {};
+
   private isDragging = false;
-  private offset = { x: 0, y: 0 };  
+  private offset = { x: 0, y: 0 };
   sessionCountdownMinutes: number = 0;
   sessionCountdownSeconds: number = 0;
   private sessionCountdownInterval: any;
 
-  
+
   sessionCountdownMinutesInactividad: number = 0;
   sessionCountdownSecondsInactividad: number = 0;
   private sessionCountdownIntervalInactividad: any;
 
-  constructor(public asistenteService: AsistenteService, private modalService: ModalService, private router: Router, 
-    private readonly catalogoService: CatalogoService, private readonly loginService: LoginService,
-    private messageService: MessageService, private modalOportunidadesService: ModalOportunidadesService, private readonly authService: LoginService) {
+  constructor(
+    public asistenteService: AsistenteService,
+    private modalService: ModalService,
+    private router: Router,
+    private readonly catalogoService: CatalogoService,
+    private messageService: MessageService,
+    private modalOportunidadesService: ModalOportunidadesService,
+    private readonly authService: LoginService,
+    private contactosService: ContactosService,
+    private modalCamposAdicionalesService: ModalCamposAdicionalesService) {
     this.items = [
       {
         label: 'Oportunidades',
@@ -105,10 +121,10 @@ export class HeaderComponent implements OnInit {
     this.asistenteSubscription = this.asistenteService.asistenteObservable.subscribe(value => {
       this.asistenteObservableValue = value;
     });
-  
+
     this.asistenteService.asistenteSubject.next(this.asistenteObservableValue * (-1));
   }
-  
+
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
     const targetElement = event.target as HTMLElement;
@@ -121,15 +137,15 @@ export class HeaderComponent implements OnInit {
   toggleOptions(): void {
     this.optionsVisible = !this.optionsVisible;
   }
-  hideSubmenu(): void{
+  hideSubmenu(): void {
     this.optionsVisible = false;
   }
-  showSubmenu(): void{
+  showSubmenu(): void {
     this.optionsVisible = true;
   }
-  ngOnInit(): void { 
+  ngOnInit(): void {
     this.startSessionCountdown();
-    this.loginService.sessionReset$.subscribe(() => {
+    this.authService.sessionReset$.subscribe(() => {
       this.startSessionCountdown();
     });
     this.asistenteService.asistenteSubject.next(-1);
@@ -170,7 +186,7 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-    cargarImagenEmpresa() {
+  cargarImagenEmpresa() {
     const idEmpresaStr = localStorage.getItem('idEmpresa');
     const idEmpresa = idEmpresaStr ? Number(idEmpresaStr) : null;
 
@@ -193,7 +209,7 @@ export class HeaderComponent implements OnInit {
 
 
   ngAfterViewInit() {
-    if(this.splitButton){
+    if (this.splitButton) {
       const mainButton = this.splitButton.containerViewChild?.nativeElement.querySelector('.p-button-secondary');
       if (mainButton) {
         mainButton.addEventListener('click', (event: MouseEvent) => {
@@ -325,10 +341,119 @@ export class HeaderComponent implements OnInit {
       });
     }
   }
-startDrag(event: MouseEvent): void {
+
+  manejarResultadoAbrirInputsAdicionales(resut: any) {
+    this.informacionReferenciaCatalgo = resut
+    this.getCamposAdicionales();
+
+  }
+
+  manejarResultadoCamposAdicionales(result: baseOut) {
+    if (result.result) {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'La operación se realizó con éxito.',
+        detail: result.errorMessage,
+      });
+      this.modalCamposAdicionalesService.closeModal();
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Se ha producido un error.',
+        detail: result.errorMessage,
+      });
+    }
+  }
+
+  onModalCloseCamposAdicionales() {
+    this.modalCamposAdicionalesService.closeModal();
+    //Se debe reabrir modal de contacto o prospecto independientemente si guardo datos o no
+    setTimeout(() => {
+      switch (this.informacionReferenciaCatalgo.tipoCatalogo.toLowerCase()) {
+        case "contactos":
+          this.modalOportunidadesService.openModalContacto(true, this.informacionReferenciaCatalgo.insertar, [], this.informacionReferenciaCatalgo.referencia);
+          break;
+        default:
+          this.modalOportunidadesService.openModalProspecto(true, this.informacionReferenciaCatalgo.insertar, [], this.informacionReferenciaCatalgo.referencia)
+          break;
+      }
+    }, 1000);
+  }
+
+  getCamposAdicionales() {
+
+    const idUsuario = this.authService.obtenerIdUsuario();
+    const idEmpresa = this.authService.obtenerIdEmpresa();
+
+    this.contactosService.getCamposAdicionales(idEmpresa, this.informacionReferenciaCatalgo.tipoCatalogo).subscribe({
+      next: (result: CamposAdicionales[]) => {
+
+        this.camposAdicionales = result.map(campos => ({
+          ...campos,
+          idInput: campos.idInput,
+          nombre: campos.nombre,
+          etiqueta: campos.etiqueta,
+          requerido: campos.requerido,
+          tipoCampo: campos.tipoCampo,
+          rCatalogoInputId: campos.rCatalogoInputId,
+          tipoCatalogoInput: campos.tipoCatalogoInput,
+          orden: campos.orden,
+          idEmpresa: idEmpresa,
+          idUsuario: idUsuario,
+          modificado: false
+        }));
+
+        this.consultarCamposAdicionalesPorCatalogo(idEmpresa, idUsuario);
+      },
+      error: (error) => {
+        console.error('Error:', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error al cargar informacion de campos adicionales'
+        });
+      }
+    });
+  }
+
+
+  consultarCamposAdicionalesPorCatalogo(idEmpresa: number, idUsuario: number) {
+
+    this.contactosService.getCamposAdicionalesPorCatalogo(idEmpresa, this.informacionReferenciaCatalgo.tipoCatalogo).subscribe({
+      next: (result: CamposAdicionales[]) => {
+
+        this.camposAdicionalesPorCatalogo = result.map(campos => ({
+          ...campos,
+          idInput: campos.idInput,
+          nombre: campos.nombre,
+          etiqueta: campos.etiqueta,
+          requerido: campos.requerido,
+          tipoCampo: campos.tipoCampo,
+          rCatalogoInputId: campos.rCatalogoInputId,
+          tipoCatalogoInput: campos.tipoCatalogoInput,
+          orden: campos.orden,
+          idEmpresa: idEmpresa,
+          idUsuario: idUsuario,
+          modificado: false
+        }));
+        this.modalCamposAdicionalesService.openModal(true, this.camposAdicionales, this.camposAdicionalesPorCatalogo, this.informacionReferenciaCatalgo.pantalla)
+      },
+      error: (error) => {
+        console.error('Error:', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error al cargar informacion de campos adicionales'
+        });
+      }
+    });
+  }
+
+
+  startDrag(event: MouseEvent): void {
     const target = event.target as HTMLElement;
     if (!target.closest('.app-chat-header')) {
-      return; 
+      return;
     }
     const el = this.chatContainer.nativeElement as HTMLElement;
     this.isDragging = true;
@@ -364,9 +489,9 @@ startDrag(event: MouseEvent): void {
     this.router.navigate(['/login']);
   }
 
-   startSessionCountdown() {
+  startSessionCountdown() {
     // sessionTimeout está en milisegundos
-    let remaining = this.loginService['sessionTimeout'] / 1000; // en segundos
+    let remaining = this.authService['sessionTimeout'] / 1000; // en segundos
     let remainingInactividad = remaining - (2 * 60); // 2 minutos antes de la expiración
 
     if (this.sessionCountdownInterval) {

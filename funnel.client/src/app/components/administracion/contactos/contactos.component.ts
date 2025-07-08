@@ -13,6 +13,8 @@ import { ModalOportunidadesService } from '../../../services/modalOportunidades.
 import { Subscription } from 'rxjs';
 import { EnumTablas } from '../../../enums/enumTablas';
 import { ConfiguracionTablaService } from '../../../services/configuracion-tabla.service';
+import { CamposAdicionales } from '../../../interfaces/campos-adicionales';
+import { ModalCamposAdicionalesService } from '../../../services/modalCamposAdicionales.service';
 
 @Component({
   selector: 'app-contactos',
@@ -53,6 +55,7 @@ export class ContactosComponent {
   columnsTodasResp: string = '';
   private modalSubscription!: Subscription;
   disabledPdf: boolean = false;
+
 
   constructor(
     private contactosService: ContactosService,
@@ -162,6 +165,7 @@ export class ContactosComponent {
       });
     }
   }
+
 
   FiltrarPorEstatus() {
     this.contactos = this.selectedEstatus === null

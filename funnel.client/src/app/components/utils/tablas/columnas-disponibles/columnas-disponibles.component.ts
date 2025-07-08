@@ -1,5 +1,8 @@
 import { Component, Inject, OnInit , HostListener, Input } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ConfiguracionTablaService } from '../../../../services/configuracion-tabla.service';
+import { MessageService } from 'primeng/api';
+import { LoginService } from '../../../../services/login.service';
 @Component({
   selector: 'app-columnas-disponibles',
   standalone: false,
@@ -18,7 +21,9 @@ export class ColumnasDisponiblesComponent implements OnInit {
   columna2: any[] = [];
   @Input() vista: string = '';
   
-  constructor(public dialogRef: MatDialogRef<ColumnasDisponiblesComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
+  constructor(public dialogRef: MatDialogRef<ColumnasDisponiblesComponent>, @Inject(MAT_DIALOG_DATA) public data: any, 
+   private readonly messageService: MessageService, private readonly configuracionColumnasService: ConfiguracionTablaService,
+   private readonly loginService: LoginService) {
     this.listaColumnas = data.todosColumnas
     this.originalData = JSON.parse(JSON.stringify(data.todosColumnas));
     this.vista = data.vista || '';
@@ -54,6 +59,39 @@ export class ColumnasDisponiblesComponent implements OnInit {
 
   aplicarFiltroParent(): void {
     this.originalData = JSON.parse(JSON.stringify(this.data.todosColumnas));
+    let guardarRequest = {
+      idTabla: this.data.todosColumnas[0]?.idTabla,
+      idUsuario: this.loginService.obtenerIdUsuario(),
+      configuracionTabla: this.data.todosColumnas
+    }
+    this.configuracionColumnasService.guardarConfiguracionTabla(guardarRequest).subscribe({
+      next: (response: any) => {
+        if(response.result){
+          this.messageService.add({
+            severity: 'success',  
+            summary: 'Éxito',
+            detail: 'Configuración guardada correctamente.',
+            life: 3000
+          });   
+        }
+        else{
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Error al guardar la configuración. ' + response.errorMessage,
+            life: 3000
+          });
+        }
+      },
+      error: (error: any) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error al guardar la configuración.',
+          life: 3000
+        });
+      }
+    });
     this.dialogRef.close(this.data.todosColumnas);
   }
 

@@ -148,6 +148,12 @@ import { GraficasClientesTop20Component } from './components/dashboard/top-veint
 import { PanelesTerminadasComponent } from './components/terminadas/paneles-terminadas/paneles-terminadas.component';
 import { EtapasComponent } from './components/catalogos/etapas/etapas.component';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ModalCamposNuevosComponent } from './components/administracion/modal-campos-nuevos/modal-campos-nuevos.component';
+import { ModalOportunidadesPorAgenteClientesComponent } from './components/dashboard/oportunidades-por-agente/modal-oportunidades-por-agente-clientes/modal-oportunidades-por-agente-clientes.component';
+import { ModalOportunidadesPorAgenteTipoComponent } from './components/dashboard/oportunidades-por-agente/modal-oportunidades-por-agente-tipo/modal-oportunidades-por-agente-tipo.component';
+import { ModalOportunidadesPorAgenteDetalleTipoComponent } from './components/dashboard/oportunidades-por-agente/modal-oportunidades-por-agente-detalle-tipo/modal-oportunidades-por-agente-detalle-tipo.component';
+import { ModalOportunidadesPorAgenteSectorComponent } from './components/dashboard/oportunidades-por-agente/modal-oportunidades-por-agente-sector/modal-oportunidades-por-agente-sector.component';
+import { ModalOportunidadesPorAgenteDetalleSectorComponent } from './components/dashboard/oportunidades-por-agente/modal-oportunidades-por-agente-detalle-sector/modal-oportunidades-por-agente-detalle-sector.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -233,7 +239,13 @@ registerLocaleData(localeEs, 'es-MX');
     UsuariosPermisosComponent,
     GraficasClientesTop20Component,
     PanelesTerminadasComponent,
-    EtapasComponent
+    EtapasComponent,
+    ModalCamposNuevosComponent,
+    ModalOportunidadesPorAgenteClientesComponent,
+    ModalOportunidadesPorAgenteTipoComponent,
+    ModalOportunidadesPorAgenteDetalleTipoComponent,
+    ModalOportunidadesPorAgenteSectorComponent,
+    ModalOportunidadesPorAgenteDetalleSectorComponent
   ],
   imports: [
     BrowserModule,

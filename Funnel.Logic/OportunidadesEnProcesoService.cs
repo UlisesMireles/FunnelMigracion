@@ -204,7 +204,8 @@ namespace Funnel.Logic
                         IdEjecutivo = y.IdEjecutivo,
                         IdContactoProspecto = y.IdContactoProspecto,
                         TotalComentarios = y.TotalComentarios,
-                        TooltipStage = y.TooltipStage
+                        TooltipStage = y.TooltipStage,
+                        Stage = y.Stage,
 
                     }).ToList()
                 });

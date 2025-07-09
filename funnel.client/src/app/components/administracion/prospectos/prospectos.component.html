@@ -19,7 +19,7 @@
           [tableStyle]="{'min-width': anchoTabla+ '%'}">
 
           <ng-template class="divAccionesTabla" #caption>
-            <div class="col-12" style="text-align: left; font-weight: bold; margin-top: 40px">
+            <div class="col-12" style="text-align: left; font-weight: bold; margin-top: 40px" (click)="onHeaderClick()">
               <h3>Administración de Prospectos</h3>
             </div>
             <div class="row">
@@ -211,4 +211,5 @@
 <!-- <app-modal-prospectos [(visible)]="modalVisible" [title]="'Editar Datos de '" (closeModal)="onModalClose()"
   (result)="manejarResultado($event)" [insertar]="insertar" [prospectos]="prospectos" [prospecto]="prospectoSeleccionado">
 </app-modal-prospectos> -->
+
 

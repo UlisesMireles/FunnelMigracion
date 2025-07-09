@@ -1,8 +1,6 @@
 ﻿using Funnel.Logic;
 using Funnel.Logic.Interfaces;
-using Funnel.Models.Base;
 using Funnel.Models.Dto;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Funnel.Server.Controllers
@@ -90,6 +88,40 @@ namespace Funnel.Server.Controllers
         public async Task<ActionResult<List<GraficaDto>>> ObtenerGraficaClientesTopVeinte(RequestGrafica data)
         {
             var result = await _graficasService.ObtenerGraficaClientesTopVeinte(data);
+            return Ok(result);
+        }
+
+        [HttpPost("[action]/")]
+        public async Task<ActionResult<List<OportunidadAgenteClienteDto>>> ObtenerOportunidadesPorAgenteClientes(RequestGrafica data)
+        {
+            var result = await _graficasService.ObtenerOportunidadesPorAgenteClientes(data);
+            return Ok(result);
+        }
+   
+    [HttpPost("[action]/")]
+        public async Task<ActionResult<List<TipoOportunidadAgenteDto>>> ObtenerOportunidadesPorAgenteTipo(RequestGrafica data)
+        {
+            var result = await _graficasService.ObtenerOportunidadesPorAgenteTipo(data);
+            return Ok(result);
+        }
+
+        [HttpPost("[action]/{idAgente}/{idTipoOporAgente}")]
+        public async Task<ActionResult<List<DetalleOportunidadTipoAgenteDto>>> ObtenerDetalleOportunidadesTipoAgente(int idAgente, int idTipoOporAgente, RequestGrafica data)
+        {
+            var result = await _graficasService.ObtenerDetalleOportunidadesTipoAgente(idAgente, idTipoOporAgente, data);
+            return Ok(result);
+        }
+        [HttpPost("[action]/")]
+        public async Task<ActionResult<List<TipoSectorAgenteDto>>> ObtenerOportunidadesPorSectorPorAgente(RequestGrafica data)
+        {
+            var result = await _graficasService.ObtenerOportunidadesPorSectorPorAgente(data);
+            return Ok(result);
+        }
+
+        [HttpPost("[action]/{idAgente}/{idSector}")]
+        public async Task<ActionResult<List<DetalleSectorAgenteDto>>> ObtenerDetallesPorSectorPorAgente(int idAgente, int idSector, RequestGrafica data)
+        {
+            var result = await _graficasService.ObtenerDetallesPorSectorPorAgente(idAgente, idSector, data);
             return Ok(result);
         }
     }

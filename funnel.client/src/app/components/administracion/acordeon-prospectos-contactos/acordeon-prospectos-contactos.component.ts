@@ -13,33 +13,50 @@ import { EnumMenus } from '../../../enums/enumMenus';
 export class AcordeonProspectosContactosComponent {
   permisoProspectos: boolean = false;
   permisoContactos: boolean = false;
-  prospectosExpandido = true;
-  contactosExpandido = false;
   EnumPaginas = EnumPaginas;
+  seccionExpandida: 'prospectos' | 'contactos'  = 'prospectos';
   constructor(private readonly loginService:LoginService) { }
   ngOnInit() {
      this.consultarPermisosUsuario();
   }
-  toggleProspectos() {
-    if (!this.permisoProspectos) return;
-    if (this.prospectosExpandido) {
-      this.prospectosExpandido = false;
-      this.contactosExpandido = true;
-    } else {
-      this.prospectosExpandido = true;
-      this.contactosExpandido = false;
+ toggleSeccion(seccion: 'prospectos' | 'contactos') {
+  const orden: ('prospectos' | 'contactos')[] = [
+    'prospectos',
+    'contactos'
+  ];
+
+  const permisos = {
+    prospectos: this.permisoProspectos,
+    contactos: this.permisoContactos,
+  };
+
+  if (!permisos[seccion]) return;
+
+  // Si se hace clic en la sección ya abierta busca la siguiente
+  if (this.seccionExpandida === seccion) {
+    const index = orden.indexOf(seccion);
+
+    for (let i = index + 1; i < orden.length; i++) {
+      if (permisos[orden[i]]) {
+        this.seccionExpandida = orden[i];
+        return;
+      }
     }
-  }
-   toggleContactos() {
-    if (!this.permisoContactos) return;
-    if (this.contactosExpandido) {
-      this.contactosExpandido = false;
-      this.prospectosExpandido = true;
-    } else {
-      this.contactosExpandido = true;
-      this.prospectosExpandido = false;
+
+    // Si no hay ninguna después busca hacia arriba
+    for (let i = 0; i < index; i++) {
+      if (permisos[orden[i]]) {
+        this.seccionExpandida = orden[i];
+        return;
+      }
     }
+
+    this.seccionExpandida = seccion;
+
+  } else {
+    this.seccionExpandida = seccion;
   }
+}
   consultarPermisosUsuario() {
     const permisos = this.loginService.obtenerPermisosUsuario();
     if (permisos && permisos.length > 0) {
@@ -47,7 +64,9 @@ export class AcordeonProspectosContactosComponent {
       if(permisoProspectos){
         this.permisoContactos = permisoProspectos.subMenu.some((p:any) => p.pagina === EnumPaginas.CONTACTOS);
         this.permisoProspectos = permisoProspectos.subMenu.some((p:any) => p.pagina === EnumPaginas.PROSPECTOS);
-        this.contactosExpandido = !this.permisoProspectos;
+        if (!this.permisoProspectos && !this.permisoContactos) {
+          this.permisoProspectos = true; 
+        }
       }
     }
   }

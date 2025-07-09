@@ -85,4 +85,114 @@ namespace Funnel.Models.Dto
             public string? TipoProyectoAbreviatura { get; set; }
             public string? Iniciales { get; set; }
         }
+    public class OportunidadAgenteClienteDto
+    {
+        public int IdOportunidad { get; set; }
+        public string? NombreProspecto { get; set; }
+        public string? NombreOportunidad { get; set; }
+        public string? NombreAbreviado { get; set; }
+        public string? TipoProyecto { get; set; }
+        public string? TipoProyectoAbreviatura { get; set; }
+        public string? Entrega { get; set; }
+        public string? EntregaDescripcion { get; set; }
+        public string? Iniciales { get; set; }
+        public string? NombreEjecutivo { get; set; }
+        public decimal Monto { get; set; }
+        public string? Probabilidad { get; set; }
+        public int FechaModificacion { get; set; }
+        public string? Comentario { get; set; }
+        public decimal MontoNormalizado { get; set; }
+        public string? FechaRegistro { get; set; }
+        public string? AbreviaturaEstatus { get; set; }
+        public string? DescripcionEstatus { get; set; }
+        public decimal decProbabilidad { get; set; }
+        public int IdEjecutivo { get; set; }
+        public string? FechaEstimadaCierreUpd { get; set; }
+        public string? FechaEstimadaCierre { get; set; }
+        public string? ProbabilidadOriginal { get; set; }
+        public int IdEstatusOportunidad { get; set; }
+        public int IdStage { get; set; }
+        public string? Stage { get; set; }
+    }
+
+    public class TipoOportunidadAgenteDto
+    {
+        public int IdTipoOporAgente { get; set; }
+        public string? Descripcion { get; set; }
+        public decimal Monto { get; set; }
+        public decimal MontoNormalizado { get; set; }
+        public decimal Porcentaje { get; set; }
+    }
+
+    public class DetalleOportunidadTipoAgenteDto
+    {
+        public int IdOportunidad { get; set; }
+        public string? NombreSector { get; set; }
+        public string? NombreProspecto { get; set; }
+        public string? NombreOportunidad { get; set; }
+        public string? NombreAbreviado { get; set; }
+        public string? TipoProyectoAbreviatura { get; set; }
+        public string? TipoProyecto { get; set; }
+        public string? Iniciales { get; set; }
+        public string? NombreEjecutivo { get; set; }
+        public decimal Monto { get; set; }
+        public string? Probabilidad { get; set; }
+        public int FechaModificacion { get; set; }
+        public string? Comentario { get; set; }
+        public decimal MontoNormalizado { get; set; }
+        public string? FechaRegistro { get; set; }
+        public string? AbreviaturaEstatus { get; set; }
+        public string? DescripcionEstatus { get; set; }
+        public decimal ProbabilidadDecimal { get; set; }
+        public int IdEjecutivo { get; set; }
+        public string? FechaEstimadaCierre { get; set; }
+        public string? ProbabilidadOriginal { get; set; }
+        public int DiasFunnel { get; set; }
+        public int IdEstatusOportunidad { get; set; }
+        public int IdStage { get; set; }
+        public string? Stage { get; set; }
+        public string? TooltipStage { get; set; }
+        public int TotalComentarios { get; set; }
+        public int IdTipoProyecto { get; set; }
+    }
+    public class TipoSectorAgenteDto
+    {
+        public int IdSector { get; set; }
+        public string? Descripcion { get; set; }   
+        public decimal Monto { get; set; }
+        public decimal MontoNormalizado { get; set; }
+        public decimal Porcentaje { get; set; }
+    }
+    public class DetalleSectorAgenteDto
+    {
+        public string? NombreSector { get; set; }
+        public int IdOportunidad { get; set; }
+        public string? NombreProspecto { get; set; }  
+        public string? NombreOportunidad { get; set; }
+        public string? NombreAbreviado { get; set; }
+        public string? TipoProyectoAbreviatura { get; set; }
+        public string? TipoProyecto { get; set; }
+        public string? Iniciales { get; set; }
+        public string? NombreEjecutivo { get; set; }
+        public decimal Monto { get; set; }
+        public string? Probabilidad { get; set; }
+        public int FechaModificacion { get; set; }
+        public string? Comentario { get; set; }
+        public decimal MontoNormalizado { get; set; }
+        public string? FechaRegistro { get; set; }
+        public string? AbreviaturaEstatus { get; set; }
+        public string? DescripcionEstatus { get; set; }
+        public decimal ProbabilidadDecimal { get; set; }
+        public int IdEjecutivo { get; set; }
+        public string? FechaEstimadaCierre { get; set; }
+        public string? ProbabilidadOriginal { get; set; }
+        public int DiasFunnel { get; set; }
+        public int IdEstatusOportunidad { get; set; }
+        public int IdStage { get; set; }
+        public string? Stage { get; set; }
+        public string? TooltipStage { get; set; }
+        public int TotalComentarios { get; set; }
+        public int IdTipoProyecto { get; set; }
+    }
+
 }

@@ -567,9 +567,9 @@ th.sort-active p-sortIcon {
   font-size: 16px;
 }
 
-@media (max-width: 1270px) {  
+@media (max-width: 1320px) {  
   .etiqueta{
-    width: 97px
+    width: 119px
   }
   .etiqueta > .titulo {
     font-size: 11px;

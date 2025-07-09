@@ -123,13 +123,14 @@
 
           <ng-template pTemplate="body" let-rowData let-columns="columns">
             <tr [ngClass]="{'fila-activa': rowData.idProspecto == prospectoEdicion?.idProspecto}">
-              <td *ngFor="let def of lsColumnasAMostrar" 
-                  [ngStyle]="{
-                    'text-align': 
-                      def.tipoFormato === 'currency' ? 'right' : 
-                      (def.tipoFormato === 'number' || def.tipoFormato === 'estatus' || def.key === 'porcEfectividad') ? 'center' : 'left',
-                      'font-weight': def.key === 'nombre' ? 'bold' : 'normal'
-                  }">
+              <td *ngFor="let def of lsColumnasAMostrar"
+              [ngStyle]="{
+                'text-align': 
+                  def.tipoFormato === 'currency' ? 'right' : 
+                  (def.tipoFormato === 'number' || def.tipoFormato === 'estatus' || def.key === 'porcEfectividad' || def.tipoFormato === 'iconoInteres') ? 'center' : 'left',
+                'vertical-align': def.tipoFormato === 'iconoInteres' ? 'middle' : 'inherit',
+                'font-weight': def.key === 'nombre' ? 'bold' : 'normal'
+              }">
                 <ng-container [ngSwitch]="def.tipoFormato">
                   <span *ngSwitchCase="'text'">
                   <span *ngIf="def.key === 'nombreSector'"> 
@@ -160,6 +161,14 @@
                   
                   <span *ngSwitchCase="'date'">
                     {{ rowData[def.key] | date:'dd/MM/yyyy' }}
+                  </span>
+                    <span *ngSwitchCase="'iconoInteres'">
+                    <ng-container [ngSwitch]="getNivelInteres(rowData[def.key])">
+                      <span *ngSwitchCase="'frio'" style="color: #2196f3;" pTooltip="Bajo">❄️</span>
+                      <span *ngSwitchCase="'tibio'" style="color: #ff9800;" pTooltip="Medio">🔥</span>
+                      <span *ngSwitchCase="'caliente'" style="color: #f44336;" pTooltip="Alto">🔥</span>
+                      <span *ngSwitchDefault style="color: #2196f3;" pTooltip="Sin interés">❄️</span>
+                    </ng-container>
                   </span>
                   
                   <span *ngSwitchDefault>{{ rowData[def.key] }}</span>

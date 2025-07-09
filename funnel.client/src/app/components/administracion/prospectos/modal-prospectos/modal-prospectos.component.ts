@@ -58,7 +58,9 @@ export class ModalProspectosComponent {
     promDiasEtapa3: 0,
     promDiasEtapa4: 0,
     promDiasEtapa5: 0,
-    promDiasSinActividad: 0
+    promDiasSinActividad: 0,
+    idNivel: 0,
+    descripcion: ''
   };
 
   ngOnInit() {
@@ -98,7 +100,9 @@ export class ModalProspectosComponent {
         promDiasEtapa3: 0,
         promDiasEtapa4: 0,
         promDiasEtapa5: 0,
-        promDiasSinActividad: 0
+        promDiasSinActividad: 0,
+        idNivel: 0,
+        descripcion: ''
       };
 
       this.prospectoForm = this.fb.group({

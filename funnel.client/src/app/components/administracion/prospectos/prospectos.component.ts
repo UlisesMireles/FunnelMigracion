@@ -63,6 +63,7 @@ EstatusDropdown = [
     {key: 'totalOportunidades', isCheck: true, valor: 'Op/todas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
     {key: 'ganadas', isCheck: true, valor: 'Ganadas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
     {key: 'porcEfectividad', isCheck: true, valor: '% Efectividad', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'decimal'},
+    {key: 'descripcion', isCheck: true, valor: 'Interés', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'iconoInteres'},
     {key: 'proceso', isCheck: false, valor: 'En Proceso', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
     {key: 'perdidas', isCheck: false, valor: 'Perdidas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
     {key: 'canceladas', isCheck: false, valor: 'Canceladas', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number'},
@@ -91,6 +92,7 @@ ngOnInit(): void {
     if (state.result.id != -1 && state.result.result) {
       this.getProspectos();
     }
+    console.log (this.prospectosOriginal);
   });
 }
 
@@ -159,7 +161,10 @@ inserta() {
     promDiasEtapa3: 0,
     promDiasEtapa4: 0,
     promDiasEtapa5: 0,
-    promDiasSinActividad: 0};
+    promDiasSinActividad: 0,
+    idNivel: 0,
+    descripcion: '',
+  };
   this.modalOportunidadesService.openModalProspecto(true, true, [], this.prospectoSeleccionado)
   this.insertar = true;
   this.modalVisible = true;
@@ -534,4 +539,9 @@ leerRespuesta(): void {
       this.leyendo = false;
     }
   }
-}
+getNivelInteres(valor: string | null | undefined): 'frio' | 'tibio' | 'caliente' {
+  if (!valor || valor.toLowerCase().includes('frio')) return 'frio';
+  if (valor.toLowerCase().includes('tibio')) return 'tibio';
+  if (valor.toLowerCase().includes('caliente')) return 'caliente';
+  return 'frio';
+}}

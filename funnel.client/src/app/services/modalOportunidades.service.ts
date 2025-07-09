@@ -26,7 +26,7 @@ export class ModalOportunidadesService {
     prospectoSeleccionado: Prospectos, result: BaseOut, desdeSector: boolean
   }>({
     showModal: false, insertarProspecto: false, prospectos: [],
-    prospectoSeleccionado: { bandera: '', idProspecto: -1, nombre: '', ubicacionFisica: '', estatus: 0, desEstatus: '', nombreSector: '', idSector: 0, totalOportunidades: 0, proceso: 0, ganadas: 0, perdidas: 0, canceladas: 0, eliminadas: 0, idEmpresa: 0, porcEfectividad: 0, promDiasEtapa1: 0, promDiasEtapa2: 0, promDiasEtapa3: 0, promDiasEtapa4: 0, promDiasEtapa5: 0, promDiasSinActividad: 0 },
+    prospectoSeleccionado: { bandera: '', idProspecto: -1, nombre: '', ubicacionFisica: '', estatus: 0, desEstatus: '', nombreSector: '', idSector: 0, totalOportunidades: 0, proceso: 0, ganadas: 0, perdidas: 0, canceladas: 0, eliminadas: 0, idEmpresa: 0, porcEfectividad: 0, promDiasEtapa1: 0, promDiasEtapa2: 0, promDiasEtapa3: 0, promDiasEtapa4: 0, promDiasEtapa5: 0, promDiasSinActividad: 0, idNivel: 0, descripcion: '' },
     result: { errorMessage: '', result: false, id: -1 },
     desdeSector: false
   });
@@ -67,7 +67,7 @@ export class ModalOportunidadesService {
   }>
     ({
       showModal: false, insertarProspecto: false, prospectos: [],
-      prospectoSeleccionado: { bandera: '', idProspecto: -1, nombre: '', ubicacionFisica: '', estatus: 0, desEstatus: '', nombreSector: '', idSector: 0, totalOportunidades: 0, proceso: 0, ganadas: 0, perdidas: 0, canceladas: 0, eliminadas: 0, idEmpresa: 0, porcEfectividad: 0, promDiasEtapa1: 0, promDiasEtapa2: 0, promDiasEtapa3: 0, promDiasEtapa4: 0, promDiasEtapa5: 0, promDiasSinActividad: 0 },
+      prospectoSeleccionado: { bandera: '', idProspecto: -1, nombre: '', ubicacionFisica: '', estatus: 0, desEstatus: '', nombreSector: '', idSector: 0, totalOportunidades: 0, proceso: 0, ganadas: 0, perdidas: 0, canceladas: 0, eliminadas: 0, idEmpresa: 0, porcEfectividad: 0, promDiasEtapa1: 0, promDiasEtapa2: 0, promDiasEtapa3: 0, promDiasEtapa4: 0, promDiasEtapa5: 0, promDiasSinActividad: 0, idNivel: 0, descripcion: '' },
       result: { errorMessage: '', result: false, id: -1 }
     });
   
@@ -102,7 +102,7 @@ export class ModalOportunidadesService {
   closeModalProspecto(result: BaseOut = { errorMessage: '', result: false, id: -1 }) {
     this.modalProspectoStateSubject.next({
       showModal: false, insertarProspecto: false, prospectos: [],
-      prospectoSeleccionado: { bandera: '', idProspecto: -1, nombre: '', ubicacionFisica: '', estatus: 0, desEstatus: '', nombreSector: '', idSector: 0, totalOportunidades: 0, proceso: 0, ganadas: 0, perdidas: 0, canceladas: 0, eliminadas: 0, idEmpresa: 0, porcEfectividad: 0, promDiasEtapa1: 0, promDiasEtapa2: 0, promDiasEtapa3: 0, promDiasEtapa4: 0, promDiasEtapa5: 0, promDiasSinActividad: 0 },
+      prospectoSeleccionado: { bandera: '', idProspecto: -1, nombre: '', ubicacionFisica: '', estatus: 0, desEstatus: '', nombreSector: '', idSector: 0, totalOportunidades: 0, proceso: 0, ganadas: 0, perdidas: 0, canceladas: 0, eliminadas: 0, idEmpresa: 0, porcEfectividad: 0, promDiasEtapa1: 0, promDiasEtapa2: 0, promDiasEtapa3: 0, promDiasEtapa4: 0, promDiasEtapa5: 0, promDiasSinActividad: 0, idNivel: 0, descripcion: '' },
       result: result,
       desdeSector: false
     });
@@ -112,7 +112,7 @@ export class ModalOportunidadesService {
   closeModalProspectoOportunidades(result: BaseOut = { errorMessage: '', result: false, id: -1 }) {
     this.modalProspectoOportunidadesStateSubject.next({
       showModal: false, insertarProspecto: true, prospectos: [],
-      prospectoSeleccionado: { bandera: '', idProspecto: -1, nombre: '', ubicacionFisica: '', estatus: 0, desEstatus: '', nombreSector: '', idSector: 0, totalOportunidades: 0, proceso: 0, ganadas: 0, perdidas: 0, canceladas: 0, eliminadas: 0, idEmpresa: 0, porcEfectividad: 0, promDiasEtapa1: 0, promDiasEtapa2: 0, promDiasEtapa3: 0, promDiasEtapa4: 0, promDiasEtapa5: 0, promDiasSinActividad: 0 },
+      prospectoSeleccionado: { bandera: '', idProspecto: -1, nombre: '', ubicacionFisica: '', estatus: 0, desEstatus: '', nombreSector: '', idSector: 0, totalOportunidades: 0, proceso: 0, ganadas: 0, perdidas: 0, canceladas: 0, eliminadas: 0, idEmpresa: 0, porcEfectividad: 0, promDiasEtapa1: 0, promDiasEtapa2: 0, promDiasEtapa3: 0, promDiasEtapa4: 0, promDiasEtapa5: 0, promDiasSinActividad: 0, idNivel: 0, descripcion: '' },
       result: result
     });
   }

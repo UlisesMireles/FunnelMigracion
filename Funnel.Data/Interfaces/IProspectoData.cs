@@ -11,6 +11,7 @@ namespace Funnel.Data.Interfaces
     public interface IProspectoData
     {
         public Task<List<ProspectoDTO>> ConsultarProspectos(int IdEmpresa);
+        public Task<List<ProspectoDTO>> ConsultarProspectosTodos();
         public Task<BaseOut> GuardarProspecto(ProspectoDTO request);
         public Task<List<ComboSectoresDto>> ComboSectores();
         Task<List<ProspectoDTO>> ConsultarTopVeinte(int IdEmpresa, string Anio);

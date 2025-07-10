@@ -99,9 +99,11 @@ namespace Funnel.Logic.Utils.Asistentes
             return respuestaOpenIA;
         }
 
-        public async Task EvaluarProspectosYAsignarNivelAsync(IProspectoData prospectoData, int IdEmpresa)
+        //public async Task EvaluarProspectosYAsignarNivelAsync(IProspectoData prospectoData, int IdEmpresa)
+        public async Task EvaluarProspectosYAsignarNivelAsync(IProspectoData prospectoData)
         {
-            var prospectos = await prospectoData.ConsultarProspectos(IdEmpresa);
+           // var prospectos = await prospectoData.ConsultarProspectos(IdEmpresa);
+            var prospectos = await prospectoData.ConsultarProspectosTodos();
 
             foreach (var prospecto in prospectos)
             {

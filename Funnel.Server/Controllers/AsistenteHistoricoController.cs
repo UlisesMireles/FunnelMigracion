@@ -43,12 +43,14 @@ namespace Funnel.Server.Controllers
             }
         }
         [HttpPost("EvaluarProspectos")]
+       // public async Task<IActionResult> EvaluarProspectos(int IdEmpresa)
         public async Task<IActionResult> EvaluarProspectos()
         {
             try
             {
                 var asistente = new AsistenteHistorico(_configuration);
-                await asistente.EvaluarProspectosYAsignarNivelAsync(_prospectoData, 1);
+               // await asistente.EvaluarProspectosYAsignarNivelAsync(_prospectoData, IdEmpresa);
+                await asistente.EvaluarProspectosYAsignarNivelAsync(_prospectoData);
                 return Ok("Evaluación de prospectos completada.");
             }
             catch (Exception ex)

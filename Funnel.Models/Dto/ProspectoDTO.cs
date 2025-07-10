@@ -35,6 +35,8 @@ namespace Funnel.Models.Dto
         public int PromDiasEtapa4 { get; set; }
         public int PromDiasEtapa5 { get; set; }
         public int PromDiasSinActividad { get; set; }
+        public int? IdNivel { get; set; }
+        public string? Descripcion { get; set; }
         public DateTime? UltimaFechaRegistro { get; set; }
 
     }

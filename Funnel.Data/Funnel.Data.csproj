@@ -25,6 +25,7 @@
 		<Folder Include="Scripts\07-05-2025 AjustesUsuarios\" />
 		<Folder Include="Scripts\08-05-2025 AjustesUsuarios\" />
 		<Folder Include="Scripts\07-07-2025 scoringInteligente\" />
+		<Folder Include="Scripts\09-07-2025 scoringInteligente\" />
 		<Folder Include="Utils\" />
 	</ItemGroup>
 	

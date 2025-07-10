@@ -53,7 +53,8 @@ namespace Funnel.Data
                     DataBase.CreateParameterSql("@IdProspecto", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, 0 ),
                     DataBase.CreateParameterSql("@Estatus", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, 0 ),
                     DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, IdEmpresa ),
-                    DataBase.CreateParameterSql("@pIdSector", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, 0 )
+                    DataBase.CreateParameterSql("@pIdSector", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, 0 ),
+                    DataBase.CreateParameterSql("@pIdNivel", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, 0 ),
                 };
             using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoProspectos", CommandType.StoredProcedure, list, _connectionString))
             {
@@ -80,6 +81,8 @@ namespace Funnel.Data
                     dto.PromDiasEtapa4 = ComprobarNulos.CheckIntNull(reader["PromDiasEtapa4"]);
                     dto.PromDiasEtapa5 = ComprobarNulos.CheckIntNull(reader["PromDiasEtapa5"]);
                     dto.PromDiasSinActividad = ComprobarNulos.CheckIntNull(reader["PromDiasSinActividad"]);
+                    dto.IdNivel = ComprobarNulos.CheckIntNull(reader["IdNivel"]);
+                    dto.Descripcion = ComprobarNulos.CheckStringNull(reader["Descripcion"]);
 
                     result.Add(dto);
                 }

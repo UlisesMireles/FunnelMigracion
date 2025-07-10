@@ -21,6 +21,8 @@ export interface Prospectos {
     promDiasEtapa4: number;
     promDiasEtapa5: number;
     promDiasSinActividad: number;
+    idNivel?: number;
+    descripcion?: string;
 }
 
 export interface ClientesTopVeinte {

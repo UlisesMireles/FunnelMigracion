@@ -16,9 +16,12 @@ namespace Funnel.Server.Controllers
     public class AsistenteHistoricoController : Controller
     {
         private readonly IConfiguration _configuration;
-        public AsistenteHistoricoController(IConfiguration configuration)
+        private readonly IProspectoData _prospectoData;
+
+        public AsistenteHistoricoController(IConfiguration configuration, IProspectoData prospectoData)
         {
             _configuration = configuration;
+            _prospectoData = prospectoData;
         }
         [HttpPost("OpenIA")]
         public async Task<ActionResult<ConsultaAsistente>> PostOpenIa(ConsultaAsistente consultaAsistente)
@@ -39,6 +42,21 @@ namespace Funnel.Server.Controllers
                 return StatusCode(500, "Ocurrió un error al procesar la solicitud: " + ex.Message);
             }
         }
+        [HttpPost("EvaluarProspectos")]
+        public async Task<IActionResult> EvaluarProspectos()
+        {
+            try
+            {
+                var asistente = new AsistenteHistorico(_configuration);
+                await asistente.EvaluarProspectosYAsignarNivelAsync(_prospectoData, 1);
+                return Ok("Evaluación de prospectos completada.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error durante la evaluación: {ex.Message}");
+            }
+        }
+
 
     }
 }

@@ -233,5 +233,20 @@ namespace Funnel.Data
             }
             return result;
         }
+
+        public async Task ActualizarNivelInteres(int idProspecto, int idNivel)
+        {
+            IList<ParameterSQl> list = new List<ParameterSQl>
+            {
+                DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "UPDATE-NIVEL-INTERES"),
+                DataBase.CreateParameterSql("@IdProspecto", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, idProspecto),
+                DataBase.CreateParameterSql("@pIdNivel", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, idNivel)
+            };
+
+            using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoProspectos", CommandType.StoredProcedure, list, _connectionString))
+            {
+                
+            }
+        }
     }
 }

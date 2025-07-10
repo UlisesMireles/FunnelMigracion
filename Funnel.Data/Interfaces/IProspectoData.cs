@@ -16,5 +16,6 @@ namespace Funnel.Data.Interfaces
         Task<List<ProspectoDTO>> ConsultarTopVeinte(int IdEmpresa, string Anio);
         Task<List<AniosDto>> ConsultarAniosOportunidades(int idEmpresa);
         Task<List<AniosDto>> ConsultarAniosGraficas(int idEmpresa);
+        Task ActualizarNivelInteres(int idProspecto, int idNivel);
     }
 }

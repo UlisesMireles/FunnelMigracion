@@ -6,9 +6,9 @@
      [class.logo-empresa]="!esLogoDefault">   
      <span class="spanNombre">{{ licencia }}</span>
     </div>
-    <div class="col-6 menu-header-container">
+    <div class="col-7 menu-header-container">
       <div>
-        Sesión expira en: {{ sessionCountdownMinutes }}:{{ sessionCountdownSeconds < 10 ? '0' + sessionCountdownSeconds : sessionCountdownSeconds }}
+        Sesión: {{ sessionCountdownMinutes }}:{{ sessionCountdownSeconds < 10 ? '0' + sessionCountdownSeconds : sessionCountdownSeconds }}
       </div>
       <div class="ms-2">
         Inactividad: {{ sessionCountdownMinutesInactividad }}:{{ sessionCountdownSecondsInactividad < 10 ? '0' + sessionCountdownSecondsInactividad : sessionCountdownSecondsInactividad }}

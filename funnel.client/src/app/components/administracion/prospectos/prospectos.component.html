@@ -164,13 +164,12 @@
                   </span>
                     <span *ngSwitchCase="'iconoInteres'">
                     <ng-container [ngSwitch]="getNivelInteres(rowData[def.key])">
-                      <span *ngSwitchCase="'frio'" style="color: #2196f3;" pTooltip="Bajo">❄️</span>
-                      <span *ngSwitchCase="'tibio'" style="color: #ff9800;" pTooltip="Medio">🔥</span>
-                      <span *ngSwitchCase="'caliente'" style="color: #f44336;" pTooltip="Alto">🔥</span>
-                      <span *ngSwitchDefault style="color: #2196f3;" pTooltip="Sin interés">❄️</span>
+                      <i *ngSwitchCase="'frio'" class="bi bi-snow" style="color: #2196f3;" pTooltip="Bajo"></i>
+                      <i *ngSwitchCase="'tibio'" class="bi bi-fire" style="color: #ff9800;" pTooltip="Medio"></i>
+                      <i *ngSwitchCase="'caliente'" class="bi bi-fire" style="color: #f44336;" pTooltip="Alto"></i>
+                      <i *ngSwitchDefault class="bi bi-snow" style="color: #2196f3;" pTooltip="Sin interés"></i>
                     </ng-container>
                   </span>
-                  
                   <span *ngSwitchDefault>{{ rowData[def.key] }}</span>
                 </ng-container>
               </td>

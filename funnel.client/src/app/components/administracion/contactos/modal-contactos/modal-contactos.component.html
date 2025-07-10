@@ -128,7 +128,7 @@
   </ng-template>
 
   <ng-template pTemplate="footer">
-    <button *ngIf="esAdministrador()" pButton label="Adicionales" (click)="abrirModalInputsAdicionales()" severity="secondary"></button>
+    <!-- <button *ngIf="esAdministrador()" pButton label="Adicionales" (click)="abrirModalInputsAdicionales()" severity="secondary"></button> -->
     <button *ngIf="!insertarContacto" pButton label="Actualizar" (click)="guardarContacto()" severity="secondary"
       [disabled]="!validaGuadar && !validaGuadarAdicionales"></button>
     <button *ngIf="insertarContacto" pButton label="Agregar" (click)="guardarContacto()" severity="secondary"

@@ -27,7 +27,7 @@
 
   <ng-template pTemplate="content">
     <div class="contenedor-tabla-dialogo">
-      <p-table #dt [value]="oportunidades" [paginator]="true" [rows]="10" 
+      <p-table #dt [value]="oportunidades" [paginator]="true" [rows]="10" [paginatorDropdownAppendTo]="'body'" 
         [rowsPerPageOptions]="[10, 25, 50]" [totalRecords]="oportunidades.length"
         styleClass="tabla-estilizada">
         
@@ -68,14 +68,14 @@
               [ngClass]="{'total-registros-cell': def.key === 'descripcion'}">
                 <!-- MONTO -->
                 <ng-container *ngIf="def.key === 'monto'">
-                    <div style="text-align: right; font-weight: bold;">
+                    <div style="text-align: left; font-weight: bold;">
                     {{ calcularSumaMontos() | currency:'MXN':'symbol':'1.2-2' }}
                     </div>
                 </ng-container>
 
                 <!-- MONTO NORMALIZADO -->
                 <ng-container *ngIf="def.key === 'montoNormalizado'">
-                    <div style="text-align: right; font-weight: bold;">
+                    <div style="text-align: left; font-weight: bold;">
                     {{ calcularSumaMontosNormalizados() | currency:'MXN':'symbol':'1.2-2' }}
                     </div>
                 </ng-container>

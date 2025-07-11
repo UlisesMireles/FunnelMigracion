@@ -27,7 +27,7 @@
 
   <ng-template pTemplate="content">
     <div class="contenedor-tabla-dialogo">
-      <p-table #dt [value]="sectores" [paginator]="true" [rows]="10" 
+      <p-table #dt [value]="sectores" [paginator]="true" [rows]="10" [paginatorDropdownAppendTo]="'body'" 
   [rowsPerPageOptions]="[10, 25, 50]" [totalRecords]="sectores.length"
   styleClass="tabla-estilizada">
 
@@ -65,7 +65,7 @@
       <td *ngFor="let def of lsColumnasAMostrar"
       [ngClass]="{'total-registros-cell': def.key === 'nombreSector'}">
         <ng-container *ngIf="def.tipoFormato === 'currency'">
-          <div style="text-align: right; font-weight: bold;">
+          <div style="text-align: left; font-weight: bold;">
             <span *ngIf="def.key === 'montoNormalizado'">
               {{ calcularSumaMontosNormalizados() | currency:'MXN':'symbol':'1.2-2' }}
             </span>

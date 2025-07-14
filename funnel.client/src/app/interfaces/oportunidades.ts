@@ -147,6 +147,10 @@ export  interface OportunidadesPorEtapa {
   editado?: boolean;
   idUsuario?: number;
   idEmpresa?: number;
+  nombreProceso?: string;
+  etapaSeleccionada?: OportunidadesPorEtapa;
+  textoBusqueda?: string;
+  idProceso?: number;
 }
 
 export interface RequestActualizarEtapa {

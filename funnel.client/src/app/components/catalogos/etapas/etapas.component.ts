@@ -7,7 +7,6 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ModalEtapasService } from '../../../services/modalEtapas.service';
 import { Subscription } from 'rxjs';
-import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-etapas',
@@ -42,10 +41,17 @@ export class EtapasComponent {
   idUsuario: number = 0;
   idEmpresa: number = 0;
   validaGuardar: boolean = false;
+  nombreProceso: string = '';
+  etapasFiltradas: any[] = [];
+  busquedaEtapa: string = '';
+  etapaSeleccionada: boolean = false;
+  etapasSeleccionada!: OportunidadesPorEtapa;
+  etapaEnEditar: Partial<OportunidadesPorEtapa> = {};
+
 
   constructor(
-    private oportunidadService: OportunidadesService, private readonly loginService: LoginService, private messageService: MessageService, private cdr: ChangeDetectorRef
-    , private modalEtapasService: ModalEtapasService, private fb: FormBuilder, private confirmationService: ConfirmationService
+    private readonly oportunidadService: OportunidadesService, private readonly loginService: LoginService, private readonly messageService: MessageService, private readonly cdr: ChangeDetectorRef
+    , private readonly modalEtapasService: ModalEtapasService, private readonly confirmationService: ConfirmationService
   ) { }
 
   ngOnInit() {
@@ -79,32 +85,36 @@ export class EtapasComponent {
   }
 
   agregarEtapa() {
-    if (this.etapas.filter(e => !e.eliminado).length >= 7) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'No puedes cargar mas de 7 etapas',
-        key: 'toast'
-      });
-      return;
-    }
-    this.validaGuardar = true;
-    const nuevaEtapa: OportunidadesPorEtapa = Object.assign({
-      idStage: 0,
-      anio: 0,
-      nombre: '',
-      tarjetas: [],
-      expandido: true,
-      editandoNombre: true,
-      agregado: true,
-      probabilidad: 0,
-      eliminado: false,
-      idEmpresa: this.idEmpresa,
-      idUsuario: this.idUsuario,
-      orden: (this.etapas.length + 1).toString()
+  if (this.etapas.filter(e => !e.eliminado).length >= 7) {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: 'No puedes cargar más de 7 etapas',
+      key: 'toast'
     });
-    this.etapas.push(nuevaEtapa);
+    return;
   }
+
+  const nuevaEtapa: OportunidadesPorEtapa = Object.assign({
+    idStage: 0,
+    anio: 0,
+    nombre: '',
+    tarjetas: [],
+    expandido: true,
+    editandoNombre: true,
+    agregado: true,
+    probabilidad: 0,
+    eliminado: false,
+    idEmpresa: this.idEmpresa,
+    idUsuario: this.idUsuario,
+    orden: (this.etapas.length + 1).toString(),
+    textoBusqueda: '', 
+    etapaSeleccionada: null
+  });
+
+  this.etapas.push(nuevaEtapa);
+}
+
 
   toggleEditarOrdenEtapas() {
     this.guardarEtapas();
@@ -128,8 +138,8 @@ export class EtapasComponent {
 
     const etapasOrdenProbabilidad = this.etapas;
     for (let i = 1; i < etapasOrdenProbabilidad.length; i++) {
-      if ((Number(etapasOrdenProbabilidad[i].probabilidad) < Number(etapasOrdenProbabilidad[i - 1].probabilidad)) && 
-          Number(etapasOrdenProbabilidad[i - 1].probabilidad) > 0) {
+      if ((Number(etapasOrdenProbabilidad[i].probabilidad) < Number(etapasOrdenProbabilidad[i - 1].probabilidad)) &&
+        Number(etapasOrdenProbabilidad[i - 1].probabilidad) > 0) {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
@@ -153,6 +163,77 @@ export class EtapasComponent {
         });
       },
     });
+  }
+
+//   filtrarEtapa(event: any, etapa: OportunidadesPorEtapa) {
+//   etapa.textoBusqueda = event.filter;
+// }
+
+filtrarEtapa(event: any, etapa: any) {
+  etapa.textoBusqueda = event.filter?.trim() || '';
+  this.etapaSeleccionada = false;
+
+  if (etapa.textoBusqueda.length > 0) {
+    this.etapasFiltradas = this.etapasActivas.filter(e =>
+      e.nombre.toLowerCase().includes(etapa.textoBusqueda.toLowerCase())
+    );
+  } else {
+    this.etapasFiltradas = this.etapasActivas;
+  }
+}
+
+  agregarEtapaDesdeBusqueda(etapaActual: OportunidadesPorEtapa) {
+    const nombreNuevaEtapa = etapaActual.textoBusqueda?.trim();
+
+    if (!nombreNuevaEtapa) return;
+    if (this.etapas.filter(e => !e.eliminado).length >= 7) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'No puedes cargar más de 7 etapas',
+        key: 'toast'
+      });
+      return;
+    }
+
+    this.etapas.forEach(e => e.editandoNombre = false);
+
+    const nuevaEtapa: OportunidadesPorEtapa = Object.assign({
+      idStage: 0,
+      anio: 0,
+      nombre: nombreNuevaEtapa,
+      tarjetas: [],
+      expandido: true,
+      editandoNombre: true,
+      agregado: true,
+      probabilidad: 0,
+      eliminado: false,
+      idEmpresa: this.idEmpresa,
+      idUsuario: this.idUsuario,
+      orden: (this.etapas.length + 1).toString(),
+      textoBusqueda: '',
+      etapaSeleccionada: null
+    });
+
+    this.etapas.push(nuevaEtapa);
+
+    setTimeout(() => {
+      nuevaEtapa.etapaSeleccionada = nuevaEtapa;
+      this.cdr.detectChanges();
+    });
+  }
+
+  seleccionarEtapa(etapa: any) {
+    if (etapa != null) {
+      this.busquedaEtapa = etapa.nombre;
+    }
+    else {
+      this.busquedaEtapa = "";
+    }
+
+    this.etapasFiltradas = this.etapasActivas;
+    this.etapaSeleccionada = true;
+    this.cdr.detectChanges();
   }
 
   dropEtapa(event: CdkDragDrop<any[]>) {
@@ -179,41 +260,67 @@ export class EtapasComponent {
   }
 
   editarNombreEtapa(etapa: any) {
+    this.etapas.forEach(e => e.editandoNombre = false);
     etapa.editandoNombre = true;
+    etapa.etapaSeleccionada = etapa;
+
+    this.cdr.detectChanges();
+  }
+
+  seleccionarEtapaExistente(etapa: OportunidadesPorEtapa, etapaSeleccionada: OportunidadesPorEtapa) {
+    if (etapaSeleccionada) {
+      etapa.nombre = etapaSeleccionada.nombre;
+      etapa.probabilidad = etapaSeleccionada.probabilidad;
+      etapa.idStage = etapaSeleccionada.idStage;
+      etapa.etapaSeleccionada = etapaSeleccionada;
+    }
   }
 
   cancelarEdicion(etapa: any) {
     etapa.editandoNombre = false;
   }
 
-  guardarNombreEtapa(etapa: any) {
-    if (etapa.probabilidad <= 0 && etapa.nombre == '') {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Tienes que llenar el nombre  y la probabilidad',
-        key: 'toast'
-      });
-      return;
-    }
-    etapa.editandoNombre = false;
-    etapa.editado = true;
-    etapa.probabilidad = etapa.probabilidad.toString();
+  guardarNombreEtapa(etapa: OportunidadesPorEtapa) {
+  if (etapa.etapaSeleccionada) {
+    etapa.nombre = etapa.etapaSeleccionada.nombre;
+    etapa.probabilidad = etapa.etapaSeleccionada.probabilidad;
+    etapa.idStage = etapa.etapaSeleccionada.idStage;
+  }
+  else if (etapa.textoBusqueda?.trim()) {
+    etapa.nombre = etapa.textoBusqueda.trim();
+    etapa.idStage = 0;
   }
 
-  // eliminarEtapa(etapa: any): void {
-  //   if (this.etapas.filter(e => !e.eliminado).length <= 3) {
-  //     this.messageService.add({
-  //       severity: 'error',
-  //       summary: 'Error',
-  //       detail: 'Tienes que tener al menos 3 etapas',
-  //       key: 'toast'
-  //     });
-  //     return;
-  //   }
-  //   etapa.eliminado = true;
+  if (!etapa.nombre || Number(etapa.probabilidad) <= 0) {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: 'Debes asignar un nombre y una probabilidad mayor a 0',
+      key: 'toast'
+    });
+    return;
+  }
 
-  // }
+  const nombreNormalizado = etapa.nombre.trim().toLowerCase();
+
+  const duplicado = this.etapasActivas.some(
+    e =>
+      e !== etapa &&
+      e.nombre.trim().toLowerCase() === nombreNormalizado
+  );
+
+  if (duplicado) {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Nombre duplicado',
+      detail: `Ya existe una etapa con el nombre "${etapa.nombre}"`,
+      key: 'toast'
+    });
+    return;
+  }
+
+  etapa.editandoNombre = false;
+}
 
   eliminarEtapa(etapa: any): void {
     if (this.etapas.filter(e => !e.eliminado).length <= 3) {
@@ -257,4 +364,4 @@ export class EtapasComponent {
   rechazarEliminacion(): void {
   }
 
-  }
+}

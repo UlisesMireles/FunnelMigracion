@@ -65,6 +65,7 @@ export class LoginService {
           localStorage.setItem('licencia', user.licencia);
           localStorage.setItem('cantidadUsuarios', user.cantidadUsuarios);
           localStorage.setItem('cantidadOportunidades', user.cantidadOportunidades);
+          localStorage.setItem('permitirDecimales', user.permitirDecimales); 
           this.currentUserSubject.next(user);
           sessionStorage.setItem('sesion', window.btoa(JSON.stringify(user)));
           sessionStorage.setItem('Usuario', user.nombre);
@@ -187,6 +188,11 @@ export class LoginService {
       return sesion;
     }
     return null;
+  }
+
+  obtenerPermitirDecimales(): boolean {
+    const valor = localStorage.getItem('permitirDecimales');
+    return valor === 'true';
   }
 
   obtenerIdEmpresa(): number {

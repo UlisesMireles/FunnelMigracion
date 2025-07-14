@@ -15,6 +15,8 @@ export class GraficasPorAgenteEliminadasComponent {
 quadrants: { cards: any[] }[] = [];
   baseUrl: string = environment.baseURL;
   agentes: AgenteDto[] = [];
+  mostrarDecimales: boolean = false;
+
 
   get dropListIds() {
     return this.quadrants.map((_, index) => `cardList${index}`);
@@ -27,7 +29,7 @@ quadrants: { cards: any[] }[] = [];
   private originalParentElements = new Map<string, { parent: HTMLElement, nextSibling: Node | null }>();
 
 
-  constructor( private readonly graficasService: GraficasService,private readonly sessionService: LoginService, private readonly cdr: ChangeDetectorRef,) {
+  constructor( private readonly graficasService: GraficasService,private readonly sessionService: LoginService, private readonly cdr: ChangeDetectorRef, private loginService: LoginService) {
     this.quadrants = [
       { cards: [this.graficasService.createCardPorAnio(1, 'Consulta Agentes', 'tabla')] },
       { cards: [this.graficasService.createCardPorAnio(2, 'Grafica por Agente - Clientes (Seleccione un Agente)', 'grafica')] },
@@ -36,6 +38,7 @@ quadrants: { cards: any[] }[] = [];
 
   }
   ngOnInit(): void {
+    this.mostrarDecimales = this.loginService.obtenerPermitirDecimales(); 
     this.baseUrl = this.baseUrl + '/Fotografia/';
     this.obtenerAniosDisponibles();
     //this.consultarAgente();
@@ -126,26 +129,30 @@ seleccionarAgente(idAgente: number) {
     });
   }
 
-  consultarGraficaAgenteTipoOportunidad(idAgente: number): void {
-    const idEstatusOportunidad = 5;
-    const anio = this.anioSeleccionado;
-    const request: RequestGraficasDto = {
-      bandera: 'SEL-AGENTE-TIPO',
-      idEmpresa: this.sessionService.obtenerIdEmpresa(),
-      idUsuario: idAgente,
-      idEstatusOportunidad,
-      anio
-    };
+consultarGraficaAgenteTipoOportunidad(idAgente: number): void {
+  const idEstatusOportunidad = 5;
+  const anio = this.anioSeleccionado;
 
-    this.graficasService.obtenerGraficaAgentesPorAnioData(request).subscribe({
-      next: (response: GraficasDto[]) => {
-        const dataAGraficar = [this.graficasService.createPieData(response)];
-        const layOutGrafica = this.graficasService.createPieLayout();
-        this.setGraficaData(2, 0, dataAGraficar, layOutGrafica);
-      },
-      error: (err: any) => console.error('Error al consultar la gráfica:', err)
-    });
-  }
+  const request: RequestGraficasDto = {
+    bandera: 'SEL-AGENTE-TIPO',
+    idEmpresa: this.sessionService.obtenerIdEmpresa(),
+    idUsuario: idAgente,
+    idEstatusOportunidad,
+    anio
+  };
+
+  this.graficasService.obtenerGraficaAgentesPorAnioData(request).subscribe({
+    next: (response: GraficasDto[]) => {
+      const dataAGraficar = [
+        this.graficasService.createPieData(response, this.mostrarDecimales)
+      ];
+      const layOutGrafica = this.graficasService.createPieLayout();
+      this.setGraficaData(2, 0, dataAGraficar, layOutGrafica);
+    },
+    error: (err: any) => console.error('Error al consultar la gráfica:', err)
+  });
+}
+
 
   drop(event: CdkDragDrop<any>) {
     if (event.previousContainer === event.container) {

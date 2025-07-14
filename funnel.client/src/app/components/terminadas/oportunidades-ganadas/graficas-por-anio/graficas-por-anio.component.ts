@@ -15,6 +15,7 @@ import * as Plotly from 'plotly.js-dist-min';
 })
 export class GraficasPorAnioComponent {
 quadrants: { cards: any[] }[] = [];
+mostrarDecimales: boolean = false;
   get dropListIds() {
     return this.quadrants.map((_, index) => `dropList${index}`);
   }
@@ -28,6 +29,7 @@ quadrants: { cards: any[] }[] = [];
   constructor(
     private readonly graficasService: GraficasService,
     private readonly sessionService: LoginService,
+    private loginService: LoginService,
     private readonly cdr: ChangeDetectorRef,
     private renderer: Renderer2, @Inject(DOCUMENT) private document: Document
 
@@ -43,6 +45,7 @@ quadrants: { cards: any[] }[] = [];
   public graph: any;
 
   ngOnInit(): void {
+    this.mostrarDecimales = this.loginService.obtenerPermitirDecimales(); 
     this.obtenerAniosDisponibles();
     this.consultarGraficaClientes();
     this.consultarGraficaTipoProyecto();
@@ -92,68 +95,82 @@ obtenerAniosDisponibles(): void {
 
   
   consultarGraficaClientes(): void {
-    const idEmpresa = this.sessionService.obtenerIdEmpresa();
-    const idUsuario = this.sessionService.obtenerIdUsuario();
-    const idEstatusOportunidad = 2;
-    const anio = this.anioSeleccionado;
-    const request: RequestGraficasDto = {
-      bandera: 'SEL-CLIENTES-ANIO',
-      idEmpresa,
-      idUsuario,
-      idEstatusOportunidad,
-      anio
-    };
-    this.graficasService.obtenerGraficaGanadasData(request).subscribe({
-      next: (response: GraficasDto[]) => {
-          const filtrados = response.filter(item => item.valor > 0);
-          const dataAGraficar = [this.graficasService.createBarPorcentajeData(filtrados)];
-          const layOutGrafica = this.graficasService.createBarLayout();
-          this.setGraficaData(0, 0, dataAGraficar, layOutGrafica);
-        },
-        error: (err: any) => console.error('Error al consultar la gráfica:', err)
-      });
-    }
+  const idEmpresa = this.sessionService.obtenerIdEmpresa();
+  const idUsuario = this.sessionService.obtenerIdUsuario();
+  const idEstatusOportunidad = 2;
+  const anio = this.anioSeleccionado;
+
+  const request: RequestGraficasDto = {
+    bandera: 'SEL-CLIENTES-ANIO',
+    idEmpresa,
+    idUsuario,
+    idEstatusOportunidad,
+    anio
+  };
+
+  this.graficasService.obtenerGraficaGanadasData(request).subscribe({
+    next: (response: GraficasDto[]) => {
+      const filtrados = response.filter(item => item.valor > 0);
+      const dataAGraficar = [
+        this.graficasService.createBarPorcentajeData(filtrados, this.mostrarDecimales)
+      ];
+      const layOutGrafica = this.graficasService.createBarLayout();
+      this.setGraficaData(0, 0, dataAGraficar, layOutGrafica);
+    },
+    error: (err: any) => console.error('Error al consultar la gráfica:', err)
+  });
+}
+
   consultarGraficaTipoProyecto(): void {
-    const idEmpresa = this.sessionService.obtenerIdEmpresa();
-    const idUsuario = this.sessionService.obtenerIdUsuario();
-    const idEstatusOportunidad = 2;
-    const anio = this.anioSeleccionado;
-    const request: RequestGraficasDto = {
-      bandera: 'SEL-TIPO-ANIO',
-      idEmpresa,
-      idUsuario,
-      idEstatusOportunidad,
-      anio
-    };
-    this.graficasService.obtenerGraficaGanadasData(request).subscribe({
-      next: (response: GraficasDto[]) => {
-        const dataAGraficar = [this.graficasService.createPieMontoData(response)];
-        const layOutGrafica = this.graficasService.createPieLayout();
-        this.setGraficaData(1, 0, dataAGraficar, layOutGrafica);
-      },
-      error: (err: any) => console.error('Error al consultar la gráfica proyecto:', err)
-    });
-  }
-  consultarGraficaVentasAnuales(): void {
-    const idEmpresa = this.sessionService.obtenerIdEmpresa();
-    const idEstatusOportunidad = 2;
-    const request: RequestGraficasDto = {
-      bandera: 'SEL-TOTALES-ANUALES',
-      idEmpresa,
-      idEstatusOportunidad
-    };
-    this.graficasService.obtenerGraficaGanadasData(request).subscribe({
-      next: (response: GraficasDto[]) => {
-          const filtrados = response.filter(item => item.valor > 0);
-          const barData = this.graficasService.createBarData(filtrados);
-         barData.marker = { color: filtrados.map(() => '#1976d2') };
-          const dataAGraficar = [barData];
-          const layOutGrafica = this.graficasService.createBarLayout();
-          this.setGraficaData(2, 0, dataAGraficar, layOutGrafica);
-        },
-        error: (err: any) => console.error('Error al consultar la gráfica:', err)
-      });
-    }
+  const idEmpresa = this.sessionService.obtenerIdEmpresa();
+  const idUsuario = this.sessionService.obtenerIdUsuario();
+  const idEstatusOportunidad = 2;
+  const anio = this.anioSeleccionado;
+
+  const request: RequestGraficasDto = {
+    bandera: 'SEL-TIPO-ANIO',
+    idEmpresa,
+    idUsuario,
+    idEstatusOportunidad,
+    anio
+  };
+
+  this.graficasService.obtenerGraficaGanadasData(request).subscribe({
+    next: (response: GraficasDto[]) => {
+      const dataAGraficar = [
+        this.graficasService.createPieMontoData(response, this.mostrarDecimales)
+      ];
+      const layOutGrafica = this.graficasService.createPieLayout();
+      this.setGraficaData(1, 0, dataAGraficar, layOutGrafica);
+    },
+    error: (err: any) => console.error('Error al consultar la gráfica proyecto:', err)
+  });
+}
+
+ consultarGraficaVentasAnuales(): void {
+  const idEmpresa = this.sessionService.obtenerIdEmpresa();
+  const idEstatusOportunidad = 2;
+
+  const request: RequestGraficasDto = {
+    bandera: 'SEL-TOTALES-ANUALES',
+    idEmpresa,
+    idEstatusOportunidad
+  };
+
+  this.graficasService.obtenerGraficaGanadasData(request).subscribe({
+    next: (response: GraficasDto[]) => {
+      const filtrados = response.filter(item => item.valor > 0);
+      const barData = this.graficasService.createBarData(filtrados, this.mostrarDecimales);
+      barData.marker = { color: filtrados.map(() => '#1976d2') };
+
+      const dataAGraficar = [barData];
+      const layOutGrafica = this.graficasService.createBarLayout();
+      this.setGraficaData(2, 0, dataAGraficar, layOutGrafica);
+    },
+    error: (err: any) => console.error('Error al consultar la gráfica:', err)
+  });
+}
+
  drop(event: CdkDragDrop<any>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);

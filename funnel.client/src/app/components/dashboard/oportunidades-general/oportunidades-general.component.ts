@@ -23,6 +23,7 @@ export class OportunidadesGeneralComponent {
   modalTiposVisible: boolean = false;
   mostrarModalDetallesTipo: boolean = false;
   tipoProyectoSeleccionado: number | null = null;
+  mostrarDecimales: boolean = false;
   originalParentElements = new Map<number, { parent: HTMLElement, nextSibling: Node | null }>();
 
   get dropListIds() {
@@ -34,6 +35,7 @@ export class OportunidadesGeneralComponent {
     private readonly graficasService: GraficasService,
     private readonly sessionService: LoginService,
     private readonly cdr: ChangeDetectorRef,
+    private loginService: LoginService,
     private dialog: MatDialog,
     private renderer: Renderer2, @Inject(DOCUMENT) private document: Document
   ) {
@@ -49,6 +51,7 @@ export class OportunidadesGeneralComponent {
   public graph: any;
 
   ngOnInit(): void {
+    this.mostrarDecimales = this.loginService.obtenerPermitirDecimales(); 
     this.consultarGraficaStage();
     this.consultarGraficaSector();
     this.consultarGraficaTipo();
@@ -61,56 +64,69 @@ export class OportunidadesGeneralComponent {
   }
 
   consultarGraficaStage(): void {
-    const idEmpresa = this.sessionService.obtenerIdEmpresa();
-    const request: RequestGraficasDto = {
-      bandera: 'SEL-OPORTUNIDAD-STAGE',
-      idEmpresa
-    };
+  const idEmpresa = this.sessionService.obtenerIdEmpresa();
+  const mostrarDecimales = this.sessionService.obtenerPermitirDecimales();
 
-    this.graficasService.obtenerGraficaData(request).subscribe({
-      next: (response: GraficasDto[]) => {
-        const dataAGraficar = [this.graficasService.createFunnelData(response)];
-        const layOutGrafica = this.graficasService.createFunnelLayout();
-        this.setGraficaData(0, 0, dataAGraficar, layOutGrafica);
-      },
-      error: (err: any) => console.error('Error al consultar la gráfica:', err)
-    });
-  }
+  const request: RequestGraficasDto = {
+    bandera: 'SEL-OPORTUNIDAD-STAGE',
+    idEmpresa
+  };
 
-  consultarGraficaTipo(): void {
-    const idEmpresa = this.sessionService.obtenerIdEmpresa();
-    const request: RequestGraficasDto = {
-      bandera: 'SEL-TIPO-SIN-MONTOS-CEROS',
-      idEmpresa
-    };
+  this.graficasService.obtenerGraficaData(request).subscribe({
+    next: (response: GraficasDto[]) => {
+      const dataAGraficar = [
+        this.graficasService.createFunnelData(response, this.mostrarDecimales)
+      ];
+      const layOutGrafica = this.graficasService.createFunnelLayout();
+      this.setGraficaData(0, 0, dataAGraficar, layOutGrafica);
+    },
+    error: (err: any) => console.error('Error al consultar la gráfica:', err)
+  });
+}
 
-    this.graficasService.obtenerGraficaData(request).subscribe({
-      next: (response: GraficasDto[]) => {
-        const dataAGraficar = [this.graficasService.createPieData(response)];
-        const layOutGrafica = this.graficasService.createPieLayout();
-        this.setGraficaData(2, 0, dataAGraficar, layOutGrafica);
-      },
-      error: (err: any) => console.error('Error al consultar la gráfica:', err)
-    });
-  }
+consultarGraficaTipo(): void {
+  const idEmpresa = this.sessionService.obtenerIdEmpresa();
+  const mostrarDecimales = this.sessionService.obtenerPermitirDecimales();
 
-  consultarGraficaSector(): void {
-    const idEmpresa = this.sessionService.obtenerIdEmpresa();
-    const request: RequestGraficasDto = {
-      bandera: 'SEL-AGENTE-SECTOR',
-      idEmpresa
-    };
+  const request: RequestGraficasDto = {
+    bandera: 'SEL-TIPO-SIN-MONTOS-CEROS',
+    idEmpresa
+  };
 
-    this.graficasService.obtenerGraficaAgentesData(request).subscribe({
-      next: (response: GraficasDto[]) => {
-        const filtrados = response.filter(item => item.valor > 0);
-        const dataAGraficar = [this.graficasService.createBarData(filtrados)];
-        const layOutGrafica = this.graficasService.createBarLayout();
-        this.setGraficaData(1, 0, dataAGraficar, layOutGrafica);
-      },
-      error: (err: any) => console.error('Error al consultar la gráfica:', err)
-    });
-  }
+  this.graficasService.obtenerGraficaData(request).subscribe({
+    next: (response: GraficasDto[]) => {
+      const dataAGraficar = [
+        this.graficasService.createPieData(response, this.mostrarDecimales)
+      ];
+      const layOutGrafica = this.graficasService.createPieLayout();
+      this.setGraficaData(2, 0, dataAGraficar, layOutGrafica);
+    },
+    error: (err: any) => console.error('Error al consultar la gráfica:', err)
+  });
+}
+
+consultarGraficaSector(): void {
+  const idEmpresa = this.sessionService.obtenerIdEmpresa();
+  const mostrarDecimales = this.sessionService.obtenerPermitirDecimales();
+
+  const request: RequestGraficasDto = {
+    bandera: 'SEL-AGENTE-SECTOR',
+    idEmpresa
+  };
+
+  this.graficasService.obtenerGraficaAgentesData(request).subscribe({
+    next: (response: GraficasDto[]) => {
+      const filtrados = response.filter(item => item.valor > 0);
+      const dataAGraficar = [
+        this.graficasService.createBarData(filtrados, this.mostrarDecimales)
+      ];
+      const layOutGrafica = this.graficasService.createBarLayout();
+      this.setGraficaData(1, 0, dataAGraficar, layOutGrafica);
+    },
+    error: (err: any) => console.error('Error al consultar la gráfica:', err)
+  });
+}
+
 
   drop(event: CdkDragDrop<any>) {
     if (event.previousContainer === event.container) {

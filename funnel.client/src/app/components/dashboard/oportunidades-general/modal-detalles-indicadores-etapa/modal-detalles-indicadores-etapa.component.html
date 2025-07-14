@@ -67,7 +67,9 @@
                 </span>
                 </span>
                 
-                <span *ngSwitchCase="'currency'">{{ rowData[def.key] | currency:'MXN':'symbol':'1.2-2'}}</span>
+                <span *ngSwitchCase="'currency'">
+                  {{ rowData[def.key] | totalCurrency:'currency':mostrarDecimales }}
+                </span>
                 <span *ngSwitchCase="'date'" 
                       [ngStyle]="{
                         'color': def.key === 'fechaEstimadaCierreOriginal' ? getColorForFechaEstimadaCierre(rowData[def.key]) : 'inherit',
@@ -85,7 +87,7 @@
             [ngClass]="{'total-registros-cell': def.key === 'nombre'}">
             <ng-container *ngIf="def.tipoFormato === 'currency'">
                 <div style="text-align: right; font-weight: bold;">
-                {{ calcularSumaMontos() | currency:'MXN':'symbol':'1.2-2' }}
+                    {{ calcularSumaMontos() | totalCurrency:'currency':mostrarDecimales }}
                 </div>
             </ng-container>
             <ng-container *ngIf="def.key === 'nombre'">

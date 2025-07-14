@@ -23,7 +23,7 @@ export class ModalOportunidadesPorAgenteSectorComponent {
   modalDetalleVisible: boolean = false;
   idSectorSeleccionado: number | null = null;
   nombreSectorSeleccionado: string = '';
-
+  public mostrarDecimales: boolean = false;
 
   lsColumnasAMostrar = [
     { key: 'descripcion', header: 'Sector', format: 'text' },
@@ -38,6 +38,7 @@ export class ModalOportunidadesPorAgenteSectorComponent {
   ) {}
 
   ngOnChanges() {
+    this.mostrarDecimales = this.loginService.obtenerPermitirDecimales();
     if (this.visible && this.idAgente) {
       this.cargarOportunidades();
     }

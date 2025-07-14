@@ -19,6 +19,7 @@ export class ModalDetallesOportunidadesPorTipoComponent {
   loading: boolean = true;
   maximized: boolean = false;
   nombreTipoProyecto: string = '';
+  public mostrarDecimales: boolean = false;
 
   lsColumnasAMostrar = [
     { key: 'nombreProspecto', valor: 'Prospecto', tipoFormato: 'text' },
@@ -36,6 +37,7 @@ export class ModalDetallesOportunidadesPorTipoComponent {
   ) { }
 
   ngOnInit() {
+    this.mostrarDecimales = this.loginService.obtenerPermitirDecimales();
     if (this.idTipoProyecto) {
       this.cargarDetalles();
     }

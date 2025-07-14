@@ -23,6 +23,8 @@ export class OportunidadesPerdidasComponent {
   disableOportunidades = true;
   isDescargando = false;
   anchoTabla = 100;
+  public mostrarDecimales: boolean = false;
+
 
   oportunidadesPerdidas: Oportunidad[] = [];
   oportunidadesOriginalPerdidas: Oportunidad[] = [];
@@ -82,6 +84,7 @@ export class OportunidadesPerdidasComponent {
   ) { }
 
   ngOnInit(): void {
+    this.mostrarDecimales = this.loginService.obtenerPermitirDecimales();
     this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
     this.getOportunidades();
 

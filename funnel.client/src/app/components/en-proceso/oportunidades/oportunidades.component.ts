@@ -29,6 +29,7 @@ export class OportunidadesComponent {
   disableOportunidades = true;
   isDescargando = false;
   anchoTabla = 100;//porciento
+  public mostrarDecimales: boolean = false;
 
   oportunidades: Oportunidad[] = [];
   oportunidadesOriginal: Oportunidad[] = [];
@@ -104,6 +105,7 @@ export class OportunidadesComponent {
   }
 
   ngOnInit(): void {
+    this.mostrarDecimales = this.loginService.obtenerPermitirDecimales();
     this.licencia = localStorage.getItem('licencia')!;
     this.cantidadOportunidades = Number(localStorage.getItem('cantidadOportunidades'));
     this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);

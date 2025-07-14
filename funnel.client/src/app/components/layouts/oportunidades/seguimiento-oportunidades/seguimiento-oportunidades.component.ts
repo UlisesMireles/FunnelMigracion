@@ -52,11 +52,19 @@ export class SeguimientoOportunidadesComponent {
 
 
   historialOportunidad: Oportunidad[] = [];
+  vocesDisponibles: SpeechSynthesisVoice[] = [];
+  vozSeleccionada: SpeechSynthesisVoice | null = null;
+
   
 
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() closeModal: EventEmitter<void> = new EventEmitter();
   @Output() result: EventEmitter<baseOut> = new EventEmitter();
+
+ngOnInit(): void {
+  this.cargarVozPreferida();
+}
+
 
   inicializarFormulario() {
     this.oportunidadForm = this.fb.group({
@@ -450,13 +458,8 @@ export class SeguimientoOportunidadesComponent {
       utterance.pitch = 1.2;
       utterance.volume = 1;
 
-      const vocesDisponibles = window.speechSynthesis.getVoices();
-      const vozSabina = vocesDisponibles.find(voz =>
-        voz.name === "Microsoft Dalia Online (Natural) - Spanish (Mexico)"
-      );
-
-      if (vozSabina) {
-        utterance.voice = vozSabina;
+      if (this.vozSeleccionada) {
+        utterance.voice = this.vozSeleccionada;
       }
 
       this.leyendo = true;
@@ -494,5 +497,28 @@ lonOp(): boolean {
   return !!nombreOportunidad && nombreOportunidad.length > 120;
 
 }
+
+  cargarVozPreferida(): void {
+    const cargarVoces = () => {
+      this.vocesDisponibles = window.speechSynthesis.getVoices();
+
+      if (this.vocesDisponibles.length === 0) {
+        setTimeout(cargarVoces, 100);
+        return;
+      }
+
+      const nombreGuardado = localStorage.getItem('vozPreferida');
+      this.vozSeleccionada = this.vocesDisponibles.find(v =>
+        v.name === (nombreGuardado || "Microsoft Dalia Online (Natural) - Spanish (Mexico)")
+      ) || null;
+
+      if (!nombreGuardado && this.vozSeleccionada) {
+        localStorage.setItem('vozPreferida', this.vozSeleccionada.name);
+      }
+    };
+    window.speechSynthesis.onvoiceschanged = cargarVoces;
+
+    cargarVoces();
+  }
 
 }

@@ -122,7 +122,8 @@
                     <p-button type="button" icon="bi bi-trash" text  
                               (click)="eliminarArchivo(item)"
                               pTooltip="Eliminar archivo"
-                              tooltipPosition="top"/>
+                              tooltipPosition="top"
+                              styleClass="p-button-error"/>
                   </ng-container>
                   
                   <ng-container *ngIf="item.diasParaEliminacion && item.diasParaEliminacion !== '0'">
@@ -131,7 +132,7 @@
                                 (click)="recuperarArchivo(item)"
                                 pTooltip="Recuperar archivo (se eliminará en {{item.diasParaEliminacion}} día(s))"
                                 tooltipPosition="top"
-                                styleClass="p-button-success"/>
+                                styleClass="p-button-error"/>
                       <span class="days-badge">{{item.diasParaEliminacion}}</span>
                     </div>
                   </ng-container>

@@ -22,6 +22,7 @@ export class LoginService {
   public currentUser: Observable<Usuario>;
   public sessionWarning$ = new Subject<void>();
   private sessionTimeout = 30 * 60 * 1000;
+  private sessionActivityTimeout = 28 * 60 * 1000;
   private timer: any;
   private warningTime: any;
   public sessionReset$ = new Subject<void>();
@@ -103,10 +104,9 @@ export class LoginService {
     if(this.warningTime){
       clearTimeout(this.warningTime);
     }
-    const _warningTime = this.sessionTimeout - (2 * 60 * 1000);
     this.warningTime = setTimeout(() => {
       this.sessionWarning$.next();
-    }, _warningTime);
+    }, this.sessionActivityTimeout);
     
     this.timer = setTimeout(() => {
       this.logout('La sesión ha expirado: login service startSessionTimer');
@@ -136,6 +136,9 @@ export class LoginService {
 
           if (this.timer) {
             clearTimeout(this.timer);
+          }
+          if(this.warningTime){
+            clearTimeout(this.warningTime);
           }
           this.currentUserSubject.next(null);
           this.router.navigate(['/login']);

@@ -113,6 +113,7 @@ export interface Tarjeta {
   stage?: string;
   nombre?: string;
   tooltipStage?: string;
+  totalArchivos: number;
 }
 
 export  interface OportunidadesPorMes {

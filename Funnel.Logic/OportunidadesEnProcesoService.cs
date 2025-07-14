@@ -150,8 +150,8 @@ namespace Funnel.Logic
                         TotalComentarios = y.TotalComentarios,
                         Stage = y.Stage,
                         Nombre = y.Nombre ?? "Sin nombre",
-                        TooltipStage = y.TooltipStage
-
+                        TooltipStage = y.TooltipStage,
+                        TotalArchivos = y.TotalArchivos
 
 
                     }).ToList()
@@ -206,6 +206,7 @@ namespace Funnel.Logic
                         TotalComentarios = y.TotalComentarios,
                         TooltipStage = y.TooltipStage,
                         Stage = y.Stage,
+                        TotalArchivos = y.TotalArchivos
 
                     }).ToList()
                 });

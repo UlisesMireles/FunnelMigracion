@@ -182,3 +182,7 @@ th.sort-active p-sortIcon {
 .total-registros-cell {
   padding-left: 3px !important;  
 }
+
+:host ::ng-deep .p-overlay{
+  top: 635.812px !important;
+}

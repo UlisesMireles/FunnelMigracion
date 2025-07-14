@@ -28,7 +28,7 @@
 
 <ng-template pTemplate="content">
   <div class="contenedor-tabla-dialogo">
-    <p-table 
+    <p-table [paginatorDropdownAppendTo]="'body'"
       [value]="oportunidades" 
       [paginator]="true" 
       [rows]="10" 
@@ -66,7 +66,7 @@
       <ng-template pTemplate="footer">
         <tr class="custom-footer">
           <td colspan="4" class="total-registros-cell">Total de Oportunidades: {{ oportunidades.length }} </td>
-          <td class="text-right">{{ calcularSumaMontos() | currency:'MXN':'symbol':'1.2-2' }}</td>
+          <td class="text-left">{{ calcularSumaMontos() | currency:'MXN':'symbol':'1.2-2' }}</td>
           <td></td>
         </tr>
       </ng-template>

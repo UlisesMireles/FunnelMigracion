@@ -20,6 +20,7 @@ namespace Funnel.Models.Dto
         public int? IdEmpresa { get; set; }
         public string? Orden { get; set; }
         public string? Probabilidad { get; set; }
+        public int RIdProcesoEtapa { get; set; }
     }
 
     public class TarjetasDto

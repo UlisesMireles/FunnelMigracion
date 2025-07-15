@@ -55,7 +55,7 @@
                 {{ rowData[def.key] }}
             </ng-template>
             </span>
-            <span *ngSwitchCase="'currency'">{{ rowData[def.key] | currency:'MXN':'symbol':'1.2-2' }}</span>
+            <span *ngSwitchCase="'currency'">{{ rowData[def.key] | totalCurrency:'currency':mostrarDecimales}}</span>
             <span *ngSwitchCase="'percent'">{{ (rowData[def.key] / 100) | percent:'1.2-2' }}</span>
             </ng-container>
             </td>
@@ -69,14 +69,14 @@
                 <!-- MONTO -->
                 <ng-container *ngIf="def.key === 'monto'">
                     <div style="text-align: left; font-weight: bold;">
-                    {{ calcularSumaMontos() | currency:'MXN':'symbol':'1.2-2' }}
+                    {{ calcularSumaMontos() | totalCurrency:'currency':mostrarDecimales}}
                     </div>
                 </ng-container>
 
                 <!-- MONTO NORMALIZADO -->
                 <ng-container *ngIf="def.key === 'montoNormalizado'">
                     <div style="text-align: left; font-weight: bold;">
-                    {{ calcularSumaMontosNormalizados() | currency:'MXN':'symbol':'1.2-2' }}
+                    {{ calcularSumaMontosNormalizados() | currency:'currency':mostrarDecimales }}
                     </div>
                 </ng-container>
                 <!-- TOTAL REGISTROS -->

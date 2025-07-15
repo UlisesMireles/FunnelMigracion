@@ -17,6 +17,7 @@ export class ModalDetallesIndicadoresEtapaComponent {
   oportunidades: Oportunidad[] = [];
   loading: boolean = true;
   maximized: boolean = false;
+  public mostrarDecimales: boolean = false;
 
     lsColumnasAMostrar = [
     { key: 'nombre', valor: 'Prospecto', tipoFormato: 'text' },
@@ -34,6 +35,7 @@ export class ModalDetallesIndicadoresEtapaComponent {
   ) {}
 
   onDialogShow() {
+    this.mostrarDecimales = this.loginService.obtenerPermitirDecimales();
     this.cargarOportunidades();
   }
 

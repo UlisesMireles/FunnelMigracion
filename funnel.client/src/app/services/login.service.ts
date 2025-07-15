@@ -192,6 +192,28 @@ export class LoginService {
     return null;
   }
 
+  obtenerPermitirDecimales(): boolean {
+    const valor = sessionStorage.getItem('permitirDecimales');
+    console.log('Permitir decimales desde sessionStorage:', valor);
+    return valor === 'true';
+  }
+
+  obtenerPermitirDecimalesDesdeApi(): Observable<boolean> {
+  const idEmpresa = this.obtenerIdEmpresa(); 
+  return this.http
+    .get<{ permitirDecimales: boolean }>(
+      `${this.baseUrl}api/Login/ObtenerPermitirDecimales`,{ params: { idEmpresa: idEmpresa.toString() } }
+    )
+    .pipe(
+      map(resp => {
+        const valor = resp?.permitirDecimales ?? false;
+        sessionStorage.setItem('permitirDecimales', valor ? 'true' : 'false');
+        return valor;
+      })
+    );
+}
+
+
   obtenerIdEmpresa(): number {
     const sesion = this.desencriptaSesion();
     if (sesion?.idEmpresa) {

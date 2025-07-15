@@ -52,7 +52,7 @@
             <td pTooltip="{{oportunidad.ejecutivo}}" tooltipPosition="top">
               {{ oportunidad.iniciales || 'N/A' }}
             </td>
-            <td class="text-right">{{ oportunidad.monto | currency:'MXN':'symbol':'1.2-2' }}</td>
+            <td class="text-right">{{ oportunidad.monto | totalCurrency:'currency':mostrarDecimales}}</td>
             <td>{{ oportunidad.fechaEstimadaCierre | date:'dd/MM/yyyy' }}</td>
         </tr>
         </ng-template>
@@ -60,7 +60,7 @@
         <ng-template pTemplate="footer">
         <tr class="custom-footer">
             <td colspan="4" class = "total-registros-cell">Total de Oportunidades: {{ oportunidades.length }}</td>
-            <td class="text-left">{{ calcularSumaMontos() | currency:'MXN':'symbol':'1.2-2' }}</td>
+            <td class="text-left">{{ calcularSumaMontos() | totalCurrency:'currency':mostrarDecimales }}</td>
             <td colspan="3"></td>
         </tr>
         </ng-template>

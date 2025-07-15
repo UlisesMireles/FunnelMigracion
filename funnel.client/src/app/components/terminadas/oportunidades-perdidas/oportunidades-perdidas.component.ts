@@ -25,6 +25,8 @@ export class OportunidadesPerdidasComponent {
   disableOportunidades = true;
   isDescargando = false;
   anchoTabla = 100;
+  public mostrarDecimales: boolean = false;
+
 
   oportunidadesPerdidas: Oportunidad[] = [];
   oportunidadesOriginalPerdidas: Oportunidad[] = [];
@@ -61,6 +63,7 @@ export class OportunidadesPerdidasComponent {
   ) { }
 
   ngOnInit(): void {
+    this.mostrarDecimales = this.loginService.obtenerPermitirDecimales();
     this.configuracionColumnasService.obtenerColumnasAMostrar(EnumTablas.OportunidadesPerdidas).subscribe({
       next: ({ todas, mostrar }) => {
         this.lsTodasColumnas = todas;

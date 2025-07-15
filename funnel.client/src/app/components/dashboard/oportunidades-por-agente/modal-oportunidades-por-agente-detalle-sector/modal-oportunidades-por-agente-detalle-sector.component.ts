@@ -20,6 +20,7 @@ export class ModalOportunidadesPorAgenteDetalleSectorComponent {
 
   oportunidades: DetalleSectorAgente[] = [];
   maximized: boolean = false;
+  public mostrarDecimales: boolean = false;
 
   constructor(
     private graficasService: GraficasService,
@@ -28,6 +29,7 @@ export class ModalOportunidadesPorAgenteDetalleSectorComponent {
   ) {}
 
   ngOnInit() {
+    this.mostrarDecimales = this.loginService.obtenerPermitirDecimales();
     if (this.visible && this.idAgente && this.idSector) {
       this.cargarDetalles();
     }

@@ -48,13 +48,23 @@ export class SeguimientoOportunidadesComponent {
 
   copiado: boolean = false;
   leyendo: boolean = false;
+  textoLimpio: string = '';
+
 
   historialOportunidad: Oportunidad[] = [];
+  vocesDisponibles: SpeechSynthesisVoice[] = [];
+  vozSeleccionada: SpeechSynthesisVoice | null = null;
+
   
 
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() closeModal: EventEmitter<void> = new EventEmitter();
   @Output() result: EventEmitter<baseOut> = new EventEmitter();
+
+ngOnInit(): void {
+  this.cargarVozPreferida();
+}
+
 
   inicializarFormulario() {
     this.oportunidadForm = this.fb.group({
@@ -264,7 +274,7 @@ export class SeguimientoOportunidadesComponent {
     this.openIaService.AsistenteHistorico(body).subscribe({
       next: res => {
         this.visibleRespuesta = true;
-        this.respuestaAsistente = this.limpiarRespuesta(res.respuesta || 'No se recibió respuesta.');
+        this.respuestaAsistente = this.limpiarRespuesta(res.respuesta || 'No se recibió respuesta.',  this.oportunidad.fechaModificacion || 0);
         this.loading = false;
       },
       error: err => {
@@ -312,13 +322,29 @@ export class SeguimientoOportunidadesComponent {
     });
   }
 
-  limpiarRespuesta(respuesta: string): string {
-    return respuesta
+  limpiarRespuesta(respuesta: string, diasSinActividad: number): string {
+    let textoLimpio = respuesta
       .replace(/```(?:\w+)?\s*([^]*?)```/g, (_, contenido) => contenido.trim())
       .replace(/^```(?:\w+)?\s*/, '')
       .replace(/```$/, '')
       .trim();
+
+      if (diasSinActividad <= 15) {
+        // Eliminar el mensaje aunque venga dentro de un <span> o con estilos
+        textoLimpio = textoLimpio.replace(
+          /<span[^>]*?>\s*Se solicita actualizar este seguimiento dado que tiene más de 15 días sin actividad\.?\s*<\/span>/gi,
+          ''
+        );
+
+        // También eliminar si viene sin etiquetas HTML
+        textoLimpio = textoLimpio.replace(
+          /Se solicita actualizar este seguimiento dado que tiene más de 15 días sin actividad\.?/gi,
+          ''
+        );
+      }
+    return textoLimpio;
   }
+  
   banderaDictado: boolean = false;
   dictando = false;
   recognition: any;
@@ -393,7 +419,7 @@ export class SeguimientoOportunidadesComponent {
     }
   }
     
-  leerRespuesta(): void {
+ leerRespuesta(): void {
     if (this.leyendo) {
       window.speechSynthesis.cancel();
       this.leyendo = false;
@@ -428,9 +454,13 @@ export class SeguimientoOportunidadesComponent {
 
       const utterance = new SpeechSynthesisUtterance(textoPlano);
       utterance.lang = 'es-MX';
-      utterance.rate = 1;
-      utterance.pitch = 1;
+      utterance.rate = 1.1;
+      utterance.pitch = 1.2;
       utterance.volume = 1;
+
+      if (this.vozSeleccionada) {
+        utterance.voice = this.vozSeleccionada;
+      }
 
       this.leyendo = true;
 
@@ -467,5 +497,28 @@ lonOp(): boolean {
   return !!nombreOportunidad && nombreOportunidad.length > 120;
 
 }
+
+  cargarVozPreferida(): void {
+    const cargarVoces = () => {
+      this.vocesDisponibles = window.speechSynthesis.getVoices();
+
+      if (this.vocesDisponibles.length === 0) {
+        setTimeout(cargarVoces, 100);
+        return;
+      }
+
+      const nombreGuardado = localStorage.getItem('vozPreferida');
+      this.vozSeleccionada = this.vocesDisponibles.find(v =>
+        v.name === (nombreGuardado || "Microsoft Dalia Online (Natural) - Spanish (Mexico)")
+      ) || null;
+
+      if (!nombreGuardado && this.vozSeleccionada) {
+        localStorage.setItem('vozPreferida', this.vozSeleccionada.name);
+      }
+    };
+    window.speechSynthesis.onvoiceschanged = cargarVoces;
+
+    cargarVoces();
+  }
 
 }

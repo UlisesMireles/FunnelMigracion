@@ -1,8 +1,6 @@
 ﻿using Funnel.Logic;
 using Funnel.Logic.Interfaces;
-using Funnel.Models.Base;
 using Funnel.Models.Dto;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Funnel.Server.Controllers

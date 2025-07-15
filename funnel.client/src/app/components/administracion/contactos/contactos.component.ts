@@ -11,6 +11,10 @@ import { ColumnasDisponiblesComponent } from '../../utils/tablas/columnas-dispon
 import { sumBy, map as mapping, omit, sortBy, groupBy, keys as getKeys } from "lodash-es";
 import { ModalOportunidadesService } from '../../../services/modalOportunidades.service';
 import { Subscription } from 'rxjs';
+import { EnumTablas } from '../../../enums/enumTablas';
+import { ConfiguracionTablaService } from '../../../services/configuracion-tabla.service';
+import { CamposAdicionales } from '../../../interfaces/campos-adicionales';
+import { ModalCamposAdicionalesService } from '../../../services/modalCamposAdicionales.service';
 
 @Component({
   selector: 'app-contactos',
@@ -33,7 +37,7 @@ export class ContactosComponent {
 
   selectedEstatus: string = 'Activo';
   loading: boolean = true;
-  
+
 
   insertar: boolean = false;
   modalVisible: boolean = false;
@@ -45,18 +49,13 @@ export class ContactosComponent {
   ];
 
   lsColumnasAMostrar: any[] = [];
-  lsTodasColumnas: any[] = [
-    { key: 'nombreCompleto', isCheck: true, valor: 'Nombre del Contacto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
-    { key: 'correoElectronico', isCheck: true, valor: 'Correo', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'prospecto', isCheck: true, valor: 'Empresa', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'telefono', isCheck: true, valor: 'Teléfono', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'desEstatus', isCheck: true, valor: 'Estatus', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'estatus' },
-  ];
+  lsTodasColumnas: any[] = [];
 
-  columnsAMostrarResp: string = JSON.stringify(this.lsColumnasAMostrar);
-  columnsTodasResp: string = JSON.stringify(this.lsTodasColumnas);
+  columnsAMostrarResp: string = '';
+  columnsTodasResp: string = '';
   private modalSubscription!: Subscription;
   disabledPdf: boolean = false;
+
 
   constructor(
     private contactosService: ContactosService,
@@ -64,11 +63,26 @@ export class ContactosComponent {
     private cdr: ChangeDetectorRef,
     private readonly loginService: LoginService,
     public dialog: MatDialog,
+    private readonly configuracionColumnasService: ConfiguracionTablaService,
     private modalOportunidadesService: ModalOportunidadesService
   ) { }
 
   ngOnInit(): void {
-    this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
+    this.configuracionColumnasService.obtenerColumnasAMostrar(EnumTablas.Contactos).subscribe({
+      next: ({ todas, mostrar }) => {
+        this.lsTodasColumnas = todas;
+        this.lsColumnasAMostrar = mostrar;
+        this.columnsAMostrarResp = JSON.stringify(this.lsColumnasAMostrar);
+        this.columnsTodasResp = JSON.stringify(this.lsTodasColumnas);
+      },
+      error: (error: any) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error al cargar configuración de columnas',
+          detail: error.errorMessage,
+        });
+      }
+    });
     this.getContactos();
     document.documentElement.style.fontSize = 12 + 'px';
     this.modalSubscription = this.modalOportunidadesService.modalContactoState$.subscribe((state) => {
@@ -152,6 +166,7 @@ export class ContactosComponent {
     }
   }
 
+
   FiltrarPorEstatus() {
     this.contactos = this.selectedEstatus === null
       ? [...this.contactosOriginal]
@@ -194,12 +209,7 @@ export class ContactosComponent {
 
     dialogRef.afterClosed().subscribe(r => {
       if (r) {
-        this.lsColumnasAMostrar = JSON.parse(this.columnsAMostrarResp);
-        const selectedColumns = r.filter((f: any) => f.isCheck);
-
-        selectedColumns.forEach((element: any) => {
-          this.lsColumnasAMostrar.push(element)
-        });
+        this.lsColumnasAMostrar = r.filter((f: any) => f.isCheck);
         if (this.lsColumnasAMostrar.length > 5) {
           this.anchoTabla = 100
         }
@@ -210,15 +220,15 @@ export class ContactosComponent {
   exportExcel(table: Table) {
     let lsColumnasAMostrar = this.lsColumnasAMostrar.filter(col => col.isCheck);
     let columnasAMostrarKeys = lsColumnasAMostrar.map(col => col.key);
-  
+
     let dataExport = (table.filteredValue || table.value || []).map(row => {
       return columnasAMostrarKeys.reduce((acc, key) => {
         acc[key] = row[key];
         return acc;
       }, {} as { [key: string]: any });
     });
-  
-  
+
+
     import('xlsx').then(xlsx => {
       const hojadeCalculo: import('xlsx').WorkSheet = xlsx.utils.json_to_sheet(dataExport);
       const libro: import('xlsx').WorkBook = xlsx.utils.book_new();
@@ -249,7 +259,7 @@ export class ContactosComponent {
     this.disabledPdf = true;
 
 
-    this.contactosService.descargarReporteContactos(data,this.loginService.obtenerIdEmpresa()).subscribe({
+    this.contactosService.descargarReporteContactos(data, this.loginService.obtenerIdEmpresa()).subscribe({
       next: (result: Blob) => {
         const url = window.URL.createObjectURL(result);
         const link = document.createElement('a');
@@ -278,7 +288,7 @@ export class ContactosComponent {
     }
 
     const registrosVisibles = table.filteredValue ? table.filteredValue : this.contactos;
-  
+
     if (def.key === 'nombreCompleto') {
       return registrosVisibles.length;
     }
@@ -294,11 +304,11 @@ export class ContactosComponent {
 
   getVisibleTotal(campo: string, dt: any): number {
     const registrosVisibles = dt.filteredValue ? dt.filteredValue : this.contactos;
-  
+
     if (campo === 'nombreCompleto') {
       return registrosVisibles.length;
     }
-  
+
     return registrosVisibles.reduce(
       (acc: number, empresa: Contacto) =>
         acc + (Number(empresa[campo as keyof Contacto] || 0)),
@@ -313,19 +323,19 @@ export class ContactosComponent {
 
   getColumnWidth(key: string): object {
     const widths: { [key: string]: string } = {
-        nombreCompleto: '100%',
-        telefono: '100%',
-        correoElectronico: '100%',
-        prospecto: '100%',
-        desEstatus: '100%',
+      nombreCompleto: '100%',
+      telefono: '100%',
+      correoElectronico: '100%',
+      prospecto: '100%',
+      desEstatus: '100%',
     };
     return { width: widths[key] || 'auto' };
-}
-isSorted(columnKey: string): boolean {
-    
-  return this.dt?.sortField === columnKey;
-}
-onHeaderClick() {
+  }
+  isSorted(columnKey: string): boolean {
+
+    return this.dt?.sortField === columnKey;
+  }
+  onHeaderClick() {
     this.headerClicked.emit();
   }
 }

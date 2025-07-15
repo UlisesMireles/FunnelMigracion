@@ -44,6 +44,9 @@ export class TopVeinteComponent {
   years: string[] = [];
   selectedYear: string = 'Todos los Años';
   leyendo: boolean = false;
+  vocesDisponibles: SpeechSynthesisVoice[] = [];
+  vozSeleccionada: SpeechSynthesisVoice | null = null;
+
 
   EstatusDropdown = [
     { label: 'Todo', value: null },
@@ -78,6 +81,7 @@ export class TopVeinteComponent {
   constructor(private messageService: MessageService, private cdr: ChangeDetectorRef, private prospectoService: ProspectoService, private loginService: LoginService, public dialog: MatDialog, private openIaService: OpenIaService) { }
 
   ngOnInit(): void {
+    this.cargarVozPreferida();
     this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);    
     this.getAniosOportunidades();
     document.documentElement.style.fontSize = 12 + 'px';
@@ -447,9 +451,14 @@ export class TopVeinteComponent {
 
       const utterance = new SpeechSynthesisUtterance(textoPlano);
       utterance.lang = 'es-MX';
-      utterance.rate = 1;
-      utterance.pitch = 1;
+      utterance.rate = 1.1;
+      utterance.pitch = 1.2;
       utterance.volume = 1;
+
+
+      if (this.vozSeleccionada) {
+        utterance.voice = this.vozSeleccionada;
+      }
 
       this.leyendo = true;
 
@@ -473,6 +482,29 @@ export class TopVeinteComponent {
       this.leyendo = false;
     }
   }
+  cargarVozPreferida(): void {
+    const cargarVoces = () => {
+      this.vocesDisponibles = window.speechSynthesis.getVoices();
+
+      if (this.vocesDisponibles.length === 0) {
+        setTimeout(cargarVoces, 100);
+        return;
+      }
+
+      const nombreGuardado = localStorage.getItem('vozPreferida');
+      this.vozSeleccionada = this.vocesDisponibles.find(v =>
+        v.name === (nombreGuardado || "Microsoft Dalia Online (Natural) - Spanish (Mexico)")
+      ) || null;
+
+      if (!nombreGuardado && this.vozSeleccionada) {
+        localStorage.setItem('vozPreferida', this.vozSeleccionada.name);
+      }
+    };
+    window.speechSynthesis.onvoiceschanged = cargarVoces;
+
+    cargarVoces();
+  }
+
 
 
 

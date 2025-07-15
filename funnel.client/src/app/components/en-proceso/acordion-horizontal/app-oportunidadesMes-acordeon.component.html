@@ -48,7 +48,7 @@
                 pTooltip="Seguimiento" tooltipPosition="top" styleClass="blue-icon">
               </p-button>
               <p-button type="button" icon="bi bi-folder2 fs-4" text (click)="documento(tarjeta)"
-                pTooltip="Documentos" tooltipPosition="top" styleClass="">
+                pTooltip="Documentos" tooltipPosition="top" [styleClass]="tarjeta.totalArchivos > 0 ? 'blue-icon-documentos': 'cancel-icon'" >
               </p-button>
               <p-button styleClass="coloreditar-icon ms-2" (click)="actualiza(tarjeta)" pTooltip="Editar registro"
                 tooltipPosition="top">

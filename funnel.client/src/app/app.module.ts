@@ -146,6 +146,7 @@ import { ServiciosEntregasComponent } from './components/catalogos/servicios-ent
 import { UsuariosPermisosComponent } from './components/catalogos/usuarios-permisos/usuarios-permisos.component';
 import { GraficasClientesTop20Component } from './components/dashboard/top-veinte/graficas-clientes-top20/graficas-clientes-top20.component';
 import { PanelesTerminadasComponent } from './components/terminadas/paneles-terminadas/paneles-terminadas.component';
+import { ModalCamposNuevosComponent } from './components/administracion/modal-campos-nuevos/modal-campos-nuevos.component';
 import { ModalOportunidadesPorAgenteClientesComponent } from './components/dashboard/oportunidades-por-agente/modal-oportunidades-por-agente-clientes/modal-oportunidades-por-agente-clientes.component';
 import { ModalOportunidadesPorAgenteTipoComponent } from './components/dashboard/oportunidades-por-agente/modal-oportunidades-por-agente-tipo/modal-oportunidades-por-agente-tipo.component';
 import { ModalOportunidadesPorAgenteDetalleTipoComponent } from './components/dashboard/oportunidades-por-agente/modal-oportunidades-por-agente-detalle-tipo/modal-oportunidades-por-agente-detalle-tipo.component';
@@ -236,6 +237,7 @@ registerLocaleData(localeEs, 'es-MX');
     UsuariosPermisosComponent,
     GraficasClientesTop20Component,
     PanelesTerminadasComponent,
+    ModalCamposNuevosComponent,
     ModalOportunidadesPorAgenteClientesComponent,
     ModalOportunidadesPorAgenteTipoComponent,
     ModalOportunidadesPorAgenteDetalleTipoComponent,

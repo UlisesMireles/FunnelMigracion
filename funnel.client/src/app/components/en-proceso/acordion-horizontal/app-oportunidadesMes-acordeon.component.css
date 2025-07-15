@@ -135,27 +135,27 @@
 
 /* Contenedor de las tarjetas (lista interna de tarjetas) */
 .contenedor-tarjetas {
-  height: 100%;           /* Se establece la altura completa del contenedor padre */
-  overflow-y: auto;      
-  overflow-x: hidden;
-  padding: 5px;           /* Espaciado interno de 5px */
-  display: flex;          /* Usa flexbox para organizar las tarjetas */
-  flex-direction: column; /* Organiza las tarjetas en columna */
-  gap: 8px;               /* Espacio de 8px entre cada tarjeta */
-  box-sizing: border-box; /* Incluye padding y border dentro de la altura definida */
-  margin-top: 3px;
-}
-
-/* Cada tarjeta individual */
-.tarjeta {
-  background: #ffffff; /* Fondo blanco para cada tarjeta */
-  padding: 10px;       /* Espaciado interno de 10px */
-  text-align: center;  /* Centrado del texto */
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave para dar profundidad */
-  padding-top: 0pX;    /* (Posible error tipográfico: "0pX" en lugar de "0px") */
-  border: #9c9b9b solid 1px !important; 
-  border-radius: 10px;
-}
+    height: 100%;           /* Se establece la altura completa del contenedor padre */
+    overflow-y: auto;       /* Activa scroll vertical cuando el contenido excede la altura */
+    overflow-x: hidden;
+    padding: 5px;           /* Espaciado interno de 5px */
+    display: flex;          /* Usa flexbox para organizar las tarjetas */
+    flex-direction: column; /* Organiza las tarjetas en columna */
+    gap: 8px;               /* Espacio de 8px entre cada tarjeta */
+    box-sizing: border-box; /* Incluye padding y border dentro de la altura definida */
+    margin-top: -1px;
+  }
+  
+  /* Cada tarjeta individual */
+  .tarjeta {
+    background: #ffffff; /* Fondo blanco para cada tarjeta */
+    border-radius: 10px;  
+    padding: 0 10px;       /* Espaciado interno de 10px */
+    text-align: center;  /* Centrado del texto */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave para dar profundidad */
+    padding-top: 0pX;    /* (Posible error tipográfico: "0pX" en lugar de "0px") */
+    border: #9c9b9b solid 1px !important; 
+  }
 
 /* Imagen interna de la tarjeta */
 .imagen-tarjeta {
@@ -164,7 +164,7 @@
 }
 
 .tarjeta-side{
-  padding-top:3px; 
+  padding-top:13px; 
   padding-left: 0 !important  ; 
   padding-right: 10px;
 }/* Estilos para el preview del drag and drop */
@@ -273,8 +273,8 @@ body {
 
 /* Espaciado superior para la fila de la tarjeta */
 .tarjeta-row {
-  padding-top: 20px;
-  padding-bottom: 10px;
+  padding-top: 10px;
+  padding-bottom: 0px;
 }
 
 /* Estilo para el nombre de la empresa */
@@ -468,19 +468,49 @@ body {
 
 ::ng-deep .custom-pencil {
   color: #000; 
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   display: inline-block;
   background: transparent !important;
 }
 
+
+.todos-expandidos ::ng-deep .cancel-icon {
+  font-size: 1.4rem !important;
+}
+.todos-expandidos ::ng-deep .blue-icon-documentos .p-button-icon{
+  font-size: 1.4rem !important;
+}
+.todos-expandidos ::ng-deep .blue-icon .p-button-icon,
+.todos-expandidos ::ng-deep .custom-pencil {
+  font-size: 1.2rem !important;
+}
 ::ng-deep .blue-icon .p-button-icon {
   color: blue !important;
-  font-size: 1.5rem !important;
-  background: transparent;
+  font-size: 1.2rem !important;
+  background: transparent;  
   border-color: transparent;
   width: 15px !important;
 }
+ ::ng-deep .blue-icon-documentos .p-button-icon {
+    color: blue !important;
+    font-size: 1.4rem;
+    background: transparent;
+    border-color: transparent;
+    width: 15px !important;
+  }
+  
+  ::ng-deep .cancel-icon .p-button-icon {
+    color: #302f2f !important;
+    font-size: 1.5rem;
+    background: transparent;
+    border-color: transparent;
+    width: 15px !important;
+  }
 
+  ::ng-deep .cancel-icon :hover {
+    background: transparent !important;
+  }
+  
 ::ng-deep .blue-icon:hover {
   background: transparent !important;
 }

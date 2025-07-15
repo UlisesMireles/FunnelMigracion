@@ -28,7 +28,7 @@
 
   <ng-template pTemplate="content">
     <div class="contenedor-tabla-dialogo">
-      <p-table #dt [value]="oportunidades" [paginator]="true" [rows]="10" 
+      <p-table #dt [value]="oportunidades" [paginator]="true" [rows]="10" [paginatorDropdownAppendTo]="'body'" 
         [rowsPerPageOptions]="[10, 25, 50]" [totalRecords]="oportunidades.length"
         styleClass="tabla-estilizada">
         
@@ -78,7 +78,7 @@
             <td *ngFor="let def of lsColumnasAMostrar"
               [ngClass]="{'total-registros-cell': def.key === 'nombreProspecto'}">
               <ng-container *ngIf="def.tipoFormato === 'currency'">
-                <div style="text-align: right; font-weight: bold;">
+                <div style="text-align: left; font-weight: bold;">
                   {{ calcularSumaMontos() |totalCurrency:'currency':mostrarDecimales }}
                 </div>
               </ng-container>

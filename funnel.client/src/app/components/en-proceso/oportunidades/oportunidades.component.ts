@@ -15,6 +15,8 @@ import { map } from 'rxjs/operators';
 import { Prospectos } from '../../../interfaces/prospecto';
 import { state } from '@angular/animations';
 import { CatalogoService } from '../../../services/catalogo.service';
+import { ConfiguracionTablaService } from '../../../services/configuracion-tabla.service';
+import { EnumTablas } from '../../../enums/enumTablas';
 
 @Component({
   selector: 'app-oportunidades',
@@ -71,35 +73,15 @@ export class OportunidadesComponent {
   totalGanadasMes: number = 0;
   totalPerdidasMes: number = 0;
   fechaCierreSortOrder: number = 1;  
-  lsTodasColumnas: any[] = [
-    { key: 'idOportunidad', isCheck: false, valor: 'Id', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
-    { key: 'nombre', isCheck: true, valor: 'Prospecto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
-    { key: 'nombreSector', isCheck: true, valor: 'Sector', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'nombreOportunidad', isCheck: true, valor: 'Oportunidad', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    //{ key: 'abreviatura', isCheck: false, valor: 'Tipo', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'stage', isCheck: true, valor: 'Etapa', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'numberFilter' },
-    { key: 'iniciales', isCheck: true, valor: 'Ejecutivo', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'nombreContacto', isCheck: true, valor: 'Contacto', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'entrega', isCheck: false, valor: 'Entrega', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'monto', isCheck: true, valor: 'Monto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
-    // { key: 'probabilidadOriginal', isCheck: false, valor: '% Original', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    // { key: 'probabilidad', isCheck: true, valor: '% Actual', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'probabilidadOriginal', isCheck: false, valor: '% Orig', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'textNFilter' },
-    { key: 'probabilidad', isCheck: false, valor: '% Act', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'textNFilter' },
-    { key: 'montoNormalizado', isCheck: true, valor: 'Vta Esperada', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
-    { key: 'fechaRegistro', isCheck: true, valor: 'Fecha Alta', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
-    { key: 'fechaEstimadaCierreOriginal', isCheck: true, valor: 'Cierre Est', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
-    { key: 'diasFunnel', isCheck: true, valor: 'D. Alta', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
-    { key: 'fechaModificacion', isCheck: true, valor: 'D. S/Act', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' }
-  ];
+  lsTodasColumnas: any[] = [];
 
-  columnsAMostrarResp: string = JSON.stringify(this.lsColumnasAMostrar);
-  columnsTodasResp: string = JSON.stringify(this.lsTodasColumnas);
+  columnsAMostrarResp: string = '';
+  columnsTodasResp: string = '';
   disabledPdf: boolean = false;
 
   constructor(private oportunidadService: OportunidadesService, private messageService: MessageService, private cdr: ChangeDetectorRef,
     private readonly loginService: LoginService, public dialog: MatDialog, private modalOportunidadesService: ModalOportunidadesService,
-    private readonly catalogoService: CatalogoService) {
+    private readonly catalogoService: CatalogoService, private readonly configuracionColumnasService: ConfiguracionTablaService) {
     this.loading = true;
     this.catalogoService.cargarProspectos(this.loginService.obtenerIdEmpresa());
   }
@@ -108,7 +90,21 @@ export class OportunidadesComponent {
     this.mostrarDecimales = this.loginService.obtenerPermitirDecimales();
     this.licencia = localStorage.getItem('licencia')!;
     this.cantidadOportunidades = Number(localStorage.getItem('cantidadOportunidades'));
-    this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
+    this.configuracionColumnasService.obtenerColumnasAMostrar(EnumTablas.OportunidadesEnProceso).subscribe({
+      next: ({ todas, mostrar }) => {
+        this.lsTodasColumnas = todas;
+        this.lsColumnasAMostrar = mostrar;
+        this.columnsAMostrarResp = JSON.stringify(this.lsColumnasAMostrar);
+        this.columnsTodasResp = JSON.stringify(this.lsTodasColumnas);
+      },
+      error: (error: any) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error al cargar configuración de columnas',
+          detail: error.errorMessage,
+        });
+      }
+    });
     this.getOportunidades();
     this.llenarEtiquetas();
     document.documentElement.style.fontSize = 12 + 'px';
@@ -281,12 +277,7 @@ export class OportunidadesComponent {
 
     dialogRef.afterClosed().subscribe(r => {
       if (r) {
-        this.lsColumnasAMostrar = JSON.parse(this.columnsAMostrarResp);
-        const selectedColumns = r.filter((f: any) => f.isCheck);
-
-        selectedColumns.forEach((element: any) => {
-          this.lsColumnasAMostrar.push(element)
-        });
+        this.lsColumnasAMostrar = r.filter((f: any) => f.isCheck);
         if (this.lsColumnasAMostrar.length > 5) {
           this.anchoTabla = 100
         }

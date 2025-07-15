@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter,Input, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { RequestProspecto } from '../../../../interfaces/prospecto';
 import { BaseOut } from '../../../../interfaces/utils/baseOut';
@@ -6,9 +6,10 @@ import { Prospectos } from '../../../../interfaces/prospecto';
 import { ProspectoService } from '../../../../services/prospecto.service';
 import { baseOut } from '../../../../interfaces/utils/utils/baseOut';
 import { LoginService } from '../../../../services/login.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalOportunidadesService } from '../../../../services/modalOportunidades.service';
 import { Subscription } from 'rxjs';
+import { InpoutAdicionalData } from '../../../../interfaces/input-adicional-data';
 
 @Component({
   selector: 'app-modal-prospectos',
@@ -17,9 +18,7 @@ import { Subscription } from 'rxjs';
   styleUrl: './modal-prospectos.component.css'
 })
 export class ModalProspectosComponent {
-  constructor (private prospectoService: ProspectoService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder, private cdr: ChangeDetectorRef,
-  private modalOportunidadesService: ModalOportunidadesService
-  ) { }
+
   @Input() prospecto!: Prospectos;
   @Input() prospectos: Prospectos[] = [];
   @Input() title: string = 'Modal';
@@ -28,16 +27,27 @@ export class ModalProspectosComponent {
   request!: RequestProspecto;
 
   prospectoActivo: boolean = false;
-  prospectoForm!: FormGroup;
+  prospectoForm: FormGroup;
   sectores: any[] = [];
   desdeSector: boolean = false;
-  
+
+  //Variables Inputs Adicionales
+  formInfoAdicionales: FormGroup;
+  inputInfoAdicionales: InpoutAdicionalData[] = [];
+  validaGuadarAdicionales: boolean = false;
+  get formArrayInfoAdicional(): FormArray {
+    return this.formInfoAdicionales.controls["formArrayInfoAdicional"] as FormArray;
+  }
+  idReferencia: number = 0;
+
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter();
   @Output() result: EventEmitter<baseOut> = new EventEmitter();
+  @Output() activarModalInputsAdicionales: EventEmitter<any> = new EventEmitter();
 
   validaGuadar: boolean = false;
-  informacionProspecto: Prospectos = {idProspecto: 0,
+  informacionProspecto: Prospectos = {
+    idProspecto: 0,
     nombre: "",
     ubicacionFisica: "",
     estatus: 0,
@@ -55,12 +65,20 @@ export class ModalProspectosComponent {
     porcEfectividad: 0
   };
 
+  constructor(private prospectoService: ProspectoService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder, private cdr: ChangeDetectorRef,
+    private modalOportunidadesService: ModalOportunidadesService
+  ) {
+    this.formInfoAdicionales = this.fb.group({});
+    this.prospectoForm = this.fb.group({});
+  }
+
   ngOnInit() {
     this.modalOportunidadesService.modalProspectoState$.subscribe(state => {
       this.desdeSector = state.desdeSector;
     });
     this.inicializarFormulario()
-    
+    this.inicializarFormularioAdicional();
+
   }
   // ngOnChanges(changes: SimpleChanges) {
   //   if (changes['prospecto'] && this.prospecto) {
@@ -70,8 +88,10 @@ export class ModalProspectosComponent {
   inicializarFormulario() {
     let idEmpresa = this.loginService.obtenerIdEmpresa();
     let valoresIniciales: Record<string, any>;
-    if(this.insertarProspecto){
-      this.informacionProspecto = {idProspecto: 0,
+    if (this.insertarProspecto) {
+      this.idReferencia = 0;
+      this.informacionProspecto = {
+        idProspecto: 0,
         nombre: this.prospecto?.nombre ?? "",
         ubicacionFisica: "",
         estatus: 0,
@@ -92,16 +112,16 @@ export class ModalProspectosComponent {
       this.prospectoForm = this.fb.group({
         idProspecto: [0],
         nombre: [this.prospecto?.nombre ?? "", [
-            Validators.required,
-            Validators.maxLength(50),
-            // Validators.pattern('^[a-zA-ZÀ-ÿ0-9\\s]+$')
-          ]
+          Validators.required,
+          Validators.maxLength(50),
+          // Validators.pattern('^[a-zA-ZÀ-ÿ0-9\\s]+$')
+        ]
         ],
         ubicacionFisica: ['', [
-            Validators.required,
-            Validators.maxLength(50),
-            Validators.pattern('^[a-zA-ZÀ-ÿ\\s]+$')
-          ]
+          Validators.required,
+          Validators.maxLength(50),
+          Validators.pattern('^[a-zA-ZÀ-ÿ\\s]+$')
+        ]
         ],
         idSector: [null, Validators.required],
         estatus: [true],
@@ -111,26 +131,27 @@ export class ModalProspectosComponent {
 
       valoresIniciales = this.prospectoForm.getRawValue();
 
-        this.prospectoForm.valueChanges.subscribe((changes) => {
-          this.validarCambios(valoresIniciales, changes);
-        });
-        this.validaGuadar = false;
-        this.cdr.detectChanges(); 
-    }else{
+      this.prospectoForm.valueChanges.subscribe((changes) => {
+        this.validarCambios(valoresIniciales, changes);
+      });
+      this.validaGuadar = false;
+      this.cdr.detectChanges();
+    } else {
+      this.idReferencia = this.prospecto.idProspecto;
       this.informacionProspecto = this.prospecto;
       this.prospectoForm = this.fb.group({
         idProspecto: [this.prospecto?.idProspecto],
         nombre: [this.prospecto?.nombre, [
-            Validators.required,
-            Validators.maxLength(50),
-            // Validators.pattern('^[a-zA-ZÀ-ÿ\\s]+$')
-          ]
+          Validators.required,
+          Validators.maxLength(50),
+          // Validators.pattern('^[a-zA-ZÀ-ÿ\\s]+$')
+        ]
         ],
         ubicacionFisica: [this.prospecto?.ubicacionFisica, [
-            Validators.required,
-            Validators.maxLength(50),
-            Validators.pattern('^[a-zA-ZÀ-ÿ\\s]+$')
-          ]
+          Validators.required,
+          Validators.maxLength(50),
+          Validators.pattern('^[a-zA-ZÀ-ÿ\\s]+$')
+        ]
         ],
         idSector: [this.prospecto?.idSector, Validators.required],
         estatus: [this.prospecto?.estatus === 1 ? true : false],
@@ -140,13 +161,14 @@ export class ModalProspectosComponent {
 
       valoresIniciales = this.prospectoForm.getRawValue();
 
-        this.prospectoForm.valueChanges.subscribe((changes) => {
-          this.validarCambios(valoresIniciales, changes);
-        });
-        this.validaGuadar = false;
-        this.cdr.detectChanges(); 
+      this.prospectoForm.valueChanges.subscribe((changes) => {
+        this.validarCambios(valoresIniciales, changes);
+      });
+      this.validaGuadar = false;
+      this.cdr.detectChanges();
     }
-    
+    this.getInputsAdicionales();
+
   }
 
   validarCambios(valoresIniciales: any, cambios: any) {
@@ -167,7 +189,7 @@ export class ModalProspectosComponent {
     return valoresInicialesJson === valoresActualesJson;
   }
 
-  onDialogShow(){
+  onDialogShow() {
     this.cargarSectores();
   }
 
@@ -187,24 +209,29 @@ export class ModalProspectosComponent {
       }
     });
   }
-  
+
   close() {
     this.visible = false;
     this.visibleChange.emit(this.visible);
     this.closeModal.emit();
   }
 
-    guardarProspecto() {
+  guardarProspecto() {
     if (this.prospectoForm.invalid) {
+      this.prospectoForm.markAllAsTouched();
       this.mostrarToastError();
-      console.log(this.prospectoForm.errors);
-      console.log(this.prospectoForm.controls['nombre'].errors);
-      console.log(this.prospectoForm.controls['ubicacionFisica'].errors);
       return;
     }
+
+    if ((this.formInfoAdicionales.invalid && this.inputInfoAdicionales.length > 0)) {
+      this.formInfoAdicionales.markAllAsTouched();
+      this.mostrarToastError();
+      return;
+    }
+
     this.prospectoForm.controls['estatus'].setValue(this.prospectoForm.value.estatus ? 1 : 0);
-     this.prospectoForm.controls['bandera'].setValue(this.prospectoForm.value.bandera);
-     this.prospectoForm.controls['idEmpresa'].setValue(this.loginService.obtenerIdEmpresa());
+    this.prospectoForm.controls['bandera'].setValue(this.prospectoForm.value.bandera);
+    this.prospectoForm.controls['idEmpresa'].setValue(this.loginService.obtenerIdEmpresa());
 
     this.informacionProspecto = {
       ...this.informacionProspecto,
@@ -216,12 +243,17 @@ export class ModalProspectosComponent {
       estatus: this.prospectoForm.get('estatus')?.value,
       idEmpresa: this.prospectoForm.get('idEmpresa')?.value
     }
-   
+
 
     this.prospectoService.postInsertProspecto(this.informacionProspecto).subscribe({
       next: (result: baseOut) => {
-        this.result.emit(result);
-        this.close();
+        if (this.inputInfoAdicionales.length > 0) {
+          this.guardarInformacionAdicional(result)
+        }
+        else {
+          this.result.emit(result);
+          this.close();
+        }
       },
       error: (error: baseOut) => {
         this.messageService.add({
@@ -233,7 +265,101 @@ export class ModalProspectosComponent {
     });
   }
 
-  
+  getInputsAdicionales() {
+    this.prospectoService.getInputsAdicionalesData(this.loginService.obtenerIdEmpresa(), 'PROSPECTOS', this.idReferencia).subscribe({
+      next: (result) => {
+        this.inputInfoAdicionales = result;
+        this.formArrayInfoAdicional.clear();
+        if (this.inputInfoAdicionales.length > 0) {
+          this.agregarElementosFormulario();
+        }
+      },
+      error: (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Se ha producido un error.',
+          detail: error.errorMessage,
+        });
+      },
+    });
+  }
+
+  inicializarFormularioAdicional() {
+    this.formInfoAdicionales = this.fb.group({
+      formArrayInfoAdicional: this.fb.array([])
+    })
+  }
+
+  agregarElementosFormulario() {
+    let valoresIniciales: Record<string, any>;
+
+    this.inputInfoAdicionales.forEach(v => {
+      let config: any = {
+        idInput: [v.idInput],
+        etiqueta: [v.etiqueta],
+        tipoCampo: [v.tipoCampo],
+        idInputData: [v.idInputData]
+      }
+      let arrayValidadores = []
+      if (v.requerido) {
+        arrayValidadores.push(Validators.required)
+      }
+      config.valor = [v.valor, arrayValidadores]
+      let formCredito = this.fb.group(config)
+
+      this.formArrayInfoAdicional.push(formCredito)
+    })
+
+
+    valoresIniciales = this.formInfoAdicionales.getRawValue();
+    this.formInfoAdicionales.valueChanges.subscribe((changes) => {
+      this.validarCambiosAdicionales(valoresIniciales, changes);
+    });
+    this.validaGuadarAdicionales = false;
+  }
+
+  validarCambiosAdicionales(valoresIniciales: any, cambios: any) {
+    const valoresActuales = cambios;
+
+    if (this.formInfoAdicionales.dirty) {
+      this.validaGuadarAdicionales = true;
+    }
+    const valoresRegresaron = this.compararValores(valoresIniciales, valoresActuales);
+    if (valoresRegresaron) {
+      this.validaGuadarAdicionales = false;
+    }
+  }
+
+  guardarInformacionAdicional(resultContacto: baseOut) {
+    //Establecer los valores a array de inputs adicionales, y el id de referencia del conctacto
+    if (this.insertarProspecto) {
+      this.idReferencia = resultContacto.id
+    }
+    this.formArrayInfoAdicional.controls.forEach((control) => {
+      let filtro = this.inputInfoAdicionales.find(x => x.idInput == control.get('idInput')?.value);
+      if (filtro) {
+        filtro.valor = control.get('valor')?.value;
+        filtro.idReferencia = this.idReferencia
+      }
+
+    })
+
+    this.prospectoService.guardarInputsAdicionalesData(this.inputInfoAdicionales).subscribe({
+      next: () => {
+        this.result.emit(resultContacto);
+        this.close();
+      },
+      error: (error: baseOut) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Se guardado correctamente el contacto pero no se puedo guardar información adicional. Se ha producido un error.',
+          detail: error.errorMessage,
+        });
+      },
+    });
+  }
+
+
 
   mostrarToastError() {
     this.messageService.add({
@@ -241,5 +367,23 @@ export class ModalProspectosComponent {
       summary: 'Error',
       detail: 'Es necesario llenar los campos indicados.',
     });
+  }
+
+  abrirModalInputsAdicionales() {
+    //Deberias cerrar el modal de contactos, enviar emmit, y pasar parametro que es del modal de contactos
+    let obj = {
+      tipoCatalogo: "Prospectos",
+      pantalla: "Prospectos",
+      insertar: this.insertarProspecto,
+      referencia: this.prospecto
+    }
+    this.activarModalInputsAdicionales.emit(obj);
+    this.close();
+
+  }
+
+  esAdministrador(): boolean {
+    const rolAdmin = 1;
+    return this.loginService.obtenerRolUsuario() === rolAdmin;
   }
 }

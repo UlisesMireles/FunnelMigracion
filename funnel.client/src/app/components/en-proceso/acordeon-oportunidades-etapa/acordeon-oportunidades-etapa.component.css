@@ -142,7 +142,7 @@
     flex-direction: column; /* Organiza las tarjetas en columna */
     gap: 8px;               /* Espacio de 8px entre cada tarjeta */
     box-sizing: border-box; /* Incluye padding y border dentro de la altura definida */
-    margin-top: 3px;
+    margin-top: -1px;
   }
   
   /* Cada tarjeta individual */
@@ -491,8 +491,31 @@
     border-color: transparent;
     width: 15px !important;
   }
+
+  ::ng-deep .blue-icon-documentos .p-button-icon {
+    color: blue !important;
+    font-size: 1.5rem;
+    background: transparent;
+    border-color: transparent;
+    width: 15px !important;
+  }
+  
+  ::ng-deep .cancel-icon .p-button-icon {
+    color: #302f2f !important;
+    font-size: 1.5rem;
+    background: transparent;
+    border-color: transparent;
+    width: 15px !important;
+  }
+
+  ::ng-deep .cancel-icon :hover {
+    background: transparent !important;
+  }
   
   ::ng-deep .blue-icon:hover {
+    background: transparent !important;
+  }
+  ::ng-deep .blue-icon-documentos {
     background: transparent !important;
   }
   ::ng-deep.folder-icon:hover {
@@ -514,7 +537,7 @@
   
   /* Estilos cuando todos (5) están expandidos */
 .todos-expandidos .tarjeta {
-  padding: 6px;
+  padding: 0 6px 6px 6px;
   border-radius: 10px
 }
 
@@ -540,6 +563,13 @@
 .todos-expandidos .card-header {
   height: 30px;
   padding: 0 6px !important;
+}
+
+.todos-expandidos ::ng-deep .cancel-icon .p-button-icon{
+  font-size: 1.4rem !important;
+}
+.todos-expandidos ::ng-deep .blue-icon-documentos .p-button-icon{
+  font-size: 1.4rem !important;
 }
 
 .todos-expandidos ::ng-deep .blue-icon .p-button-icon,

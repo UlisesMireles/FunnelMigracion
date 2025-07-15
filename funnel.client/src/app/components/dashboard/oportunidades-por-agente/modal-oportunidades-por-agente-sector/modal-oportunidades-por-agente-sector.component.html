@@ -27,7 +27,7 @@
 
   <ng-template pTemplate="content">
     <div class="contenedor-tabla-dialogo">
-      <p-table #dt [value]="oportunidades" [paginator]="true" [rows]="10" 
+      <p-table #dt [value]="oportunidades" [paginator]="true" [rows]="10" [paginatorDropdownAppendTo]="'body'" 
         [rowsPerPageOptions]="[10, 25, 50]" [totalRecords]="oportunidades.length"
         styleClass="tabla-estilizada">
         
@@ -47,18 +47,18 @@
                     {{ rowData.descripcion }}
                 </a>
                 </td>
-            <td style="text-align: right;">{{ rowData.monto | totalCurrency:'currency':mostrarDecimales}}</td>
-            <td style="text-align: right;">{{ rowData.montoNormalizado | totalCurrency:'currency':mostrarDecimales}}</td>
+            <td style="text-align: left;">{{ rowData.monto | totalCurrency:'currency':mostrarDecimales}}</td>
+            <td style="text-align: left;">{{ rowData.montoNormalizado | totalCurrency:'currency':mostrarDecimales}}</td>
           </tr>
         </ng-template>
         
         <ng-template pTemplate="footer" let-columns>
           <tr class="custom-footer">
             <td>Total de Registros: {{ oportunidades.length }}</td>
-            <td style="text-align: right; font-weight: bold;">
+            <td style="text-align: left; font-weight: bold;">
               {{ calcularSumaMontos() | totalCurrency:'currency':mostrarDecimales}}
             </td>
-            <td style="text-align: right; font-weight: bold;">
+            <td style="text-align: left; font-weight: bold;">
               {{ calcularSumaMontosNormalizados() | totalCurrency:'currency':mostrarDecimales}}
             </td>
           </tr>

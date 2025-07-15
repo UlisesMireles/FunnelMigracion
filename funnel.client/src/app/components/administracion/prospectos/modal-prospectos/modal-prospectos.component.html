@@ -1,67 +1,64 @@
-<p-dialog
-  [(visible)]="visible"
-  [modal]="true" styleClass="custom-header-naranja"
-  [closable]="true"
-  [style]="{ width: '35rem', height: 'auto' }"
-  (onHide)="close()"
-  (onShow)="onDialogShow()"
-  class="bodyDialog"
->
-<ng-template pTemplate="header">
-  <label class="margen">
-    {{ insertarProspecto ? 'Nuevo Prospecto' : title + ' ' + prospectoForm.get('nombre')?.value }}
-  </label>
-</ng-template>
-<br>
-<ng-template pTemplate="content">
-<form [formGroup]="prospectoForm">
-  <!-- Nombre -->
-  <div class="row">
-    <div class="col-sm-4 lbl">
-      <label for="nombre">Nombre: </label>
-    </div>
-    <div class="col-sm-8">
-      <input pInputText class="inptSize" formControlName="nombre" />
-      <span *ngIf="prospectoForm.get('nombre')?.invalid && prospectoForm.get('nombre')?.touched" class="text-danger"><br>
-        <ng-container *ngIf="prospectoForm.get('nombre')?.errors?.['required']">El nombre es obligatorio.</ng-container>
-        <ng-container *ngIf="prospectoForm.get('nombre')?.errors?.['maxLength']">El nombre no puede ser mayor a 50 caracteres.</ng-container>
-        <ng-container *ngIf="prospectoForm.get('nombre')?.errors?.['pattern']">El nombre solo puede contener letras y espacios.</ng-container></span>
-    </div>
-  </div>
+<p-dialog [(visible)]="visible" [modal]="true" styleClass="custom-header-naranja" [closable]="true"
+  [style]="{ width: '35rem', height: 'auto' }" (onHide)="close()" (onShow)="onDialogShow()" class="bodyDialog">
+  <ng-template pTemplate="header">
+    <label class="margen">
+      {{ insertarProspecto ? 'Nuevo Prospecto' : title + ' ' + prospectoForm.get('nombre')?.value }}
+    </label>
+  </ng-template>
+  <br>
+  <ng-template pTemplate="content">
+    <form [formGroup]="prospectoForm">
+      <!-- Nombre -->
+      <div class="row">
+        <div class="col-sm-4 lbl">
+          <label for="nombre">Nombre: </label>
+        </div>
+        <div class="col-sm-8">
+          <input pInputText class="inptSize" formControlName="nombre" />
+          <span *ngIf="prospectoForm.get('nombre')?.invalid && prospectoForm.get('nombre')?.touched"
+            class="text-danger"><br>
+            <ng-container *ngIf="prospectoForm.get('nombre')?.errors?.['required']">El nombre es
+              obligatorio.</ng-container>
+            <ng-container *ngIf="prospectoForm.get('nombre')?.errors?.['maxLength']">El nombre no puede ser mayor a 50
+              caracteres.</ng-container>
+            <ng-container *ngIf="prospectoForm.get('nombre')?.errors?.['pattern']">El nombre solo puede contener letras
+              y espacios.</ng-container></span>
+        </div>
+      </div>
 
-  <div class="row">
-    <div class="col-sm-4 lbl">
-      <label for="ubicacionFisica">Ubicación Física: </label>
-    </div>
-    <div class="col-sm-8">
-      <input pInputText class="inptSize" formControlName="ubicacionFisica" />
-      <span *ngIf="prospectoForm.get('ubicacionFisica')?.invalid && prospectoForm.get('ubicacionFisica')?.touched" class="text-danger"><br>
-        <ng-container *ngIf="prospectoForm.get('ubicacionFisica')?.errors?.['required']">La ubicación física es obligatoria.</ng-container>
-        <ng-container *ngIf="prospectoForm.get('ubicacionFisica')?.errors?.['maxLength']">La ubicación física no puede ser mayor a 50 caracteres.</ng-container>
-        <ng-container *ngIf="prospectoForm.get('ubicacionFisica')?.errors?.['pattern']">La ubicación física solo puede contener letras y espacios.</ng-container></span>
-      
-    </div>
+      <div class="row">
+        <div class="col-sm-4 lbl">
+          <label for="ubicacionFisica">Ubicación Física: </label>
+        </div>
+        <div class="col-sm-8">
+          <input pInputText class="inptSize" formControlName="ubicacionFisica" />
+          <span *ngIf="prospectoForm.get('ubicacionFisica')?.invalid && prospectoForm.get('ubicacionFisica')?.touched"
+            class="text-danger"><br>
+            <ng-container *ngIf="prospectoForm.get('ubicacionFisica')?.errors?.['required']">La ubicación física es
+              obligatoria.</ng-container>
+            <ng-container *ngIf="prospectoForm.get('ubicacionFisica')?.errors?.['maxLength']">La ubicación física no
+              puede ser mayor a 50 caracteres.</ng-container>
+            <ng-container *ngIf="prospectoForm.get('ubicacionFisica')?.errors?.['pattern']">La ubicación física solo
+              puede contener letras y espacios.</ng-container></span>
+
+        </div>
       </div>
       <div class="row">
         <div class="col-sm-4 lbl">
-        <label for="sector">Sector: </label>
+          <label for="sector">Sector: </label>
         </div>
         <div class="col-sm-8">
-          <p-dropdown
-            class="inptSize1"
-            [options]="sectores"
-            formControlName="idSector"
-            optionLabel="nombreSector"
-            optionValue="idSector"
-            appendTo="body"
-            placeholder="Seleccione un sector">
+          <p-dropdown class="inptSize1" [options]="sectores" formControlName="idSector" optionLabel="nombreSector"
+            optionValue="idSector" appendTo="body" placeholder="Seleccione un sector">
           </p-dropdown>
-          <span *ngIf="prospectoForm.get('idSector')?.invalid && prospectoForm.get('idSector')?.touched" class="text-danger"><br>
-            <ng-container *ngIf="prospectoForm.get('idSector')?.errors?.['required']">Debe seleccionar un sector.</ng-container>
+          <span *ngIf="prospectoForm.get('idSector')?.invalid && prospectoForm.get('idSector')?.touched"
+            class="text-danger"><br>
+            <ng-container *ngIf="prospectoForm.get('idSector')?.errors?.['required']">Debe seleccionar un
+              sector.</ng-container>
           </span>
         </div>
       </div>
-     <div class="row" *ngIf="!insertarProspecto && !desdeSector">
+      <div class="row" *ngIf="!insertarProspecto && !desdeSector">
         <div class="col-sm-4" style="margin-left: -39px">
           <label for="estatus">Estatus: </label>
         </div>
@@ -70,11 +67,40 @@
           <span style="padding-left: 6px !important;">Activo</span>
         </div>
       </div>
-</form>
-</ng-template>
-<ng-template pTemplate="footer">
-  <button *ngIf="!insertarProspecto" pButton label="Actualizar" (click)="guardarProspecto()" severity="secondary" [disabled]="!validaGuadar"></button>
-  <button *ngIf="insertarProspecto" pButton label="Agregar" (click)="guardarProspecto()" severity="secondary" [disabled]="!validaGuadar"></button>
-  <button pButton label="Cancelar" (click)="close()" severity="secondary"></button>
-</ng-template>
+    </form>
+
+    <!-- Inputs Info Adicionales -->
+    <form [formGroup]="formInfoAdicionales" style="margin-top: 10px; margin-bottom: 10px;"
+      [hidden]="inputInfoAdicionales.length == 0">
+      <h5 style="margin: 10px 0px;font-size: 1.15rem;">Información Adicional</h5>
+      <div formArrayName="formArrayInfoAdicional">
+
+        <div [formGroupName]="i" class="row" *ngFor="let prospectoAdicionalForm of formArrayInfoAdicional.controls; let i = index">
+          <div class="col-sm-4 lbl">
+            <label for="nombre">{{prospectoAdicionalForm.get('etiqueta')?.value}}: </label>
+          </div>
+          <div class="col-sm-8">
+            <input pInputText class="inptSize" formControlName="valor" />
+            <span *ngIf="prospectoAdicionalForm.get('valor')?.invalid && prospectoAdicionalForm.get('valor')?.touched"
+              class="text-danger"><br>
+              <ng-container
+                *ngIf="prospectoAdicionalForm.get('valor')?.errors?.['required']">{{prospectoAdicionalForm.get('etiqueta')?.value}}
+                es
+                obligatorio.</ng-container>
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </form>
+
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <!-- <button *ngIf="esAdministrador()" pButton label="Adicionales" (click)="abrirModalInputsAdicionales()" severity="secondary"></button> -->
+    <button *ngIf="!insertarProspecto" pButton label="Actualizar" (click)="guardarProspecto()" severity="secondary"
+      [disabled]="!validaGuadar && !validaGuadarAdicionales"></button>
+    <button *ngIf="insertarProspecto" pButton label="Agregar" (click)="guardarProspecto()" severity="secondary"
+      [disabled]="!validaGuadar && !validaGuadarAdicionales"></button>
+    <button pButton label="Cancelar" (click)="close()" severity="secondary"></button>
+  </ng-template>
 </p-dialog>

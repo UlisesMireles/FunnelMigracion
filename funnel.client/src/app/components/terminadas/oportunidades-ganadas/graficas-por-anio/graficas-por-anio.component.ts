@@ -45,11 +45,12 @@ mostrarDecimales: boolean = false;
   public graph: any;
 
   ngOnInit(): void {
-    this.mostrarDecimales = this.loginService.obtenerPermitirDecimales(); 
+    setTimeout(() => {this.mostrarDecimales = this.loginService.obtenerPermitirDecimales();
     this.obtenerAniosDisponibles();
     this.consultarGraficaClientes();
     this.consultarGraficaTipoProyecto();
     this.consultarGraficaVentasAnuales();
+    }, 500);
   }
  
 

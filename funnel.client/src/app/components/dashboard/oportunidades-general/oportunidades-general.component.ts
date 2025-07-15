@@ -51,10 +51,11 @@ export class OportunidadesGeneralComponent {
   public graph: any;
 
   ngOnInit(): void {
-    this.mostrarDecimales = this.loginService.obtenerPermitirDecimales(); 
+    setTimeout(() => {this.mostrarDecimales = this.loginService.obtenerPermitirDecimales();
     this.consultarGraficaStage();
     this.consultarGraficaSector();
     this.consultarGraficaTipo();
+     }, 500);
   }
 
   private setGraficaData(quadrantIdx: number, cardIdx: number, data: any, layout: any) {

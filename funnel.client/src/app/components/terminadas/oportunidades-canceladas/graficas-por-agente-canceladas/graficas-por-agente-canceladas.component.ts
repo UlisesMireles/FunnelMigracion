@@ -38,10 +38,11 @@ quadrants: { cards: any[] }[] = [];
     ];
 
   }
-  ngOnInit(): void {
-    this.mostrarDecimales = this.loginService.obtenerPermitirDecimales(); 
+  ngOnInit(): void { 
     this.baseUrl = this.baseUrl + '/Fotografia/';
+    setTimeout(() => {this.mostrarDecimales = this.loginService.obtenerPermitirDecimales();
     this.obtenerAniosDisponibles();
+    }, 500);
     //this.consultarAgente();
   }
   obtenerAniosDisponibles(): void {

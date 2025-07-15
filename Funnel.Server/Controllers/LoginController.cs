@@ -105,5 +105,13 @@ namespace Funnel.Server.Controllers
             var respuesta = await _loginService.ObtenerImagenEmpresa(IdEmpresa);
             return Ok(respuesta);
         }
+        [HttpGet("[action]/")]
+        public async Task<ActionResult<UsuarioDto>> ObtenerPermitirDecimales(int idEmpresa)
+        {
+            var respuesta = await _loginService.ObtenerPermitirDecimales(idEmpresa);
+            return Ok(respuesta);
+        }
+
     }
+
 }

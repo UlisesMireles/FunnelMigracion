@@ -40,9 +40,10 @@ export class OportunidadesPorAgenteComponent {
   }
 
   ngOnInit(): void {
-    this.mostrarDecimales = this.loginService.obtenerPermitirDecimales();
     this.baseUrl = this.baseUrl + '/Fotografia/';
+    setTimeout(() => {this.mostrarDecimales = this.loginService.obtenerPermitirDecimales();
     this.consultarAgente();
+    }, 500);
   }
 
   private setGraficaData(quadrantIdx: number, cardIdx: number, data: any, layout: any) {

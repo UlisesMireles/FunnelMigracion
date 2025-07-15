@@ -65,7 +65,6 @@ export class LoginService {
           localStorage.setItem('licencia', user.licencia);
           localStorage.setItem('cantidadUsuarios', user.cantidadUsuarios);
           localStorage.setItem('cantidadOportunidades', user.cantidadOportunidades);
-          localStorage.setItem('permitirDecimales', user.permitirDecimales); 
           this.currentUserSubject.next(user);
           sessionStorage.setItem('sesion', window.btoa(JSON.stringify(user)));
           sessionStorage.setItem('Usuario', user.nombre);
@@ -191,9 +190,26 @@ export class LoginService {
   }
 
   obtenerPermitirDecimales(): boolean {
-    const valor = localStorage.getItem('permitirDecimales');
+    const valor = sessionStorage.getItem('permitirDecimales');
+    console.log('Permitir decimales desde sessionStorage:', valor);
     return valor === 'true';
   }
+
+  obtenerPermitirDecimalesDesdeApi(): Observable<boolean> {
+  const idEmpresa = this.obtenerIdEmpresa(); 
+  return this.http
+    .get<{ permitirDecimales: boolean }>(
+      `${this.baseUrl}api/Login/ObtenerPermitirDecimales`,{ params: { idEmpresa: idEmpresa.toString() } }
+    )
+    .pipe(
+      map(resp => {
+        const valor = resp?.permitirDecimales ?? false;
+        sessionStorage.setItem('permitirDecimales', valor ? 'true' : 'false');
+        return valor;
+      })
+    );
+}
+
 
   obtenerIdEmpresa(): number {
     const sesion = this.desencriptaSesion();

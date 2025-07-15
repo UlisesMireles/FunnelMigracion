@@ -182,5 +182,11 @@ namespace Funnel.Logic
         {
             return await _loginData.ObtenerImagenEmpresa(IdEmpresa);
         }
+        public async Task<UsuarioDto> ObtenerPermitirDecimales(int idEmpresa)
+        {
+            var respuesta = await _loginData.ObtenerPermitirDecimales(idEmpresa);
+            return respuesta;
+        }
+
     }
 }

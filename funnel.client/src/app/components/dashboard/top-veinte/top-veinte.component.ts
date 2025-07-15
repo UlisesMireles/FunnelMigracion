@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild, HostListener, ElementRef } from '@angular/core';
 import { LazyLoadEvent } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { MessageService } from 'primeng/api';
@@ -11,6 +11,8 @@ import { LoginService } from '../../../services/login.service';
 import { ColumnasDisponiblesComponent } from '../../utils/tablas/columnas-disponibles/columnas-disponibles.component';
 import { ConsultaAsistenteDto } from '../../../interfaces/asistentes/consultaAsistente';
 import { OpenIaService } from '../../../services/asistentes/openIA.service';
+import { Subscription } from 'rxjs';
+import { AsistenteService } from '../../../services/asistentes/asistente.service';
 
 @Component({
   selector: 'app-top-veinte',
@@ -18,7 +20,8 @@ import { OpenIaService } from '../../../services/asistentes/openIA.service';
   templateUrl: './top-veinte.component.html',
   styleUrl: './top-veinte.component.css'
 })
-export class TopVeinteComponent {
+export class TopVeinteComponent implements OnInit {
+  @ViewChild('chatContainer') chatContainer!: ElementRef;
   @ViewChild('dt')
   dt!: Table;
 
@@ -46,6 +49,10 @@ export class TopVeinteComponent {
   leyendo: boolean = false;
   vocesDisponibles: SpeechSynthesisVoice[] = [];
   vozSeleccionada: SpeechSynthesisVoice | null = null;
+
+  private asistenteSubscription!: Subscription;
+  asistenteObservableValue: number = -1;
+  enableAsistenteBienvenida = false;
 
 
   EstatusDropdown = [
@@ -78,7 +85,9 @@ export class TopVeinteComponent {
   columnsTodasResp = JSON.stringify(this.lsTodasColumnas);
   disabledPdf: boolean = false;
 
-  constructor(private messageService: MessageService, private cdr: ChangeDetectorRef, private prospectoService: ProspectoService, private loginService: LoginService, public dialog: MatDialog, private openIaService: OpenIaService) { }
+  constructor(private messageService: MessageService, private cdr: ChangeDetectorRef, private prospectoService: ProspectoService, private loginService: LoginService, public dialog: MatDialog, private openIaService: OpenIaService,
+    public asistenteService: AsistenteService
+  ) { }
 
   ngOnInit(): void {
     this.cargarVozPreferida();
@@ -503,6 +512,30 @@ export class TopVeinteComponent {
     window.speechSynthesis.onvoiceschanged = cargarVoces;
 
     cargarVoces();
+  }
+
+    ngOnDestroy(): void {
+    if (this.asistenteSubscription) {
+      this.asistenteSubscription.unsubscribe();
+    }
+  }
+    toggleChat(): void {
+    this.asistenteSubscription = this.asistenteService.asistenteBienvenidaObservable.subscribe(value => {
+      this.asistenteObservableValue = value;
+    });
+  
+    this.asistenteService.asistenteBienvenidaSubject.next(this.asistenteObservableValue * (-1));
+   
+  
+  }
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+
+    const targetElement = event.target as HTMLElement;
+    if (this.chatContainer && !this.chatContainer.nativeElement.contains(targetElement)) {
+      this.enableAsistenteBienvenida = false;
+      this.asistenteService.asistenteBienvenidaSubject.next(-1);
+    }
   }
 
 

@@ -3,5 +3,6 @@ export enum EnumAsistentes {
     VentasCortoplazo = 2,
     AyudaOperacion = 3,
     AccionesRiesgos= 4,
-    Ventas = 5
+    Ventas = 5,
+    Prospeccion = 7
  }

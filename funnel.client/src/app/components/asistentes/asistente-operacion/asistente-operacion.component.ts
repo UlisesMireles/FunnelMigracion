@@ -31,6 +31,7 @@ export class AsistenteOperacionComponent implements OnInit, OnDestroy {
       this.estadoChatService.stateChanges().subscribe(state => {
         if (state) {
           this.asistenteSeleccionado = state.asistenteSeleccionado || { idBot: 4, documento: false };
+          console.log('Asistente seleccionado:', this.asistenteSeleccionado);
         }
       })
     );

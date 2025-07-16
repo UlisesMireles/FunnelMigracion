@@ -1,9 +1,11 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild, EventEmitter, Output, OnDestroy } from '@angular/core';
 import { SideNavChatFunnelService } from '../../../services/asistentes/sidenavChatFunnel.service';
 import { environment } from '../../../../environments/environment';
-import { ChatBotComponent } from './chat-bot/chat-bot.component';
 import { AsistentesAdministradorService } from '../../../services/asistentes/asistentesAdministrador.service';
 import { AsistenteService } from '../../../services/asistentes/asistente.service';
+import { Subscription } from 'rxjs';
+import { EstadoChatService } from '../../../services/asistentes/estado-chat.service';
+import { ChatBotComponent } from './chat-bot/chat-bot.component';
 
 @Component({
   selector: 'app-asistente-prospeccion',
@@ -11,37 +13,47 @@ import { AsistenteService } from '../../../services/asistentes/asistente.service
   templateUrl: './asistente-prospeccion.component.html',
   styleUrl: './asistente-prospeccion.component.css'
 })
-export class AsistenteProspeccionComponent {
-@ViewChild(ChatBotComponent) chatBotAsistente!: ChatBotComponent;
-  isProd = environment.production;
-  baseUrl: string = environment.baseURLAssets;
-
+export class AsistenteProspeccionComponent implements OnInit, OnDestroy {
+  @ViewChild(ChatBotComponent) chatBotAsistenteProspeccion!: ChatBotComponent;
   @Output() OncerrarChat = new EventEmitter<void>();
+  baseUrlAssets = environment.baseUrlAssetsChatbot;
+  isProd = environment.production;
+  asistenteSeleccionado: any = { asistente: '', idBot: 7 };
   version: string = '';
-
-  constructor(public sideNavService: SideNavChatFunnelService,private cdRef: ChangeDetectorRef, private asistentesService: AsistentesAdministradorService, 
-    private asistenteSubjectService: AsistenteService
-  ) {
+  private subscriptions = new Subscription();
+  constructor(public sideNavService: SideNavChatFunnelService, private cdRef: ChangeDetectorRef, private asistentesAdministracionService: AsistentesAdministradorService,
+    private asistenteService: AsistenteService, private  estadoChatService: EstadoChatService) {
   }
 
   ngOnInit() {
     this.obtenerVersion();
+    // Suscribirse a cambios en el estado
+    this.subscriptions.add(
+      this.estadoChatService.stateChanges().subscribe(state => {
+        if (state) {
+          this.asistenteSeleccionado = state.asistenteSeleccionado || { idBot: 7, documento: false };
+          console.log('Asistente seleccionado:', this.asistenteSeleccionado);
+        }
+      })
+    );
+
   }
   toggleSideNav(): void {
     this.sideNavService.toggle();
     this.sideNavService.toggleIconState();
   }
 
-  mostrarTemas(){
-    this.chatBotAsistente.mostrarTemas();
+  mostrarCategorias() {
+    this.chatBotAsistenteProspeccion.mostrarCategorias();
   }
 
-  reset(){
-    this.chatBotAsistente.resetConversation();
+  nombreAsistenteSeleccionado(asistente: any): void {
+    this.asistenteSeleccionado = asistente;
+    this.cdRef.detectChanges();
   }
 
   obtenerVersion(): void {
-    this.asistentesService.obtenerVersionAsistentes().subscribe({
+    this.asistentesAdministracionService.obtenerVersionAsistentes().subscribe({
       next: (data) => {
         this.version = data.version;
         this.cdRef.detectChanges();
@@ -50,11 +62,24 @@ export class AsistenteProspeccionComponent {
     });
   }
   onCerrarChat() {
-    this.asistenteSubjectService.asistenteBienvenidaSubject.next(-1);
+    this.asistenteService.asistenteSubject.next(-1);
     const chatContainer = document.getElementById("chat-container");
     if (chatContainer) {
       chatContainer.classList.add("d-none");
     }
+    
+    // Guardar estado a través del servicio
+    if (this.chatBotAsistenteProspeccion) {
+      this.estadoChatService.saveState({
+        historial: this.chatBotAsistenteProspeccion.chatHistorial,
+        asistenteSeleccionado: this.asistenteSeleccionado,
+        lsPreguntasPorCategoria: this.chatBotAsistenteProspeccion.lsPreguntasPorCategoria,
+        lsCategoriaPreguntas: this.chatBotAsistenteProspeccion.lsCategoriaPreguntas,
+        lsAsistentesPorCategoria: this.chatBotAsistenteProspeccion.lsAsistentesPorCategoria
+      });
+    }
   }
-
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+  }
 }

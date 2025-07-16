@@ -1,18 +1,18 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
-import { EnumAsistentes } from './../../../../enums/enumAsistente';
-import { AsistentesDto } from './../../../../interfaces/asistentes/asistente';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
+import { AsitenteCategoriasDto } from './../../../../interfaces/asistentes/asistente';
 import { CategoriaPreguntasDto } from './../../../../interfaces/asistentes/categoriaPreguntas';
-//import { CategoriasDto } from 'src/app/interfaces/categorias';
 import { ChatHistorial } from './../../../../interfaces/asistentes//chatHistorial';
 import { ConsultaAsistenteDto } from './../../../../interfaces/asistentes/consultaAsistente';
 import { PreguntasPorCategoriaDto } from'./../../../../interfaces/asistentes/preguntasPorCategoria';
 import { EmojiPipe } from '../../../../pipes/asistentes/emoji.pipe';
 import { AsistenteService } from '../../../../services/asistentes/asistente.service';
-import { AsistentesAdministradorService } from '../../../../services/asistentes/asistentesAdministrador.service';
-import { CategoriasService } from '../../../../services/asistentes/categorias.service';
 import { OpenIaService } from '../../../../services/asistentes/openIA.service';
+import { PreguntasFrecuentesService } from '../../../../services/asistentes/preguntasFrecuentes.service';
 import { environment } from '../../../../../environments/environment';
+import { LoginService } from '../../../../services/login.service';
+import { MessageService } from 'primeng/api';
+/*import { EstadoChatService } from '../../../../services/asistentes/estado-chat.service';*/
 
 
 @Component({
@@ -21,292 +21,423 @@ import { environment } from '../../../../../environments/environment';
   templateUrl: './chat-bot.component.html',
   styleUrl: './chat-bot.component.css'
 })
-export class ChatBotComponent {
-
-   baseUrlAssets = environment.baseUrlAssetsChatbot;
+export class ChatBotComponent implements OnInit {
+  baseUrlAssets = environment.baseUrlAssetsChatbot;
   @ViewChild('scrollMe') scrollMe!: ElementRef;
   consultaAsistente: ConsultaAsistenteDto = {
     exitoso: false,
     errorMensaje: "",
-    idBot: EnumAsistentes.Bienvenida,
+    idBot: 7,
     pregunta: '',
     respuesta: '',
-    idUsuario: 0,
+    idUsuario: this.idUsuario(),
     tokensEntrada: 0,
     tokensSalida: 0,
-    idTipoUsuario: 0,
-    idEmpresa: 0,
+    idTipoUsuario: this.IdTipoUsuario(),
+    idEmpresa: this.IdEmpresa(),
     fechaPregunta: new Date(),
     fechaRespuesta: new Date(),
-    esPreguntaFrecuente: false,
+    esPreguntaFrecuente: false
   };
 
-  chatHistorial: ChatHistorial[] = [
-    { rol: "asistente", mensaje: "¡Hola!✨ Bienvenido al asistente virtual del funnel. Estoy aquí para ayudarte a descubrir cómo este sistema puede significar mayores resultados económicos, simplificando tu proceso de ventas." },
-    { rol: "asistente", mensaje: "Elige uno de los siguientes temas que deseas conocer:" }
-  ]
-  chatHistorialResp!: string;
-  pregunta = "";
+  public chatHistorial: ChatHistorial[] = [
+    { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨" },
+    { rol: "asistente", mensaje: "Bienvenido(a) al asistente virtual del sistema de ventas Funnel. Estoy aquí para ayudarte. Puedes escribir tu pregunta directamente o explorar por categorías si lo prefieres." }
+  ];
 
-  asistente!: AsistentesDto;
-  asistenteSeleccionado = 1;
-  lsCategoriaPreguntas!: CategoriaPreguntasDto[];
-  lsCategoriaPreguntasResp!: string;
-  lsPreguntasPorCategoria!: PreguntasPorCategoriaDto[];
+  lsRevisarCategorias: any[] = ['Sí', 'No'];
+  public chatHistorialResp!: string;
+  pregunta = "";
+  asistenteSeleccionado = { idBot: 7, documento: false };
+  public lsAsistentesPorCategoria!: AsitenteCategoriasDto[];
+  public lsCategoriaPreguntas!: CategoriaPreguntasDto[];
+  public lsPreguntasPorCategoria!: PreguntasPorCategoriaDto[];
+  /** */
   loadOpciones: boolean = false;
   isConsultandoOpenIa: boolean = false;
-  lsRevisarTemas: any[] = ['Sí', 'No'];
-  esperandoRespuestaFaq: boolean = false;
-
+  mostrarMensajeCopiado: boolean = false;
+  mensajeCopiadoTexto: string = '';
+  @Output() nombreAsistenteSeleccionado = new EventEmitter<any>();
 
   constructor(
     private oaService: OpenIaService,
-    public aService: AsistenteService,
+    public asistenteService: AsistenteService,
     private cdRef: ChangeDetectorRef,
-    private asistenteAdminService: AsistentesAdministradorService,
-    private categoriasService: CategoriasService
+    private preguntasFAQService: PreguntasFrecuentesService,
+    private loginService: LoginService,
+    private messageService: MessageService
+    /*private estadoChatService: EstadoChatService*/
   ) {
   }
 
-  ngOnInit() {
+ngOnInit() {
+  this.chatHistorialResp = JSON.stringify(this.chatHistorial);
+
+  const savedState = sessionStorage.getItem('chatBotOperacionState');
+  if (savedState) {
+    this.restoreState(JSON.parse(savedState));
+  } else {
+    this.obtenListaPreguntasFrecuentesCategoriaOperaciones();
+  }
+}
+  private restoreState(state: any) {
+    this.chatHistorial = state.historial || [
+      { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨" },
+      { rol: "asistente", mensaje: "Bienvenido(a) al asistente virtual del sistema de ventas Funnel. Estoy aquí para ayudarte. Puedes escribir tu pregunta directamente o explorar por categorías si lo prefieres." }
+    ];
+    
     this.chatHistorialResp = JSON.stringify(this.chatHistorial);
-    this.obtenAsistentes();
-    this.obtenPreguntasFrecuentesPorIdCategorias();
+    this.asistenteSeleccionado = state.asistenteSeleccionado || { idBot: 7, documento: false };
+    this.lsPreguntasPorCategoria = state.lsPreguntasPorCategoria || [];
+    this.lsCategoriaPreguntas = state.lsCategoriaPreguntas || [];
+    this.lsAsistentesPorCategoria = state.lsAsistentesPorCategoria || [];
+    
+    this.cdRef.detectChanges();
+  }
+  private saveState() {
+  const state = {
+    historial: this.chatHistorial,
+    asistenteSeleccionado: this.asistenteSeleccionado,
+    lsPreguntasPorCategoria: this.lsPreguntasPorCategoria,
+    lsCategoriaPreguntas: this.lsCategoriaPreguntas,
+    lsAsistentesPorCategoria: this.lsAsistentesPorCategoria
+  };
+  sessionStorage.setItem('chatBotOperacionState', JSON.stringify(state));
+}
+  //#region obtencion de datos de session storage
+  nombreUsuario(): string {
+    let NombreUsuarioString = environment.usuarioData.nombreUsuario;
+    const nombreUsuario = sessionStorage.getItem('Usuario');
+    if (nombreUsuario) {
+      NombreUsuarioString = nombreUsuario;
+    }
+    return NombreUsuarioString;
   }
 
-  obtenAsistentes() {
-    this.asistenteAdminService.obtenerAsistentes().subscribe(
-      {
-        next: (value) => {
-          if (value.result) {
-            const index = value.asistentes.findIndex(f => f.idBot == EnumAsistentes.Bienvenida);
-            if (index !== -1) {
-              this.asistente = value.asistentes[index];
-            }
-          } else {
-            console.error(value.errorMessage);
-          }
-        },
-        error(err) {
-          console.error(err)
-        },
-        complete: () => {
-          this.obtenAsistenteSeleccionado();
-        },
-      }
-    );
+  idUsuario(): number {
+    let idUsuarioNumber = environment.usuarioData.idUsuario;
+    const idUsuario = sessionStorage.getItem('IdUsuario');
+    if (idUsuario) {
+      idUsuarioNumber = +idUsuario;
+    }
+    return idUsuarioNumber;
   }
 
-  obtenPreguntasFrecuentesPorIdCategorias() {
-    this.categoriasService.obtenPreguntasFrecuentesPorIdCategoriaAsistenteBienvenida().subscribe({
+  IdTipoUsuario(): number {
+    let IdTipoUsuarioNumber = environment.usuarioData.idTipoUsuario;
+    const IdTipoUsuario = sessionStorage.getItem('IdTipoUsuario');
+    if (IdTipoUsuario) {
+      IdTipoUsuarioNumber = +IdTipoUsuario;
+    }
+    return IdTipoUsuarioNumber;
+  }
+
+  IdEmpresa(): number {
+    let IdEmpresaNumber = environment.usuarioData.idEmpresa;
+    const IdEmpresa = sessionStorage.getItem('IdEmpresa');
+    if (IdEmpresa) {
+      IdEmpresaNumber = +IdEmpresa;
+    }
+    return IdEmpresaNumber;
+  }
+  //#endregion
+
+  //#region oonsultas
+  obtenListaPreguntasFrecuentesCategoriaOperaciones() {
+    this.preguntasFAQService.obtenListaPreguntasFrecuentesCategoria().subscribe({
       next: (value) => {
         if (value.result) {
-          value.preguntasPorCategoria.forEach(categoria => {
-            categoria.listaPreguntasPorCategoria.forEach(preguntasPorCategoria => {
-              preguntasPorCategoria.yaSePregunto = false
-            });
-          });
-          this.lsCategoriaPreguntas = value.preguntasPorCategoria;
-          this.lsCategoriaPreguntasResp = JSON.stringify(value.preguntasPorCategoria);
-          this.chatHistorial.push({ rol: "categorias", mensaje: "" })
-          this.cdRef.detectChanges();
+          this.lsAsistentesPorCategoria = value.asistentes;
+          const asistenteOperacion = this.lsAsistentesPorCategoria.find(a => a.idBot === 7);  
+          if (asistenteOperacion) {
+            this.obtenCategoriasPorAsistente(asistenteOperacion);
+          }
+        } else {
+          console.error(value.errorMessage);
+        }
+        },
+      error(err) {
+        console.error(err)
+      }
+      
+    });
+  }
+  /*obtenListaPreguntasFrecuentesCategoria() {
+    this.preguntasFAQService.obtenListaPreguntasFrecuentesCategoria().subscribe({
+      next: (value) => {
+        if (value.result) {
+          this.lsAsistentesPorCategoria = value.asistentes.filter(categoria => categoria.idBot === 4);
         } else {
           console.error(value.errorMessage);
         }
       },
       error(err) {
         console.error(err)
-      }
-    });
-    
-  }
-
-
-  consultaMensajeOpenIa(event?: any) {
-    if (!this.isConsultandoOpenIa) {
-      let indexCategorias = this.chatHistorial.findIndex(f => f.rol === 'categorias');
-      if (indexCategorias !== -1) {
-        this.chatHistorial.splice(indexCategorias, 1);
-      }
-
-      let indexPreguntasPorCat = this.chatHistorial.findIndex(f => f.rol === 'preguntasPorCat');
-      if (indexPreguntasPorCat !== -1) {
-        this.chatHistorial.splice(indexPreguntasPorCat, 1);
-      }
-
-      let indexRevisarTemas = this.chatHistorial.findIndex(f => f.rol === 'revisarTemas');
-      if (indexRevisarTemas !== -1) {
-        this.chatHistorial.splice(indexRevisarTemas, 1);
-      }
-
-      this.consultaAsistente.pregunta = this.pregunta;
-      this.chatHistorial.push({ rol: "usuario", mensaje: this.consultaAsistente.pregunta })
-      this.pregunta = "";
-
-      if (this.esperandoRespuestaFaq && this.consultaAsistente.pregunta.toLowerCase().includes("si")) {
-        this.esperandoRespuestaFaq = false;
-        this.chatHistorial.push({ rol: "usuario", mensaje: this.consultaAsistente.pregunta })
-        this.seleccionRevisarTemas("Sí");
-        return;
-      }
-      if (this.esperandoRespuestaFaq && this.consultaAsistente.pregunta.toLowerCase().includes("no")) {
-        this.esperandoRespuestaFaq = false;
-        this.chatHistorial.push({ rol: "usuario", mensaje: this.consultaAsistente.pregunta })
-        this.seleccionRevisarTemas("No");
-        return;
-      }
-  
-      let lsAllPreguntasPorCategoria: any[] = [];
-      this.lsCategoriaPreguntas.forEach(element => {
-        element.listaPreguntasPorCategoria.forEach(e => {
-          lsAllPreguntasPorCategoria.push(e)
-        });
-      });
-      let index = lsAllPreguntasPorCategoria.findIndex(f => f.pregunta.toLocaleLowerCase().indexOf(this.consultaAsistente.pregunta.toLocaleLowerCase()) !== -1)
-      if (index !== -1) {
-        this.chatHistorial.push({ rol: "asistente", mensaje: lsAllPreguntasPorCategoria[index].respuesta });
-        this.chatHistorial.push({ rol: "preguntasPorCat", mensaje: "" });
-      } else {
-        this.chatHistorial.push({ rol: "cargando", mensaje: "..." })
-        this.obtenRespuestaAsistentePorInput();
-      }
-    }
-    this.scrollToBottom();
-  }
-
-  obtenAsistenteSeleccionado() {
-    this.aService.asistenteObservable.subscribe({
-      next: (value: number) => {
-        this.asistenteSeleccionado = value;
-        this.cdRef.detectChanges();
-      }
-    })
-  }
-
-  obtenRespuestaAsistentePorInput() {
-    this.isConsultandoOpenIa = true;
-    this.oaService.obtenOpenIaConsultaAsistente(this.consultaAsistente).subscribe({
-      next: (data: ConsultaAsistenteDto) => {
-        this.chatHistorial.pop()
-        this.chatHistorial.push(
-          { rol: "asistente", mensaje: data.respuesta },
-          /*{ rol: "asistente", mensaje: "¿Te gustaría acceder a nuestro menú de preguntas frecuentes? 😊" },
-          { rol: "revisarTemas", mensaje: "" }*/
-        );
-        this.esperandoRespuestaFaq = true;
-        this.cdRef.detectChanges();
+      },
+      complete: () => {
+        this.chatHistorial.push({ rol: "asistentes", mensaje: "" });
         this.scrollToBottom();
-        this.isConsultandoOpenIa = false;
+        this.cdRef.detectChanges();
       },
-      error: (err: HttpErrorResponse) => {
-        this.isConsultandoOpenIa = false;
-        console.error(err);
-      }
-    })
+    });
+  }*/
+
+  obtenCategoriasPorAsistente(asistente: AsitenteCategoriasDto) {
+    this.nombreAsistenteSeleccionado.emit({ asistente: asistente.asistente, idBot: asistente.idBot });
+    this.asistenteSeleccionado = { idBot: asistente.idBot, documento: asistente.documento };
+
+    const asistenteSeleccionado = this.lsAsistentesPorCategoria.find(f => f.idBot == asistente.idBot);
+    if (asistenteSeleccionado)
+      this.lsCategoriaPreguntas = asistenteSeleccionado.preguntasPorCategoria;
+    this.chatHistorial.push({ rol: "categorias", mensaje: "" })
+    this.cdRef.detectChanges();
     this.scrollToBottom();
   }
 
-  obtenRespuestaAsistentePorSeleccionPregunta() {
-    this.isConsultandoOpenIa = true;
-    this.oaService.obtenOpenIaConsultaAsistente(this.consultaAsistente).subscribe({
-      next: (data: ConsultaAsistenteDto) => {
-        this.chatHistorial.pop()
-        this.chatHistorial.push({ rol: "asistente", mensaje: data.respuesta }, { rol: "filtroFaq", mensaje: "" });
-        this.cdRef.detectChanges();
-        this.isConsultandoOpenIa = false;
-      },
-      error: (err: HttpErrorResponse) => {
-        this.chatHistorial.pop();
-        this.cdRef.detectChanges();
-        this.isConsultandoOpenIa = false;
-        console.error(err);
-      }
-    })
-    this.scrollToBottom();
-  }
+  //#endregion
 
+  //#region acciones en chat
   seleccionCategoria(categoria: CategoriaPreguntasDto) {
+    const categoriaSeleccionada = this.lsCategoriaPreguntas.find(f => f.idCategoria == categoria.idCategoria);
+    if (categoriaSeleccionada)
+      this.lsPreguntasPorCategoria = categoriaSeleccionada.listaPreguntasPorCategoria;
     this.chatHistorial.pop();
-    let indexCategoria = this.lsCategoriaPreguntas.findIndex(f => f.idCategoria === categoria.idCategoria);
-    this.lsPreguntasPorCategoria = this.lsCategoriaPreguntas[indexCategoria].listaPreguntasPorCategoria;
     const filterPipe = new EmojiPipe();
     this.chatHistorial.push({ rol: "usuario", mensaje: categoria.descripcion });
     if (categoria.mensajePrincipal) {
       this.chatHistorial.push({ rol: "asistente", mensaje: filterPipe.transform(categoria.mensajePrincipal) });
     }
     this.chatHistorial.push({ rol: "preguntasPorCat", mensaje: "" });
-
     this.scrollToBottom();
+    this.saveState(); 
   }
 
   seleccionPregunta(preguntaFaq: PreguntasPorCategoriaDto) {
-    this.chatHistorial.pop();
-    preguntaFaq.yaSePregunto = true;
+    let findIndexFiltroFaq = this.chatHistorial.findIndex(f => f.rol === 'filtroFaq');
+    this.chatHistorial.splice(findIndexFiltroFaq, 1);
     this.chatHistorial.push({ rol: "usuario", mensaje: preguntaFaq.pregunta });
-    const findPreguntasUsadas = this.lsPreguntasPorCategoria.filter(f => f.yaSePregunto == false);
-    if (findPreguntasUsadas.length !== 0) {
-      this.chatHistorial.push(
-        { rol: "asistente", mensaje: preguntaFaq.respuesta },
-        { rol: "preguntasPorCat", mensaje: "" });
+    preguntaFaq.yaSePregunto = true;
+    if (this.asistenteSeleccionado.documento) {
+      this.chatHistorial.push({ rol: "asistente", mensaje: preguntaFaq.respuesta });
+      let findPreguntasUsadas = this.lsPreguntasPorCategoria.filter(f => f.yaSePregunto == false);
+      if (findPreguntasUsadas.length == 0) {
+        this.chatHistorial.push(
+          { rol: "asistente", mensaje: "En cualquier momento puedes hacer una pregunta abierta o ¿quisieras revisar por categoría?😊" },
+          { rol: "revisarCategorias", mensaje: "" }
+        );
+      } else {
+        this.chatHistorial.push({ rol: "preguntasPorCat", mensaje: "" });
+      }
+
+      this.scrollToBottom();
+      this.cdRef.detectChanges();
+      this.saveState();
     } else {
-      this.chatHistorial.push(
-        { rol: "asistente", mensaje: preguntaFaq.respuesta },
-        { rol: "preguntasPorCat", mensaje: "" });
-      this.chatHistorial.push(
-        { rol: "asistente", mensaje: "En cualquier momento puedes hacer una pregunta abierta o ¿quisieras revisar por tema?😊" },
-        { rol: "revisarTemas", mensaje: "" }
-      );
+      this.consultaAsistente.idBot = this.asistenteSeleccionado.idBot;
+      this.consultaAsistente.pregunta = preguntaFaq.pregunta;
+      this.consultaAsistente.esPreguntaFrecuente = true;
+      this.consultaAsistente.respuesta = preguntaFaq.respuesta;
+      this.isConsultandoOpenIa = true;
+      this.chatHistorial.push({ rol: "cargando", mensaje: "..." });
+      this.oaService.obtenOpenIaConsultaAsistente(this.consultaAsistente).subscribe({
+        next: (data: ConsultaAsistenteDto) => {
+          if (data.exitoso) {
+            this.chatHistorial.pop();
+            this.chatHistorial.push({ rol: "asistente", mensaje: data.respuesta });
+            preguntaFaq.yaSePregunto = true;
+          }
+
+          this.isConsultandoOpenIa = false;
+
+          let findPreguntasUsadas = this.lsPreguntasPorCategoria.filter(f => f.yaSePregunto == false);
+
+          if (findPreguntasUsadas.length == 0) {
+            this.chatHistorial.push(
+              { rol: "asistente", mensaje: "En cualquier momento puedes hacer una pregunta abierta o ¿quisieras revisar por categoría?😊" },
+              { rol: "revisarCategorias", mensaje: "" }
+            );
+          } else {
+            this.chatHistorial.push({ rol: "preguntasPorCat", mensaje: "" });
+          }
+
+          this.scrollToBottom();
+          this.cdRef.detectChanges();
+          this.saveState();
+        },
+        error: (err: HttpErrorResponse) => {
+          this.chatHistorial.pop();
+          this.cdRef.detectChanges();
+          this.isConsultandoOpenIa = false;
+          console.error(err);
+        }
+      });
     }
-    this.esperandoRespuestaFaq = true;
+  }
+  //#endregion
+
+  consultaMensajeOpenIa() {
+    if (!this.pregunta?.trim()) return;
+    if (!this.isConsultandoOpenIa) {
+      let findIndexFiltroFaq = this.chatHistorial.findIndex(f => f.rol === 'preguntasPorCat');
+      if (findIndexFiltroFaq !== -1) {
+        this.chatHistorial.splice(findIndexFiltroFaq, 1);
+      }
+
+      const indexRevisarCategorias = this.chatHistorial.findIndex(f => f.rol === 'revisarCategorias');
+      if (indexRevisarCategorias != -1) {
+        this.chatHistorial.splice(indexRevisarCategorias, 1);
+      }
+
+      this.consultaAsistente.idBot = this.asistenteSeleccionado.idBot;
+      this.consultaAsistente.pregunta = this.pregunta;
+      this.consultaAsistente.respuesta = "";
+      this.consultaAsistente.esPreguntaFrecuente = false;
+      this.chatHistorial.push({ rol: "usuario", mensaje: this.consultaAsistente.pregunta })
+      this.pregunta = "";
+      if (this.consultaAsistente.pregunta.length < 5) {
+        this.chatHistorial.push({ rol: "asistente", mensaje: "¿Podrías ser más específico en tu pregunta?😊" });
+        let findPreguntasUsadas = this.lsPreguntasPorCategoria.filter(f => f.yaSePregunto == false);
+
+        if (findPreguntasUsadas.length !== 0) {
+          this.chatHistorial.push({ rol: "preguntasPorCat", mensaje: "" });
+        }
+      } else {
+        const preguntaEncontrada = this.lsPreguntasPorCategoria?.find?.(f => f.pregunta.toLocaleLowerCase().includes(this.consultaAsistente.pregunta.toLocaleLowerCase()));
+        if (preguntaEncontrada) {
+          if (this.asistenteSeleccionado.documento) {
+            this.chatHistorial.push({ rol: "asistente", mensaje: preguntaEncontrada.respuesta });
+            const hayPreguntas = this.lsPreguntasPorCategoria.filter(f => f.yaSePregunto == false);
+            if (hayPreguntas.length !== 0) {
+              this.chatHistorial.push({ rol: "preguntasPorCat", mensaje: "" });
+            }
+          } else {
+            this.consultaAsistente.esPreguntaFrecuente = true;
+            this.consultaAsistente.respuesta = preguntaEncontrada.respuesta;
+            this.isConsultandoOpenIa = true;
+            this.chatHistorial.push({ rol: "cargando", mensaje: "..." });
+            this.oaService.obtenOpenIaConsultaAsistente(this.consultaAsistente).subscribe({
+              next: (data: ConsultaAsistenteDto) => {
+                if (data.exitoso) {
+                  this.chatHistorial.pop();
+                  this.chatHistorial.push({ rol: "asistente", mensaje: data.respuesta });
+                }
+
+                this.isConsultandoOpenIa = false;
+
+                let findPreguntasUsadas = this.lsPreguntasPorCategoria.filter(f => f.yaSePregunto == false);
+
+                if (findPreguntasUsadas.length == 0) {
+                  this.chatHistorial.push(
+                    { rol: "asistente", mensaje: "En cualquier momento puedes hacer una pregunta abierta o ¿quisieras revisar por categoría?😊" },
+                    { rol: "revisarCategorias", mensaje: "" }
+                  );
+                } else {
+                  this.chatHistorial.push({ rol: "preguntasPorCat", mensaje: "" });
+                }
+
+                this.scrollToBottom();
+                this.cdRef.detectChanges();
+                this.saveState();
+              },
+              error: (err: HttpErrorResponse) => {
+                this.chatHistorial.pop();
+                this.cdRef.detectChanges();
+                this.isConsultandoOpenIa = false;
+                console.error(err);
+              }
+            });
+          }
+        } else {
+          this.chatHistorial.push({ rol: "cargando", mensaje: "..." })
+          this.obtenRespuestaAsistentePorInput();
+        }
+      }
+
+    }
     this.scrollToBottom();
   }
 
-  resetConversation() {
-    this.loadOpciones = false;
-    this.lsCategoriaPreguntas = JSON.parse(this.lsCategoriaPreguntasResp);
-    this.chatHistorial = JSON.parse(this.chatHistorialResp);
-    this.chatHistorial.push({ rol: "categorias", mensaje: "" });
-    this.cdRef.detectChanges();
+  obtenRespuestaAsistentePorInput() {
+    this.isConsultandoOpenIa = true;
+    this.oaService.obtenOpenIaConsultaAsistente(this.consultaAsistente).subscribe({
+      next: (data: ConsultaAsistenteDto) => {
+        this.chatHistorial = this.chatHistorial.filter(m => m.rol !== "cargando");
+        this.chatHistorial.push({ rol: "asistente", mensaje: data.respuesta });
+        this.cdRef.detectChanges();
+        this.scrollToBottom();
+        this.isConsultandoOpenIa = false;
+      },
+      error: (err: HttpErrorResponse) => {
+        this.chatHistorial = this.chatHistorial.filter(m => m.rol !== "cargando");
+        this.scrollToBottom();
+        this.cdRef.detectChanges();
+        this.isConsultandoOpenIa = false;
+        this.saveState();
+        console.error(err);
+      }
+    });
   }
 
-  mostrarTemas() {
-    this.lsCategoriaPreguntas = JSON.parse(this.lsCategoriaPreguntasResp);
-    const indexCategoria = this.chatHistorial.findIndex(f => f.rol === 'categorias');
-    if (indexCategoria != -1) {
-      this.chatHistorial.splice(indexCategoria, 1);
-    }
+  //#region metodos de acciones de componente
+  resetConversation() {
+  this.loadOpciones = false;
+  this.nombreAsistenteSeleccionado.emit({ asistente: '', idBot: 0 });
+  this.asistenteSeleccionado = { idBot: 0, documento: false };
+  //Limpiar historial y arrays
+  this.chatHistorial = [
+    { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨" },
+    { rol: "asistente", mensaje: "Bienvenido(a) al asistente virtual del sistema de ventas Funnel. Estoy aquí para ayudarte. Puedes escribir tu pregunta directamente o explorar por categorías si lo prefieres." }
+  ];
+  this.chatHistorialResp = JSON.stringify(this.chatHistorial);
+  this.lsPreguntasPorCategoria = [];
+  this.lsCategoriaPreguntas = [];
+  this.lsAsistentesPorCategoria = [];
+  sessionStorage.removeItem('chatBotOperacionState');
+  localStorage.removeItem('chatBotOperacionState');
+  this.obtenListaPreguntasFrecuentesCategoriaOperaciones();
+  this.cdRef.detectChanges();
+}
 
-    const indexPreguntasPorCat = this.chatHistorial.findIndex(f => f.rol === 'preguntasPorCat');
-    if (indexPreguntasPorCat != -1) {
-      this.chatHistorial.splice(indexPreguntasPorCat, 1);
-    }
-
-    const indexRevisarTemas = this.chatHistorial.findIndex(f => f.rol === 'revisarTemas');
-    if (indexRevisarTemas != -1) {
-      this.chatHistorial.splice(indexRevisarTemas, 1);
-    }
-
+  mostrarCategorias() {
+    this.asistenteSeleccionado = { idBot: 7, documento: false };
+    const componentes = ['asistentes', 'categorias', 'preguntasPorCat', 'revisarCategoris'];
+    componentes.forEach(componente => {
+      const index = this.chatHistorial.findIndex(m => m.rol === componente);
+      if (index !== -1) this.chatHistorial.splice(index, 1);
+    });
+  
+    // Mostrar categorías directamente
     this.chatHistorial.push(
       { rol: "asistente", mensaje: "¡Hola! ¿En qué puedo ayudarte hoy?" },
-      { rol: "categorias", mensaje: "" });
-    this.cdRef.detectChanges();
+      { rol: "categorias", mensaje: "" }
+    );
+    
     this.scrollToBottom();
+    this.cdRef.detectChanges();
+    this.saveState();
   }
 
-  seleccionRevisarTemas(rt: string) {
-    this.chatHistorial.pop();
-    if (rt !== "No") {
-      this.lsCategoriaPreguntas = JSON.parse(this.lsCategoriaPreguntasResp);
-
+  seleccionRevisarCategorias(respuesta: string) {
+    this.chatHistorial.pop(); 
+    this.chatHistorial.push({ rol: "usuario", mensaje: respuesta });
+    
+    if (respuesta === "Sí") {
+      this.lsPreguntasPorCategoria?.forEach(pregunta => {
+        pregunta.yaSePregunto = false;
+      });
+  
       this.chatHistorial.push(
-        { rol: "asistente", mensaje: "Selecciona el tema de tu interés 😊:" },
-        { rol: "categorias", mensaje: "" });
+        { rol: "asistente", mensaje: "Estas son las categorías disponibles:" },
+        { rol: "categorias", mensaje: "" } 
+      );
     } else {
       this.chatHistorial.push(
-        { rol: "asistente", mensaje: "¡Muy bien! Si tienes alguna pregunta, estaré encantado de ayudarte." });
-
+        { rol: "asistente", mensaje: "Perfecto. Si tienes otra duda, estaré aquí para ayudarte. 😊" }
+      );
     }
+    
     this.scrollToBottom();
+    this.saveState();
   }
 
   scrollToBottom() {
@@ -318,4 +449,63 @@ export class ChatBotComponent {
       });
     }, 0);
   }
+
+  //#endregion
+  copiarRespuesta(texto: string) {
+  const textoLimpio = texto.replace(/<[^>]*>/g, '');
+
+  navigator.clipboard.writeText(textoLimpio).then(() => {
+    this.mostrarMensajeCopiado = true;
+    this.mensajeCopiadoTexto = '✅ Texto copiado al portapapeles';
+    this.cdRef.detectChanges(); 
+
+    setTimeout(() => {
+      this.mostrarMensajeCopiado = false;
+      this.cdRef.detectChanges(); 
+    }, 1000);
+  }).catch(err => {
+    this.mostrarMensajeCopiado = true;
+    this.mensajeCopiadoTexto = '⚠️ Error al copiar el texto';
+    this.cdRef.detectChanges(); 
+
+    setTimeout(() => {
+      this.mostrarMensajeCopiado = false;
+      this.cdRef.detectChanges(); 
+    }, 1000);
+  });
 }
+mostrarBotonCopiar(chat: ChatHistorial): boolean {
+  if (
+    chat.mensaje === "¿Podrías ser más específico en tu pregunta?😊" ||
+    chat.mensaje === "Tu pregunta no es valida, has otra pregunta"
+  ) {
+    return false;
+  }
+  const index = this.chatHistorial.indexOf(chat);
+  if (index > 0) {
+    const mensajeAnterior = this.chatHistorial[index - 1];
+
+    // Si la respuesta viene de seleccionRevisarCategorias
+    if (
+      mensajeAnterior.rol === 'usuario' &&
+      this.lsRevisarCategorias.includes(mensajeAnterior.mensaje) &&
+      chat.rol === 'asistente'
+    ) {
+      return false;
+    }
+     
+    //Es respuesta a una pregunta frecuente 
+    const esPreguntaFrecuente = this.lsPreguntasPorCategoria?.some(
+      p => p.pregunta === mensajeAnterior.mensaje
+    );
+    
+    // Es respuesta a un input 
+    const esInputUsuario = mensajeAnterior.rol === 'usuario' && 
+                         !this.lsCategoriaPreguntas?.some(
+                           c => c.descripcion === mensajeAnterior.mensaje
+                         );
+
+    return esPreguntaFrecuente || esInputUsuario;
+  }
+  return false;
+}}

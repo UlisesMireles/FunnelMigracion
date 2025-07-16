@@ -39,7 +39,20 @@
                   <i class="bi bi-stars"></i>
                   <span class="ia-button-text "> IA</span>
                 </button>
-              </div>
+                <button pButton severity="secondary" pTooltip="Análisis de prospección"
+                        tooltipPosition="top" class="icon-btn ml-2"
+                        (click)="mostrarAsistenteProspeccion = true">
+                  <i class="bi bi-stars"></i>
+                  <span class="ia-button-text"> IA P</span>
+                </button>
+
+                 <!-- Contenedor del chatbot -->
+                <ng-container *ngIf="(asistenteService.asistenteObservable | async) === 1">
+                <div id="chat-container" class="chatbot-window" #chatContainer (mousedown)="startDrag($event)">
+                <app-asistente-prospeccion></app-asistente-prospeccion>
+                </div>
+                </ng-container>
+                        </div>
             </div>
           </ng-template>
 
@@ -210,3 +223,9 @@
     </div>
   </ng-template>
 </p-dialog>
+
+<ng-container *ngIf="mostrarAsistenteProspeccion">
+  <div id="chat-container" class="chatbot-window" #chatContainer (mousedown)="startDrag($event)">
+    <app-asistente-prospeccion></app-asistente-prospeccion>
+  </div>
+</ng-container>

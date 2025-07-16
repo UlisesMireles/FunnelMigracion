@@ -3,7 +3,6 @@
     <div class="row m-0 p-0 ">
       <div class="col-1 pt-1">
 
-        <img  [src]="baseUrl + '/assets/img/ai.png'" alt="Icon" class="app-online-icon ms-2">
 
       </div>
       <div class="col-8 pt-0 vstack" >
@@ -12,8 +11,6 @@
 
       <div class="col-3 p-0 align-content-center">
         <div class="row m-0 justify-content-end">
-          <i class="col-auto p-0 bi bi-list app-chat-reset-icon" title="Mostrar temas" (click)="mostrarTemas()"
-            aria-hidden="true"></i><span class="app-sr-only">Mostrar temas</span>
           <i *ngIf="isProd" class="col-auto p-0 pe-1 bi bi-x app-chat-close-icon" (click)="onCerrarChat()" aria-hidden="true"></i>
           <i *ngIf="!isProd" class="col-auto p-0 pe-1 bi bi-x app-chat-close-icon" (click)="onCerrarChat()" aria-hidden="true"></i>
         </div>

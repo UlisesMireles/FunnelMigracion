@@ -11,6 +11,10 @@ import { TooltipModule } from 'primeng/tooltip';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+// Importaciones de seguridad
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { SecurityInterceptor } from '../security/security.interceptor';
+
 import { MatInputModule } from '@angular/material/input';
 import Aura from '@primeng/themes/aura';
 import { MessageService } from 'primeng/api';
@@ -312,6 +316,11 @@ registerLocaleData(localeEs, 'es-MX');
       }
     }),
     MessageService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: SecurityInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent],
 

@@ -1,6 +1,7 @@
 ﻿using Funnel.Logic.Utils.Asistentes;
 using Funnel.Models.Dto;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Funnel.Server.Controllers
 {
@@ -9,9 +10,11 @@ namespace Funnel.Server.Controllers
     public class AsistenteProspeccionController : Controller
     {
         private readonly IConfiguration _configuration;
-        public AsistenteProspeccionController(IConfiguration configuration)
+        private readonly IMemoryCache _cache;
+        public AsistenteProspeccionController(IConfiguration configuration, IMemoryCache cache)
         {
             _configuration = configuration;
+            _cache = cache;
         }
         [HttpPost("OpenIA")]
         public async Task<ActionResult<ConsultaAsistente>> PostOpenIa(ConsultaAsistente consultaAsistente)
@@ -23,7 +26,7 @@ namespace Funnel.Server.Controllers
 
             try
             {
-                var asistente = new AsistenteProspeccionInteligente(_configuration);
+                var asistente = new AsistenteProspeccionInteligente(_configuration, _cache);
                 var resultado = await asistente.AsistenteOpenAIAsync(consultaAsistente);
                 return Ok(resultado);
             }

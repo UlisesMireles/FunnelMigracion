@@ -327,3 +327,17 @@
     color: #ccc; 
     pointer-events: none;
     cursor: not-allowed;}
+.btn-primary {
+  background-color: #4a6fa5;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  color: white;
+  cursor: pointer;
+  align-self: flex-start;
+  margin-left: 10px;
+}
+
+.btn-primary:hover {
+  background-color: #3a5a80;
+}

@@ -13,7 +13,7 @@ import { ConsultaAsistenteDto } from '../../../interfaces/asistentes/consultaAsi
 import { OpenIaService } from '../../../services/asistentes/openIA.service';
 import { Subscription } from 'rxjs';
 import { AsistenteService } from '../../../services/asistentes/asistente.service';
-
+import { TopVeinteDataService } from '../../../services/top-veinte-data.service';
 @Component({
   selector: 'app-top-veinte',
   standalone: false,
@@ -87,7 +87,7 @@ export class TopVeinteComponent implements OnInit {
   disabledPdf: boolean = false;
 
   constructor(private messageService: MessageService, private cdr: ChangeDetectorRef, private prospectoService: ProspectoService, private loginService: LoginService, public dialog: MatDialog, private openIaService: OpenIaService,
-    public asistenteService: AsistenteService
+    public asistenteService: AsistenteService, private topVeinteDataService: TopVeinteDataService
   ) { }
 
   ngOnInit(): void {
@@ -121,6 +121,7 @@ export class TopVeinteComponent implements OnInit {
     this.prospectoService.getTopVeinte(this.loginService.obtenerIdEmpresa(), anioSeleccionado).subscribe({
       next: (result: ClientesTopVeinte[]) => {
         this.TopVeinteOriginal = result;
+        this.topVeinteDataService.updateTop20Data(result);
         this.selectedEstatus = 'Activo';
         this.cdr.detectChanges();
         this.loading = false;

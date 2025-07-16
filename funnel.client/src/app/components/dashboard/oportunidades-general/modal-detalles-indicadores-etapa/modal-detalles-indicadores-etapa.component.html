@@ -28,7 +28,7 @@
   <ng-template pTemplate="content">
     <div class="contenedor-tabla-dialogo" #contenedorTabla>
       <!-- Tabla de oportunidades -->
-      <p-table #dt [value]="oportunidades" [paginator]="true" [rows]="10" 
+      <p-table #dt [value]="oportunidades" [paginator]="oportunidades.length > 10" [rows]="10" 
         [paginatorDropdownAppendTo]="'body'"
         [rowsPerPageOptions]="[10, 25, 50]" [totalRecords]="oportunidades.length"
         styleClass="tabla-estilizada">

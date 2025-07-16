@@ -26,7 +26,7 @@
 
   <ng-template pTemplate="content">
     <div class="contenedor-tabla-dialogo">
-      <p-table #dt [value]="detalles" [paginator]="true" [rows]="10" [paginatorDropdownAppendTo]="'body'" 
+      <p-table #dt [value]="detalles" [paginator]="detalles.length > 10" [rows]="10" [paginatorDropdownAppendTo]="'body'" 
         [rowsPerPageOptions]="[10, 25, 50]" [totalRecords]="detalles.length"
         styleClass="tabla-estilizada">
 

@@ -6,18 +6,22 @@ using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Text;
 using static Funnel.Models.Dto.OpenAiConfiguracion;
-
+using Microsoft.Extensions.Caching.Memory;
 namespace Funnel.Logic.Utils.Asistentes
 {
     public class AsistenteProspeccionInteligente
     {
+        private readonly IMemoryCache _cache;
         private static readonly IConfiguration _configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
         private readonly string _connectionString;
-        public AsistenteProspeccionInteligente(IConfiguration configuration)
+        public AsistenteProspeccionInteligente(IConfiguration configuration, IMemoryCache cache)
         {
             _connectionString = configuration.GetConnectionString("FunelDatabase");
+            _cache = cache;
         }
 
+        private string GetAssistantCacheKey(int userId) => $"assistantId_{userId}";
+        private string GetThreadCacheKey(int userId) => $"threadId_{userId}";
         public async Task<ConsultaAsistente> AsistenteOpenAIAsync(ConsultaAsistente consultaAsistente)
         {
             if (string.IsNullOrWhiteSpace(consultaAsistente.Pregunta))
@@ -28,7 +32,7 @@ namespace Funnel.Logic.Utils.Asistentes
 
             try
             {
-                var respuestaOpenIA = await BuildAnswer(consultaAsistente.Pregunta, consultaAsistente.IdBot);
+                var respuestaOpenIA = await BuildAnswer(consultaAsistente.Pregunta, consultaAsistente.IdBot, consultaAsistente.IdUsuario);
                 consultaAsistente.Respuesta = respuestaOpenIA.Respuesta;
                 consultaAsistente.TokensEntrada = respuestaOpenIA.TokensEntrada;
                 consultaAsistente.TokensSalida = respuestaOpenIA.TokensSalida;
@@ -44,37 +48,46 @@ namespace Funnel.Logic.Utils.Asistentes
 
             return consultaAsistente;
         }
-        private async Task<RespuestaOpenIA> BuildAnswer(string pregunta, int idBot)
+        private async Task<RespuestaOpenIA> BuildAnswer(string pregunta, int idBot, int idUsuario)
         {
-            var configuracion = await ObtenerConfiguracionPorIdBotAsync(idBot);
-            if (configuracion == null)
-                throw new Exception("No se encontró configuración para el asistente con IdBot: " + idBot);
-
-            // 1. Crear el assistant con el prompt como instrucciones
-            var assistantId = await CreateAssistantAsync(
-                apiKey: configuracion.Llave,
-                model: configuracion.Modelo,
-                instructions: configuracion.Prompt
-            );
-
-            // 2. Crear un thread
-            var threadId = await CreateThreadAsync(configuracion.Llave);
-
-            // 3. Agregar el mensaje del usuario
-            await AddMessageToThreadAsync(configuracion.Llave, threadId, pregunta, "user");
-
-            // 4. Ejecutar el assistant sobre el thread
-            var runId = await RunAssistantAsync(configuracion.Llave, assistantId, threadId);
-
-            // 5. Esperar la respuesta
-            var respuesta = await GetAssistantResponseAsync(configuracion.Llave, threadId, runId);
-
-            return new RespuestaOpenIA
+            try
             {
-                Respuesta = respuesta.Content,
-                TokensEntrada = respuesta.PromptTokens,
-                TokensSalida = respuesta.CompletionTokens
-            };
+                var configuracion = await ObtenerConfiguracionPorIdBotAsync(idBot);
+                if (configuracion == null)
+                    throw new Exception("No se encontró configuración para el asistente con IdBot: " + idBot);
+
+                // 1. Crear el assistant con el prompt como instrucciones
+                var assistantId = await GetOrCreateAssistantIdAsync(configuracion.Llave, configuracion.Modelo, configuracion.Prompt, idUsuario);
+
+                //2. Crear un thread
+                var threadId = await GetOrCreateThreadIdAsync(configuracion.Llave, idUsuario);
+
+
+                // 3. Agregar el mensaje del usuario
+                await AddMessageToThreadAsync(configuracion.Llave, threadId, pregunta, "user");
+
+                // 4. Ejecutar el assistant sobre el thread
+                var runId = await RunAssistantAsync(configuracion.Llave, assistantId, threadId);
+
+                // 5. Esperar la respuesta
+                var respuesta = await GetAssistantResponseAsync(configuracion.Llave, threadId, runId);
+
+                return new RespuestaOpenIA
+                {
+                    Respuesta = respuesta.Content,
+                    TokensEntrada = respuesta.PromptTokens,
+                    TokensSalida = respuesta.CompletionTokens
+                };
+            }
+            catch(Exception ex)
+            {
+                return new RespuestaOpenIA
+                {
+                    Respuesta = ex.Message,
+                    TokensEntrada = 0,
+                    TokensSalida = 0
+                };
+            }
         }
 
         private async Task<ConfiguracionDto?> ObtenerConfiguracionPorIdBotAsync(int idBot)
@@ -217,6 +230,35 @@ namespace Funnel.Logic.Utils.Asistentes
                 PromptTokens = 0,
                 CompletionTokens = 0
             };
+        }
+
+        private async Task<string> GetOrCreateAssistantIdAsync(string apiKey, string model, string instructions, int userId)
+        {
+            var assistantId = await _cache.GetOrCreateAsync(GetAssistantCacheKey(userId), async entry =>
+            {
+                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(1);
+                var id = await CreateAssistantAsync(apiKey, model, instructions);
+                return id ?? throw new InvalidOperationException("El ID del asistente no puede ser nulo.");
+            });
+
+            if (assistantId is null)
+                throw new InvalidOperationException("El ID del asistente no puede ser nulo (cache).");
+
+            return assistantId;
+        }
+        private async Task<string> GetOrCreateThreadIdAsync(string apiKey, int userId)
+        {
+            var threadId = await _cache.GetOrCreateAsync(GetThreadCacheKey(userId), async entry =>
+            {
+                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(12);
+                var id = await CreateThreadAsync(apiKey);
+                return id ?? throw new InvalidOperationException("El ID del thread no puede ser nulo.");
+            });
+
+            if (threadId is null)
+                throw new InvalidOperationException("El ID del thread no puede ser nulo (cache).");
+
+            return threadId;
         }
     }
 }

@@ -179,10 +179,14 @@ th.sort-active p-sortIcon {
   background: inherit !important;
 }
 
+:host {
+  --cantidad-registros: 0;
+}
+
 .total-registros-cell {
   padding-left: 3px !important;  
 }
 
-:host ::ng-deep .p-overlay{
-  top: 635.812px !important;
+::ng-deep .p-overlay{
+  top: 635px !important;
 }

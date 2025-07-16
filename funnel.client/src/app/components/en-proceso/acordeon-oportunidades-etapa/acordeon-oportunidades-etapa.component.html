@@ -48,7 +48,7 @@
             <!-- Encabezado con título e ícono de edición -->
             <div class="card-header">
               <div class="fila-monto">
-                <label class="monto-normalizado">{{ tarjeta.monto | currency:'MXN':'symbol':'1.0-0' }}</label>
+                <label class="monto-normalizado">{{ tarjeta.monto | totalCurrency:'currency':mostrarDecimales }}</label>
               </div>
               <p-button type="button" icon="bi bi-file-earmark-text fs-3" text (click)="seguimiento(tarjeta)"
                 pTooltip="Seguimiento" tooltipPosition="top" styleClass="blue-icon">

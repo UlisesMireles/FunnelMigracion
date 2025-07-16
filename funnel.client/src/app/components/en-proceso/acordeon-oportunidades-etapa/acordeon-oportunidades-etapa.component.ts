@@ -36,6 +36,7 @@ export class AcordeonOportunidadesEtapaComponent {
   // Output para emitir resultados de la petición post (por ejemplo, para notificar a un padre)
   @Output() result: EventEmitter<baseOut> = new EventEmitter();
 
+  public mostrarDecimales: boolean = false;
   modalDocumentosVisible: boolean = false;
   private modalSubscription!: Subscription;
   baseUrl: string = environment.baseURL;
@@ -46,7 +47,9 @@ export class AcordeonOportunidadesEtapaComponent {
   ) { }
 
   ngOnInit() {
-
+    setTimeout(() => {
+      this.mostrarDecimales = this.loginService.obtenerPermitirDecimales();
+    }, 1000); 
     this.getOportunidadesPorEtapa();
     this.modalSubscription = this.modalOportunidadesService.modalState$.subscribe((state) => {
       //Valida si se emite un result Exitoso desde modal

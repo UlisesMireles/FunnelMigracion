@@ -22,7 +22,7 @@ export class LoginService {
   public currentUser: Observable<Usuario>;
   public sessionWarning$ = new Subject<void>();
   private sessionTimeout = 30 * 60 * 1000;
-  private sessionActivityTimeout = 28 * 60 * 1000;
+  private sessionActivityTimeout = 15 * 60 * 1000;
   private timer: any;
   private warningTime: any;
   public sessionReset$ = new Subject<void>();
@@ -40,9 +40,6 @@ export class LoginService {
       const timeDiff = Date.now() - parseInt(lastActivity);
       if (timeDiff > this.sessionTimeout) {
         this.logout('La sesión ha expirado: login service');
-      } else {
-        this.currentUserSubject.next(JSON.parse(currentUser));
-        this.startSessionTimer();
       }
     }
   }
@@ -104,12 +101,13 @@ export class LoginService {
     if(this.warningTime){
       clearTimeout(this.warningTime);
     }
+    console.log('Warning time: '+ this.warningTime);
     this.warningTime = setTimeout(() => {
       this.sessionWarning$.next();
+      console.log('Session warning triggered desde login: '+ this.sessionActivityTimeout);
     }, this.sessionActivityTimeout);
     
     this.timer = setTimeout(() => {
-      this.logout('La sesión ha expirado: login service startSessionTimer');
     }, this.sessionTimeout);
   }
 
@@ -137,9 +135,7 @@ export class LoginService {
           if (this.timer) {
             clearTimeout(this.timer);
           }
-          if(this.warningTime){
-            clearTimeout(this.warningTime);
-          }
+          clearTimeout(this.warningTime);
           this.currentUserSubject.next(null);
           this.router.navigate(['/login']);
         })

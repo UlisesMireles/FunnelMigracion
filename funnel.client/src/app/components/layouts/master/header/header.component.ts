@@ -492,7 +492,7 @@ export class HeaderComponent implements OnInit {
   startSessionCountdown() {
     // sessionTimeout está en milisegundos
     let remaining = this.authService['sessionTimeout'] / 1000; // en segundos
-    let remainingInactividad = remaining - (2 * 60); // 2 minutos antes de la expiración
+    let remainingInactividad =  this.authService['sessionActivityTimeout'] / 1000;
 
     if (this.sessionCountdownInterval) {
       clearInterval(this.sessionCountdownInterval);

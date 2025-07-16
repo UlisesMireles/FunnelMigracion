@@ -87,7 +87,9 @@ export class OportunidadesComponent {
   }
 
   ngOnInit(): void {
+    setTimeout(() => {
     this.mostrarDecimales = this.loginService.obtenerPermitirDecimales();
+    },500);
     this.licencia = localStorage.getItem('licencia')!;
     this.cantidadOportunidades = Number(localStorage.getItem('cantidadOportunidades'));
     this.configuracionColumnasService.obtenerColumnasAMostrar(EnumTablas.OportunidadesEnProceso).subscribe({

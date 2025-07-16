@@ -28,9 +28,7 @@ namespace Funnel.Logic.Utils.Asistentes
 
             try
             {
-
                 var respuestaOpenIA = await BuildAnswer(consultaAsistente.Pregunta, consultaAsistente.IdBot);
-
                 consultaAsistente.Respuesta = respuestaOpenIA.Respuesta;
                 consultaAsistente.TokensEntrada = respuestaOpenIA.TokensEntrada;
                 consultaAsistente.TokensSalida = respuestaOpenIA.TokensSalida;
@@ -46,28 +44,6 @@ namespace Funnel.Logic.Utils.Asistentes
 
             return consultaAsistente;
         }
-
-        private async Task<ConfiguracionDto?> ObtenerConfiguracionPorIdBotAsync(int idBot)
-        {
-            List<ConfiguracionDto> result = new List<ConfiguracionDto>();
-            IList<ParameterSQl> list = new List<ParameterSQl>
-            {
-                DataBase.CreateParameterSql("@IdBot", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, idBot)
-            };
-            using (IDataReader reader = await DataBase.GetReaderSql("F_ConfiguracionAsistentesPorIdBot", CommandType.StoredProcedure, list, _connectionString))
-            {
-                while (reader.Read())
-                {
-                    var dto = new ConfiguracionDto();
-                    dto.Modelo = ComprobarNulos.CheckStringNull(reader["Modelo"]);
-                    dto.Llave = ComprobarNulos.CheckStringNull(reader["Llave"]);
-                    dto.Prompt = ComprobarNulos.CheckStringNull(reader["Prompt"]);
-                    result.Add(dto);
-                }
-            }
-            return result.FirstOrDefault();
-        }
-
         private async Task<RespuestaOpenIA> BuildAnswer(string pregunta, int idBot)
         {
             var configuracion = await ObtenerConfiguracionPorIdBotAsync(idBot);
@@ -100,6 +76,29 @@ namespace Funnel.Logic.Utils.Asistentes
                 TokensSalida = respuesta.CompletionTokens
             };
         }
+
+        private async Task<ConfiguracionDto?> ObtenerConfiguracionPorIdBotAsync(int idBot)
+        {
+            List<ConfiguracionDto> result = new List<ConfiguracionDto>();
+            IList<ParameterSQl> list = new List<ParameterSQl>
+            {
+                DataBase.CreateParameterSql("@IdBot", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, idBot)
+            };
+            using (IDataReader reader = await DataBase.GetReaderSql("F_ConfiguracionAsistentesPorIdBot", CommandType.StoredProcedure, list, _connectionString))
+            {
+                while (reader.Read())
+                {
+                    var dto = new ConfiguracionDto();
+                    dto.Modelo = ComprobarNulos.CheckStringNull(reader["Modelo"]);
+                    dto.Llave = ComprobarNulos.CheckStringNull(reader["Llave"]);
+                    dto.Prompt = ComprobarNulos.CheckStringNull(reader["Prompt"]);
+                    result.Add(dto);
+                }
+            }
+            return result.FirstOrDefault();
+        }
+
+       
         private static HttpClient GetClient(string apiKey)
         {
             var client = new HttpClient();
@@ -111,12 +110,13 @@ namespace Funnel.Logic.Utils.Asistentes
         public static async Task<string> CreateAssistantAsync(string apiKey, string model, string instructions)
         {
             var client = GetClient(apiKey);
-            model = "gpt-4-1106-preview";
             var body = new
             {
                 model,
                 instructions,
-                name = "AsistenteProspeccionInteligente"
+                name = "AsistenteProspeccionInteligente",
+                temperature = 0.5
+
             };
             var jsonRequest = JsonSerializer.Serialize(body);
             var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");

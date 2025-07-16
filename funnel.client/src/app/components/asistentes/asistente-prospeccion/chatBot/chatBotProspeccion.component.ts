@@ -50,6 +50,8 @@ export class ChatBotProspeccionComponent implements OnInit {
   ) { }
 
    ngOnInit() { 
+    console.log("Historial:", this.chatHistorial);
+
     this.chatHistorialResp = JSON.stringify(this.chatHistorial);
    }
 

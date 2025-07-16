@@ -37,6 +37,6 @@ export class OpenIaService {
   }
 
   asistenteProspeccion(data: ConsultaAsistenteDto): Observable<ConsultaAsistenteDto> {
-    return this.http.post<ConsultaAsistenteDto>(this.baseUrl + '/api/AsistenteProspeccion/OpenIA',data);
+    return this.http.post<ConsultaAsistenteDto>(this.baseUrl + 'api/AsistenteProspeccion/OpenIA',data);
   }
 }

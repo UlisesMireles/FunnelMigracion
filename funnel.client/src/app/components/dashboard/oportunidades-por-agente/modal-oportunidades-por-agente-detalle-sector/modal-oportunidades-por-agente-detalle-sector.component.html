@@ -30,7 +30,7 @@
   <div class="contenedor-tabla-dialogo">
     <p-table [paginatorDropdownAppendTo]="'body'"
       [value]="oportunidades" 
-      [paginator]="true" 
+      [paginator]="oportunidades.length > 10"
       [rows]="10" 
       styleClass="tabla-estilizada">
 

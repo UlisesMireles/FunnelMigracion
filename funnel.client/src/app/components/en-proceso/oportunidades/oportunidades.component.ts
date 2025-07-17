@@ -46,6 +46,11 @@ export class OportunidadesComponent {
   modalVisible: boolean = false;
   modalSeguimientoVisible: boolean = false;
   modalDocumentosVisible: boolean = false;
+  modalDetalleOportunidadesVisible: boolean = false;
+  
+  oportunidadesModalDetalle: Oportunidad[] = [];
+  tituloModalDetalle: string = '';
+  
   licencia: string = '';
   cantidadOportunidades: number = 0;
   private modalSubscription!: Subscription;
@@ -72,9 +77,16 @@ export class OportunidadesComponent {
   totalProspectosMes: number = 0;
   totalGanadasMes: number = 0;
   totalPerdidasMes: number = 0;
+  
+  // Listas de oportunidades para mostrar en modales
+  oportunidadesAbiertasMes: Oportunidad[] = [];
+  oportunidadesProspectosNuevos: Oportunidad[] = [];
+  oportunidadesGanadasMes: Oportunidad[] = [];
+  oportunidadesPerdidasMes: Oportunidad[] = [];
   fechaCierreSortOrder: number = 1;  
   lsTodasColumnas: any[] = [];
 
+  maximized: boolean = false;
   columnsAMostrarResp: string = '';
   columnsTodasResp: string = '';
   disabledPdf: boolean = false;
@@ -172,10 +184,17 @@ export class OportunidadesComponent {
     
     this.oportunidadService.consultarEtiquetasOportunidades(this.loginService.obtenerIdEmpresa(), this.loginService.obtenerIdUsuario()).subscribe({
       next: (result: any) => {
-        this.totalOportunidadesMes = result.abiertasMes;
-        this.totalProspectosMes = result.prospectosNuevos;
-        this.totalGanadasMes = result.ganadasMes;
-        this.totalPerdidasMes = result.perdidasMes;
+        // Ahora result contiene listas de oportunidades en lugar de números
+        this.oportunidadesAbiertasMes = result.abiertasMes || [];
+        this.oportunidadesProspectosNuevos = result.prospectosNuevos || [];
+        this.oportunidadesGanadasMes = result.ganadasMes || [];
+        this.oportunidadesPerdidasMes = result.perdidasMes || [];
+        
+        // Calcular totales usando .length
+        this.totalOportunidadesMes = this.oportunidadesAbiertasMes.length;
+        this.totalProspectosMes = this.oportunidadesProspectosNuevos.length;
+        this.totalGanadasMes = this.oportunidadesGanadasMes.length;
+        this.totalPerdidasMes = this.oportunidadesPerdidasMes.length;
       },
       error: (error:any) => {
         this.messageService.add({
@@ -529,16 +548,61 @@ export class OportunidadesComponent {
       });
   }
   onSortFechaCierre() {
-  if (this.dt.sortField === 'fechaEstimadaCierreOriginal') {
-    this.fechaCierreSortOrder = -this.fechaCierreSortOrder;
-  } else {
-    this.fechaCierreSortOrder = 1;
+    if (this.dt.sortField === 'fechaEstimadaCierreOriginal') {
+      this.fechaCierreSortOrder = -this.fechaCierreSortOrder;
+    } else {
+      this.fechaCierreSortOrder = 1;
+    }
+    
+    this.dt.sortOrder = this.fechaCierreSortOrder;
+    this.dt.sortField = 'fechaEstimadaCierreOriginal';
+    this.dt.sortSingle();
   }
-  
-  this.dt.sortOrder = this.fechaCierreSortOrder;
-  this.dt.sortField = 'fechaEstimadaCierreOriginal';
-  this.dt.sortSingle();
-}
+
+  // Métodos para abrir modales con detalles de oportunidades
+  abrirModalOportunidadesAbiertasMes() {
+    if (this.oportunidadesAbiertasMes.length === 0) {
+      return;
+    }
+    this.abrirModalDetalleOportunidades(this.oportunidadesAbiertasMes, 'Oportunidades Abiertas del Mes');
+  }
+
+  abrirModalProspectosNuevosMes() {
+    if (this.oportunidadesProspectosNuevos.length === 0) {
+      return;
+    }
+    this.abrirModalDetalleOportunidades(this.oportunidadesProspectosNuevos, 'Prospectos Nuevos del Mes');
+  }
+
+  abrirModalOportunidadesGanadasMes() {
+    if (this.oportunidadesGanadasMes.length === 0) {
+      return;
+    }
+    this.abrirModalDetalleOportunidades(this.oportunidadesGanadasMes, 'Oportunidades Ganadas del Mes');
+  }
+
+  abrirModalOportunidadesPerdidasMes() {
+    if (this.oportunidadesPerdidasMes.length === 0) {
+      return;
+    }
+    this.abrirModalDetalleOportunidades(this.oportunidadesPerdidasMes, 'Oportunidades Perdidas del Mes');
+  }
+
+  private abrirModalDetalleOportunidades(oportunidades: Oportunidad[], titulo: string) {
+    this.oportunidadesModalDetalle = oportunidades;
+    this.tituloModalDetalle = titulo;
+    this.modalDetalleOportunidadesVisible = true;
+  }
+
+  cerrarModalDetalle() {
+    this.modalDetalleOportunidadesVisible = false;
+    this.oportunidadesModalDetalle = [];
+    this.tituloModalDetalle = '';
+  }
+
+  getSumaMontos(oportunidades: Oportunidad[]): number {
+    return sumBy(oportunidades, 'monto');
+  }
 }
 
 

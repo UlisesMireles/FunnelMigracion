@@ -699,3 +699,37 @@ th.sort-active p-sortIcon {
   border: 1px solid #d4f7e7;
   color: black;
 }
+
+/* Estilo para las etiquetas clickeables */
+.cursor-pointer {
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.cursor-pointer:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cursor-pointer:focus {
+  outline-offset: 2px;
+}
+
+/* Estilos para el modal de detalle de oportunidades */
+.modal-content-detalle {
+  padding: 1rem;
+}
+
+.modal-content-detalle .table-responsive {
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+.modal-content-detalle p-table {
+  font-size: 0.9rem;
+}
+
+.modal-content-detalle .text-muted {
+  padding: 2rem;
+  font-size: 1.1rem;
+}

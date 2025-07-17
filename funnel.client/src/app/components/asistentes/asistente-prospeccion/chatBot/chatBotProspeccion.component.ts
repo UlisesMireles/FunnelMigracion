@@ -107,12 +107,11 @@ export class ChatBotProspeccionComponent implements OnInit {
     }
   });
 }
-  enviarDataset() {
+enviarDataset() {
   if (!this.topVeinteOriginal.length) {
-      console.error("No hay datos disponibles");
-      return;
-    }
-  // Encuentra y actualiza el último mensaje del asistente para ocultar el botón
+    return;
+  }
+  
   let lastAssistantMessageIndex = -1;
   for (let i = this.chatHistorial.length - 1; i >= 0; i--) {
     if (this.chatHistorial[i].rol === 'asistente') {
@@ -124,58 +123,66 @@ export class ChatBotProspeccionComponent implements OnInit {
   if (lastAssistantMessageIndex !== -1) {
     this.chatHistorial[lastAssistantMessageIndex].mostrarBotonDataset = false;
   }
-      const Datos = this.topVeinteOriginal.map(item => ({
-      nombre: item.nombre,
-      sector: item.nombreSector,
-      ubicacion: item.ubicacionFisica,
-      }));
 
-    const historialTexto = Datos.map(c => {
-      return `
-        Nombre: ${c.nombre}
-        Sector: ${c.sector}
-        Ubicación: ${c.ubicacion}
-         -----------------------------`;
-    }).join('\n');
+  const Datos = this.topVeinteOriginal.map(item => ({
+    nombre: item.nombre,
+    sector: item.nombreSector,
+    ubicacion: item.ubicacionFisica,
+  }));
 
-    const pregunta = `Este es el conjunto de datos que puedo proporcionar.
-${historialTexto}`;
+  const historialTexto = Datos.map(c => {
+    return `
+      Nombre: ${c.nombre}
+      Sector: ${c.sector}
+      Ubicación: ${c.ubicacion}
+       -----------------------------`;
+  }).join('\n');
 
-    const body: ConsultaAsistenteDto = {
-      exitoso: true,
-      errorMensaje: '',
-      idBot: 7,
-      pregunta: `${pregunta}`,
-      fechaPregunta: new Date(),
-      respuesta: '',
-      fechaRespuesta: new Date(),
-      tokensEntrada: 0,
-      tokensSalida: 0,
-      idUsuario: this.loginService.obtenerIdUsuario(),
-      idTipoUsuario: 0,
-      idEmpresa: this.loginService.obtenerIdEmpresa(),
-      esPreguntaFrecuente: false,
-    };
-    console.log("Cuerpo del mensaje:", body);
-    this.chatHistorial.push({ rol: "usuario", mensaje: pregunta });
-    this.scrollToBottom();
-
-    this.OpenIaService.asistenteProspeccion(body).subscribe({
-      next: res => {
-        this.chatHistorial.push({ 
-          rol: "asistente", 
-          mensaje: res.respuesta,
-          mostrarBotonDataset: false 
-        });
-        this.cdRef.detectChanges();
-        this.scrollToBottom();
-      },
-      error: err => {
-        //this.respuestaAsistente = 'Error al consultar al asistente: ' + err.message;
-      }
-    });
-  }
+  const mensajeUsuario = "Dataset enviado";
   
+  const body: ConsultaAsistenteDto = {
+    exitoso: true,
+    errorMensaje: '',
+    idBot: 7,
+    pregunta: historialTexto, 
+    fechaPregunta: new Date(),
+    respuesta: '',
+    fechaRespuesta: new Date(),
+    tokensEntrada: 0,
+    tokensSalida: 0,
+    idUsuario: this.loginService.obtenerIdUsuario(),
+    idTipoUsuario: 0,
+    idEmpresa: this.loginService.obtenerIdEmpresa(),
+    esPreguntaFrecuente: false,
+  };
+  
+  this.chatHistorial.push({ rol: "usuario", mensaje: mensajeUsuario });
+  this.chatHistorial.push({ rol: "cargando", mensaje: "..." });
+  this.scrollToBottom();
+
+  this.OpenIaService.asistenteProspeccion(body).subscribe({
+    next: res => {
+      this.chatHistorial.pop();
+      this.chatHistorial.push({ 
+        rol: "asistente", 
+        mensaje: res.respuesta,
+        mostrarBotonDataset: false 
+      });
+      this.cdRef.detectChanges();
+      this.scrollToBottom();
+    },
+    error: err => {
+      this.chatHistorial.pop();
+      this.chatHistorial.push({ 
+        rol: "asistente", 
+        mensaje: "Lo siento, ocurrió un error al procesar el dataset.",
+        mostrarBotonDataset: false 
+      });
+      this.cdRef.detectChanges();
+      console.error(err);
+    }
+  });
+}
 
   resetConversation() {
     this.chatHistorial = [

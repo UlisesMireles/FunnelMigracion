@@ -447,7 +447,7 @@
                 <td>{{ oportunidad.prospecto }}</td>
                 <td>{{ oportunidad.oportunidad }}</td>
                 <td>{{ oportunidad.fecha | date:'dd/MM/yyyy' }}</td>
-                <td>{{ oportunidad.monto | totalCurrency:'numeric':mostrarDecimales}}</td>
+                <td>${{ oportunidad.monto | totalCurrency:'numeric':mostrarDecimales}}</td>
               </tr>
             </ng-template>
              <ng-template pTemplate="footer" let-columns #footer>

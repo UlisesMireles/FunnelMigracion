@@ -4,6 +4,7 @@ using Funnel.Server.Extensions;
 using Microsoft.Extensions.Configuration;
 using Funnel.Server.PdfTools;
 using Microsoft.Extensions.FileProviders;
+using Funnel.Logic.Utils.Asistentes;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,8 +20,13 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddMemoryCache();
 //Inyeccion de dependencias
-builder.Services.AddServices();
+builder.Services.AddServices(); 
+
+// ...otros servicios
+builder.Services.AddScoped<AsistenteProspeccionInteligente>();
+
 
 builder.Services.AddCors();
 builder.Services.AddControllers();

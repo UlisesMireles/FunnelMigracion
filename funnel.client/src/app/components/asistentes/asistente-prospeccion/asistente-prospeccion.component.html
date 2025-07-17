@@ -1,14 +1,12 @@
-<div class="float-end containerAsistente">
-  <div class="app-chat-header">
-    <div class="row m-0 p-0 ">
-      <div class="col-1 pt-1">
-
-
-      </div>
-      <div class="col-8 pt-0 vstack" >
-        <h2>Funnel AI</h2>
-      </div>
-
+<div class="containerAsistente">
+    <div class="app-chat-header" [ngClass]="{ 'app-chat-headerTemaAsistenteOperacion': asistenteSeleccionado.idBot == 7}">
+      <div class="row m-0 p-0 ">
+        <div class="col-8 pt-0 vstack">
+          <div class="hstack">
+            <h2>Funnel AI</h2>
+            <h6 class="ps-1" style="align-self: flex-end; height: 75%;padding-top: 5px !important;">{{asistenteSeleccionado.asistente !== "" ? ' - ' : '' }}{{asistenteSeleccionado.asistente}}</h6>
+          </div>
+        </div>
       <div class="col-3 p-0 align-content-center">
         <div class="row m-0 justify-content-end">
           <i *ngIf="isProd" class="col-auto p-0 pe-1 bi bi-x app-chat-close-icon" (click)="onCerrarChat()" aria-hidden="true"></i>

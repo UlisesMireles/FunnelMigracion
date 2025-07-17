@@ -112,6 +112,18 @@ export class ChatBotProspeccionComponent implements OnInit {
       console.error("No hay datos disponibles");
       return;
     }
+  // Encuentra y actualiza el último mensaje del asistente para ocultar el botón
+  let lastAssistantMessageIndex = -1;
+  for (let i = this.chatHistorial.length - 1; i >= 0; i--) {
+    if (this.chatHistorial[i].rol === 'asistente') {
+      lastAssistantMessageIndex = i;
+      break;
+    }
+  }
+  
+  if (lastAssistantMessageIndex !== -1) {
+    this.chatHistorial[lastAssistantMessageIndex].mostrarBotonDataset = false;
+  }
       const Datos = this.topVeinteOriginal.map(item => ({
       nombre: item.nombre,
       sector: item.nombreSector,
@@ -123,11 +135,11 @@ export class ChatBotProspeccionComponent implements OnInit {
         Nombre: ${c.nombre}
         Sector: ${c.sector}
         Ubicación: ${c.ubicacion}
-        `;
+         -----------------------------`;
     }).join('\n');
 
     const pregunta = `Este es el conjunto de datos que puedo proporcionar.
-        ${historialTexto}`;
+${historialTexto}`;
 
     const body: ConsultaAsistenteDto = {
       exitoso: true,
@@ -145,15 +157,18 @@ export class ChatBotProspeccionComponent implements OnInit {
       esPreguntaFrecuente: false,
     };
     console.log("Cuerpo del mensaje:", body);
-    /*this.visibleRespuesta = true;
-    this.respuestaAsistente = '';
-    this.loadingAsistente = true;*/
+    this.chatHistorial.push({ rol: "usuario", mensaje: pregunta });
+    this.scrollToBottom();
 
     this.OpenIaService.asistenteProspeccion(body).subscribe({
       next: res => {
-        /*this.visibleRespuesta = true;
-        this.respuestaAsistente = this.limpiarRespuesta(res.respuesta || 'No se recibió respuesta.');
-        this.loadingAsistente = false;*/
+        this.chatHistorial.push({ 
+          rol: "asistente", 
+          mensaje: res.respuesta,
+          mostrarBotonDataset: false 
+        });
+        this.cdRef.detectChanges();
+        this.scrollToBottom();
       },
       error: err => {
         //this.respuestaAsistente = 'Error al consultar al asistente: ' + err.message;

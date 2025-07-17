@@ -17,6 +17,8 @@ export class AsistenteProspeccionComponent {
 
   @Output() OncerrarChat = new EventEmitter<void>();
   version: string = '';
+  asistenteSeleccionado: any = { asistente: '', idBot: 7 };
+  baseUrlAssets = environment.baseUrlAssetsChatbot;
 
   constructor(public sideNavService: SideNavChatFunnelService,private cdRef: ChangeDetectorRef, private asistentesService: AsistentesAdministradorService, 
     private asistenteSubjectService: AsistenteService

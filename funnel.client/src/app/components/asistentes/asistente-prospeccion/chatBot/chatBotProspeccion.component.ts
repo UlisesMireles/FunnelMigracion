@@ -39,7 +39,7 @@ export class ChatBotProspeccionComponent implements OnInit {
   chatHistorial: ChatHistorial[] = [
     {
       rol: "asistente",
-      mensaje: "¡Hola!✨ Bienvenido. Estoy aquí para ayudarte a descubrir cómo este sistema puede significar mayores resultados económicos mediante la búsqueda de nuevos prospectos."
+      mensaje: "¡Hola!✨ Bienvenido(a) al asistente virtual GluAll del sistema de ventas Funnel. Estoy aquí para ayudarte a descubrir cómo este sistema puede significar mayores resultados económicos mediante la búsqueda de nuevos prospectos."
     }
   ];
   chatHistorialResp!: string;
@@ -54,12 +54,10 @@ export class ChatBotProspeccionComponent implements OnInit {
   ) { }
 
    ngOnInit() { 
-    console.log("Historial:", this.chatHistorial);
 
     this.chatHistorialResp = JSON.stringify(this.chatHistorial);
     this.topVeinteDataService.currentTop20Data.subscribe(data => {
       this.topVeinteOriginal = data;
-      console.log("Datos recibidos:", data);
     });
    }
 
@@ -186,11 +184,11 @@ enviarDataset() {
 
   resetConversation() {
     this.chatHistorial = [
-      {
-        rol: "asistente",
-        mensaje: "¡Hola!✨ Bienvenido. Estoy aquí para ayudarte a descubrir cómo este sistema puede significar mayores resultados económicos mediante la búsqueda de nuevos prospectos.",
-        mostrarBotonDataset: false
-      }
+       {
+      rol: "asistente",
+      mensaje: "¡Hola!✨ Bienvenido(a) al asistente virtual GluAll del sistema de ventas Funnel. Estoy aquí para ayudarte a descubrir cómo este sistema puede significar mayores resultados económicos mediante la búsqueda de nuevos prospectos.",
+      mostrarBotonDataset: false
+    }
     ];
     this.cdRef.detectChanges();
     this.scrollToBottom();

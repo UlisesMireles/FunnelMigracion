@@ -19,8 +19,8 @@ export class AsistenteProspeccionComponent {
   version: string = '';
   asistenteSeleccionado: any = { asistente: '', idBot: 7 };
   baseUrlAssets = environment.baseUrlAssetsChatbot;
-
-  constructor(public sideNavService: SideNavChatFunnelService,private cdRef: ChangeDetectorRef, private asistentesService: AsistentesAdministradorService, 
+  mostrarAsistenteProspeccion: boolean = false;
+  constructor(public sideNavService: SideNavChatFunnelService, private cdRef: ChangeDetectorRef, private asistentesService: AsistentesAdministradorService,
     private asistenteSubjectService: AsistenteService
   ) {
   }
@@ -47,7 +47,7 @@ export class AsistenteProspeccionComponent {
     });
   }
   onCerrarChat() {
-    this.asistenteSubjectService.asistenteBienvenidaSubject.next(-1);
+    this.mostrarAsistenteProspeccion = false;
     const chatContainer = document.getElementById("chat-container");
     if (chatContainer) {
       chatContainer.classList.add("d-none");

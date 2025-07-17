@@ -556,5 +556,15 @@ export class TopVeinteComponent implements OnInit {
   };
 
   mostrarAsistenteProspeccion = false;
-
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: MouseEvent) {
+    if (this.mostrarAsistenteProspeccion) {
+      const chatContainer = this.chatContainer?.nativeElement;
+      
+      if (chatContainer && !chatContainer.contains(event.target)) {
+        this.mostrarAsistenteProspeccion = false;
+        this.cdr.detectChanges(); 
+      }
+    }
+  }
 }

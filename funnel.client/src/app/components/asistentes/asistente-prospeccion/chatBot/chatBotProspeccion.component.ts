@@ -45,6 +45,8 @@ export class ChatBotProspeccionComponent implements OnInit {
   chatHistorialResp!: string;
   mostrarBotonDataset: boolean = false;
   topVeinteOriginal: ClientesTopVeinte[] = [];
+  mensajeCopiadoTexto: string = '';
+  mostrarMensajeCopiado: boolean = false;
   constructor(
     private OpenIaService: OpenIaService,
     private aService: AsistenteService,
@@ -203,4 +205,27 @@ enviarDataset() {
       });
     }, 0);
   }
+  copiarRespuesta(texto: string) {
+  const textoLimpio = texto.replace(/<[^>]*>/g, '');
+
+  navigator.clipboard.writeText(textoLimpio).then(() => {
+    this.mostrarMensajeCopiado = true;
+    this.mensajeCopiadoTexto = '✅ Texto copiado al portapapeles';
+    this.cdRef.detectChanges(); 
+
+    setTimeout(() => {
+      this.mostrarMensajeCopiado = false;
+      this.cdRef.detectChanges(); 
+    }, 1000);
+  }).catch(err => {
+    this.mostrarMensajeCopiado = true;
+    this.mensajeCopiadoTexto = '⚠️ Error al copiar el texto';
+    this.cdRef.detectChanges(); 
+
+    setTimeout(() => {
+      this.mostrarMensajeCopiado = false;
+      this.cdRef.detectChanges(); 
+    }, 1000);
+  });
+}
 }

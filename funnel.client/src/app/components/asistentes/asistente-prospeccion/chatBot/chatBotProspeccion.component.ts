@@ -47,6 +47,7 @@ export class ChatBotProspeccionComponent implements OnInit {
   topVeinteOriginal: ClientesTopVeinte[] = [];
   mensajeCopiadoTexto: string = '';
   mostrarMensajeCopiado: boolean = false;
+  asistenteSeleccionado = { idBot: 7, documento: false };
   constructor(
     private OpenIaService: OpenIaService,
     private aService: AsistenteService,
@@ -56,13 +57,32 @@ export class ChatBotProspeccionComponent implements OnInit {
   ) { }
 
    ngOnInit() { 
-
     this.chatHistorialResp = JSON.stringify(this.chatHistorial);
+    const savedState = sessionStorage.getItem('chatBotProspeccionState');
+      if (savedState) {
+        this.restoreState(JSON.parse(savedState));
+      } 
     this.topVeinteDataService.currentTop20Data.subscribe(data => {
       this.topVeinteOriginal = data;
     });
    }
-
+   private restoreState(state: any) {
+    this.chatHistorial = state.historial || [
+      {
+        rol: "asistente",
+        mensaje: "¡Hola!✨ Bienvenido(a) al asistente virtual GluAll del sistema de ventas Funnel. Estoy aquí para ayudarte a descubrir cómo este sistema puede significar mayores resultados económicos mediante la búsqueda de nuevos prospectos."
+      }
+    ];
+    this.chatHistorialResp = JSON.stringify(this.chatHistorial);
+    this.cdRef.detectChanges();
+  }
+  private saveState() {
+    const state = {
+      historial: this.chatHistorial,
+      asistenteSeleccionado: this.asistenteSeleccionado
+    };
+    sessionStorage.setItem('chatBotProspeccionState', JSON.stringify(state));
+  }
   consultaMensajeOpenIa(event?: any) {
     if (!this.isConsultandoOpenIa && this.pregunta.trim() !== "") {
       this.consultaAsistente.pregunta = this.pregunta;
@@ -70,6 +90,7 @@ export class ChatBotProspeccionComponent implements OnInit {
       this.pregunta = "";
       this.chatHistorial.push({ rol: "cargando", mensaje: "..." });
       this.scrollToBottom();
+      this.saveState();
       this.obtenRespuestaAsistentePorInput();
     }
   }
@@ -92,6 +113,7 @@ export class ChatBotProspeccionComponent implements OnInit {
       
       this.cdRef.detectChanges();
       this.scrollToBottom();
+      this.saveState();
       this.isConsultandoOpenIa = false;
     },
     error: (err: HttpErrorResponse) => {
@@ -102,6 +124,7 @@ export class ChatBotProspeccionComponent implements OnInit {
         mostrarBotonDataset: false 
       });
       this.cdRef.detectChanges();
+      this.saveState();
       console.error(err);
       this.isConsultandoOpenIa = false;
     }
@@ -138,7 +161,7 @@ enviarDataset() {
        -----------------------------`;
   }).join('\n');
 
-  const mensajeUsuario = "Dataset enviado";
+  const mensajeUsuario = "Se envió la información de clientes top 20 que se encuentran en la tabla.";
   
   const body: ConsultaAsistenteDto = {
     exitoso: true,
@@ -168,6 +191,7 @@ enviarDataset() {
         mensaje: res.respuesta,
         mostrarBotonDataset: false 
       });
+      this.saveState();
       this.cdRef.detectChanges();
       this.scrollToBottom();
     },
@@ -178,6 +202,7 @@ enviarDataset() {
         mensaje: "Lo siento, ocurrió un error al procesar el dataset.",
         mostrarBotonDataset: false 
       });
+      this.saveState();
       this.cdRef.detectChanges();
       console.error(err);
     }
@@ -192,6 +217,8 @@ enviarDataset() {
       mostrarBotonDataset: false
     }
     ];
+    sessionStorage.removeItem('chatBotProspeccionState');
+    localStorage.removeItem('chatBotProspeccionState');
     this.cdRef.detectChanges();
     this.scrollToBottom();
   }

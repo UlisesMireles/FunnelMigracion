@@ -14,5 +14,6 @@ namespace Funnel.Logic.Interfaces
         Task<ProcesosDTO> ConsultarEtapasPorProceso(int IdProceso);
         public Task<List<OportunidadesTarjetasDto>> InsertarModificarEtapa(List<OportunidadesTarjetasDto> etapas);
         public Task<BaseOut> InsertarModificarProcesoEtapa(ProcesosDTO request);
+        public Task<byte[]> GenerarReporteProcesos(ProcesosReportesDTO procesos, string RutaBase, string titulo, int IdEmpresa);
     }
 }

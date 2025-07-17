@@ -37,5 +37,12 @@ namespace Funnel.Server.Controllers
             var respuesta = await _procesosService.InsertarModificarProcesoEtapa(request);
             return Ok(respuesta);
         }
+
+        [HttpPost("[action]/")]
+        public async Task<ActionResult> DescargarReporteProcesos([FromBody] ProcesosReportesDTO procesos, int IdEmpresa)
+        {
+            var pdf = await _procesosService.GenerarReporteProcesos(procesos, Directory.GetCurrentDirectory(), "Reporte de Procesos", IdEmpresa);
+            return File(pdf, "application/pdf", "Procesos.pdf");
+        }
     }
 }

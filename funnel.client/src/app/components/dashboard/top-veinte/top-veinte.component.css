@@ -503,3 +503,7 @@
   box-shadow: 0 0 5px rgba(71, 185, 132, 0.6); 
   cursor: pointer;
 }
+.p-select .p-select-overlay {
+    min-width: 100%;
+    margin-top: -605px !important;
+}

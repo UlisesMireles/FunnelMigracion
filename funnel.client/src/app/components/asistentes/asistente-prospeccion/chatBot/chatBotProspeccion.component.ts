@@ -136,8 +136,23 @@ export class ChatBotProspeccionComponent implements OnInit {
 }
 enviarDataset() {
   if (!this.topVeinteOriginal.length) {
+    for (let i = this.chatHistorial.length - 1; i >= 0; i--) {
+      if (this.chatHistorial[i].rol === 'asistente' && this.chatHistorial[i].mostrarBotonDataset) {
+        this.chatHistorial[i].mostrarBotonDataset = false;
+        break;
+      }
+    }
+
+    this.chatHistorial.push({ 
+      rol: "asistente", 
+      mensaje: "Por favor verifica que el filtro que estás aplicando en la tabla tenga registros e intenta de nuevo.",
+      mostrarBotonDataset: true 
+    });
+
+    this.saveState();
     return;
   }
+
   
   let lastAssistantMessageIndex = -1;
   for (let i = this.chatHistorial.length - 1; i >= 0; i--) {
@@ -152,11 +167,11 @@ enviarDataset() {
   }
 
   const Datos = this.topVeinteOriginal.map(item => ({
+    
     nombre: item.nombre,
     sector: item.nombreSector,
     ubicacion: item.ubicacionFisica,
   }));
-
   const historialTexto = Datos.map(c => {
     return `
       Nombre: ${c.nombre}

@@ -143,6 +143,7 @@ export class TopVeinteComponent implements OnInit {
     this.topveinte = this.selectedEstatus === null
       ? [...this.TopVeinteOriginal]
       : [...this.TopVeinteOriginal.filter((x) => x.desEstatus === this.selectedEstatus)];
+     this.topVeinteDataService.updateTop20Data(this.topveinte);
     if (this.dt) {
       this.dt.first = 0;
     }

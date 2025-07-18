@@ -37,10 +37,8 @@ export class ChatBotProspeccionComponent implements OnInit {
   };
 
   chatHistorial: ChatHistorial[] = [
-    {
-      rol: "asistente",
-      mensaje: "¡Hola!✨ Bienvenido(a) al asistente virtual GluAll del sistema de ventas Funnel. Estoy aquí para ayudarte a descubrir cómo este sistema puede significar mayores resultados económicos mediante la búsqueda de nuevos prospectos."
-    }
+    { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨" },
+    { rol: "asistente", mensaje: "Bienvenido(a) al asistente virtual del CRM GluAll. Estoy aquí para ayudarte a descubrir cómo este sistema puede significar mayores resultados económicos mediante la búsqueda de nuevos prospectos. Porfavor proporciona el sector en específico o un dataset con tus clientes.", mostrarBotonDataset: true }
   ];
   chatHistorialResp!: string;
   mostrarBotonDataset: boolean = false;
@@ -61,17 +59,23 @@ export class ChatBotProspeccionComponent implements OnInit {
     const savedState = sessionStorage.getItem('chatBotProspeccionState');
       if (savedState) {
         this.restoreState(JSON.parse(savedState));
-      } 
+      }
     this.topVeinteDataService.currentTop20Data.subscribe(data => {
       this.topVeinteOriginal = data;
     });
    }
+   nombreUsuario(): string {
+    let NombreUsuarioString = environment.usuarioData.nombreUsuario;
+    const nombreUsuario = sessionStorage.getItem('Usuario');
+    if (nombreUsuario) {
+      NombreUsuarioString = nombreUsuario;
+    }
+    return NombreUsuarioString;
+  }
    private restoreState(state: any) {
     this.chatHistorial = state.historial || [
-      {
-        rol: "asistente",
-        mensaje: "¡Hola!✨ Bienvenido(a) al asistente virtual GluAll del sistema de ventas Funnel. Estoy aquí para ayudarte a descubrir cómo este sistema puede significar mayores resultados económicos mediante la búsqueda de nuevos prospectos."
-      }
+      { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨" },
+      { rol: "asistente", mensaje: "Bienvenido(a) al asistente virtual del CRM GluAll. Estoy aquí para ayudarte a descubrir cómo este sistema puede significar mayores resultados económicos mediante la búsqueda de nuevos prospectos." , mostrarBotonDataset: true}
     ];
     this.chatHistorialResp = JSON.stringify(this.chatHistorial);
     this.cdRef.detectChanges();
@@ -211,11 +215,8 @@ enviarDataset() {
 
   resetConversation() {
     this.chatHistorial = [
-       {
-      rol: "asistente",
-      mensaje: "¡Hola!✨ Bienvenido(a) al asistente virtual GluAll del sistema de ventas Funnel. Estoy aquí para ayudarte a descubrir cómo este sistema puede significar mayores resultados económicos mediante la búsqueda de nuevos prospectos.",
-      mostrarBotonDataset: false
-    }
+    { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨" },
+    { rol: "asistente", mensaje: "Bienvenido(a) al asistente virtual del CRM GluAll. Estoy aquí para ayudarte a descubrir cómo este sistema puede significar mayores resultados económicos mediante la búsqueda de nuevos prospectos.", mostrarBotonDataset: true }
     ];
     sessionStorage.removeItem('chatBotProspeccionState');
     localStorage.removeItem('chatBotProspeccionState');

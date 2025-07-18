@@ -121,7 +121,20 @@ export class TopVeinteComponent implements OnInit {
     this.prospectoService.getTopVeinte(this.loginService.obtenerIdEmpresa(), anioSeleccionado).subscribe({
       next: (result: ClientesTopVeinte[]) => {
         this.TopVeinteOriginal = result;
-        this.topVeinteDataService.updateTop20Data(result);
+        const opDataSet = result.filter(ClientesTopVeinte => {
+          if (this.selectedYear === "Todos los Años") {
+            return ClientesTopVeinte.porcGanadas > 75;
+
+          }
+          else {
+            //Si es un año específico
+            return ClientesTopVeinte.porcGanadas > 75 &&
+                  ClientesTopVeinte.totalOportunidades >= 5 &&
+                  ClientesTopVeinte.ganadas >= 1;
+          }
+        });
+
+this.topVeinteDataService.updateTop20Data(opDataSet);
         this.selectedEstatus = 'Activo';
         this.cdr.detectChanges();
         this.loading = false;
@@ -139,15 +152,26 @@ export class TopVeinteComponent implements OnInit {
   }
 
   FiltrarPorEstatus() {
+  this.topveinte = this.selectedEstatus === null
+    ? [...this.TopVeinteOriginal]
+    : [...this.TopVeinteOriginal.filter((x) => x.desEstatus === this.selectedEstatus)];
 
-    this.topveinte = this.selectedEstatus === null
-      ? [...this.TopVeinteOriginal]
-      : [...this.TopVeinteOriginal.filter((x) => x.desEstatus === this.selectedEstatus)];
-     this.topVeinteDataService.updateTop20Data(this.topveinte);
-    if (this.dt) {
-      this.dt.first = 0;
+  // Filtro de porcentaje + condiciones extra si no es "Todos los Años"
+  const opDataSet = this.topveinte.filter(item => {
+    if (this.selectedYear === "Todos los Años") {
+      return item.porcGanadas > 75;
+    } else {
+      return item.porcGanadas > 75 && item.totalOportunidades >= 5 && item.ganadas >= 1;
     }
+  });
+
+  this.topVeinteDataService.updateTop20Data(opDataSet);
+
+  if (this.dt) {
+    this.dt.first = 0;
   }
+}
+
 
   onYearChange() {
     this.getTopVeinte();

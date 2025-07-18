@@ -9,5 +9,6 @@ export enum EnumTablas {
     Contactos = 8,
     Usuarios = 9,
     TipoServicio = 10,
-    TipoEntrega = 11
+    TipoEntrega = 11,
+    Procesos = 12,
 }

@@ -76,6 +76,7 @@ namespace Funnel.Data
                     dto.OportunidadesPerdidas = ComprobarNulos.CheckIntNull(reader["OportunidadesPerdidas"]);
                     dto.OportunidadesCanceladas = ComprobarNulos.CheckIntNull(reader["OportunidadesCanceladas"]);
                     dto.OportunidadesEliminadas = ComprobarNulos.CheckIntNull(reader["OportunidadesEliminadas"]);
+                    dto.DesEstatus = dto.Estatus == true ? "Activo" : "Inactivo";
 
                     result.Add(dto);
                 }

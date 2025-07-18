@@ -32,6 +32,7 @@ export class HeaderComponent implements OnInit {
   nombreUsuario: string = '';
   licencia: string = '';
   optionsVisible: boolean = false;
+  optionsVisibleProcesos: boolean = false;
 
   insertar: boolean = false;
   insertarContacto: boolean = false;
@@ -150,6 +151,16 @@ export class HeaderComponent implements OnInit {
   showSubmenu(): void {
     this.optionsVisible = true;
   }
+
+  toggleOptionsProcesos(): void {
+    this.optionsVisibleProcesos = !this.optionsVisibleProcesos;
+  }
+  hideSubmenuProcesos(): void {
+    this.optionsVisibleProcesos = false;
+  }
+  showSubmenuProcesos(): void {
+    this.optionsVisibleProcesos = true;
+  }
   ngOnInit(): void {
     this.startSessionCountdown();
     this.authService.sessionReset$.subscribe(() => {
@@ -249,7 +260,7 @@ export class HeaderComponent implements OnInit {
             idUsuario: idUsuario,
             idStage: etapa.idStage
           }));
-          this.modalEtapasService.openModal(true, this.etapas)
+          this.modalEtapasService.openModal(true, false, this.etapas)
         },
         error: (error) => {
           console.error('Error:', error);
@@ -324,6 +335,11 @@ export class HeaderComponent implements OnInit {
   onModalCloseOportunidades() {
     this.modalOportunidadesService.closeModal();
   }
+
+  goToConfiguracionProcesos() {
+    this.router.navigate(['/procesos']);
+  }
+
 
   manejarResultadoOportunidades(result: baseOut) {
     if (result.result) {

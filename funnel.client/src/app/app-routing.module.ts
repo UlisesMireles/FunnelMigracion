@@ -46,6 +46,7 @@ import { UsuariosPermisosComponent } from './components/catalogos/usuarios-permi
 import { PanelesTerminadasComponent } from './components/terminadas/paneles-terminadas/paneles-terminadas.component';
 import { EtapasComponent } from './components/catalogos/etapas/etapas.component';
 import { ModalCamposNuevosComponent } from './components/administracion/modal-campos-nuevos/modal-campos-nuevos.component';
+import { ProcesosComponent } from './components/catalogos/procesos/procesos.component';
 const routes: Routes = [
   { path: '', component: LoginComponent, title: 'Login' },
   { path: 'login', component: LoginComponent, title: 'Login' },
@@ -99,6 +100,7 @@ const routes: Routes = [
   { path: 'dashboard', component: AdminDashboardComponent, title: 'Dashboard General', canActivate: [AuthGuard]},
   { path: 'configuracion-etapas', component: EtapasComponent, title: 'Configuración de Etapas' },
   { path: 'modal-campos-adicionales', component: ModalCamposNuevosComponent, title: 'ModalCamposAdicionales', canActivate: [AuthGuard]},
+  { path: 'procesos', component: ProcesosComponent, title: 'Catálogo de Procesos', canActivate: [AuthGuard] },
 ];
 
 

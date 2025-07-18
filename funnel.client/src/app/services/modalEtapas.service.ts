@@ -12,23 +12,23 @@ export class ModalEtapasService {
 
   // Observable para Etapas
   private modalStateSubject = new BehaviorSubject<{
-    showModal: boolean, etapas: OportunidadesPorEtapa[], result: BaseOut
+    showModal: boolean, insertarEtapas: boolean, etapas: OportunidadesPorEtapa[], result: BaseOut
   }>
-    ({ showModal: false, etapas: [], result: { errorMessage: '', result: false, id: -1 } });
+    ({ showModal: false, insertarEtapas: false, etapas: [], result: { errorMessage: '', result: false, id: -1 } });
 
   modalState$ = this.modalStateSubject.asObservable();
 
   constructor() { }
 
   // Método para abrir la modal
-  openModal(showModal: boolean, etapas: OportunidadesPorEtapa[], result: BaseOut = { errorMessage: '', result: false, id: -1 }) {
-    this.modalStateSubject.next({ showModal: showModal, etapas: etapas, result: result });
+  openModal(showModal: boolean, insertarEtapas: boolean, etapas: OportunidadesPorEtapa[], result: BaseOut = { errorMessage: '', result: false, id: -1 }) {
+    this.modalStateSubject.next({ showModal: showModal, insertarEtapas: insertarEtapas, etapas: etapas, result: result });
     return this.modalStateSubject.asObservable();
   }
 
   // Método para cerrar la modal
   closeModal(result: BaseOut = { errorMessage: '', result: false, id: -1 }) {
-    this.modalStateSubject.next({ showModal: false, etapas: [], result: result });
+    this.modalStateSubject.next({ showModal: false, insertarEtapas: false, etapas: [], result: result });
   }
 
 }

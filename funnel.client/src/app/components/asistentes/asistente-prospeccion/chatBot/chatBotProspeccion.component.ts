@@ -145,7 +145,7 @@ enviarDataset() {
 
     this.chatHistorial.push({ 
       rol: "asistente", 
-      mensaje: "Por favor verifica que el filtro que estás aplicando en la tabla tenga registros e intenta de nuevo.",
+      mensaje: "Por favor verifica que el filtro que estás aplicando en la tabla tenga registros válidos e intenta de nuevo.",
       mostrarBotonDataset: true 
     });
 

@@ -37,10 +37,12 @@ export class HeaderComponent implements OnInit {
   insertar: boolean = false;
   insertarContacto: boolean = false;
   insertarProspecto: boolean = false;
+  insertarEtapas: boolean = false;
 
   private modalSubscription!: Subscription;
   private modalProspectosSubscription!: Subscription;
   private modalContactosSubscription!: Subscription;
+  private modalEtapasSubscription!: Subscription;
 
   modalVisibleEtapas: boolean = false;
 
@@ -201,6 +203,12 @@ export class HeaderComponent implements OnInit {
       this.insertarContacto = state.insertarContacto;
       this.contactos = state.contactos;
       this.contactoSeleccionado = state.contactoSeleccionado;
+    });
+
+    this.modalEtapasSubscription = this.modalEtapasService.modalState$.subscribe((state) => {
+      this.modalVisibleEtapas = state.showModal;
+      this.insertarEtapas = state.insertarEtapas;
+      this.etapas = state.etapas;
     });
   }
 

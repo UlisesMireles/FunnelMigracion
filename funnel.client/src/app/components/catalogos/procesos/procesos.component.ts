@@ -279,9 +279,9 @@ export class ProcesosComponent {
     const idEmpresa = this.loginService.obtenerIdEmpresa();
 
     this.procesosService.getOportunidadesPorEtapa(proceso.idProceso).subscribe({
-      next: (result: OportunidadesPorEtapa[]) => {
+      next: (result: Procesos) => {
 
-        this.etapas = result.map(etapa => ({
+        this.etapas = result.etapas.map(etapa => ({
           ...etapa,
           expandido: true, // Expandir todas las etapas por defecto
           editandoNombre: false,
@@ -294,7 +294,7 @@ export class ProcesosComponent {
           idProceso: proceso.idProceso,
           nombreProceso: proceso.nombre
         }));
-        this.modalEtapasService.openModal(true, false, this.etapas, { errorMessage: '', result: false, id: -1 });
+        this.modalEtapasService.openModal(true, false, this.etapas);
         this.procesoSeleccionado = proceso;
         this.procesoEdicion = { ...proceso };
         this.insertar = false;

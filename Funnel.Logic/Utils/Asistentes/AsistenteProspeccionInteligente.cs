@@ -1,5 +1,6 @@
 ﻿using Funnel.Data.Utils;
 using Funnel.Models.Dto;
+using System.Data;
 using Microsoft.Extensions.Configuration;
 using System.Data;
 using System.Net.Http.Headers;
@@ -7,6 +8,8 @@ using System.Text.Json;
 using System.Text;
 using static Funnel.Models.Dto.OpenAiConfiguracion;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Data.SqlClient;
+using System.Collections.Generic;
 namespace Funnel.Logic.Utils.Asistentes
 {
     public class AsistenteProspeccionInteligente
@@ -72,12 +75,30 @@ namespace Funnel.Logic.Utils.Asistentes
                 // 5. Esperar la respuesta
                 var respuesta = await GetAssistantResponseAsync(configuracion.Llave, threadId, runId);
 
+                var insertarBitacora = new InsertaBitacoraPreguntasDto
+                {
+                    IdBot = idBot,
+                    Pregunta = pregunta,
+                    FechaPregunta = DateTime.Now,
+                    Respuesta = respuesta.Content,
+                    FechaRespuesta = DateTime.Now,
+                    Respondio = true,
+                    TokensEntrada = respuesta.PromptTokens,
+                    TokensSalida = respuesta.CompletionTokens,
+                    IdUsuario = idUsuario,
+                    CostoPregunta = respuesta.PromptTokens * configuracion.CostoTokensEntrada,
+                    CostoRespuesta = respuesta.CompletionTokens * configuracion.CostoTokensSalida,
+                    CostoTotal = (respuesta.PromptTokens * configuracion.CostoTokensEntrada) + (respuesta.CompletionTokens * configuracion.CostoTokensSalida),
+                    Modelo = configuracion.Modelo
+                };
+                await InsertaPreguntaBitacoraPreguntas(insertarBitacora);
                 return new RespuestaOpenIA
                 {
                     Respuesta = respuesta.Content,
                     TokensEntrada = respuesta.PromptTokens,
                     TokensSalida = respuesta.CompletionTokens
                 };
+
             }
             catch(Exception ex)
             {
@@ -259,6 +280,50 @@ namespace Funnel.Logic.Utils.Asistentes
                 throw new InvalidOperationException("El ID del thread no puede ser nulo (cache).");
 
             return threadId;
+        }
+        public async Task<InsertaBitacoraPreguntasDto> InsertaPreguntaBitacoraPreguntas(InsertaBitacoraPreguntasDto insert)
+            {
+            try
+            {
+                if (insert != null)
+                {
+                    IList<ParameterSQl> listaParametros = new List<ParameterSQl>
+                    {
+                        DataBase.CreateParameterSql("@pResult", SqlDbType.Binary, 1, ParameterDirection.Output, false, "Result", DataRowVersion.Default, insert.Result),
+                        DataBase.CreateParameterSql("@pErrorMessage", SqlDbType.VarChar, -1, ParameterDirection.Output, false, "ErrorMessage", DataRowVersion.Default, insert.ErrorMessage),
+                        DataBase.CreateParameterSql("@pIdBot", SqlDbType.Int, 10, ParameterDirection.Input, false, "IdBot", DataRowVersion.Default, insert.IdBot),
+                        DataBase.CreateParameterSql("@pPregunta", SqlDbType.VarChar, 255, ParameterDirection.Input, false, "Pregunta", DataRowVersion.Default, insert.Pregunta),
+                        DataBase.CreateParameterSql("@pFechaPregunta", SqlDbType.DateTime, 8, ParameterDirection.Input, false, "FechaPregunta", DataRowVersion.Default, insert.FechaPregunta),
+                        DataBase.CreateParameterSql("@pRespuesta", SqlDbType.VarChar, -1, ParameterDirection.Input, false, "Respuesta", DataRowVersion.Default, insert.Respuesta),
+                        DataBase.CreateParameterSql("@pFechaRespuesta", SqlDbType.DateTime, 8, ParameterDirection.Input, false, "FechaRespuesta", DataRowVersion.Default, insert.FechaRespuesta),
+                        DataBase.CreateParameterSql("@pRespondio", SqlDbType.Bit, 1, ParameterDirection.Input, false, "Respondio", DataRowVersion.Default, insert.Respondio),
+                        DataBase.CreateParameterSql("@pTokensEntrada", SqlDbType.Int, 10, ParameterDirection.Input, false, "TokensEntrada", DataRowVersion.Default, insert.TokensEntrada),
+                        DataBase.CreateParameterSql("@pTokensSalida", SqlDbType.Int, 10, ParameterDirection.Input, false, "TokensSalida", DataRowVersion.Default, insert.TokensSalida),
+                        DataBase.CreateParameterSql("@pIdUsuario", SqlDbType.Int, 10, ParameterDirection.Input, false, "IdUsuario", DataRowVersion.Default, insert.IdUsuario),
+                        DataBase.CreateParameterSql("@pCostoPregunta", SqlDbType.Decimal, 18, ParameterDirection.Input, false, "CostoPregunta", DataRowVersion.Default, insert.CostoPregunta),
+                        DataBase.CreateParameterSql("@pCostoRespuesta", SqlDbType.Decimal, 18, ParameterDirection.Input, false, "CostoRespuesta", DataRowVersion.Default, insert.CostoRespuesta),
+                        DataBase.CreateParameterSql("@pCostoTotal", SqlDbType.Decimal, 18, ParameterDirection.Input, false, "CostoTotal", DataRowVersion.Default, insert.CostoTotal),
+                        DataBase.CreateParameterSql("@pModelo", SqlDbType.VarChar, 50, ParameterDirection.Input, false, "Modelo", DataRowVersion.Default, insert.Modelo)
+                    };
+
+                    using (IDataReader reader = await DataBase.GetReaderSql("F_InsertaPreguntaBitacoraPreguntas", CommandType.StoredProcedure, listaParametros, _connectionString))
+                    {
+                        while (reader.Read())
+                        {
+                            insert.ErrorMessage = ComprobarNulos.CheckStringNull(reader["@pErrorMessage"]);
+                            insert.Result = ComprobarNulos.CheckBooleanNull(reader["@pResult"]);
+
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                insert.Result = false;
+                insert.ErrorMessage = ex.Message;
+            }
+
+            return insert;
         }
     }
 }

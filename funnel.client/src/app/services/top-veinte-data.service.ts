@@ -9,12 +9,12 @@ export class TopVeinteDataService {
 
   // BehaviorSubject emite el último valor a nuevos suscriptores
   private top20Data = new BehaviorSubject<ClientesTopVeinte[]>([]);
-  
   // Observable al que otros componentes se suscribirán
   currentTop20Data = this.top20Data.asObservable();
 
   // Método para actualizar los datos
   updateTop20Data(data: ClientesTopVeinte[]) {
+     console.log('Datos recibidos en updateTop20Data:', data);
     this.top20Data.next(data);
   }
 }

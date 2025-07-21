@@ -10,6 +10,7 @@ using static Funnel.Models.Dto.OpenAiConfiguracion;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Data.SqlClient;
 using System.Collections.Generic;
+using SharpToken;
 namespace Funnel.Logic.Utils.Asistentes
 {
     public class AsistenteProspeccionInteligente
@@ -37,8 +38,8 @@ namespace Funnel.Logic.Utils.Asistentes
             {
                 var respuestaOpenIA = await BuildAnswer(consultaAsistente.Pregunta, consultaAsistente.IdBot, consultaAsistente.IdUsuario);
                 consultaAsistente.Respuesta = respuestaOpenIA.Respuesta;
-                consultaAsistente.TokensEntrada = respuestaOpenIA.TokensEntrada;
-                consultaAsistente.TokensSalida = respuestaOpenIA.TokensSalida;
+                //consultaAsistente.TokensEntrada = respuestaOpenIA.TokensEntrada;
+                //consultaAsistente.TokensSalida = respuestaOpenIA.TokensSalida;
                 consultaAsistente.Exitoso = true;
                 consultaAsistente.FechaRespuesta = DateTime.Now;
             }
@@ -74,6 +75,9 @@ namespace Funnel.Logic.Utils.Asistentes
 
                 // 5. Esperar la respuesta
                 var respuesta = await GetAssistantResponseAsync(configuracion.Llave, threadId, runId);
+                // 6. Contar los tokens
+                var tokensEntrada = ContarTokens(pregunta, configuracion.Modelo);
+                var tokensSalida = ContarTokens(respuesta.Content, configuracion.Modelo);
 
                 var insertarBitacora = new InsertaBitacoraPreguntasDto
                 {
@@ -95,8 +99,8 @@ namespace Funnel.Logic.Utils.Asistentes
                 return new RespuestaOpenIA
                 {
                     Respuesta = respuesta.Content,
-                    TokensEntrada = respuesta.PromptTokens,
-                    TokensSalida = respuesta.CompletionTokens
+                    TokensEntrada = tokensEntrada,
+                    TokensSalida = tokensSalida
                 };
 
             }
@@ -324,6 +328,19 @@ namespace Funnel.Logic.Utils.Asistentes
             }
 
             return insert;
+            }
+        private static int ContarTokens(string texto, string modelo)
+        {
+            try
+            {
+                var encoding = GptEncoding.GetEncodingForModel(modelo);
+                return encoding.Encode(texto).Count;
+            }
+            catch
+            {
+                var encoding = GptEncoding.GetEncoding("cl100k_base");
+                return encoding.Encode(texto).Count;
+            }
         }
     }
 }

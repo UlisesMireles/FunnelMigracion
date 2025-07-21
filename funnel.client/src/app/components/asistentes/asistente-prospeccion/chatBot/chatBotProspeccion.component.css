@@ -116,6 +116,7 @@
     margin: 0;
 }
 
+
 .formatoMensajes {
     font-size: small;
 
@@ -150,8 +151,14 @@
     tr {
         border-bottom: 1px solid #ddd;
     }
-}
 
+    span {
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        align-self: stretch;
+    }
+}
 .opcionesClass {
     padding: 10px;
     background-color: #e2ecec;
@@ -380,4 +387,11 @@
   20% { opacity: 1; transform: translateX(-50%) translateY(0); }
   80% { opacity: 1; transform: translateX(-50%) translateY(0); }
   100% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+}
+.vstackbot {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: fit-content;
+  max-width: 100%; 
 }

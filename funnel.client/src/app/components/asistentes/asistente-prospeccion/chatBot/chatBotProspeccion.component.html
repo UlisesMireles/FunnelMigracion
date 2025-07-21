@@ -1,4 +1,5 @@
 <div class="scrollable-div" #scrollMe>
+  <div *ngIf="mostrarMensajeCopiado" class="mensaje-flotante">{{ mensajeCopiadoTexto }}</div>
   <div class="chat-historial" *ngFor="let chat of chatHistorial">
     <div class="chat-row" [ngClass]="{'row-reverse': chat.rol === 'usuario'}">
       <ng-container [ngSwitch]="chat.rol">
@@ -9,11 +10,10 @@
             </div>
           </div>
         </ng-container>
-
         <ng-container *ngSwitchCase="'asistente'">
           <div class="vstack">
-            <label class="labelAsistente ps-2">GluALL</label>
-            <div class="chat-bubble ai-bubble formatoMensajes" [innerHTML]="chat.mensaje"></div>
+            <label class="labelAsistente ps-2">Prospector Comercial</label>
+           <div class="chat-bubble ai-bubble formatoMensajes vstackbot" [innerHTML]="chat.mensaje"></div>
             <button *ngIf="chat.mostrarBotonDataset" class="btn btn-primary mt-2" (click)="enviarDataset()">
               Enviar Dataset
             </button>
@@ -21,9 +21,6 @@
               class="btn-copiar" (click)="copiarRespuesta(chat.mensaje)"
               matTooltip="Copiar mensaje"> <mat-icon>content_copy</mat-icon>
             </button>
-            <div *ngIf="mostrarMensajeCopiado" class="mensaje-flotante">
-              {{ mensajeCopiadoTexto }}
-            </div>
           </div>
         </ng-container>
 

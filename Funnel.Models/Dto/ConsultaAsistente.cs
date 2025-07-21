@@ -15,6 +15,7 @@ namespace Funnel.Models.Dto
         public string Pregunta { get; set; } = string.Empty;
         public DateTime FechaPregunta { get; set; }
         public string Respuesta { get; set; } = string.Empty;
+        public string RutaDocumento { get; set; } = string.Empty;
         public DateTime FechaRespuesta { get; set; }
         public int TokensEntrada { get; set; }
         public int TokensSalida { get; set; }

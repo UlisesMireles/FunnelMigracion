@@ -46,9 +46,10 @@
 </ng-template>
 
 <div class="chatbot-message-box" data-role="chatbot">
-  <input type="text" class="chatbot-input" [(ngModel)]="pregunta" placeholder="¿Cómo puedo ayudarte el día de hoy?" (keydown.enter)="consultaMensajeOpenIa($event)">
-  
-  <mat-icon matSuffix style="color:#256F45; cursor:pointer; margin-top:1px;" (click)="resetConversation()" matTooltip="Eliminar historial">delete</mat-icon>
+  <textarea class="chatbot-input" [(ngModel)]="pregunta" placeholder="¿Cómo puedo ayudarte el día de hoy?" 
+    (keydown.enter)="consultaMensajeOpenIa($event)" (input)="ajustarAlturaTextarea($event)"></textarea>  
+  <mat-icon matSuffix style="color:#256F45; cursor:pointer; margin-top:1px;" 
+    (click)="resetConversation()" matTooltip="Eliminar historial">delete</mat-icon>
   <mat-icon matSuffix class="ms-2" (click)="!pregunta || isConsultandoOpenIa ? null : consultaMensajeOpenIa()"
     [ngClass]="{'disabled-icon': !pregunta || isConsultandoOpenIa}" [ngStyle]="{'color':'#256F45'}">send</mat-icon>
 </div>

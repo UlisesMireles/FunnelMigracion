@@ -263,7 +263,7 @@
 
 .chatbot-message-box {
     padding: 2px 12px;
-    min-height: 32px !important; 
+    min-height: 32px !important;
     border-width: 1px 0 0;
     border-style: solid;
     flex: 0 0 auto;
@@ -273,23 +273,29 @@
     border-color: #ccc;
     color: #333;
     background-color: #fff;
-    position: relative; 
+    position: relative;
     transition: padding 0.3s ease;
-    padding-top: 4px !important;     
-    padding-bottom: 4px !important;  
-    min-height: 36px !important;
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+    align-items: center;
+}
 
-    .chatbot-input {
-        font-size: .9rem !important;
-        margin: 0;
-        padding: 0;
-        border: none !important; 
-        font: inherit;
-        background: 0;
-        flex: 1 1 auto;
-        outline: none !important;
-
-    }
+.chatbot-input {
+    font-size: .9rem !important;
+    margin: 0;
+    padding: 5px 0;
+    border: none !important;
+    font: inherit;
+    background: 0;
+    flex: 1 1 auto;
+    outline: none !important;
+    resize: none;
+    overflow-y: hidden;
+    min-height: 20px;
+    max-height: 120px;
+    line-height: 1.4;
+    white-space: pre-wrap;
+    word-wrap: break-word;
 }
 .chatbot-options {
     position: absolute;

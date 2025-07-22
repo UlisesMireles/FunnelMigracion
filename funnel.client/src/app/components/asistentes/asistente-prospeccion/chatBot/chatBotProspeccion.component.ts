@@ -300,4 +300,17 @@ enviarDataset() {
     }, 1000);
   });
 }
+ajustarAlturaTextarea(event: any): void {
+  const textarea = event.target;
+  textarea.style.height = 'auto'; 
+  const newHeight = Math.min(textarea.scrollHeight, 120); 
+  textarea.style.height = `${newHeight}px`;
+  
+  const texto = textarea.value;
+  const palabras = texto.split(' ');
+  if (palabras.length > 10) { 
+    textarea.value = palabras.join(' ');
+    this.ajustarAlturaTextarea({target: textarea});
+  }
+}
 }

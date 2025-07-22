@@ -132,6 +132,8 @@ namespace Funnel.Logic.Utils.Asistentes
                     dto.Modelo = ComprobarNulos.CheckStringNull(reader["Modelo"]);
                     dto.Llave = ComprobarNulos.CheckStringNull(reader["Llave"]);
                     dto.Prompt = ComprobarNulos.CheckStringNull(reader["Prompt"]);
+                    dto.CostoTokensEntrada = (double)ComprobarNulos.CheckDecimalNull(reader["CostoTokensEntrada"]);
+                    dto.CostoTokensSalida = (double)ComprobarNulos.CheckDecimalNull(reader["CostoTokensSalida"]);
                     result.Add(dto);
                 }
             }

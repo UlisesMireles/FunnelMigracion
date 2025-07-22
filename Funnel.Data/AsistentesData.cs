@@ -33,6 +33,8 @@ namespace Funnel.Data
                     dto.Prompt = ComprobarNulos.CheckStringNull(reader["Prompt"]);
                     dto.RutaDocumento = ComprobarNulos.CheckStringNull(reader["RutaDocumento"]);
                     dto.FileId = ComprobarNulos.CheckStringNull(reader["FileId"]);
+                    dto.CostoTokensEntrada = (double)ComprobarNulos.CheckDecimalNull(reader["CostoTokensEntrada"]);
+                    dto.CostoTokensSalida = (double)ComprobarNulos.CheckDecimalNull(reader["CostoTokensSalida"]);
                     result.Add(dto);
                 }
             }

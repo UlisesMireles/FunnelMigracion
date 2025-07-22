@@ -26,11 +26,11 @@ export class ChatBotProspeccionComponent implements OnInit {
     idBot: 7,
     pregunta: '',
     respuesta: '',
-    idUsuario: 0,
     tokensEntrada: 0,
     tokensSalida: 0,
-    idTipoUsuario: 0,
-    idEmpresa: 0,
+    idUsuario: this.idUsuario(),
+    idTipoUsuario: this.IdTipoUsuario(),
+    idEmpresa: this.IdEmpresa(),
     fechaPregunta: new Date(),
     fechaRespuesta: new Date(),
     esPreguntaFrecuente: false,
@@ -64,7 +64,8 @@ export class ChatBotProspeccionComponent implements OnInit {
       this.topVeinteOriginal = data;
     });
    }
-   nombreUsuario(): string {
+   //#region obtencion de datos de session storage
+  nombreUsuario(): string {
     let NombreUsuarioString = environment.usuarioData.nombreUsuario;
     const nombreUsuario = sessionStorage.getItem('Usuario');
     if (nombreUsuario) {
@@ -72,6 +73,34 @@ export class ChatBotProspeccionComponent implements OnInit {
     }
     return NombreUsuarioString;
   }
+
+  idUsuario(): number {
+    let idUsuarioNumber = environment.usuarioData.idUsuario;
+    const idUsuario = sessionStorage.getItem('IdUsuario');
+    if (idUsuario) {
+      idUsuarioNumber = +idUsuario;
+    }
+    return idUsuarioNumber;
+  }
+
+  IdTipoUsuario(): number {
+    let IdTipoUsuarioNumber = environment.usuarioData.idTipoUsuario;
+    const IdTipoUsuario = sessionStorage.getItem('IdTipoUsuario');
+    if (IdTipoUsuario) {
+      IdTipoUsuarioNumber = +IdTipoUsuario;
+    }
+    return IdTipoUsuarioNumber;
+  }
+
+  IdEmpresa(): number {
+    let IdEmpresaNumber = environment.usuarioData.idEmpresa;
+    const IdEmpresa = sessionStorage.getItem('IdEmpresa');
+    if (IdEmpresa) {
+      IdEmpresaNumber = +IdEmpresa;
+    }
+    return IdEmpresaNumber;
+  }
+  //#endregion
    private restoreState(state: any) {
     this.chatHistorial = state.historial || [
       { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨" },

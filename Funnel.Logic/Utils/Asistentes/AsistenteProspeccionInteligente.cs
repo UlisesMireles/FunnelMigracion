@@ -79,6 +79,7 @@ namespace Funnel.Logic.Utils.Asistentes
                 var tokensEntrada = ContarTokens(pregunta, configuracion.Modelo);
                 var tokensSalida = ContarTokens(respuesta.Content, configuracion.Modelo);
 
+
                 var insertarBitacora = new InsertaBitacoraPreguntasDto
                 {
                     IdBot = idBot,
@@ -87,14 +88,15 @@ namespace Funnel.Logic.Utils.Asistentes
                     Respuesta = respuesta.Content,
                     FechaRespuesta = DateTime.Now,
                     Respondio = true,
-                    TokensEntrada = respuesta.PromptTokens,
-                    TokensSalida = respuesta.CompletionTokens,
+                    TokensEntrada = tokensEntrada,
+                    TokensSalida =tokensSalida,
                     IdUsuario = idUsuario,
-                    CostoPregunta = respuesta.PromptTokens * configuracion.CostoTokensEntrada,
-                    CostoRespuesta = respuesta.CompletionTokens * configuracion.CostoTokensSalida,
-                    CostoTotal = (respuesta.PromptTokens * configuracion.CostoTokensEntrada) + (respuesta.CompletionTokens * configuracion.CostoTokensSalida),
+                    CostoPregunta = tokensEntrada * configuracion.CostoTokensEntrada,
+                    CostoRespuesta =tokensSalida * configuracion.CostoTokensSalida,
+                    CostoTotal = (tokensEntrada * configuracion.CostoTokensEntrada) + (tokensSalida * configuracion.CostoTokensSalida),
                     Modelo = configuracion.Modelo
                 };
+
                 await InsertaPreguntaBitacoraPreguntas(insertarBitacora);
                 return new RespuestaOpenIA
                 {

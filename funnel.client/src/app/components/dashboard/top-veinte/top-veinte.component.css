@@ -336,7 +336,7 @@
 /*ASISTENTE PROSPECCION*/
 .chatbot-window {
   width: 490px;
-  height: 470px;
+  height: auto;
   background: white !important;
   position: fixed;
   top: 130px;
@@ -396,7 +396,7 @@
 @media only screen and (max-width: 600px) {
   .chatbot-window {
     width: 90%;
-    height: 70%;
+    height: auto;
     top: 60px;
     right: 5%;
   }

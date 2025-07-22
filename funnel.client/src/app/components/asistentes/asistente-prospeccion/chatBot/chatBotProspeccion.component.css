@@ -2,7 +2,7 @@
 
 /*scrollable-div es el historial de mensajes*/
 .scrollable-div {
-    height: 94%;
+    height: 500px;
     padding-top: 10px;
     padding-bottom: 10px;
     padding-left: 10px;

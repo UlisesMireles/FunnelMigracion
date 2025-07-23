@@ -116,15 +116,24 @@ export class ChatBotProspeccionComponent implements OnInit {
     };
     sessionStorage.setItem('chatBotProspeccionState', JSON.stringify(state));
   }
-  consultaMensajeOpenIa(event?: any) {
+  consultaMensajeOpenIa(event?: any, textarea?: HTMLTextAreaElement) {
     if (!this.isConsultandoOpenIa && this.pregunta.trim() !== "") {
       this.consultaAsistente.pregunta = this.pregunta;
       this.chatHistorial.push({ rol: "usuario", mensaje: this.pregunta });
       this.pregunta = "";
+
+      if (textarea) {
+        textarea.style.height = 'auto';
+      }
+
       this.chatHistorial.push({ rol: "cargando", mensaje: "..." });
       this.scrollToBottom();
       this.saveState();
       this.obtenRespuestaAsistentePorInput();
+
+    }
+    if (event && event.key === 'Enter') {
+      event.preventDefault();
     }
   }
  obtenRespuestaAsistentePorInput() {

@@ -235,6 +235,10 @@ namespace Funnel.Logic
             {
                 await Task.Delay(1000);
                 var runResponse = await client.GetAsync($"threads/{threadId}/runs/{runId}");
+                runResponse.EnsureSuccessStatusCode();
+                var runJson = await runResponse.Content.ReadAsStringAsync();
+                using var runDoc = JsonDocument.Parse(runJson);
+                status = runDoc.RootElement.GetProperty("status").GetString();
             } while (status != "completed" && status != "failed" && status != "cancelled");
 
 

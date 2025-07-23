@@ -319,15 +319,28 @@ enviarDataset() {
 }
 ajustarAlturaTextarea(event: any): void {
   const textarea = event.target;
-  textarea.style.height = 'auto'; 
-  const newHeight = Math.min(textarea.scrollHeight, 120); 
-  textarea.style.height = `${newHeight}px`;
+  textarea.style.height = 'auto';
+  textarea.style.height = `${Math.min(textarea.scrollHeight, 120)}px`;
+
+  const textoOriginal = textarea.value;
   
-  const texto = textarea.value;
-  const palabras = texto.split(' ');
-  if (palabras.length > 10) { 
-    textarea.value = palabras.join(' ');
-    this.ajustarAlturaTextarea({target: textarea});
+  const palabras = textoOriginal.split(/\s+/);
+
+  if (palabras.length <= 13) {
+    return;
+  }
+
+  let nuevoTexto = '';
+  for (let i = 0; i < palabras.length; i++) {
+    nuevoTexto += palabras[i] + ' ';
+    if ((i + 1) % 13 === 0 && i !== palabras.length - 1) {
+      nuevoTexto = nuevoTexto.trimEnd() + '\n';
+    }
+  }
+
+  if (nuevoTexto.trim() !== textoOriginal.trim()) {
+    textarea.value = nuevoTexto.trim();
+    this.pregunta = textarea.value; 
   }
 }
 }

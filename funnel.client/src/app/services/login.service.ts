@@ -8,11 +8,11 @@ import { Permiso } from '../interfaces/permisos'; // Ajusta la ruta si es necesa
 import { CatalogoService } from './catalogo.service';
 import { SolicitudRegistroSistema } from '../interfaces/solicitud-registro';
 import { baseOut } from '../interfaces/utils/utils/baseOut';
-import { Usuarios } from '../interfaces/usuarios';
 import { EstadoChatService } from './asistentes/estado-chat.service';
 import { PermisosService } from './permisos.service';
 /*import { EstadoChatService } from './asistentes/estado-chat.service';*/
 import { Subject } from 'rxjs';
+import { OpenIaService } from './asistentes/openIA.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -28,6 +28,7 @@ export class LoginService {
   public sessionReset$ = new Subject<void>();
 
   constructor(private http: HttpClient, private router: Router, private readonly catalogoService: CatalogoService, 
+    private OpenIaService: OpenIaService,
     private readonly permisosService: PermisosService, private estadoChatService: EstadoChatService) {
     this.currentUser = this.currentUserSubject.asObservable();
     this.checkInitialSession();
@@ -131,7 +132,14 @@ export class LoginService {
           localStorage.removeItem('correo');
 
           sessionStorage.clear();
-
+          this.OpenIaService.limpiarCacheBot(this.obtenerIdUsuario(), 7).subscribe({
+            next: (response) => {
+              console.log('Cache limpiado exitosamente', response);
+            },
+            error: (error) => {
+              console.error('Error al limpiar cache', error);
+            }
+          });
           if (this.timer) {
             clearTimeout(this.timer);
           }

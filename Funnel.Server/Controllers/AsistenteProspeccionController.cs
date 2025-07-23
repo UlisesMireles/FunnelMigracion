@@ -50,5 +50,11 @@ namespace Funnel.Server.Controllers
                 return StatusCode(500, "Ocurrió un error al procesar la solicitud: " + ex.Message);
             }
         }
+        [HttpPost("LimpiarCacheBot")]
+        public IActionResult LimpiarCacheBot(int userId, int idBot)
+        {
+            _asistentesService.LimpiarCacheAsistente(userId, idBot);
+            return Ok(new { mensaje = "Caché limpiado correctamente." });
+        }
     }
 }

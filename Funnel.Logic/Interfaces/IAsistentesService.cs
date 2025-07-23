@@ -7,5 +7,6 @@ namespace Funnel.Logic.Interfaces
     {
         public Task<BaseOut> ActualizarDocumento(ConsultaAsistente consultaAsistente);
         public Task<ConsultaAsistente> AsistenteOpenAIAsync(ConsultaAsistente consultaAsistente);
+        public Task LimpiarCacheAsistente(int userId, int idBot);
     }
 }

@@ -38,8 +38,8 @@ export class ChatBotProspeccionComponent implements OnInit {
 
   chatHistorial: ChatHistorial[] = [
     { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨" },
-    { rol: "asistente", mensaje: "Bienvenido(a) al asistente virtual del CRM GluAll. Estoy aquí para ayudarte a descubrir cómo este sistema puede significar mayores resultados económicos mediante la búsqueda de nuevos prospectos. Porfavor proporciona el sector en específico o un dataset con tus clientes.", mostrarBotonDataset: true }
-  ];
+    { rol: "asistente", mensaje: "Bienvenido(a) a tu asistente comercial. Soy LeadsEisei AI, tu asistente para convertir contactos en oportunidades reales. ¿Me dices tu nombre para comenzar?." , mostrarBotonDataset: true}
+    ];
   chatHistorialResp!: string;
   mostrarBotonDataset: boolean = false;
   topVeinteOriginal: ClientesTopVeinte[] = [];
@@ -104,7 +104,7 @@ export class ChatBotProspeccionComponent implements OnInit {
    private restoreState(state: any) {
     this.chatHistorial = state.historial || [
       { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨" },
-      { rol: "asistente", mensaje: "Bienvenido(a) al asistente virtual del CRM GluAll. Estoy aquí para ayudarte a descubrir cómo este sistema puede significar mayores resultados económicos mediante la búsqueda de nuevos prospectos." , mostrarBotonDataset: true}
+      { rol: "asistente", mensaje: "Bienvenido(a) a tu asistente comercial. Soy LeadsEisei AI, tu asistente para convertir contactos en oportunidades reales. ¿Me dices tu nombre para comenzar?." , mostrarBotonDataset: true}
     ];
     this.chatHistorialResp = JSON.stringify(this.chatHistorial);
     this.cdRef.detectChanges();
@@ -267,10 +267,18 @@ enviarDataset() {
 }
 
   resetConversation() {
+    this.OpenIaService.limpiarCacheBot(this.loginService.obtenerIdUsuario(), 7).subscribe({
+      next: (response) => {
+        console.log('Cache limpiado exitosamente', response);
+      },
+      error: (error) => {
+        console.error('Error al limpiar cache', error);
+      }
+    });
     this.chatHistorial = [
     { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨" },
-    { rol: "asistente", mensaje: "Bienvenido(a) al asistente virtual del CRM GluAll. Estoy aquí para ayudarte a descubrir cómo este sistema puede significar mayores resultados económicos mediante la búsqueda de nuevos prospectos.", mostrarBotonDataset: true }
-    ];
+    { rol: "asistente", mensaje: "Bienvenido(a) a tu asistente comercial. Soy LeadsEisei AI, tu asistente para convertir contactos en oportunidades reales. ¿Me dices tu nombre para comenzar?." , mostrarBotonDataset: true}
+  ];
     sessionStorage.removeItem('chatBotProspeccionState');
     localStorage.removeItem('chatBotProspeccionState');
     this.cdRef.detectChanges();

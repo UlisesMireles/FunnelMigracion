@@ -8,6 +8,8 @@ using System.Text.Json;
 using System.Text;
 using Funnel.Data.Interfaces;
 using SharpToken;
+using Markdig;
+using System.Text.RegularExpressions;
 namespace Funnel.Logic
 {
     public class AsistentesService: IAsistentesService
@@ -19,10 +21,10 @@ namespace Funnel.Logic
             _cache = cache;
             _asistentesData = asistentesData;
         }
-
-        private string GetAssistantCacheKey(int userId) => $"assistantId_{userId}";
-        private string GetThreadCacheKey(int userId) => $"threadId_{userId}"; 
         private string GetVectorStoreCacheKey(int idBot) => $"vectorStoreId_{idBot}";
+        private string GetAssistantCacheKey(int userId, int idBot) => $"assistantId_{userId}_{idBot}";
+        private string GetThreadCacheKey(int userId, int idBot) => $"threadId_{userId}_{idBot}";
+
 
         public async Task<BaseOut> ActualizarDocumento(ConsultaAsistente consultaAsistente)
         {
@@ -79,14 +81,13 @@ namespace Funnel.Logic
                     await _asistentesData.GuardarFileIdLeadEisei(idBot, configuracion.FileId);
                 }
 
-                // En BuildAnswer o donde corresponda
                 string vectorStoreId = await GetOrCreateVectorStoreIdAsync(configuracion.Llave, idBot, configuracion.FileId);
 
                 // 1. Crear el assistant con el prompt como instrucciones
-                var assistantId = await GetOrCreateAssistantIdAsync(configuracion, idUsuario, vectorStoreId);
+                var assistantId = await GetOrCreateAssistantIdAsync(configuracion, idUsuario, vectorStoreId, idBot);
 
                 //2. Crear un thread
-                var threadId = await GetOrCreateThreadIdAsync(configuracion.Llave, idUsuario);
+                var threadId = await GetOrCreateThreadIdAsync(configuracion.Llave, idUsuario, idBot);
 
                 // 3. Agregar el mensaje del usuario
                 await AddMessageToThreadAsync(configuracion.Llave, threadId, pregunta, "user");
@@ -228,15 +229,14 @@ namespace Funnel.Logic
 
             // Esperar a que el run termine (polling)
             string status = "";
+            int maxWaitMs = 30000; 
+            int waited = 0;
             do
             {
                 await Task.Delay(1000);
                 var runResponse = await client.GetAsync($"threads/{threadId}/runs/{runId}");
-                runResponse.EnsureSuccessStatusCode();
-                var runJson = await runResponse.Content.ReadAsStringAsync();
-                using var runDoc = JsonDocument.Parse(runJson);
-                status = runDoc.RootElement.GetProperty("status").GetString();
             } while (status != "completed" && status != "failed" && status != "cancelled");
+
 
             // Obtener el mensaje de respuesta
             var messagesResponse = await client.GetAsync($"threads/{threadId}/messages");
@@ -250,10 +250,11 @@ namespace Funnel.Logic
                 if (message.GetProperty("role").GetString() == "assistant")
                 {
                     var content = message.GetProperty("content")[0].GetProperty("text").GetProperty("value").GetString();
-                    // Los tokens no están directamente disponibles, deberías calcularlos si es necesario
+
+                    var respuestaLimpia = LimpiarRespuesta(content);
                     return new AssistantResponse
                     {
-                        Content = content,
+                        Content = respuestaLimpia,
                         PromptTokens = 0,
                         CompletionTokens = 0
                     };
@@ -266,12 +267,30 @@ namespace Funnel.Logic
                 CompletionTokens = 0
             };
         }
-
-        private async Task<string> GetOrCreateAssistantIdAsync(ConfiguracionDto configuracion, int userId, string vectorStoreId)
+        public static string LimpiarRespuesta(string markdown)
         {
-            var assistantId = await _cache.GetOrCreateAsync(GetAssistantCacheKey(userId), async entry =>
+            var normalizado = NormalizarSaltosDeLinea(markdown);
+            normalizado = normalizado.Replace("\n\n", "\n\n");
+            normalizado = ReemplazarNegritas(normalizado);
+            var html = Markdig.Markdown.ToHtml(normalizado);
+
+            return html;
+        }
+        private static string NormalizarSaltosDeLinea(string markdown)
+        {
+            // Reemplaza \r\n y \r por \n
+            return markdown.Replace("\r\n", "\n").Replace("\r", "\n");
+        }
+        private static string ReemplazarNegritas(string texto)
+        {
+            // Reemplaza **texto** por <strong>texto</strong>
+            return Regex.Replace(texto, @"\*\*(.+?)\*\*", "<strong>$1</strong>");
+        }
+        private async Task<string> GetOrCreateAssistantIdAsync(ConfiguracionDto configuracion, int userId, string vectorStoreId, int idBot)
+        {
+            var assistantId = await _cache.GetOrCreateAsync(GetAssistantCacheKey(userId, idBot), async entry =>
             {
-                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(1);
+                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(8);
                 var id = await CreateAssistantWithVectorStoreAsync(configuracion, vectorStoreId);
                 return id ?? throw new InvalidOperationException("El ID del asistente no puede ser nulo.");
             });
@@ -281,11 +300,11 @@ namespace Funnel.Logic
 
             return assistantId;
         }
-        private async Task<string> GetOrCreateThreadIdAsync(string apiKey, int userId)
+        private async Task<string> GetOrCreateThreadIdAsync(string apiKey, int userId, int idBot)
         {
-            var threadId = await _cache.GetOrCreateAsync(GetThreadCacheKey(userId), async entry =>
+            var threadId = await _cache.GetOrCreateAsync(GetThreadCacheKey(userId, idBot), async entry =>
             {
-                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(12);
+                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(2);
                 var id = await CreateThreadAsync(apiKey);
                 return id ?? throw new InvalidOperationException("El ID del thread no puede ser nulo.");
             });
@@ -299,7 +318,7 @@ namespace Funnel.Logic
         {
             var vectorStoreId = await _cache.GetOrCreateAsync(GetVectorStoreCacheKey(idBot), async entry =>
             {
-                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(7); // Ajusta según tu lógica  
+                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(7);   
                 var id = await CreateVectorStoreAsync(apiKey, fileId);
                 // Espera a que el Vector Store esté listo  
                 while (!await IsVectorStoreReadyAsync(apiKey, id))
@@ -415,5 +434,30 @@ namespace Funnel.Logic
                 return encoding.Encode(texto).Count;
             }
         }
+        public async Task LimpiarCacheAsistente(int userId, int idBot)
+        {
+            await Task.Run(() =>
+            {
+                RemoveAssistantCache(userId, idBot);
+                RemoveThreadCache(userId, idBot);
+                RemoveVectorStoreCache(idBot);
+            });
+        }
+
+        public void RemoveAssistantCache(int userId, int idBot)
+        {
+            _cache.Remove(GetAssistantCacheKey(userId, idBot));
+        }
+
+        public void RemoveThreadCache(int userId, int idBot)
+        {
+            _cache.Remove(GetThreadCacheKey(userId, idBot));
+        }
+
+        public void RemoveVectorStoreCache(int idBot)
+        {
+            _cache.Remove(GetVectorStoreCacheKey(idBot));
+        }
+
     }
 }

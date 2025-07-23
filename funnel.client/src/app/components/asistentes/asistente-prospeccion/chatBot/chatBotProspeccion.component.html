@@ -14,9 +14,9 @@
           <div class="vstack">
             <label class="labelAsistente ps-2">Prospector Comercial</label>
            <div class="chat-bubble ai-bubble formatoMensajes vstackbot" [innerHTML]="chat.mensaje"></div>
-            <button *ngIf="chat.mostrarBotonDataset" class="btn btn-primary mt-2" (click)="enviarDataset()">
+            <!-- <button *ngIf="chat.mostrarBotonDataset" class="btn btn-primary mt-2" (click)="enviarDataset()">
               Enviar Dataset
-            </button>
+            </button> -->
              <button *ngIf="chat.mensaje.includes('Nombre de la empresa') || chat.mensaje.includes('Giro')" 
               class="btn-copiar" (click)="copiarRespuesta(chat.mensaje)"
               matTooltip="Copiar mensaje"> <mat-icon>content_copy</mat-icon>

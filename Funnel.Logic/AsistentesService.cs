@@ -70,6 +70,7 @@ namespace Funnel.Logic
         {
             try
             {
+                DateTime fechaPregunta = DateTime.Now;
                 var configuracion = await _asistentesData.ObtenerConfiguracionPorIdBotAsync(idBot);
                 if (configuracion == null)
                     throw new Exception("No se encontró configuración para el asistente con IdBot: " + idBot);
@@ -107,7 +108,7 @@ namespace Funnel.Logic
                 {
                     IdBot = idBot,
                     Pregunta = pregunta,
-                    FechaPregunta = DateTime.Now,
+                    FechaPregunta = fechaPregunta,
                     Respuesta = respuesta.Content,
                     FechaRespuesta = DateTime.Now,
                     Respondio = true,

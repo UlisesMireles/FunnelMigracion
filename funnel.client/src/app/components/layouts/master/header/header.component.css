@@ -394,7 +394,7 @@
   background: white !important;
   position: fixed;
   top: 50px;
-  left: 760px;
+  right: 1%;
   border-radius: 10px;
   overflow: visible !important;
   z-index: 5000;

@@ -36,7 +36,8 @@ namespace Funnel.Server.Extensions
             services.AddScoped<IConfiguracionTablasService, ConfiguracionTablasService>();
             services.AddScoped<IInputsAdicionalesData, InputsAdicionalesData>();
             services.AddScoped<IInputsAdicionalesService, InputsAdicionalesService>();
-
+            services.AddScoped<IAsistentesData, AsistentesData>();
+            services.AddScoped<IAsistentesService, AsistentesService>();
 
             return services;
         }

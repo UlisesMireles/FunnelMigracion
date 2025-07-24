@@ -35,4 +35,12 @@ export class OpenIaService {
   AsistenteHistorico(data : ConsultaAsistenteDto): Observable<ConsultaAsistenteDto>{
     return this.http.post<ConsultaAsistenteDto>(this.baseUrl + 'api/AsistenteHistorico/OpenIA',data);
   }
+
+  asistenteProspeccion(data: ConsultaAsistenteDto): Observable<ConsultaAsistenteDto> {
+    return this.http.post<ConsultaAsistenteDto>(this.baseUrl + 'api/AsistenteProspeccion/OpenIA',data);
+  }
+  
+  limpiarCacheBot(userId: number, idBot: number): Observable<any> {
+    return this.http.post(this.baseUrl + 'api/AsistenteProspeccion/LimpiarCacheBot', { userId, idBot });
+  }
 }

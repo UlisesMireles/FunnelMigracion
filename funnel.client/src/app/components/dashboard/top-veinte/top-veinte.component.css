@@ -333,3 +333,28 @@
 .bi-stars::before{
   color: #47b984;
 }
+
+.a-small {
+  font-weight: 600;
+  padding: 10px 0;
+}
+
+.a-small:hover {
+  color: var(--bs-navbar-brand-hover-color);
+}
+
+.icon-btn {
+  border: 2px solid transparent;
+  border-radius: 6px;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.icon-btn:hover {
+  border: 2px solid #47b984;
+  box-shadow: 0 0 5px rgba(71, 185, 132, 0.6); 
+  cursor: pointer;
+}
+::ng-deep  .p-select .p-select-overlay {
+    min-width: 100%;
+    margin-top: -605px !important;
+}

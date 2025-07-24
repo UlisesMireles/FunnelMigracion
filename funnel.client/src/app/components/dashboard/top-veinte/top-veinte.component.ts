@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild, HostListener, ElementRef } from '@angular/core';
 import { LazyLoadEvent } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { MessageService } from 'primeng/api';
@@ -11,14 +11,16 @@ import { LoginService } from '../../../services/login.service';
 import { ColumnasDisponiblesComponent } from '../../utils/tablas/columnas-disponibles/columnas-disponibles.component';
 import { ConsultaAsistenteDto } from '../../../interfaces/asistentes/consultaAsistente';
 import { OpenIaService } from '../../../services/asistentes/openIA.service';
-
+import { Subscription } from 'rxjs';
+import { AsistenteService } from '../../../services/asistentes/asistente.service';
+import { TopVeinteDataService } from '../../../services/top-veinte-data.service';
 @Component({
   selector: 'app-top-veinte',
   standalone: false,
   templateUrl: './top-veinte.component.html',
   styleUrl: './top-veinte.component.css'
 })
-export class TopVeinteComponent {
+export class TopVeinteComponent implements OnInit {
   @ViewChild('dt')
   dt!: Table;
 
@@ -46,6 +48,7 @@ export class TopVeinteComponent {
   leyendo: boolean = false;
   vocesDisponibles: SpeechSynthesisVoice[] = [];
   vozSeleccionada: SpeechSynthesisVoice | null = null;
+
 
 
   EstatusDropdown = [
@@ -78,7 +81,9 @@ export class TopVeinteComponent {
   columnsTodasResp = JSON.stringify(this.lsTodasColumnas);
   disabledPdf: boolean = false;
 
-  constructor(private messageService: MessageService, private cdr: ChangeDetectorRef, private prospectoService: ProspectoService, private loginService: LoginService, public dialog: MatDialog, private openIaService: OpenIaService) { }
+  constructor(private messageService: MessageService, private cdr: ChangeDetectorRef, private prospectoService: ProspectoService, private loginService: LoginService, public dialog: MatDialog, private openIaService: OpenIaService,
+    public asistenteService: AsistenteService, private topVeinteDataService: TopVeinteDataService
+  ) { }
 
   ngOnInit(): void {
     this.cargarVozPreferida();
@@ -111,6 +116,20 @@ export class TopVeinteComponent {
     this.prospectoService.getTopVeinte(this.loginService.obtenerIdEmpresa(), anioSeleccionado).subscribe({
       next: (result: ClientesTopVeinte[]) => {
         this.TopVeinteOriginal = result;
+        const opDataSet = result.filter(ClientesTopVeinte => {
+          if (this.selectedYear === "Todos los Años") {
+            return ClientesTopVeinte.porcGanadas > 75;
+
+          }
+          else {
+            //Si es un año específico
+            return ClientesTopVeinte.porcGanadas > 75 &&
+                  ClientesTopVeinte.totalOportunidades >= 5 &&
+                  ClientesTopVeinte.ganadas >= 1;
+          }
+        });
+
+this.topVeinteDataService.updateTop20Data(opDataSet);
         this.selectedEstatus = 'Activo';
         this.cdr.detectChanges();
         this.loading = false;
@@ -128,14 +147,26 @@ export class TopVeinteComponent {
   }
 
   FiltrarPorEstatus() {
+  this.topveinte = this.selectedEstatus === null
+    ? [...this.TopVeinteOriginal]
+    : [...this.TopVeinteOriginal.filter((x) => x.desEstatus === this.selectedEstatus)];
 
-    this.topveinte = this.selectedEstatus === null
-      ? [...this.TopVeinteOriginal]
-      : [...this.TopVeinteOriginal.filter((x) => x.desEstatus === this.selectedEstatus)];
-    if (this.dt) {
-      this.dt.first = 0;
+  // Filtro de porcentaje + condiciones extra si no es "Todos los Años"
+  const opDataSet = this.topveinte.filter(item => {
+    if (this.selectedYear === "Todos los Años") {
+      return item.porcGanadas > 75;
+    } else {
+      return item.porcGanadas > 75 && item.totalOportunidades >= 5 && item.ganadas >= 1;
     }
+  });
+
+  this.topVeinteDataService.updateTop20Data(opDataSet);
+
+  if (this.dt) {
+    this.dt.first = 0;
   }
+}
+
 
   onYearChange() {
     this.getTopVeinte();
@@ -505,7 +536,5 @@ export class TopVeinteComponent {
     cargarVoces();
   }
 
-
-
-
+    
 }

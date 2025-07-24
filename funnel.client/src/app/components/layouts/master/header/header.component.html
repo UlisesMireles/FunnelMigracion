@@ -25,7 +25,16 @@
           <li class="option-btn" (click)="agregarContacto()">Contacto</li>
         </ul> 
       </div>
-  
+      <button class="btnAgregar" style="margin-left: 5px;"
+                  (click)="mostrarAsistenteProspeccion = true">
+                  <i class="bi bi-stars"></i>
+                  <span class="ia-button-text"> PC </span>
+                </button>
+      <ng-container *ngIf="mostrarAsistenteProspeccion">
+      <div id="chat-container-prospeccion" class="chatbot-window-prospeccion" #chatContainerProspeccion (mousedown)="startDragProspeccion($event)">
+        <app-asistente-prospeccion></app-asistente-prospeccion>
+      </div>
+      </ng-container>
       <div class="chatbot ms-2">
         <!-- Botón de chat en el header-->
         <button class="btnAgregar" (click)="toggleChat()">
@@ -34,7 +43,7 @@
         </button>
        <!-- Contenedor del chatbot -->
       <ng-container *ngIf="(asistenteService.asistenteObservable | async) === 1">
-      <div id="chat-container" class="chatbot-window" #chatContainer (mousedown)="startDrag($event)">
+      <div id="chat-container-operacion" class="chatbot-window-operacion" #chatContainerOperacion (mousedown)="startDrag($event)">
       <app-asistente-operacion></app-asistente-operacion>
       </div>
       </ng-container>

@@ -122,6 +122,7 @@ export class HeaderComponent implements OnInit {
   toggleChat(): void {
     this.asistenteSubscription = this.asistenteService.asistenteObservable.subscribe(value => {
       this.asistenteObservableValue = value;
+      this.enableAsistenteOperacion = this.asistenteObservableValue === 1;
     });
 
     this.asistenteService.asistenteSubject.next(this.asistenteObservableValue * (-1));
@@ -561,8 +562,8 @@ handleClickOutside(event: MouseEvent): void {
       y: event.clientY - el.getBoundingClientRect().top,
     };
 
-    document.addEventListener('mousemove', this.onDrag);
-    document.addEventListener('mouseup', this.endDrag);
+    document.addEventListener('mousemove', this.onDragProspeccion);
+    document.addEventListener('mouseup', this.endDragProspeccion);
   }
 
   onDragProspeccion = (event: MouseEvent): void => {

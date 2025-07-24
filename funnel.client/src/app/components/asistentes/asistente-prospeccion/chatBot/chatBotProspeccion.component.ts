@@ -318,29 +318,32 @@ enviarDataset() {
   });
 }
 ajustarAlturaTextarea(event: any): void {
-  const textarea = event.target;
+  const textarea = event.target as HTMLTextAreaElement;
   textarea.style.height = 'auto';
   textarea.style.height = `${Math.min(textarea.scrollHeight, 120)}px`;
 
-  const textoOriginal = textarea.value;
+  const textoOriginal: string = textarea.value;
   
-  const palabras = textoOriginal.split(/\s+/);
-
-  if (palabras.length <= 13) {
-    return;
-  }
-
-  let nuevoTexto = '';
-  for (let i = 0; i < palabras.length; i++) {
-    nuevoTexto += palabras[i] + ' ';
-    if ((i + 1) % 13 === 0 && i !== palabras.length - 1) {
-      nuevoTexto = nuevoTexto.trimEnd() + '\n';
+  const palabrasYEspacios: string[] = textoOriginal.split(/(\s+)/);
+  
+  let nuevoTexto: string = '';
+  let lineaActual: string = '';
+  
+  for (const segmento of palabrasYEspacios) {
+    if (lineaActual.length + segmento.length > 75) {
+      nuevoTexto += lineaActual.trimEnd() + '\n';
+      lineaActual = segmento; 
+    } else {
+      lineaActual += segmento;
     }
   }
+  
+  if (lineaActual.length > 0) {
+    nuevoTexto += lineaActual;
+  }
 
-  if (nuevoTexto.trim() !== textoOriginal.trim()) {
-    textarea.value = nuevoTexto.trim();
+  if (nuevoTexto !== textoOriginal) {
+    textarea.value = nuevoTexto;
     this.pregunta = textarea.value; 
   }
-}
-}
+}}

@@ -21,6 +21,36 @@ namespace Funnel.Data
             _connectionString = configuration.GetConnectionString("FunelDatabase");
         }
 
+        public async Task<List<PlantillasEtapasDTO>> ConsultarPlantillasProcesosEtapas()
+        {
+            List<PlantillasEtapasDTO> result = new List<PlantillasEtapasDTO>();
+            List<OportunidadesTarjetasDto> etapas = new List<OportunidadesTarjetasDto>();
+            IList<ParameterSQl> list = new List<ParameterSQl>
+                {
+                    DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "PLANTILLAS-ETAPAS" )
+                };
+            using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoProcesos", CommandType.StoredProcedure, list, _connectionString))
+            {
+                while (reader.Read())
+                {
+                    var dto = new PlantillasEtapasDTO();
+
+                    dto.IdPlantilla = ComprobarNulos.CheckIntNull(reader["IdPlantilla"]);
+                    dto.Plantilla = ComprobarNulos.CheckStringNull(reader["Plantilla"]);
+                    dto.Estatus = ComprobarNulos.CheckBooleanNull(reader["Estatus"]);
+                    dto.DesEstatus = ComprobarNulos.CheckStringNull(reader["DesEstatus"]);
+
+                    dto.IdStage = ComprobarNulos.CheckIntNull(reader["IdStage"]);
+                    dto.NombreEtapa = ComprobarNulos.CheckStringNull(reader["NombreEtapa"]);
+                    dto.Orden = ComprobarNulos.CheckStringNull(reader["Orden"]);
+                    dto.Probabilidad = ComprobarNulos.CheckStringNull(reader["Probabilidad"]);
+
+                    result.Add(dto);
+                }
+            }
+            return result;
+        }
+
         public async Task<ProcesosDTO> ConsultarEtapasPorProceso(int IdProceso)
         {
             ProcesosDTO result = new ProcesosDTO();
@@ -51,7 +81,7 @@ namespace Funnel.Data
             }
             result.Etapas = etapas;
             return result;
-        }
+        }        
 
         public async Task<List<ProcesosDTO>> ConsultarProcesos(int IdEmpresa)
         {

@@ -31,8 +31,15 @@ namespace Funnel.Server.Controllers
             return Ok(respuesta);
         }
 
+        [HttpGet("[action]/")]
+        public async Task<ActionResult<List<PlantillasProcesosStageDTO>>> ConsultarPlantillasProcesosEtapas()
+        {
+            var respuesta = await _procesosService.ConsultarPlantillasProcesosEtapas();
+            return Ok(respuesta);
+        }
+
         [HttpPost("[action]/")]
-        public async Task<ActionResult<BaseOut>> GuardarInputsAdicionales([FromBody] ProcesosDTO request)
+        public async Task<ActionResult<BaseOut>> InsertarModificarProcesoEtapa([FromBody] ProcesosDTO request)
         {
             var respuesta = await _procesosService.InsertarModificarProcesoEtapa(request);
             return Ok(respuesta);

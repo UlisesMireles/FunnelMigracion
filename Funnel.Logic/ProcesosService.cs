@@ -28,6 +28,38 @@ namespace Funnel.Logic
             _loginService = loginService;
         }
 
+        public async Task<List<PlantillasProcesosStageDTO>> ConsultarPlantillasProcesosEtapas()
+        {
+            var data = await _procesosData.ConsultarPlantillasProcesosEtapas();
+
+            //Obtener plantillas
+            var plantillas = data.GroupBy(v => v.IdPlantilla).
+                Select(v =>
+                    new PlantillasProcesosStageDTO
+                    {
+                        IdPlantilla = v.Key,
+                        Plantilla = v.First().Plantilla,
+                        Estatus = v.First().Estatus,
+                        DesEstatus = v.First().DesEstatus
+                    }).ToList();
+
+            //Obtener Etapas
+            plantillas.ForEach(v =>
+            {
+                v.Etapas = data.Where(x => x.IdPlantilla == v.IdPlantilla)
+                .Select(y =>
+                    new OportunidadesTarjetasDto
+                    {
+                        IdStage = y.IdStage,
+                        Nombre = y.NombreEtapa,
+                        Orden = y.Orden,
+                        Probabilidad = y.Probabilidad
+                    }).ToList();
+            });
+
+            return plantillas;
+        }
+
         public async Task<ProcesosDTO> ConsultarEtapasPorProceso(int IdProceso)
         {
             return await _procesosData.ConsultarEtapasPorProceso(IdProceso);
@@ -36,7 +68,7 @@ namespace Funnel.Logic
         public async Task<List<ProcesosDTO>> ConsultarProcesos(int IdEmpresa)
         {
             return await _procesosData.ConsultarProcesos(IdEmpresa);
-        }        
+        }
 
         public async Task<List<OportunidadesTarjetasDto>> InsertarModificarEtapa(List<OportunidadesTarjetasDto> etapas)
         {
@@ -74,7 +106,7 @@ namespace Funnel.Logic
             //Insertar o actualizar datos de Proceso, y etapas eliminadas del proceso
             return await _procesosData.InsertarModificarProcesoEtapa(request);
 
-            
+
         }
 
         public async Task<byte[]> GenerarReporteProcesos(ProcesosReportesDTO procesos, string RutaBase, string titulo, int IdEmpresa)

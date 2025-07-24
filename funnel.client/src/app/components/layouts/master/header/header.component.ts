@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener, ChangeDetectorRef } from '@angular/core';
 import { environment } from '../../../../../environments/environment';
 import { AsistenteService } from '../../../../services/asistentes/asistente.service';
 import { ModalService } from '../../../../services/modal-perfil.service';
@@ -59,7 +59,8 @@ export class HeaderComponent implements OnInit {
   @ViewChild('splitBtn') splitButton!: SplitButton;
   esLogoDefault = false;
   imagenEmpresaUrl: string | null = null;
-  @ViewChild('chatContainer') chatContainer!: ElementRef;
+  @ViewChild('chatContainerOperacion') chatContainerOperacion!: ElementRef;
+  @ViewChild('chatContainerProspeccion') chatContainerProspeccion!: ElementRef;
 
   //Modal Campos Adicionales
   camposAdicionales: CamposAdicionales[] = [];
@@ -87,7 +88,8 @@ export class HeaderComponent implements OnInit {
     private modalOportunidadesService: ModalOportunidadesService,
     private readonly authService: LoginService,
     private contactosService: ContactosService,
-    private modalCamposAdicionalesService: ModalCamposAdicionalesService) {
+    private modalCamposAdicionalesService: ModalCamposAdicionalesService,
+    private cdr: ChangeDetectorRef) {
     this.items = [
       {
         label: 'Oportunidades',
@@ -126,14 +128,28 @@ export class HeaderComponent implements OnInit {
   }
 
   @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent): void {
-    const targetElement = event.target as HTMLElement;
+handleClickOutside(event: MouseEvent): void {
+  const targetElement = event.target as HTMLElement;
 
-    if (this.chatContainer && !this.chatContainer.nativeElement.contains(targetElement)) {
-      this.enableAsistenteOperacion = false;
-      this.asistenteService.asistenteSubject.next(-1);
-    }
+  const isToggleButtonOperacion = targetElement.closest('#chat-container-operacion'); 
+  const isToggleButtonProspeccion = targetElement.closest('#chat-container-prospeccion'); 
+
+  if (this.enableAsistenteOperacion && 
+      this.chatContainerOperacion && 
+      !this.chatContainerOperacion.nativeElement.contains(targetElement) &&
+      !isToggleButtonOperacion) {
+    this.enableAsistenteOperacion = false;
+    this.asistenteService.asistenteSubject.next(-1);
   }
+
+  if (this.mostrarAsistenteProspeccion && 
+      this.chatContainerProspeccion && 
+      !this.chatContainerProspeccion.nativeElement.contains(targetElement) &&
+      !isToggleButtonProspeccion) {
+    this.mostrarAsistenteProspeccion = false;
+    this.cdr.detectChanges();
+  }
+}
   toggleOptions(): void {
     this.optionsVisible = !this.optionsVisible;
   }
@@ -455,7 +471,7 @@ export class HeaderComponent implements OnInit {
     if (!target.closest('.app-chat-header')) {
       return;
     }
-    const el = this.chatContainer.nativeElement as HTMLElement;
+    const el = this.chatContainerOperacion.nativeElement as HTMLElement;
     this.isDragging = true;
     this.offset = {
       x: event.clientX - el.getBoundingClientRect().left,
@@ -472,7 +488,7 @@ export class HeaderComponent implements OnInit {
     const x = event.clientX - this.offset.x;
     const y = event.clientY - this.offset.y;
 
-    const el = this.chatContainer.nativeElement as HTMLElement;
+    const el = this.chatContainerOperacion.nativeElement as HTMLElement;
     el.style.left = `${x}px`;
     el.style.top = `${y}px`;
     el.style.right = 'auto'; // anula el "right" para permitir mover
@@ -533,4 +549,40 @@ export class HeaderComponent implements OnInit {
     this.sessionCountdownMinutesInactividad = Math.floor(remainingSeconds / 60);
     this.sessionCountdownSecondsInactividad = remainingSeconds % 60;
   }
+  startDragProspeccion(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.app-chat-header-prospeccion')) {
+      return;
+    }
+    const el = this.chatContainerProspeccion.nativeElement as HTMLElement;
+    this.isDragging = true;
+    this.offset = {
+      x: event.clientX - el.getBoundingClientRect().left,
+      y: event.clientY - el.getBoundingClientRect().top,
+    };
+
+    document.addEventListener('mousemove', this.onDrag);
+    document.addEventListener('mouseup', this.endDrag);
+  }
+
+  onDragProspeccion = (event: MouseEvent): void => {
+    if (!this.isDragging) return;
+
+    const x = event.clientX - this.offset.x;
+    const y = event.clientY - this.offset.y;
+
+    const el = this.chatContainerProspeccion.nativeElement as HTMLElement;
+    el.style.left = `${x}px`;
+    el.style.top = `${y}px`;
+    el.style.right = 'auto'; // anula el "right" para permitir mover
+  };
+
+  endDragProspeccion = (): void => {
+    this.isDragging = false;
+    document.removeEventListener('mousemove', this.onDragProspeccion);
+    document.removeEventListener('mouseup', this.endDragProspeccion);
+  };
+
+  mostrarAsistenteProspeccion = false;
+
 }

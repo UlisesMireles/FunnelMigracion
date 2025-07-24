@@ -48,9 +48,9 @@ export class AsistenteProspeccionComponent {
   }
   onCerrarChat() {
     this.mostrarAsistenteProspeccion = false;
-    const chatContainer = document.getElementById("chat-container");
-    if (chatContainer) {
-      chatContainer.classList.add("d-none");
+    const chatContainerProspeccion = document.getElementById("chat-container-prospeccion");
+    if (chatContainerProspeccion) {
+      chatContainerProspeccion.classList.add("d-none");
     }
   }
 }

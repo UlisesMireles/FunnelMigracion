@@ -21,7 +21,6 @@ import { TopVeinteDataService } from '../../../services/top-veinte-data.service'
   styleUrl: './top-veinte.component.css'
 })
 export class TopVeinteComponent implements OnInit {
-  @ViewChild('chatContainer') chatContainer!: ElementRef;
   @ViewChild('dt')
   dt!: Table;
 
@@ -50,11 +49,7 @@ export class TopVeinteComponent implements OnInit {
   vocesDisponibles: SpeechSynthesisVoice[] = [];
   vozSeleccionada: SpeechSynthesisVoice | null = null;
 
-  private asistenteSubscription!: Subscription;
-  asistenteObservableValue: number = -1;
-  enableAsistenteBienvenida = false;
-  private isDragging = false;
-  private offset = { x: 0, y: 0 };
+
 
   EstatusDropdown = [
     { label: 'Todo', value: null },
@@ -541,55 +536,5 @@ this.topVeinteDataService.updateTop20Data(opDataSet);
     cargarVoces();
   }
 
-    ngOnDestroy(): void {
-    if (this.asistenteSubscription) {
-      this.asistenteSubscription.unsubscribe();
-    }
-  }
- startDrag(event: MouseEvent): void {
-    const target = event.target as HTMLElement;
-    if (!target.closest('.app-chat-header')) {
-      return;
-    }
-    const el = this.chatContainer.nativeElement as HTMLElement;
-    this.isDragging = true;
-    this.offset = {
-      x: event.clientX - el.getBoundingClientRect().left,
-      y: event.clientY - el.getBoundingClientRect().top,
-    };
-
-    document.addEventListener('mousemove', this.onDrag);
-    document.addEventListener('mouseup', this.endDrag);
-  }
-
-  onDrag = (event: MouseEvent): void => {
-    if (!this.isDragging) return;
-
-    const x = event.clientX - this.offset.x;
-    const y = event.clientY - this.offset.y;
-
-    const el = this.chatContainer.nativeElement as HTMLElement;
-    el.style.left = `${x}px`;
-    el.style.top = `${y}px`;
-    el.style.right = 'auto'; // anula el "right" para permitir mover
-  };
-
-  endDrag = (): void => {
-    this.isDragging = false;
-    document.removeEventListener('mousemove', this.onDrag);
-    document.removeEventListener('mouseup', this.endDrag);
-  };
-
-  mostrarAsistenteProspeccion = false;
-  @HostListener('document:click', ['$event'])
-  onClickOutside(event: MouseEvent) {
-    if (this.mostrarAsistenteProspeccion) {
-      const chatContainer = this.chatContainer?.nativeElement;
-      
-      if (chatContainer && !chatContainer.contains(event.target)) {
-        this.mostrarAsistenteProspeccion = false;
-        this.cdr.detectChanges(); 
-      }
-    }
-  }
+    
 }

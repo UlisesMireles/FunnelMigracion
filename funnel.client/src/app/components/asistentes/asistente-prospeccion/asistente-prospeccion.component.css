@@ -24,7 +24,7 @@
     padding-bottom: 10px;
 }
 
-.app-chat-header {
+.app-chat-header-prospeccion {
     height: 10% !important;
     background-color: rgb(46, 71, 93);
     color: #fff;
@@ -82,7 +82,7 @@
 
 /* mobiles (landscape and portrait) */
 @media only screen and (min-width: 50px) and (max-width: 350px) {
-    .app-chat-header {
+    .app-chat-header-prospeccion {
         height: 17% !important;
     }
 }
@@ -91,7 +91,7 @@
     align-items: normal;
 } */
 
-.app-chat-headerTemaAsistenteOperacion {
+.app-chat-header-prospeccion-TemaAsistenteOperacion {
     background-color: #00C455;
     color: #1d0707;
 

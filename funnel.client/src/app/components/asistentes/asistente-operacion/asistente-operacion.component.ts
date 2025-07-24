@@ -61,9 +61,9 @@ export class AsistenteOperacionComponent implements OnInit, OnDestroy {
   }
   onCerrarChat() {
     this.asistenteService.asistenteSubject.next(-1);
-    const chatContainer = document.getElementById("chat-container");
-    if (chatContainer) {
-      chatContainer.classList.add("d-none");
+    const chatContainerOperacion = document.getElementById("chat-container-operacion");
+    if (chatContainerOperacion) {
+      chatContainerOperacion.classList.add("d-none");
     }
     
     // Guardar estado a través del servicio

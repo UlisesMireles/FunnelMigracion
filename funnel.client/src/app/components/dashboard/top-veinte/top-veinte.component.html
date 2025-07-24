@@ -34,7 +34,7 @@
                   pTooltip="Descargar Excel" tooltipPosition="top" styleClass="custom-button add-button"
                   [ngStyle]="{'margin-right': '5px'}" />
 
-                <button pButton severity="secondary" (click)="enviarSeguimiento()" class="icon-btn ml-2 ">
+                <button *ngIf="licenciaPlatino" pButton severity="secondary" (click)="enviarSeguimiento()" class="icon-btn ml-2 ">
                   <i class="bi bi-stars"></i>
                   <span class="ia-button-text "> ADC </span>
                 </button>

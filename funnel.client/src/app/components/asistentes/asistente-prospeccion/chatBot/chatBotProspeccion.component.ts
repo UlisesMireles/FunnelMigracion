@@ -39,9 +39,8 @@ export class ChatBotProspeccionComponent implements OnInit, AfterViewInit {
   };
 
   chatHistorial: ChatHistorial[] = [
-    { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨" },
-    { rol: "asistente", mensaje: "Bienvenido(a) a tu asistente comercial. Soy LeadsEisei AI, tu asistente para convertir contactos en oportunidades reales. ¿Me dices tu nombre para comenzar?." , mostrarBotonDataset: true}
-    ];
+     { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨ Bienvenido(a) a tu asistente comercial. Soy LeadsEisei AI, tu asistente para convertir contactos en oportunidades reales. ¿Me dices tu nombre para comenzar?." , mostrarBotonDataset: true}
+   ];
   chatHistorialResp!: string;
   mostrarBotonDataset: boolean = false;
   topVeinteOriginal: ClientesTopVeinte[] = [];
@@ -112,8 +111,7 @@ ngAfterViewInit(): void {
   //#endregion
    private restoreState(state: any) {
     this.chatHistorial = state.historial || [
-      { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨" },
-      { rol: "asistente", mensaje: "Bienvenido(a) a tu asistente comercial. Soy LeadsEisei AI, tu asistente para convertir contactos en oportunidades reales. ¿Me dices tu nombre para comenzar?." , mostrarBotonDataset: true}
+      { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨ Bienvenido(a) a tu asistente comercial. Soy LeadsEisei AI, tu asistente para convertir contactos en oportunidades reales. ¿Me dices tu nombre para comenzar?." , mostrarBotonDataset: true}
     ];
     this.chatHistorialResp = JSON.stringify(this.chatHistorial);
     this.cdRef.detectChanges();
@@ -285,9 +283,8 @@ enviarDataset() {
       }
     });
     this.chatHistorial = [
-    { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨" },
-    { rol: "asistente", mensaje: "Bienvenido(a) a tu asistente comercial. Soy LeadsEisei AI, tu asistente para convertir contactos en oportunidades reales. ¿Me dices tu nombre para comenzar?." , mostrarBotonDataset: true}
-  ];
+     { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨ Bienvenido(a) a tu asistente comercial. Soy LeadsEisei AI, tu asistente para convertir contactos en oportunidades reales. ¿Me dices tu nombre para comenzar?." , mostrarBotonDataset: true}
+   ];
     sessionStorage.removeItem('chatBotProspeccionState');
     localStorage.removeItem('chatBotProspeccionState');
     this.cdRef.detectChanges();

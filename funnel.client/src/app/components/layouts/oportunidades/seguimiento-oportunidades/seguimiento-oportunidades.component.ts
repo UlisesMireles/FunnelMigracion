@@ -7,6 +7,7 @@ import { Oportunidad, RequestOportunidad } from '../../../../interfaces/oportuni
 import { baseOut } from '../../../../interfaces/utils/utils/baseOut';
 import { OpenIaService } from '../../../../services/asistentes/openIA.service';
 import { ConsultaAsistenteDto } from '../../../../interfaces/asistentes/consultaAsistente';
+import { EnumLicencias } from '../../../../enums/enumLicencias';
 
 @Component({
   selector: 'app-seguimiento-oportunidades',
@@ -15,6 +16,7 @@ import { ConsultaAsistenteDto } from '../../../../interfaces/asistentes/consulta
   styleUrl: './seguimiento-oportunidades.component.css'
 })
 export class SeguimientoOportunidadesComponent {
+  licenciaPlatino: boolean = false;
 
   get isTerminado(): boolean {
     return this.oportunidadForm.get('idEstatusOportunidad')?.value !== 1;
@@ -61,9 +63,10 @@ export class SeguimientoOportunidadesComponent {
   @Output() closeModal: EventEmitter<void> = new EventEmitter();
   @Output() result: EventEmitter<baseOut> = new EventEmitter();
 
-ngOnInit(): void {
-  this.cargarVozPreferida();
-}
+  ngOnInit(): void {
+    this.licenciaPlatino = localStorage.getItem('licencia')! === EnumLicencias.Platino;
+    this.cargarVozPreferida();
+  }
 
 
   inicializarFormulario() {

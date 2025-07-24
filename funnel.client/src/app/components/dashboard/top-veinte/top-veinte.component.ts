@@ -14,6 +14,7 @@ import { OpenIaService } from '../../../services/asistentes/openIA.service';
 import { Subscription } from 'rxjs';
 import { AsistenteService } from '../../../services/asistentes/asistente.service';
 import { TopVeinteDataService } from '../../../services/top-veinte-data.service';
+import { EnumLicencias } from '../../../enums/enumLicencias';
 @Component({
   selector: 'app-top-veinte',
   standalone: false,
@@ -76,7 +77,7 @@ export class TopVeinteComponent implements OnInit {
     { key: 'desEstatus', isCheck: true, valor: 'Estatus', groupHeader: '', isIgnore: false, tipoFormato: 'estatus' }
   ];
 
-
+  licenciaPlatino: boolean = false;
   columnsAMostrarResp = JSON.stringify(this.lsColumnasAMostrar);
   columnsTodasResp = JSON.stringify(this.lsTodasColumnas);
   disabledPdf: boolean = false;
@@ -86,6 +87,7 @@ export class TopVeinteComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.licenciaPlatino = localStorage.getItem('licencia')! === EnumLicencias.Platino;
     this.cargarVozPreferida();
     this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);    
     this.getAniosOportunidades();

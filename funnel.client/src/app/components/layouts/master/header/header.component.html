@@ -25,7 +25,7 @@
           <li class="option-btn" (click)="agregarContacto()">Contacto</li>
         </ul> 
       </div>
-      <button class="btnAgregar" style="margin-left: 5px;"
+      <button class="btnAgregar"  *ngIf="licenciaPlatino" style="margin-left: 5px;"
                   (click)="mostrarAsistenteProspeccion = true">
                   <i class="bi bi-stars"></i>
                   <span class="ia-button-text"> PC </span>
@@ -36,6 +36,8 @@
       </div>
       </ng-container>
       <div class="chatbot ms-2">
+  
+      <div class="chatbot ms-2" *ngIf="licenciaPlatino" >
         <!-- Botón de chat en el header-->
         <button class="btnAgregar" (click)="toggleChat()">
           <i class="bi bi-stars"></i> 

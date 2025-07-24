@@ -37,13 +37,14 @@
       <div class="d-flex contenedor-etiquetas"
         *ngIf="titulo === 'Oportunidades Por Mes' || titulo === 'Oportunidades Por Etapa'">
         <!-- Oportunidades en proceso -->
-        <div class="etiqueta bg-white shadow-md rounded-xl px-6 text-center etiqueta-default">
+        <div class="etiqueta bg-white shadow-md rounded-xl px-6 text-center etiqueta-default" >
           <p class="titulo mb-0 color-tab-1">En proceso</p>
           <p class="cantidad mb-0 color-tab-1">{{totalOportunidades}}</p>
         </div>
 
         <!-- Oportunidades abiertas en el mes -->
-        <div class="etiqueta bg-white shadow-md rounded-xl px-6 text-center etiqueta-default">
+        <div class="etiqueta bg-white shadow-md rounded-xl px-6 text-center etiqueta-default cursor-pointer"
+        (click)="abrirModalOportunidadesAbiertasMes()" (keyup.enter)="abrirModalOportunidadesAbiertasMes()" >
           <p class="titulo mb-0 color-tab-5">Abiertas en el mes</p>
           <p class="cantidad mb-0 color-tab-5">{{totalOportunidadesMes}}</p>
         </div>
@@ -410,6 +411,7 @@
               <tr class="custom-header">
                 <th scope="col" class="text-start">Prospecto</th>
                 <th scope="col" class="text-start">Oportunidad</th>
+                <th scope="col" class="text-start">Ejecutivo</th>
                 <th scope="col" class="text-start">Fecha</th>
                 <th scope="col" class="text-start">Monto</th>
               </tr>
@@ -430,6 +432,9 @@
                     </ng-template>
                   </p-columnFilter>
                 </th>
+                 <th scope="col">
+                 
+                </th>
                 <th scope="col">
                   <p-columnFilter field="fecha" matchMode="contains" [showMenu]="false">
                     <ng-template pTemplate="filter" let-value let-filter="filterCallback">
@@ -446,6 +451,11 @@
               <tr>
                 <td>{{ oportunidad.prospecto }}</td>
                 <td>{{ oportunidad.oportunidad }}</td>
+                <td>
+                  <span pTooltip="{{oportunidad.ejecutivo}}" tooltipPosition="top">
+                    {{ oportunidad.inicialesEjecutivo }}
+                  </span>
+                </td>
                 <td>{{ oportunidad.fecha | date:'dd/MM/yyyy' }}</td>
                 <td>${{ oportunidad.monto | totalCurrency:'numeric':mostrarDecimales}}</td>
               </tr>

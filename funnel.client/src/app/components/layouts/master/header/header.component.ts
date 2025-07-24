@@ -16,6 +16,7 @@ import { CatalogoService } from '../../../../services/catalogo.service';
 import { ContactosService } from '../../../../services/contactos.service';
 import { CamposAdicionales } from '../../../../interfaces/campos-adicionales';
 import { ModalCamposAdicionalesService } from '../../../../services/modalCamposAdicionales.service';
+import { EnumLicencias } from '../../../../enums/enumLicencias';
 @Component({
   selector: 'app-header',
   standalone: false,
@@ -78,6 +79,7 @@ export class HeaderComponent implements OnInit {
   sessionCountdownMinutesInactividad: number = 0;
   sessionCountdownSecondsInactividad: number = 0;
   private sessionCountdownIntervalInactividad: any;
+  licenciaPlatino: boolean = false;
 
   constructor(
     public asistenteService: AsistenteService,
@@ -161,6 +163,8 @@ handleClickOutside(event: MouseEvent): void {
     this.optionsVisible = true;
   }
   ngOnInit(): void {
+    this.licenciaPlatino = localStorage.getItem('licencia')! === EnumLicencias.Platino;
+    console.log(localStorage.getItem('licencia')!);
     this.startSessionCountdown();
     this.authService.sessionReset$.subscribe(() => {
       this.startSessionCountdown();

@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { ConsultaAsistenteDto } from './../../../../interfaces/asistentes/consultaAsistente';
 import { ChatHistorial } from './../../../../interfaces/asistentes/chatHistorial';
 import { OpenIaService } from '../../../../services/asistentes/openIA.service';
@@ -14,9 +14,11 @@ import { ClientesTopVeinte } from '../../../../interfaces/prospecto';
   templateUrl: './chatBotProspeccion.component.html',
   styleUrl: './chatBotProspeccion.component.css'
 })
-export class ChatBotProspeccionComponent implements OnInit {
+export class ChatBotProspeccionComponent implements OnInit, AfterViewInit {
   baseUrlAssets = environment.baseUrlAssetsChatbot;
   @ViewChild('scrollMe') scrollMe!: ElementRef;
+  @ViewChild('inputChat') inputChat!: ElementRef;
+
   pregunta = "";
   isConsultandoOpenIa: boolean = false;
 
@@ -63,7 +65,14 @@ export class ChatBotProspeccionComponent implements OnInit {
     this.topVeinteDataService.currentTop20Data.subscribe(data => {
       this.topVeinteOriginal = data;
     });
+     this.scrollToBottom();
    }
+ngAfterViewInit(): void {
+  setTimeout(() => {
+    this.inputChat?.nativeElement?.focus();
+  }, 0);
+}
+
    //#region obtencion de datos de session storage
   nombreUsuario(): string {
     let NombreUsuarioString = environment.usuarioData.nombreUsuario;

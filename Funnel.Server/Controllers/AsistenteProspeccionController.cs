@@ -51,10 +51,16 @@ namespace Funnel.Server.Controllers
             }
         }
         [HttpPost("LimpiarCacheBot")]
-        public IActionResult LimpiarCacheBot(int userId, int idBot)
+        public IActionResult LimpiarCacheBot([FromForm] int userId, [FromForm] int idBot)
         {
             _asistentesService.LimpiarCacheAsistente(userId, idBot);
             return Ok(new { mensaje = "Caché limpiado correctamente." });
+        }
+        [HttpPost("InicializarCacheIdsAsync")]
+        public async Task<ActionResult<ConsultaAsistente>> InicializarCacheIdsAsync([FromForm] int userId, [FromForm] int idBot)
+        {
+            var result = await _asistentesService.InicializarCacheIdsAsync(userId, idBot);
+            return Ok(result);
         }
     }
 }

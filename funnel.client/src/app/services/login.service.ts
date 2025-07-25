@@ -28,7 +28,7 @@ export class LoginService {
   public sessionReset$ = new Subject<void>();
 
   constructor(private http: HttpClient, private router: Router, private readonly catalogoService: CatalogoService, 
-    private OpenIaService: OpenIaService,
+    private OpenIaService: OpenIaService, private readonly openIaService: OpenIaService,
     private readonly permisosService: PermisosService, private estadoChatService: EstadoChatService) {
     this.currentUser = this.currentUserSubject.asObservable();
     this.checkInitialSession();
@@ -59,6 +59,8 @@ export class LoginService {
           localStorage.setItem('apellidoPaterno', user.apellidoPaterno);
           localStorage.setItem('apellidoMaterno', user.apellidoMaterno);
           localStorage.setItem('correo', user.correo);
+          localStorage.setItem('puesto', 'Agente comercial');
+          localStorage.setItem('numeroTelefono', '6771084410');
           localStorage.setItem('imagenPerfil', user.archivoImagen);
           localStorage.setItem('lastActivity', Date.now().toString());
           localStorage.setItem('licencia', user.licencia);
@@ -75,6 +77,14 @@ export class LoginService {
           this.catalogoService.cargarCatalogos(user.idEmpresa);
           this.cargarPermisosUsuario(user.idRol, user.idEmpresa);
           this.startSessionTimer();
+          this.OpenIaService.inicializarCacheIdsAsync(user.idUsuario, 7).subscribe({
+                next: (response) => {
+                  console.log('Cache inicializado exitosamente', response);
+                },
+                error: (error) => {
+                  console.error('Error al inicializar cache', error);
+                }
+              });
         }
         return user;
       }));
@@ -294,6 +304,36 @@ export class LoginService {
     }).pipe(
       map(data => data.urlImagen ?? '')
     );
+  }
+
+  obtenerDatosUsuarioLogueado(): {
+    nombre: string;
+    apellidoPaterno: string;
+    apellidoMaterno: string;
+    correo: string;
+    nombreCompleto: string;
+    puesto: string;
+    numeroTelefono: string;
+  } {
+    const nombre = localStorage.getItem('nombre') || '';
+    const apellidoPaterno = localStorage.getItem('apellidoPaterno') || '';
+    const apellidoMaterno = localStorage.getItem('apellidoMaterno') || '';
+    const correo = localStorage.getItem('correo') || '';
+    const puesto = localStorage.getItem('puesto') || '';
+    const numeroTelefono = localStorage.getItem('numeroTelefono') || '';
+
+    // Concatenar nombre completo
+    const nombreCompleto = `${nombre} ${apellidoPaterno} ${apellidoMaterno}`.trim();
+    
+    return {
+      nombre,
+      apellidoPaterno,
+      apellidoMaterno,
+      correo,
+      puesto,
+      numeroTelefono,
+      nombreCompleto
+    };
   }
 
 }

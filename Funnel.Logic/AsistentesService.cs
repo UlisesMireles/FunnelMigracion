@@ -24,6 +24,50 @@ namespace Funnel.Logic
         private string GetVectorStoreCacheKey(int idBot) => $"vectorStoreId_{idBot}";
         private string GetAssistantCacheKey(int userId, int idBot) => $"assistantId_{userId}_{idBot}";
         private string GetThreadCacheKey(int userId, int idBot) => $"threadId_{userId}_{idBot}";
+        public async Task<BaseOut> InicializarCacheIdsAsync(int userId, int idBot)
+        {
+            BaseOut result = new BaseOut();
+            try
+            {
+                var configuracion = await _asistentesData.ObtenerConfiguracionPorIdBotAsync(idBot);
+                if (configuracion == null)
+                    throw new Exception("No se encontró configuración para el asistente ");
+                // 1. Vector Store
+                var vectorStoreCacheKey = GetVectorStoreCacheKey(idBot);
+                if (!(_cache.Get(vectorStoreCacheKey) is string vectorStoreId) || string.IsNullOrEmpty(vectorStoreId))
+                {
+                    vectorStoreId = await CreateVectorStoreAsync(configuracion.Llave, configuracion.FileId);
+                    while (!await IsVectorStoreReadyAsync(configuracion.Llave, vectorStoreId))
+                    {
+                        await Task.Delay(1000);
+                    }
+                    _cache.Set(vectorStoreCacheKey, vectorStoreId, TimeSpan.FromDays(7));
+                }
+
+                // 2. Assistant
+                var assistantCacheKey = GetAssistantCacheKey(userId, idBot);
+                if (!(_cache.Get(assistantCacheKey) is string assistantId) || string.IsNullOrEmpty(assistantId))
+                {
+                    assistantId = await CreateAssistantWithVectorStoreAsync(configuracion, vectorStoreId);
+                    _cache.Set(assistantCacheKey, assistantId, TimeSpan.FromHours(2));
+                }
+
+                // 3. Thread
+                var threadCacheKey = GetThreadCacheKey(userId, idBot);
+                if (!(_cache.Get(threadCacheKey) is string threadId) || string.IsNullOrEmpty(threadId))
+                {
+                    threadId = await CreateThreadAsync(configuracion.Llave);
+                    _cache.Set(threadCacheKey, threadId, TimeSpan.FromHours(2));
+                }
+                result.Result = true;
+            }
+            catch(Exception ex)
+            {
+                result.Result = false;
+                result.ErrorMessage = "Ocurrio un error al inicializar cache" + ex.Message;
+            }
+            return result;
+        }
 
 
         public async Task<BaseOut> ActualizarDocumento(ConsultaAsistente consultaAsistente)
@@ -50,7 +94,8 @@ namespace Funnel.Logic
 
             try
             {
-                var respuestaOpenIA = await BuildAnswer(consultaAsistente.Pregunta, consultaAsistente.IdBot, consultaAsistente.IdUsuario);
+                string preguntaConData = string.Concat(consultaAsistente.Pregunta, "(usuario:", consultaAsistente.NombreUsuario, ",correo:", consultaAsistente.Correo, ", puesto:", consultaAsistente.Puesto, ",telefono:", consultaAsistente.NumeroTelefono, ')');
+                var respuestaOpenIA = await BuildAnswer(preguntaConData, consultaAsistente.IdBot, consultaAsistente.IdUsuario);
                 consultaAsistente.Respuesta = respuestaOpenIA.Respuesta;
                 consultaAsistente.TokensEntrada = respuestaOpenIA.TokensEntrada;
                 consultaAsistente.TokensSalida = respuestaOpenIA.TokensSalida;
@@ -293,51 +338,57 @@ namespace Funnel.Logic
         }
         private async Task<string> GetOrCreateAssistantIdAsync(ConfiguracionDto configuracion, int userId, string vectorStoreId, int idBot)
         {
-            var assistantId = await _cache.GetOrCreateAsync(GetAssistantCacheKey(userId, idBot), async entry =>
+            var cacheKey = GetAssistantCacheKey(userId, idBot);
+            if (_cache.Get(cacheKey) is string assistantId && !string.IsNullOrEmpty(assistantId))
             {
-                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(8);
-                var id = await CreateAssistantWithVectorStoreAsync(configuracion, vectorStoreId);
-                return id ?? throw new InvalidOperationException("El ID del asistente no puede ser nulo.");
-            });
+                return assistantId;
+            }
 
-            if (assistantId is null)
-                throw new InvalidOperationException("El ID del asistente no puede ser nulo (cache).");
+            var newAssistantId = await CreateAssistantWithVectorStoreAsync(configuracion, vectorStoreId);
+            if (string.IsNullOrEmpty(newAssistantId))
+                throw new InvalidOperationException("El ID del asistente no puede ser nulo.");
 
-            return assistantId;
+            _cache.Set(cacheKey, newAssistantId, TimeSpan.FromHours(2));
+            return newAssistantId;
         }
         private async Task<string> GetOrCreateThreadIdAsync(string apiKey, int userId, int idBot)
         {
-            var threadId = await _cache.GetOrCreateAsync(GetThreadCacheKey(userId, idBot), async entry =>
+            var cacheKey = GetThreadCacheKey(userId, idBot);
+            if (_cache.Get(cacheKey) is string threadId && !string.IsNullOrEmpty(threadId))
             {
-                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(2);
-                var id = await CreateThreadAsync(apiKey);
-                return id ?? throw new InvalidOperationException("El ID del thread no puede ser nulo.");
-            });
+                return threadId;
+            }
 
-            if (threadId is null)
-                throw new InvalidOperationException("El ID del thread no puede ser nulo (cache).");
+            var newThreadId = await CreateThreadAsync(apiKey);
+            if (string.IsNullOrEmpty(newThreadId))
+                throw new InvalidOperationException("El ID del thread no puede ser nulo.");
 
-            return threadId;
+            _cache.Set(cacheKey, newThreadId, TimeSpan.FromHours(2));
+            return newThreadId;
         }
+
         private async Task<string> GetOrCreateVectorStoreIdAsync(string apiKey, int idBot, string fileId)
         {
-            var vectorStoreId = await _cache.GetOrCreateAsync(GetVectorStoreCacheKey(idBot), async entry =>
+            var cacheKey = GetVectorStoreCacheKey(idBot);
+            if (_cache.Get(cacheKey) is string vectorStoreId && !string.IsNullOrEmpty(vectorStoreId))
             {
-                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(7);   
-                var id = await CreateVectorStoreAsync(apiKey, fileId);
-                // Espera a que el Vector Store esté listo  
-                while (!await IsVectorStoreReadyAsync(apiKey, id))
-                {
-                    await Task.Delay(1000);
-                }
-                return id ?? throw new InvalidOperationException("El ID del Vector Store no puede ser nulo.");
-            });
+                return vectorStoreId;
+            }
 
-            if (vectorStoreId is null)
-                throw new InvalidOperationException("El ID del Vector Store no puede ser nulo (cache).");
+            var newVectorStoreId = await CreateVectorStoreAsync(apiKey, fileId);
+            // Espera a que el Vector Store esté listo
+            while (!await IsVectorStoreReadyAsync(apiKey, newVectorStoreId))
+            {
+                await Task.Delay(1000);
+            }
 
-            return vectorStoreId;
+            if (string.IsNullOrEmpty(newVectorStoreId))
+                throw new InvalidOperationException("El ID del Vector Store no puede ser nulo.");
+
+            _cache.Set(cacheKey, newVectorStoreId, TimeSpan.FromHours(2));
+            return newVectorStoreId;
         }
+
         public static async Task<string> UploadFileToOpenAIAsync(string apiKey, string filePath, string purpose = "assistants")
         {
             var client = new HttpClient();
@@ -451,7 +502,11 @@ namespace Funnel.Logic
 
         public void RemoveAssistantCache(int userId, int idBot)
         {
-            _cache.Remove(GetAssistantCacheKey(userId, idBot));
+            var key = GetAssistantCacheKey(userId, idBot);
+            Console.WriteLine("Antes de Remove: " + (_cache.Get(key) ?? "null"));
+            _cache.Remove(key);
+            Console.WriteLine("Después de Remove: " + (_cache.Get(key) ?? "null"));
+
         }
 
         public void RemoveThreadCache(int userId, int idBot)

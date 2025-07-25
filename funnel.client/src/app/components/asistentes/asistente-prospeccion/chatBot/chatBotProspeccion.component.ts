@@ -30,6 +30,10 @@ export class ChatBotProspeccionComponent implements OnInit, AfterViewInit {
     respuesta: '',
     tokensEntrada: 0,
     tokensSalida: 0,
+    nombreUsuario: '',
+    correo: '',
+    puesto: '',
+    numeroTelefono : '',
     idUsuario: this.idUsuario(),
     idTipoUsuario: this.IdTipoUsuario(),
     idEmpresa: this.IdEmpresa(),
@@ -39,7 +43,7 @@ export class ChatBotProspeccionComponent implements OnInit, AfterViewInit {
   };
 
   chatHistorial: ChatHistorial[] = [
-     { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨ Bienvenido(a) a tu asistente comercial. Soy LeadsEisei AI, tu asistente para convertir contactos en oportunidades reales. ¿Me dices tu nombre para comenzar?." , mostrarBotonDataset: true}
+     { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨ Bienvenido(a) a tu asistente comercial. Soy Bruno, tu asistente para convertir contactos en oportunidades reales. ¿Me dices tu nombre para comenzar?." , mostrarBotonDataset: true}
    ];
   chatHistorialResp!: string;
   mostrarBotonDataset: boolean = false;
@@ -56,6 +60,10 @@ export class ChatBotProspeccionComponent implements OnInit, AfterViewInit {
   ) { }
 
    ngOnInit() { 
+    this.consultaAsistente.nombreUsuario = this.loginService.obtenerDatosUsuarioLogueado().nombreCompleto;
+    this.consultaAsistente.correo = this.loginService.obtenerDatosUsuarioLogueado().correo;
+    this.consultaAsistente.puesto = this.loginService.obtenerDatosUsuarioLogueado().puesto;
+    this.consultaAsistente.numeroTelefono = this.loginService.obtenerDatosUsuarioLogueado().numeroTelefono;
     this.chatHistorialResp = JSON.stringify(this.chatHistorial);
     const savedState = sessionStorage.getItem('chatBotProspeccionState');
       if (savedState) {
@@ -109,9 +117,31 @@ ngAfterViewInit(): void {
     return IdEmpresaNumber;
   }
   //#endregion
+  
+  private esSaludo(mensaje: string): boolean {
+    const saludos = [
+      'hola', 'hello', 'hi', 'buenas', 'buenos dias', 'buenas tardes', 'buenas noches',
+      'buen dia', 'buena tarde', 'buena noche', 'que tal', 'saludos', 'hey'
+    ];
+    
+    const mensajeLimpio = mensaje.toLowerCase().trim().replace(/[¡!¿?.,]/g, '');
+    
+    // Verificar si el mensaje es solo un saludo (máximo 3 palabras)
+    const palabras = mensajeLimpio.split(/\s+/);
+    if (palabras.length > 3) {
+      return false;
+    }
+    
+    return saludos.some(saludo => mensajeLimpio.includes(saludo));
+  }
+  
+  private generarRespuestaSaludo(): string {
+    return `¡Hola ${this.nombreUsuario()}! ¿En qué puedo ayudarte hoy?`;
+  }
+
    private restoreState(state: any) {
     this.chatHistorial = state.historial || [
-      { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨ Bienvenido(a) a tu asistente comercial. Soy LeadsEisei AI, tu asistente para convertir contactos en oportunidades reales. ¿Me dices tu nombre para comenzar?." , mostrarBotonDataset: true}
+      { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨ Bienvenido(a) a tu asistente comercial. Soy Bruno, tu asistente para convertir contactos en oportunidades reales. ¿Me dices tu nombre para comenzar?." , mostrarBotonDataset: true}
     ];
     this.chatHistorialResp = JSON.stringify(this.chatHistorial);
     this.cdRef.detectChanges();
@@ -125,8 +155,30 @@ ngAfterViewInit(): void {
   }
   consultaMensajeOpenIa(event?: any, textarea?: HTMLTextAreaElement) {
     if (!this.isConsultandoOpenIa && this.pregunta.trim() !== "") {
+      const preguntaOriginal = this.pregunta;
       this.consultaAsistente.pregunta = this.pregunta;
       this.chatHistorial.push({ rol: "usuario", mensaje: this.pregunta });
+      
+      // Verificar si es un saludo simple
+      if (this.esSaludo(preguntaOriginal)) {
+        const respuestaSaludo = this.generarRespuestaSaludo();
+        this.chatHistorial.push({ 
+          rol: "asistente", 
+          mensaje: respuestaSaludo,
+          mostrarBotonDataset: false 
+        });
+        
+        this.pregunta = "";
+        if (textarea) {
+          textarea.style.height = 'auto';
+        }
+        
+        this.cdRef.detectChanges();
+        this.scrollToBottom();
+        this.saveState();
+        return;
+      }
+      
       this.pregunta = "";
 
       if (textarea) {
@@ -283,7 +335,7 @@ enviarDataset() {
       }
     });
     this.chatHistorial = [
-     { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨ Bienvenido(a) a tu asistente comercial. Soy LeadsEisei AI, tu asistente para convertir contactos en oportunidades reales. ¿Me dices tu nombre para comenzar?." , mostrarBotonDataset: true}
+     { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨ Bienvenido(a) a tu asistente comercial. Soy Bruno, tu asistente para convertir contactos en oportunidades reales. ¿Me dices tu nombre para comenzar?." , mostrarBotonDataset: true}
    ];
     sessionStorage.removeItem('chatBotProspeccionState');
     localStorage.removeItem('chatBotProspeccionState');

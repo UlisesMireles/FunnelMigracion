@@ -41,6 +41,16 @@ export class OpenIaService {
   }
   
   limpiarCacheBot(userId: number, idBot: number): Observable<any> {
-    return this.http.post(this.baseUrl + 'api/AsistenteProspeccion/LimpiarCacheBot', { userId, idBot });
+    const formData = new FormData();
+    formData.append('userId', userId.toString());
+    formData.append('idBot', idBot.toString());
+    return this.http.post(this.baseUrl + 'api/AsistenteProspeccion/LimpiarCacheBot', formData);
+  }
+  
+  inicializarCacheIdsAsync(userId: number, idBot: number): Observable<any> {
+    const formData = new FormData();
+    formData.append('userId', userId.toString());
+    formData.append('idBot', idBot.toString());
+    return this.http.post(this.baseUrl + 'api/AsistenteProspeccion/InicializarCacheIdsAsync', formData);
   }
 }

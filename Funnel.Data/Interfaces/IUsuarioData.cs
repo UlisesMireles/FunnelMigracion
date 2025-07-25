@@ -16,6 +16,7 @@ namespace Funnel.Data.Interfaces
 
         Task<BaseOut> GuardarUsuarios(UsuarioDto usuarios);
         public Task<List<ComboTiposUsuariosDto>> ComboTiposUsuarios();
+        public Task<List<ComboPuestosDto>> ComboPuestos();
         Task<List<string>> ObtenerInicialesPorEmpresa(int idEmpresa);
         Task<bool> ValidarInicialesExistente(string iniciales, int idEmpresa);
 

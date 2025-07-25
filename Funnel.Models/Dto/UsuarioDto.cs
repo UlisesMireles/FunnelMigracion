@@ -41,5 +41,9 @@ namespace Funnel.Models.Dto
         public int? CantidadOportunidades { get; set; }
         public string? SesionId { get; set; }
         public string? MotivoCerrarSesion { get; set; }
+        public bool? PermitirDecimales { get; set; }
+        public string? Telefono { get; set; }   
+        public int? IdPuesto { get; set; }
+        public string? Puesto { get; set; }
     }
 }

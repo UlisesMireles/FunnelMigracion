@@ -8,6 +8,7 @@ export interface Usuarios {
     tipoUsuario: string;
     nombre: string;
     correo: string;
+    telefono?: string;
     idEmpresa: number;
     idTipoUsuario: number;
     descripcion: string;
@@ -26,6 +27,8 @@ export interface Usuarios {
     id?: number;
     imagen?: File;
     cantidadOportunidades?: number;
+    idPuesto?: number;
+    puesto?: string;
   }
   
   export interface RequestUsuario {
@@ -36,6 +39,7 @@ export interface Usuarios {
     tipoUsuario: string;
     nombre: string;
     correo: string;
+    telefono?: string;
     idEmpresa: number;
     idTipoUsuario: number;
     apellidoPaterno: string;
@@ -47,4 +51,6 @@ export interface Usuarios {
     fechaFin: string;
     iniciales: string;
     id?: number;
+    idPuesto?: number;
+    puesto?: string;
   }

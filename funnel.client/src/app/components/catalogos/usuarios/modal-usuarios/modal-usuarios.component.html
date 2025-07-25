@@ -77,6 +77,25 @@
           </span>
         </div>
       </div>
+      <div class="row">
+        <div class="col-sm-4 lbl">
+          <label for="telefono">Teléfono: </label>
+        </div>
+        <div class="col-sm-8">
+          <input pInputText class="inptSize" formControlName="telefono" />
+          <span *ngIf="usuarioForm.get('telefono')?.invalid && usuarioForm.get('telefono')?.touched"
+            class="text-danger"><br>
+            <ng-container *ngIf="usuarioForm.get('telefono')?.errors?.['required']">El teléfono es obligatorio.
+            </ng-container>
+            <ng-container *ngIf="usuarioForm.get('telefono')?.errors?.['minlength']">El teléfono debe tener al menos 8
+              caracteres. </ng-container>
+            <ng-container *ngIf="usuarioForm.get('telefono')?.errors?.['maxlength']">El teléfono no puede tener más de
+              15 caracteres. </ng-container>
+            <ng-container *ngIf="usuarioForm.get('telefono')?.errors?.['pattern']">Formato de telefono incorrecto.
+            </ng-container>
+          </span>
+        </div>
+      </div>
       <div class="row ">
         <div class="col-sm-4 lbl">
           <label for="tiposUsuario">Tipo de Usuario: </label>
@@ -93,6 +112,25 @@
           </p-dropdown>
           <span *ngIf="usuarioForm.get('idTipoUsuario')?.invalid && usuarioForm.get('idTipoUsuario')?.touched" class="text-danger"><br>
             <ng-container *ngIf="usuarioForm.get('idTipoUsuario')?.errors?.['required']">Debe seleccionar un tipo de usuario.</ng-container>
+          </span>
+        </div>
+      </div>
+      <div class="row ">
+        <div class="col-sm-4 lbl">
+          <label for="puesto">Puesto: </label>
+        </div>
+        <div class="col-sm-8 ">
+          <p-dropdown
+            class="inptSize1"
+            [options]="puestos"
+            formControlName="idPuesto"
+            optionLabel="descripcion"
+            optionValue="idPuesto"
+            appendTo="body"
+            placeholder="Seleccione un puesto">
+          </p-dropdown>
+          <span *ngIf="usuarioForm.get('idPuesto')?.invalid && usuarioForm.get('idPuesto')?.touched" class="text-danger"><br>
+            <ng-container *ngIf="usuarioForm.get('idPuesto')?.errors?.['required']">Debe seleccionar un puesto.</ng-container>
           </span>
         </div>
       </div>

@@ -28,6 +28,7 @@ export class ModalUsuariosComponent {
   
     usuarioForm!: FormGroup;
     tiposUsuario: any[] = [];
+    puestos: any[] = [];
 
     selectedFile: File | null = null;
     selectedFileName: string = '';
@@ -104,8 +105,16 @@ export class ModalUsuariosComponent {
         idTipoUsuario: [null, Validators.required],
         estatus: [true],
         correo: ['', [Validators.required, Validators.email]],
+        telefono: ['', [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.maxLength(20),
+          Validators.pattern('^[0-9+\\-\\s()]+$')
+        ]
+        ],
         idUsuario: [this.loginService.obtenerIdUsuario()],
         idEmpresa: [this.loginService.obtenerIdEmpresa()],
+        idPuesto: [null, Validators.required],
         bandera: ['INSERT']
       },{ validator: this.passwordMatchValidator });
       return;
@@ -168,7 +177,15 @@ export class ModalUsuariosComponent {
             Validators.maxLength(100)
           ]
         ],
+        telefono: [this.usuario.telefono, [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.maxLength(20),
+          Validators.pattern('^[0-9+\\-\\s()]+$')
+        ]
+        ],
         idEmpresa: [this.loginService.obtenerIdEmpresa()],
+        idPuesto: [this.usuario.idPuesto, Validators.required],
         bandera: ['UPDATE']
       }, { validator: this.passwordMatchValidator });
       this.selectedFileOriginal = this.selectedFile;
@@ -187,6 +204,7 @@ export class ModalUsuariosComponent {
 
   onDialogShow() {
     this.cargarTipoUsuario();
+    this.cargarPuestos();
     this.inicializarFormulario(); 
     this.escucharCambiosEnCampos();
   }
@@ -195,6 +213,22 @@ export class ModalUsuariosComponent {
     this.UsuariosService.getTiposUsuarios(this.loginService.obtenerIdEmpresa()).subscribe({
       next: (result: any) => {
         this.tiposUsuario = result;
+      },
+      error: (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Se ha producido un error.',
+          detail: error.errorMessage,
+        });
+      }
+    });
+  }
+
+  cargarPuestos() {
+    this.UsuariosService.getPuestos(this.loginService.obtenerIdEmpresa()).subscribe({
+      next: (result: any) => {
+        console.log("Puestos obtenidos:", result);
+        this.puestos = result;
       },
       error: (error) => {
         this.messageService.add({

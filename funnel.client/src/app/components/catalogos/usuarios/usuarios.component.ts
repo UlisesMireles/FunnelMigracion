@@ -327,6 +327,7 @@ export class UsuariosComponent {
       usuario: '100%',
       iniciales: '100%',
       correo: '100%',
+      telefono: '100%',
       tipoUsuario: '100%',
       desEstatus: '100%',
       cantidadOportunidades: '100%',

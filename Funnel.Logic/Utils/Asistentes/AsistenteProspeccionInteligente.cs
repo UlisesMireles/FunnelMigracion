@@ -36,12 +36,25 @@ namespace Funnel.Logic.Utils.Asistentes
 
             try
             {
-                var respuestaOpenIA = await BuildAnswer(consultaAsistente.Pregunta, consultaAsistente.IdBot, consultaAsistente.IdUsuario);
-                consultaAsistente.Respuesta = respuestaOpenIA.Respuesta;
-                //consultaAsistente.TokensEntrada = respuestaOpenIA.TokensEntrada;
-                //consultaAsistente.TokensSalida = respuestaOpenIA.TokensSalida;
-                consultaAsistente.Exitoso = true;
-                consultaAsistente.FechaRespuesta = DateTime.Now;
+                var respuestaFrecuente = await VerificarPreguntaFrecuenteAsync(consultaAsistente.Pregunta, consultaAsistente.IdBot);
+
+                if (respuestaFrecuente != null)
+                {
+                    consultaAsistente.Respuesta = respuestaFrecuente.Respuesta;
+                    consultaAsistente.EsPreguntaFrecuente = true;
+                    consultaAsistente.Exitoso = true;
+                    consultaAsistente.FechaRespuesta = DateTime.Now;
+                }
+                else
+                {
+                    var respuestaOpenIA = await BuildAnswer(consultaAsistente.Pregunta, consultaAsistente.IdBot, consultaAsistente.IdUsuario);
+                    consultaAsistente.Respuesta = respuestaOpenIA.Respuesta;
+                    //consultaAsistente.TokensEntrada = respuestaOpenIA.TokensEntrada;
+                    //consultaAsistente.TokensSalida = respuestaOpenIA.TokensSalida;
+                    consultaAsistente.EsPreguntaFrecuente = false;
+                    consultaAsistente.Exitoso = true;
+                    consultaAsistente.FechaRespuesta = DateTime.Now;
+                }
             }
             catch (Exception ex)
             {
@@ -51,6 +64,51 @@ namespace Funnel.Logic.Utils.Asistentes
             }
 
             return consultaAsistente;
+        }
+        private async Task<PreguntasFrecuentesDto> VerificarPreguntaFrecuenteAsync(string pregunta, int idBot)
+        {
+            List<PreguntasFrecuentesDto> result = new List<PreguntasFrecuentesDto>();
+
+            IList<ParameterSQl> list = new List<ParameterSQl>
+            {
+                DataBase.CreateParameterSql("pIdBot", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, idBot)
+            };
+
+
+
+            using (IDataReader reader = await DataBase.GetReaderSql("F_PreguntasFrecuentesActivasPorBot", CommandType.StoredProcedure, list, _connectionString))
+            {
+                while (reader.Read())
+                {
+                    var dto = new PreguntasFrecuentesDto
+                    {
+                        Id = ComprobarNulos.CheckIntNull(reader["Id"]),
+                        IdBot = ComprobarNulos.CheckIntNull(reader["IdBot"]),
+                        Pregunta = ComprobarNulos.CheckStringNull(reader["Pregunta"]),
+                        Respuesta = ComprobarNulos.CheckStringNull(reader["Respuesta"]),
+                        Activo = ComprobarNulos.CheckBooleanNull(reader["Activo"])
+                    };
+                    result.Add(dto);
+                }
+
+            }
+            var preguntaNormalizada = NormalizarTexto(pregunta);
+            return result.FirstOrDefault(p =>
+                p.Activo &&
+                EsPreguntaSimilar(NormalizarTexto(p.Pregunta), preguntaNormalizada));
+        }
+
+        private string NormalizarTexto(string texto)
+        {
+            if (string.IsNullOrWhiteSpace(texto))
+                return string.Empty;
+
+            return texto.Trim().ToLower();
+        }
+        private bool EsPreguntaSimilar(string pregunta1, string pregunta2)
+        {
+           
+            return pregunta1.Contains(pregunta2) || pregunta2.Contains(pregunta1);
         }
         private async Task<RespuestaOpenIA> BuildAnswer(string pregunta, int idBot, int idUsuario)
         {

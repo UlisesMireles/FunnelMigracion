@@ -66,6 +66,7 @@ export class ModalUsuariosComponent {
   }
 
   inicializarFormulario() {
+    this.puestosFiltrados = this.puestos;
     if (this.insertar) {
       const passwordGenerada = this.generarPassword(); 
       this.usuarioForm = this.fb.group({
@@ -195,7 +196,14 @@ export class ModalUsuariosComponent {
       }, { validator: this.passwordMatchValidator });
       this.selectedFileOriginal = this.selectedFile;
       this.actualizarIniciales(); 
-    
+      if (this.usuario.idPuesto) {
+        this.puestoSeleccionado = true;
+        this.puestosSeleccionado = { id: this.usuario.idPuesto, descripcion: this.usuario.puesto } as Puestos;
+        this.busquedaPuesto = this.puestosSeleccionado.descripcion;
+      } else {
+        this.puestoSeleccionado = false;
+        this.busquedaPuesto = '';
+      }
     }
   }
 
@@ -232,7 +240,6 @@ export class ModalUsuariosComponent {
   cargarPuestos() {
     this.UsuariosService.getPuestos(this.loginService.obtenerIdEmpresa()).subscribe({
       next: (result: any) => {
-        console.log("Puestos obtenidos:", result);
         this.puestos = result;
       },
       error: (error) => {

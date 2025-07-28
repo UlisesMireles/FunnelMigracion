@@ -122,7 +122,7 @@
           </div>
           <div class="col-sm-8">
             <p-select [options]="puestos" formControlName="idPuesto" optionLabel="descripcion" [filter]="true"
-              filterBy="descripcion" [showClear]="true" placeholder="{{busquedaPuesto || 'Selecciona un prospecto'}}"
+              filterBy="descripcion" [showClear]="true" placeholder="{{busquedaPuesto || 'Selecciona un puesto'}}"
               class="w-full md:w-56" (onChange)="seleccionarPuesto($event.value)"
               (onFilter)="filtrarPuestos($event)" 
                [ngStyle]="{ width: '250px', height: '41px', 'text-align': 'left', 'padding-top': '4px', 'padding-left': '6px' }"

@@ -16,7 +16,7 @@ export class ModalOportunidadesPorAgenteTipoComponent {
   @Input() idAgente: number | null = null;
   @Input() idTipoOporAgente!: number;
   nombreTipoSeleccionado: string = '';
-  
+  public mostrarDecimales: boolean = false;
   
 
   modalDetalleVisible: boolean = false;
@@ -39,6 +39,7 @@ constructor(
   ) {}
 
   ngOnChanges() {
+    this.mostrarDecimales = this.loginService.obtenerPermitirDecimales();
     console.log('Visible:', this.visible, 'idAgente:', this.idAgente);
     if (this.visible && this.idAgente) {
       this.cargarOportunidades();

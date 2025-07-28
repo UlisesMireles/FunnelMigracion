@@ -55,7 +55,7 @@ export class ModalUsuariosComponent {
   ngOnInit() {
     this.inicializarFormulario ();
     this.escucharCambiosEnCampos();
-
+    this.cargarPuestos();
   }
 
   ngOnChanges(changes: SimpleChanges) {

@@ -25,7 +25,7 @@ export class MenuComponent {
   onSidebarToggle(expanded: boolean) {
     this.isExpanded = expanded;
   }
-  constructor(private readonly router: Router, private readonly breakpointObserver: BreakpointObserver, private readonly authService: LoginService, public sideNavService: SideNavService) {
+  constructor(private readonly router: Router, private readonly breakpointObserver: BreakpointObserver, private readonly authService: LoginService, public sideNavService: SideNavService, private readonly loginService: LoginService) {
 
   }
 
@@ -46,6 +46,16 @@ export class MenuComponent {
         this.tipoUsuario = this.rol;
       }
     }
+
+    console.log('Antes Permitir decimales:');
+    this.loginService.obtenerPermitirDecimalesDesdeApi().subscribe({
+      next: (valor) => {
+        console.log(`Permitir decimales actualizado a: ${valor}`);
+      },
+      error: (err) => {
+        console.error('Error al consultar permitirDecimales', err);
+      }
+    });
   }
   logout() {
     this.authService.logout('Sesión cerrada por el usuario');

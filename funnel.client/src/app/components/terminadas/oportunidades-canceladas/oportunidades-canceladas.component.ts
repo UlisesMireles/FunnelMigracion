@@ -35,7 +35,7 @@ export class OportunidadesCanceladasComponent {
   modalSeguimientoVisible: boolean = false;
   seguimientoOportunidad: boolean = false;
   modalDocumentosVisible: boolean = false;
-
+  public mostrarDecimales: boolean = false;
 
   loading: boolean = true;
 
@@ -60,6 +60,7 @@ export class OportunidadesCanceladasComponent {
   ) { }
 
   ngOnInit(): void {
+    this.mostrarDecimales = this.loginService.obtenerPermitirDecimales();
     this.configuracionColumnasService.obtenerColumnasAMostrar(EnumTablas.OportunidadesCanceladas).subscribe({
       next: ({ todas, mostrar }) => {
         this.lsTodasColumnas = todas;

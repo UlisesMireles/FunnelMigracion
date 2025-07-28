@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectorRef, ElementRef, Renderer2 } from '@angular/core';
 import { Oportunidad } from '../../../../interfaces/oportunidades';
 import { OportunidadesService } from '../../../../services/oportunidades.service';
 import { LoginService } from '../../../../services/login.service';
@@ -17,6 +17,7 @@ export class ModalDetallesIndicadoresEtapaComponent {
   oportunidades: Oportunidad[] = [];
   loading: boolean = true;
   maximized: boolean = false;
+  public mostrarDecimales: boolean = false;
 
     lsColumnasAMostrar = [
     { key: 'nombre', valor: 'Prospecto', tipoFormato: 'text' },
@@ -30,14 +31,19 @@ export class ModalDetallesIndicadoresEtapaComponent {
     constructor(
     private oportunidadesService: OportunidadesService,
     private loginService: LoginService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private readonly el: ElementRef,
+    private readonly renderer: Renderer2
   ) {}
 
   onDialogShow() {
+    this.mostrarDecimales = this.loginService.obtenerPermitirDecimales();
     this.cargarOportunidades();
+    this.actualizarVariableCSS();
   }
 
 cargarOportunidades() {
+  this.loading = true;
   this.oportunidadesService.getOportunidades(
     this.loginService.obtenerIdEmpresa(),
     this.loginService.obtenerIdUsuario(),
@@ -49,14 +55,21 @@ cargarOportunidades() {
         const fechaB = b.fechaEstimadaCierreOriginal ? new Date(b.fechaEstimadaCierreOriginal).getTime() : 0;
         return fechaB - fechaA;
       });
+      this.loading = false;
+      this.actualizarVariableCSS();
+      this.cdr.detectChanges(); // Forzar detección de cambios para actualizar la variable CSS
     },
     error: (error) => {
       console.error('Error al cargar oportunidades', error);
+      this.loading = false;
     }
-  });
-}
+  });  }
 
-close() { 
+  private actualizarVariableCSS() {
+    this.renderer.setStyle(this.el.nativeElement, '--cantidad-registros', this.oportunidades.length.toString());
+  }
+
+close() {
   this.visible = false;
   this.visibleChange.emit(this.visible);
   this.closeModal.emit();

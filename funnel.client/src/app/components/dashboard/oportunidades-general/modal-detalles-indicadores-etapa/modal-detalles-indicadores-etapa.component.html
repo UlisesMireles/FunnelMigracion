@@ -26,9 +26,10 @@
   </ng-template>
 
   <ng-template pTemplate="content">
-    <div class="contenedor-tabla-dialogo">
+    <div class="contenedor-tabla-dialogo" #contenedorTabla>
       <!-- Tabla de oportunidades -->
-      <p-table #dt [value]="oportunidades" [paginator]="true" [rows]="10" [paginatorDropdownAppendTo]="'body'"
+      <p-table #dt [value]="oportunidades" [paginator]="oportunidades.length > 10" [rows]="10" 
+        [paginatorDropdownAppendTo]="'body'"
         [rowsPerPageOptions]="[10, 25, 50]" [totalRecords]="oportunidades.length"
         styleClass="tabla-estilizada">
         
@@ -67,7 +68,9 @@
                 </span>
                 </span>
                 
-                <span *ngSwitchCase="'currency'">{{ rowData[def.key] | currency:'MXN':'symbol':'1.2-2'}}</span>
+                <span *ngSwitchCase="'currency'">
+                  {{ rowData[def.key] | totalCurrency:'currency':mostrarDecimales }}
+                </span>
                 <span *ngSwitchCase="'date'" 
                       [ngStyle]="{
                         'color': def.key === 'fechaEstimadaCierreOriginal' ? getColorForFechaEstimadaCierre(rowData[def.key]) : 'inherit',
@@ -85,7 +88,7 @@
             [ngClass]="{'total-registros-cell': def.key === 'nombre'}">
             <ng-container *ngIf="def.tipoFormato === 'currency'">
                 <div style="text-align: left; font-weight: bold;">
-                {{ calcularSumaMontos() | currency:'MXN':'symbol':'1.2-2' }}
+                    {{ calcularSumaMontos() | totalCurrency:'currency':mostrarDecimales }}
                 </div>
             </ng-container>
             <ng-container *ngIf="def.key === 'nombre'">
@@ -97,4 +100,5 @@
       </p-table>
     </div>
   </ng-template>
+  <div [style.--cantidad-registros]="oportunidades.length"></div>
 </p-dialog>

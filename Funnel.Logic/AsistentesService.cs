@@ -166,17 +166,62 @@ namespace Funnel.Logic
                 EsPreguntaSimilar(NormalizarTexto(p.Pregunta), preguntaNormalizada));
         }
 
+        private bool EsPreguntaSimilar(string preguntaBD, string preguntaUsuario)
+        {
+            string textoBD = NormalizarTexto(preguntaBD);
+            string textoUsuario = NormalizarTexto(preguntaUsuario);
+
+            if (textoBD.Contains(textoUsuario) || textoUsuario.Contains(textoBD))
+                return true;
+
+            int distancia = CalcularDistanciaLevenshtein(textoBD, textoUsuario);
+            int maxLength = Math.Max(textoBD.Length, textoUsuario.Length);
+            double porcentajeSimilitud = 1.0 - (double)distancia / maxLength;
+
+            return porcentajeSimilitud > 0.7;
+        }
+
         private string NormalizarTexto(string texto)
         {
             if (string.IsNullOrWhiteSpace(texto))
                 return string.Empty;
 
-            return texto.Trim().ToLower();
-        }
-        private bool EsPreguntaSimilar(string pregunta1, string pregunta2)
-        {
+            texto = texto.Trim().ToLower();
 
-            return pregunta1.Contains(pregunta2) || pregunta2.Contains(pregunta1);
+            texto = new string(texto.Where(c => !char.IsPunctuation(c)).ToArray());
+
+            var palabrasComunes = new[] { "por", "para", "con", "de", "que", "como", "un", "una", "los", "las", "podrías", "ayudarme", "coloca", "las", "que", "me", "diste" };
+            var palabras = texto.Split(' ').Where(p => !palabrasComunes.Contains(p));
+
+            return string.Join(" ", palabras);
+        }
+
+        private int CalcularDistanciaLevenshtein(string a, string b)
+        {
+            if (string.IsNullOrEmpty(a)) return string.IsNullOrEmpty(b) ? 0 : b.Length;
+            if (string.IsNullOrEmpty(b)) return a.Length;
+
+            int[,] matriz = new int[a.Length + 1, b.Length + 1];
+
+            for (int i = 0; i <= a.Length; i++)
+                matriz[i, 0] = i;
+
+            for (int j = 0; j <= b.Length; j++)
+                matriz[0, j] = j;
+
+            for (int i = 1; i <= a.Length; i++)
+            {
+                for (int j = 1; j <= b.Length; j++)
+                {
+                    int costo = (b[j - 1] == a[i - 1]) ? 0 : 1;
+
+                    matriz[i, j] = Math.Min(
+                        Math.Min(matriz[i - 1, j] + 1, matriz[i, j - 1] + 1),
+                        matriz[i - 1, j - 1] + costo);
+                }
+            }
+
+            return matriz[a.Length, b.Length];
         }
         private async Task<RespuestaOpenIA> BuildAnswer(string pregunta, int idBot, int idUsuario)
         {

@@ -115,25 +115,34 @@
           </span>
         </div>
       </div>
-      <div class="row ">
-        <div class="col-sm-4 lbl">
-          <label for="puesto">Puesto: </label>
+
+      <div class="row">
+          <div class="col-sm-4 lbl">
+            <label for="puesto">Puesto:</label>
+          </div>
+          <div class="col-sm-8">
+            <p-select [options]="puestos" formControlName="idPuesto" optionLabel="descripcion" [filter]="true"
+              filterBy="descripcion" [showClear]="true" placeholder="{{busquedaPuesto || 'Selecciona un prospecto'}}"
+              class="w-full md:w-56" (onChange)="seleccionarPuesto($event.value)"
+              (onFilter)="filtrarPuestos($event)" 
+               [ngStyle]="{ width: '250px', height: '41px', 'text-align': 'left', 'padding-top': '4px', 'padding-left': '6px' }"
+               [appendTo]="'body'">
+              <ng-template #selectedItem let-selectedOption>
+                <div class="flex items-center gap-2">
+                  <i class="pi pi-user"></i>
+                  <div>{{ selectedOption?.descripcion || 'Seleccione un puesto' }}</div>
+                </div>
+              </ng-template>
+              <ng-template let-item #item [ngStyle]="{ 'z-index': '1000' }">
+                <div class="flex items-center gap-2">
+                  <i class="pi pi-user"></i>
+                  <div>{{ item.descripcion }}</div>
+                </div>
+              </ng-template>
+            </p-select>
+          </div>
         </div>
-        <div class="col-sm-8 ">
-          <p-dropdown
-            class="inptSize1"
-            [options]="puestos"
-            formControlName="idPuesto"
-            optionLabel="descripcion"
-            optionValue="idPuesto"
-            appendTo="body"
-            placeholder="Seleccione un puesto">
-          </p-dropdown>
-          <span *ngIf="usuarioForm.get('idPuesto')?.invalid && usuarioForm.get('idPuesto')?.touched" class="text-danger"><br>
-            <ng-container *ngIf="usuarioForm.get('idPuesto')?.errors?.['required']">Debe seleccionar un puesto.</ng-container>
-          </span>
-        </div>
-      </div>
+
        <div class="row" *ngIf="!insertar">
         <div class="col-sm-4 lbl">
           <label for="password">Contraseña:</label>

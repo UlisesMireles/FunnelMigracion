@@ -54,3 +54,8 @@ export interface Usuarios {
     idPuesto?: number;
     puesto?: string;
   }
+
+  export interface Puestos {
+    id: number;
+    descripcion: string;
+  }

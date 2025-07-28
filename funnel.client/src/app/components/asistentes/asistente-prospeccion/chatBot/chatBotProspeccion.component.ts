@@ -200,37 +200,51 @@ ngAfterViewInit(): void {
   this.OpenIaService.asistenteProspeccion(this.consultaAsistente).subscribe({
     next: (data: ConsultaAsistenteDto) => {
       this.chatHistorial.pop();
-      const respuesta = data.respuesta.toLowerCase();
-      const mostrarBoton = respuesta.includes('dataset') || 
-                          respuesta.includes('conjunto de datos') || 
-                          respuesta.includes('proporciona datos') || 
-                          respuesta.includes('envía datos');
-      
-      this.chatHistorial.push({ 
-        rol: "asistente", 
-        mensaje: data.respuesta,
-        mostrarBotonDataset: mostrarBoton 
-      });
-      
-      this.cdRef.detectChanges();
-      this.scrollToBottom();
-      this.saveState();
-      this.isConsultandoOpenIa = false;
+      if(data.esPreguntaFrecuente) {
+        this.mostrarRespuestaFrecuente(data);
+      }else{
+        this.mostrarRespuestaOpenAI(data);
+      }
+      this.finalizarConsulta();
     },
     error: (err: HttpErrorResponse) => {
-      this.chatHistorial.pop();
-      this.chatHistorial.push({ 
-        rol: "asistente", 
-        mensaje: "Lo siento, ocurrió un error al procesar tu pregunta.",
-        mostrarBotonDataset: false 
-      });
-      this.cdRef.detectChanges();
-      this.saveState();
-      console.error(err);
-      this.isConsultandoOpenIa = false;
+      this.manejarEerrorConsulta(err);
     }
   });
 }
+private mostrarRespuestaFrecuente(data: ConsultaAsistenteDto) {
+    this.chatHistorial.push({ 
+      rol: "asistente", 
+      mensaje: data.respuesta,
+      mostrarBotonDataset: false,
+      esPreguntaFrecuente: true
+    });
+  }
+private mostrarRespuestaOpenAI(data: ConsultaAsistenteDto) {
+  this.chatHistorial.push({ 
+    rol: "asistente", 
+    mensaje: data.respuesta,
+    mostrarBotonDataset: false,
+    esPreguntaFrecuente: false
+  }); 
+}
+ private finalizarConsulta() {
+    this.cdRef.detectChanges();
+    this.scrollToBottom();
+    this.saveState();
+    this.isConsultandoOpenIa = false;
+  }
+  private manejarEerrorConsulta(err: HttpErrorResponse) {
+    this.chatHistorial.pop();
+    this.chatHistorial.push({ 
+      rol: "asistente", 
+      mensaje: "Lo siento, ocurrió un error al procesar tu pregunta.",
+      mostrarBotonDataset: false 
+    });
+    this.finalizarConsulta();
+    console.error(err);
+  }
+     
 enviarDataset() {
   if (!this.topVeinteOriginal.length) {
     for (let i = this.chatHistorial.length - 1; i >= 0; i--) {

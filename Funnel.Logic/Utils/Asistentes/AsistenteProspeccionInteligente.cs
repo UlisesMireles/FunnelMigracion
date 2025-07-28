@@ -11,6 +11,8 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Data.SqlClient;
 using System.Collections.Generic;
 using SharpToken;
+using FuzzySharp;
+using Funnel.Data.Interfaces;
 namespace Funnel.Logic.Utils.Asistentes
 {
     public class AsistenteProspeccionInteligente
@@ -18,6 +20,7 @@ namespace Funnel.Logic.Utils.Asistentes
         private readonly IMemoryCache _cache;
         private static readonly IConfiguration _configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
         private readonly string _connectionString;
+        private readonly IAsistentesData _asistentesData;
         public AsistenteProspeccionInteligente(IConfiguration configuration, IMemoryCache cache)
         {
             _connectionString = configuration.GetConnectionString("FunelDatabase");
@@ -36,7 +39,7 @@ namespace Funnel.Logic.Utils.Asistentes
 
             try
             {
-                var respuestaFrecuente = await VerificarPreguntaFrecuenteAsync(consultaAsistente.Pregunta, consultaAsistente.IdBot);
+                var respuestaFrecuente = await VerificarPreguntaFrecuenteAsync(consultaAsistente.Pregunta, consultaAsistente.IdBot, consultaAsistente.IdUsuario);
 
                 if (respuestaFrecuente != null)
                 {
@@ -65,16 +68,14 @@ namespace Funnel.Logic.Utils.Asistentes
 
             return consultaAsistente;
         }
-        private async Task<PreguntasFrecuentesDto> VerificarPreguntaFrecuenteAsync(string pregunta, int idBot)
+        private async Task<PreguntasFrecuentesDto> VerificarPreguntaFrecuenteAsync(string pregunta, int idBot, int idUsuario)
         {
             List<PreguntasFrecuentesDto> result = new List<PreguntasFrecuentesDto>();
 
             IList<ParameterSQl> list = new List<ParameterSQl>
-            {
-                DataBase.CreateParameterSql("pIdBot", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, idBot)
-            };
-
-
+    {
+        DataBase.CreateParameterSql("@IdBot", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, idBot)
+    };
 
             using (IDataReader reader = await DataBase.GetReaderSql("F_PreguntasFrecuentesActivasPorBot", CommandType.StoredProcedure, list, _connectionString))
             {
@@ -90,70 +91,70 @@ namespace Funnel.Logic.Utils.Asistentes
                     };
                     result.Add(dto);
                 }
-
             }
+
+            var configuracion = await _asistentesData.ObtenerConfiguracionPorIdBotAsync(idBot);
+            if (configuracion == null)
+                return null;
+
+            var threadCacheKey = GetThreadCacheKey(idUsuario);
+            if (!(_cache.Get(threadCacheKey) is string threadId) || string.IsNullOrEmpty(threadId))
+                return null;
+
+            var historialConversacion = await ObtenerHistorialConversacion(configuracion.Llave, threadId);
+            var contextoCompleto = string.Join(" ", historialConversacion) + " " + pregunta;
+
             var preguntaNormalizada = NormalizarTexto(pregunta);
-            return result.FirstOrDefault(p =>
-                p.Activo &&
-                EsPreguntaSimilar(NormalizarTexto(p.Pregunta), preguntaNormalizada));
+            var contextoNormalizado = NormalizarTexto(contextoCompleto);
+
+            var mejorCoincidencia = result
+                .Where(p => p.Activo)
+                .Select(p => new
+                {
+                    Pregunta = p,
+                    ScorePregunta = Fuzz.Ratio(NormalizarTexto(p.Pregunta), preguntaNormalizada),
+                    ScoreContexto = Fuzz.Ratio(NormalizarTexto(p.Pregunta), contextoNormalizado)
+                })
+                .OrderByDescending(x => Math.Max(x.ScorePregunta, x.ScoreContexto))
+                .FirstOrDefault();
+
+            const int umbralSimilitud = 40;
+            if (mejorCoincidencia != null &&
+                (mejorCoincidencia.ScorePregunta >= umbralSimilitud ||
+                 mejorCoincidencia.ScoreContexto >= umbralSimilitud))
+            {
+                return mejorCoincidencia.Pregunta;
+            }
+
+            return null;
         }
-
-        private bool EsPreguntaSimilar(string preguntaBD, string preguntaUsuario)
-        {
-            string textoBD = NormalizarTexto(preguntaBD);
-            string textoUsuario = NormalizarTexto(preguntaUsuario);
-
-            if (textoBD.Contains(textoUsuario) || textoUsuario.Contains(textoBD))
-                return true;
-
-            int distancia = CalcularDistanciaLevenshtein(textoBD, textoUsuario);
-            int maxLength = Math.Max(textoBD.Length, textoUsuario.Length);
-            double porcentajeSimilitud = 1.0 - (double)distancia / maxLength;
-
-            return porcentajeSimilitud > 0.7;
-        }
-
         private string NormalizarTexto(string texto)
         {
             if (string.IsNullOrWhiteSpace(texto))
                 return string.Empty;
 
-            texto = texto.Trim().ToLower();
-
-            texto = new string(texto.Where(c => !char.IsPunctuation(c)).ToArray());
-
-            var palabrasComunes = new[] { "por", "para", "con", "de", "que", "como", "un", "una", "los", "las", "podrías", "ayudarme", "coloca", "las", "que", "me", "diste" };
-            var palabras = texto.Split(' ').Where(p => !palabrasComunes.Contains(p));
-
-            return string.Join(" ", palabras);
+            return texto.Trim().ToLower();
         }
-
-        private int CalcularDistanciaLevenshtein(string a, string b)
+        private async Task<List<string>> ObtenerHistorialConversacion(string apiKey, string threadId)
         {
-            if (string.IsNullOrEmpty(a)) return string.IsNullOrEmpty(b) ? 0 : b.Length;
-            if (string.IsNullOrEmpty(b)) return a.Length;
+            var client = OpenAIUtils.GetClient(apiKey);
+            var messagesResponse = await client.GetAsync($"threads/{threadId}/messages");
+            messagesResponse.EnsureSuccessStatusCode();
 
-            int[,] matriz = new int[a.Length + 1, b.Length + 1];
+            var messagesJson = await messagesResponse.Content.ReadAsStringAsync();
+            using var messagesDoc = JsonDocument.Parse(messagesJson);
 
-            for (int i = 0; i <= a.Length; i++)
-                matriz[i, 0] = i;
+            var historial = new List<string>();
+            var messages = messagesDoc.RootElement.GetProperty("data");
 
-            for (int j = 0; j <= b.Length; j++)
-                matriz[0, j] = j;
-
-            for (int i = 1; i <= a.Length; i++)
+            foreach (var message in messages.EnumerateArray())
             {
-                for (int j = 1; j <= b.Length; j++)
-                {
-                    int costo = (b[j - 1] == a[i - 1]) ? 0 : 1;
-
-                    matriz[i, j] = Math.Min(
-                        Math.Min(matriz[i - 1, j] + 1, matriz[i, j - 1] + 1),
-                        matriz[i - 1, j - 1] + costo);
-                }
+                var role = message.GetProperty("role").GetString();
+                var content = message.GetProperty("content")[0].GetProperty("text").GetProperty("value").GetString();
+                historial.Add($"{role}: {content}");
             }
 
-            return matriz[a.Length, b.Length];
+            return historial;
         }
         private async Task<RespuestaOpenIA> BuildAnswer(string pregunta, int idBot, int idUsuario)
         {

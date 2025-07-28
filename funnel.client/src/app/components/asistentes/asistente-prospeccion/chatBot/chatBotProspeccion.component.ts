@@ -43,7 +43,7 @@ export class ChatBotProspeccionComponent implements OnInit, AfterViewInit {
   };
 
   chatHistorial: ChatHistorial[] = [
-     { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨ Bienvenido(a) a tu asistente comercial. Soy Bruno, tu asistente para convertir contactos en oportunidades reales. ¿Me dices tu nombre para comenzar?." , mostrarBotonDataset: true}
+     { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨ Bienvenido(a) a tu asistente comercial. Soy Bruno, tu asistente para convertir contactos en oportunidades reales." , mostrarBotonDataset: true}
    ];
   chatHistorialResp!: string;
   mostrarBotonDataset: boolean = false;
@@ -141,7 +141,7 @@ ngAfterViewInit(): void {
 
    private restoreState(state: any) {
     this.chatHistorial = state.historial || [
-      { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨ Bienvenido(a) a tu asistente comercial. Soy Bruno, tu asistente para convertir contactos en oportunidades reales. ¿Me dices tu nombre para comenzar?." , mostrarBotonDataset: true}
+      { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨ Bienvenido(a) a tu asistente comercial. Soy Bruno, tu asistente para convertir contactos en oportunidades reales." , mostrarBotonDataset: true}
     ];
     this.chatHistorialResp = JSON.stringify(this.chatHistorial);
     this.cdRef.detectChanges();
@@ -349,7 +349,7 @@ enviarDataset() {
       }
     });
     this.chatHistorial = [
-     { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨ Bienvenido(a) a tu asistente comercial. Soy Bruno, tu asistente para convertir contactos en oportunidades reales. ¿Me dices tu nombre para comenzar?." , mostrarBotonDataset: true}
+     { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨ Bienvenido(a) a tu asistente comercial. Soy Bruno, tu asistente para convertir contactos en oportunidades reales." , mostrarBotonDataset: true}
    ];
     sessionStorage.removeItem('chatBotProspeccionState');
     localStorage.removeItem('chatBotProspeccionState');

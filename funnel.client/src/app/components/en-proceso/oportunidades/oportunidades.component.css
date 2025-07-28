@@ -572,7 +572,6 @@ th.sort-active p-sortIcon {
   text-align: center;
   text-decoration: none;
   font-weight: bold;
-  cursor: pointer;
 }
 
 .etiqueta>.titulo {
@@ -593,14 +592,12 @@ th.sort-active p-sortIcon {
     font-size: 11px;
     text-decoration: none;
     font-weight: bold;
-    cursor: pointer;
   }
 
   .etiqueta>.cantidad {
     font-size: 13px;
     text-decoration: none;
     font-weight: bold;
-    cursor: pointer;
   }
 
   .contenedor-etiquetas {

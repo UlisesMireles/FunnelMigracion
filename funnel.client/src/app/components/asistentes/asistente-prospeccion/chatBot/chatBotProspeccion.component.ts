@@ -1,0 +1,421 @@
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { ConsultaAsistenteDto } from './../../../../interfaces/asistentes/consultaAsistente';
+import { ChatHistorial } from './../../../../interfaces/asistentes/chatHistorial';
+import { OpenIaService } from '../../../../services/asistentes/openIA.service';
+import { AsistenteService } from '../../../../services/asistentes/asistente.service';
+import { environment } from '../../../../../environments/environment';
+import { LoginService } from '../../../../services/login.service';
+import { TopVeinteDataService } from '../../../../services/top-veinte-data.service';
+import { ClientesTopVeinte } from '../../../../interfaces/prospecto';
+@Component({
+  selector: 'app-chaBotProspeccion',
+  standalone: false,
+  templateUrl: './chatBotProspeccion.component.html',
+  styleUrl: './chatBotProspeccion.component.css'
+})
+export class ChatBotProspeccionComponent implements OnInit, AfterViewInit {
+  baseUrlAssets = environment.baseUrlAssetsChatbot;
+  @ViewChild('scrollMe') scrollMe!: ElementRef;
+  @ViewChild('inputChat') inputChat!: ElementRef;
+
+  pregunta = "";
+  isConsultandoOpenIa: boolean = false;
+
+  consultaAsistente: ConsultaAsistenteDto = {
+    exitoso: false,
+    errorMensaje: "",
+    idBot: 7,
+    pregunta: '',
+    respuesta: '',
+    tokensEntrada: 0,
+    tokensSalida: 0,
+    nombreUsuario: '',
+    correo: '',
+    puesto: '',
+    numeroTelefono : '',
+    idUsuario: this.idUsuario(),
+    idTipoUsuario: this.IdTipoUsuario(),
+    idEmpresa: this.IdEmpresa(),
+    fechaPregunta: new Date(),
+    fechaRespuesta: new Date(),
+    esPreguntaFrecuente: false,
+  };
+
+  chatHistorial: ChatHistorial[] = [
+     { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨ Bienvenido(a) a tu asistente comercial. Soy Bruno, tu asistente para convertir contactos en oportunidades reales. ¿Me dices tu nombre para comenzar?." , mostrarBotonDataset: true}
+   ];
+  chatHistorialResp!: string;
+  mostrarBotonDataset: boolean = false;
+  topVeinteOriginal: ClientesTopVeinte[] = [];
+  mensajeCopiadoTexto: string = '';
+  mostrarMensajeCopiado: boolean = false;
+  asistenteSeleccionado = { idBot: 7, documento: false };
+  constructor(
+    private OpenIaService: OpenIaService,
+    private aService: AsistenteService,
+    private cdRef: ChangeDetectorRef, 
+    private loginService: LoginService,
+    private topVeinteDataService: TopVeinteDataService,
+  ) { }
+
+   ngOnInit() { 
+    this.consultaAsistente.nombreUsuario = this.loginService.obtenerDatosUsuarioLogueado().nombreCompleto;
+    this.consultaAsistente.correo = this.loginService.obtenerDatosUsuarioLogueado().correo;
+    this.consultaAsistente.puesto = this.loginService.obtenerDatosUsuarioLogueado().puesto;
+    this.consultaAsistente.numeroTelefono = this.loginService.obtenerDatosUsuarioLogueado().numeroTelefono;
+    this.chatHistorialResp = JSON.stringify(this.chatHistorial);
+    const savedState = sessionStorage.getItem('chatBotProspeccionState');
+      if (savedState) {
+        this.restoreState(JSON.parse(savedState));
+      }
+    this.topVeinteDataService.currentTop20Data.subscribe(data => {
+      this.topVeinteOriginal = data;
+    });
+     this.scrollToBottom();
+   }
+ngAfterViewInit(): void {
+  setTimeout(() => {
+    this.inputChat?.nativeElement?.focus();
+  }, 0);
+}
+
+   //#region obtencion de datos de session storage
+  nombreUsuario(): string {
+    let NombreUsuarioString = environment.usuarioData.nombreUsuario;
+    const nombreUsuario = sessionStorage.getItem('Usuario');
+    if (nombreUsuario) {
+      NombreUsuarioString = nombreUsuario;
+    }
+    return NombreUsuarioString;
+  }
+
+  idUsuario(): number {
+    let idUsuarioNumber = environment.usuarioData.idUsuario;
+    const idUsuario = sessionStorage.getItem('IdUsuario');
+    if (idUsuario) {
+      idUsuarioNumber = +idUsuario;
+    }
+    return idUsuarioNumber;
+  }
+
+  IdTipoUsuario(): number {
+    let IdTipoUsuarioNumber = environment.usuarioData.idTipoUsuario;
+    const IdTipoUsuario = sessionStorage.getItem('IdTipoUsuario');
+    if (IdTipoUsuario) {
+      IdTipoUsuarioNumber = +IdTipoUsuario;
+    }
+    return IdTipoUsuarioNumber;
+  }
+
+  IdEmpresa(): number {
+    let IdEmpresaNumber = environment.usuarioData.idEmpresa;
+    const IdEmpresa = sessionStorage.getItem('IdEmpresa');
+    if (IdEmpresa) {
+      IdEmpresaNumber = +IdEmpresa;
+    }
+    return IdEmpresaNumber;
+  }
+  //#endregion
+  
+  private esSaludo(mensaje: string): boolean {
+    const saludos = [
+      'hola', 'hello', 'hi', 'buenas', 'buenos dias', 'buenas tardes', 'buenas noches',
+      'buen dia', 'buena tarde', 'buena noche', 'que tal', 'saludos', 'hey'
+    ];
+    
+    const mensajeLimpio = mensaje.toLowerCase().trim().replace(/[¡!¿?.,]/g, '');
+    
+    // Verificar si el mensaje es solo un saludo (máximo 3 palabras)
+    const palabras = mensajeLimpio.split(/\s+/);
+    if (palabras.length > 3) {
+      return false;
+    }
+    
+    return saludos.some(saludo => mensajeLimpio.includes(saludo));
+  }
+  
+  private generarRespuestaSaludo(): string {
+    return `¡Hola ${this.nombreUsuario()}! ¿En qué puedo ayudarte hoy?`;
+  }
+
+   private restoreState(state: any) {
+    this.chatHistorial = state.historial || [
+      { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨ Bienvenido(a) a tu asistente comercial. Soy Bruno, tu asistente para convertir contactos en oportunidades reales. ¿Me dices tu nombre para comenzar?." , mostrarBotonDataset: true}
+    ];
+    this.chatHistorialResp = JSON.stringify(this.chatHistorial);
+    this.cdRef.detectChanges();
+  }
+  private saveState() {
+    const state = {
+      historial: this.chatHistorial,
+      asistenteSeleccionado: this.asistenteSeleccionado
+    };
+    sessionStorage.setItem('chatBotProspeccionState', JSON.stringify(state));
+  }
+  consultaMensajeOpenIa(event?: any, textarea?: HTMLTextAreaElement) {
+    if (!this.isConsultandoOpenIa && this.pregunta.trim() !== "") {
+      const preguntaOriginal = this.pregunta;
+      this.consultaAsistente.pregunta = this.pregunta;
+      this.chatHistorial.push({ rol: "usuario", mensaje: this.pregunta });
+      
+      // Verificar si es un saludo simple
+      if (this.esSaludo(preguntaOriginal)) {
+        const respuestaSaludo = this.generarRespuestaSaludo();
+        this.chatHistorial.push({ 
+          rol: "asistente", 
+          mensaje: respuestaSaludo,
+          mostrarBotonDataset: false 
+        });
+        
+        this.pregunta = "";
+        if (textarea) {
+          textarea.style.height = 'auto';
+        }
+        
+        this.cdRef.detectChanges();
+        this.scrollToBottom();
+        this.saveState();
+        return;
+      }
+      
+      this.pregunta = "";
+
+      if (textarea) {
+        textarea.style.height = 'auto';
+      }
+
+      this.chatHistorial.push({ rol: "cargando", mensaje: "..." });
+      this.scrollToBottom();
+      this.saveState();
+      this.obtenRespuestaAsistentePorInput();
+
+    }
+    if (event && event.key === 'Enter') {
+      event.preventDefault();
+    }
+  }
+ obtenRespuestaAsistentePorInput() {
+  this.isConsultandoOpenIa = true;
+  this.OpenIaService.asistenteProspeccion(this.consultaAsistente).subscribe({
+    next: (data: ConsultaAsistenteDto) => {
+      this.chatHistorial.pop();
+      if(data.esPreguntaFrecuente) {
+        this.mostrarRespuestaFrecuente(data);
+      }else{
+        this.mostrarRespuestaOpenAI(data);
+      }
+      this.finalizarConsulta();
+    },
+    error: (err: HttpErrorResponse) => {
+      this.manejarEerrorConsulta(err);
+    }
+  });
+}
+private mostrarRespuestaFrecuente(data: ConsultaAsistenteDto) {
+    this.chatHistorial.push({ 
+      rol: "asistente", 
+      mensaje: data.respuesta,
+      mostrarBotonDataset: false,
+      esPreguntaFrecuente: true
+    });
+  }
+private mostrarRespuestaOpenAI(data: ConsultaAsistenteDto) {
+  this.chatHistorial.push({ 
+    rol: "asistente", 
+    mensaje: data.respuesta,
+    mostrarBotonDataset: false,
+    esPreguntaFrecuente: false
+  }); 
+}
+ private finalizarConsulta() {
+    this.cdRef.detectChanges();
+    this.scrollToBottom();
+    this.saveState();
+    this.isConsultandoOpenIa = false;
+  }
+  private manejarEerrorConsulta(err: HttpErrorResponse) {
+    this.chatHistorial.pop();
+    this.chatHistorial.push({ 
+      rol: "asistente", 
+      mensaje: "Lo siento, ocurrió un error al procesar tu pregunta.",
+      mostrarBotonDataset: false 
+    });
+    this.finalizarConsulta();
+    console.error(err);
+  }
+     
+enviarDataset() {
+  if (!this.topVeinteOriginal.length) {
+    for (let i = this.chatHistorial.length - 1; i >= 0; i--) {
+      if (this.chatHistorial[i].rol === 'asistente' && this.chatHistorial[i].mostrarBotonDataset) {
+        this.chatHistorial[i].mostrarBotonDataset = false;
+        break;
+      }
+    }
+
+    this.chatHistorial.push({ 
+      rol: "asistente", 
+      mensaje: "Por favor verifica que el filtro que estás aplicando en la tabla tenga registros válidos e intenta de nuevo.",
+      mostrarBotonDataset: true 
+    });
+
+    this.saveState();
+    return;
+  }
+
+  
+  let lastAssistantMessageIndex = -1;
+  for (let i = this.chatHistorial.length - 1; i >= 0; i--) {
+    if (this.chatHistorial[i].rol === 'asistente') {
+      lastAssistantMessageIndex = i;
+      break;
+    }
+  }
+  
+  if (lastAssistantMessageIndex !== -1) {
+    this.chatHistorial[lastAssistantMessageIndex].mostrarBotonDataset = false;
+  }
+
+  const Datos = this.topVeinteOriginal.map(item => ({
+    
+    nombre: item.nombre,
+    sector: item.nombreSector,
+    ubicacion: item.ubicacionFisica,
+  }));
+  const historialTexto = Datos.map(c => {
+    return `
+      Nombre: ${c.nombre}
+      Sector: ${c.sector}
+      Ubicación: ${c.ubicacion}
+       -----------------------------`;
+  }).join('\n');
+
+  const mensajeUsuario = "Se envió la información de clientes top 20 que se encuentran en la tabla.";
+  
+  const body: ConsultaAsistenteDto = {
+    exitoso: true,
+    errorMensaje: '',
+    idBot: 7,
+    pregunta: historialTexto, 
+    fechaPregunta: new Date(),
+    respuesta: '',
+    fechaRespuesta: new Date(),
+    tokensEntrada: 0,
+    tokensSalida: 0,
+    idUsuario: this.loginService.obtenerIdUsuario(),
+    idTipoUsuario: 0,
+    idEmpresa: this.loginService.obtenerIdEmpresa(),
+    esPreguntaFrecuente: false,
+  };
+  
+  this.chatHistorial.push({ rol: "usuario", mensaje: mensajeUsuario });
+  this.chatHistorial.push({ rol: "cargando", mensaje: "..." });
+  this.scrollToBottom();
+
+  this.OpenIaService.asistenteProspeccion(body).subscribe({
+    next: res => {
+      this.chatHistorial.pop();
+      this.chatHistorial.push({ 
+        rol: "asistente", 
+        mensaje: res.respuesta,
+        mostrarBotonDataset: false 
+      });
+      this.saveState();
+      this.cdRef.detectChanges();
+      this.scrollToBottom();
+    },
+    error: err => {
+      this.chatHistorial.pop();
+      this.chatHistorial.push({ 
+        rol: "asistente", 
+        mensaje: "Lo siento, ocurrió un error al procesar el dataset.",
+        mostrarBotonDataset: false 
+      });
+      this.saveState();
+      this.cdRef.detectChanges();
+      console.error(err);
+    }
+  });
+}
+
+  resetConversation() {
+    this.OpenIaService.limpiarCacheBot(this.loginService.obtenerIdUsuario(), 7).subscribe({
+      next: (response) => {
+        console.log('Cache limpiado exitosamente', response);
+      },
+      error: (error) => {
+        console.error('Error al limpiar cache', error);
+      }
+    });
+    this.chatHistorial = [
+     { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨ Bienvenido(a) a tu asistente comercial. Soy Bruno, tu asistente para convertir contactos en oportunidades reales. ¿Me dices tu nombre para comenzar?." , mostrarBotonDataset: true}
+   ];
+    sessionStorage.removeItem('chatBotProspeccionState');
+    localStorage.removeItem('chatBotProspeccionState');
+    this.cdRef.detectChanges();
+    this.scrollToBottom();
+  }
+
+  scrollToBottom() {
+    setTimeout(() => {
+      this.scrollMe.nativeElement.scrollTo({
+        top: this.scrollMe.nativeElement.scrollHeight,
+        left: 0,
+        behavior: 'smooth'
+      });
+    }, 0);
+  }
+  copiarRespuesta(texto: string) {
+  const textoLimpio = texto.replace(/<[^>]*>/g, '');
+
+  navigator.clipboard.writeText(textoLimpio).then(() => {
+    this.mostrarMensajeCopiado = true;
+    this.mensajeCopiadoTexto = '✅ Texto copiado al portapapeles';
+    this.cdRef.detectChanges(); 
+
+    setTimeout(() => {
+      this.mostrarMensajeCopiado = false;
+      this.cdRef.detectChanges(); 
+    }, 1000);
+  }).catch(err => {
+    this.mostrarMensajeCopiado = true;
+    this.mensajeCopiadoTexto = '⚠️ Error al copiar el texto';
+    this.cdRef.detectChanges(); 
+
+    setTimeout(() => {
+      this.mostrarMensajeCopiado = false;
+      this.cdRef.detectChanges(); 
+    }, 1000);
+  });
+}
+ajustarAlturaTextarea(event: any): void {
+  const textarea = event.target as HTMLTextAreaElement;
+  textarea.style.height = 'auto';
+  textarea.style.height = `${Math.min(textarea.scrollHeight, 120)}px`;
+
+  const textoOriginal: string = textarea.value;
+  
+  const palabrasYEspacios: string[] = textoOriginal.split(/(\s+)/);
+  
+  let nuevoTexto: string = '';
+  let lineaActual: string = '';
+  
+  for (const segmento of palabrasYEspacios) {
+    if (lineaActual.length + segmento.length > 75) {
+      nuevoTexto += lineaActual.trimEnd() + '\n';
+      lineaActual = segmento; 
+    } else {
+      lineaActual += segmento;
+    }
+  }
+  
+  if (lineaActual.length > 0) {
+    nuevoTexto += lineaActual;
+  }
+
+  if (nuevoTexto !== textoOriginal) {
+    textarea.value = nuevoTexto;
+    this.pregunta = textarea.value; 
+  }
+}}

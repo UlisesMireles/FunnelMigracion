@@ -42,6 +42,8 @@ namespace Funnel.Models.Dto
         public string? SesionId { get; set; }
         public string? MotivoCerrarSesion { get; set; }
         public bool? PermitirDecimales { get; set; }
+        public string? Puesto { get; set; }
+        public string? Telefono { get; set; }
 
     }
 }

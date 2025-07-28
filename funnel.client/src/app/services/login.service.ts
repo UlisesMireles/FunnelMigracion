@@ -59,8 +59,8 @@ export class LoginService {
           localStorage.setItem('apellidoPaterno', user.apellidoPaterno);
           localStorage.setItem('apellidoMaterno', user.apellidoMaterno);
           localStorage.setItem('correo', user.correo);
-          localStorage.setItem('puesto', 'Agente comercial');
-          localStorage.setItem('numeroTelefono', '6771084410');
+          localStorage.setItem('puesto', user.puesto);
+          localStorage.setItem('numeroTelefono', user.telefono);
           localStorage.setItem('imagenPerfil', user.archivoImagen);
           localStorage.setItem('lastActivity', Date.now().toString());
           localStorage.setItem('licencia', user.licencia);

@@ -63,14 +63,14 @@ namespace Funnel.Logic
             return await _oportunidadesData.ComboTipoOportunidad(IdEmpresa);
         }
 
-        public async Task<List<OportunidadesEnProcesoDto>> ConsultarHistoricoOportunidades(int IdEmpresa, int IdOportunidad)
+        public async Task<List<OportunidadesEnProcesoDto>> ConsultarHistoricoOportunidades(int IdEmpresa, int IdOportunidad, int IdProceso)
         {
-            return await _oportunidadesData.ConsultarHistoricoOportunidades(IdEmpresa, IdOportunidad);
+            return await _oportunidadesData.ConsultarHistoricoOportunidades(IdEmpresa, IdOportunidad, IdProceso);
         }
 
-        public async Task<List<OportunidadesEnProcesoDto>> ConsultarOportunidadesEnProceso(int IdUsuario, int IdEmpresa, int IdEstatus)
+        public async Task<List<OportunidadesEnProcesoDto>> ConsultarOportunidadesEnProceso(int IdUsuario, int IdEmpresa, int IdEstatus, int IdProceso)
         {
-            return await _oportunidadesData.ConsultarOportunidadesEnProceso(IdUsuario, IdEmpresa, IdEstatus);
+            return await _oportunidadesData.ConsultarOportunidadesEnProceso(IdUsuario, IdEmpresa, IdEstatus, IdProceso);
         }
 
         public async Task<BaseOut> GuardarHistorico(OportunidadesEnProcesoDto request)
@@ -82,12 +82,12 @@ namespace Funnel.Logic
         {
             return await _oportunidadesData.GuardarOportunidad(request);
         }
-        public async Task<List<OportunidadesTarjetasDto>> ConsultarOportunidadesPorMes(int IdUsuario, int IdEmpresa)
+        public async Task<List<OportunidadesTarjetasDto>> ConsultarOportunidadesPorMes(int IdUsuario, int IdEmpresa, int IdProceso)
         {
             CultureInfo cultura = new CultureInfo("es-ES");
 
             List<OportunidadesTarjetasDto> lista = new List<OportunidadesTarjetasDto>();
-            List<OportunidadesEnProcesoDto> oportunidades = await _oportunidadesData.ConsultarOportunidadesEnProceso(IdUsuario, IdEmpresa, 1);
+            List<OportunidadesEnProcesoDto> oportunidades = await _oportunidadesData.ConsultarOportunidadesEnProceso(IdUsuario, IdEmpresa, 1, IdProceso);
 
             int[] meses = new int[5];
             int[] anio = new int[5];
@@ -160,13 +160,13 @@ namespace Funnel.Logic
             lista = lista.Where(x => x.Anio > 0).OrderBy(x => x.Anio).ThenBy(x => x.Mes).ToList();
             return lista;
         }
-        public async Task<List<OportunidadesTarjetasDto>> ConsultarOportunidadesPorEtapa(int IdUsuario, int IdEmpresa)
+        public async Task<List<OportunidadesTarjetasDto>> ConsultarOportunidadesPorEtapa(int IdUsuario, int IdEmpresa, int IdProceso)
         {
             CultureInfo cultura = new CultureInfo("es-ES");
 
             List<OportunidadesTarjetasDto> lista = new List<OportunidadesTarjetasDto>();
             List<ComboEtapasDto> etapas = await _oportunidadesData.ComboEtapas(IdEmpresa);
-            List<OportunidadesEnProcesoDto> oportunidades = await _oportunidadesData.ConsultarOportunidadesEnProceso(IdUsuario, IdEmpresa, 1);
+            List<OportunidadesEnProcesoDto> oportunidades = await _oportunidadesData.ConsultarOportunidadesEnProceso(IdUsuario, IdEmpresa, 1, IdProceso);
 
             foreach (var item in etapas)
             {
@@ -227,13 +227,13 @@ namespace Funnel.Logic
             return await _oportunidadesData.ActualizarEtapa(request);
         }
 
-        public async Task<byte[]> GenerarReporteSeguimientoOportunidades(int IdEmpresa, int IdOportunidad, string RutaBase)
+        public async Task<byte[]> GenerarReporteSeguimientoOportunidades(int IdEmpresa, int IdOportunidad, string RutaBase, int IdProceso)
         {
             var imagenEmpresa = await _loginService.ObtenerImagenEmpresa(IdEmpresa);
             string urlLogo = $"{imagenEmpresa.UrlImagen}?v={Guid.NewGuid()}";
             string logoBase64 = await Descarga.DescargarImagenComoBase64(urlLogo);
 
-            var datos = await _oportunidadesData.ConsultarHistoricoOportunidades(IdEmpresa, IdOportunidad);
+            var datos = await _oportunidadesData.ConsultarHistoricoOportunidades(IdEmpresa, IdOportunidad, IdProceso);
 
             var rutaPlantillaHeader = Path.Combine(RutaBase, "PlantillasReporteHtml", "PlantillaReporteFunnelHeaderDinamico.html");
             var rutaPlantillaBody = Path.Combine(RutaBase, "PlantillasReporteHtml", "PlantillaReporteFunnel.html");
@@ -403,9 +403,9 @@ namespace Funnel.Logic
             return pdfBytes;
         }
 
-        public async Task<EtiquetasOportunidadesDto> ConsultarEtiquetas(int IdEmpresa, int IdUsuario)
+        public async Task<EtiquetasOportunidadesDto> ConsultarEtiquetas(int IdEmpresa, int IdUsuario, int IdProceso)
         {
-            return await _oportunidadesData.ConsultarEtiquetas(IdEmpresa, IdUsuario);
+            return await _oportunidadesData.ConsultarEtiquetas(IdEmpresa, IdUsuario, IdProceso);
         }
     }
 }

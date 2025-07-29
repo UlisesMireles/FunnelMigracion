@@ -5,6 +5,7 @@ using Funnel.Data.Utils;
 using System.Data;
 using Funnel.Models.Dto;
 using System.Net.NetworkInformation;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Funnel.Data
 {
@@ -167,14 +168,15 @@ namespace Funnel.Data
             return result;
         }
 
-        public async Task<List<OportunidadesEnProcesoDto>> ConsultarHistoricoOportunidades(int IdEmpresa, int IdOportunidad)
+        public async Task<List<OportunidadesEnProcesoDto>> ConsultarHistoricoOportunidades(int IdEmpresa, int IdOportunidad, int IdProceso)
         {
             List<OportunidadesEnProcesoDto> result = new List<OportunidadesEnProcesoDto>();
             IList<ParameterSQl> list = new List<ParameterSQl>
             {
                 DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "SEL-HISTORICO"),
                 DataBase.CreateParameterSql("@pIdOportunidad", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, IdOportunidad),
-                DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, IdEmpresa)
+                DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, IdEmpresa),
+                DataBase.CreateParameterSql("@pIdProceso", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, IdProceso)
             };
             using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoOportunidades", CommandType.StoredProcedure, list, _connectionString))
             {
@@ -195,14 +197,15 @@ namespace Funnel.Data
             return result;
         }
 
-        public async Task<List<OportunidadesEnProcesoDto>> ConsultarOportunidadesEnProceso(int IdUsuario, int IdEmpresa, int IdEstatus)
+        public async Task<List<OportunidadesEnProcesoDto>> ConsultarOportunidadesEnProceso(int IdUsuario, int IdEmpresa, int IdEstatus, int IdProceso)
         {
             List<OportunidadesEnProcesoDto> result = new List<OportunidadesEnProcesoDto>();
             IList<ParameterSQl> list = new List<ParameterSQl>
             {
                 DataBase.CreateParameterSql("@pIdUsuario", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, IdUsuario),
                 DataBase.CreateParameterSql("@pIdEstatusOportunidad", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, IdEstatus),
-                DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, IdEmpresa)
+                DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, IdEmpresa),
+                DataBase.CreateParameterSql("@pIdProceso", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, IdProceso)
             };
             using (IDataReader reader = await DataBase.GetReaderSql("spOportunidades_ObtenerOportunidadesPorEstatus", CommandType.StoredProcedure, list, _connectionString))
             {
@@ -280,7 +283,7 @@ namespace Funnel.Data
                     DataBase.CreateParameterSql("@pIdOportunidad", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdOportunidad),
                     DataBase.CreateParameterSql("@pComentario", SqlDbType.VarChar, -1, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Comentario),
                     DataBase.CreateParameterSql("@pIdUsuario", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdUsuario),
-                    DataBase.CreateParameterSql("@pStage", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Stage),
+                    DataBase.CreateParameterSql("@pStage", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Stage)
                 };
 
                 using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoOportunidades", CommandType.StoredProcedure, list, _connectionString))
@@ -350,6 +353,7 @@ namespace Funnel.Data
                         DataBase.CreateParameterSql("@pIdEstatusOportunidad", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdEstatusOportunidad),
                         DataBase.CreateParameterSql("@pProbabilidad", SqlDbType.VarChar, 100, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Probabilidad),
                         DataBase.CreateParameterSql("@pIdUsuario", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdUsuario),
+                        DataBase.CreateParameterSql("@pIdProceso", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdProceso)
                     };
                 }
                 else if (request.Bandera == "UPD-ESTATUS")
@@ -423,6 +427,7 @@ namespace Funnel.Data
                     DataBase.CreateParameterSql("@pFechaEstimadaCierre", SqlDbType.Date, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.FechaEstimadaCierre),
                     DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdEmpresa),
                     DataBase.CreateParameterSql("@pIdUsuario", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdUsuario),
+                    DataBase.CreateParameterSql("@pIdProceso", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdProceso)
 
                 };
 
@@ -494,7 +499,7 @@ namespace Funnel.Data
             }
             return result;
         }
-        public async Task<EtiquetasOportunidadesDto> ConsultarEtiquetas(int IdEmpresa, int IdUsuario)
+        public async Task<EtiquetasOportunidadesDto> ConsultarEtiquetas(int IdEmpresa, int IdUsuario, int IdProceso)
         {
             EtiquetasOportunidadesDto result = new EtiquetasOportunidadesDto();
             List<EtiquetasOportunidadesDetalleDto> listProspectosNuevos = new List<EtiquetasOportunidadesDetalleDto>();

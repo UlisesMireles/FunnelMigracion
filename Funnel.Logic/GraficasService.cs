@@ -23,9 +23,9 @@ namespace Funnel.Logic
         {
             return await _graficasData.ObtenerAgentes(data);
         }
-        public async Task<List<AniosDto>> Anios(int IdEmpresa, int IdEstatusOportunidad)
+        public async Task<List<AniosDto>> Anios(int IdEmpresa, int IdEstatusOportunidad, int IdProceso)
         {
-            return await _graficasData.Anios(IdEmpresa, IdEstatusOportunidad);
+            return await _graficasData.Anios(IdEmpresa, IdEstatusOportunidad, IdProceso);
         }
         public async Task<List<GraficaDto>> ObtenerGraficaGanadasAnio(RequestGrafica data)
         {

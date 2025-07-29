@@ -282,9 +282,9 @@ namespace Funnel.Logic
             return pdfBytes;
         }
 
-        public async Task<List<AniosDto>> ConsultarAniosOportunidades(int idEmpresa)
+        public async Task<List<AniosDto>> ConsultarAniosOportunidades(int idEmpresa, int IdProceso)
         {
-            return await _ProspectoData.ConsultarAniosOportunidades(idEmpresa);
+            return await _ProspectoData.ConsultarAniosOportunidades(idEmpresa, IdProceso);
         }
 
         public async Task<List<AniosDto>> ConsultarAniosGraficas(int idEmpresa)

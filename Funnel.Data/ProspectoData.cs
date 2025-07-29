@@ -126,13 +126,14 @@ namespace Funnel.Data
             return result;
         }
 
-        public async Task<List<AniosDto>> ConsultarAniosOportunidades(int idEmpresa)
+        public async Task<List<AniosDto>> ConsultarAniosOportunidades(int idEmpresa, int IdProceso)
         {
             List<AniosDto> result = new List<AniosDto>();
             IList<ParameterSQl> list = new List<ParameterSQl>
             {
                 DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, "ANIOS-OPORTUNIDADES"),
-                DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, idEmpresa)
+                DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, idEmpresa),
+                    DataBase.CreateParameterSql("@pIdProceso", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, IdProceso)
             };
             using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoProspectos", CommandType.StoredProcedure, list, _connectionString))
             {

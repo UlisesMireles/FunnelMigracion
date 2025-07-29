@@ -118,7 +118,7 @@ namespace Funnel.Logic.Utils.Asistentes
                 .OrderByDescending(x => Math.Max(x.ScorePregunta, x.ScoreContexto))
                 .FirstOrDefault();
 
-            const int umbralSimilitud = 40;
+            const int umbralSimilitud = 55;
             if (mejorCoincidencia != null &&
                 (mejorCoincidencia.ScorePregunta >= umbralSimilitud ||
                  mejorCoincidencia.ScoreContexto >= umbralSimilitud))

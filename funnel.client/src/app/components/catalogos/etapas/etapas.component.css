@@ -254,3 +254,7 @@ body {
     color: black;
     cursor: no-drop;
 }
+
+.estilosBotonesInhabilitador:disabled { 
+    cursor: no-drop;
+}

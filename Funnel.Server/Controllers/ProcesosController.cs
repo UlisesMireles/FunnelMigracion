@@ -51,5 +51,12 @@ namespace Funnel.Server.Controllers
             var pdf = await _procesosService.GenerarReporteProcesos(procesos, Directory.GetCurrentDirectory(), "Reporte de Procesos", IdEmpresa);
             return File(pdf, "application/pdf", "Procesos.pdf");
         }
+
+        [HttpGet("ConsultarComboEtapas/")]
+        public async Task<ActionResult> ConsultarComboEtapas(int IdUsuario, int idEmpresa)
+        {
+            var result = await _procesosService.ConsultarComboEtapas(IdUsuario, idEmpresa);
+            return Ok(result);
+        }
     }
 }

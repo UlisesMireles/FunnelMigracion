@@ -12,6 +12,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace Funnel.Logic
 {
@@ -204,6 +205,29 @@ namespace Funnel.Logic
 
 
             return pdfBytes;
+        }
+
+        public async Task<List<OportunidadesTarjetasDto>> ConsultarComboEtapas(int IdUsuario, int IdEmpresa)
+        {
+            List<OportunidadesTarjetasDto> lista = new List<OportunidadesTarjetasDto>();
+            List<ComboEtapasDto> etapas = await _procesosData.ComboEtapas(IdEmpresa);
+
+            foreach (var item in etapas)
+            {
+                lista.Add(new OportunidadesTarjetasDto
+                {
+                    Nombre = item.Concepto ?? "Sin etapa",
+                    Anio = Convert.ToInt32(item.Stage),
+                    Probabilidad = item.Probabilidad,
+                    Orden = item.Orden,
+                    IdStage = item.Id,
+                    Tarjetas = {}
+                });
+            }
+
+
+            lista = lista.Where(x => x.Nombre != "Sin etapa" && x.Anio > 0).OrderBy(x => x.Anio).ToList();
+            return lista;
         }
     }
 }

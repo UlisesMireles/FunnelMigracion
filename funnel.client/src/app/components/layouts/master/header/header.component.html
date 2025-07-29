@@ -13,17 +13,61 @@
             Inactividad: {{ sessionCountdownMinutesInactividad }}:{{ sessionCountdownSecondsInactividad < 10 ? '0' +
               sessionCountdownSecondsInactividad : sessionCountdownSecondsInactividad }} </div>
 
-              <div class="agregar btn-agregar-custom ms-2" (click)="toggleOptionsProcesos()" (mouseenter)="showSubmenuProcesos()"
-                (mouseleave)="hideSubmenuProcesos()">
+              <!-- <div class="agregar btn-agregar-custom ms-2" (click)="toggleOptionsProcesos()"
+                (mouseenter)="showSubmenuProcesos()" (mouseleave)="hideSubmenuProcesos()">
                 <button class="btn-chat float-end cursor-pointer">
                   <i class="bi bi-clipboard-data color-amarillo" style="margin-left: -6px;"></i>
                   <span class="ia-button-text color-amarillo"> PROCESOS</span>
                 </button>
                 <ul *ngIf="optionsVisibleProcesos" class="options-container" (click)="showSubmenuProcesos()"
                   (mouseleave)="hideSubmenuProcesos()">
-                  <li class="option-btn" (click)="modalEtapas()">Etapas</li>
+                  <li class="option-btn">Etapas</li>
                   <li class="option-btn" (click)="goToConfiguracionProcesos()">Configuración</li>
                 </ul>
+              </div> -->
+              <div class="agregar btn-agregar-custom ms-2 header-container">
+                <!-- <button class="btn-chat float-end cursor-pointer" (click)="toggleOptionsProcesos()">
+                  <i class="bi bi-clipboard-data color-amarillo" style="margin-left: -6px;"></i>
+                  <span class="ia-button-text color-amarillo"> PROCESOS</span>
+                </button> -->
+
+                <!-- <div class="options-container-procesos"> -->
+                  <p-select #selectProcesos [options]="procesos" optionLabel="nombre" placeholder="Selecciona un proceso"
+                    [showClear]="true" [filter]="true" (onChange)="seleccionarProceso($event.value)"
+                    [ngStyle]="{
+        width: '200px',
+        height: '30px',
+        'text-align': 'left',
+        'padding-left': '6px',
+        'background': 'linear-gradient(0deg, rgba(247, 106, 19, 1) 0%, rgba(200, 87, 24, 1) 35%, rgba(231, 91, 42, 1) 100%)',
+        'border': 'none'
+      }" >
+                    <!-- Opción seleccionada -->
+                    <ng-template #selectedItem let-selectedOption>
+                      <div class="flex items-center gap-2" style="width: 100%; color: white;">
+                        <i class="pi pi-database"></i>
+                        <div>{{ selectedOption?.nombre || 'Seleccione un proceso' }}</div>
+                      </div>
+                    </ng-template>
+
+                    <!-- Lista de opciones -->
+                    <ng-template let-item #item>
+                      <div class="flex items-center gap-2">
+                        <i class="pi pi-database"></i>
+                        <div>{{ item.nombre }}</div>
+                      </div>
+                    </ng-template>
+
+                    <!-- Botón de configuración -->
+                    <ng-template #footer style="background-color: rgba(16, 61, 102, 0.5) !important;">
+                      <div class="p-3 text-center">
+                        <button class="btnAgregarProspectoContacto" (click)="goToConfiguracionProcesos(); selectProcesos.hide()" size="small">
+                          + Configuración
+                        </button>
+                      </div>
+                    </ng-template>
+                  </p-select>
+                <!-- </div> -->
               </div>
               <div class="agregar btn-agregar-custom ms-2" (click)="toggleOptions()" (mouseenter)="showSubmenu()"
                 (mouseleave)="hideSubmenu()">

@@ -13,9 +13,37 @@
                 </label>
             </div>
             <div class="col-9" style="text-align: left; padding-bottom: 10px;">
-                <input id="nombreProceso" [(ngModel)]="etapasActivas[0].nombreProceso" placeholder="Nombre del proceso" pInputText
-                    class="p-inputtext" style="width: 111%;" />
+                <input id="nombreProceso" [(ngModel)]="nombreProceso" placeholder="Nombre del proceso"
+                    pInputText class="p-inputtext" style="width: 111%;" />
             </div>
+        </div>
+        <h3 style="justify-self: left;">Plantillas</h3>
+        <div style="justify-self: left;">
+            <p-select [options]="plantillas" optionLabel="plantilla" placeholder="Selecciona una plantilla" [showClear]="true"
+                [filter]="true" (onChange)="seleccionarPlantilla($event.value)" [ngStyle]="{
+        width: '200px',
+        height: '41px',
+        'text-align': 'left',
+        'padding-left': '6px'
+      }"
+      appendTo="body"
+      [disabled]="opcionPlantillas">
+                <!-- Opción seleccionada -->
+                <ng-template #selectedItem let-selectedOption>
+                    <div class="flex items-center gap-2" style="width: 100%">
+                        <i class="pi pi-database"></i>
+                        <div>{{ selectedOption?.plantilla || 'Seleccione una plantilla' }}</div>
+                    </div>
+                </ng-template>
+
+                <!-- Lista de opciones -->
+                <ng-template let-item #item>
+                    <div class="flex items-center gap-2">
+                        <i class="pi pi-database"></i>
+                        <div>{{ item.plantilla }}</div>
+                    </div>
+                </ng-template>
+            </p-select>
         </div>
 
         <h3 style="justify-self: left;">Etapas</h3>
@@ -30,19 +58,14 @@
 
                 </div>
                 <div class="col-2" *ngIf="!etapa.editandoNombre">
-                    <button (click)="editarNombreEtapa(etapa)" class="boton-editar">✏️</button>
-                    <button (click)="eliminarEtapa(etapa)" class="boton-eliminar">❌</button>
+                    <button (click)="editarNombreEtapa(etapa)" class="boton-editar estilosBotonesInhabilitador" [disabled]="!opcionPlantillas">✏️</button>
+                    <button (click)="eliminarEtapa(etapa)" class="boton-eliminar estilosBotonesInhabilitador" [disabled]="!opcionPlantillas">❌</button>
                 </div>
                 <div *ngIf="etapa.editandoNombre" class="col-9 formulario-edicion">
-                    <p-select [options]="etapasActivas" 
-                    [(ngModel)]="etapa.etapaSeleccionada" 
-                    optionLabel="nombre"
-                        [filter]="true" 
-                        filterBy="nombre" 
-                        [showClear]="true"
-                        placeholder="{{etapa.textoBusqueda || 'Selecciona una etapa'}}" 
-                        class="w-full md:w-56"
-                        (onChange)="seleccionarEtapaExistente(etapa, $event.value)" 
+                    <p-select [options]="etapasComboActivas" [(ngModel)]="etapa.etapaSeleccionada" optionLabel="nombre"
+                        [filter]="true" filterBy="nombre" [showClear]="true"
+                        placeholder="{{etapa.textoBusqueda || 'Selecciona una etapa'}}" class="w-full md:w-56"
+                        (onChange)="seleccionarEtapaExistente(etapa, $event.value)"
                         (onFilter)="filtrarEtapa($event, etapa)"
                         [ngStyle]="{ width: '-webkit-fill-available', height: '41px', 'text-align': 'left', 'padding-top': '4px', 'padding-left': '6px' }"
                         appendTo="body">
@@ -62,7 +85,8 @@
 
                         <ng-template #footer>
                             <div class="p-3 text-center">
-                                <button class="btnAgregarProspectoContacto" [disabled]="!etapa.textoBusqueda" (click)="agregarEtapaDesdeBusqueda(etapa)" size="small"> +
+                                <button class="btnAgregarProspectoContacto" [disabled]="!etapa.textoBusqueda"
+                                    (click)="agregarEtapaDesdeBusqueda(etapa)" size="small"> +
                                     Agregar Etapa</button>
                             </div>
                         </ng-template>
@@ -77,7 +101,7 @@
             </div>
         </div>
         <div class="boton-agregar-contenedor">
-            <button mat-button (click)="agregarEtapa()" class="boton-agregar">
+            <button mat-button (click)="agregarEtapa()" class="boton-agregar estilosBotonesInhabilitador" [disabled]="habilitaPlantillas">
                 +
             </button>
             <span class="texto-agregar">Agregar etapa</span>

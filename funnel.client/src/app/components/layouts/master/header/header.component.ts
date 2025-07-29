@@ -18,6 +18,9 @@ import { OportunidadesService } from '../../../../services/oportunidades.service
 import { ContactosService } from '../../../../services/contactos.service';
 import { CamposAdicionales } from '../../../../interfaces/campos-adicionales';
 import { ModalCamposAdicionalesService } from '../../../../services/modalCamposAdicionales.service';
+import { Procesos } from '../../../../interfaces/procesos';
+import { ProcesosService } from '../../../../services/procesos.service';
+import { PlantillasProcesos } from '../../../../interfaces/plantillas-procesos';
 @Component({
   selector: 'app-header',
   standalone: false,
@@ -85,6 +88,10 @@ export class HeaderComponent implements OnInit {
   sessionCountdownSecondsInactividad: number = 0;
   private sessionCountdownIntervalInactividad: any;
   etapas: OportunidadesPorEtapa[] = [];
+  procesos: Procesos[] = [];
+  plantillas: PlantillasProcesos[] = [];
+   @ViewChild('selectProcesos') selectProcesos: any;
+
 
   constructor(
     public asistenteService: AsistenteService,
@@ -97,7 +104,8 @@ export class HeaderComponent implements OnInit {
     private contactosService: ContactosService,
     private modalCamposAdicionalesService: ModalCamposAdicionalesService,
     private oportunidadService: OportunidadesService,
-    private modalEtapasService: ModalEtapasService) {
+    private modalEtapasService: ModalEtapasService,
+    private procesosService: ProcesosService) {
     this.items = [
       {
         label: 'Oportunidades',
@@ -180,6 +188,7 @@ export class HeaderComponent implements OnInit {
 
     this.nombreUsuario = localStorage.getItem('username')!;
     this.licencia = localStorage.getItem('licencia')!;
+    this.getProcesos();
 
     //Suscripcion a servicio de modal de oportunidades, recibe datos para el despliegue del modal
     this.modalSubscription = this.modalOportunidadesService.modalState$.subscribe((state) => {
@@ -209,6 +218,7 @@ export class HeaderComponent implements OnInit {
       this.modalVisibleEtapas = state.showModal;
       this.insertarEtapas = state.insertarEtapas;
       this.etapas = state.etapas;
+      this.plantillas = state.plantillas;
     });
   }
 
@@ -233,6 +243,25 @@ export class HeaderComponent implements OnInit {
     });
   }
 
+  getProcesos() {
+      this.procesosService.getProcesos(this.authService.obtenerIdEmpresa()).subscribe({
+        next: (result: Procesos[]) => {
+          this.procesos = result.filter(proceso => proceso.estatus == true);
+        },
+        error: (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Se ha producido un error.',
+            detail: error.errorMessage,
+          });
+        },
+      });
+    }
+
+seleccionarProceso(proceso: Procesos) {
+  console.log('Proceso seleccionado:', proceso);
+}
+
 
   ngAfterViewInit() {
     if (this.splitButton) {
@@ -244,42 +273,6 @@ export class HeaderComponent implements OnInit {
       }
     }
   }
-
-  modalEtapas() {
-     this.getOportunidadesPorEtapa();
-  }
-
-  getOportunidadesPorEtapa() {
-  
-      const idUsuario = this.authService.obtenerIdUsuario();
-      const idEmpresa = this.authService.obtenerIdEmpresa();
-  
-      this.oportunidadService.getOportunidadesPorEtapa(idEmpresa, idUsuario).subscribe({
-        next: (result: OportunidadesPorEtapa[]) => {
-  
-          this.etapas = result.map(etapa => ({
-            ...etapa,
-            expandido: true, // Expandir todas las etapas por defecto
-            editandoNombre: false,
-            tarjetas: etapa.tarjetas || [],
-            orden: etapa.orden,
-            probabilidad: etapa.probabilidad,
-            idEmpresa: idUsuario,
-            idUsuario: idUsuario,
-            idStage: etapa.idStage
-          }));
-          this.modalEtapasService.openModal(true, false, this.etapas)
-        },
-        error: (error) => {
-          console.error('Error:', error);
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Error al cargar oportunidades por etapa'
-          });
-        }
-      });
-    }
 
   agregarOportunidad() {
     this.modalOportunidadesService.openModal(true, true, [], {})

@@ -15,5 +15,6 @@ namespace Funnel.Data.Interfaces
         Task<List<PlantillasEtapasDTO>> ConsultarPlantillasProcesosEtapas();
         Task<BaseOut> InsertarModificarEtapa(OportunidadesTarjetasDto request, string bandera);
         Task<BaseOut> InsertarModificarProcesoEtapa(ProcesosDTO request);
+        Task<List<ComboEtapasDto>> ComboEtapas(int IdEmpresa);
     }
 }

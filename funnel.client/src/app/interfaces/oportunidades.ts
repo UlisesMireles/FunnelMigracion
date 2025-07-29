@@ -149,7 +149,7 @@ export  interface OportunidadesPorEtapa {
   idUsuario?: number;
   idEmpresa?: number;
   nombreProceso?: string;
-  etapaSeleccionada?: OportunidadesPorEtapa;
+  etapaSeleccionada?: OportunidadesPorEtapa | null | undefined;
   textoBusqueda?: string;
   idProceso?: number;
 }

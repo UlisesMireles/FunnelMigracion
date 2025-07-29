@@ -12,6 +12,8 @@ import { ProcesosService } from '../../../services/procesos.service';
 import { ColumnasDisponiblesComponent } from '../../utils/tablas/columnas-disponibles/columnas-disponibles.component';
 import { OportunidadesPorEtapa } from '../../../interfaces/oportunidades';
 import { sumBy, map as mapping, omit, sortBy, groupBy, keys as getKeys } from 'lodash-es';
+import { PlantillasProcesos } from '../../../interfaces/plantillas-procesos';
+import { baseOut } from '../../../interfaces/utils/utils/baseOut';
 
 @Component({
   selector: 'app-procesos',
@@ -52,6 +54,9 @@ export class ProcesosComponent {
   private modalSubscription!: Subscription;
   disabledPdf: boolean = false;
   etapas: OportunidadesPorEtapa[] = [];
+  etapasCombo: OportunidadesPorEtapa[] = [];
+  plantillas: PlantillasProcesos[] = [];
+  modalVisibleEtapas: boolean = false;
 
   constructor(private messageService: MessageService,
     private cdr: ChangeDetectorRef,
@@ -79,8 +84,11 @@ export class ProcesosComponent {
       }
     });
     this.getProcesos();
+    this.getComboEtapas();
+    this.consultaPlantillas();
     document.documentElement.style.fontSize = 12 + 'px';
     this.modalSubscription = this.modalEtapasService.modalState$.subscribe((state) => {
+      this.modalVisibleEtapas = state.showModal;
       this.insertar = state.insertarEtapas;
       if (!state.showModal) {
         this.procesoEdicion = null;
@@ -97,6 +105,8 @@ export class ProcesosComponent {
       this.modalSubscription.unsubscribe();  // Desuscribimos al destruir el componente
     }
   }
+
+
 
   getProcesos() {
     this.procesosService.getProcesos(this.loginService.obtenerIdEmpresa()).subscribe({
@@ -129,6 +139,58 @@ export class ProcesosComponent {
     if (this.dt) {
       this.dt.first = 0;
     }
+  }
+
+  getComboEtapas() {
+
+    const idUsuario = this.loginService.obtenerIdUsuario();
+    const idEmpresa = this.loginService.obtenerIdEmpresa();
+
+    this.procesosService.getComboEtapas(idEmpresa, idUsuario).subscribe({
+      next: (result: OportunidadesPorEtapa[]) => {
+
+        this.etapasCombo = result.map(etapa => ({
+          ...etapa,
+          expandido: true, // Expandir todas las etapas por defecto
+          editandoNombre: false,
+          tarjetas: etapa.tarjetas || [],
+          orden: etapa.orden,
+          probabilidad: etapa.probabilidad,
+          idEmpresa: idUsuario,
+          idUsuario: idUsuario,
+          idStage: etapa.idStage
+        }));
+      },
+      error: (error) => {
+        console.error('Error:', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error al cargar oportunidades por etapa'
+        });
+      }
+    });
+  }
+
+  consultaPlantillas() {
+
+    const idUsuario = this.loginService.obtenerIdUsuario();
+    const idEmpresa = this.loginService.obtenerIdEmpresa();
+
+    this.procesosService.getPlantillasProcesos().subscribe({
+      next: (result: PlantillasProcesos[]) => {
+
+        this.plantillas = result;
+      },
+      error: (error) => {
+        console.error('Error:', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error al consultar plantillas para procesos'
+        });
+      }
+    });
   }
 
   clear(table: Table) {
@@ -267,7 +329,7 @@ export class ProcesosComponent {
       oportunidadesCanceladas: 0,
       etapas: []
     };
-    this.modalEtapasService.openModal(true, true, this.etapas);
+    this.modalEtapasService.openModal(true, true, this.etapas, this.etapasCombo, this.plantillas);
     this.insertar = true;
     this.modalVisible = true;
 
@@ -294,7 +356,7 @@ export class ProcesosComponent {
           idProceso: proceso.idProceso,
           nombreProceso: proceso.nombre
         }));
-        this.modalEtapasService.openModal(true, false, this.etapas);
+        this.modalEtapasService.openModal(true, false, this.etapas, this.etapasCombo, this.plantillas);
         this.procesoSeleccionado = proceso;
         this.procesoEdicion = { ...proceso };
         this.insertar = false;
@@ -335,27 +397,27 @@ export class ProcesosComponent {
 
   actualiza(proceso: Procesos) {
     this.getOportunidadesPorEtapa(proceso);
+  }
+
+  getTotalCostPrimeNg(table: Table, def: any) {
+    if (!def.isTotal) {
+      return;
     }
 
-    getTotalCostPrimeNg(table: Table, def: any) {
-        if (!def.isTotal) {
-          return;
-        }
-    
-        const registrosVisibles = table.filteredValue ? table.filteredValue : this.procesos;
-    
-        if (def.key === 'nombreProceso') {
-          return registrosVisibles.length;
-        }
-    
-        return (
-          registrosVisibles.reduce(
-            (acc: number, empresa: Procesos) =>
-              acc + (Number(empresa[def.key as keyof Procesos]) || 0),
-            0
-          ) / registrosVisibles.length
-        );
-      }
+    const registrosVisibles = table.filteredValue ? table.filteredValue : this.procesos;
+
+    if (def.key === 'nombreProceso') {
+      return registrosVisibles.length;
+    }
+
+    return (
+      registrosVisibles.reduce(
+        (acc: number, empresa: Procesos) =>
+          acc + (Number(empresa[def.key as keyof Procesos]) || 0),
+        0
+      ) / registrosVisibles.length
+    );
+  }
 
 
   onHeaderClick() {

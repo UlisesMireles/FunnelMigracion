@@ -12,26 +12,26 @@
 
 #header img {
   height: auto;
-  max-height: 120px; 
+  max-height: 120px;
   width: auto;
   max-width: 120px;
   object-fit: contain;
 }
 
 #header img.logo-empresa {
-  max-height: 100% !important;  
-  max-width: 120px !important; 
-  width: auto !important;      
-  height: auto !important;     
+  max-height: 100% !important;
+  max-width: 120px !important;
+  width: auto !important;
+  height: auto !important;
   object-fit: contain !important;
   padding: 2px 0 !important;
 }
 
-.navbar > div:first-child {
+.navbar>div:first-child {
   display: flex;
   align-items: center;
   height: 100%;
-  max-height: 50px; 
+  max-height: 50px;
 }
 
 .navbar {
@@ -39,13 +39,13 @@
   align-items: center;
   height: 100%;
   padding: 0px;
-  position: relative;    
+  position: relative;
   padding: 0px 10px;
-  gap: 10px; 
+  gap: 10px;
   margin-right: 10px;
 }
 
-.navbar > div {
+.navbar>div {
   display: flex;
   align-items: center;
 }
@@ -65,7 +65,8 @@
   cursor: pointer;
   border-radius: 5px;
   border: 0;
-  transition: background 0.3s, color 0.3s; /* transición suave */
+  transition: background 0.3s, color 0.3s;
+  /* transición suave */
 }
 
 .btn-chat:hover {
@@ -77,15 +78,16 @@
 } */
 
 .btn-chat i {
-  font-size: 18px;      
+  font-size: 18px;
   border: none;
 }
 
-.ia-button-text{
+.ia-button-text {
   font-size: 12px;
   margin-left: 9px;
   font-weight: bold;
 }
+
 .chatbot-window {
   width: 490px;
   height: 550px;
@@ -267,10 +269,12 @@
   border-radius: 5px;
   border: 0;
 }
+
 .menu-item-perfil:hover {
   background: rgb(186, 114, 69);
 }
-.menu-item-logout{
+
+.menu-item-logout {
   height: 30px;
   cursor: pointer;
   border-radius: 5px;
@@ -280,11 +284,13 @@
   align-items: center;
   justify-content: center;
 }
-.menu-item-logout i{
+
+.menu-item-logout i {
   color: #fff;
   font-size: 30px;
   -webkit-text-stroke: 1px;
 }
+
 .spanNombre {
   color: white;
   padding-left: 6px;
@@ -306,11 +312,13 @@
   align-items: center;
   justify-content: center;
 }
+
 .btnAgregar i {
-  font-size: 18px;      
+  font-size: 18px;
   border: none;
   color: #8ee3bc;
 }
+
 .btnAgregar:hover {
   background-color: #e4e4e4;
 }
@@ -338,13 +346,14 @@
   width: 100%;
   padding: 8px;
   text-align: left;
-  border: none; 
+  border: none;
   cursor: pointer;
   color: white;
 }
 
 .option-btn:hover {
-  background-color: rgba(16, 61, 102, 0.5);  /* C cambio de color */
+  background-color: rgba(16, 61, 102, 0.5);
+  /* C cambio de color */
   color: white;
 }
 
@@ -359,13 +368,15 @@
   font-size: 12px;
   height: 30px;
 }
-.menu-header-container{
+
+.menu-header-container {
   display: flex;
   justify-content: flex-end;
   align-items: center;
 }
-.color-amarillo{
-  color:rgb(255, 238, 88);
+
+.color-amarillo {
+  color: rgb(255, 238, 88);
 }
 
 
@@ -383,7 +394,111 @@
 .option-btn button:last-child {
   border-bottom: none;
 }
+
 .option-btn button:hover {
-  background-color: rgba(16, 61, 102, 0.5);  
-  color: white; 
+  background-color: rgba(16, 61, 102, 0.5);
+  color: white;
 }
+
+#btnAgregarProspectoContacto {
+  display: inline-flex;
+  cursor: pointer;
+  user-select: none;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  color: black;
+  background: #ecfdf5;
+  border: 1px solid #ecfdf5;
+  padding-block: var(--p-button-padding-y);
+  padding-inline: var(--p-button-padding-x);
+  font-size: 1rem;
+  font-family: inherit;
+  font-feature-settings: inherit;
+  transition: background var(--p-button-transition-duration), color var(--p-button-transition-duration), border-color var(--p-button-transition-duration), outline-color var(--p-button-transition-duration), box-shadow var(--p-button-transition-duration);
+  border-radius: var(--p-button-border-radius);
+  outline-color: transparent;
+  gap: var(--p-button-gap);
+  font-size: var(--p-button-sm-font-size);
+  padding-block: var(--p-button-sm-padding-y);
+  padding-inline: var(--p-button-sm-padding-x);
+}
+
+#btnAgregarProspectoContacto:not(:disabled):hover {
+  background: #d4f7e7;
+  border: 1px solid #d4f7e7;
+  color: black;
+}
+
+
+.btnAgregarProspectoContacto {
+  display: inline-flex;
+  cursor: pointer;
+  user-select: none;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  color: black;
+  background: #ecfdf5;
+  border: 1px solid #ecfdf5;
+  padding-block: var(--p-button-padding-y);
+  padding-inline: var(--p-button-padding-x);
+  font-size: 1rem;
+  font-family: inherit;
+  font-feature-settings: inherit;
+  transition: background var(--p-button-transition-duration), color var(--p-button-transition-duration), border-color var(--p-button-transition-duration), outline-color var(--p-button-transition-duration), box-shadow var(--p-button-transition-duration);
+  border-radius: var(--p-button-border-radius);
+  outline-color: transparent;
+  gap: var(--p-button-gap);
+  font-size: var(--p-button-sm-font-size);
+  padding-block: var(--p-button-sm-padding-y);
+  padding-inline: var(--p-button-sm-padding-x);
+  margin-left: 4px;
+}
+
+.btnAgregarProspectoContacto:not(:disabled):hover {
+  background: #d4f7e7;
+  border: 1px solid #d4f7e7;
+  color: black;
+}
+
+::ng-deep .custom-proceso-select .p-dropdown {
+  height: 50px !important;
+  font-size: 16px;
+  line-height: 48px;
+  background-color: rgba(16, 61, 102, 0.5) !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+::ng-deep .custom-proceso-select .p-dropdown-label {
+  padding-top: 10px;
+  background-color: rgba(16, 61, 102, 0.5) !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.options-container-procesos {
+  position: absolute;
+  top: 40px;
+  border-radius: 4px;
+  padding: 0px;
+  z-index: 100;
+  width: 100px;
+}
+
+::ng-deep .header-container .p-select-label.p-placeholder {
+  color: #ffffff !important;
+}
+
+/* ::ng-deep .p-select-header {
+  background-color: rgba(16, 61, 102, 0.5) !important;
+} */
+
+/* ::ng-deep .p-select-list-container {
+  background-color: rgba(16, 61, 102, 0.5) !important;
+} */

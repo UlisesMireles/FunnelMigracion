@@ -43,9 +43,9 @@ namespace Funnel.Logic
             return await _oportunidadesData.ComboEntregas(IdEmpresa);
         }
 
-        public async Task<List<ComboEtapasDto>> ComboEtapas(int IdEmpresa)
+        public async Task<List<ComboEtapasDto>> ComboEtapas(int IdEmpresa, int IdProceso)
         {
-            return await _oportunidadesData.ComboEtapas(IdEmpresa);
+            return await _oportunidadesData.ComboEtapas(IdEmpresa, IdProceso);
         }
 
         public async Task<List<ComboProspectosDto>> ComboProspectos(int IdEmpresa)
@@ -165,7 +165,7 @@ namespace Funnel.Logic
             CultureInfo cultura = new CultureInfo("es-ES");
 
             List<OportunidadesTarjetasDto> lista = new List<OportunidadesTarjetasDto>();
-            List<ComboEtapasDto> etapas = await _oportunidadesData.ComboEtapas(IdEmpresa);
+            List<ComboEtapasDto> etapas = await _oportunidadesData.ComboEtapas(IdEmpresa, IdProceso);
             List<OportunidadesEnProcesoDto> oportunidades = await _oportunidadesData.ConsultarOportunidadesEnProceso(IdUsuario, IdEmpresa, 1, IdProceso);
 
             foreach (var item in etapas)

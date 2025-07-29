@@ -83,13 +83,14 @@ namespace Funnel.Data
             }
             return result;
         }
-        public async Task<List<ComboEtapasDto>> ComboEtapas(int IdEmpresa)
+        public async Task<List<ComboEtapasDto>> ComboEtapas(int IdEmpresa, int IdProceso)
         {
             List<ComboEtapasDto> result = new List<ComboEtapasDto>();
             IList<ParameterSQl> list = new List<ParameterSQl>
             {
                 DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "INDICADORES-STAGE"),
-                DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, IdEmpresa)
+                DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, IdEmpresa),
+                DataBase.CreateParameterSql("@pIdProceso", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, IdProceso)
             };
             using (IDataReader reader = await DataBase.GetReaderSql("F_Catalogos", CommandType.StoredProcedure, list, _connectionString))
             {

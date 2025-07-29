@@ -40,9 +40,9 @@ namespace Funnel.Server.Controllers
             return Ok(result);
         }
         [HttpGet("[action]/")]
-        public async Task<ActionResult> ComboEtapas(int idEmpresa)
+        public async Task<ActionResult> ComboEtapas(int idEmpresa, int IdProceso)
         {
-            var result = await _oportunidadesService.ComboEtapas(idEmpresa);
+            var result = await _oportunidadesService.ComboEtapas(idEmpresa, IdProceso);
             return Ok(result);
         }
         [HttpGet("[action]/")]

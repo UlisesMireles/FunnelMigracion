@@ -121,10 +121,12 @@
                   'text-align': 
                     def.tipoFormato === 'estatus' ? 'center' : 
                     (def.tipoFormato === 'number') ? 'center' : 
-                    def.key === 'iniciales' ? 'center' : 'left',
+                    def.key === 'iniciales' ? 'center' : 
+                    def.key === 'telefono' ? 'center' : 'left',
                     'width': def.key === 'stage' || def.key === 'iniciales' ? '80px' :
                     def.key === 'cantidadOportunidades' ? '60px' : 
                     def.tipoFormato === 'estatus' ? '30px' : ''
+                    
                 }">
                   <ng-container [ngSwitch]="def.tipoFormato">
                     <span *ngSwitchCase="'text'">{{ rowData[def.key] }}</span>
@@ -155,6 +157,7 @@
                       Total de Registros: {{ getTotalCostPrimeNg(dt, def) }}
                     </ng-container>
                   </td>
+                  <td></td>
                 </tr>
           </ng-template>
 

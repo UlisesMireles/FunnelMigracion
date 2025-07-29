@@ -515,7 +515,9 @@ namespace Funnel.Data
                         Prospecto = ComprobarNulos.CheckStringNull(reader["Prospecto"]),
                         Oportunidad = ComprobarNulos.CheckStringNull(reader["Oportunidad"]),
                         Fecha = ComprobarNulos.CheckDateTimeNull(reader["Fecha"]),
-                        Monto = ComprobarNulos.CheckDecimalNull(reader["Monto"])
+                        Monto = ComprobarNulos.CheckDecimalNull(reader["Monto"]),
+                        Ejecutivo = ComprobarNulos.CheckStringNull(reader["Ejecutivo"]),
+                        InicialesEjecutivo = ComprobarNulos.CheckStringNull(reader["InicialesEjecutivo"])
                     };
                     listProspectosNuevos.Add(registro);
                 }
@@ -527,7 +529,9 @@ namespace Funnel.Data
                         Prospecto = ComprobarNulos.CheckStringNull(reader["Prospecto"]),
                         Oportunidad = ComprobarNulos.CheckStringNull(reader["Oportunidad"]),
                         Fecha = ComprobarNulos.CheckDateTimeNull(reader["Fecha"]),
-                        Monto = ComprobarNulos.CheckDecimalNull(reader["Monto"])
+                        Monto = ComprobarNulos.CheckDecimalNull(reader["Monto"]),
+                        Ejecutivo = ComprobarNulos.CheckStringNull(reader["Ejecutivo"]),
+                        InicialesEjecutivo = ComprobarNulos.CheckStringNull(reader["InicialesEjecutivo"])
                     };
                     listAbiertasMes.Add(registro);
                 }
@@ -539,7 +543,9 @@ namespace Funnel.Data
                         Prospecto = ComprobarNulos.CheckStringNull(reader["Prospecto"]),
                         Oportunidad = ComprobarNulos.CheckStringNull(reader["Oportunidad"]),
                         Fecha = ComprobarNulos.CheckDateTimeNull(reader["Fecha"]),
-                        Monto = ComprobarNulos.CheckDecimalNull(reader["Monto"])
+                        Monto = ComprobarNulos.CheckDecimalNull(reader["Monto"]),
+                        Ejecutivo = ComprobarNulos.CheckStringNull(reader["Ejecutivo"]),
+                        InicialesEjecutivo = ComprobarNulos.CheckStringNull(reader["InicialesEjecutivo"])
                     };
                     listGanadasMes.Add(registro);
                 }
@@ -551,7 +557,9 @@ namespace Funnel.Data
                         Prospecto = ComprobarNulos.CheckStringNull(reader["Prospecto"]),
                         Oportunidad = ComprobarNulos.CheckStringNull(reader["Oportunidad"]),
                         Fecha = ComprobarNulos.CheckDateTimeNull(reader["Fecha"]),
-                        Monto = ComprobarNulos.CheckDecimalNull(reader["Monto"])
+                        Monto = ComprobarNulos.CheckDecimalNull(reader["Monto"]),
+                        Ejecutivo = ComprobarNulos.CheckStringNull(reader["Ejecutivo"]),
+                        InicialesEjecutivo = ComprobarNulos.CheckStringNull(reader["InicialesEjecutivo"])
                     };
                     listPerdidasMes.Add(registro);
                 }

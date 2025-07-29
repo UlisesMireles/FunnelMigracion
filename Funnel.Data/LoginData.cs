@@ -53,6 +53,8 @@ namespace Funnel.Data
                         usuario.Licencia = ComprobarNulos.CheckStringNull(reader["Licencia"]);
                         usuario.CantidadUsuarios = ComprobarNulos.CheckIntNull(reader["CantidadUsuarios"]);
                         usuario.CantidadOportunidades = ComprobarNulos.CheckIntNull(reader["CantidadOportunidades"]);
+                        usuario.Puesto = ComprobarNulos.CheckStringNull(reader["Puesto"]);
+                        usuario.Telefono = ComprobarNulos.CheckStringNull(reader["Telefono"]);
                     }
                 }
             }

@@ -37,6 +37,25 @@ namespace Funnel.Data
             }
             return result;
         }
+        public async Task<List<ComboPuestosDto>> ComboPuestos()
+        {
+            List<ComboPuestosDto> result = new List<ComboPuestosDto>();
+            IList<ParameterSQl> list = new List<ParameterSQl>
+            {
+                DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "SEL-PUESTO"),
+            };
+            using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoUsuarios", CommandType.StoredProcedure, list, _connectionString))
+            {
+                while (reader.Read())
+                {
+                    var dto = new ComboPuestosDto();
+                    dto.IdPuesto = ComprobarNulos.CheckIntNull(reader["IdPuesto"]);
+                    dto.Descripcion = ComprobarNulos.CheckStringNull(reader["Descripcion"]);
+                    result.Add(dto);
+                }
+            }
+            return result;
+        }
 
         public async Task<List<UsuarioDto>> ConsultarUsuarios(int IdEmpresa)
         {
@@ -66,7 +85,10 @@ namespace Funnel.Data
                         TipoUsuario = ComprobarNulos.CheckStringNull(reader["TipoUsuario"]),
                         Usuario = ComprobarNulos.CheckStringNull(reader["Usuario"]),
                         ArchivoImagen = ComprobarNulos.CheckStringNull(reader["ArchivoImagen"]),
-                        CantidadOportunidades = ComprobarNulos.CheckIntNull(reader["NumOportunidades"]),   
+                        CantidadOportunidades = ComprobarNulos.CheckIntNull(reader["NumOportunidades"]),
+                        Telefono = ComprobarNulos.CheckStringNull(reader["Telefono"]),
+                        IdPuesto = ComprobarNulos.CheckIntNull(reader["IdPuesto"]),
+                        Puesto = ComprobarNulos.CheckStringNull(reader["Puesto"]),
                     };
                     result.Add(dto);
                 }
@@ -89,7 +111,9 @@ namespace Funnel.Data
                     Password = request.Password,
                     Iniciales = request.Iniciales,
                     Correo = request.Correo,
+                    Telefono = request.Telefono,
                     IdTipoUsuario = request.IdTipoUsuario,
+                    IdPuesto = request.IdPuesto,
                     IdUsuario = request.IdUsuario,
                     IdEmpresa = request.IdEmpresa,
                     Estatus = request.Estatus,
@@ -186,6 +210,8 @@ namespace Funnel.Data
             DataBase.CreateParameterSql("@IdUsuario", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdUsuario),
             DataBase.CreateParameterSql("@Estatus", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Estatus),
             DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdEmpresa ?? (object)DBNull.Value),
+            DataBase.CreateParameterSql("@pIdPuesto", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdPuesto ?? (object)DBNull.Value),
+            DataBase.CreateParameterSql("@Telefono", SqlDbType.VarChar, 20, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Telefono)
         };
 
                 using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoUsuarios", CommandType.StoredProcedure, list, _connectionString))

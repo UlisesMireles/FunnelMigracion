@@ -22,5 +22,6 @@ namespace Funnel.Models.Dto
         public decimal Creditos { get; set; }
         public string RutaDocumento { get; set; } = string.Empty;
         public string? Prompt { get; set; } = string.Empty;
+        public string? FileId { get; set; } = string.Empty;
     }
 }

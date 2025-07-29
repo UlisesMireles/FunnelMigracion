@@ -12,9 +12,12 @@ namespace Funnel.Models.Dto
     }
     public class EtiquetasOportunidadesDetalleDto
     {
-        public string Prospecto { get; set; }
-        public string Oportunidad { get; set; }
+        public string? Prospecto { get; set; }
+        public string? Oportunidad { get; set; }
+        public string? Ejecutivo { get; set; }
+        public string? InicialesEjecutivo { get; set; }
         public DateTime Fecha { get; set; }
         public decimal Monto { get; set; }
+
     }
 }

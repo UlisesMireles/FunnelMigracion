@@ -7,116 +7,47 @@
     </div>
     <div class="col-7 menu-header-container">
       <div>
-        Sesión: {{ sessionCountdownMinutes }}:{{ sessionCountdownSeconds < 10 ? '0' + sessionCountdownSeconds : sessionCountdownSeconds }}
-      </div>
-      <div class="ms-2">
-        Inactividad: {{ sessionCountdownMinutesInactividad }}:{{ sessionCountdownSecondsInactividad < 10 ? '0' + sessionCountdownSecondsInactividad : sessionCountdownSecondsInactividad }}
-      </div>
-      <div class="agregar btn-agregar-custom ms-2" (click)="toggleOptions()" (mouseenter)="showSubmenu()" (mouseleave)="hideSubmenu()">
-        <!-- <p-splitbutton label="Agregar" [model]="items" raised severity="secondary" #splitBtn /> -->
-        <button class="btn-chat float-end cursor-pointer"  > 
-          <i class="bi bi-plus color-amarillo" style="margin-left: -6px;"></i> 
-          <span class="ia-button-text color-amarillo"> ALTA</span>
-        </button>
-        <ul *ngIf="optionsVisible" class="options-container" (click)="showSubmenu()" (mouseleave)="hideSubmenu()">
-          <li class="option-btn" (click)="agregarOportunidad()">Oportunidad</li>
-          <li class="option-btn" (click)="agregarProspecto()">Prospecto</li>
-          <li class="option-btn" (click)="agregarContacto()">Contacto</li>
-        </ul> 
-      </div>
-      <button class="btnAgregar"  *ngIf="licenciaPlatino" style="margin-left: 5px;"
-                  (click)="mostrarAsistenteProspeccion = true">
-                  <i class="bi bi-stars"></i>
-                  <span class="ia-button-text"> PC </span>
-                </button>
-      <ng-container *ngIf="mostrarAsistenteProspeccion">
-      <div id="chat-container-prospeccion" class="chatbot-window-prospeccion" #chatContainerProspeccion (mousedown)="startDragProspeccion($event)">
-        <app-asistente-prospeccion></app-asistente-prospeccion>
-      </div>
-      </ng-container>
-  
-      <div class="chatbot ms-2" *ngIf="licenciaPlatino" >
-        <!-- Botón de chat en el header-->
-        <button class="btnAgregar" (click)="toggleChat()">
-          <i class="bi bi-stars"></i> 
-          <span class="ia-button-text "> IA</span>
-        </button>
-       <!-- Contenedor del chatbot -->
-      <ng-container *ngIf="(asistenteService.asistenteObservable | async) === 1">
-      <div id="chat-container-operacion" class="chatbot-window-operacion" #chatContainerOperacion (mousedown)="startDrag($event)">
-      <app-asistente-operacion></app-asistente-operacion>
-      </div>
-      </ng-container>
-      </div>
-      <!-- Perfil (el primero de derecha a izquierda) -->
-      <div class="perfil ms-2" style="justify-content: end;">
-        <button class="menu-item-perfil" (click)="navigateTo('/perfil')">
-          <i class="bi bi-person-circle large-icon" [title]="'Perfil'"></i>
-          <span class="spanNombre">{{ nombreUsuario }}</span>
-        </button>
-      </div>
-      <div class="ms-2" style="justify-content: end;">
-        <button class="menu-item-logout" (click)="logout()">
-          <i class="bi bi-box-arrow-right large-icon" [title]="'Cerrar Sesión'"></i>
-        </button>
-      </div>
-    </div>
-    
-
-              <!-- <div class="agregar btn-agregar-custom ms-2" (click)="toggleOptionsProcesos()"
-                (mouseenter)="showSubmenuProcesos()" (mouseleave)="hideSubmenuProcesos()">
-                <button class="btn-chat float-end cursor-pointer">
-                  <i class="bi bi-clipboard-data color-amarillo" style="margin-left: -6px;"></i>
-                  <span class="ia-button-text color-amarillo"> PROCESOS</span>
-                </button>
-                <ul *ngIf="optionsVisibleProcesos" class="options-container" (click)="showSubmenuProcesos()"
-                  (mouseleave)="hideSubmenuProcesos()">
-                  <li class="option-btn">Etapas</li>
-                  <li class="option-btn" (click)="goToConfiguracionProcesos()">Configuración</li>
-                </ul>
-              </div> -->
+        Sesión: {{ sessionCountdownMinutes }}:{{ sessionCountdownSeconds < 10 ? '0' + sessionCountdownSeconds :
+          sessionCountdownSeconds }} </div>
+          <div class="ms-2">
+            Inactividad: {{ sessionCountdownMinutesInactividad }}:{{ sessionCountdownSecondsInactividad < 10 ? '0' +
+              sessionCountdownSecondsInactividad : sessionCountdownSecondsInactividad }} </div>
               <div class="agregar btn-agregar-custom ms-2 header-container">
-                <!-- <button class="btn-chat float-end cursor-pointer" (click)="toggleOptionsProcesos()">
-                  <i class="bi bi-clipboard-data color-amarillo" style="margin-left: -6px;"></i>
-                  <span class="ia-button-text color-amarillo"> PROCESOS</span>
-                </button> -->
-
-                <!-- <div class="options-container-procesos"> -->
-                  <p-select #selectProcesos [options]="procesos" optionLabel="nombre" placeholder="Selecciona un proceso"
-                    [showClear]="true" [filter]="true" (onChange)="seleccionarProceso($event.value)"
-                    [ngStyle]="{
+                <p-select #selectProcesos [options]="procesos" optionLabel="nombre" placeholder="Selecciona un proceso"
+                  [showClear]="true" [filter]="true" (onChange)="seleccionarProceso($event.value)" [ngStyle]="{
         width: '200px',
         height: '30px',
         'text-align': 'left',
         'padding-left': '6px',
         'background': 'linear-gradient(0deg, rgba(247, 106, 19, 1) 0%, rgba(200, 87, 24, 1) 35%, rgba(231, 91, 42, 1) 100%)',
         'border': 'none'
-      }" >
-                    <!-- Opción seleccionada -->
-                    <ng-template #selectedItem let-selectedOption>
-                      <div class="flex items-center gap-2" style="width: 100%; color: white;">
-                        <i class="pi pi-database"></i>
-                        <div>{{ selectedOption?.nombre || 'Seleccione un proceso' }}</div>
-                      </div>
-                    </ng-template>
+      }">
+                  <!-- Opción seleccionada -->
+                  <ng-template #selectedItem let-selectedOption>
+                    <div class="flex items-center gap-2" style="width: 100%; color: white;">
+                      <i class="pi pi-database"></i>
+                      <div>{{ selectedOption?.nombre || 'Seleccione un proceso' }}</div>
+                    </div>
+                  </ng-template>
 
-                    <!-- Lista de opciones -->
-                    <ng-template let-item #item>
-                      <div class="flex items-center gap-2">
-                        <i class="pi pi-database"></i>
-                        <div>{{ item.nombre }}</div>
-                      </div>
-                    </ng-template>
+                  <!-- Lista de opciones -->
+                  <ng-template let-item #item>
+                    <div class="flex items-center gap-2">
+                      <i class="pi pi-database"></i>
+                      <div>{{ item.nombre }}</div>
+                    </div>
+                  </ng-template>
 
-                    <!-- Botón de configuración -->
-                    <ng-template #footer style="background-color: rgba(16, 61, 102, 0.5) !important;">
-                      <div class="p-3 text-center">
-                        <button class="btnAgregarProspectoContacto" (click)="goToConfiguracionProcesos(); selectProcesos.hide()" size="small">
-                          + Configuración
-                        </button>
-                      </div>
-                    </ng-template>
-                  </p-select>
+                  <!-- Botón de configuración -->
+                  <ng-template #footer style="background-color: rgba(16, 61, 102, 0.5) !important;">
+                    <div class="p-3 text-center">
+                      <button class="btnAgregarProspectoContacto"
+                        (click)="goToConfiguracionProcesos(); selectProcesos.hide()" size="small">
+                        + Configuración
+                      </button>
+                    </div>
+                  </ng-template>
+                </p-select>
                 <!-- </div> -->
               </div>
               <div class="agregar btn-agregar-custom ms-2" (click)="toggleOptions()" (mouseenter)="showSubmenu()"
@@ -133,8 +64,19 @@
                   <li class="option-btn" (click)="agregarContacto()">Contacto</li>
                 </ul>
               </div>
+              <button class="btnAgregar" *ngIf="licenciaPlatino" style="margin-left: 5px;"
+                (click)="mostrarAsistenteProspeccion = true">
+                <i class="bi bi-stars"></i>
+                <span class="ia-button-text"> PC </span>
+              </button>
+              <ng-container *ngIf="mostrarAsistenteProspeccion">
+                <div id="chat-container-prospeccion" class="chatbot-window-prospeccion" #chatContainerProspeccion
+                  (mousedown)="startDragProspeccion($event)">
+                  <app-asistente-prospeccion></app-asistente-prospeccion>
+                </div>
+              </ng-container>
 
-              <div class="chatbot ms-2">
+              <div class="chatbot ms-2" *ngIf="licenciaPlatino">
                 <!-- Botón de chat en el header-->
                 <button class="btnAgregar" (click)="toggleChat()">
                   <i class="bi bi-stars"></i>
@@ -142,7 +84,8 @@
                 </button>
                 <!-- Contenedor del chatbot -->
                 <ng-container *ngIf="(asistenteService.asistenteObservable | async) === 1">
-                  <div id="chat-container" class="chatbot-window" #chatContainer (mousedown)="startDrag($event)">
+                  <div id="chat-container-operacion" class="chatbot-window-operacion" #chatContainerOperacion
+                    (mousedown)="startDrag($event)">
                     <app-asistente-operacion></app-asistente-operacion>
                   </div>
                 </ng-container>
@@ -160,9 +103,10 @@
                 </button>
               </div>
           </div>
+      </div>
 
 
-          <!-- Logo (el último de derecha a izquierda) -->
+      <!-- Logo (el último de derecha a izquierda) -->
 
       <!-- </div> -->
 </header>

@@ -21,6 +21,11 @@ export class UsuariosService {
       params: { idEmpresa: idEmpresa.toString() }
     });
   }
+  getPuestos(idEmpresa: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}api/Usuarios/ComboPuestos`, {
+      params: { idEmpresa: idEmpresa.toString() }
+    });
+  }
 
   postGuardarUsuario(formData: FormData): Observable<any> {
     return this.http.post(`${this.baseUrl}api/Usuarios/GuardarImagen`, formData);

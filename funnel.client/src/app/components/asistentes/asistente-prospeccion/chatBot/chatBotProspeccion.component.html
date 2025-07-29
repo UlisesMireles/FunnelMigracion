@@ -1,0 +1,55 @@
+<div class="scrollable-div" #scrollMe>
+  <div *ngIf="mostrarMensajeCopiado" class="mensaje-flotante">{{ mensajeCopiadoTexto }}</div>
+  <div class="chat-historial" *ngFor="let chat of chatHistorial">
+    <div class="chat-row" [ngClass]="{'row-reverse': chat.rol === 'usuario'}">
+      <ng-container [ngSwitch]="chat.rol">
+        <ng-container *ngSwitchCase="'cargando'">
+          <div class="chat-bubble ai-bubble">
+            <div class="lds-ellipsis">
+              <div></div><div></div><div></div><div></div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngSwitchCase="'asistente'">
+          <div class="vstack">
+            <label class="labelAsistente ps-2">Prospector Comercial</label>
+           <div class="chat-bubble ai-bubble formatoMensajes vstackbot" [innerHTML]="chat.mensaje"></div>
+            <!-- <button *ngIf="chat.mostrarBotonDataset" class="btn btn-primary mt-2" (click)="enviarDataset()">
+              Enviar Dataset
+            </button> -->
+             <button *ngIf="chat.mensaje.includes('Nombre de la empresa') || chat.mensaje.includes('Giro')" 
+              class="btn-copiar" (click)="copiarRespuesta(chat.mensaje)"
+              matTooltip="Copiar mensaje"> <mat-icon>content_copy</mat-icon>
+            </button>
+          </div>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'usuario'">
+          <div class="vstack row-reverse">
+            <div class="chat-bubble human-bubble formatoMensajes" [innerHTML]="chat.mensaje"></div>
+          </div>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+<ng-template #cargando>
+  <div class="chat-bubble ai-bubble">
+    <div class="lds-ellipsis ">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</ng-template>
+
+<div class="chatbot-message-box" data-role="chatbot">
+  <textarea #inputChat class="chatbot-input" [(ngModel)]="pregunta" placeholder="¿Cómo puedo ayudarte el día de hoy?" 
+    (keydown.enter)="consultaMensajeOpenIa($event, inputChat)" (input)="ajustarAlturaTextarea($event)"></textarea>  
+  <mat-icon matSuffix style="color:#256F45; cursor:pointer; margin-top:1px;" 
+    (click)="resetConversation()" matTooltip="Eliminar historial">delete</mat-icon>
+  <mat-icon matSuffix class="ms-2" (click)="!pregunta || isConsultandoOpenIa ? null : consultaMensajeOpenIa()"
+    [ngClass]="{'disabled-icon': !pregunta || isConsultandoOpenIa}" [ngStyle]="{'color':'#256F45'}">send</mat-icon>
+</div>

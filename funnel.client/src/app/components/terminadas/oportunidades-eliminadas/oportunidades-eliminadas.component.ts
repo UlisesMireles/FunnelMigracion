@@ -36,7 +36,7 @@ export class OportunidadesEliminadasComponent {
   modalSeguimientoVisible: boolean = false;
   seguimientoOportunidad: boolean = false;
   modalDocumentosVisible: boolean = false;
-
+  public mostrarDecimales: boolean = false;
 
   years: string[] = [];
   selectedYear: string = new Date().getFullYear().toString();
@@ -60,6 +60,7 @@ export class OportunidadesEliminadasComponent {
   ) { }
 
   ngOnInit(): void {
+    this.mostrarDecimales = this.loginService.obtenerPermitirDecimales();
     this.configuracionColumnasService.obtenerColumnasAMostrar(EnumTablas.OportunidadesEliminadas).subscribe({
       next: ({ todas, mostrar }) => {
         this.lsTodasColumnas = todas;

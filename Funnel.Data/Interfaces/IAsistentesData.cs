@@ -1,0 +1,11 @@
+﻿using Funnel.Models.Base;
+using Funnel.Models.Dto;
+namespace Funnel.Data.Interfaces
+{
+    public interface IAsistentesData
+    {
+        public Task<ConfiguracionDto?> ObtenerConfiguracionPorIdBotAsync(int idBot);
+        public Task<BaseOut> GuardarFileIdLeadEisei(int idBot, string fileId);
+        public Task<InsertaBitacoraPreguntasDto> InsertaPreguntaBitacoraPreguntas(InsertaBitacoraPreguntasDto insert);
+    }
+}

@@ -40,7 +40,8 @@ namespace Funnel.Server.Extensions
             services.AddScoped<IInputsAdicionalesService, InputsAdicionalesService>();
             services.AddScoped<IProcesosData, ProcesosData>();
             services.AddScoped<IProcesosService, ProcesosService>();
-
+            services.AddScoped<IAsistentesData, AsistentesData>();
+            services.AddScoped<IAsistentesService, AsistentesService>();
 
             return services;
         }

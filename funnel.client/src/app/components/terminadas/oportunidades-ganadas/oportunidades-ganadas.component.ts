@@ -37,6 +37,7 @@ export class OportunidadesGanadasComponent {
   modalSeguimientoVisible: boolean = false;
   seguimientoOportunidad: boolean = false;
   modalDocumentosVisible: boolean = false;
+  public mostrarDecimales: boolean = false;
 
   loading: boolean = true;
 
@@ -61,6 +62,7 @@ export class OportunidadesGanadasComponent {
   ) { }
 
   ngOnInit(): void {
+    this.mostrarDecimales = this.loginService.obtenerPermitirDecimales();
     this.configuracionColumnasService.obtenerColumnasAMostrar(EnumTablas.OportunidadesGanadas).subscribe({
       next: ({ todas, mostrar }) => {
         this.lsTodasColumnas = todas;

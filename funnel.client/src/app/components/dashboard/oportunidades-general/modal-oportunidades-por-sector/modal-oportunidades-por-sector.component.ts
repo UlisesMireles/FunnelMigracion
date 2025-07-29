@@ -18,6 +18,7 @@ export class ModalOportunidadesPorSectorComponent {
   sectores: Sectores[] = [];
   loading: boolean = true;
   maximized: boolean = false;
+  public mostrarDecimales: boolean = false;
 
     lsColumnasAMostrar = [
     { key: 'nombreSector', valor: 'Sector', tipoFormato: 'text' },
@@ -28,6 +29,7 @@ export class ModalOportunidadesPorSectorComponent {
   constructor(private loginService: LoginService, private graficasService: GraficasService, private cdr: ChangeDetectorRef) { }
 
     ngOnInit() {
+    this.mostrarDecimales = this.loginService.obtenerPermitirDecimales();
     this.cargarSectores();
   }
 

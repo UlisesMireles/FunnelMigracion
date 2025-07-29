@@ -38,6 +38,12 @@ namespace Funnel.Server.Controllers
             var respuesta = await _usuariosService.ComboTiposUsuarios();
             return Ok(respuesta);
         }
+        [HttpGet("[action]/")]
+        public async Task<ActionResult<List<ComboPuestosDto>>> ComboPuestos()
+        {
+            var respuesta = await _usuariosService.ComboPuestos();
+            return Ok(respuesta);
+        }
 
         [HttpPost("[action]")]
         public async Task<ActionResult<UsuarioDto>> GuardarImagen([FromForm] List<IFormFile> imagen, [FromForm] UsuarioDto request)

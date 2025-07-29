@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener, ChangeDetectorRef } from '@angular/core';
 import { environment } from '../../../../../environments/environment';
 import { AsistenteService } from '../../../../services/asistentes/asistente.service';
 import { ModalService } from '../../../../services/modal-perfil.service';
@@ -21,6 +21,8 @@ import { ModalCamposAdicionalesService } from '../../../../services/modalCamposA
 import { Procesos } from '../../../../interfaces/procesos';
 import { ProcesosService } from '../../../../services/procesos.service';
 import { PlantillasProcesos } from '../../../../interfaces/plantillas-procesos';
+import { EnumLicencias } from '../../../../enums/enumLicencias';
+
 @Component({
   selector: 'app-header',
   standalone: false,
@@ -69,7 +71,8 @@ export class HeaderComponent implements OnInit {
   @ViewChild('splitBtn') splitButton!: SplitButton;
   esLogoDefault = false;
   imagenEmpresaUrl: string | null = null;
-  @ViewChild('chatContainer') chatContainer!: ElementRef;
+  @ViewChild('chatContainerOperacion') chatContainerOperacion!: ElementRef;
+  @ViewChild('chatContainerProspeccion') chatContainerProspeccion!: ElementRef;
 
   //Modal Campos Adicionales
   camposAdicionales: CamposAdicionales[] = [];
@@ -92,6 +95,7 @@ export class HeaderComponent implements OnInit {
   plantillas: PlantillasProcesos[] = [];
    @ViewChild('selectProcesos') selectProcesos: any;
 
+  licenciaPlatino: boolean = false;
 
   constructor(
     public asistenteService: AsistenteService,
@@ -105,7 +109,9 @@ export class HeaderComponent implements OnInit {
     private modalCamposAdicionalesService: ModalCamposAdicionalesService,
     private oportunidadService: OportunidadesService,
     private modalEtapasService: ModalEtapasService,
-    private procesosService: ProcesosService) {
+    private procesosService: ProcesosService,
+    private cdr: ChangeDetectorRef) {
+      
     this.items = [
       {
         label: 'Oportunidades',
@@ -138,20 +144,35 @@ export class HeaderComponent implements OnInit {
   toggleChat(): void {
     this.asistenteSubscription = this.asistenteService.asistenteObservable.subscribe(value => {
       this.asistenteObservableValue = value;
+      this.enableAsistenteOperacion = this.asistenteObservableValue === 1;
     });
 
     this.asistenteService.asistenteSubject.next(this.asistenteObservableValue * (-1));
   }
 
   @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent): void {
-    const targetElement = event.target as HTMLElement;
+handleClickOutside(event: MouseEvent): void {
+  const targetElement = event.target as HTMLElement;
 
-    if (this.chatContainer && !this.chatContainer.nativeElement.contains(targetElement)) {
-      this.enableAsistenteOperacion = false;
-      this.asistenteService.asistenteSubject.next(-1);
-    }
+  const isToggleButtonOperacion = targetElement.closest('#chat-container-operacion'); 
+  const isToggleButtonProspeccion = targetElement.closest('#chat-container-prospeccion'); 
+
+  if (this.enableAsistenteOperacion && 
+      this.chatContainerOperacion && 
+      !this.chatContainerOperacion.nativeElement.contains(targetElement) &&
+      !isToggleButtonOperacion) {
+    this.enableAsistenteOperacion = false;
+    this.asistenteService.asistenteSubject.next(-1);
   }
+
+  if (this.mostrarAsistenteProspeccion && 
+      this.chatContainerProspeccion && 
+      !this.chatContainerProspeccion.nativeElement.contains(targetElement) &&
+      !isToggleButtonProspeccion) {
+    this.mostrarAsistenteProspeccion = false;
+    this.cdr.detectChanges();
+  }
+}
   toggleOptions(): void {
     this.optionsVisible = !this.optionsVisible;
   }
@@ -172,6 +193,8 @@ export class HeaderComponent implements OnInit {
     this.optionsVisibleProcesos = true;
   }
   ngOnInit(): void {
+    this.licenciaPlatino = localStorage.getItem('licencia')! === EnumLicencias.Platino;
+    console.log(localStorage.getItem('licencia')!);
     this.startSessionCountdown();
     this.authService.sessionReset$.subscribe(() => {
       this.startSessionCountdown();
@@ -518,7 +541,7 @@ startDrag(event: MouseEvent): void {
     if (!target.closest('.app-chat-header')) {
       return;
     }
-    const el = this.chatContainer.nativeElement as HTMLElement;
+    const el = this.chatContainerOperacion.nativeElement as HTMLElement;
     this.isDragging = true;
     this.offset = {
       x: event.clientX - el.getBoundingClientRect().left,
@@ -535,7 +558,7 @@ startDrag(event: MouseEvent): void {
     const x = event.clientX - this.offset.x;
     const y = event.clientY - this.offset.y;
 
-    const el = this.chatContainer.nativeElement as HTMLElement;
+    const el = this.chatContainerOperacion.nativeElement as HTMLElement;
     el.style.left = `${x}px`;
     el.style.top = `${y}px`;
     el.style.right = 'auto'; // anula el "right" para permitir mover
@@ -555,7 +578,7 @@ startDrag(event: MouseEvent): void {
   startSessionCountdown() {
     // sessionTimeout está en milisegundos
     let remaining = this.authService['sessionTimeout'] / 1000; // en segundos
-    let remainingInactividad = remaining - (2 * 60); // 2 minutos antes de la expiración
+    let remainingInactividad =  this.authService['sessionActivityTimeout'] / 1000;
 
     if (this.sessionCountdownInterval) {
       clearInterval(this.sessionCountdownInterval);
@@ -597,7 +620,6 @@ startDrag(event: MouseEvent): void {
     this.sessionCountdownSecondsInactividad = remainingSeconds % 60;
   }
 
-  
    manejarResultadoEtapas(result: baseOut) {
     if (result.result) {
       this.messageService.add({
@@ -614,4 +636,40 @@ startDrag(event: MouseEvent): void {
       });
     }
   }
+  startDragProspeccion(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.app-chat-header-prospeccion')) {
+      return;
+    }
+    const el = this.chatContainerProspeccion.nativeElement as HTMLElement;
+    this.isDragging = true;
+    this.offset = {
+      x: event.clientX - el.getBoundingClientRect().left,
+      y: event.clientY - el.getBoundingClientRect().top,
+    };
+
+    document.addEventListener('mousemove', this.onDragProspeccion);
+    document.addEventListener('mouseup', this.endDragProspeccion);
+  }
+
+  onDragProspeccion = (event: MouseEvent): void => {
+    if (!this.isDragging) return;
+
+    const x = event.clientX - this.offset.x;
+    const y = event.clientY - this.offset.y;
+
+    const el = this.chatContainerProspeccion.nativeElement as HTMLElement;
+    el.style.left = `${x}px`;
+    el.style.top = `${y}px`;
+    el.style.right = 'auto'; // anula el "right" para permitir mover
+  };
+
+  endDragProspeccion = (): void => {
+    this.isDragging = false;
+    document.removeEventListener('mousemove', this.onDragProspeccion);
+    document.removeEventListener('mouseup', this.endDragProspeccion);
+  };
+
+  mostrarAsistenteProspeccion = false;
+
 }

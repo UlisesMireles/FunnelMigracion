@@ -18,6 +18,7 @@ export class ModalOportunidadesPorTipoComponent {
   tiposProyecto: OportunidadesTipo[] = [];
   loading: boolean = true;
   maximized: boolean = false;
+  public mostrarDecimales: boolean = false;
 
   lsColumnasAMostrar = [
     { key: 'descripcion', valor: 'Tipo Oportunidad', tipoFormato: 'text' },
@@ -32,6 +33,7 @@ export class ModalOportunidadesPorTipoComponent {
   ) { }
 
   ngOnInit() {
+    this.mostrarDecimales = this.loginService.obtenerPermitirDecimales();
     this.cargarTiposProyecto();
   }
 

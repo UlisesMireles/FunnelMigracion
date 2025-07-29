@@ -7,11 +7,61 @@
     </div>
     <div class="col-7 menu-header-container">
       <div>
-        Sesión: {{ sessionCountdownMinutes }}:{{ sessionCountdownSeconds < 10 ? '0' + sessionCountdownSeconds :
-          sessionCountdownSeconds }} </div>
-          <div class="ms-2">
-            Inactividad: {{ sessionCountdownMinutesInactividad }}:{{ sessionCountdownSecondsInactividad < 10 ? '0' +
-              sessionCountdownSecondsInactividad : sessionCountdownSecondsInactividad }} </div>
+        Sesión: {{ sessionCountdownMinutes }}:{{ sessionCountdownSeconds < 10 ? '0' + sessionCountdownSeconds : sessionCountdownSeconds }}
+      </div>
+      <div class="ms-2">
+        Inactividad: {{ sessionCountdownMinutesInactividad }}:{{ sessionCountdownSecondsInactividad < 10 ? '0' + sessionCountdownSecondsInactividad : sessionCountdownSecondsInactividad }}
+      </div>
+      <div class="agregar btn-agregar-custom ms-2" (click)="toggleOptions()" (mouseenter)="showSubmenu()" (mouseleave)="hideSubmenu()">
+        <!-- <p-splitbutton label="Agregar" [model]="items" raised severity="secondary" #splitBtn /> -->
+        <button class="btn-chat float-end cursor-pointer"  > 
+          <i class="bi bi-plus color-amarillo" style="margin-left: -6px;"></i> 
+          <span class="ia-button-text color-amarillo"> ALTA</span>
+        </button>
+        <ul *ngIf="optionsVisible" class="options-container" (click)="showSubmenu()" (mouseleave)="hideSubmenu()">
+          <li class="option-btn" (click)="agregarOportunidad()">Oportunidad</li>
+          <li class="option-btn" (click)="agregarProspecto()">Prospecto</li>
+          <li class="option-btn" (click)="agregarContacto()">Contacto</li>
+        </ul> 
+      </div>
+      <button class="btnAgregar"  *ngIf="licenciaPlatino" style="margin-left: 5px;"
+                  (click)="mostrarAsistenteProspeccion = true">
+                  <i class="bi bi-stars"></i>
+                  <span class="ia-button-text"> PC </span>
+                </button>
+      <ng-container *ngIf="mostrarAsistenteProspeccion">
+      <div id="chat-container-prospeccion" class="chatbot-window-prospeccion" #chatContainerProspeccion (mousedown)="startDragProspeccion($event)">
+        <app-asistente-prospeccion></app-asistente-prospeccion>
+      </div>
+      </ng-container>
+  
+      <div class="chatbot ms-2" *ngIf="licenciaPlatino" >
+        <!-- Botón de chat en el header-->
+        <button class="btnAgregar" (click)="toggleChat()">
+          <i class="bi bi-stars"></i> 
+          <span class="ia-button-text "> IA</span>
+        </button>
+       <!-- Contenedor del chatbot -->
+      <ng-container *ngIf="(asistenteService.asistenteObservable | async) === 1">
+      <div id="chat-container-operacion" class="chatbot-window-operacion" #chatContainerOperacion (mousedown)="startDrag($event)">
+      <app-asistente-operacion></app-asistente-operacion>
+      </div>
+      </ng-container>
+      </div>
+      <!-- Perfil (el primero de derecha a izquierda) -->
+      <div class="perfil ms-2" style="justify-content: end;">
+        <button class="menu-item-perfil" (click)="navigateTo('/perfil')">
+          <i class="bi bi-person-circle large-icon" [title]="'Perfil'"></i>
+          <span class="spanNombre">{{ nombreUsuario }}</span>
+        </button>
+      </div>
+      <div class="ms-2" style="justify-content: end;">
+        <button class="menu-item-logout" (click)="logout()">
+          <i class="bi bi-box-arrow-right large-icon" [title]="'Cerrar Sesión'"></i>
+        </button>
+      </div>
+    </div>
+    
 
               <!-- <div class="agregar btn-agregar-custom ms-2" (click)="toggleOptionsProcesos()"
                 (mouseenter)="showSubmenuProcesos()" (mouseleave)="hideSubmenuProcesos()">
@@ -114,7 +164,7 @@
 
           <!-- Logo (el último de derecha a izquierda) -->
 
-      </div>
+      <!-- </div> -->
 </header>
 
 <!-- Componente de chat -->

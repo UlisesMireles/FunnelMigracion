@@ -20,7 +20,7 @@ export class ModalOportunidadesPorAgenteClientesComponent {
   oportunidades: OportunidadAgenteCliente[] = [];
   loading: boolean = true;
   maximized: boolean = false;
-
+  public mostrarDecimales: boolean = false;
 
     lsColumnasAMostrar = [
     { key: 'nombreProspecto', valor: 'Prospecto', tipoFormato: 'text' },
@@ -37,6 +37,7 @@ export class ModalOportunidadesPorAgenteClientesComponent {
   ) {}
 
   onDialogShow() {
+    this.mostrarDecimales = this.loginService.obtenerPermitirDecimales();
     if (this.idAgente) {
       this.cargarOportunidades();
     }

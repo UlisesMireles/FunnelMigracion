@@ -135,7 +135,8 @@ export class OportunidadesGanadasComponent {
     this.selectedMonth = "Todos los Meses";
   }
   getOportunidades() {
-    this.oportunidadService.getOportunidades(this.loginService.obtenerIdEmpresa(), this.loginService.obtenerIdUsuario(), this.idEstatus).subscribe({
+    const idProceso = Number(localStorage.getItem('idProceso'));
+    this.oportunidadService.getOportunidades(this.loginService.obtenerIdEmpresa(), this.loginService.obtenerIdUsuario(), this.idEstatus, idProceso).subscribe({
       next: (result: Oportunidad[]) => {
 
         const oportunidadesOrdenadas = sortBy(result, (o) =>

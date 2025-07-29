@@ -45,6 +45,7 @@ namespace Funnel.Models.Dto
         public string? Telefono { get; set; }   
         public int? IdPuesto { get; set; }
         public string? Puesto { get; set; }
+        public int? IdProceso { get; set; }
 
     }
 }

@@ -270,6 +270,7 @@ handleClickOutside(event: MouseEvent): void {
       this.procesosService.getProcesos(this.authService.obtenerIdEmpresa()).subscribe({
         next: (result: Procesos[]) => {
           this.procesos = result.filter(proceso => proceso.estatus == true);
+          localStorage.setItem('idProceso', this.procesos[0].idProceso.toString());
         },
         error: (error) => {
           this.messageService.add({
@@ -283,6 +284,8 @@ handleClickOutside(event: MouseEvent): void {
 
 seleccionarProceso(proceso: Procesos) {
   console.log('Proceso seleccionado:', proceso);
+  localStorage.setItem('idProceso', proceso.idProceso.toString());
+  window.location.reload();
 }
 
 

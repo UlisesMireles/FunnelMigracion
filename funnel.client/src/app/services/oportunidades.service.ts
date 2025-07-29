@@ -13,9 +13,9 @@ export class OportunidadesService {
   baseUrl: string = environment.baseURL;
 
   constructor(private http: HttpClient) { }
-  getOportunidades(idEmpresa: number, idUsuario: number, idEstatus: number): Observable<any> {
+  getOportunidades(idEmpresa: number, idUsuario: number, idEstatus: number, idProceso: number): Observable<any> {
     return this.http.get(`${this.baseUrl}api/Oportunidades/ConsultarOportunidadesEnProceso`, {
-      params: { idEmpresa: idEmpresa.toString(), idUsuario: idUsuario.toString(), idEstatus: idEstatus.toString() }
+      params: { idEmpresa: idEmpresa.toString(), idUsuario: idUsuario.toString(), idEstatus: idEstatus.toString(), idProceso: idProceso.toString() }
     });
   }
 

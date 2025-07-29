@@ -6,6 +6,7 @@ using System.Data;
 using Funnel.Models.Dto;
 using System.Net.NetworkInformation;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using Azure.Core;
 
 namespace Funnel.Data
 {
@@ -510,7 +511,8 @@ namespace Funnel.Data
             {
                 DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "ETIQUETAS_DETALLE_OPORTUNIDAD"),
                 DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, IdEmpresa),
-                DataBase.CreateParameterSql("@pEstatus", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, IdUsuario)
+                DataBase.CreateParameterSql("@pEstatus", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, IdUsuario),
+                DataBase.CreateParameterSql("@pIdProceso", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, IdProceso)
             };
             using (IDataReader reader = await DataBase.GetReaderSql("F_Catalogos", CommandType.StoredProcedure, list, _connectionString))
             {

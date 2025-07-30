@@ -74,7 +74,7 @@ namespace Funnel.Data
                     var dto = new UsuarioDto
                     {
                         IdUsuario = ComprobarNulos.CheckIntNull(reader["IdUsuario"]),
-                        Nombre = ComprobarNulos.CheckStringNull(reader["Nombre"]),
+                        Nombre = ComprobarNulos.CheckStringNull(reader["NombreCompleto"]),
                         ApellidoPaterno = ComprobarNulos.CheckStringNull(reader["ApellidoPaterno"]),
                         ApellidoMaterno = ComprobarNulos.CheckStringNull(reader["ApellidoMaterno"]),
                         Iniciales = ComprobarNulos.CheckStringNull(reader["Iniciales"]),
@@ -87,8 +87,8 @@ namespace Funnel.Data
                         ArchivoImagen = ComprobarNulos.CheckStringNull(reader["ArchivoImagen"]),
                         CantidadOportunidades = ComprobarNulos.CheckIntNull(reader["NumOportunidades"]),
                         Telefono = ComprobarNulos.CheckStringNull(reader["Telefono"]),
-                        IdPuesto = ComprobarNulos.CheckIntNull(reader["IdPuesto"]),
-                        Puesto = ComprobarNulos.CheckStringNull(reader["Puesto"]),
+                      //  IdPuesto = ComprobarNulos.CheckIntNull(reader["IdPuesto"]),
+                        Puesto = ComprobarNulos.CheckStringNull(reader["PuestoLibre"]),
                     };
                     result.Add(dto);
                 }
@@ -113,7 +113,8 @@ namespace Funnel.Data
                     Correo = request.Correo,
                     Telefono = request.Telefono,
                     IdTipoUsuario = request.IdTipoUsuario,
-                    IdPuesto = request.IdPuesto,
+                   // IdPuesto = request.IdPuesto,
+                    Puesto = request.Puesto,
                     IdUsuario = request.IdUsuario,
                     IdEmpresa = request.IdEmpresa,
                     Estatus = request.Estatus,
@@ -210,7 +211,8 @@ namespace Funnel.Data
             DataBase.CreateParameterSql("@IdUsuario", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdUsuario),
             DataBase.CreateParameterSql("@Estatus", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Estatus),
             DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdEmpresa ?? (object)DBNull.Value),
-            DataBase.CreateParameterSql("@pIdPuesto", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdPuesto ?? (object)DBNull.Value),
+           // DataBase.CreateParameterSql("@pIdPuesto", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdPuesto ?? (object)DBNull.Value),
+            DataBase.CreateParameterSql("@PuestoLibre", SqlDbType.VarChar, 100, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Puesto ?? (object)DBNull.Value),
             DataBase.CreateParameterSql("@Telefono", SqlDbType.VarChar, 20, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Telefono)
         };
 

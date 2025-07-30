@@ -74,7 +74,7 @@ namespace Funnel.Data
                     var dto = new UsuarioDto
                     {
                         IdUsuario = ComprobarNulos.CheckIntNull(reader["IdUsuario"]),
-                        Nombre = ComprobarNulos.CheckStringNull(reader["Nombre"]),
+                        Nombre = ComprobarNulos.CheckStringNull(reader["NombreCompleto"]),
                         ApellidoPaterno = ComprobarNulos.CheckStringNull(reader["ApellidoPaterno"]),
                         ApellidoMaterno = ComprobarNulos.CheckStringNull(reader["ApellidoMaterno"]),
                         Iniciales = ComprobarNulos.CheckStringNull(reader["Iniciales"]),

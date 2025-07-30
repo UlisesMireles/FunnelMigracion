@@ -65,9 +65,9 @@ export class OportunidadesService {
     });
   }
 
-  getHistorial(idOportunidad: number, idEmpresa: number): Observable<any> {
+  getHistorial(idOportunidad: number, idEmpresa: number, idProceso: number): Observable<any> {
     return this.http.get(`${this.baseUrl}api/Oportunidades/ConsultarHistoricoOportunidades`, {
-      params: { idOportunidad: idOportunidad.toString(), idEmpresa: idEmpresa.toString() }
+      params: { idOportunidad: idOportunidad.toString(), idEmpresa: idEmpresa.toString(), idProceso: idProceso.toString() }
     });
   }
 
@@ -79,9 +79,9 @@ export class OportunidadesService {
     return this.http.get(`${this.baseUrl}api/Archivos/ConsultarArchivo/` + idOportunidad);
   }
 
-  getOportunidadesPorMes(idEmpresa: number, idUsuario: number): Observable<any> {
+  getOportunidadesPorMes(idEmpresa: number, idUsuario: number, idProceso: number): Observable<any> {
     return this.http.get(`${this.baseUrl}api/Oportunidades/ConsultarOportunidadesPorMes`, {
-      params: { idUsuario: idUsuario.toString(), idEmpresa: idEmpresa.toString() }
+      params: { idUsuario: idUsuario.toString(), idEmpresa: idEmpresa.toString(), idProceso: idProceso.toString() }
     });
   }
 
@@ -89,9 +89,9 @@ export class OportunidadesService {
     return this.http.post<baseOut>(this.baseUrl + 'api/Oportunidades/ActualizarFechaEstimada', data);
   }
 
-  getOportunidadesPorEtapa(idEmpresa: number, idUsuario: number): Observable<any> {
+  getOportunidadesPorEtapa(idEmpresa: number, idUsuario: number, idProceso: number): Observable<any> {
     return this.http.get(`${this.baseUrl}api/Oportunidades/ConsultarOportunidadesPorEtapa`, {
-      params: { idUsuario: idUsuario.toString(), idEmpresa: idEmpresa.toString() }
+      params: { idUsuario: idUsuario.toString(), idEmpresa: idEmpresa.toString(), idProceso: idProceso.toString() }
     });
   }
 
@@ -99,9 +99,9 @@ export class OportunidadesService {
     return this.http.post<baseOut>(this.baseUrl + 'api/Oportunidades/ActualizarEtapa', data);
   }
 
-  descargarReporteSeguimientoOportunidades(idOportunidad: number, idEmpresa: number, _empresa: string): Observable<Blob> {
+  descargarReporteSeguimientoOportunidades(idOportunidad: number, idEmpresa: number, _empresa: string, idProceso: number): Observable<Blob> {
     return this.http.get(`${this.baseUrl}api/Oportunidades/DescargarReporteSeguimientoOportunidades`, {
-      params: { idOportunidad: idOportunidad.toString(), idEmpresa: idEmpresa.toString(), empresa: _empresa }, responseType: 'blob'
+      params: { idOportunidad: idOportunidad.toString(), idEmpresa: idEmpresa.toString(), empresa: _empresa, idProceso: idProceso.toString() }, responseType: 'blob'
     });
   }
 
@@ -134,9 +134,9 @@ export class OportunidadesService {
     return this.http.post(`${this.baseUrl}api/Oportunidades/DescargarReporteOportunidadesEliminadas`, data,
       { params: { idEmpresa: idEmpresa.toString() }, responseType: 'blob' });
   }
-  consultarEtiquetasOportunidades(idEmpresa: number, idUsuario: number): Observable<any> {
+  consultarEtiquetasOportunidades(idEmpresa: number, idUsuario: number, idProceso: number): Observable<any> {
     return this.http.get(`${this.baseUrl}api/Oportunidades/ConsultarEtiquetasOportunidades`, {
-      params: { idEmpresa: idEmpresa.toString(), idUsuario: idUsuario}
+      params: { idEmpresa: idEmpresa.toString(), idUsuario: idUsuario, idProceso: idProceso.toString()}
     });
   }
 

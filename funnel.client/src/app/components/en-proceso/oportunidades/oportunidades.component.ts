@@ -176,6 +176,7 @@ export class OportunidadesComponent {
     this.catalogoService.cargarProspectos(this.loginService.obtenerIdEmpresa());
     this.totalOportunidades = this.oportunidades.length;
     const hoy = new Date();
+    const idProceso = Number(localStorage.getItem('idProceso'));
     this.totalOportunidadesMes = this.oportunidades
       .filter(o => {
         if (!o.fechaRegistro) return false;
@@ -183,7 +184,7 @@ export class OportunidadesComponent {
         return fecha.getMonth() === hoy.getMonth() && fecha.getFullYear() === hoy.getFullYear();
       }).length;
     
-    this.oportunidadService.consultarEtiquetasOportunidades(this.loginService.obtenerIdEmpresa(), this.loginService.obtenerIdUsuario()).subscribe({
+    this.oportunidadService.consultarEtiquetasOportunidades(this.loginService.obtenerIdEmpresa(), this.loginService.obtenerIdUsuario(), idProceso).subscribe({
       next: (result: any) => {
         // Ahora result contiene listas de oportunidades en lugar de números
         this.oportunidadesAbiertasMes = result.abiertasMes || [];

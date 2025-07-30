@@ -70,9 +70,11 @@ export class OortunidadesMesAcordeonComponent {
 
   // Método que consume el servicio para obtener las oportunidades por mes
   getOportunidadesPorMes() {
+    const idProceso = Number(localStorage.getItem('idProceso'));
     this.oportunidadService.getOportunidadesPorMes(
       this.loginService.obtenerIdEmpresa(),
-      this.loginService.obtenerIdUsuario()
+      this.loginService.obtenerIdUsuario(),
+      idProceso
     ).subscribe({
       next: (result: OportunidadesPorMes[]) => {
         // Asignamos el resultado a nuestro array 'elementos'

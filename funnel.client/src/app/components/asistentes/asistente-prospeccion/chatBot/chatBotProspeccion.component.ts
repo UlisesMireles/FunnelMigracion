@@ -389,33 +389,11 @@ enviarDataset() {
     }, 1000);
   });
 }
-ajustarAlturaTextarea(event: any): void {
+ajustarAlturaTextarea(event: any): void { 
   const textarea = event.target as HTMLTextAreaElement;
+
   textarea.style.height = 'auto';
   textarea.style.height = `${Math.min(textarea.scrollHeight, 120)}px`;
 
-  const textoOriginal: string = textarea.value;
-  
-  const palabrasYEspacios: string[] = textoOriginal.split(/(\s+)/);
-  
-  let nuevoTexto: string = '';
-  let lineaActual: string = '';
-  
-  for (const segmento of palabrasYEspacios) {
-    if (lineaActual.length + segmento.length > 75) {
-      nuevoTexto += lineaActual.trimEnd() + '\n';
-      lineaActual = segmento; 
-    } else {
-      lineaActual += segmento;
-    }
-  }
-  
-  if (lineaActual.length > 0) {
-    nuevoTexto += lineaActual;
-  }
-
-  if (nuevoTexto !== textoOriginal) {
-    textarea.value = nuevoTexto;
-    this.pregunta = textarea.value; 
-  }
-}}
+}
+}

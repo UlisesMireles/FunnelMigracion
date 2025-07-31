@@ -9,7 +9,7 @@ namespace Funnel.Models.Dto
     public class ProspectosReporteDTO
     {
         public List<ColumnasPaginacion> Columnas { get; set; }
-        public List<ProspectoDTO> Datos { get; set; }
+        public List<Dictionary<string, object?>> Datos { get; set; }
         public string? Anio { get; set; }
     }
 }

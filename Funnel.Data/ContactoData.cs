@@ -13,7 +13,7 @@ namespace Funnel.Data
         public ContactoData(IConfiguration configuration)
         {
             _connectionString = configuration.GetConnectionString("FunelDatabase");
-        }
+        }        
 
         public async Task<List<ComboProspectosDto>> ComboProspectos(int IdEmpresa)
         {
@@ -122,6 +122,48 @@ namespace Funnel.Data
                         result.Id = 0;
                         result.Result = false;
                         break;
+                }
+            }
+            return result;
+        }
+
+        public async Task<List<string>> ColumnasAdicionales(int idEmpresa)
+        {
+            List<string> result = new List<string>();
+            IList<ParameterSQl> list = new List<ParameterSQl>
+                {
+                    DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "COLUMNAS-ADICIONALES" ),
+                    DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, idEmpresa ),
+                };
+            using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoContactosProspectos", CommandType.StoredProcedure, list, _connectionString))
+            {
+                while (reader.Read())
+                {
+                    result.Add(ComprobarNulos.CheckStringNull(reader["NombreCampo"]));
+                }
+            }
+            return result;
+        }
+
+        public async Task<List<ContactoDto>> ColumnasAdicionalesData(int idEmpresa, List<string> nombresColumnas)
+        {
+            List<ContactoDto> result = new List<ContactoDto>();
+            IList<ParameterSQl> list = new List<ParameterSQl>
+                {
+                    DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "COLUMNAS-ADICIONALES-DATA" ),
+                    DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, idEmpresa ),
+                };
+            using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoContactosProspectos", CommandType.StoredProcedure, list, _connectionString))
+            {
+                while (reader.Read())
+                {
+                    var dto = new ContactoDto();
+                    dto.IdContactoProspecto = ComprobarNulos.CheckIntNull(reader["IdContactoProspecto"]);
+                    foreach (var columna in nombresColumnas)
+                    {
+                        dto.PropiedadesAdicionales[columna] = ComprobarNulos.CheckStringNull(reader[columna]);
+                    }
+                    result.Add(dto);
                 }
             }
             return result;

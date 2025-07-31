@@ -101,7 +101,13 @@ export class ProspectosComponent {
   getProspectos() {
     this.prospectoService.getProspectos(this.loginService.obtenerIdEmpresa()).subscribe({
       next: (result: Prospectos[]) => {
-        this.prospectosOriginal = result.sort((a, b) => b.totalOportunidades - a.totalOportunidades);
+        this.prospectosOriginal = result.sort((a, b) => b.totalOportunidades - a.totalOportunidades).map(p => {
+          const { propiedadesAdicionales, ...resto } = p;
+          return {
+            ...resto,
+            ...propiedadesAdicionales
+          };
+        });
         this.selectedEstatus = 'Activo';
         this.cdr.detectChanges();
         this.loading = false;

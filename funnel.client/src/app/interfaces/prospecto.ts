@@ -15,6 +15,7 @@ export interface Prospectos {
     eliminadas: number;
     idEmpresa: number;
     porcEfectividad: number;
+    [key: string]: any; // permite agregar más propiedades
 }
 
 export interface ClientesTopVeinte {

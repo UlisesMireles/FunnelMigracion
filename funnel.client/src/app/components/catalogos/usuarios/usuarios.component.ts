@@ -322,14 +322,13 @@ export class UsuariosComponent {
   getColumnWidth(key: string): object {
     const widths: { [key: string]: string } = {
       nombre: '100%',
-      apellidoPaterno: '100%',
-      apellidoMaterno: '100%',
       usuario: '100%',
       iniciales: '100%',
       correo: '100%',
       telefono: '100%',
       tipoUsuario: '100%',
       desEstatus: '100%',
+      puesto: '100%',
       cantidadOportunidades: '100%',
     };
     return { width: widths[key] || 'auto' };

@@ -41,7 +41,8 @@ namespace Funnel.Logic
             var datosProspectos = await _ProspectoData.ConsultarProspectos(IdEmpresa);
 
             datosProspectos.ForEach(v => {
-                v.PropiedadesAdicionales = dataColumnasAdicionales.First(x => x.IdProspecto == v.IdProspecto).PropiedadesAdicionales;
+                var adicional = dataColumnasAdicionales.FirstOrDefault(x => x.IdProspecto == v.IdProspecto);
+                v.PropiedadesAdicionales = adicional?.PropiedadesAdicionales ?? new Dictionary<string, string?>();
             });
 
 

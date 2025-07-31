@@ -41,7 +41,8 @@ namespace Funnel.Logic
             var datosContactos = await _contactoData.ConsultarContacto(IdEmpresa);
 
             datosContactos.ForEach(v => {
-                v.PropiedadesAdicionales = dataColumnasAdicionales.First(x => x.IdContactoProspecto == v.IdContactoProspecto).PropiedadesAdicionales;
+                var adicional = dataColumnasAdicionales.FirstOrDefault(x => x.IdProspecto == v.IdProspecto);
+                v.PropiedadesAdicionales = adicional?.PropiedadesAdicionales ?? new Dictionary<string, string?>();
             });
 
             return datosContactos;

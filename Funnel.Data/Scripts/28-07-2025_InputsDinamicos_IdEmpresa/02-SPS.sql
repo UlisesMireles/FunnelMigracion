@@ -256,8 +256,7 @@ ALTER PROCEDURE [dbo].[F_CatalogoProspectos]
 	@Estatus INT = 0,
 	@pIdEmpresa int = 0,
 	@pIdSector int = 0,
-	@pAnio varchar(10) = null,
-	@pIdNivel int = 0
+	@pAnio varchar(10) = null
 AS
 BEGIN
 	DECLARE @vIdCatalogo INT,@cols NVARCHAR(MAX),
@@ -326,7 +325,7 @@ BEGIN
 	SELECT 
 		P.IdProspecto, P.Nombre, P.UbicacionFisica, P.Estatus, 
 		CASE WHEN P.Estatus = 1 THEN 'Activo' ELSE 'Inactivo' END as DesEstatus, 
-		S.NombreSector, P.IdSector,P.IdNivel, NI.Descripcion,
+		S.NombreSector, P.IdSector,
 		COUNT(o.IdOportunidad) as TotalOportunidades,
 
 		-- Conteos por estatus
@@ -360,9 +359,8 @@ BEGIN
 	LEFT JOIN Sectores S ON P.IdSector = S.IdSector
 	LEFT JOIN Oportunidades o ON P.IdProspecto = o.IdProspecto
 	LEFT JOIN DiasEtapas de ON o.IdOportunidad = de.IdOportunidad
-	LEFT JOIN NivelesInteres NI ON P.IdNivel = NI.IdNivel
 	WHERE P.IdEmpresa = @pIdEmpresa
-	GROUP BY P.IdProspecto, P.Nombre, P.UbicacionFisica, P.Estatus, S.NombreSector, P.IdSector, P.IdNivel, NI.Descripcion
+	GROUP BY P.IdProspecto, P.Nombre, P.UbicacionFisica, P.Estatus, S.NombreSector, P.IdSector
 
 	ORDER BY P.Nombre ASC
 END
@@ -1306,13 +1304,13 @@ END
 		GROUP BY YEAR(o.FechaRegistro)
 		ORDER BY Anio DESC
 	END
-	IF @pBandera = 'UPDATE-NIVEL-INTERES'
-	BEGIN
-		UPDATE Prospectos
-		SET IdNivel = @pIdNivel,
-			FechaModificacion = GETDATE()
-		WHERE IdProspecto = @IdProspecto
-	END
+	--IF @pBandera = 'UPDATE-NIVEL-INTERES'
+	--BEGIN
+	--	UPDATE Prospectos
+	--	SET IdNivel = @pIdNivel,
+	--		FechaModificacion = GETDATE()
+	--	WHERE IdProspecto = @IdProspecto
+	--END
 	IF @pBandera = 'SELECT-PROSPECTOS-GENERAL'
 BEGIN
 	;WITH DiasEtapas AS (
@@ -1376,7 +1374,7 @@ BEGIN
 	SELECT 
 		P.IdProspecto, P.Nombre, P.UbicacionFisica, P.Estatus, 
 		CASE WHEN P.Estatus = 1 THEN 'Activo' ELSE 'Inactivo' END as DesEstatus, 
-		S.NombreSector, P.IdSector,P.IdNivel, NI.Descripcion,
+		S.NombreSector, P.IdSector,
 		COUNT(o.IdOportunidad) as TotalOportunidades,
 
 		-- Conteos por estatus
@@ -1409,10 +1407,103 @@ BEGIN
 	LEFT JOIN Sectores S ON P.IdSector = S.IdSector
 	LEFT JOIN Oportunidades o ON P.IdProspecto = o.IdProspecto
 	LEFT JOIN DiasEtapas de ON o.IdOportunidad = de.IdOportunidad
-	LEFT JOIN NivelesInteres NI ON P.IdNivel = NI.IdNivel
-	GROUP BY P.IdProspecto, P.Nombre, P.UbicacionFisica, P.Estatus, S.NombreSector, P.IdSector, P.IdNivel, NI.Descripcion
+	GROUP BY P.IdProspecto, P.Nombre, P.UbicacionFisica, P.Estatus, S.NombreSector, P.IdSector
 
 	ORDER BY P.Nombre ASC
 END
 
 END
+
+
+GO
+/****** Object:  StoredProcedure [dbo].[F_ConfiguracionColumnas_ConsultarColumnasPorIdTabla]    Script Date: 31/07/2025 04:19:12 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Ulises Mireles Cruz
+-- Create date: 2025-07-07
+-- Description:	Consulta de columnas por IdTabla. Si el usaurio no tiene registrada una configuracion personal se trae la consulta por default 
+-- =============================================
+ALTER PROCEDURE [dbo].[F_ConfiguracionColumnas_ConsultarColumnasPorIdTabla]
+	@pIdTabla INT = 0,
+	@pIdUsuario INT = 0
+AS
+BEGIN
+	DECLARE @vNombreTabla varchar(250) = null
+	SET @vNombreTabla = (SELECT UPPER(NombreTabla) FROM ConfiguracionTablas WHERE Id = @pIdTabla)
+	
+	IF EXISTS (SELECT IdTabla FROM RelacionConfiguracionColumnasUsuario WHERE IdTabla = @pIdTabla AND IdUsuario = @pIdUsuario)
+	BEGIN
+		IF @vNombreTabla IN ('PROSPECTOS','CONTACTOS')
+		BEGIN
+
+			SELECT	
+				T.IdColumna, C.Llave, C.Valor, C.TipoFormato, IsChecked, IsIgnore, IsTotal, GroupColumn, Orden 
+			FROM RelacionConfiguracionColumnasUsuario T
+			INNER JOIN ConfiguracionColumnas C ON C.Id = T.IdColumna
+			WHERE IdTabla = @pIdTabla AND IdUsuario = @pIdUsuario
+			UNION
+			SELECT T.IdColumna, IAD.Llave, IAD.Valor, IAD.TipoFormato, T.IsChecked, T.IsIgnore, T.IsTotal, T.GroupColumn, IAD.Orden
+			FROM
+			RelacionConfiguracionColumnasUsuario T
+			JOIN(
+				SELECT 100000+IA.Id IdColumna, CNF.Llave, CNF.Valor, CNF.TipoFormato, CNF.IsChecked, CNF.IsIgnore, CNF.IsTotal, CNF.GroupColumn, 100000+R.Orden Orden
+				FROM ConfiguracionColumnasInputsAdicionales CNF
+				JOIN InputsAdicionales IA ON IA.Nombre = CNF.Llave
+				JOIN R_InputsCatalogo R ON R.InputId = IA.Id AND R.Activo = 1
+				JOIN ConfiguracionTablas CT ON CT.Id = R.CatalogoId AND CT.Id = @pIdTabla
+			)IAD ON IAD.IdColumna = T.IdColumna
+			WHERE T.IdTabla = @pIdTabla
+			ORDER BY 9
+
+		END
+		ELSE
+		BEGIN
+
+			SELECT	
+				T.IdColumna, C.Llave, C.Valor, C.TipoFormato, IsChecked, IsIgnore, IsTotal, GroupColumn 
+			FROM RelacionConfiguracionColumnasUsuario T
+			INNER JOIN ConfiguracionColumnas C ON C.Id = T.IdColumna
+			WHERE IdTabla = @pIdTabla AND IdUsuario = @pIdUsuario
+			ORDER BY Orden
+
+		END		
+	END
+	ELSE
+	BEGIN
+		IF @vNombreTabla IN ('PROSPECTOS','CONTACTOS')
+		BEGIN
+
+			SELECT	
+				T.IdColumna, C.Llave, C.Valor, C.TipoFormato, IsChecked, IsIgnore, IsTotal, GroupColumn, Orden 
+			FROM ConfiguracionColumnasDefault T
+			INNER JOIN ConfiguracionColumnas C ON C.Id = T.IdColumna
+			WHERE IdTabla = @pIdTabla
+			UNION
+			SELECT 100000+IA.Id IdColumna, CNF.Llave, CNF.Valor, CNF.TipoFormato, CNF.IsChecked, CNF.IsIgnore, CNF.IsTotal, CNF.GroupColumn, 100000+R.Orden
+			FROM ConfiguracionColumnasInputsAdicionales CNF
+			JOIN InputsAdicionales IA ON IA.Nombre = CNF.Llave
+			JOIN R_InputsCatalogo R ON R.InputId = IA.Id AND R.Activo = 1
+			JOIN ConfiguracionTablas CT ON CT.Id = R.CatalogoId AND CT.Id = @pIdTabla
+			ORDER BY 9
+
+		END
+		ELSE
+		BEGIN
+
+			SELECT	
+				T.IdColumna, C.Llave, C.Valor, C.TipoFormato, IsChecked, IsIgnore, IsTotal, GroupColumn 
+			FROM ConfiguracionColumnasDefault T
+			INNER JOIN ConfiguracionColumnas C ON C.Id = T.IdColumna
+			WHERE IdTabla = @pIdTabla 
+			ORDER BY Orden
+
+		END		
+	END
+
+
+
+END
+

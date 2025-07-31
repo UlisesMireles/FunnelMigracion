@@ -126,9 +126,8 @@ ngAfterViewInit(): void {
     
     const mensajeLimpio = mensaje.toLowerCase().trim().replace(/[¡!¿?.,]/g, '');
     
-    // Verificar si el mensaje es solo un saludo (máximo 3 palabras)
     const palabras = mensajeLimpio.split(/\s+/);
-    if (palabras.length > 3) {
+    if (palabras.length > 4) {
       return false;
     }
     

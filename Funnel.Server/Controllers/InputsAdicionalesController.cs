@@ -39,9 +39,9 @@ namespace Funnel.Server.Controllers
         }
 
         [HttpPost("[action]/")]
-        public async Task<ActionResult<BaseOut>> GuardarInputsAdicionales([FromBody] List<InputAdicionalDTO> listaInputs)
+        public async Task<ActionResult<BaseOut>> GuardarInputsAdicionales([FromBody] List<InputAdicionalDTO> listaInputs, int IdEmpresa)
         {
-            var respuesta = await _inputsAdicionalesService.GuardarInputsAdicionales(listaInputs);
+            var respuesta = await _inputsAdicionalesService.GuardarInputsAdicionales(listaInputs, IdEmpresa);
             return Ok(respuesta);
         }
 

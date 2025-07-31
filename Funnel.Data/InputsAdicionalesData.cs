@@ -121,7 +121,7 @@ namespace Funnel.Data
 
         }
 
-        public async Task<BaseOut> GuardarInputsAdicionales(List<InputAdicionalDTO> listaInputs)
+        public async Task<BaseOut> GuardarInputsAdicionales(List<InputAdicionalDTO> listaInputs, int IdEmpresa)
         {
             BaseOut result = new BaseOut();
             DataTable dtPermisos = new DataTable("InputsCatalogo");
@@ -145,6 +145,7 @@ namespace Funnel.Data
             IList<ParameterSQl> list = new List<ParameterSQl>
             {
                 DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, "INS-INPUT-ADICIONAL" ),
+                DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, IdEmpresa ),
                 DataBase.CreateParameterSql("@pTipoCatalogoInput", SqlDbType.VarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, tipoCatalogo ),
                 DataBase.CreateParameterSql("@pInputsCatalogo", SqlDbType.Structured, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, dtPermisos)
             };

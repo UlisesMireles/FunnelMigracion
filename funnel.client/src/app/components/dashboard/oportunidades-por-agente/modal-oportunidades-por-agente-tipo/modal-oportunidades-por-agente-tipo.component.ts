@@ -48,11 +48,13 @@ constructor(
 
    cargarOportunidades() {
     if (!this.idAgente) return;
+    const idProceso = Number(localStorage.getItem('idProceso'));
 
     const requestData: RequestGraficasDto = {
       idEmpresa: this.loginService.obtenerIdEmpresa(),
       idUsuario: this.idAgente,
-      bandera: 'SEL-TIPO-OPOR-AGENTE'
+      bandera: 'SEL-TIPO-OPOR-AGENTE',
+      idProceso: idProceso
     };
 
     this.graficasService.obtenerOportunidadesPorAgenteTipo(requestData).subscribe({

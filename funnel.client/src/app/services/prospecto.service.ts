@@ -47,9 +47,9 @@ export class ProspectoService {
     });
   }
 
-  getAniosOportunidades(idEmpresa: number): Observable<any> {
+  getAniosOportunidades(idEmpresa: number, idProceso: number): Observable<any> {
     return this.http.get(`${this.baseUrl}api/Prospectos/ConsultarAniosOportunidades`, {
-      params: { idEmpresa: idEmpresa.toString() }
+      params: { idEmpresa: idEmpresa.toString(), idProceso: '0' }
     });
   }
 

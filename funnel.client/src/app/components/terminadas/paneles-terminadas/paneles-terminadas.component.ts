@@ -75,9 +75,9 @@ export class PanelesTerminadasComponent {
         if (!this.permisoGanadas && !this.permisoPerdidas && !this.permisoCanceladas && !this.permisoEliminadas) {
           this.permisoGanadas = true; 
         }
-        
       }
     }
+    console.log(this.permisoGanadas);
   }
 }
 

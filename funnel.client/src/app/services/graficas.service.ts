@@ -58,6 +58,7 @@ export class GraficasService {
     titulo,
     tipo,
     infoCargada: false,
+    sinDatos: false,
     maximizada: false, 
     grafica: {
       data: [],
@@ -75,6 +76,7 @@ createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
     titulo,
     tipo,
     infoCargada: false,
+    sinDatos: false,
     grafica: {
       data: [],
       layout: {},

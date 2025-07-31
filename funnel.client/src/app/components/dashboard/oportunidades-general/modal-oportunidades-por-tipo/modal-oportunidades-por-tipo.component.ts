@@ -43,11 +43,13 @@ export class ModalOportunidadesPorTipoComponent {
 
   cargarTiposProyecto() {
     this.loading = true;
+    const idProceso = Number(localStorage.getItem('idProceso'));
     
     const requestData: RequestGraficasDto = {
       idEmpresa: this.loginService.obtenerIdEmpresa(),
       idUsuario: this.loginService.obtenerIdUsuario(),
-      bandera: 'SEL-TIPO-SIN-MONTOS-CEROS'
+      bandera: 'SEL-TIPO-SIN-MONTOS-CEROS',
+      idProceso: idProceso
     };
 
     this.graficasService.obtenerOportunidadesPorTipo(requestData)

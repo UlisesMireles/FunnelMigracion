@@ -45,10 +45,12 @@ export class ModalOportunidadesPorAgenteClientesComponent {
 
   cargarOportunidades() {
     if (!this.idAgente) return;
+    const idProceso = Number(localStorage.getItem('idProceso'));
     const requestData: RequestGraficasDto = {
       idEmpresa: this.loginService.obtenerIdEmpresa(),
       idUsuario: this.idAgente,
       idEstatusOportunidad: 1,
+      idProceso: idProceso
     };
 
     this.graficasService.obtenerOportunidadesPorAgenteClientes(requestData).subscribe({

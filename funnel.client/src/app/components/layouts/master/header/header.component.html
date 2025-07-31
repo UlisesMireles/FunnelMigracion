@@ -13,7 +13,7 @@
             Inactividad: {{ sessionCountdownMinutesInactividad }}:{{ sessionCountdownSecondsInactividad < 10 ? '0' +
               sessionCountdownSecondsInactividad : sessionCountdownSecondsInactividad }} </div>
               <div class="agregar btn-agregar-custom ms-2 header-container">
-                <p-select #selectProcesos [options]="procesos" optionLabel="nombre" placeholder="Selecciona un proceso"
+                <p-select #selectProcesos [(ngModel)]="procesoSeleccionado"  [options]="procesos" optionLabel="nombre" placeholder="Selecciona un proceso"
                   [showClear]="true" [filter]="true" (onChange)="seleccionarProceso($event.value)" [ngStyle]="{
         width: '200px',
         height: '30px',

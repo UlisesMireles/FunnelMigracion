@@ -96,6 +96,7 @@ export class HeaderComponent implements OnInit {
    @ViewChild('selectProcesos') selectProcesos: any;
 
   licenciaPlatino: boolean = false;
+  procesoSeleccionado: Procesos | null = null;
 
   constructor(
     public asistenteService: AsistenteService,
@@ -270,7 +271,17 @@ handleClickOutside(event: MouseEvent): void {
       this.procesosService.getProcesos(this.authService.obtenerIdEmpresa()).subscribe({
         next: (result: Procesos[]) => {
           this.procesos = result.filter(proceso => proceso.estatus == true);
-          localStorage.setItem('idProceso', this.procesos[0].idProceso.toString());
+          const idProceso = Number(localStorage.getItem('idProceso'));
+          let procesoSeleccionado = this.procesos.find(proceso => proceso.idProceso == idProceso);
+          if (procesoSeleccionado) {
+          this.procesoSeleccionado = procesoSeleccionado;
+        }
+
+        if (!this.procesoSeleccionado && this.procesos.length > 0) {
+          this.procesoSeleccionado = this.procesos[0];
+        }
+
+          //localStorage.setItem('idProceso', this.procesos[0].idProceso.toString());
         },
         error: (error) => {
           this.messageService.add({

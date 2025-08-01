@@ -27,7 +27,7 @@ namespace Funnel.Data
             List<OportunidadesTarjetasDto> etapas = new List<OportunidadesTarjetasDto>();
             IList<ParameterSQl> list = new List<ParameterSQl>
                 {
-                    DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "PLANTILLAS-ETAPAS" )
+                    DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, "PLANTILLAS-ETAPAS" )
                 };
             using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoProcesos", CommandType.StoredProcedure, list, _connectionString))
             {
@@ -57,7 +57,7 @@ namespace Funnel.Data
             List<OportunidadesTarjetasDto> etapas = new List<OportunidadesTarjetasDto>();
             IList<ParameterSQl> list = new List<ParameterSQl>
                 {
-                    DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "PROCESOS-ETAPAS" ),
+                    DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, "PROCESOS-ETAPAS" ),
                     DataBase.CreateParameterSql("@pIdProceso", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, IdProceso )
                 };
             using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoProcesos", CommandType.StoredProcedure, list, _connectionString))
@@ -88,7 +88,7 @@ namespace Funnel.Data
             List<ProcesosDTO> result = new List<ProcesosDTO>();
             IList<ParameterSQl> list = new List<ParameterSQl>
                 {
-                    DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "PROCESOS-POR-EMPRESA" ),
+                    DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, "PROCESOS-POR-EMPRESA" ),
                     DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, IdEmpresa )
                 };
             using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoProcesos", CommandType.StoredProcedure, list, _connectionString))
@@ -232,7 +232,7 @@ namespace Funnel.Data
             List<ComboEtapasDto> result = new List<ComboEtapasDto>();
             IList<ParameterSQl> list = new List<ParameterSQl>
             {
-                DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "CATALOGO-INDICADORES-STAGE-COMBO"),
+                DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, "CATALOGO-INDICADORES-STAGE-COMBO"),
                 DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, IdEmpresa)
             };
             using (IDataReader reader = await DataBase.GetReaderSql("F_Catalogos", CommandType.StoredProcedure, list, _connectionString))

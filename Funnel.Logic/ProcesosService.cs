@@ -101,6 +101,8 @@ namespace Funnel.Logic
                 return result;
             }
 
+            request.Etapas.RemoveAll(v => v.RIdProcesoEtapa == 0 && v.Eliminado == true);
+
             //Insertar o actulizar Etapas
             request.Etapas = await InsertarModificarEtapa(request.Etapas);
 

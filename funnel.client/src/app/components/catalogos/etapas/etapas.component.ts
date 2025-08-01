@@ -462,6 +462,8 @@ export class EtapasComponent {
       return;
     }
 
+    etapa.probabilidad = etapa.probabilidad?.toString();
+
     const nombreNormalizado = etapa.nombre.trim().toLowerCase();
 
     const duplicado = this.etapasActivas.some(

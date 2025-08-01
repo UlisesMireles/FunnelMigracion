@@ -51,6 +51,7 @@ export interface Oportunidad {
     primerNombreContacto?: string;
     nombreContactoCompleto?: string;
     bandera?: string;
+    idProceso?: number;
 }
 
 export interface RequestOportunidad {

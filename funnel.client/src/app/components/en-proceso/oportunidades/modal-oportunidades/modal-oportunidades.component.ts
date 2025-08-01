@@ -315,10 +315,11 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
   }
 
   onDialogShow() {
+    const idProceso = Number(localStorage.getItem('idProceso'));
     this.catalogoService.cargarProspectos(this.loginService.obtenerIdEmpresa());
     this.catalogoService.cargarContactos(this.loginService.obtenerIdEmpresa());
     this.catalogoService.cargarServicios(this.loginService.obtenerIdEmpresa());
-    this.catalogoService.cargarEtapas(this.loginService.obtenerIdEmpresa());
+    this.catalogoService.cargarEtapas(this.loginService.obtenerIdEmpresa(), idProceso);
     this.catalogoService.cargarEjecutivos(this.loginService.obtenerIdEmpresa());
     this.catalogoService.cargarEntregas(this.loginService.obtenerIdEmpresa());
 
@@ -429,7 +430,8 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
       fechaEstimadaCierre: this.oportunidadForm.get('fechaEstimadaCierreOriginal')?.value || new Date(),
       comentario: this.oportunidadForm.get('comentario')?.value,
       idProspecto: idProspecto,
-      probabilidad: this.oportunidadForm.get('probabilidad')?.value
+      probabilidad: this.oportunidadForm.get('probabilidad')?.value,
+      idProceso: Number(localStorage.getItem('idProceso'))
     };
     this.informacionOportunidad.probabilidad = this.informacionOportunidad.probabilidad?.replace('%', '').trim();
     this.informacionOportunidad.idUsuario = this.loginService.obtenerIdUsuario();

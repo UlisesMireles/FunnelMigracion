@@ -22,11 +22,12 @@ export class GraficasService {
   obtenerAgentesData(data: RequestGraficasDto): Observable<AgenteDto[]> {
     return this.http.post<AgenteDto[]>(`${this.baseUrl}api/Graficas/ObtenerAgentes`, data);
   }
-  obtenerAnios(idEmpresa: number, idEstatusOportunidad: number): Observable<any> {
+  obtenerAnios(idEmpresa: number, idEstatusOportunidad: number, idProceso: number): Observable<any> {
     return this.http.get(`${this.baseUrl}api/Graficas/Anios`, {
       params: {
         IdEmpresa: idEmpresa.toString(),
-        IdEstatusOportunidad: idEstatusOportunidad.toString()
+        IdEstatusOportunidad: idEstatusOportunidad.toString(),
+        IdProceso: idProceso.toString()
       }
     });
   }

@@ -126,7 +126,7 @@ export class EtapasComponent {
       expandido: true,
       editandoNombre: true,
       agregado: true,
-      probabilidad: 0,
+      probabilidad: '0',
       eliminado: false,
       idEmpresa: this.idEmpresa,
       idUsuario: this.idUsuario,
@@ -332,7 +332,7 @@ export class EtapasComponent {
     const nuevaEtapaCombo: OportunidadesPorEtapa = Object.assign({
       idStage: 0,
       nombre: nombreNuevaEtapa,
-      probabilidad: etapaActual.probabilidad || 0,
+      probabilidad: etapaActual.probabilidad?.toString() || '0',
       anio: 0,
       tarjetas: [],
       expandido: true,
@@ -362,7 +362,7 @@ export class EtapasComponent {
     etapaActual.etapaSeleccionada = nuevaEtapaCombo;
     etapaActual.textoBusqueda = '';
     etapaActual.editandoNombre = true; // se mantiene editando
-    etapaActual.probabilidad = etapaActual.probabilidad || '1';
+    etapaActual.probabilidad = etapaActual.probabilidad || '0';
     this.validaGuardar = true;
     // Refrescar la vista y el binding del combo
     setTimeout(() => {
@@ -435,7 +435,7 @@ export class EtapasComponent {
   guardarNombreEtapa(etapa: OportunidadesPorEtapa) {
     if (etapa.etapaSeleccionada) {
       etapa.nombre = etapa.etapaSeleccionada.nombre;
-      //etapa.probabilidad = etapa.etapaSeleccionada.probabilidad;
+      etapa.probabilidad = etapa.probabilidad?.toString();
       etapa.idStage = etapa.etapaSeleccionada.idStage;
     }
     else if (etapa.textoBusqueda?.trim()) {

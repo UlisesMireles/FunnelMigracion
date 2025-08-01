@@ -82,7 +82,10 @@ namespace Funnel.Logic
                     guardado = await _procesosData.InsertarModificarEtapa(item, "INSERTAR-ETAPA");
                     item.IdStage = guardado.Id;
                 }
-                else if (item.Editado is not null && item.Editado == true && item.Eliminado == false && item.IdStage > 0)
+                else if (
+                     (item.Editado is not null && item.Editado == true && item.Eliminado == false && item.IdStage > 0) ||
+                     (item.Agregado is not null && item.Agregado == true && item.Eliminado == false && item.IdStage != 0)
+                    )
                 {
                     guardado = await _procesosData.InsertarModificarEtapa(item, "UPDATE-ETAPA");
                     item.IdStage = guardado.Id;
@@ -223,7 +226,7 @@ namespace Funnel.Logic
                     Probabilidad = item.Probabilidad,
                     Orden = item.Orden,
                     IdStage = item.Id,
-                    Tarjetas = {}
+                    Tarjetas = { }
                 });
             }
 

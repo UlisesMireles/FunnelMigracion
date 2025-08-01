@@ -435,14 +435,13 @@ export class EtapasComponent {
   guardarNombreEtapa(etapa: OportunidadesPorEtapa) {
     if (etapa.etapaSeleccionada) {
       etapa.nombre = etapa.etapaSeleccionada.nombre;
-      etapa.probabilidad = etapa.etapaSeleccionada.probabilidad;
+      //etapa.probabilidad = etapa.etapaSeleccionada.probabilidad;
       etapa.idStage = etapa.etapaSeleccionada.idStage;
     }
     else if (etapa.textoBusqueda?.trim()) {
       etapa.nombre = etapa.textoBusqueda.trim();
       etapa.idStage = 0;
     }
-
     if (!etapa.nombre || Number(etapa.probabilidad) <= 0) {
       this.messageService.add({
         severity: 'error',
@@ -470,6 +469,18 @@ export class EtapasComponent {
       });
       return;
     }
+
+    let busquedaEtapaNueva = this.etapas.find(e => e.eliminado && e.nombre == etapa.nombre);
+
+    if(busquedaEtapaNueva) {
+      busquedaEtapaNueva.eliminado = false;
+      const index = this.etapas.indexOf(etapa);
+      if (index !== -1) {
+        this.etapas.splice(index, 1);
+      }
+    }
+
+
 
     etapa.editandoNombre = false;
   }

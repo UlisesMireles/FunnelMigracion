@@ -496,6 +496,7 @@ export class EtapasComponent {
     }
 
     etapa.editandoNombre = false;
+    this.validaGuardar = true;
   }
 
   eliminarEtapa(etapa: any): void {

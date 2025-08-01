@@ -200,6 +200,16 @@ export class EtapasComponent {
       return;
     }
 
+    if (this.nombreProceso == '') {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Tiene que tener un nombre de proceso',
+        key: 'toast'
+      });
+      return;
+    }
+
     this.proceso = Object.assign({
       idProceso: this.insertEtapas ? 0 : this.etapas[0].idProceso,
       idEmpresa: this.idEmpresa,
@@ -480,7 +490,10 @@ export class EtapasComponent {
       }
     }
 
-
+    
+    if(etapa.idStage !== 0 && !etapa.eliminado && !etapa.agregado) {
+      etapa.editado = true;
+    }
 
     etapa.editandoNombre = false;
   }

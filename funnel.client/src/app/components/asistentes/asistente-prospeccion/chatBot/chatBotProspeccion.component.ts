@@ -43,7 +43,7 @@ export class ChatBotProspeccionComponent implements OnInit, AfterViewInit {
   };
 
   chatHistorial: ChatHistorial[] = [
-     { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨ Bienvenido(a) a tu asistente comercial. Soy Bruno, tu asistente para convertir contactos en oportunidades reales." , mostrarBotonDataset: true}
+     { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨  Soy Bruno, tu asistente comercial para convertir contactos en oportunidades reales.  Estoy aquí para ayudarte a generar correos estratégicos, identificar oportunidades con IA, proponer soluciones por sector y ayudarte en ventas consultivas, todo desde un solo lugar." , mostrarBotonDataset: true}
    ];
   chatHistorialResp!: string;
   mostrarBotonDataset: boolean = false;
@@ -80,7 +80,6 @@ ngAfterViewInit(): void {
   }, 0);
 }
 
-   //#region obtencion de datos de session storage
   nombreUsuario(): string {
     let NombreUsuarioString = environment.usuarioData.nombreUsuario;
     const nombreUsuario = sessionStorage.getItem('Usuario');
@@ -126,9 +125,8 @@ ngAfterViewInit(): void {
     
     const mensajeLimpio = mensaje.toLowerCase().trim().replace(/[¡!¿?.,]/g, '');
     
-    // Verificar si el mensaje es solo un saludo (máximo 3 palabras)
     const palabras = mensajeLimpio.split(/\s+/);
-    if (palabras.length > 3) {
+    if (palabras.length > 4) {
       return false;
     }
     
@@ -141,7 +139,7 @@ ngAfterViewInit(): void {
 
    private restoreState(state: any) {
     this.chatHistorial = state.historial || [
-      { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨ Bienvenido(a) a tu asistente comercial. Soy Bruno, tu asistente para convertir contactos en oportunidades reales." , mostrarBotonDataset: true}
+      { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨  Soy Bruno, tu asistente comercial para convertir contactos en oportunidades reales.  Estoy aquí para ayudarte a generar correos estratégicos, identificar oportunidades con IA, proponer soluciones por sector y ayudarte en ventas consultivas, todo desde un solo lugar." , mostrarBotonDataset: true}
     ];
     this.chatHistorialResp = JSON.stringify(this.chatHistorial);
     this.cdRef.detectChanges();
@@ -349,7 +347,7 @@ enviarDataset() {
       }
     });
     this.chatHistorial = [
-     { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨ Bienvenido(a) a tu asistente comercial. Soy Bruno, tu asistente para convertir contactos en oportunidades reales." , mostrarBotonDataset: true}
+     { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨  Soy Bruno, tu asistente comercial para convertir contactos en oportunidades reales.  Estoy aquí para ayudarte a generar correos estratégicos, identificar oportunidades con IA, proponer soluciones por sector y ayudarte en ventas consultivas, todo desde un solo lugar." , mostrarBotonDataset: true}
    ];
     sessionStorage.removeItem('chatBotProspeccionState');
     localStorage.removeItem('chatBotProspeccionState');
@@ -389,33 +387,11 @@ enviarDataset() {
     }, 1000);
   });
 }
-ajustarAlturaTextarea(event: any): void {
+ajustarAlturaTextarea(event: any): void { 
   const textarea = event.target as HTMLTextAreaElement;
+
   textarea.style.height = 'auto';
   textarea.style.height = `${Math.min(textarea.scrollHeight, 120)}px`;
 
-  const textoOriginal: string = textarea.value;
-  
-  const palabrasYEspacios: string[] = textoOriginal.split(/(\s+)/);
-  
-  let nuevoTexto: string = '';
-  let lineaActual: string = '';
-  
-  for (const segmento of palabrasYEspacios) {
-    if (lineaActual.length + segmento.length > 75) {
-      nuevoTexto += lineaActual.trimEnd() + '\n';
-      lineaActual = segmento; 
-    } else {
-      lineaActual += segmento;
-    }
-  }
-  
-  if (lineaActual.length > 0) {
-    nuevoTexto += lineaActual;
-  }
-
-  if (nuevoTexto !== textoOriginal) {
-    textarea.value = nuevoTexto;
-    this.pregunta = textarea.value; 
-  }
-}}
+}
+}

@@ -29,7 +29,7 @@ export class ModalUsuariosComponent {
   
     usuarioForm!: FormGroup;
     tiposUsuario: any[] = [];
-    puestos: any[] = [];
+    //puestos: any[] = [];
 
     selectedFile: File | null = null;
     selectedFileName: string = '';
@@ -42,9 +42,9 @@ export class ModalUsuariosComponent {
     rutaImgenDefault: string = this.baseUrl + 'Fotografia/persona_icono_principal.png';
     rutaImgen: string = this.baseUrl + '/Fotografia/';
     busquedaPuesto: string = '';
-    puestoSeleccionado: boolean = false;
+    /*puestoSeleccionado: boolean = false;
     puestosSeleccionado!: Puestos;
-    puestosFiltrados: any[] = [];
+    puestosFiltrados: any[] = [];*/
     
     @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() closeModal: EventEmitter<void> = new EventEmitter();
@@ -55,7 +55,7 @@ export class ModalUsuariosComponent {
   ngOnInit() {
     this.inicializarFormulario ();
     this.escucharCambiosEnCampos();
-    this.cargarPuestos();
+   // this.cargarPuestos();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -66,7 +66,7 @@ export class ModalUsuariosComponent {
   }
 
   inicializarFormulario() {
-    this.puestosFiltrados = this.puestos;
+   // this.puestosFiltrados = this.puestos;
     if (this.insertar) {
       const passwordGenerada = this.generarPassword(); 
       this.usuarioForm = this.fb.group({
@@ -120,7 +120,13 @@ export class ModalUsuariosComponent {
         ],
         idUsuario: [this.loginService.obtenerIdUsuario()],
         idEmpresa: [this.loginService.obtenerIdEmpresa()],
-        idPuesto: [null, Validators.required],
+        //idPuesto: [null, Validators.required],
+        puesto: ['',[
+            Validators.required,
+            Validators.maxLength(50),
+            Validators.pattern('^[a-zA-ZÀ-ÿ\\s]+$')
+          ]
+        ],
         bandera: ['INSERT']
       },{ validator: this.passwordMatchValidator });
       return;
@@ -191,19 +197,25 @@ export class ModalUsuariosComponent {
         ]
         ],
         idEmpresa: [this.loginService.obtenerIdEmpresa()],
-        idPuesto: [this.usuario.idPuesto, Validators.required],
+        //idPuesto: [this.usuario.idPuesto, Validators.required],
+        puesto: [this.usuario.puesto, [
+            Validators.required,
+            Validators.maxLength(50),
+            Validators.pattern('^[a-zA-ZÀ-ÿ\\s]+$')
+          ]
+        ],
         bandera: ['UPDATE']
       }, { validator: this.passwordMatchValidator });
       this.selectedFileOriginal = this.selectedFile;
       this.actualizarIniciales(); 
-      if (this.usuario.idPuesto) {
+     /* if (this.usuario.idPuesto) {
         this.puestoSeleccionado = true;
         this.puestosSeleccionado = { id: this.usuario.idPuesto, descripcion: this.usuario.puesto } as Puestos;
         this.busquedaPuesto = this.puestosSeleccionado.descripcion;
       } else {
         this.puestoSeleccionado = false;
         this.busquedaPuesto = '';
-      }
+      }*/
     }
   }
 
@@ -217,7 +229,7 @@ export class ModalUsuariosComponent {
 
   onDialogShow() {
     this.cargarTipoUsuario();
-    this.cargarPuestos();
+ //   this.cargarPuestos();
     this.inicializarFormulario(); 
     this.escucharCambiosEnCampos();
   }
@@ -237,7 +249,7 @@ export class ModalUsuariosComponent {
     });
   }
 
-  cargarPuestos() {
+ /* cargarPuestos() {
     this.UsuariosService.getPuestos(this.loginService.obtenerIdEmpresa()).subscribe({
       next: (result: any) => {
         this.puestos = result;
@@ -277,7 +289,7 @@ export class ModalUsuariosComponent {
     this.puestoSeleccionado = true;
     this.cdr.detectChanges();
   }
-
+*/
   close() {
     this.visible = false;
     this.visibleChange.emit(this.visible);
@@ -335,17 +347,17 @@ export class ModalUsuariosComponent {
       formValue.estatus = formValue.estatus ? 1 : 0;
       formValue.idEmpresa = this.loginService.obtenerIdEmpresa();
       formValue.bandera = this.insertar ? 'INSERT' : 'UPDATE';
-      let idPuesto = this.usuarioForm.get('idPuesto')?.value.idPuesto;
+  /*    let idPuesto = this.usuarioForm.get('idPuesto')?.value.idPuesto;
       if (idPuesto) {
         formValue.idPuesto = idPuesto;
       } else {
         delete formValue.idPuesto;
-      }
+      }*/
   
       if (!this.insertar && !formValue.password) {
         delete formValue.password;
       }
-  
+      
       const formData = new FormData();
       for (const key in formValue) {
         if (key === 'selectedFile') continue; 
@@ -371,7 +383,7 @@ export class ModalUsuariosComponent {
         // Agrega la imagen con el nuevo nombre
         formData.append('imagen', this.selectedFile, nombreArchivo);
       }
-      
+
       this.UsuariosService.postGuardarUsuario(formData).subscribe({
         
         next: (result: any) => {

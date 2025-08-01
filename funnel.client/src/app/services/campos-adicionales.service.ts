@@ -13,7 +13,7 @@ export class CamposAdicionalesService {
 
   constructor(private http: HttpClient) { }
 
-  postCamposAdicionales(data: any): Observable <baseOut> {
-    return this.http.post<baseOut>(this.baseUrl+'api/InputsAdicionales/GuardarInputsAdicionales', data);
+  postCamposAdicionales(data: any, idEmpresa: number): Observable <baseOut> {
+    return this.http.post<baseOut>(this.baseUrl+'api/InputsAdicionales/GuardarInputsAdicionales', data, { params: { idEmpresa: idEmpresa.toString() }});
   }
 }

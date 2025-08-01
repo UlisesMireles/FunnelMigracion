@@ -86,42 +86,47 @@ namespace Funnel.Data
 
         public async Task<List<InputAdicionalDataDTO>> ConsultarDataInputsAdicionales(int IdEmpresa, string TipoCatalogo, int IdReferencia)
         {
-            List<InputAdicionalDataDTO> result = new List<InputAdicionalDataDTO>();
-            IList<ParameterSQl> list = new List<ParameterSQl>
+            var result = new List<InputAdicionalDataDTO>();
+            try
+            {
+                IList<ParameterSQl> list = new List<ParameterSQl>
                 {
                     DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, "SEL-INPUTS-CATALOGO-DATA" ),
                     DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, IdEmpresa ),
                     DataBase.CreateParameterSql("@pTipoCatalogoInput", SqlDbType.VarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, TipoCatalogo ),
                     DataBase.CreateParameterSql("@pIdReferencia", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, IdReferencia ),
                 };
-            using (IDataReader reader = await DataBase.GetReaderSql("F_InputsAdicionales", CommandType.StoredProcedure, list, _connectionString))
-            {
-                while (reader.Read())
+                using (IDataReader reader = await DataBase.GetReaderSql("F_InputsAdicionales", CommandType.StoredProcedure, list, _connectionString))
                 {
-                    var dto = new InputAdicionalDataDTO();
+                    while (reader.Read())
+                    {
+                        var dto = new InputAdicionalDataDTO();
 
-                    dto.IdInput = ComprobarNulos.CheckIntNull(reader["IdInput"]);
-                    dto.Nombre = ComprobarNulos.CheckStringNull(reader["Nombre"]);
-                    dto.Etiqueta = ComprobarNulos.CheckStringNull(reader["Etiqueta"]);
-                    dto.Requerido = ComprobarNulos.CheckBooleanNull(reader["Requerido"]);
-                    dto.TipoCampo = ComprobarNulos.CheckStringNull(reader["TipoCampo"]);
-                    dto.RCatalogoInputId = ComprobarNulos.CheckIntNull(reader["RCatalogoInputId"]);
-                    dto.Orden = ComprobarNulos.CheckIntNull(reader["Orden"]);
-                    dto.TipoCatalogoInputId = ComprobarNulos.CheckIntNull(reader["TipoCatalogoInputId"]);
-                    dto.TipoCatalogoInput = ComprobarNulos.CheckStringNull(reader["TipoCatalogoInput"]);
-                    dto.IdInputData = ComprobarNulos.CheckIntNull(reader["IdInputData"]);
-                    dto.Valor = ComprobarNulos.CheckStringNull(reader["Valor"]);
-                    dto.IdReferencia = ComprobarNulos.CheckIntNull(reader["IdReferencia"]);
+                        dto.IdInput = ComprobarNulos.CheckIntNull(reader["IdInput"]);
+                        dto.Nombre = ComprobarNulos.CheckStringNull(reader["Nombre"]);
+                        dto.Etiqueta = ComprobarNulos.CheckStringNull(reader["Etiqueta"]);
+                        dto.Requerido = ComprobarNulos.CheckBooleanNull(reader["Requerido"]);
+                        dto.TipoCampo = ComprobarNulos.CheckStringNull(reader["TipoCampo"]);
+                        dto.RCatalogoInputId = ComprobarNulos.CheckIntNull(reader["RCatalogoInputId"]);
+                        dto.Orden = ComprobarNulos.CheckIntNull(reader["Orden"]);
+                        dto.TipoCatalogoInputId = ComprobarNulos.CheckIntNull(reader["TipoCatalogoInputId"]);
+                        dto.TipoCatalogoInput = ComprobarNulos.CheckStringNull(reader["TipoCatalogoInput"]);
+                        dto.IdInputData = ComprobarNulos.CheckIntNull(reader["IdInputData"]);
+                        dto.Valor = ComprobarNulos.CheckStringNull(reader["Valor"]);
+                        dto.IdReferencia = ComprobarNulos.CheckIntNull(reader["IdReferencia"]);
 
-
-                    result.Add(dto);
+                        result.Add(dto);
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al consultar datos de inputs adicionales: {ex.Message}", ex);
+            }
             return result;
-
         }
 
-        public async Task<BaseOut> GuardarInputsAdicionales(List<InputAdicionalDTO> listaInputs)
+        public async Task<BaseOut> GuardarInputsAdicionales(List<InputAdicionalDTO> listaInputs, int IdEmpresa)
         {
             BaseOut result = new BaseOut();
             DataTable dtPermisos = new DataTable("InputsCatalogo");
@@ -145,6 +150,7 @@ namespace Funnel.Data
             IList<ParameterSQl> list = new List<ParameterSQl>
             {
                 DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, "INS-INPUT-ADICIONAL" ),
+                DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, IdEmpresa ),
                 DataBase.CreateParameterSql("@pTipoCatalogoInput", SqlDbType.VarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, tipoCatalogo ),
                 DataBase.CreateParameterSql("@pInputsCatalogo", SqlDbType.Structured, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, dtPermisos)
             };

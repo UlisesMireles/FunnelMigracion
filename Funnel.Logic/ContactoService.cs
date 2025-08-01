@@ -11,6 +11,8 @@ using DinkToPdf;
 using System.Reflection;
 using DinkToPdf.Contracts;
 using Funnel.Logic.Utils;
+using Funnel.Data;
+using System.Diagnostics.Contracts;
 
 namespace Funnel.Logic
 {
@@ -33,7 +35,17 @@ namespace Funnel.Logic
 
         public async Task<List<ContactoDto>> ConsultarContacto(int IdEmpresa)
         {
-            return await _contactoData.ConsultarContacto(IdEmpresa);
+            var columnasAdicionales = await _contactoData.ColumnasAdicionales(IdEmpresa);
+            var dataColumnasAdicionales = await _contactoData.ColumnasAdicionalesData(IdEmpresa, columnasAdicionales);
+
+            var datosContactos = await _contactoData.ConsultarContacto(IdEmpresa);
+
+            datosContactos.ForEach(v => {
+                var adicional = dataColumnasAdicionales.FirstOrDefault(x => x.IdProspecto == v.IdProspecto);
+                v.PropiedadesAdicionales = adicional?.PropiedadesAdicionales ?? new Dictionary<string, string?>();
+            });
+
+            return datosContactos;
         }
 
         public async Task<BaseOut> GuardarContacto(ContactoDto request)
@@ -76,9 +88,8 @@ namespace Funnel.Logic
             var rutaArchivoTempHeader = Path.Combine(RutaBase, "PlantillasReporteHtml", $"PlantillaReporteHeader-{Guid.NewGuid()}.html");
             File.WriteAllText(rutaArchivoTempHeader, htmlHeaderDinamico);
 
-            var propiedadesTexto = typeof(ContactoDto).GetProperties(BindingFlags.Public | BindingFlags.Instance).Select(v => v.Name.ToLower()).ToList();
-            var propiedades = contactos.Datos.First().GetType().GetProperties();
-            var keysColumnas = contactos.Columnas.Where(v => propiedadesTexto.Contains(v.key.ToLower())).Select(v => v.key.ToLower()).ToList();
+            var propiedadesTexto = contactos.Datos[0].Keys.Select(k => k.ToLower()).ToList();
+            var keysColumnas = contactos.Columnas.Where(v => propiedadesTexto.Contains(v.key.ToLower())).Select(v => v.key).ToList();
             var nombresColumnas = contactos.Columnas.Where(v => propiedadesTexto.Contains(v.key.ToLower())).Select(v => v.valor).ToList();
             PropertyInfo propiedad;
             DateTime? fecha;
@@ -102,15 +113,12 @@ namespace Funnel.Logic
 
                 foreach (var columna in keysColumnas)
                 {
-                    propiedad = propiedades.First(v => v.Name.ToLower() == columna);
-                    if (propiedad.PropertyType == typeof(DateTime?))
+                    if (item.TryGetValue(columna, out var valorObj) && valorObj is DateTime fechaTmp)
                     {
-                        fecha = propiedad.GetValue(item) as DateTime?;
-                        sb.Append($"<td style=\"width: 100px;\">{fecha?.ToString("dd-MM-yyyy")}</td>");
+                        sb.Append($"<td style=\"width: 100px;\">{fechaTmp.ToString("dd-MM-yyyy")}</td>");
                     }
-                    else
-                        sb.Append($"<td>{propiedad.GetValue(item)}</td>");
-
+                    else                    
+                        sb.Append($"<td>{item[columna]}</td>");
                 }
                 sb.Append("</tr>");
             }

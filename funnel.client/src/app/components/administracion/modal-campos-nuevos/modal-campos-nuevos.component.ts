@@ -161,7 +161,7 @@ export class ModalCamposNuevosComponent {
     else
       listaFinalCamposAdicionales = [...this.camposAdicionales];
 
-    this.camposAdicionalesMetodosService.postCamposAdicionales(listaFinalCamposAdicionales).subscribe({
+    this.camposAdicionalesMetodosService.postCamposAdicionales(listaFinalCamposAdicionales,this.idEmpresa).subscribe({
       next: (result: baseOut) => {
         this.result.emit(result);
         //this.cerrar();

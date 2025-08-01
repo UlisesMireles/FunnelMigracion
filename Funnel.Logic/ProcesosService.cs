@@ -77,14 +77,14 @@ namespace Funnel.Logic
 
             foreach (OportunidadesTarjetasDto item in etapas)
             {
-                if (item.Agregado is not null && item.Agregado == true && item.Eliminado == false && item.IdStage == 0)
+                if (item.Agregado == true && (item.Eliminado == false || item.Eliminado is null) && item.IdStage == 0)
                 {
                     guardado = await _procesosData.InsertarModificarEtapa(item, "INSERTAR-ETAPA");
                     item.IdStage = guardado.Id;
                 }
                 else if (
-                     (item.Editado is not null && item.Editado == true && item.Eliminado == false && item.IdStage > 0) ||
-                     (item.Agregado is not null && item.Agregado == true && item.Eliminado == false && item.IdStage != 0)
+                     (item.Editado == true && (item.Eliminado == false || item.Eliminado is null) && item.IdStage > 0) ||
+                     (item.Agregado == true && (item.Eliminado == false || item.Eliminado is null) && item.IdStage != 0)
                     )
                 {
                     guardado = await _procesosData.InsertarModificarEtapa(item, "UPDATE-ETAPA");

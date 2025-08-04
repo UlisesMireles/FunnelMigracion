@@ -215,20 +215,24 @@ createPieData(items: GraficasDto[], mostrarDecimales = false) {
       }
     };
   }
-  createFunnelData(items: GraficasDto[], mostrarDecimales = false) {
-    const opcionesFormato = this.getOpcionesFormato(mostrarDecimales);
-    return {
-      type: 'funnel',
-      x: [100, 80, 60, 40, 20],
-      hovertemplate: '<b>%{text}</b><extra></extra>',
-      text: items.map(item => '<b>' + item.label + '</b><br>' + item.valor.toLocaleString('es-MX', opcionesFormato)),
-      texttemplate: '%{text}',
-      textfont: { family: "Old Standard TT", size: 13, color: "black" },
-      marker: {
-        color: items.map(item => item.coloreSerie ?? this.getRandomColor())
-      }
-    };
-  }
+ createFunnelData(items: GraficasDto[], mostrarDecimales = false) {
+  const opcionesFormato = this.getOpcionesFormato(mostrarDecimales);
+  
+  // Ordenar por porcentaje ascendente
+  const itemsOrdenados = items.sort((a, b) => (a.porcentaje ?? 0) - (b.porcentaje ?? 0));
+  
+  return {
+    type: 'funnel',
+    x: itemsOrdenados.map(item => 100 - (item.porcentaje ?? 0)),
+    hovertemplate: '<b>%{text}</b><extra></extra>',
+    text: itemsOrdenados.map(item => '<b>' + item.label + '</b><br>' + item.valor.toLocaleString('es-MX', opcionesFormato)),
+    texttemplate: '%{text}',
+    textfont: { family: "Old Standard TT", size: 13, color: "black" },
+    marker: {
+      color: itemsOrdenados.map(item => item.coloreSerie !== '' ? item.coloreSerie : this.getRandomColor())
+    }
+  };
+}
 
   createBarHorizontalLayout() {
     return {

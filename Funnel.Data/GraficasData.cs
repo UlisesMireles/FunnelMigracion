@@ -38,6 +38,7 @@ namespace Funnel.Data
                             dto.Contador = ComprobarNulos.CheckIntNull(reader["Contador"]);
                             dto.Area = ComprobarNulos.CheckIntNull(reader["Area"]);
                             dto.ColoreSerie = ComprobarNulos.CheckStringNull(reader["ColorSerie"]);
+                            dto.Porcentaje = ComprobarNulos.CheckDecimalNull(reader["PorcentajeAsignado"]);
 
                             result.Add(dto);
                         }

@@ -40,7 +40,6 @@ constructor(
 
   ngOnChanges() {
     this.mostrarDecimales = this.loginService.obtenerPermitirDecimales();
-    console.log('Visible:', this.visible, 'idAgente:', this.idAgente);
     if (this.visible && this.idAgente) {
       this.cargarOportunidades();
     }

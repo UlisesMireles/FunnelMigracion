@@ -209,7 +209,6 @@ export class LoginService {
 
   obtenerPermitirDecimales(): boolean {
     const valor = sessionStorage.getItem('permitirDecimales');
-    console.log('Permitir decimales desde sessionStorage:', valor);
     return valor === 'true';
   }
 

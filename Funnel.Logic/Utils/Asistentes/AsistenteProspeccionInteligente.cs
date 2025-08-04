@@ -70,12 +70,44 @@ namespace Funnel.Logic.Utils.Asistentes
         }
         private async Task<PreguntasFrecuentesDto> VerificarPreguntaFrecuenteAsync(string pregunta, int idBot, int idUsuario)
         {
+            List<PreguntasFrecuentesDto> preguntasFrecuentes = await ObtenerPreguntasFrecuenteAsync(pregunta, idBot, idUsuario);
+
+            var preguntaNormalizada = NormalizarTexto(pregunta);
+
+            var mejorCoincidencia = preguntasFrecuentes
+                .Where(p => p.Activo)
+                .Select(p => new
+                {
+                    Pregunta = p,
+                    Score = Fuzz.Ratio(NormalizarTexto(p.Pregunta), preguntaNormalizada)
+                })
+                .OrderByDescending(x => x.Score)
+                .FirstOrDefault();
+
+            const int umbralSimilitud = 90;
+            if (mejorCoincidencia != null && mejorCoincidencia.Score >= umbralSimilitud)
+            {
+                return mejorCoincidencia.Pregunta;
+            }
+
+            return null;
+        }
+
+        private string NormalizarTexto(string texto)
+        {
+            if (string.IsNullOrWhiteSpace(texto))
+                return string.Empty;
+
+            return texto.Trim().ToLower();
+        }
+        private async Task<List<PreguntasFrecuentesDto>> ObtenerPreguntasFrecuenteAsync(string pregunta, int idBot, int idUsuario)
+        {
             List<PreguntasFrecuentesDto> result = new List<PreguntasFrecuentesDto>();
 
             IList<ParameterSQl> list = new List<ParameterSQl>
-    {
-        DataBase.CreateParameterSql("@IdBot", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, idBot)
-    };
+            {
+            DataBase.CreateParameterSql("@IdBot", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, idBot)
+            };
 
             using (IDataReader reader = await DataBase.GetReaderSql("F_PreguntasFrecuentesActivasPorBot", CommandType.StoredProcedure, list, _connectionString))
             {
@@ -93,69 +125,9 @@ namespace Funnel.Logic.Utils.Asistentes
                 }
             }
 
-            var configuracion = await _asistentesData.ObtenerConfiguracionPorIdBotAsync(idBot);
-            if (configuracion == null)
-                return null;
-
-            var threadCacheKey = GetThreadCacheKey(idUsuario);
-            if (!(_cache.Get(threadCacheKey) is string threadId) || string.IsNullOrEmpty(threadId))
-                return null;
-
-            var historialConversacion = await ObtenerHistorialConversacion(configuracion.Llave, threadId);
-            var contextoCompleto = string.Join(" ", historialConversacion) + " " + pregunta;
-
-            var preguntaNormalizada = NormalizarTexto(pregunta);
-            var contextoNormalizado = NormalizarTexto(contextoCompleto);
-
-            var mejorCoincidencia = result
-                .Where(p => p.Activo)
-                .Select(p => new
-                {
-                    Pregunta = p,
-                    ScorePregunta = Fuzz.Ratio(NormalizarTexto(p.Pregunta), preguntaNormalizada),
-                    ScoreContexto = Fuzz.Ratio(NormalizarTexto(p.Pregunta), contextoNormalizado)
-                })
-                .OrderByDescending(x => Math.Max(x.ScorePregunta, x.ScoreContexto))
-                .FirstOrDefault();
-
-            const int umbralSimilitud = 55;
-            if (mejorCoincidencia != null &&
-                (mejorCoincidencia.ScorePregunta >= umbralSimilitud ||
-                 mejorCoincidencia.ScoreContexto >= umbralSimilitud))
-            {
-                return mejorCoincidencia.Pregunta;
-            }
-
-            return null;
+            return result;
         }
-        private string NormalizarTexto(string texto)
-        {
-            if (string.IsNullOrWhiteSpace(texto))
-                return string.Empty;
 
-            return texto.Trim().ToLower();
-        }
-        private async Task<List<string>> ObtenerHistorialConversacion(string apiKey, string threadId)
-        {
-            var client = OpenAIUtils.GetClient(apiKey);
-            var messagesResponse = await client.GetAsync($"threads/{threadId}/messages");
-            messagesResponse.EnsureSuccessStatusCode();
-
-            var messagesJson = await messagesResponse.Content.ReadAsStringAsync();
-            using var messagesDoc = JsonDocument.Parse(messagesJson);
-
-            var historial = new List<string>();
-            var messages = messagesDoc.RootElement.GetProperty("data");
-
-            foreach (var message in messages.EnumerateArray())
-            {
-                var role = message.GetProperty("role").GetString();
-                var content = message.GetProperty("content")[0].GetProperty("text").GetProperty("value").GetString();
-                historial.Add($"{role}: {content}");
-            }
-
-            return historial;
-        }
         private async Task<RespuestaOpenIA> BuildAnswer(string pregunta, int idBot, int idUsuario)
         {
             try

@@ -21,12 +21,14 @@ namespace Funnel.Logic
         private readonly IProcesosData _procesosData;
         private readonly IConverter _converter;
         private readonly ILoginService _loginService;
+        private readonly IUsuarioData _usuarioData;
 
-        public ProcesosService(IProcesosData ProcesosData, IConverter converter, ILoginService loginService)
+        public ProcesosService(IProcesosData ProcesosData, IConverter converter, ILoginService loginService, IUsuarioData usuarioData)
         {
             _procesosData = ProcesosData;
             _converter = converter;
             _loginService = loginService;
+            _usuarioData = usuarioData;
         }
 
         public async Task<List<PlantillasProcesosStageDTO>> ConsultarPlantillasProcesosEtapas()
@@ -225,6 +227,20 @@ namespace Funnel.Logic
 
             lista = lista.Where(x => x.Nombre != "Sin etapa" && x.Anio > 0).OrderBy(x => x.Anio).ToList();
             return lista;
+        }
+        public async Task<UsuarioDto> CantidadProcesoPermitidosPorLicencia(string Licencia)
+        {
+            UsuarioDto result = new UsuarioDto();
+            try
+            {
+                result = await _usuarioData.ObtenerInformacionUsuarioYLicencia(Licencia);
+            }
+            catch (Exception ex)
+            {
+                result.ErrorMessage = "Error al consultar cantidad de procesos permitidos por licencia: " + ex.Message;
+                result.Result = false;
+            }
+            return result;
         }
     }
 }

@@ -58,5 +58,12 @@ namespace Funnel.Server.Controllers
             var result = await _procesosService.ConsultarComboEtapas(IdUsuario, idEmpresa);
             return Ok(result);
         }
+
+        [HttpGet("CantidadProcesoPermitidosPorLicencia/")]
+        public async Task<ActionResult<UsuarioDto>> CantidadProcesoPermitidosPorLicencia(string Licencia)
+        {
+            var result = await _procesosService.CantidadProcesoPermitidosPorLicencia(Licencia);
+            return Ok(result);
+        }
     }
 }

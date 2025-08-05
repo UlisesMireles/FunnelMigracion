@@ -173,7 +173,7 @@ namespace Funnel.Logic
                 lista.Add(new OportunidadesTarjetasDto
                 {
                     Nombre = item.Concepto ?? "Sin etapa",
-                    Anio = Convert.ToInt32(item.Stage),
+                    Anio = Convert.ToInt32(item.Orden),
                     Probabilidad = item.Probabilidad,
                     Orden = item.Orden,
                     IdStage = item.Id,

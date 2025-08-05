@@ -102,7 +102,7 @@ namespace Funnel.Data
                     dto.Concepto = ComprobarNulos.CheckStringNull(reader["Concepto"]);
                     dto.Descripcion = ComprobarNulos.CheckStringNull(reader["Descripcion"]);
                     dto.Probabilidad = ComprobarNulos.CheckStringNull(reader["Probabilidad"]);
-                    dto.Orden = ComprobarNulos.CheckStringNull(reader["Stage"]);
+                    dto.Orden = ComprobarNulos.CheckStringNull(reader["Orden"]);
                     result.Add(dto);
                 }
             }

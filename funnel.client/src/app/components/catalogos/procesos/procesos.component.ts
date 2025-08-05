@@ -68,7 +68,11 @@ export class ProcesosComponent {
   ) { }
 
   ngOnInit(): void {
-    this.cantidadProcesosPermitidos = localStorage.getItem('cantidadProcesosPermitidos') ? parseInt(localStorage.getItem('cantidadProcesosPermitidos')!) : 0;
+    this.procesosService.getCantidadProcesosPermitidos().subscribe({
+      next: (result: any) => {
+        this.cantidadProcesosPermitidos = result.cantidadProcesosPermitidos;
+      }
+    });
     this.configuracionColumnasService.obtenerColumnasAMostrar(EnumTablas.Procesos).subscribe({
       next: ({ todas, mostrar }) => {
         this.lsTodasColumnas = todas;
@@ -305,6 +309,7 @@ export class ProcesosComponent {
       });
       return;
     }
+    
     const idUsuario = this.loginService.obtenerIdUsuario();
     const idEmpresa = this.loginService.obtenerIdEmpresa();
 

@@ -82,14 +82,6 @@ namespace Funnel.Logic
                     guardado = await _procesosData.InsertarModificarEtapa(item, "INSERTAR-ETAPA");
                     item.IdStage = guardado.Id;
                 }
-                else if (
-                     (item.Editado == true && (item.Eliminado == false || item.Eliminado is null) && item.IdStage > 0) ||
-                     (item.Agregado == true && (item.Eliminado == false || item.Eliminado is null) && item.IdStage != 0)
-                    )
-                {
-                    guardado = await _procesosData.InsertarModificarEtapa(item, "UPDATE-ETAPA");
-                    item.IdStage = guardado.Id;
-                }
             }
             return etapas;
         }
@@ -109,7 +101,7 @@ namespace Funnel.Logic
             //Insertar o actulizar Etapas
             request.Etapas = await InsertarModificarEtapa(request.Etapas);
 
-            //Insertar o actualizar datos de Proceso, y etapas eliminadas del proceso
+            //Insertar o actualizar datos de Proceso, y etapas del proceso
             return await _procesosData.InsertarModificarProcesoEtapa(request);
 
 

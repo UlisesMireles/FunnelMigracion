@@ -181,6 +181,8 @@ namespace Funnel.Data
             dtProcesosEtapas.Columns.Add(new DataColumn("IdProceso", typeof(int)));
             dtProcesosEtapas.Columns.Add(new DataColumn("IdStage", typeof(int)));
             dtProcesosEtapas.Columns.Add(new DataColumn("Estatus", typeof(bool)));
+            dtProcesosEtapas.Columns.Add(new DataColumn("PorcentajeAsignado", typeof(int)));
+            dtProcesosEtapas.Columns.Add(new DataColumn("Orden", typeof(int)));
 
             foreach (var item in request.Etapas)
             {
@@ -189,6 +191,8 @@ namespace Funnel.Data
                 row["IdProceso"] = request.IdProceso;
                 row["IdStage"] = item.IdStage;
                 row["Estatus"] = item.Eliminado is not null && item.Eliminado == true && item.IdStage > 0 ? false : true;
+                row["PorcentajeAsignado"] = Convert.ToInt32(item.Probabilidad);
+                row["Orden"] = Convert.ToInt32(item.Orden);
                 dtProcesosEtapas.Rows.Add(row);
             }
 

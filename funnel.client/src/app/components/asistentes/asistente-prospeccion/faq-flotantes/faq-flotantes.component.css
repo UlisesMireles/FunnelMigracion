@@ -1,6 +1,6 @@
 .faq-flotante-card {
-  position: fixed;
-  right: 510px;
+  position: absolute;
+  right: 100%;
   width: 350px;
   background: #ffffff;
   border-radius: 15px;
@@ -9,7 +9,10 @@
   animation: fadeIn 0.3s ease-in-out;
   margin-top: -605px;
   height: 606px;
+  top: 610px;
+  
 }
+
 .faq-header {
   background: linear-gradient(to right, #ecfdf5, #ecfdf5) !important;
   color: black;

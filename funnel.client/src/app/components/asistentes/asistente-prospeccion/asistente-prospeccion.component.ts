@@ -60,7 +60,6 @@ toggleFaqs() {
 }
 
   enviarPreguntaAlChat(pregunta: string) {
-    console.log('Pregunta enviada:', pregunta);
-    this.chatBotAsistente.consultaMensajeOpenIa(pregunta);
+    this.chatBotAsistente.recibirPreguntaExterna(pregunta);
   }
 }

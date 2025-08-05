@@ -53,4 +53,14 @@ export class AsistenteProspeccionComponent {
       chatContainerProspeccion.classList.add("d-none");
     }
   }
+  mostrarFaqs = false;
+
+toggleFaqs() {
+  this.mostrarFaqs = !this.mostrarFaqs;
+}
+
+  enviarPreguntaAlChat(pregunta: string) {
+    console.log('Pregunta enviada:', pregunta);
+    this.chatBotAsistente.consultaMensajeOpenIa(pregunta);
+  }
 }

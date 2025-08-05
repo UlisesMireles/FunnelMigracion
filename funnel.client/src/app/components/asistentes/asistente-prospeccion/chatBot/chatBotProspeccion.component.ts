@@ -152,6 +152,7 @@ ngAfterViewInit(): void {
     sessionStorage.setItem('chatBotProspeccionState', JSON.stringify(state));
   }
   consultaMensajeOpenIa(event?: any, textarea?: HTMLTextAreaElement) {
+    console.log('Evento de consulta recibido:', event);
     if (!this.isConsultandoOpenIa && this.pregunta.trim() !== "") {
       const preguntaOriginal = this.pregunta;
       this.consultaAsistente.pregunta = this.pregunta;

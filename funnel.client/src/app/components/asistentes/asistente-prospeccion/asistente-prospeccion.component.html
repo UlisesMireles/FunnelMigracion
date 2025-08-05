@@ -9,12 +9,18 @@
         </div>
       <div class="col-3 p-0 align-content-center">
         <div class="row m-0 justify-content-end">
+        <i class="col-auto p-0 pe-1 bi bi-question-circle app-chat-close-icon me-2"
+        title="Ver preguntas frecuentes"
+        (click)="toggleFaqs()"
+        aria-hidden="true"></i>
           <i *ngIf="isProd" class="col-auto p-0 pe-1 bi bi-x app-chat-close-icon" (click)="onCerrarChat()" aria-hidden="true"></i>
           <i *ngIf="!isProd" class="col-auto p-0 pe-1 bi bi-x app-chat-close-icon" (click)="onCerrarChat()" aria-hidden="true"></i>
+
         </div>
         <div class="app-chat-version">V. {{ version }}</div>
       </div>
     </div>
   </div>
   <app-chaBotProspeccion class="chatBotAsistenteProspeccion"></app-chaBotProspeccion>
+  <app-faq-flotantes [mostrarFaqs]="mostrarFaqs" (preguntaSeleccionada)="enviarPreguntaAlChat($event)"></app-faq-flotantes>
 </div>

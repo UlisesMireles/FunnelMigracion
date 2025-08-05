@@ -1,0 +1,20 @@
+<div class="faq-flotante-card" *ngIf="mostrarFaqs">
+  <div class="faq-header">
+    <h5>Preguntas Frecuentes</h5>
+    <i class="bi bi-x-circle close-faq-icon" (click)="cerrarFaqs()" aria-hidden="true"></i>
+  </div>
+
+  <div class="faq-body">
+    <div class="faq-item" *ngFor="let faq of faqs">
+      <button class="faq-button" (click)="enviarPregunta(faq.pregunta)">
+        {{ faq.pregunta }}
+      </button>
+    </div>
+  </div>
+
+  <div class="faq-footer">
+    <button class="btn-reset" (click)="generarPreguntasAleatorias()">
+      Ver otras preguntas
+    </button>
+  </div>
+</div>

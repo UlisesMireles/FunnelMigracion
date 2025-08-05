@@ -66,6 +66,7 @@ export class LoginService {
           localStorage.setItem('licencia', user.licencia);
           localStorage.setItem('cantidadUsuarios', user.cantidadUsuarios);
           localStorage.setItem('cantidadOportunidades', user.cantidadOportunidades);
+          localStorage.setItem('cantidadProcesosPermitidos', user.cantidadProcesosPermitidos);
           localStorage.setItem('idProceso', user.idProceso.toString());
           this.currentUserSubject.next(user);
           sessionStorage.setItem('sesion', window.btoa(JSON.stringify(user)));

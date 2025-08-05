@@ -57,7 +57,7 @@ export class ProcesosComponent {
   etapasCombo: OportunidadesPorEtapa[] = [];
   plantillas: PlantillasProcesos[] = [];
   modalVisibleEtapas: boolean = false;
-
+  cantidadProcesosPermitidos: number = 0;
   constructor(private messageService: MessageService,
     private cdr: ChangeDetectorRef,
     private loginService: LoginService,
@@ -68,6 +68,7 @@ export class ProcesosComponent {
   ) { }
 
   ngOnInit(): void {
+    this.cantidadProcesosPermitidos = localStorage.getItem('cantidadProcesosPermitidos') ? parseInt(localStorage.getItem('cantidadProcesosPermitidos')!) : 0;
     this.configuracionColumnasService.obtenerColumnasAMostrar(EnumTablas.Procesos).subscribe({
       next: ({ todas, mostrar }) => {
         this.lsTodasColumnas = todas;
@@ -296,6 +297,14 @@ export class ProcesosComponent {
   }
 
   inserta() {
+    if (this.procesos.length >= this.cantidadProcesosPermitidos) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Límite alcanzado',
+        detail: 'Tu licencia actual no permite agregar más procesos.'
+      });
+      return;
+    }
     const idUsuario = this.loginService.obtenerIdUsuario();
     const idEmpresa = this.loginService.obtenerIdEmpresa();
 

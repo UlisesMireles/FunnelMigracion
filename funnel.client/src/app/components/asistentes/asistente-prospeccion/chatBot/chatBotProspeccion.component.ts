@@ -152,6 +152,7 @@ ngAfterViewInit(): void {
     sessionStorage.setItem('chatBotProspeccionState', JSON.stringify(state));
   }
   consultaMensajeOpenIa(event?: any, textarea?: HTMLTextAreaElement) {
+    console.log('Evento de consulta recibido:', event);
     if (!this.isConsultandoOpenIa && this.pregunta.trim() !== "") {
       const preguntaOriginal = this.pregunta;
       this.consultaAsistente.pregunta = this.pregunta;
@@ -394,4 +395,51 @@ ajustarAlturaTextarea(event: any): void {
   textarea.style.height = `${Math.min(textarea.scrollHeight, 120)}px`;
 
 }
+
+recibirPreguntaExterna(pregunta: string) {
+  if (!this.isConsultandoOpenIa && pregunta.trim() !== "") {
+    const preguntaOriginal = pregunta;
+    this.consultaAsistente.pregunta = pregunta;
+    this.chatHistorial.push({ rol: "usuario", mensaje: pregunta });
+
+    if (this.esSaludo(preguntaOriginal)) {
+      const respuestaSaludo = this.generarRespuestaSaludo();
+      this.chatHistorial.push({ 
+        rol: "asistente", 
+        mensaje: respuestaSaludo,
+        mostrarBotonDataset: false 
+      });
+      
+      this.cdRef.detectChanges();
+      this.scrollToBottom();
+      this.saveState();
+      return;
+    }
+
+    this.chatHistorial.push({ rol: "cargando", mensaje: "..." });
+    this.cdRef.detectChanges();
+    this.scrollToBottom();
+    this.saveState();
+
+    this.isConsultandoOpenIa = true;
+    this.OpenIaService.asistenteProspeccion(this.consultaAsistente).subscribe({
+      next: (data: ConsultaAsistenteDto) => {
+        this.chatHistorial.pop();
+        this.chatHistorial.push({ 
+          rol: "asistente", 
+          mensaje: data.respuesta,
+          mostrarBotonDataset: false 
+        });
+        this.cdRef.detectChanges();
+        this.scrollToBottom();
+        this.saveState();
+        this.isConsultandoOpenIa = false;
+      },
+      error: (err: HttpErrorResponse) => {
+        this.manejarEerrorConsulta(err);
+      }
+    });
+  }
+}
+
 }

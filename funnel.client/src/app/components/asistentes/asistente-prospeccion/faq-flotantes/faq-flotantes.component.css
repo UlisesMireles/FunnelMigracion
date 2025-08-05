@@ -7,8 +7,8 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   z-index: 1050;
   animation: fadeIn 0.3s ease-in-out;
-  margin-top: -609px;
-  height: 610px;
+  margin-top: -605px;
+  height: 606px;
 }
 .faq-header {
   background: linear-gradient(to right, #ecfdf5, #ecfdf5) !important;

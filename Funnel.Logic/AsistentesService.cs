@@ -12,6 +12,7 @@ using System.Text.RegularExpressions;
 using Funnel.Logic.Utils;
 using Funnel.Data.Utils;
 using System.Data;
+using FuzzySharp;
 namespace Funnel.Logic
 {
     public class AsistentesService: IAsistentesService
@@ -103,7 +104,7 @@ namespace Funnel.Logic
             }
             try
             {
-                var respuestaFrecuente = await VerificarPreguntaFrecuenteAsync(consultaAsistente.Pregunta, consultaAsistente.IdBot);
+                var respuestaFrecuente = await VerificarPreguntaFrecuenteAsync(consultaAsistente.Pregunta, consultaAsistente.IdBot, consultaAsistente.IdUsuario);
 
                 if (respuestaFrecuente != null)
                 {
@@ -134,15 +135,46 @@ namespace Funnel.Logic
 
             return consultaAsistente;
         }
-        private async Task<PreguntasFrecuentesDto> VerificarPreguntaFrecuenteAsync(string pregunta, int idBot)
+        private async Task<PreguntasFrecuentesDto> VerificarPreguntaFrecuenteAsync(string pregunta, int idBot, int idUsuario)
+        {
+            List<PreguntasFrecuentesDto> preguntasFrecuentes = await ObtenerPreguntasFrecuentesAsync(idBot);
+
+            var preguntaNormalizada = NormalizarTexto(pregunta);
+
+            var mejorCoincidencia = preguntasFrecuentes
+                .Where(p => p.Activo)
+                .Select(p => new
+                {
+                    Pregunta = p,
+                    Score = Fuzz.Ratio(NormalizarTexto(p.Pregunta), preguntaNormalizada)
+                })
+                .OrderByDescending(x => x.Score)
+                .FirstOrDefault();
+
+            const int umbralSimilitud = 90;
+            if (mejorCoincidencia != null && mejorCoincidencia.Score >= umbralSimilitud)
+            {
+                return mejorCoincidencia.Pregunta;
+            }
+
+            return null;
+        }
+
+        private string NormalizarTexto(string texto)
+        {
+            if (string.IsNullOrWhiteSpace(texto))
+                return string.Empty;
+
+            return texto.Trim().ToLower();
+        }
+        public async Task<List<PreguntasFrecuentesDto>> ObtenerPreguntasFrecuentesAsync(int idBot)
         {
             List<PreguntasFrecuentesDto> result = new List<PreguntasFrecuentesDto>();
 
             IList<ParameterSQl> list = new List<ParameterSQl>
             {
-                DataBase.CreateParameterSql("@IdBot", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, idBot)
+            DataBase.CreateParameterSql("@IdBot", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, idBot)
             };
-
 
             using (IDataReader reader = await DataBase.GetReaderSql("F_PreguntasFrecuentesActivasPorBot", CommandType.StoredProcedure, list, _connectionString))
             {
@@ -158,25 +190,9 @@ namespace Funnel.Logic
                     };
                     result.Add(dto);
                 }
-
             }
-            var preguntaNormalizada = NormalizarTexto(pregunta);
-            return result.FirstOrDefault(p =>
-                p.Activo &&
-                EsPreguntaSimilar(NormalizarTexto(p.Pregunta), preguntaNormalizada));
-        }
 
-        private string NormalizarTexto(string texto)
-        {
-            if (string.IsNullOrWhiteSpace(texto))
-                return string.Empty;
-
-            return texto.Trim().ToLower();
-        }
-        private bool EsPreguntaSimilar(string pregunta1, string pregunta2)
-        {
-
-            return pregunta1.Contains(pregunta2) || pregunta2.Contains(pregunta1);
+            return result;
         }
         private async Task<RespuestaOpenIA> BuildAnswer(string pregunta, int idBot, int idUsuario)
         {

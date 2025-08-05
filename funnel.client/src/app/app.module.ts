@@ -154,6 +154,7 @@ import { ModalOportunidadesPorAgenteSectorComponent } from './components/dashboa
 import { ModalOportunidadesPorAgenteDetalleSectorComponent } from './components/dashboard/oportunidades-por-agente/modal-oportunidades-por-agente-detalle-sector/modal-oportunidades-por-agente-detalle-sector.component';
 import { AsistenteProspeccionComponent } from './components/asistentes/asistente-prospeccion/asistente-prospeccion.component';
 import { ChatBotProspeccionComponent } from './components/asistentes/asistente-prospeccion/chatBot/chatBotProspeccion.component';
+import { FaqFlotantesComponent } from './components/asistentes/asistente-prospeccion/faq-flotantes/faq-flotantes.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -246,7 +247,8 @@ registerLocaleData(localeEs, 'es-MX');
     ModalOportunidadesPorAgenteSectorComponent,
     ModalOportunidadesPorAgenteDetalleSectorComponent,
     AsistenteProspeccionComponent,
-    ChatBotProspeccionComponent
+    ChatBotProspeccionComponent,
+    FaqFlotantesComponent
   ],
   imports: [
     BrowserModule,

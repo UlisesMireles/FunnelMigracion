@@ -16,7 +16,7 @@ export class FaqFlotantesComponent {
 
 faqs: Faq[] = [];
 todasLasFaqs: Faq[] = [
-  { pregunta: '¿Qué es el funnel?', respuesta: 'Es un sistema para gestionar oportunidades de ventas.' },
+  { pregunta: '¿Cómo empiezo con LeadsEisei AI?', respuesta: 'Es un sistema para gestionar oportunidades de ventas.' },
   { pregunta: '¿Cómo puedo tener un usuario?', respuesta: 'Solicítalo a tu administrador o equipo de TI.' },
   { pregunta: '¿Cuánto cuesta el funnel?', respuesta: 'Depende del plan contratado.' },
   { pregunta: '¿Cómo se maneja mi información?', respuesta: 'Conforme a nuestra política de privacidad.' },

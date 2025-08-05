@@ -398,23 +398,8 @@ ajustarAlturaTextarea(event: any): void {
 
 recibirPreguntaExterna(pregunta: string) {
   if (!this.isConsultandoOpenIa && pregunta.trim() !== "") {
-    const preguntaOriginal = pregunta;
     this.consultaAsistente.pregunta = pregunta;
     this.chatHistorial.push({ rol: "usuario", mensaje: pregunta });
-
-    if (this.esSaludo(preguntaOriginal)) {
-      const respuestaSaludo = this.generarRespuestaSaludo();
-      this.chatHistorial.push({ 
-        rol: "asistente", 
-        mensaje: respuestaSaludo,
-        mostrarBotonDataset: false 
-      });
-      
-      this.cdRef.detectChanges();
-      this.scrollToBottom();
-      this.saveState();
-      return;
-    }
 
     this.chatHistorial.push({ rol: "cargando", mensaje: "..." });
     this.cdRef.detectChanges();

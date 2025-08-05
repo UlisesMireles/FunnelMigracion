@@ -15,12 +15,11 @@
         aria-hidden="true"></i>
           <i *ngIf="isProd" class="col-auto p-0 pe-1 bi bi-x app-chat-close-icon" (click)="onCerrarChat()" aria-hidden="true"></i>
           <i *ngIf="!isProd" class="col-auto p-0 pe-1 bi bi-x app-chat-close-icon" (click)="onCerrarChat()" aria-hidden="true"></i>
-
         </div>
         <div class="app-chat-version">V. {{ version }}</div>
       </div>
     </div>
   </div>
   <app-chaBotProspeccion class="chatBotAsistenteProspeccion"></app-chaBotProspeccion>
-  <app-faq-flotantes [mostrarFaqs]="mostrarFaqs" (preguntaSeleccionada)="enviarPreguntaAlChat($event)"></app-faq-flotantes>
+  <app-faq-flotantes [mostrarFaqs]="mostrarFaqs" (preguntaSeleccionada)="enviarPreguntaAlChat($event)" (cerrar)="mostrarFaqs = false"></app-faq-flotantes>
 </div>

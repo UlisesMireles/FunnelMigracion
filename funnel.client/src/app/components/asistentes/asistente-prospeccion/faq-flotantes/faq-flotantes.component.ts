@@ -9,18 +9,31 @@ import { Faq } from '../../../../interfaces/asistentes/pregunta';
 })
 
 export class FaqFlotantesComponent {
- @Input() mostrarFaqs = false;
-  @Output() preguntaSeleccionada = new EventEmitter<string>();
-
+ //@Input() mostrarFaqs = false;
+ private _mostrarFaqs = false;
+ @Output() preguntaSeleccionada = new EventEmitter<string>();
+ @Output() cerrar = new EventEmitter<void>();
+ 
 faqs: Faq[] = [];
 todasLasFaqs: Faq[] = [];
 paginaActual: number = 0;
 faqsPorPagina: number = 8;
 totalPaginas: number = 0;
+
 constructor(private openIaService: OpenIaService) {}
   ngOnInit() {
     const idBot= 7;
     this.obtenerFaqs(idBot);
+  }
+  @Input()
+  set mostrarFaqs(value: boolean) {
+    this._mostrarFaqs = value;
+    if (value) {
+      this.cargarPagina(0); 
+    }
+  }
+  get mostrarFaqs() {
+    return this._mostrarFaqs;
   }
    obtenerFaqs(idBot: number) {
     this.openIaService.obtenerFaq(idBot).subscribe({
@@ -37,6 +50,7 @@ constructor(private openIaService: OpenIaService) {}
 
   cerrarFaqs() {
     this.mostrarFaqs = false;
+    this.cerrar.emit();
   }
   cargarPagina(pagina: number) {
     const inicio = pagina * this.faqsPorPagina;
@@ -68,6 +82,6 @@ constructor(private openIaService: OpenIaService) {}
 
   enviarPregunta(pregunta: string) {
     this.preguntaSeleccionada.emit(pregunta);
-    this.cerrarFaqs();
+    this.cerrar.emit();
   }
 }

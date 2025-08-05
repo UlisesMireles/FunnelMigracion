@@ -1,8 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-export interface Faq {
-  pregunta: string;
-  respuesta: string;
-}
+import { OpenIaService } from '../../../../services/asistentes/openIA.service';
+import { Faq } from '../../../../interfaces/asistentes/pregunta';
 @Component({
   selector: 'app-faq-flotantes',
   standalone: false,
@@ -15,27 +13,50 @@ export class FaqFlotantesComponent {
   @Output() preguntaSeleccionada = new EventEmitter<string>();
 
 faqs: Faq[] = [];
-todasLasFaqs: Faq[] = [
-  { pregunta: '¿Qué es el funnel?', respuesta: 'Es un sistema para gestionar oportunidades de ventas.' },
-  { pregunta: '¿Cómo puedo tener un usuario?', respuesta: 'Solicítalo a tu administrador o equipo de TI.' },
-  { pregunta: '¿Cuánto cuesta el funnel?', respuesta: 'Depende del plan contratado.' },
-  { pregunta: '¿Cómo se maneja mi información?', respuesta: 'Conforme a nuestra política de privacidad.' },
-  { pregunta: '¿Puedo acceder desde el móvil?', respuesta: 'Sí, con conexión a internet y navegador.' },
-  { pregunta: '¿Qué tipos de usuarios existen?', respuesta: 'Administrador, Comercial y Cliente.' },
-  { pregunta: '¿El sistema tiene soporte?', respuesta: 'Sí, puedes contactarnos por correo o chat.' },
-  { pregunta: '¿Qué datos recopila el sistema?', respuesta: 'Solo los necesarios para gestión de ventas.' },
-  { pregunta: '¿Se puede integrar con CRM?', respuesta: 'Sí, contamos con APIs para ello.' },
-  { pregunta: '¿Cómo reporto un problema?', respuesta: 'Desde el módulo de soporte en el sistema.' }
-];
+todasLasFaqs: Faq[] = [];
+paginaActual: number = 0;
+faqsPorPagina: number = 8;
+totalPaginas: number = 0;
+constructor(private openIaService: OpenIaService) {}
   ngOnInit() {
-    this.generarPreguntasAleatorias();
+    const idBot= 7;
+    this.obtenerFaqs(idBot);
+  }
+   obtenerFaqs(idBot: number) {
+    this.openIaService.obtenerFaq(idBot).subscribe({
+      next: (data: any) => {
+        this.todasLasFaqs = data;
+        this.totalPaginas = Math.ceil(this.todasLasFaqs.length / this.faqsPorPagina);
+        this.cargarPagina(0);
+      },
+      error: (error) => {
+        console.error('Error al obtener FAQs:', error);
+      }
+    });
   }
 
   cerrarFaqs() {
     this.mostrarFaqs = false;
   }
+  cargarPagina(pagina: number) {
+    const inicio = pagina * this.faqsPorPagina;
+    const fin = inicio + this.faqsPorPagina;
+    this.faqs = this.todasLasFaqs.slice(inicio, fin);
+    this.paginaActual = pagina;
+  }
 
-  generarPreguntasAleatorias() {
+  paginaAnterior() {
+    if (this.paginaActual > 0) {
+      this.cargarPagina(this.paginaActual - 1);
+    }
+  }
+
+  paginaSiguiente() {
+    if (this.paginaActual < this.totalPaginas - 1) {
+      this.cargarPagina(this.paginaActual + 1);
+    }
+  }
+  /*generarPreguntasAleatorias() {
     const preguntasAleatorias = this.todasLasFaqs
       .sort(() => 0.5 - Math.random())
       .slice(0, 8);
@@ -43,7 +64,7 @@ todasLasFaqs: Faq[] = [
         pregunta: faq.pregunta,
         respuesta: faq.respuesta
     }));
-  }
+  }*/
 
   enviarPregunta(pregunta: string) {
     this.preguntaSeleccionada.emit(pregunta);

@@ -13,8 +13,12 @@
   </div>
 
   <div class="faq-footer">
-    <button class="btn-reset" (click)="generarPreguntasAleatorias()">
-      Ver otras preguntas
+    <button class="btn-nav" [disabled]="paginaActual === 0" (click)="paginaAnterior()">
+      Anterior
+    </button>
+    <!--<span class="pagina-info">Página {{ paginaActual + 1 }} de {{ totalPaginas }}</span>-->
+    <button class="btn-nav" [disabled]="paginaActual === totalPaginas - 1" (click)="paginaSiguiente()">
+      Siguiente
     </button>
   </div>
 </div>

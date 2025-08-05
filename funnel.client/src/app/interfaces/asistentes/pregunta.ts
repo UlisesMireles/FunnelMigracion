@@ -4,3 +4,7 @@ export interface Pregunta {
   respuesta: string,
   esPreguntaFrecuente: boolean
 }
+export interface Faq {
+  pregunta: string;
+  respuesta: string;
+}

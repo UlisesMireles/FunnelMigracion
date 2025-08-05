@@ -39,7 +39,9 @@ export class OpenIaService {
   asistenteProspeccion(data: ConsultaAsistenteDto): Observable<ConsultaAsistenteDto> {
     return this.http.post<ConsultaAsistenteDto>(this.baseUrl + 'api/AsistenteProspeccion/OpenIA',data);
   }
-  
+  obtenerFaq(idBot: number) {
+    return this.http.get(this.baseUrl + 'api/AsistenteProspeccion/ObtenerFaq', { params: { idBot: idBot.toString() } });
+  }
   limpiarCacheBot(userId: number, idBot: number): Observable<any> {
     const formData = new FormData();
     formData.append('userId', userId.toString());

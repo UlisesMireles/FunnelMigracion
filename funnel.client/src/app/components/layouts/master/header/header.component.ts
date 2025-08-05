@@ -97,6 +97,7 @@ export class HeaderComponent implements OnInit {
 
   licenciaPlatino: boolean = false;
   procesoSeleccionado: Procesos | null = null;
+  etapasCombo: OportunidadesPorEtapa[] = [];
 
   constructor(
     public asistenteService: AsistenteService,
@@ -244,7 +245,49 @@ handleClickOutside(event: MouseEvent): void {
       this.etapas = state.etapas;
       this.plantillas = state.plantillas;
     });
+
+    this.getComboEtapas();
   }
+
+  getComboEtapas() {
+  
+      const idUsuario = this.authService.obtenerIdUsuario();
+      const idEmpresa = this.authService.obtenerIdEmpresa();
+  
+      this.procesosService.getComboEtapas(idEmpresa, idUsuario).subscribe({
+        next: (result: OportunidadesPorEtapa[]) => {
+  
+          this.etapasCombo = result.map(etapa => ({
+            ...etapa,
+            expandido: true, // Expandir todas las etapas por defecto
+            editandoNombre: false,
+            tarjetas: etapa.tarjetas || [],
+            orden: etapa.orden,
+            probabilidad: etapa.probabilidad,
+            idEmpresa: idUsuario,
+            idUsuario: idUsuario,
+            idStage: etapa.idStage
+          }));
+
+          const idProceso = Number(localStorage.getItem('idProceso'));
+          const usuario = idUsuario;
+          if (idProceso <= 0 && usuario > 0) {
+            this.modalEtapasService.openModal(true, true, this.etapas, this.etapasCombo, this.plantillas);
+          }
+          else {
+            this.modalEtapasService.closeModal();
+          }
+        },
+        error: (error) => {
+          console.error('Error:', error);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Error al cargar oportunidades por etapa'
+          });
+        }
+      });
+    }
 
   cargarImagenEmpresa() {
     const idEmpresaStr = localStorage.getItem('idEmpresa');

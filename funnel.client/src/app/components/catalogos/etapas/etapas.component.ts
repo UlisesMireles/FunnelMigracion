@@ -56,6 +56,7 @@ export class EtapasComponent {
   plantillas: PlantillasProcesos[] = [];
   opcionPlantillas: boolean = false;
   habilitaPlantillas: boolean = false;
+  esNuevo: boolean = false;
 
   constructor(
       private readonly loginService: LoginService, 
@@ -76,6 +77,11 @@ export class EtapasComponent {
       this.etapasCombo = state.etapasCombo;
       this.plantillas = state.plantillas;
       this.opcionPlantillas = false;
+      this.habilitaPlantillas = false;
+      const idProceso = Number(localStorage.getItem('idProceso'));
+      if(idProceso <= 0) {
+        this.esNuevo = true;
+      }
       if (this.insertEtapas) {
         this.etapas = [];
         this.nombreProceso = '';
@@ -414,6 +420,7 @@ export class EtapasComponent {
     this.visible = false;
     this.etapas = [];
     this.opcionPlantillas = false;
+    this.habilitaPlantillas = false;
     this.modalEtapasService.closeModal();
     this.visibleChange.emit(this.visible);
     this.closeModal.emit();

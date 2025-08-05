@@ -1,4 +1,4 @@
-<p-dialog [(visible)]="visible" [modal]="true" styleClass="custom-header-naranja" [closable]="true"
+<p-dialog [(visible)]="visible" [modal]="true" styleClass="custom-header-naranja" [closable]="!esNuevo"
     [style]="{ width: '50rem', height: 'auto' }" (onHide)="cerrar()" (onShow)="onDialogShow()" class="bodyDialog">
     <ng-template pTemplate="header">
         <label>
@@ -8,26 +8,32 @@
     <br>
     <ng-template pTemplate="content">
         <div class="row col-12">
+            <p style="text-align: left; color: red;" *ngIf="esNuevo"> Hola! Antes de comenzar...
+
+                Para poder registrar oportunidades, primero necesitas crear un proceso. Este proceso nos ayudará a
+                organizar y dar seguimiento adecuado a cada una de tus oportunidades.
+                Por favor, completa el siguiente formulario para crear tu primer proceso. Una vez creado, podrás
+                comenzar a registrar tus oportunidades sin problema. </p>
+        </div>
+        <div class="row col-12">
             <div class="col-3" style="text-align: left; padding-right: 0px; width: auto;">
                 <label for="nombreProceso" style="padding-top: 6px;">Nombre del Proceso
                 </label>
             </div>
             <div class="col-9" style="text-align: left; padding-bottom: 10px;">
-                <input id="nombreProceso" [(ngModel)]="nombreProceso" placeholder="Nombre del proceso"
-                    pInputText class="p-inputtext" style="width: 111%;" />
+                <input id="nombreProceso" [(ngModel)]="nombreProceso" placeholder="Nombre del proceso" pInputText
+                    class="p-inputtext" style="width: 111%;" />
             </div>
         </div>
         <h3 style="justify-self: left;">Plantillas</h3>
         <div style="justify-self: left;">
-            <p-select [options]="plantillas" optionLabel="plantilla" placeholder="Selecciona una plantilla" [showClear]="true"
-                [filter]="true" (onChange)="seleccionarPlantilla($event.value)" [ngStyle]="{
+            <p-select [options]="plantillas" optionLabel="plantilla" placeholder="Selecciona una plantilla"
+                [showClear]="true" [filter]="true" (onChange)="seleccionarPlantilla($event.value)" [ngStyle]="{
         width: '200px',
         height: '41px',
         'text-align': 'left',
         'padding-left': '6px'
-      }"
-      appendTo="body"
-      [disabled]="opcionPlantillas">
+      }" appendTo="body" [disabled]="opcionPlantillas">
                 <!-- Opción seleccionada -->
                 <ng-template #selectedItem let-selectedOption>
                     <div class="flex items-center gap-2" style="width: 100%">
@@ -58,8 +64,10 @@
 
                 </div>
                 <div class="col-2" *ngIf="!etapa.editandoNombre">
-                    <button (click)="editarNombreEtapa(etapa)" class="boton-editar estilosBotonesInhabilitador" [disabled]="!opcionPlantillas">✏️</button>
-                    <button (click)="eliminarEtapa(etapa)" class="boton-eliminar estilosBotonesInhabilitador" [disabled]="!opcionPlantillas">❌</button>
+                    <button (click)="editarNombreEtapa(etapa)" class="boton-editar estilosBotonesInhabilitador"
+                        [disabled]="!opcionPlantillas">✏️</button>
+                    <button (click)="eliminarEtapa(etapa)" class="boton-eliminar estilosBotonesInhabilitador"
+                        [disabled]="!opcionPlantillas">❌</button>
                 </div>
                 <div *ngIf="etapa.editandoNombre" class="col-9 formulario-edicion">
                     <p-select [options]="etapasComboActivas" [(ngModel)]="etapa.etapaSeleccionada" optionLabel="nombre"
@@ -101,7 +109,8 @@
             </div>
         </div>
         <div class="boton-agregar-contenedor">
-            <button mat-button (click)="agregarEtapa()" class="boton-agregar estilosBotonesInhabilitador" [disabled]="habilitaPlantillas">
+            <button mat-button (click)="agregarEtapa()" class="boton-agregar estilosBotonesInhabilitador"
+                [disabled]="habilitaPlantillas">
                 +
             </button>
             <span class="texto-agregar">Agregar etapa</span>
@@ -110,7 +119,7 @@
     <ng-template pTemplate="footer">
         <button mat-button color="primary" class="btn-agregar-etapa" (click)="toggleEditarOrdenEtapas()"
             [disabled]="!validaGuardar">Guardar</button>
-        <button mat-button class="btn-agregar-etapa" (click)="cerrar()">Cancelar</button>
+        <button mat-button class="btn-agregar-etapa" (click)="cerrar()" [disabled]="esNuevo">Cancelar</button>
 
     </ng-template>
 

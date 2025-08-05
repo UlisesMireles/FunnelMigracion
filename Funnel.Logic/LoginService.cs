@@ -27,8 +27,11 @@ namespace Funnel.Logic
             var respuesta = await _loginData.Autenticar(user, contrasena);
             int empresa = respuesta.IdEmpresa ?? 0;
             var procesos = await _procesosData.ConsultarProcesos(empresa);
+            if (procesos.Count > 0)
+                respuesta.IdProceso = procesos[0].IdProceso;
+            else
+                respuesta.IdProceso = 0;
 
-            respuesta.IdProceso = procesos[0].IdProceso;
             return respuesta;
         }
         public async Task<DobleAutenticacionDto> VerificarCodigoDobleAutenticacion(CodigoDosPasosDto usuario)

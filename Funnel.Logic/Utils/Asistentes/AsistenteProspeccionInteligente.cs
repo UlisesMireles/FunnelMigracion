@@ -119,7 +119,8 @@ namespace Funnel.Logic.Utils.Asistentes
                         IdBot = ComprobarNulos.CheckIntNull(reader["IdBot"]),
                         Pregunta = ComprobarNulos.CheckStringNull(reader["Pregunta"]),
                         Respuesta = ComprobarNulos.CheckStringNull(reader["Respuesta"]),
-                        Activo = ComprobarNulos.CheckBooleanNull(reader["Activo"])
+                        Activo = ComprobarNulos.CheckBooleanNull(reader["Activo"]),
+                        Categoria = ComprobarNulos.CheckStringNull(reader["Categoria"])
                     };
                     result.Add(dto);
                 }

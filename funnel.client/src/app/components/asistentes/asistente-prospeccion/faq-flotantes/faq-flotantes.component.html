@@ -5,10 +5,13 @@
   </div>
 
   <div class="faq-body">
-    <div class="faq-item" *ngFor="let faq of faqs">
-      <button class="faq-button" (click)="enviarPregunta(faq.pregunta)">
-        {{ faq.pregunta }}
-      </button>
+    <div *ngFor="let categoria of faqsAgrupadas[paginaActual]?.categorias">
+      <h6 class="categoria-titulo">{{categoria.nombre}}</h6>
+      <div class="faq-item" *ngFor="let faq of categoria.faqs">
+        <button class="faq-button" (click)="enviarPregunta(faq.pregunta)">
+          {{ faq.pregunta }}
+        </button>
+      </div>
     </div>
   </div>
 

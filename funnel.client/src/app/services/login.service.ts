@@ -113,7 +113,6 @@ export class LoginService {
     if(this.warningTime){
       clearTimeout(this.warningTime);
     }
-    console.log('Warning time: '+ this.warningTime);
     this.warningTime = setTimeout(() => {
       this.sessionWarning$.next();
       console.log('Session warning triggered desde login: '+ this.sessionActivityTimeout);

@@ -14,4 +14,5 @@ export interface Procesos {
     oportunidadesEliminadas: number;
     oportunidadesCanceladas: number;
     etapas: OportunidadesPorEtapa[];
+    idPlantilla?: number;
 }

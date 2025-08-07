@@ -106,7 +106,8 @@ namespace Funnel.Data
                     dto.OportunidadesPerdidas = ComprobarNulos.CheckIntNull(reader["OportunidadesPerdidas"]);
                     dto.OportunidadesCanceladas = ComprobarNulos.CheckIntNull(reader["OportunidadesCanceladas"]);
                     dto.OportunidadesEliminadas = ComprobarNulos.CheckIntNull(reader["OportunidadesEliminadas"]);
-                    dto.DesEstatus = dto.Estatus == true ? "Activo" : "Inactivo";
+                    dto.DesEstatus = dto.Estatus ? "Activo" : "Inactivo";
+                    dto.IdPlantilla = ComprobarNulos.CheckIntNull(reader["IdPlantilla"]);
 
                     result.Add(dto);
                 }
@@ -190,7 +191,15 @@ namespace Funnel.Data
                 row["RIdProcesoEtapa"] = item.RIdProcesoEtapa;
                 row["IdProceso"] = request.IdProceso;
                 row["IdStage"] = item.IdStage;
-                row["Estatus"] = item.Eliminado is not null && item.Eliminado == true && item.IdStage > 0 ? false : true;
+                if (item.Eliminado == true && item.IdStage > 0)
+                {
+                    row["Estatus"] = false;
+                }
+                else
+                {
+                    row["Estatus"] = item.IdStage > 0;
+                }
+                
                 row["PorcentajeAsignado"] = Convert.ToInt32(item.Probabilidad);
                 row["Orden"] = Convert.ToInt32(item.Orden);
                 dtProcesosEtapas.Rows.Add(row);
@@ -204,15 +213,21 @@ namespace Funnel.Data
                 DataBase.CreateParameterSql("@pIdUsuario", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, request.IdUsuario ),
                 DataBase.CreateParameterSql("@pNombre", SqlDbType.VarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Nombre ),
                 DataBase.CreateParameterSql("@pEstatus", SqlDbType.Bit, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, request.Estatus),
-                DataBase.CreateParameterSql("@pRProsceosEtapas", SqlDbType.Structured, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, dtProcesosEtapas)
+                DataBase.CreateParameterSql("@pRProsceosEtapas", SqlDbType.Structured, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, dtProcesosEtapas),
+                DataBase.CreateParameterSql("@pIdPlantilla", SqlDbType.Int, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdPlantilla)
             };
 
             try
             {
                 using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoProcesos", CommandType.StoredProcedure, list, _connectionString))
+                {
+                    while (reader.Read())
+                    {
+                        result.Id = ComprobarNulos.CheckIntNull(reader["IdProceso"]);
+                    }
+                }
 
                 result.ErrorMessage = "Proceso guardado correctamente.";
-                result.Id = 1;
                 result.Result = true;
             }
             catch (SqlException ex) when (ex.Number == 2627 || ex.Number == 2601)

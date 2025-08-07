@@ -1,10 +1,9 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Oportunidad, OportunidadesPorEtapa } from '../../../interfaces/oportunidades';
 import { baseOut } from '../../../interfaces/utils/utils/baseOut';
-import { OportunidadesService } from '../../../services/oportunidades.service';
 import { LoginService } from '../../../services/login.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ModalEtapasService } from '../../../services/modalEtapas.service';
 import { Subscription } from 'rxjs';
 import { ProcesosService } from '../../../services/procesos.service';
@@ -40,11 +39,13 @@ export class EtapasComponent {
   @Output() result: EventEmitter<baseOut> = new EventEmitter();
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() closeModal: EventEmitter<void> = new EventEmitter();
+
   private modalSubscription!: Subscription;
   idUsuario: number = 0;
   idEmpresa: number = 0;
   validaGuardar: boolean = false;
   nombreProceso: string = '';
+  idPlantilla: number = -1;
   etapasFiltradas: any[] = [];
   busquedaEtapa: string = '';
   etapaSeleccionada: boolean = false;
@@ -56,15 +57,15 @@ export class EtapasComponent {
   plantillas: PlantillasProcesos[] = [];
   opcionPlantillas: boolean = false;
   habilitaPlantillas: boolean = false;
+  deshabilitarAccionesEtapas: boolean = false;
   esNuevo: boolean = false;
-
   constructor(
-      private readonly loginService: LoginService, 
-      private readonly messageService: MessageService, 
-      private readonly cdr: ChangeDetectorRef, 
-      private readonly modalEtapasService: ModalEtapasService, 
-      private readonly confirmationService: ConfirmationService, 
-      private procesosService: ProcesosService
+    private readonly loginService: LoginService,
+    private readonly messageService: MessageService,
+    private readonly cdr: ChangeDetectorRef,
+    private readonly modalEtapasService: ModalEtapasService,
+    private readonly confirmationService: ConfirmationService,
+    private procesosService: ProcesosService
   ) { }
 
   ngOnInit() {
@@ -76,10 +77,14 @@ export class EtapasComponent {
       this.insertEtapas = state.insertarEtapas;
       this.etapasCombo = state.etapasCombo;
       this.plantillas = state.plantillas;
+      if (this.plantillas.length == 0) {
+        this.consultaPlantillas();
+      }
       this.opcionPlantillas = false;
       this.habilitaPlantillas = false;
+      this.idPlantilla = -1; // Resetear la plantilla seleccionada
       const idProceso = Number(localStorage.getItem('idProceso'));
-      if(idProceso <= 0) {
+      if (idProceso <= 0) {
         this.esNuevo = true;
       }
       if (this.insertEtapas) {
@@ -93,10 +98,29 @@ export class EtapasComponent {
         this.nombreProceso = this.etapas[0]?.nombreProceso ?? '';
         this.connectedDropLists = this.etapas.map((_, i) => `ListEtapa${i}`);
         this.cantidadExpandidos = this.etapas.filter(etapa => etapa.expandido).length;
+        if (state.idPlantilla > 0) {
+          this.idPlantilla = state.idPlantilla;
+          this.habilitaPlantillas = true;
+          this.deshabilitarAccionesEtapas = true;
+        }
       }
     });
   }
-
+  consultaPlantillas() {
+    this.procesosService.getPlantillasProcesos().subscribe({
+      next: (result: PlantillasProcesos[]) => {
+        this.plantillas = result;
+      },
+      error: (error) => {
+        console.error('Error:', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error al consultar plantillas para procesos'
+        });
+      }
+    });
+  }
   ngOnDestroy() {
     if (this.modalSubscription) {
       this.modalSubscription.unsubscribe();
@@ -146,15 +170,30 @@ export class EtapasComponent {
     this.opcionPlantillas = true;
   }
 
-  seleccionarPlantilla(plantilla: PlantillasProcesos) {
-  console.log('Plantilla seleccionada:', plantilla);
-  this.etapas = plantilla.etapas;
-  this.habilitaPlantillas = true;
-  this.validaGuardar = true;
-  this.connectedDropLists = this.etapas.map((_, i) => `ListEtapa${i}`);
-  this.cantidadExpandidos = this.etapas.filter(etapa => etapa.expandido).length;
-  this.cdr.detectChanges();
-}
+  seleccionarPlantilla(idPlantilla: number) {
+    if (!idPlantilla) return;
+
+    const plantilla = this.plantillas.find(p => p.idPlantilla === idPlantilla);
+    if (!plantilla) return;
+
+    this.etapas = plantilla.etapas;
+    this.idPlantilla = plantilla.idPlantilla;
+    this.habilitaPlantillas = true;
+    this.validaGuardar = true;
+    this.connectedDropLists = this.etapas.map((_, i) => `ListEtapa${i}`);
+    this.cantidadExpandidos = this.etapas.filter(etapa => etapa.expandido).length;
+    this.cdr.detectChanges();
+  }
+
+  limpiarPlantilla() {
+    this.idPlantilla = -1;
+    this.etapas = [];
+    this.habilitaPlantillas = false;
+    this.validaGuardar = false;
+    this.connectedDropLists = [];
+    this.cantidadExpandidos = 0;
+    this.cdr.detectChanges();
+  }
 
 
   toggleEditarOrdenEtapas() {
@@ -228,7 +267,8 @@ export class EtapasComponent {
       oportunidadesPerdidas: 0,
       oportunidadesEliminadas: 0,
       oportunidadesCanceladas: 0,
-      etapas: this.etapas
+      etapas: this.etapas,
+      idPlantilla: this.idPlantilla
     });
 
     if (this.proceso) {
@@ -386,7 +426,7 @@ export class EtapasComponent {
     }, 0);
   }
 
-  
+
   seleccionarEtapa(etapa: any) {
     if (etapa != null) {
       this.busquedaEtapa = etapa.nombre;
@@ -429,7 +469,7 @@ export class EtapasComponent {
   editarNombreEtapa(etapa: any) {
     this.etapas.forEach(e => e.editandoNombre = false);
     etapa.editandoNombre = true;
-     const etapaComboSeleccionada = this.etapasComboActivas.find(e => e.idStage === etapa.idStage);
+    const etapaComboSeleccionada = this.etapasComboActivas.find(e => e.idStage === etapa.idStage);
     etapa.etapaSeleccionada = etapaComboSeleccionada || null;
     //etapa.etapaSeleccionada = etapa;
 
@@ -491,7 +531,7 @@ export class EtapasComponent {
 
     let busquedaEtapaNueva = this.etapas.find(e => e.eliminado && e.nombre == etapa.nombre);
 
-    if(busquedaEtapaNueva) {
+    if (busquedaEtapaNueva) {
       busquedaEtapaNueva.eliminado = false;
       const index = this.etapas.indexOf(etapa);
       if (index !== -1) {
@@ -499,8 +539,8 @@ export class EtapasComponent {
       }
     }
 
-    
-    if(etapa.idStage !== 0 && !etapa.eliminado && !etapa.agregado) {
+
+    if (etapa.idStage !== 0 && !etapa.eliminado && !etapa.agregado) {
       etapa.editado = true;
     }
 

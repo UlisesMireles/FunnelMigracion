@@ -47,7 +47,6 @@ export class MenuComponent {
       }
     }
 
-    console.log('Antes Permitir decimales:');
     this.loginService.obtenerPermitirDecimalesDesdeApi().subscribe({
       next: (valor) => {
         console.log(`Permitir decimales actualizado a: ${valor}`);

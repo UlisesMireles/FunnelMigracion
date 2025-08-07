@@ -184,7 +184,6 @@ export class ProcesosComponent {
 
     this.procesosService.getPlantillasProcesos().subscribe({
       next: (result: PlantillasProcesos[]) => {
-
         this.plantillas = result;
       },
       error: (error) => {
@@ -370,7 +369,7 @@ export class ProcesosComponent {
           idProceso: proceso.idProceso,
           nombreProceso: proceso.nombre
         }));
-        this.modalEtapasService.openModal(true, false, this.etapas, this.etapasCombo, this.plantillas);
+        this.modalEtapasService.openModal(true, false, this.etapas, this.etapasCombo, this.plantillas, undefined, proceso.idPlantilla || -1);
         this.procesoSeleccionado = proceso;
         this.procesoEdicion = { ...proceso };
         this.insertar = false;

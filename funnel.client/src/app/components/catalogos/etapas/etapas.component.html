@@ -27,13 +27,15 @@
         </div>
         <h3 style="justify-self: left;">Plantillas</h3>
         <div style="justify-self: left;">
-            <p-select [options]="plantillas" optionLabel="plantilla" placeholder="Selecciona una plantilla"
-                [showClear]="true" [filter]="true" (onChange)="seleccionarPlantilla($event.value)" [ngStyle]="{
-        width: '200px',
-        height: '41px',
-        'text-align': 'left',
-        'padding-left': '6px'
-      }" appendTo="body" [disabled]="opcionPlantillas">
+            <p-select [options]="plantillas" optionLabel="plantilla" optionValue="idPlantilla" placeholder="Selecciona una plantilla" 
+                [(ngModel)]="idPlantilla" [showClear]="true" [filter]="true" 
+                (onChange)="seleccionarPlantilla($event.value)" 
+                (onClear)="limpiarPlantilla()" [ngStyle]="{
+                    width: '200px',
+                    height: '41px',
+                    'text-align': 'left',
+                    'padding-left': '6px'
+                }" appendTo="body" [disabled]="opcionPlantillas">
                 <!-- Opción seleccionada -->
                 <ng-template #selectedItem let-selectedOption>
                     <div class="flex items-center gap-2" style="width: 100%">
@@ -53,7 +55,8 @@
         </div>
 
         <h3 style="justify-self: left;">Etapas</h3>
-        <div cdkDropList [cdkDropListData]="etapas" (cdkDropListDropped)="dropEtapa($event)" class="lista-etapas">
+        <div cdkDropList [cdkDropListData]="etapas" (cdkDropListDropped)="dropEtapa($event)" class="lista-etapas" 
+        [cdkDropListDisabled]="habilitaPlantillas">
             <div *ngFor="let etapa of etapasActivas; let i = index" cdkDrag class="col-12 etapa-item">
                 <div class="col-1">
                     <span cdkDragHandle class="handle">⋮⋮⋮</span>
@@ -65,9 +68,9 @@
                 </div>
                 <div class="col-2" *ngIf="!etapa.editandoNombre">
                     <button (click)="editarNombreEtapa(etapa)" class="boton-editar estilosBotonesInhabilitador"
-                        [disabled]="!opcionPlantillas">✏️</button>
+                        [disabled]="habilitaPlantillas">✏️</button>
                     <button (click)="eliminarEtapa(etapa)" class="boton-eliminar estilosBotonesInhabilitador"
-                        [disabled]="!opcionPlantillas">❌</button>
+                        [disabled]="habilitaPlantillas">❌</button>
                 </div>
                 <div *ngIf="etapa.editandoNombre" class="col-9 formulario-edicion">
                     <p-select [options]="etapasComboActivas" [(ngModel)]="etapa.etapaSeleccionada" optionLabel="nombre"

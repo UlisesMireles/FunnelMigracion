@@ -196,7 +196,6 @@ handleClickOutside(event: MouseEvent): void {
   }
   ngOnInit(): void {
     this.licenciaPlatino = localStorage.getItem('licencia')! === EnumLicencias.Platino;
-    console.log(localStorage.getItem('licencia')!);
     this.startSessionCountdown();
     this.authService.sessionReset$.subscribe(() => {
       this.startSessionCountdown();
@@ -685,6 +684,8 @@ startDrag(event: MouseEvent): void {
         detail: result.errorMessage,
       });
       this.modalEtapasService.closeModal(result);
+      localStorage.setItem('idProceso', result.id.toString());
+      window.location.reload();
     } else {
       this.messageService.add({
         severity: 'error',

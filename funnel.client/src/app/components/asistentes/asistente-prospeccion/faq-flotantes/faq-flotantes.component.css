@@ -43,22 +43,6 @@
   overflow-y: auto;
 }
 
-.faq-button {
-  width: 100%;
-  text-align: left;
-  background-color: #f1f1f1;
-  border: none;
-  border-radius: 8px;
-  padding: 10px;
-  margin-bottom: 10px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.faq-button:hover {
-  background-color: #e0e0e0;
-}
-
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
@@ -98,7 +82,37 @@
   cursor: not-allowed;
 }
 
-.pagina-info {
-  font-size: 0.9rem;
+/*categoria*/
+.categoria-titulo {
+  margin-top: 15px;
+  margin-bottom: 8px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #eee;
   color: #555;
+  font-weight: bold;
+}
+
+.faq-item {
+  margin-bottom: 5px;
+}
+
+.faq-button {
+  width: 100%;
+  text-align: left;
+  padding: 8px 12px;
+  border: none;
+  background-color: #f1f1f1;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.faq-button:hover {
+  background-color: #e9ecef;
+}
+
+.pagina-info {
+  margin: 0 15px;
+  font-size: 0.9em;
+  color: #666;
 }

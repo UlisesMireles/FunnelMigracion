@@ -112,6 +112,14 @@ namespace Funnel.Logic
                     consultaAsistente.EsPreguntaFrecuente = true;
                     consultaAsistente.Exitoso = true;
                     consultaAsistente.FechaRespuesta = DateTime.Now;
+
+                    // Obtener configuración y thread
+                    var configuracion = await _asistentesData.ObtenerConfiguracionPorIdBotAsync(consultaAsistente.IdBot);
+                    var threadId = await GetOrCreateThreadIdAsync(configuracion.Llave, consultaAsistente.IdUsuario, consultaAsistente.IdBot);
+
+                    // Agregar pregunta y respuesta
+                    await OpenAIUtils.AddMessageToThreadAsync(configuracion.Llave, threadId, consultaAsistente.Pregunta, "user");
+                    await OpenAIUtils.AddMessageToThreadAsync(configuracion.Llave, threadId, consultaAsistente.Respuesta, "assistant");
                 }
                 else
                 {
@@ -186,7 +194,8 @@ namespace Funnel.Logic
                         IdBot = ComprobarNulos.CheckIntNull(reader["IdBot"]),
                         Pregunta = ComprobarNulos.CheckStringNull(reader["Pregunta"]),
                         Respuesta = ComprobarNulos.CheckStringNull(reader["Respuesta"]),
-                        Activo = ComprobarNulos.CheckBooleanNull(reader["Activo"])
+                        Activo = ComprobarNulos.CheckBooleanNull(reader["Activo"]),
+                        Categoria = ComprobarNulos.CheckStringNull(reader["Categoria"])
                     };
                     result.Add(dto);
                 }

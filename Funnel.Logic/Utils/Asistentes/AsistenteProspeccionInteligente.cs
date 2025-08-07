@@ -47,6 +47,14 @@ namespace Funnel.Logic.Utils.Asistentes
                     consultaAsistente.EsPreguntaFrecuente = true;
                     consultaAsistente.Exitoso = true;
                     consultaAsistente.FechaRespuesta = DateTime.Now;
+
+                    // Obtener configuración y thread
+                    var configuracion = await ObtenerConfiguracionPorIdBotAsync(consultaAsistente.IdBot);
+                    var threadId = await GetOrCreateThreadIdAsync(configuracion.Llave, consultaAsistente.IdUsuario);
+
+                    // Agregar pregunta y respuesta 
+                    await AddMessageToThreadAsync(configuracion.Llave, threadId, consultaAsistente.Pregunta, "user");
+                    await AddMessageToThreadAsync(configuracion.Llave, threadId, consultaAsistente.Respuesta, "assistant");
                 }
                 else
                 {
@@ -119,7 +127,8 @@ namespace Funnel.Logic.Utils.Asistentes
                         IdBot = ComprobarNulos.CheckIntNull(reader["IdBot"]),
                         Pregunta = ComprobarNulos.CheckStringNull(reader["Pregunta"]),
                         Respuesta = ComprobarNulos.CheckStringNull(reader["Respuesta"]),
-                        Activo = ComprobarNulos.CheckBooleanNull(reader["Activo"])
+                        Activo = ComprobarNulos.CheckBooleanNull(reader["Activo"]),
+                        Categoria = ComprobarNulos.CheckStringNull(reader["Categoria"])
                     };
                     result.Add(dto);
                 }

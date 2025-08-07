@@ -362,10 +362,10 @@ namespace Funnel.Logic
             }
 
             var newVectorStoreId = await OpenAIUtils.CreateVectorStoreAsync(apiKey, fileId);
-            while (!await OpenAIUtils.IsVectorStoreReadyAsync(apiKey, newVectorStoreId))
-            {
-                await Task.Delay(1000);
-            }
+            //while (!await OpenAIUtils.IsVectorStoreReadyAsync(apiKey, newVectorStoreId))
+            //{
+            //    await Task.Delay(1000);
+            //}
 
             if (string.IsNullOrEmpty(newVectorStoreId))
                 throw new InvalidOperationException("El ID del Vector Store no puede ser nulo.");

@@ -425,9 +425,10 @@ recibirPreguntaExterna(pregunta: string) {
     this.OpenIaService.asistenteProspeccion(this.consultaAsistente).subscribe({
       next: (data: ConsultaAsistenteDto) => {
         this.chatHistorial.pop();
+        const respuestaConUsuario = this.reemplazarVariablesEnRespuesta(data.respuesta);
         this.chatHistorial.push({ 
           rol: "asistente", 
-          mensaje: data.respuesta,
+          mensaje: respuestaConUsuario,
           mostrarBotonDataset: false 
         });
         this.cdRef.detectChanges();
@@ -441,5 +442,18 @@ recibirPreguntaExterna(pregunta: string) {
     });
   }
 }
+
+private reemplazarVariablesEnRespuesta(respuesta: string): string {
+  const usuario = this.loginService.obtenerDatosUsuarioLogueado();
+  const nombreUsuario = usuario?.nombre || 'Usuario';
+  const rolUsuario = usuario?.puesto || 'Usuario';
+  const correoUsuario = usuario?.correo || 'Usuario';
+
+  return respuesta
+    .replace(/\[Tu nombre\]/gi, nombreUsuario)
+    .replace(/\[Tu rol\]/gi, correoUsuario)
+    .replace(/\[Tu correo electrónico\]/gi, rolUsuario);
+}
+
 
 }

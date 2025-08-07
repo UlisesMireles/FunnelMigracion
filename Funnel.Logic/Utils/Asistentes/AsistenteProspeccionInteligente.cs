@@ -47,6 +47,14 @@ namespace Funnel.Logic.Utils.Asistentes
                     consultaAsistente.EsPreguntaFrecuente = true;
                     consultaAsistente.Exitoso = true;
                     consultaAsistente.FechaRespuesta = DateTime.Now;
+
+                    // Obtener configuración y thread
+                    var configuracion = await ObtenerConfiguracionPorIdBotAsync(consultaAsistente.IdBot);
+                    var threadId = await GetOrCreateThreadIdAsync(configuracion.Llave, consultaAsistente.IdUsuario);
+
+                    // Agregar pregunta y respuesta 
+                    await AddMessageToThreadAsync(configuracion.Llave, threadId, consultaAsistente.Pregunta, "user");
+                    await AddMessageToThreadAsync(configuracion.Llave, threadId, consultaAsistente.Respuesta, "assistant");
                 }
                 else
                 {

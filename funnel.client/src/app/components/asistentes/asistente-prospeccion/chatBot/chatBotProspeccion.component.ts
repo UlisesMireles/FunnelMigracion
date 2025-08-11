@@ -8,6 +8,8 @@ import { environment } from '../../../../../environments/environment';
 import { LoginService } from '../../../../services/login.service';
 import { TopVeinteDataService } from '../../../../services/top-veinte-data.service';
 import { ClientesTopVeinte } from '../../../../interfaces/prospecto';
+import { EncuestaService } from '../../../../services/asistentes/encuesta.service';
+import { PreguntaEncuesta } from '../../../../interfaces/asistentes/encuesta';
 @Component({
   selector: 'app-chaBotProspeccion',
   standalone: false,
@@ -57,6 +59,7 @@ export class ChatBotProspeccionComponent implements OnInit, AfterViewInit {
     private cdRef: ChangeDetectorRef, 
     private loginService: LoginService,
     private topVeinteDataService: TopVeinteDataService,
+    private encuestaService: EncuestaService,
   ) { }
 
    ngOnInit() { 
@@ -354,6 +357,7 @@ enviarDataset() {
     localStorage.removeItem('chatBotProspeccionState');
     this.cdRef.detectChanges();
     this.scrollToBottom();
+    this.realizarEncuesta();
   }
 
   scrollToBottom() {
@@ -455,5 +459,55 @@ private reemplazarVariablesEnRespuesta(respuesta: string): string {
     .replace(/\[Tu correo electrónico\]/gi, rolUsuario);
 }
 
+preguntaEncuesta: string = '';
+preguntasProcesadas: any[] = [];
+
+realizarEncuesta() {
+  this.encuestaService.getPreguntasEncuesta().subscribe({
+    next: (data: PreguntaEncuesta[]) => {
+      // Procesamos la data agrupando las preguntas Multiple
+      const preguntasMap = new Map<number, {
+        idPregunta: number;
+        pregunta: string;
+        tipoRespuesta: string;
+        respuestas: string[];
+      }>();
+
+      data.forEach(item => {
+        // Limpiamos el HTML de tipoRespuesta para facilitar búsqueda
+        const tipoRespuestaLimpio = item.tipoRespuesta.replace(/<[^>]+>/g, '').toLowerCase();
+
+        if (tipoRespuestaLimpio.includes('multiple')) {
+          // Agrupamos respuestas por pregunta
+          if (!preguntasMap.has(item.idPregunta)) {
+            preguntasMap.set(item.idPregunta, {
+              idPregunta: item.idPregunta,
+              pregunta: item.pregunta,
+              tipoRespuesta: tipoRespuestaLimpio,
+              respuestas: []
+            });
+          }
+          preguntasMap.get(item.idPregunta)!.respuestas.push(item.respuesta);
+        } else {
+          // Para Opciones y Abierta guardamos como entrada independiente
+          preguntasMap.set(item.idPregunta, {
+            idPregunta: item.idPregunta,
+            pregunta: item.pregunta,
+            tipoRespuesta: tipoRespuestaLimpio,
+            respuestas: [] // No aplica, se maneja diferente
+          });
+        }
+      });
+
+      // Convertimos el Map a array para usar en el template
+      this.preguntasProcesadas = Array.from(preguntasMap.values());
+
+      console.log('Preguntas procesadas:', this.preguntasProcesadas);
+    },
+    error: (err) => {
+      console.error('Error al obtener las preguntas de la encuesta:', err);
+    }
+  });
+}
 
 }

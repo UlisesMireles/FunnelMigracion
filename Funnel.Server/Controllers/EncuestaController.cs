@@ -22,6 +22,12 @@ namespace Funnel.Server.Controllers
             var result = await _encuestaService.ConsultarPreguntasEncuesta();
             return Ok(result);
         }
+        [HttpPost("[action]/")]
+        public async Task<ActionResult<InsertaBitacoraPreguntasDto>> InsertaPreguntaBitacoraPreguntas(InsertaBitacoraPreguntasDto insert)
+        {
+            var result = await _encuestaService.InsertaPreguntaBitacoraPreguntas(insert);
+            return Ok(result);
+        }
     }
    
 }

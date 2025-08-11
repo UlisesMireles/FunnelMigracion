@@ -42,5 +42,41 @@ namespace Funnel.Data
             }
             return result;
         }
+        public async Task<InsertaBitacoraPreguntasDto> InsertaPreguntaBitacoraPreguntas(InsertaBitacoraPreguntasDto insert)
+        {
+            try
+            {
+                if (insert != null)
+                {
+                    IList<ParameterSQl> listaParametros = new List<ParameterSQl>
+                {
+                    DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, "Bandera", DataRowVersion.Default, "INSERT-RESPUESTAS"),
+                    DataBase.CreateParameterSql("@IdBot", SqlDbType.Int, 10, ParameterDirection.Input, false, "IdBot", DataRowVersion.Default, insert.IdBot),
+                    DataBase.CreateParameterSql("@Pregunta", SqlDbType.VarChar, 255, ParameterDirection.Input, false, "Pregunta", DataRowVersion.Default, insert.Pregunta),
+                    DataBase.CreateParameterSql("@FechaPregunta", SqlDbType.DateTime, 8, ParameterDirection.Input, false, "FechaPregunta", DataRowVersion.Default, insert.FechaPregunta),
+                    DataBase.CreateParameterSql("@Respuesta", SqlDbType.VarChar, -1, ParameterDirection.Input, false, "Respuesta", DataRowVersion.Default, insert.Respuesta),
+                    DataBase.CreateParameterSql("@FechaRespuesta", SqlDbType.DateTime, 8, ParameterDirection.Input, false, "FechaRespuesta", DataRowVersion.Default, insert.FechaRespuesta),
+                    DataBase.CreateParameterSql("@IdUsuario", SqlDbType.Int, 10, ParameterDirection.Input, false, "IdUsuario", DataRowVersion.Default, insert.IdUsuario),
+                };
+
+                    using (IDataReader reader = await DataBase.GetReaderSql("F_EncuestaBot", CommandType.StoredProcedure, listaParametros, _connectionString))
+                    {
+                        while (reader.Read())
+                        {
+                            insert.Result = ComprobarNulos.CheckBooleanNull(reader["@pResult"]);
+
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                insert.Result = false;
+                insert.ErrorMessage = ex.Message;
+            }
+
+            return insert;
+        }
     }
 }
+

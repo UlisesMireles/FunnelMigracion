@@ -10,5 +10,6 @@ namespace Funnel.Logic.Interfaces
     public interface IEncuestaService
     {
         public Task<List<EncuestaDto>> ConsultarPreguntasEncuesta();
+        public Task<InsertaBitacoraPreguntasDto> InsertaPreguntaBitacoraPreguntas(InsertaBitacoraPreguntasDto insert);
     }
 }

@@ -26,5 +26,10 @@ namespace Funnel.Logic
         {
             return await _encuestaData.ConsultarPreguntasEncuesta();
         }
+        public async Task<InsertaBitacoraPreguntasDto> InsertaPreguntaBitacoraPreguntas(InsertaBitacoraPreguntasDto insert)
+        {
+            return await _encuestaData.InsertaPreguntaBitacoraPreguntas(insert);
+        }
     }
+
 }

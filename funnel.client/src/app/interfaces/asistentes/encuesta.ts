@@ -4,5 +4,4 @@ export interface PreguntaEncuesta {
   tipoRespuesta: string;
   idRespuesta: number | null;
   respuesta: string;
-  // otros campos si tienes
 }

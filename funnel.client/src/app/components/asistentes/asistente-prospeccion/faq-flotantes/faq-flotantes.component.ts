@@ -38,7 +38,7 @@ constructor(private openIaService: OpenIaService) {}
   obtenerFaqs(idBot: number) {
     this.openIaService.obtenerFaq(idBot).subscribe({
       next: (data: any) => {
-        this.todasLasFaqs = data;
+        this.todasLasFaqs = data.filter((faq: Faq) => faq.idCategoria !== 15);
         this.agruparFaqsPorCategoria();
       },
       error: (error) => {

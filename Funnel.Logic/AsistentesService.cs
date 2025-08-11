@@ -195,7 +195,8 @@ namespace Funnel.Logic
                         Pregunta = ComprobarNulos.CheckStringNull(reader["Pregunta"]),
                         Respuesta = ComprobarNulos.CheckStringNull(reader["Respuesta"]),
                         Activo = ComprobarNulos.CheckBooleanNull(reader["Activo"]),
-                        Categoria = ComprobarNulos.CheckStringNull(reader["Categoria"])
+                        Categoria = ComprobarNulos.CheckStringNull(reader["Categoria"]),
+                        IdCategoria = ComprobarNulos.CheckIntNull(reader["IdCategoria"])
                     };
                     result.Add(dto);
                 }

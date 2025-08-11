@@ -131,8 +131,11 @@ export class HeaderComponent implements OnInit {
   }
 
   @HostListener('document:click', ['$event'])
-handleClickOutside(event: MouseEvent): void {
+  handleClickOutside(event: MouseEvent): void {
   const targetElement = event.target as HTMLElement;
+
+  // Verificar si el clic fue en algún diálogo abierto
+  const isInsideDialog = targetElement.closest('.confirm-dialog') !== null;
 
   const isToggleButtonOperacion = targetElement.closest('#chat-container-operacion'); 
   const isToggleButtonProspeccion = targetElement.closest('#chat-container-prospeccion'); 
@@ -140,7 +143,8 @@ handleClickOutside(event: MouseEvent): void {
   if (this.enableAsistenteOperacion && 
       this.chatContainerOperacion && 
       !this.chatContainerOperacion.nativeElement.contains(targetElement) &&
-      !isToggleButtonOperacion) {
+      !isToggleButtonOperacion &&
+      !isInsideDialog) { 
     this.enableAsistenteOperacion = false;
     this.asistenteService.asistenteSubject.next(-1);
   }
@@ -148,7 +152,8 @@ handleClickOutside(event: MouseEvent): void {
   if (this.mostrarAsistenteProspeccion && 
       this.chatContainerProspeccion && 
       !this.chatContainerProspeccion.nativeElement.contains(targetElement) &&
-      !isToggleButtonProspeccion) {
+      !isToggleButtonProspeccion &&
+      !isInsideDialog) { 
     this.mostrarAsistenteProspeccion = false;
     this.cdr.detectChanges();
   }

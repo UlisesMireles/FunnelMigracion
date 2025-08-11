@@ -63,6 +63,7 @@ export class ChatBotProspeccionComponent implements OnInit, AfterViewInit {
     this.consultaAsistente.nombreUsuario = this.loginService.obtenerDatosUsuarioLogueado().nombreCompleto;
     this.consultaAsistente.correo = this.loginService.obtenerDatosUsuarioLogueado().correo;
     this.consultaAsistente.puesto = this.loginService.obtenerDatosUsuarioLogueado().puesto;
+    this.consultaAsistente.empresa = this.loginService.obtenerEmpresa();
     this.consultaAsistente.numeroTelefono = this.loginService.obtenerDatosUsuarioLogueado().numeroTelefono;
     this.chatHistorialResp = JSON.stringify(this.chatHistorial);
     const savedState = sessionStorage.getItem('chatBotProspeccionState');

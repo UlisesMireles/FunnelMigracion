@@ -17,7 +17,7 @@
             <!-- <button *ngIf="chat.mostrarBotonDataset" class="btn btn-primary mt-2" (click)="enviarDataset()">
               Enviar Dataset
             </button> -->
-             <button 
+             <button *ngIf="!chat.mensaje.toLocaleLowerCase().includes('hola')" 
               class="btn-copiar" (click)="copiarRespuesta(chat.mensaje)"
               matTooltip="Copiar mensaje"> <mat-icon>content_copy</mat-icon>
             </button>

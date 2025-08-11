@@ -124,7 +124,7 @@ namespace Funnel.Logic
                 else
                 {
                     {
-                        string preguntaConData = string.Concat(consultaAsistente.Pregunta, "(usuario:", consultaAsistente.NombreUsuario, ",correo:", consultaAsistente.Correo, ", puesto:", consultaAsistente.Puesto, ",telefono:", consultaAsistente.NumeroTelefono, ')');
+                        string preguntaConData = string.Concat(consultaAsistente.Pregunta, "(usuario:", consultaAsistente.NombreUsuario, ",correo:", consultaAsistente.Correo, ", puesto:", consultaAsistente.Puesto, ", empresa:", consultaAsistente.Empresa, ",telefono:", consultaAsistente.NumeroTelefono, ')');
                         var respuestaOpenIA = await BuildAnswer(preguntaConData, consultaAsistente.IdBot, consultaAsistente.IdUsuario);
                         consultaAsistente.Respuesta = respuestaOpenIA.Respuesta;
                         consultaAsistente.TokensEntrada = respuestaOpenIA.TokensEntrada;

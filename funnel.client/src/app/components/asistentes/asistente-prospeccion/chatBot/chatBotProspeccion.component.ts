@@ -43,7 +43,11 @@ export class ChatBotProspeccionComponent implements OnInit, AfterViewInit {
   };
 
   chatHistorial: ChatHistorial[] = [
-     { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨  Soy Bruno, tu asistente comercial para convertir contactos en oportunidades reales.  Estoy aquí para ayudarte a generar correos estratégicos, identificar oportunidades con IA, proponer soluciones por sector y ayudarte en ventas consultivas, todo desde un solo lugar." , mostrarBotonDataset: true}
+     { rol: "asistente", 
+       mensaje: "Hola " + this.nombreUsuario() + "! ✨  Soy Bruno, tu asistente comercial para convertir contactos en oportunidades reales.  Estoy aquí para ayudarte a generar correos estratégicos, identificar oportunidades con IA, proponer soluciones por sector y ayudarte en ventas consultivas, todo desde un solo lugar." , 
+       mostrarBotonDataset: true,
+      mostrarBotonCopiar: false
+      }
    ];
   chatHistorialResp!: string;
   mostrarBotonDataset: boolean = false;
@@ -140,7 +144,11 @@ ngAfterViewInit(): void {
 
    private restoreState(state: any) {
     this.chatHistorial = state.historial || [
-      { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨  Soy Bruno, tu asistente comercial para convertir contactos en oportunidades reales.  Estoy aquí para ayudarte a generar correos estratégicos, identificar oportunidades con IA, proponer soluciones por sector y ayudarte en ventas consultivas, todo desde un solo lugar." , mostrarBotonDataset: true}
+      { rol: "asistente",
+        mensaje: "Hola " + this.nombreUsuario() + "! ✨  Soy Bruno, tu asistente comercial para convertir contactos en oportunidades reales.  Estoy aquí para ayudarte a generar correos estratégicos, identificar oportunidades con IA, proponer soluciones por sector y ayudarte en ventas consultivas, todo desde un solo lugar." ,
+        mostrarBotonDataset: true,
+        mostrarBotonCopiar: false,
+      }
     ];
     this.chatHistorialResp = JSON.stringify(this.chatHistorial);
     this.cdRef.detectChanges();
@@ -157,15 +165,16 @@ ngAfterViewInit(): void {
     if (!this.isConsultandoOpenIa && this.pregunta.trim() !== "") {
       const preguntaOriginal = this.pregunta;
       this.consultaAsistente.pregunta = this.pregunta;
-      this.chatHistorial.push({ rol: "usuario", mensaje: this.pregunta });
-      
+      this.chatHistorial.push({ rol: "usuario", mensaje: this.pregunta});
+
       // Verificar si es un saludo simple
       if (this.esSaludo(preguntaOriginal)) {
         const respuestaSaludo = this.generarRespuestaSaludo();
         this.chatHistorial.push({ 
           rol: "asistente", 
           mensaje: respuestaSaludo,
-          mostrarBotonDataset: false 
+          mostrarBotonDataset: false,
+          mostrarBotonCopiar: false
         });
         
         this.pregunta = "";
@@ -217,7 +226,8 @@ private mostrarRespuestaFrecuente(data: ConsultaAsistenteDto) {
       rol: "asistente", 
       mensaje: data.respuesta,
       mostrarBotonDataset: false,
-      esPreguntaFrecuente: true
+      esPreguntaFrecuente: true,
+      mostrarBotonCopiar: true
     });
   }
 private mostrarRespuestaOpenAI(data: ConsultaAsistenteDto) {
@@ -225,7 +235,8 @@ private mostrarRespuestaOpenAI(data: ConsultaAsistenteDto) {
     rol: "asistente", 
     mensaje: data.respuesta,
     mostrarBotonDataset: false,
-    esPreguntaFrecuente: false
+    esPreguntaFrecuente: false,
+    mostrarBotonCopiar: true
   }); 
 }
  private finalizarConsulta() {
@@ -239,7 +250,8 @@ private mostrarRespuestaOpenAI(data: ConsultaAsistenteDto) {
     this.chatHistorial.push({ 
       rol: "asistente", 
       mensaje: "Lo siento, ocurrió un error al procesar tu pregunta.",
-      mostrarBotonDataset: false 
+      mostrarBotonDataset: false,
+      mostrarBotonCopiar: false
     });
     this.finalizarConsulta();
     console.error(err);
@@ -257,7 +269,8 @@ enviarDataset() {
     this.chatHistorial.push({ 
       rol: "asistente", 
       mensaje: "Por favor verifica que el filtro que estás aplicando en la tabla tenga registros válidos e intenta de nuevo.",
-      mostrarBotonDataset: true 
+      mostrarBotonDataset: true,
+      mostrarBotonCopiar: false
     });
 
     this.saveState();
@@ -319,7 +332,8 @@ enviarDataset() {
       this.chatHistorial.push({ 
         rol: "asistente", 
         mensaje: res.respuesta,
-        mostrarBotonDataset: false 
+        mostrarBotonDataset: false,
+        mostrarBotonCopiar: true
       });
       this.saveState();
       this.cdRef.detectChanges();
@@ -330,7 +344,8 @@ enviarDataset() {
       this.chatHistorial.push({ 
         rol: "asistente", 
         mensaje: "Lo siento, ocurrió un error al procesar el dataset.",
-        mostrarBotonDataset: false 
+        mostrarBotonDataset: false,
+        mostrarBotonCopiar: false
       });
       this.saveState();
       this.cdRef.detectChanges();
@@ -349,8 +364,12 @@ enviarDataset() {
       }
     });
     this.chatHistorial = [
-     { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨  Soy Bruno, tu asistente comercial para convertir contactos en oportunidades reales.  Estoy aquí para ayudarte a generar correos estratégicos, identificar oportunidades con IA, proponer soluciones por sector y ayudarte en ventas consultivas, todo desde un solo lugar." , mostrarBotonDataset: true}
-   ];
+     { rol: "asistente", 
+      mensaje: "Hola " + this.nombreUsuario() + "! ✨  Soy Bruno, tu asistente comercial para convertir contactos en oportunidades reales.  Estoy aquí para ayudarte a generar correos estratégicos, identificar oportunidades con IA, proponer soluciones por sector y ayudarte en ventas consultivas, todo desde un solo lugar." , 
+      mostrarBotonDataset: true,
+      mostrarBotonCopiar: false
+     }
+    ];
     sessionStorage.removeItem('chatBotProspeccionState');
     localStorage.removeItem('chatBotProspeccionState');
     this.cdRef.detectChanges();
@@ -408,7 +427,8 @@ recibirPreguntaExterna(pregunta: string) {
       this.chatHistorial.push({ 
         rol: "asistente", 
         mensaje: respuestaSaludo,
-        mostrarBotonDataset: false 
+        mostrarBotonDataset: false,
+        mostrarBotonCopiar: false
       });
       
       this.cdRef.detectChanges();
@@ -430,7 +450,8 @@ recibirPreguntaExterna(pregunta: string) {
         this.chatHistorial.push({ 
           rol: "asistente", 
           mensaje: respuestaConUsuario,
-          mostrarBotonDataset: false 
+          mostrarBotonDataset: false,
+          mostrarBotonCopiar: true
         });
         this.cdRef.detectChanges();
         this.scrollToBottom();

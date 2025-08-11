@@ -156,6 +156,7 @@ import { AsistenteProspeccionComponent } from './components/asistentes/asistente
 import { ChatBotProspeccionComponent } from './components/asistentes/asistente-prospeccion/chatBot/chatBotProspeccion.component';
 import { FaqFlotantesComponent } from './components/asistentes/asistente-prospeccion/faq-flotantes/faq-flotantes.component';
 import { EliminarConversacionComponent } from './components/asistentes/asistente-prospeccion/eliminar-conversacion/eliminar-conversacion.component';
+import { EvaluarBotComponent } from './components/asistentes/asistente-prospeccion/evaluar-bot/evaluar-bot.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -250,7 +251,8 @@ registerLocaleData(localeEs, 'es-MX');
     AsistenteProspeccionComponent,
     ChatBotProspeccionComponent,
     FaqFlotantesComponent,
-    EliminarConversacionComponent
+    EliminarConversacionComponent,
+    EvaluarBotComponent
   ],
   imports: [
     BrowserModule,

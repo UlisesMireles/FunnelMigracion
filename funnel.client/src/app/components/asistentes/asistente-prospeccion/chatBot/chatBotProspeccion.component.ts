@@ -12,6 +12,7 @@ import { EncuestaService } from '../../../../services/asistentes/encuesta.servic
 import { PreguntaEncuesta } from '../../../../interfaces/asistentes/encuesta';
 import { MatDialog } from '@angular/material/dialog';
 import { EliminarConversacionComponent } from '../eliminar-conversacion/eliminar-conversacion.component';
+import { EvaluarBotComponent } from '../evaluar-bot/evaluar-bot.component';
 @Component({
   selector: 'app-chaBotProspeccion',
   standalone: false,
@@ -348,34 +349,37 @@ enviarDataset() {
 resetConversation() {
   const dialogRef = this.dialog.open(EliminarConversacionComponent, {
     width: '350px',
-    position: {
-      left: '1090px',  
-      top: '250px' 
-    },
+    position: { left: '1090px', top: '250px' }
   });
 
   dialogRef.afterClosed().subscribe(result => {
-    if (result) {
-      this.OpenIaService.limpiarCacheBot(this.loginService.obtenerIdUsuario(), 7).subscribe({
-        next: (response) => {
-          console.log('Cache limpiado exitosamente', response);
-        },
-        error: (error) => {
-          console.error('Error al limpiar cache', error);
+    if (result === 'evaluar') {
+      const evalDialogRef = this.dialog.open(EvaluarBotComponent, {
+        width: '350px',
+        position: { left: '1090px', top: '250px' }
+      });
+
+      evalDialogRef.afterClosed().subscribe(evaluarResult => {
+        if (evaluarResult === false) {
+          // Solo limpiar historial si se presionó "No"
+          this.OpenIaService.limpiarCacheBot(this.loginService.obtenerIdUsuario(), 7).subscribe({
+            next: (response) => console.log('Cache limpiado exitosamente', response),
+            error: (error) => console.error('Error al limpiar cache', error)
+          });
+
+          this.chatHistorial = [
+            { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨  Soy Bruno, tu asistente comercial para convertir contactos en oportunidades reales.  Estoy aquí para ayudarte a generar correos estratégicos, identificar oportunidades con IA, proponer soluciones por sector y ayudarte en ventas consultivas, todo desde un solo lugar." , mostrarBotonDataset: true}
+          ];
+          sessionStorage.removeItem('chatBotProspeccionState');
+          localStorage.removeItem('chatBotProspeccionState');
+          this.cdRef.detectChanges();
+          this.scrollToBottom();
         }
       });
-      this.chatHistorial = [
-     { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨  Soy Bruno, tu asistente comercial para convertir contactos en oportunidades reales.  Estoy aquí para ayudarte a generar correos estratégicos, identificar oportunidades con IA, proponer soluciones por sector y ayudarte en ventas consultivas, todo desde un solo lugar." , 
-      mostrarBotonDataset: true}
-     ];
-      sessionStorage.removeItem('chatBotProspeccionState');
-      localStorage.removeItem('chatBotProspeccionState');
-      this.cdRef.detectChanges();
-      this.scrollToBottom();
-      this.realizarEncuesta();
     }
   });
 }
+
 
   scrollToBottom() {
     setTimeout(() => {

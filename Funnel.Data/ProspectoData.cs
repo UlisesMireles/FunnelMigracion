@@ -228,5 +228,47 @@ namespace Funnel.Data
             }
             return result;
         }
+
+        public async Task<List<string>> ColumnasAdicionales(int idEmpresa)
+        {
+            List<string> result = new List<string>();
+            IList<ParameterSQl> list = new List<ParameterSQl>
+                {
+                    DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "COLUMNAS-ADICIONALES" ),
+                    DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, idEmpresa ),
+                };
+            using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoProspectos", CommandType.StoredProcedure, list, _connectionString))
+            {
+                while (reader.Read())
+                {
+                    result.Add(ComprobarNulos.CheckStringNull(reader["NombreCampo"]));
+                }
+            }
+            return result;
+        }
+
+        public async Task<List<ProspectoDTO>> ColumnasAdicionalesData(int idEmpresa, List<string> nombresColumnas)
+        {
+            List<ProspectoDTO> result = new List<ProspectoDTO>();
+            IList<ParameterSQl> list = new List<ParameterSQl>
+                {
+                    DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "COLUMNAS-ADICIONALES-DATA" ),
+                    DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, idEmpresa ),
+                };
+            using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoProspectos", CommandType.StoredProcedure, list, _connectionString))
+            {
+                while (reader.Read())
+                {
+                    var dto = new ProspectoDTO();
+                    dto.IdProspecto = ComprobarNulos.CheckIntNull(reader["IdProspecto"]);
+                    foreach (var columna in nombresColumnas)
+                    {
+                        dto.PropiedadesAdicionales[columna] = ComprobarNulos.CheckStringNull(reader[columna]);
+                    }
+                    result.Add(dto);
+                }
+            }
+            return result;
+        }
     }
 }

@@ -14,5 +14,6 @@
         public int? IdProspecto { get; set; }
         public int? IdEmpresa { get; set; }
         public string? Bandera { get; set; }
+        public Dictionary<string, string?> PropiedadesAdicionales { get; set; } = new();
     }
 }

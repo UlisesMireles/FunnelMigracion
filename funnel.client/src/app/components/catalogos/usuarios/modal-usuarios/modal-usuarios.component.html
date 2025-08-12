@@ -115,7 +115,19 @@
           </span>
         </div>
       </div>
-
+       <div class="row ">
+        <div class="col-sm-4 lbl">
+          <label for="puesto">Puesto:</label>
+        </div>
+        <div class="col-sm-8 ">
+          <input pInputText class="inptSize" formControlName="puesto" />
+          <span *ngIf="usuarioForm.get('puesto')?.invalid && usuarioForm.get('puesto')?.touched" class="text-danger">
+            <br />
+            <ng-container *ngIf="usuarioForm.get('puesto')?.errors?.['required']">El puesto es obligatorio.</ng-container>
+          </span>
+        </div>
+      </div>
+<!--  
       <div class="row">
           <div class="col-sm-4 lbl">
             <label for="puesto">Puesto:</label>
@@ -141,7 +153,7 @@
               </ng-template>
             </p-select>
           </div>
-        </div>
+        </div>-->
 
        <div class="row" *ngIf="!insertar">
         <div class="col-sm-4 lbl">

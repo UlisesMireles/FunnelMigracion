@@ -1,0 +1,27 @@
+<div class="faq-flotante-card" *ngIf="mostrarFaqs">
+  <div class="faq-header">
+    <h5>Preguntas Frecuentes</h5>
+    <i class="bi bi-x-circle close-faq-icon" (click)="cerrarFaqs()" aria-hidden="true"></i>
+  </div>
+
+  <div class="faq-body">
+    <div *ngFor="let categoria of faqsAgrupadas[paginaActual]?.categorias">
+      <h6 class="categoria-titulo">{{categoria.nombre}}</h6>
+      <div class="faq-item" *ngFor="let faq of categoria.faqs">
+        <button class="faq-button" (click)="enviarPregunta(faq.pregunta)">
+          {{ faq.pregunta }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="faq-footer">
+    <button class="btn-nav" [disabled]="paginaActual === 0" (click)="paginaAnterior()">
+      Anterior
+    </button>
+    <!--<span class="pagina-info">Página {{ paginaActual + 1 }} de {{ totalPaginas }}</span>-->
+    <button class="btn-nav" [disabled]="paginaActual === totalPaginas - 1" (click)="paginaSiguiente()">
+      Siguiente
+    </button>
+  </div>
+</div>

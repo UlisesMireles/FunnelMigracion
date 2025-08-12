@@ -43,7 +43,11 @@ export class ChatBotProspeccionComponent implements OnInit, AfterViewInit {
   };
 
   chatHistorial: ChatHistorial[] = [
-     { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨ Bienvenido(a) a tu asistente comercial. Soy Bruno, tu asistente para convertir contactos en oportunidades reales." , mostrarBotonDataset: true}
+     { rol: "asistente", 
+       mensaje: "Hola " + this.nombreUsuario() + "! ✨  Soy Bruno, tu asistente comercial para convertir contactos en oportunidades reales.  Estoy aquí para ayudarte a generar correos estratégicos, identificar oportunidades con IA, proponer soluciones por sector y ayudarte en ventas consultivas, todo desde un solo lugar." , 
+       mostrarBotonDataset: true,
+      mostrarBotonCopiar: false
+      }
    ];
   chatHistorialResp!: string;
   mostrarBotonDataset: boolean = false;
@@ -63,6 +67,7 @@ export class ChatBotProspeccionComponent implements OnInit, AfterViewInit {
     this.consultaAsistente.nombreUsuario = this.loginService.obtenerDatosUsuarioLogueado().nombreCompleto;
     this.consultaAsistente.correo = this.loginService.obtenerDatosUsuarioLogueado().correo;
     this.consultaAsistente.puesto = this.loginService.obtenerDatosUsuarioLogueado().puesto;
+    this.consultaAsistente.empresa = this.loginService.obtenerEmpresa();
     this.consultaAsistente.numeroTelefono = this.loginService.obtenerDatosUsuarioLogueado().numeroTelefono;
     this.chatHistorialResp = JSON.stringify(this.chatHistorial);
     const savedState = sessionStorage.getItem('chatBotProspeccionState');
@@ -80,7 +85,6 @@ ngAfterViewInit(): void {
   }, 0);
 }
 
-   //#region obtencion de datos de session storage
   nombreUsuario(): string {
     let NombreUsuarioString = environment.usuarioData.nombreUsuario;
     const nombreUsuario = sessionStorage.getItem('Usuario');
@@ -126,9 +130,8 @@ ngAfterViewInit(): void {
     
     const mensajeLimpio = mensaje.toLowerCase().trim().replace(/[¡!¿?.,]/g, '');
     
-    // Verificar si el mensaje es solo un saludo (máximo 3 palabras)
     const palabras = mensajeLimpio.split(/\s+/);
-    if (palabras.length > 3) {
+    if (palabras.length > 4) {
       return false;
     }
     
@@ -141,7 +144,11 @@ ngAfterViewInit(): void {
 
    private restoreState(state: any) {
     this.chatHistorial = state.historial || [
-      { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨ Bienvenido(a) a tu asistente comercial. Soy Bruno, tu asistente para convertir contactos en oportunidades reales." , mostrarBotonDataset: true}
+      { rol: "asistente",
+        mensaje: "Hola " + this.nombreUsuario() + "! ✨  Soy Bruno, tu asistente comercial para convertir contactos en oportunidades reales.  Estoy aquí para ayudarte a generar correos estratégicos, identificar oportunidades con IA, proponer soluciones por sector y ayudarte en ventas consultivas, todo desde un solo lugar." ,
+        mostrarBotonDataset: true,
+        mostrarBotonCopiar: false,
+      }
     ];
     this.chatHistorialResp = JSON.stringify(this.chatHistorial);
     this.cdRef.detectChanges();
@@ -154,18 +161,20 @@ ngAfterViewInit(): void {
     sessionStorage.setItem('chatBotProspeccionState', JSON.stringify(state));
   }
   consultaMensajeOpenIa(event?: any, textarea?: HTMLTextAreaElement) {
+    console.log('Evento de consulta recibido:', event);
     if (!this.isConsultandoOpenIa && this.pregunta.trim() !== "") {
       const preguntaOriginal = this.pregunta;
       this.consultaAsistente.pregunta = this.pregunta;
-      this.chatHistorial.push({ rol: "usuario", mensaje: this.pregunta });
-      
+      this.chatHistorial.push({ rol: "usuario", mensaje: this.pregunta});
+
       // Verificar si es un saludo simple
       if (this.esSaludo(preguntaOriginal)) {
         const respuestaSaludo = this.generarRespuestaSaludo();
         this.chatHistorial.push({ 
           rol: "asistente", 
           mensaje: respuestaSaludo,
-          mostrarBotonDataset: false 
+          mostrarBotonDataset: false,
+          mostrarBotonCopiar: false
         });
         
         this.pregunta = "";
@@ -217,7 +226,8 @@ private mostrarRespuestaFrecuente(data: ConsultaAsistenteDto) {
       rol: "asistente", 
       mensaje: data.respuesta,
       mostrarBotonDataset: false,
-      esPreguntaFrecuente: true
+      esPreguntaFrecuente: true,
+      mostrarBotonCopiar: true
     });
   }
 private mostrarRespuestaOpenAI(data: ConsultaAsistenteDto) {
@@ -225,7 +235,8 @@ private mostrarRespuestaOpenAI(data: ConsultaAsistenteDto) {
     rol: "asistente", 
     mensaje: data.respuesta,
     mostrarBotonDataset: false,
-    esPreguntaFrecuente: false
+    esPreguntaFrecuente: false,
+    mostrarBotonCopiar: true
   }); 
 }
  private finalizarConsulta() {
@@ -239,7 +250,8 @@ private mostrarRespuestaOpenAI(data: ConsultaAsistenteDto) {
     this.chatHistorial.push({ 
       rol: "asistente", 
       mensaje: "Lo siento, ocurrió un error al procesar tu pregunta.",
-      mostrarBotonDataset: false 
+      mostrarBotonDataset: false,
+      mostrarBotonCopiar: false
     });
     this.finalizarConsulta();
     console.error(err);
@@ -257,7 +269,8 @@ enviarDataset() {
     this.chatHistorial.push({ 
       rol: "asistente", 
       mensaje: "Por favor verifica que el filtro que estás aplicando en la tabla tenga registros válidos e intenta de nuevo.",
-      mostrarBotonDataset: true 
+      mostrarBotonDataset: true,
+      mostrarBotonCopiar: false
     });
 
     this.saveState();
@@ -319,7 +332,8 @@ enviarDataset() {
       this.chatHistorial.push({ 
         rol: "asistente", 
         mensaje: res.respuesta,
-        mostrarBotonDataset: false 
+        mostrarBotonDataset: false,
+        mostrarBotonCopiar: true
       });
       this.saveState();
       this.cdRef.detectChanges();
@@ -330,7 +344,8 @@ enviarDataset() {
       this.chatHistorial.push({ 
         rol: "asistente", 
         mensaje: "Lo siento, ocurrió un error al procesar el dataset.",
-        mostrarBotonDataset: false 
+        mostrarBotonDataset: false,
+        mostrarBotonCopiar: false
       });
       this.saveState();
       this.cdRef.detectChanges();
@@ -349,8 +364,12 @@ enviarDataset() {
       }
     });
     this.chatHistorial = [
-     { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨ Bienvenido(a) a tu asistente comercial. Soy Bruno, tu asistente para convertir contactos en oportunidades reales." , mostrarBotonDataset: true}
-   ];
+     { rol: "asistente", 
+      mensaje: "Hola " + this.nombreUsuario() + "! ✨  Soy Bruno, tu asistente comercial para convertir contactos en oportunidades reales.  Estoy aquí para ayudarte a generar correos estratégicos, identificar oportunidades con IA, proponer soluciones por sector y ayudarte en ventas consultivas, todo desde un solo lugar." , 
+      mostrarBotonDataset: true,
+      mostrarBotonCopiar: false
+     }
+    ];
     sessionStorage.removeItem('chatBotProspeccionState');
     localStorage.removeItem('chatBotProspeccionState');
     this.cdRef.detectChanges();
@@ -389,33 +408,74 @@ enviarDataset() {
     }, 1000);
   });
 }
-ajustarAlturaTextarea(event: any): void {
+ajustarAlturaTextarea(event: any): void { 
   const textarea = event.target as HTMLTextAreaElement;
+
   textarea.style.height = 'auto';
   textarea.style.height = `${Math.min(textarea.scrollHeight, 120)}px`;
 
-  const textoOriginal: string = textarea.value;
-  
-  const palabrasYEspacios: string[] = textoOriginal.split(/(\s+)/);
-  
-  let nuevoTexto: string = '';
-  let lineaActual: string = '';
-  
-  for (const segmento of palabrasYEspacios) {
-    if (lineaActual.length + segmento.length > 75) {
-      nuevoTexto += lineaActual.trimEnd() + '\n';
-      lineaActual = segmento; 
-    } else {
-      lineaActual += segmento;
-    }
-  }
-  
-  if (lineaActual.length > 0) {
-    nuevoTexto += lineaActual;
-  }
+}
 
-  if (nuevoTexto !== textoOriginal) {
-    textarea.value = nuevoTexto;
-    this.pregunta = textarea.value; 
+recibirPreguntaExterna(pregunta: string) {
+  if (!this.isConsultandoOpenIa && pregunta.trim() !== "") {
+    const preguntaOriginal = pregunta;
+    this.consultaAsistente.pregunta = pregunta;
+    this.chatHistorial.push({ rol: "usuario", mensaje: pregunta });
+
+    if (this.esSaludo(preguntaOriginal)) {
+      const respuestaSaludo = this.generarRespuestaSaludo();
+      this.chatHistorial.push({ 
+        rol: "asistente", 
+        mensaje: respuestaSaludo,
+        mostrarBotonDataset: false,
+        mostrarBotonCopiar: false
+      });
+      
+      this.cdRef.detectChanges();
+      this.scrollToBottom();
+      this.saveState();
+      return;
+    }
+
+    this.chatHistorial.push({ rol: "cargando", mensaje: "..." });
+    this.cdRef.detectChanges();
+    this.scrollToBottom();
+    this.saveState();
+
+    this.isConsultandoOpenIa = true;
+    this.OpenIaService.asistenteProspeccion(this.consultaAsistente).subscribe({
+      next: (data: ConsultaAsistenteDto) => {
+        this.chatHistorial.pop();
+        const respuestaConUsuario = this.reemplazarVariablesEnRespuesta(data.respuesta);
+        this.chatHistorial.push({ 
+          rol: "asistente", 
+          mensaje: respuestaConUsuario,
+          mostrarBotonDataset: false,
+          mostrarBotonCopiar: true
+        });
+        this.cdRef.detectChanges();
+        this.scrollToBottom();
+        this.saveState();
+        this.isConsultandoOpenIa = false;
+      },
+      error: (err: HttpErrorResponse) => {
+        this.manejarEerrorConsulta(err);
+      }
+    });
   }
-}}
+}
+
+private reemplazarVariablesEnRespuesta(respuesta: string): string {
+  const usuario = this.loginService.obtenerDatosUsuarioLogueado();
+  const nombreUsuario = usuario?.nombre || 'Usuario';
+  const rolUsuario = usuario?.puesto || 'Usuario';
+  const correoUsuario = usuario?.correo || 'Usuario';
+
+  return respuesta
+    .replace(/\[Tu nombre\]/gi, nombreUsuario)
+    .replace(/\[Tu rol\]/gi, correoUsuario)
+    .replace(/\[Tu correo electrónico\]/gi, rolUsuario);
+}
+
+
+}

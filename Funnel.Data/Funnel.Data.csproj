@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FuzzySharp" Version="2.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.2" />
@@ -26,6 +27,7 @@
 		<Folder Include="Scripts\07-05-2025 AjustesUsuarios\" />
 		<Folder Include="Scripts\08-05-2025 AjustesUsuarios\" />
 		<Folder Include="Scripts\28-07-2025 AsisteProspeccionIntelgente\" />
+		<Folder Include="Scripts\05-08-2025 similitudFaq\" />
 		<Folder Include="Utils\" />
 	</ItemGroup>
 	

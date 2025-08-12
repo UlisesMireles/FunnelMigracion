@@ -62,5 +62,11 @@ namespace Funnel.Server.Controllers
             var result = await _asistentesService.InicializarCacheIdsAsync(userId, idBot);
             return Ok(result);
         }
+        [HttpGet("ObtenerFaq")]
+        public async Task<ActionResult<List<PreguntasFrecuentesDto>>> ObtenerPreguntasFrecuentesAsync(int idBot)
+        {
+            var result = await _asistentesService.ObtenerPreguntasFrecuentesAsync( idBot);
+            return Ok(result);
+        }
     }
 }

@@ -99,7 +99,13 @@ export class ContactosComponent {
   getContactos() {
     this.contactosService.getContactos(this.loginService.obtenerIdEmpresa()).subscribe({
       next: (result: Contacto[]) => {
-        this.contactosOriginal = result;
+        this.contactosOriginal = result.map(p => {
+          const { propiedadesAdicionales, ...resto } = p;
+          return {
+            ...resto,
+            ...propiedadesAdicionales
+          };
+        });
         this.selectedEstatus = 'Activo';
         this.cdr.detectChanges();
         this.loading = false;
@@ -247,6 +253,7 @@ export class ContactosComponent {
         return acc;
       }, {} as { [key: string]: any });
     });
+    
 
     let data = {
       columnas: lsColumnasAMostrar,

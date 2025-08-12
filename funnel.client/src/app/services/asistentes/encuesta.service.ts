@@ -13,4 +13,7 @@ export class EncuestaService {
     getPreguntasEncuesta(): Observable<any> {
         return this.http.get(`${this.baseUrl}api/Encuesta/ConsultarPreguntasEncuesta`);
     }
+    registrarRespuestaEncuesta(datos: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}api/Encuesta/InsertaPreguntaBitacoraPreguntas`, datos);
+    }
 }

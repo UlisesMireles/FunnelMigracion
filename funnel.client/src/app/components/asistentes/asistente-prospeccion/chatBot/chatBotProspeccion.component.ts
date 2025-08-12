@@ -9,7 +9,7 @@ import { LoginService } from '../../../../services/login.service';
 import { TopVeinteDataService } from '../../../../services/top-veinte-data.service';
 import { ClientesTopVeinte } from '../../../../interfaces/prospecto';
 import { EncuestaService } from '../../../../services/asistentes/encuesta.service';
-import { PreguntaEncuesta } from '../../../../interfaces/asistentes/encuesta';
+import { PreguntaEncuesta, PreguntaProcesada } from '../../../../interfaces/asistentes/encuesta';
 import { MatDialog } from '@angular/material/dialog';
 import { EliminarConversacionComponent } from '../eliminar-conversacion/eliminar-conversacion.component';
 import { EvaluarBotComponent } from '../evaluar-bot/evaluar-bot.component';
@@ -56,6 +56,9 @@ export class ChatBotProspeccionComponent implements OnInit, AfterViewInit {
   mensajeCopiadoTexto: string = '';
   mostrarMensajeCopiado: boolean = false;
   asistenteSeleccionado = { idBot: 7, documento: false };
+  preguntaEncuesta: string = '';
+  preguntasProcesadas: PreguntaProcesada[] = [];
+
   constructor(
     private OpenIaService: OpenIaService,
     private aService: AsistenteService,
@@ -360,26 +363,15 @@ resetConversation() {
       });
 
       evalDialogRef.afterClosed().subscribe(evaluarResult => {
-        if (evaluarResult === false) {
-          // Solo limpiar historial si se presionó "No"
-          this.OpenIaService.limpiarCacheBot(this.loginService.obtenerIdUsuario(), 7).subscribe({
-            next: (response) => console.log('Cache limpiado exitosamente', response),
-            error: (error) => console.error('Error al limpiar cache', error)
-          });
-
-          this.chatHistorial = [
-            { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨  Soy Bruno, tu asistente comercial para convertir contactos en oportunidades reales.  Estoy aquí para ayudarte a generar correos estratégicos, identificar oportunidades con IA, proponer soluciones por sector y ayudarte en ventas consultivas, todo desde un solo lugar." , mostrarBotonDataset: true}
-          ];
-          sessionStorage.removeItem('chatBotProspeccionState');
-          localStorage.removeItem('chatBotProspeccionState');
-          this.cdRef.detectChanges();
-          this.scrollToBottom();
+        if (evaluarResult === true) {
+          this.mostrarEncuesta();
+        }else if (evaluarResult === false) {
+          this.limpiarConversacion();
         }
       });
     }
   });
 }
-
 
   scrollToBottom() {
     setTimeout(() => {
@@ -480,8 +472,7 @@ private reemplazarVariablesEnRespuesta(respuesta: string): string {
     .replace(/\[Tu correo electrónico\]/gi, rolUsuario);
 }
 
-preguntaEncuesta: string = '';
-preguntasProcesadas: any[] = [];
+
 
 realizarEncuesta() {
   this.encuestaService.getPreguntasEncuesta().subscribe({
@@ -531,4 +522,113 @@ realizarEncuesta() {
   });
 }
 
+
+
+private mostrarEncuesta() {
+  this.encuestaService.getPreguntasEncuesta().subscribe({
+    next: (data: PreguntaEncuesta[]) => {
+      const preguntasMap = new Map<number, PreguntaProcesada>();
+
+      data.forEach((item: PreguntaEncuesta) => {
+        const tipoRespuestaLimpio = item.tipoRespuesta.replace(/<[^>]+>/g, '').toLowerCase();
+
+        if (!preguntasMap.has(item.idPregunta)) {
+          preguntasMap.set(item.idPregunta, {
+            idPregunta: item.idPregunta,
+            pregunta: item.pregunta,
+            tipoRespuesta: tipoRespuestaLimpio,
+            respuestas: []
+          });
+        }
+
+        // Solo agregar respuesta si existe (para preguntas múltiples)
+        if (item.respuesta) {
+          preguntasMap.get(item.idPregunta)!.respuestas.push(item.respuesta);
+        }
+      });
+
+      this.preguntasProcesadas = Array.from(preguntasMap.values());
+      console.log('Preguntas procesadas para encuesta:', this.preguntasProcesadas);
+      if (this.preguntasProcesadas.length > 0) {
+        this.mostrarPreguntaActual(0);
+      }
+    },
+    error: (err: HttpErrorResponse) => {
+      console.error('Error al obtener preguntas:', err);
+    }
+  });
+}
+
+private mostrarPreguntaActual(index: number) {
+  if (index >= this.preguntasProcesadas.length) {
+    this.chatHistorial.push({
+      rol: "asistente",
+      mensaje: "¡Gracias por completar la encuesta!",
+      mostrarBotonDataset: false
+    });
+    this.limpiarConversacion();
+    return;
+  }
+
+  const preguntaActual = this.preguntasProcesadas[index];
+
+  this.chatHistorial.push({
+    rol: "asistente",
+    mensaje: preguntaActual.pregunta,
+    mostrarBotonDataset: false,
+    esEncuesta: true,
+    preguntaEncuesta: preguntaActual,
+    indicePregunta: index
+  });
+
+  this.scrollToBottom();
+  this.saveState();
+}
+
+manejarRespuestaEncuesta(respuesta: string, idPregunta: number) {
+  const preguntaActual = this.preguntasProcesadas.find(p => p.idPregunta === idPregunta);
+  if (!preguntaActual) {
+    console.error("No se encontró la pregunta para idPregunta:", idPregunta);
+    return;
+  }
+
+  const datosEncuesta = {
+    idBot: this.asistenteSeleccionado.idBot,
+    pregunta: preguntaActual.pregunta,
+    fechaPregunta: new Date().toISOString(),
+    respuesta: respuesta,
+    fechaRespuesta: new Date().toISOString(),
+    idUsuario: this.loginService.obtenerIdUsuario()
+  };
+
+  this.encuestaService.registrarRespuestaEncuesta(datosEncuesta).subscribe({
+    next: (response) => {
+      console.log('Respuesta registrada:', response);
+      const siguienteIndex = this.preguntasProcesadas.indexOf(preguntaActual) + 1;
+      this.mostrarPreguntaActual(siguienteIndex);
+    },
+    error: (error) => {
+      console.error('Error al registrar respuesta:', error);
+      const siguienteIndex = this.preguntasProcesadas.indexOf(preguntaActual) + 1;
+      this.mostrarPreguntaActual(siguienteIndex);
+    }
+  });
+
+  console.log(`Pregunta ID ${idPregunta}: ${respuesta}`);
+}
+
+private limpiarConversacion() {
+  this.OpenIaService.limpiarCacheBot(this.loginService.obtenerIdUsuario(), 7).subscribe({
+    next: (response) => console.log('Cache limpiado', response),
+    error: (error) => console.error('Error al limpiar cache', error)
+  });
+
+  this.chatHistorial = [
+    { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨ Soy Bruno..." , mostrarBotonDataset: true}
+  ];
+  sessionStorage.removeItem('chatBotProspeccionState');
+  localStorage.removeItem('chatBotProspeccionState');
+  this.cdRef.detectChanges();
+  this.scrollToBottom();
+}
 }

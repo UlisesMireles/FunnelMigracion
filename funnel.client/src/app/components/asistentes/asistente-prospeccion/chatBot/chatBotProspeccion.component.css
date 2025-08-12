@@ -400,3 +400,11 @@
   width: fit-content;
   max-width: 100%; 
 }
+/*ENCUESTA*/
+.opciones-encuesta {
+  display: flex;
+  flex-wrap: wrap;
+}
+.opciones-encuesta button {
+  min-width: 120px;
+}

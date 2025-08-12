@@ -11,19 +11,32 @@
           </div>
         </ng-container>
         <ng-container *ngSwitchCase="'asistente'">
-          <div class="vstack">
-            <label class="labelAsistente ps-2">Prospector Comercial</label>
-           <div class="chat-bubble ai-bubble formatoMensajes vstackbot" [innerHTML]="chat.mensaje"></div>
-            <!-- <button *ngIf="chat.mostrarBotonDataset" class="btn btn-primary mt-2" (click)="enviarDataset()">
-              Enviar Dataset
-            </button> -->
-             <button 
-              class="btn-copiar" (click)="copiarRespuesta(chat.mensaje)"
-              matTooltip="Copiar mensaje"> <mat-icon>content_copy</mat-icon>
+  <div class="vstack">
+    <label class="labelAsistente ps-2">Prospector Comercial</label>
+      <!-- Si es encuesta -->
+      <ng-container *ngIf="chat.esEncuesta; else mensajeNormal">
+        <div class="chat-bubble ai-bubble formatoMensajes vstackbot">
+          <div class="pregunta-texto">{{ chat.mensaje }}</div>
+
+          <div class="opciones-encuesta">
+            <button 
+              *ngFor="let opcion of chat.preguntaEncuesta?.respuestas" 
+              class="btn btn-outline-primary m-1"
+              (click)="manejarRespuestaEncuesta(opcion, chat.preguntaEncuesta!.idPregunta)">
+              {{ opcion }}
             </button>
           </div>
-        </ng-container>
-
+        </div>
+      </ng-container>
+        <!-- Si NO es encuesta -->
+        <ng-template #mensajeNormal>
+          <div class="chat-bubble ai-bubble formatoMensajes vstackbot" [innerHTML]="chat.mensaje"></div>
+        </ng-template>
+        <button  class="btn-copiar" (click)="copiarRespuesta(chat.mensaje)" matTooltip="Copiar mensaje">
+          <mat-icon>content_copy</mat-icon>
+        </button>
+      </div>
+      </ng-container>
         <ng-container *ngSwitchCase="'usuario'">
           <div class="vstack row-reverse">
             <div class="chat-bubble human-bubble formatoMensajes" [innerHTML]="chat.mensaje"></div>
@@ -33,7 +46,6 @@
     </div>
   </div>
 </div>
-
 <ng-template #cargando>
   <div class="chat-bubble ai-bubble">
     <div class="lds-ellipsis ">

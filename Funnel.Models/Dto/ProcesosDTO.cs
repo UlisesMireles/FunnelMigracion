@@ -18,7 +18,7 @@ namespace Funnel.Models.Dto
         public int OportunidadesPerdidas { get; set; }
         public int OportunidadesEliminadas { get; set; }
         public int OportunidadesCanceladas { get; set; }
-        public List<OportunidadesTarjetasDto> Etapas { get; set; }
+        public List<OportunidadesTarjetasDto>? Etapas { get; set; }
         public string DesEstatus { get; set; }
         public int IdPlantilla { get; set; }
     }

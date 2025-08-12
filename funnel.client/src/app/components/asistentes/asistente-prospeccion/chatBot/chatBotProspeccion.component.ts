@@ -58,7 +58,7 @@ export class ChatBotProspeccionComponent implements OnInit, AfterViewInit {
   asistenteSeleccionado = { idBot: 7, documento: false };
   preguntaEncuesta: string = '';
   preguntasProcesadas: PreguntaProcesada[] = [];
-
+   
   constructor(
     private OpenIaService: OpenIaService,
     private aService: AsistenteService,
@@ -525,6 +525,11 @@ realizarEncuesta() {
 
 
 private mostrarEncuesta() {
+  this.chatHistorial.push({
+    rol: "asistente",
+    mensaje: "Queremos escucharte. Esta encuesta rápida nos ayudará a mejorar la experiencia con Bruno, tu asistente comercial inteligente de LeadEisei AI 1.0. Responder no te tomará más de 2 minutos. ¡Gracias por tu tiempo!",
+    mostrarBotonDataset: false
+  });
   this.encuestaService.getPreguntasEncuesta().subscribe({
     next: (data: PreguntaEncuesta[]) => {
       const preguntasMap = new Map<number, PreguntaProcesada>();
@@ -591,7 +596,16 @@ manejarRespuestaEncuesta(respuesta: string, idPregunta: number) {
     console.error("No se encontró la pregunta para idPregunta:", idPregunta);
     return;
   }
-
+  this.chatHistorial.push({
+    rol: "usuario",
+    mensaje: respuesta
+  });
+  const indexPreguntaEnHistorial = this.chatHistorial.findIndex(
+    chat => chat.esEncuesta && chat.preguntaEncuesta?.idPregunta === idPregunta
+  );
+  if (indexPreguntaEnHistorial !== -1) {
+    this.chatHistorial[indexPreguntaEnHistorial].preguntaEncuesta!.respuestas = [];
+  }
   const datosEncuesta = {
     idBot: this.asistenteSeleccionado.idBot,
     pregunta: preguntaActual.pregunta,
@@ -602,8 +616,8 @@ manejarRespuestaEncuesta(respuesta: string, idPregunta: number) {
   };
 
   this.encuestaService.registrarRespuestaEncuesta(datosEncuesta).subscribe({
-    next: (response) => {
-      console.log('Respuesta registrada:', response);
+    next: () => {
+      console.log('Respuesta registrada');
       const siguienteIndex = this.preguntasProcesadas.indexOf(preguntaActual) + 1;
       this.mostrarPreguntaActual(siguienteIndex);
     },
@@ -614,8 +628,10 @@ manejarRespuestaEncuesta(respuesta: string, idPregunta: number) {
     }
   });
 
-  console.log(`Pregunta ID ${idPregunta}: ${respuesta}`);
+  this.scrollToBottom();
+  this.saveState();
 }
+
 
 private limpiarConversacion() {
   this.OpenIaService.limpiarCacheBot(this.loginService.obtenerIdUsuario(), 7).subscribe({
@@ -624,7 +640,7 @@ private limpiarConversacion() {
   });
 
   this.chatHistorial = [
-    { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨ Soy Bruno..." , mostrarBotonDataset: true}
+    { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨  Soy Bruno, tu asistente comercial para convertir contactos en oportunidades reales.  Estoy aquí para ayudarte a generar correos estratégicos, identificar oportunidades con IA, proponer soluciones por sector y ayudarte en ventas consultivas, todo desde un solo lugar." , mostrarBotonDataset: true}
   ];
   sessionStorage.removeItem('chatBotProspeccionState');
   localStorage.removeItem('chatBotProspeccionState');

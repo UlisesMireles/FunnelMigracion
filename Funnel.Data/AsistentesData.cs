@@ -101,5 +101,34 @@ namespace Funnel.Data
 
             return insert;
         }
+        public async Task<List<PreguntasFrecuentesDto>> ObtenerPreguntasFrecuentesAsync(int idBot)
+        {
+            List<PreguntasFrecuentesDto> result = new List<PreguntasFrecuentesDto>();
+
+            IList<ParameterSQl> list = new List<ParameterSQl>
+            {
+            DataBase.CreateParameterSql("@IdBot", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, idBot)
+            };
+
+            using (IDataReader reader = await DataBase.GetReaderSql("F_PreguntasFrecuentesActivasPorBot", CommandType.StoredProcedure, list, _connectionString))
+            {
+                while (reader.Read())
+                {
+                    var dto = new PreguntasFrecuentesDto
+                    {
+                        Id = ComprobarNulos.CheckIntNull(reader["Id"]),
+                        IdBot = ComprobarNulos.CheckIntNull(reader["IdBot"]),
+                        Pregunta = ComprobarNulos.CheckStringNull(reader["Pregunta"]),
+                        Respuesta = ComprobarNulos.CheckStringNull(reader["Respuesta"]),
+                        Activo = ComprobarNulos.CheckBooleanNull(reader["Activo"]),
+                        Categoria = ComprobarNulos.CheckStringNull(reader["Categoria"]),
+                        IdCategoria = ComprobarNulos.CheckIntNull(reader["IdCategoria"])
+                    };
+                    result.Add(dto);
+                }
+            }
+
+            return result;
+        }
     }
 }

@@ -13,6 +13,8 @@ import { PreguntaEncuesta, PreguntaProcesada } from '../../../../interfaces/asis
 import { MatDialog } from '@angular/material/dialog';
 import { EliminarConversacionComponent } from '../eliminar-conversacion/eliminar-conversacion.component';
 import { EvaluarBotComponent } from '../evaluar-bot/evaluar-bot.component';
+import { MessageService } from 'primeng/api';
+
 @Component({
   selector: 'app-chaBotProspeccion',
   standalone: false,
@@ -48,7 +50,7 @@ export class ChatBotProspeccionComponent implements OnInit, AfterViewInit {
   };
 
   chatHistorial: ChatHistorial[] = [
-     { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨  Soy Bruno, tu asistente comercial para convertir contactos en oportunidades reales.  Estoy aquí para ayudarte a generar correos estratégicos, identificar oportunidades con IA, proponer soluciones por sector y ayudarte en ventas consultivas, todo desde un solo lugar." , mostrarBotonDataset: true}
+     { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨  Soy Bruno, tu asistente comercial para convertir contactos en oportunidades reales.  Estoy aquí para ayudarte a generar correos estratégicos, identificar oportunidades con IA, proponer soluciones por sector y ayudarte en ventas consultivas, todo desde un solo lugar." , mostrarBotonDataset: true, mostrarBotonCopiar: false}
    ];
   chatHistorialResp!: string;
   mostrarBotonDataset: boolean = false;
@@ -58,7 +60,9 @@ export class ChatBotProspeccionComponent implements OnInit, AfterViewInit {
   asistenteSeleccionado = { idBot: 7, documento: false };
   preguntaEncuesta: string = '';
   preguntasProcesadas: PreguntaProcesada[] = [];
-   
+  tipoEncuesta: string = '';
+  respuestaAbierta: string = '';
+
   constructor(
     private OpenIaService: OpenIaService,
     private aService: AsistenteService,
@@ -66,7 +70,8 @@ export class ChatBotProspeccionComponent implements OnInit, AfterViewInit {
     private loginService: LoginService,
     private topVeinteDataService: TopVeinteDataService,
     private encuestaService: EncuestaService,
-    private dialog: MatDialog,
+    private dialog: MatDialog, private messageService: MessageService
+    
   ) { }
 
    ngOnInit() { 
@@ -149,7 +154,7 @@ ngAfterViewInit(): void {
 
    private restoreState(state: any) {
     this.chatHistorial = state.historial || [
-      { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨  Soy Bruno, tu asistente comercial para convertir contactos en oportunidades reales.  Estoy aquí para ayudarte a generar correos estratégicos, identificar oportunidades con IA, proponer soluciones por sector y ayudarte en ventas consultivas, todo desde un solo lugar." , mostrarBotonDataset: true}
+      { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨  Soy Bruno, tu asistente comercial para convertir contactos en oportunidades reales.  Estoy aquí para ayudarte a generar correos estratégicos, identificar oportunidades con IA, proponer soluciones por sector y ayudarte en ventas consultivas, todo desde un solo lugar." , mostrarBotonDataset: true, mostrarBotonCopiar: false }
     ];
     this.chatHistorialResp = JSON.stringify(this.chatHistorial);
     this.cdRef.detectChanges();
@@ -174,7 +179,7 @@ ngAfterViewInit(): void {
         this.chatHistorial.push({ 
           rol: "asistente", 
           mensaje: respuestaSaludo,
-          mostrarBotonDataset: false 
+          mostrarBotonDataset: false, 
         });
         
         this.pregunta = "";
@@ -476,7 +481,8 @@ private mostrarEncuesta() {
   this.chatHistorial.push({
     rol: "asistente",
     mensaje: "Queremos escucharte. Esta encuesta rápida nos ayudará a mejorar la experiencia con Bruno, tu asistente comercial inteligente de LeadEisei AI 1.0. Responder no te tomará más de 2 minutos. ¡Gracias por tu tiempo!",
-    mostrarBotonDataset: false
+    mostrarBotonDataset: false,
+    mostrarBotonCopiar: false
   });
   this.encuestaService.getPreguntasEncuesta().subscribe({
     next: (data: PreguntaEncuesta[]) => {
@@ -514,15 +520,18 @@ private mostrarEncuesta() {
 
 private mostrarPreguntaActual(index: number) {
   if (index >= this.preguntasProcesadas.length) {
-    this.chatHistorial.push({
-      rol: "asistente",
-      mensaje: "¡Gracias por completar la encuesta!",
-      mostrarBotonDataset: false
+    this.messageService.add({
+      severity: 'success',
+      summary: 'La operación se realizó con éxito.',
+      detail: '¡Gracias por completar la encuesta!',
     });
-    this.limpiarConversacion();
-    return;
-  }
+    setTimeout(() => {
+      this.limpiarConversacion();
+    }, 3000); // 3000 ms = 3 segundos
 
+    return;
+  
+  }
   const preguntaActual = this.preguntasProcesadas[index];
 
   this.chatHistorial.push({
@@ -538,8 +547,7 @@ private mostrarPreguntaActual(index: number) {
   this.scrollToBottom();
   this.saveState();
 }
-tipoEncuesta: string = '';
-respuestaAbierta: string = '';
+
 
 manejarRespuestaEncuesta(respuesta: string, idPregunta: number) {
   const preguntaActual = this.preguntasProcesadas.find(p => p.idPregunta === idPregunta);
@@ -547,6 +555,11 @@ manejarRespuestaEncuesta(respuesta: string, idPregunta: number) {
     console.error("No se encontró la pregunta para idPregunta:", idPregunta);
     return;
   }
+  if (!respuesta.trim()) {
+    // No enviar respuestas vacías ni espacios
+    return;
+  }
+
   this.chatHistorial.push({
     rol: "usuario",
     mensaje: respuesta
@@ -578,7 +591,6 @@ manejarRespuestaEncuesta(respuesta: string, idPregunta: number) {
       this.mostrarPreguntaActual(siguienteIndex);
     }
   });
-
   this.scrollToBottom();
   this.saveState();
 }
@@ -591,7 +603,7 @@ private limpiarConversacion() {
   });
 
   this.chatHistorial = [
-    { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨  Soy Bruno, tu asistente comercial para convertir contactos en oportunidades reales.  Estoy aquí para ayudarte a generar correos estratégicos, identificar oportunidades con IA, proponer soluciones por sector y ayudarte en ventas consultivas, todo desde un solo lugar." , mostrarBotonDataset: true}
+    { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨  Soy Bruno, tu asistente comercial para convertir contactos en oportunidades reales.  Estoy aquí para ayudarte a generar correos estratégicos, identificar oportunidades con IA, proponer soluciones por sector y ayudarte en ventas consultivas, todo desde un solo lugar." , mostrarBotonDataset: true, mostrarBotonCopiar: false }
   ];
   sessionStorage.removeItem('chatBotProspeccionState');
   localStorage.removeItem('chatBotProspeccionState');

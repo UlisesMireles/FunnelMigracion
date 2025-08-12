@@ -9,5 +9,6 @@ export interface ChatHistorial{
     preguntaEncuesta?: PreguntaProcesada;
     indicePregunta?: number;
     tipoEncuesta?: string;     
-    respuestaAbierta?: string;   
+    respuestaAbierta?: string;  
+    mostrarBotonCopiar?: boolean;
 }

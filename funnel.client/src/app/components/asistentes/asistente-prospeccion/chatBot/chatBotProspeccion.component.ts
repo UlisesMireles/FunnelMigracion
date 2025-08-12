@@ -472,58 +472,6 @@ private reemplazarVariablesEnRespuesta(respuesta: string): string {
     .replace(/\[Tu correo electrónico\]/gi, rolUsuario);
 }
 
-
-
-realizarEncuesta() {
-  this.encuestaService.getPreguntasEncuesta().subscribe({
-    next: (data: PreguntaEncuesta[]) => {
-      // Procesamos la data agrupando las preguntas Multiple
-      const preguntasMap = new Map<number, {
-        idPregunta: number;
-        pregunta: string;
-        tipoRespuesta: string;
-        respuestas: string[];
-      }>();
-
-      data.forEach(item => {
-        // Limpiamos el HTML de tipoRespuesta para facilitar búsqueda
-        const tipoRespuestaLimpio = item.tipoRespuesta.replace(/<[^>]+>/g, '').toLowerCase();
-
-        if (tipoRespuestaLimpio.includes('multiple')) {
-          // Agrupamos respuestas por pregunta
-          if (!preguntasMap.has(item.idPregunta)) {
-            preguntasMap.set(item.idPregunta, {
-              idPregunta: item.idPregunta,
-              pregunta: item.pregunta,
-              tipoRespuesta: tipoRespuestaLimpio,
-              respuestas: []
-            });
-          }
-          preguntasMap.get(item.idPregunta)!.respuestas.push(item.respuesta);
-        } else {
-          // Para Opciones y Abierta guardamos como entrada independiente
-          preguntasMap.set(item.idPregunta, {
-            idPregunta: item.idPregunta,
-            pregunta: item.pregunta,
-            tipoRespuesta: tipoRespuestaLimpio,
-            respuestas: [] // No aplica, se maneja diferente
-          });
-        }
-      });
-
-      // Convertimos el Map a array para usar en el template
-      this.preguntasProcesadas = Array.from(preguntasMap.values());
-
-      console.log('Preguntas procesadas:', this.preguntasProcesadas);
-    },
-    error: (err) => {
-      console.error('Error al obtener las preguntas de la encuesta:', err);
-    }
-  });
-}
-
-
-
 private mostrarEncuesta() {
   this.chatHistorial.push({
     rol: "asistente",
@@ -583,12 +531,15 @@ private mostrarPreguntaActual(index: number) {
     mostrarBotonDataset: false,
     esEncuesta: true,
     preguntaEncuesta: preguntaActual,
-    indicePregunta: index
+    indicePregunta: index,
+    tipoEncuesta: preguntaActual.tipoRespuesta
   });
 
   this.scrollToBottom();
   this.saveState();
 }
+tipoEncuesta: string = '';
+respuestaAbierta: string = '';
 
 manejarRespuestaEncuesta(respuesta: string, idPregunta: number) {
   const preguntaActual = this.preguntasProcesadas.find(p => p.idPregunta === idPregunta);

@@ -64,6 +64,8 @@ export class ChatBotProspeccionComponent implements OnInit, AfterViewInit {
   respuestaAbierta: string = '';
   respuestaComentarios: string = '';
   @Output() cerrarChat = new EventEmitter<void>();
+  preguntaActualIndex: number = 0;
+  encuestaActiva: boolean = false;
   constructor(
     private OpenIaService: OpenIaService,
     private aService: AsistenteService,
@@ -158,13 +160,25 @@ ngAfterViewInit(): void {
     this.chatHistorial = state.historial || [
       { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨  Soy Bruno, tu asistente comercial para convertir contactos en oportunidades reales.  Estoy aquí para ayudarte a generar correos estratégicos, identificar oportunidades con IA, proponer soluciones por sector y ayudarte en ventas consultivas, todo desde un solo lugar." , mostrarBotonDataset: true, mostrarBotonCopiar: false }
     ];
+    if(state.encuesta){
+      this.preguntasProcesadas = state.encuesta.preguntasProcesadas || [];
+      this.preguntaActualIndex = state.encuesta.preguntaActualIndex || 0;
+      //this.respuestasEnviadas = state.encuesta.respuestasEnviadas || [];
+      this.encuestaActiva = state.encuesta.encuestaActiva || false; 
+    }
     this.chatHistorialResp = JSON.stringify(this.chatHistorial);
     this.cdRef.detectChanges();
   }
   private saveState() {
     const state = {
       historial: this.chatHistorial,
-      asistenteSeleccionado: this.asistenteSeleccionado
+      asistenteSeleccionado: this.asistenteSeleccionado,
+      encuesta:{
+        preguntasProcesadas: this.preguntasProcesadas,
+        preguntaActualIndex: this.preguntaActualIndex,
+        encuestaActiva: this.encuestaActiva
+        //respuestasEnviadas: this.respuesasEnviadas
+      }
     };
     sessionStorage.setItem('chatBotProspeccionState', JSON.stringify(state));
   }
@@ -380,7 +394,6 @@ resetConversation() {
         position: { right: '70px', top: '250px' },
         viewContainerRef: this.viewContainerRef
       });
-
       evalDialogRef.afterClosed().subscribe(evaluarResult => {
         if (evaluarResult === true) {
           this.mostrarEncuesta();
@@ -523,7 +536,6 @@ private mostrarEncuesta() {
       });
 
       this.preguntasProcesadas = Array.from(preguntasMap.values());
-      console.log('Preguntas procesadas para encuesta:', this.preguntasProcesadas);
       if (this.preguntasProcesadas.length > 0) {
         this.mostrarPreguntaActual(0);
       }
@@ -535,6 +547,9 @@ private mostrarEncuesta() {
 }
 
 private mostrarPreguntaActual(index: number) {
+  this.preguntaActualIndex = index;
+  this.encuestaActiva = true;
+  this.saveState();
   if (index >= this.preguntasProcesadas.length) {
     this.chatHistorial.push({
       rol: "asistente",
@@ -542,6 +557,9 @@ private mostrarPreguntaActual(index: number) {
       mostrarBotonDataset: false,
       mostrarBotonCopiar: false
     });
+    this.encuestaActiva = false;
+    //this.preguntasProcesadas = [];
+    this.saveState();
     setTimeout(() => {
       this.limpiarConversacion();
     }, 2000);
@@ -567,9 +585,13 @@ private mostrarPreguntaActual(index: number) {
 
 
 manejarRespuestaEncuesta(respuesta: string, idPregunta: number) {
+   if (!this.encuestaActiva || this.preguntasProcesadas.length === 0) {
+    console.error("Encuesta no activa o sin preguntas. No se procesará la respuesta.");
+    return;
+  }
   const preguntaActual = this.preguntasProcesadas.find(p => p.idPregunta === idPregunta);
   if (!preguntaActual) {
-    console.error("No se encontró la pregunta para idPregunta:", idPregunta);
+    console.error("No se encontró la pregunta");
     return;
   }
   if (!respuesta.trim()) {
@@ -597,15 +619,14 @@ manejarRespuestaEncuesta(respuesta: string, idPregunta: number) {
   const datosEncuesta = {
     idBot: this.asistenteSeleccionado.idBot,
     pregunta: preguntaActual.pregunta,
-    fechaPregunta: new Date().toISOString(),
+    fechaPregunta: new Date(),
     respuesta: respuesta,
-    fechaRespuesta: new Date().toISOString(),
+    fechaRespuesta: new Date(),
     idUsuario: this.loginService.obtenerIdUsuario()
   };
 
   this.encuestaService.registrarRespuestaEncuesta(datosEncuesta).subscribe({
     next: () => {
-      console.log('Respuesta registrada');
       const siguienteIndex = this.preguntasProcesadas.indexOf(preguntaActual) + 1;
       this.mostrarPreguntaActual(siguienteIndex);
     },

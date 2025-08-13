@@ -27,4 +27,5 @@ export interface ConsultaAsistente {
     correo?: string;
     puesto?: string;
     numeroTelefono?: string;
+    empresa?: string;
   }

@@ -17,6 +17,7 @@ namespace Funnel.Models.Dto
         public string Correo { get; set; } = string.Empty;
         public string Puesto { get; set; } = string.Empty;
         public string NumeroTelefono { get; set; } = string.Empty;
+        public string Empresa { get; set; } = string.Empty;
         public DateTime FechaPregunta { get; set; }
         public string Respuesta { get; set; } = string.Empty;
         public string RutaDocumento { get; set; } = string.Empty;

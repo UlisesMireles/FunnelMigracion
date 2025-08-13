@@ -13,13 +13,11 @@ namespace Funnel.Logic
     public class EncuestaService : IEncuestaService
     {
         private readonly IEncuestaData _encuestaData;
-        private readonly ILoginService _loginService;
-        private readonly IConverter _converter;
+
         public EncuestaService(IEncuestaData encuestaData, IConverter converter, ILoginService loginService)
         {
             _encuestaData = encuestaData;
-            _converter = converter;
-            _loginService = loginService;
+      
         }
 
         public async Task<List<EncuestaDto>> ConsultarPreguntasEncuesta()

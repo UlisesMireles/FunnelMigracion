@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef, AfterViewInit, EventEmitter, Output } from '@angular/core';
 import { ConsultaAsistenteDto } from './../../../../interfaces/asistentes/consultaAsistente';
 import { ChatHistorial } from './../../../../interfaces/asistentes/chatHistorial';
 import { OpenIaService } from '../../../../services/asistentes/openIA.service';
@@ -63,6 +63,7 @@ export class ChatBotProspeccionComponent implements OnInit, AfterViewInit {
   tipoEncuesta: string = '';
   respuestaAbierta: string = '';
   respuestaComentarios: string = '';
+  @Output() cerrarChat = new EventEmitter<void>();
   constructor(
     private OpenIaService: OpenIaService,
     private aService: AsistenteService,
@@ -363,6 +364,9 @@ enviarDataset() {
 
   
 resetConversation() {
+  if (this.chatHistorial.length <= 1) {
+    return; 
+  }
   const dialogRef = this.dialog.open(EliminarConversacionComponent, {
     width: '350px',
     position: { right: '70px', top: '250px' }, 
@@ -569,8 +573,15 @@ manejarRespuestaEncuesta(respuesta: string, idPregunta: number) {
     return;
   }
   if (!respuesta.trim()) {
-    // No enviar respuestas vacías ni espacios
     return;
+  }
+    
+  const preguntaEnHistorial = this.chatHistorial.find(
+  chat => chat.esEncuesta && chat.preguntaEncuesta?.idPregunta === idPregunta
+  );
+  
+  if (preguntaEnHistorial) {
+    preguntaEnHistorial.respuestaEnviada = true;
   }
 
   this.chatHistorial.push({
@@ -613,8 +624,14 @@ manejarRespuestaEncuesta(respuesta: string, idPregunta: number) {
 
 private limpiarConversacion() {
   this.OpenIaService.limpiarCacheBot(this.loginService.obtenerIdUsuario(), 7).subscribe({
-    next: (response) => console.log('Cache limpiado', response),
-    error: (error) => console.error('Error al limpiar cache', error)
+    next: (response) => {
+      console.log('Cache limpiado', response);
+      this.cerrarChat.emit(); 
+    },
+    error: (error) => {
+      console.error('Error al limpiar cache', error);
+      //this.cerrarChat.emit(); 
+    }
   });
 
   this.chatHistorial = [

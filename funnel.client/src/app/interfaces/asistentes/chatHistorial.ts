@@ -12,4 +12,5 @@ export interface ChatHistorial{
     tipoEncuesta?: string;     
     respuestaAbierta?: string;  
     respuestaComentarios?: string;
+    respuestaEnviada?: boolean;
 }

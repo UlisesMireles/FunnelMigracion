@@ -1,5 +1,3 @@
-USE [SFS-MASTER-QA]
-GO
 
 /****** Object:  Table [dbo].[RespuestasEncuesta]    Script Date: 08/08/2025 11:30:42 a. m. ******/
 SET ANSI_NULLS ON

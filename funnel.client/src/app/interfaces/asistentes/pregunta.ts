@@ -8,6 +8,7 @@ export interface Faq {
   pregunta: string;
   respuesta: string;
   categoria: string;
+  idCategoria: number;
 }
 
 export interface Categoria {

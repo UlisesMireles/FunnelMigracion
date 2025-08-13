@@ -52,6 +52,7 @@ export class AsistenteProspeccionComponent {
     if (chatContainerProspeccion) {
       chatContainerProspeccion.classList.add("d-none");
     }
+    this.OncerrarChat.emit();
   }
   mostrarFaqs = false;
 

@@ -13,6 +13,7 @@ using Funnel.Logic.Utils;
 using Funnel.Data.Utils;
 using System.Data;
 using FuzzySharp;
+using Funnel.Data;
 namespace Funnel.Logic
 {
     public class AsistentesService: IAsistentesService
@@ -145,7 +146,7 @@ namespace Funnel.Logic
         }
         private async Task<PreguntasFrecuentesDto> VerificarPreguntaFrecuenteAsync(string pregunta, int idBot, int idUsuario)
         {
-            List<PreguntasFrecuentesDto> preguntasFrecuentes = await ObtenerPreguntasFrecuentesAsync(idBot);
+            List<PreguntasFrecuentesDto> preguntasFrecuentes = await _asistentesData.ObtenerPreguntasFrecuentesAsync(idBot);
 
             var preguntaNormalizada = NormalizarTexto(pregunta);
 
@@ -175,34 +176,7 @@ namespace Funnel.Logic
 
             return texto.Trim().ToLower();
         }
-        public async Task<List<PreguntasFrecuentesDto>> ObtenerPreguntasFrecuentesAsync(int idBot)
-        {
-            List<PreguntasFrecuentesDto> result = new List<PreguntasFrecuentesDto>();
-
-            IList<ParameterSQl> list = new List<ParameterSQl>
-            {
-            DataBase.CreateParameterSql("@IdBot", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, idBot)
-            };
-
-            using (IDataReader reader = await DataBase.GetReaderSql("F_PreguntasFrecuentesActivasPorBot", CommandType.StoredProcedure, list, _connectionString))
-            {
-                while (reader.Read())
-                {
-                    var dto = new PreguntasFrecuentesDto
-                    {
-                        Id = ComprobarNulos.CheckIntNull(reader["Id"]),
-                        IdBot = ComprobarNulos.CheckIntNull(reader["IdBot"]),
-                        Pregunta = ComprobarNulos.CheckStringNull(reader["Pregunta"]),
-                        Respuesta = ComprobarNulos.CheckStringNull(reader["Respuesta"]),
-                        Activo = ComprobarNulos.CheckBooleanNull(reader["Activo"]),
-                        Categoria = ComprobarNulos.CheckStringNull(reader["Categoria"])
-                    };
-                    result.Add(dto);
-                }
-            }
-
-            return result;
-        }
+        
         private async Task<RespuestaOpenIA> BuildAnswer(string pregunta, int idBot, int idUsuario)
         {
             try
@@ -420,5 +394,9 @@ namespace Funnel.Logic
             _cache.Remove(GetVectorStoreCacheKey(idBot));
         }
 
+        public async Task<List<PreguntasFrecuentesDto>> ObtenerPreguntasFrecuentesAsync(int idBot)
+        {
+            return await _asistentesData.ObtenerPreguntasFrecuentesAsync(idBot);
+        }
     }
 }

@@ -28,6 +28,7 @@
 		<Folder Include="Scripts\08-05-2025 AjustesUsuarios\" />
 		<Folder Include="Scripts\28-07-2025 AsisteProspeccionIntelgente\" />
 		<Folder Include="Scripts\05-08-2025 similitudFaq\" />
+		<Folder Include="Scripts\11-08-2025 Encuesta\" />
 		<Folder Include="Utils\" />
 	</ItemGroup>
 	

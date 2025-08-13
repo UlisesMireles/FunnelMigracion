@@ -400,3 +400,38 @@
   width: fit-content;
   max-width: 100%; 
 }
+/*ENCUESTA*/
+.opciones-encuesta-container {
+  width: 90%;
+  margin-top: 8px;
+  margin-left: 10px;
+}
+
+.opciones-encuesta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin-left: 0;
+}
+
+.opciones-encuesta button {
+  min-width: auto;
+  width: auto;
+  margin: 4px;
+  padding: 8px 12px;
+  border-radius: 10px; 
+  font-size: 14px;
+  transition: all 0.3s ease;
+  border: 2px solid #256F45; 
+  background-color: white;
+  color: #256F45;
+}
+
+.opciones-encuesta button:hover {
+  background-color: #256F45;
+  color: white;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.chatbot-window-prospeccion input, .chatbot-window-prospeccion textarea {
+    width: 380px;
+}

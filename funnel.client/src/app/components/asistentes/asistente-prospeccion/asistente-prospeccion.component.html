@@ -20,6 +20,6 @@
       </div>
     </div>
   </div>
-  <app-chaBotProspeccion class="chatBotAsistenteProspeccion"></app-chaBotProspeccion>
+  <app-chaBotProspeccion class="chatBotAsistenteProspeccion" (cerrarChat)="onCerrarChat()"></app-chaBotProspeccion>
   <app-faq-flotantes [mostrarFaqs]="mostrarFaqs" (preguntaSeleccionada)="enviarPreguntaAlChat($event)" (cerrar)="mostrarFaqs = false"></app-faq-flotantes>
 </div>

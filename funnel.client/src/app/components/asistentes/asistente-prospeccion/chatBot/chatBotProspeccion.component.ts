@@ -579,6 +579,7 @@ private mostrarPreguntaActual(index: number) {
     tipoEncuesta: preguntaActual.tipoRespuesta
   });
 
+  this.cdRef.detectChanges();
   this.scrollToBottom();
   this.saveState();
 }

@@ -21,7 +21,6 @@ export class EtapasComponent {
   etapas: OportunidadesPorEtapa[] = [];
   loading: boolean = true;
   errorMessage: string = '';
-  connectedDropLists: string[] = [];
   tarjetaMovida: any;
   idOportunidadTarjeta: number = 0;
   tarjetaEnEspera: any;
@@ -96,7 +95,6 @@ export class EtapasComponent {
         this.etapas = state.etapas;
         this.opcionPlantillas = true;
         this.nombreProceso = this.etapas[0]?.nombreProceso ?? '';
-        this.connectedDropLists = this.etapas.map((_, i) => `ListEtapa${i}`);
         this.cantidadExpandidos = this.etapas.filter(etapa => etapa.expandido).length;
         if (state.idPlantilla > 0) {
           this.idPlantilla = state.idPlantilla;
@@ -160,7 +158,7 @@ export class EtapasComponent {
       eliminado: false,
       idEmpresa: this.idEmpresa,
       idUsuario: this.idUsuario,
-      orden: (this.etapas.length + 1).toString(),
+      orden: (this.etapasActivas.length + 1).toString(),
       textoBusqueda: '',
       etapaSeleccionada: null
     });
@@ -168,6 +166,14 @@ export class EtapasComponent {
     this.etapas.push(nuevaEtapa);
     this.validaGuardar = true;
     this.opcionPlantillas = true;
+    this.habilitaPlantillas = false;
+    // Actualizar connectedDropLists después de agregar
+    this.actualizarConnectedDropLists();
+  }
+
+  // Método para forzar la detección de cambios después de operaciones con etapas
+  actualizarConnectedDropLists() {
+    this.cdr.detectChanges();
   }
 
   seleccionarPlantilla(idPlantilla: number) {
@@ -180,7 +186,6 @@ export class EtapasComponent {
     this.idPlantilla = plantilla.idPlantilla;
     this.habilitaPlantillas = true;
     this.validaGuardar = true;
-    this.connectedDropLists = this.etapas.map((_, i) => `ListEtapa${i}`);
     this.cantidadExpandidos = this.etapas.filter(etapa => etapa.expandido).length;
     this.cdr.detectChanges();
   }
@@ -190,7 +195,6 @@ export class EtapasComponent {
     this.etapas = [];
     this.habilitaPlantillas = false;
     this.validaGuardar = false;
-    this.connectedDropLists = [];
     this.cantidadExpandidos = 0;
     this.cdr.detectChanges();
   }
@@ -208,6 +212,10 @@ export class EtapasComponent {
     return this.etapasCombo.filter(e => !e.eliminado);
   }
 
+  get connectedDropLists() {
+    return this.etapasActivas.map((_, i) => `ListEtapa${i}`);
+  }
+
   guardarEtapas() {
     let etapasLista = this.etapas.filter(e => e.nombre == '' && Number(e.probabilidad) <= 0);
     if (etapasLista.length > 0) {
@@ -220,7 +228,7 @@ export class EtapasComponent {
       return;
     }
 
-    const etapasOrdenProbabilidad = this.etapas;
+    const etapasOrdenProbabilidad = this.etapas.filter(e => !e.eliminado);
     for (let i = 1; i < etapasOrdenProbabilidad.length; i++) {
       if ((Number(etapasOrdenProbabilidad[i].probabilidad) < Number(etapasOrdenProbabilidad[i - 1].probabilidad)) &&
         Number(etapasOrdenProbabilidad[i - 1].probabilidad) > 0) {
@@ -441,11 +449,22 @@ export class EtapasComponent {
   }
 
   dropEtapa(event: CdkDragDrop<any[]>) {
-    moveItemInArray(this.etapas, event.previousIndex, event.currentIndex);
-    this.etapas.forEach((etapa, index) => {
+    
+    // Trabajar solo con etapas activas para el drag and drop
+    const etapasActivas = this.etapasActivas;
+    moveItemInArray(etapasActivas, event.previousIndex, event.currentIndex);
+    
+    // Actualizar el orden solo de las etapas activas
+    etapasActivas.forEach((etapa, index) => {
       etapa.orden = (index + 1).toString();
-      this.validaGuardar = true;
     });
+    
+    // Recrear el array de etapas manteniendo las eliminadas al final
+    const etapasEliminadas = this.etapas.filter(e => e.eliminado);
+    this.etapas = [...etapasActivas, ...etapasEliminadas];
+    
+    this.validaGuardar = true;
+    this.actualizarConnectedDropLists();
   }
 
   alternarItem(item: any, event: Event) {
@@ -578,6 +597,9 @@ export class EtapasComponent {
   confirmarEliminacion(etapa: any): void {
     if (etapa) {
       etapa.eliminado = true;
+      etapa.orden = "1000";
+      // Actualizar connectedDropLists después de eliminar
+      this.actualizarConnectedDropLists();
       this.messageService.add({
         severity: 'success',
         summary: 'Éxito',

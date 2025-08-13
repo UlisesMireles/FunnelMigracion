@@ -373,7 +373,7 @@ resetConversation() {
     if (result === 'evaluar') {
       const evalDialogRef = this.dialog.open(EvaluarBotComponent, {
         width: '350px',
-        position: { left: '70px', top: '250px' },
+        position: { right: '70px', top: '250px' },
         viewContainerRef: this.viewContainerRef
       });
 

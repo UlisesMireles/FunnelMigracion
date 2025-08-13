@@ -29,16 +29,6 @@
                       (click)="manejarRespuestaEncuesta(opcion, chat.preguntaEncuesta!.idPregunta)">
                       {{ opcion }}
                     </button>
-           <div class="chat-bubble ai-bubble formatoMensajes vstackbot" [innerHTML]="chat.mensaje"></div>
-            <!-- <button *ngIf="chat.mostrarBotonDataset" class="btn btn-primary mt-2" (click)="enviarDataset()">
-              Enviar Dataset
-            </button> -->
-             <button *ngIf="chat.rol === 'asistente' && chat.mostrarBotonCopiar" class="btn btn-primary mt-2"
-              class="btn-copiar" (click)="copiarRespuesta(chat.mensaje)"
-              matTooltip="Copiar mensaje"> <mat-icon>content_copy</mat-icon>
-            </button>
-          </div>
-        </ng-container>
 
                 <div *ngIf="opcion.toLowerCase().includes('especificar en comentarios')" class="mt-2 position-relative">
                    <input type="text" class="form-control pr-5" placeholder="Escribe tu respuesta..."

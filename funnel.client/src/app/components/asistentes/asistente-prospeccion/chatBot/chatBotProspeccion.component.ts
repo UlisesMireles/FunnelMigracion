@@ -13,7 +13,7 @@ import { PreguntaEncuesta, PreguntaProcesada } from '../../../../interfaces/asis
 import { MatDialog } from '@angular/material/dialog';
 import { EliminarConversacionComponent } from '../eliminar-conversacion/eliminar-conversacion.component';
 import { EvaluarBotComponent } from '../evaluar-bot/evaluar-bot.component';
-import { MessageService } from 'primeng/api';
+import { ViewContainerRef } from '@angular/core';
 
 @Component({
   selector: 'app-chaBotProspeccion',
@@ -62,7 +62,7 @@ export class ChatBotProspeccionComponent implements OnInit, AfterViewInit {
   preguntasProcesadas: PreguntaProcesada[] = [];
   tipoEncuesta: string = '';
   respuestaAbierta: string = '';
-
+  respuestaComentarios: string = '';
   constructor(
     private OpenIaService: OpenIaService,
     private aService: AsistenteService,
@@ -70,7 +70,7 @@ export class ChatBotProspeccionComponent implements OnInit, AfterViewInit {
     private loginService: LoginService,
     private topVeinteDataService: TopVeinteDataService,
     private encuestaService: EncuestaService,
-    private dialog: MatDialog, private messageService: MessageService
+    private dialog: MatDialog, private viewContainerRef: ViewContainerRef
     
   ) { }
 
@@ -357,14 +357,16 @@ enviarDataset() {
 resetConversation() {
   const dialogRef = this.dialog.open(EliminarConversacionComponent, {
     width: '350px',
-    position: { left: '1090px', top: '250px' }
+    position: { right: '70px', top: '250px' }, 
+    viewContainerRef: this.viewContainerRef
   });
 
   dialogRef.afterClosed().subscribe(result => {
     if (result === 'evaluar') {
       const evalDialogRef = this.dialog.open(EvaluarBotComponent, {
         width: '350px',
-        position: { left: '1090px', top: '250px' }
+        position: { left: '70px', top: '250px' },
+        viewContainerRef: this.viewContainerRef
       });
 
       evalDialogRef.afterClosed().subscribe(evaluarResult => {
@@ -520,14 +522,15 @@ private mostrarEncuesta() {
 
 private mostrarPreguntaActual(index: number) {
   if (index >= this.preguntasProcesadas.length) {
-    this.messageService.add({
-      severity: 'success',
-      summary: 'La operación se realizó con éxito.',
-      detail: '¡Gracias por completar la encuesta!',
+    this.chatHistorial.push({
+      rol: "asistente",
+      mensaje: "✅ Gracias por su tiempo. Su participación es muy valiosa para ayudarnos a mejorar nuestros servicios.",
+      mostrarBotonDataset: false,
+      mostrarBotonCopiar: false
     });
     setTimeout(() => {
       this.limpiarConversacion();
-    }, 3000); // 3000 ms = 3 segundos
+    }, 2000);
 
     return;
   
@@ -591,6 +594,8 @@ manejarRespuestaEncuesta(respuesta: string, idPregunta: number) {
       this.mostrarPreguntaActual(siguienteIndex);
     }
   });
+  this.respuestaAbierta = '';
+  this.respuestaComentarios = '';
   this.scrollToBottom();
   this.saveState();
 }

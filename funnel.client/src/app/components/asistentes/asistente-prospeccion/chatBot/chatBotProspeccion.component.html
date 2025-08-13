@@ -1,4 +1,3 @@
-<p-toast></p-toast>
 <div class="scrollable-div" #scrollMe>
   <div *ngIf="mostrarMensajeCopiado" class="mensaje-flotante">{{ mensajeCopiadoTexto }}</div>
   <div class="chat-historial" *ngFor="let chat of chatHistorial">
@@ -31,17 +30,15 @@
                       {{ opcion }}
                     </button>
 
-                    <div *ngIf="opcion.toLowerCase().includes('especificar en comentarios')" class="mt-2">
-                      <input type="text" 
-                            class="form-control mb-2"
-                            placeholder="Escribe tu respuesta..."
-                            [(ngModel)]="respuestaAbierta" 
-                            (keydown.enter)="manejarRespuestaEncuesta(respuestaAbierta, chat.preguntaEncuesta!.idPregunta)">
-                      <button class="btn btn-primary"
-                              (click)="manejarRespuestaEncuesta(respuestaAbierta, chat.preguntaEncuesta!.idPregunta)">
-                        Enviar
-                      </button>
-                    </div>
+                <div *ngIf="opcion.toLowerCase().includes('especificar en comentarios')" class="mt-2 position-relative">
+                   <input type="text" class="form-control pr-5" placeholder="Escribe tu respuesta..."
+                    [(ngModel)]="respuestaComentarios"
+                    (keydown.enter)="manejarRespuestaEncuesta(respuestaComentarios, chat.preguntaEncuesta!.idPregunta)">
+                    <button class="btn btn-primary py-1 position-absolute"  style="left: 240px; top: 34%; transform: translateY(-50%);"
+                    (click)="manejarRespuestaEncuesta(respuestaComentarios, chat.preguntaEncuesta!.idPregunta)">
+                    Enviar
+                    </button>
+                  </div>
                   </div>
                 </ng-container>
               </div>

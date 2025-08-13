@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Funnel.Data.Utils;
 using static Funnel.Models.Dto.OpenAiConfiguracion;
 using System.Data;
+using Funnel.Data.Interfaces;
 
 
 namespace Funnel.Logic.Utils.Asistentes
@@ -15,10 +16,12 @@ namespace Funnel.Logic.Utils.Asistentes
     public class AsistenteHistorico
     {
         private static readonly IConfiguration _configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+        private readonly IAsistentesData _asistentesData;
         private readonly string _connectionString;
-        public AsistenteHistorico(IConfiguration configuration)
+        public AsistenteHistorico(IConfiguration configuration, IAsistentesData asistentesData)
         {
             _connectionString = configuration.GetConnectionString("FunelDatabase");
+            _asistentesData = asistentesData;
         }
 
         public async Task<ConsultaAsistente> AsistenteOpenAIAsync(ConsultaAsistente consultaAsistente)
@@ -32,6 +35,7 @@ namespace Funnel.Logic.Utils.Asistentes
             try
             {
 
+                DateTime fechaPregunta = DateTime.Now;
                 var respuestaOpenIA = await BuildAnswer(consultaAsistente.Pregunta, consultaAsistente.IdBot);
 
                 consultaAsistente.Respuesta = respuestaOpenIA.Respuesta;
@@ -39,6 +43,26 @@ namespace Funnel.Logic.Utils.Asistentes
                 consultaAsistente.TokensSalida = respuestaOpenIA.TokensSalida;
                 consultaAsistente.Exitoso = true;
                 consultaAsistente.FechaRespuesta = DateTime.Now;
+                var configuracion = await _asistentesData.ObtenerConfiguracionPorIdBotAsync(consultaAsistente.IdBot);
+                if (configuracion == null)
+                    throw new Exception("No se encontró configuración para el asistente con IdBot: " + consultaAsistente.IdBot);
+                var insertarBitacora = new InsertaBitacoraPreguntasDto
+                {
+                    IdBot = consultaAsistente.IdBot,
+                    Pregunta = consultaAsistente.Pregunta,
+                    FechaPregunta = fechaPregunta,
+                    Respuesta = consultaAsistente.Respuesta,
+                    FechaRespuesta = DateTime.Now,
+                    Respondio = true,
+                    TokensEntrada = consultaAsistente.TokensEntrada,
+                    TokensSalida = consultaAsistente.TokensSalida,
+                    IdUsuario = consultaAsistente.IdUsuario,
+                    CostoPregunta = consultaAsistente.TokensEntrada * configuracion.CostoTokensEntrada,
+                    CostoRespuesta = consultaAsistente.TokensSalida * configuracion.CostoTokensSalida,
+                    CostoTotal = (consultaAsistente.TokensEntrada * configuracion.CostoTokensEntrada) + (consultaAsistente.TokensSalida * configuracion.CostoTokensSalida),
+                    Modelo = configuracion.Modelo
+                };
+                await _asistentesData.InsertaPreguntaBitacoraPreguntas(insertarBitacora);
             }
             catch (Exception ex)
             {
@@ -86,8 +110,7 @@ namespace Funnel.Logic.Utils.Asistentes
             {
                 model = configuracion.Modelo,
                 messages = messages,
-                temperature = 0.7,
-                max_tokens = 900
+                temperature = 1.0
             };
 
             var chatRespuestaOpenIA = await OpenIAFunciones.ChatCompletionAsync(configuracion.Llave, requestBody);

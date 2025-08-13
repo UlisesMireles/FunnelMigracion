@@ -16,9 +16,11 @@ namespace Funnel.Server.Controllers
     public class AsistenteHistoricoController : Controller
     {
         private readonly IConfiguration _configuration;
-        public AsistenteHistoricoController(IConfiguration configuration)
+        private readonly IAsistentesData _asistentesData;
+        public AsistenteHistoricoController(IConfiguration configuration, IAsistentesData asistentesData)
         {
             _configuration = configuration;
+            _asistentesData = asistentesData;
         }
         [HttpPost("OpenIA")]
         public async Task<ActionResult<ConsultaAsistente>> PostOpenIa(ConsultaAsistente consultaAsistente)
@@ -30,7 +32,7 @@ namespace Funnel.Server.Controllers
 
             try
             {
-                var asistente = new AsistenteHistorico(_configuration);
+                var asistente = new AsistenteHistorico(_configuration,_asistentesData);
                 var resultado = await asistente.AsistenteOpenAIAsync(consultaAsistente);
                 return Ok(resultado);
             }

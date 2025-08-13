@@ -25,8 +25,7 @@ namespace Funnel.Models.Dto
         {
             public string model { get; set; } = string.Empty;
             public List<Message>? messages { get; set; }
-            public double temperature { get; set; }
-            public int max_tokens { get; set; } = 200; 
+            public double temperature { get; set; } 
         }
 
         public class ChatRequestBodyConFunctionCalls : ChatRequestBody

@@ -141,7 +141,7 @@ div.inDivDatatableHeader>p-button>button.p-button {
   text-overflow: clip;
   padding: 2px 1px !important;
   height: 26px !important;
-  line-height: 0.5 !important;
+  line-height: 1.2 !important;
 }
 
 ::ng-deep .p-datatable-wrapper {
@@ -443,7 +443,7 @@ th.sort-active p-sortIcon {
 ::ng-deep .p-datatable-tbody>tr>td.fixed-width-oportunidad {
   height: auto !important;
   /* Permite que la celda crezca */
-  line-height: 1.6 !important;
+  line-height: 1.1 !important;
   /* Espaciado entre líneas */
   min-height: 26px !important;
   /* Altura mínima pero puede expandirse */
@@ -453,7 +453,7 @@ th.sort-active p-sortIcon {
 }
 
 ::ng-deep .p-datatable-tbody>tr>td.columna-nombre-sector {
-  line-height: 1.6 !important;
+  line-height: 1.1 !important;
   /* Espaciado entre líneas */
   min-height: 26px !important;
   /* Altura mínima pero puede expandirse */

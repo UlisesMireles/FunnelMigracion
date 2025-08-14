@@ -26,7 +26,8 @@
                   <div class="opcion-con-comentarios">
                     <button 
                       class="btn btn-outline-primary m-1"
-                      (click)="manejarRespuestaEncuesta(opcion, chat.preguntaEncuesta!.idPregunta)">
+                      (click)="manejarRespuestaEncuesta(opcion, chat.preguntaEncuesta!.idPregunta)"
+                      [disabled]="opcion.toLowerCase().includes('especificar en comentarios')">
                       {{ opcion }}
                     </button>
 
@@ -55,8 +56,9 @@
 
               <!-- ABIERTA -->
               <div *ngSwitchCase="'abierta'" class="opciones-encuesta">
+                <div *ngIf="!chat.respuestaEnviada">
                 <input type="text" 
-                      class="form-control mb-2" 
+                      class="form-control mb-2 input-abierta" 
                       placeholder="Escribe tu respuesta..."
                       [(ngModel)]="respuestaAbierta"
                       (keydown.enter)="manejarRespuestaEncuesta(respuestaAbierta, chat.preguntaEncuesta!.idPregunta)">
@@ -65,7 +67,7 @@
                   Enviar
                 </button>
               </div>
-            </div>
+            </div></div>
             </ng-container>
             <!-- Si NO es encuesta -->
             <ng-template #mensajeNormalCopiar>
@@ -98,7 +100,7 @@
 
 <div class="chatbot-message-box" data-role="chatbot">
   <textarea #inputChat class="chatbot-input" [(ngModel)]="pregunta" placeholder="¿Cómo puedo ayudarte el día de hoy?" 
-    (keydown.enter)="consultaMensajeOpenIa($event, inputChat)" (input)="ajustarAlturaTextarea($event)"></textarea>  
+    (keydown.enter)="consultaMensajeOpenIa($event, inputChat)" (input)="ajustarAlturaTextarea($event)" [disabled]="encuestaActiva"></textarea>  
   <mat-icon matSuffix style="color:#256F45; cursor:pointer; margin-top:1px;" 
     (click)="resetConversation()" matTooltip="Eliminar historial">delete</mat-icon>
   <mat-icon matSuffix class="ms-2" (click)="!pregunta || isConsultandoOpenIa ? null : consultaMensajeOpenIa()"

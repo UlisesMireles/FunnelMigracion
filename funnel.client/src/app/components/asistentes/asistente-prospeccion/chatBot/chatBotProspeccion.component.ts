@@ -561,9 +561,12 @@ private mostrarPreguntaActual(index: number) {
     //this.preguntasProcesadas = [];
     this.saveState();
     setTimeout(() => {
-      this.limpiarConversacion();
-    }, 2000);
-
+      this.scrollToBottom();
+      setTimeout(() => {
+        this.limpiarConversacion();
+      }, 2000);
+    }, 100);
+    
     return;
   
   }

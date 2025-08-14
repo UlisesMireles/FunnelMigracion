@@ -48,6 +48,9 @@ namespace Funnel.Data
             {
                 if (insert != null)
                 {
+                    insert.FechaPregunta = DateTime.Now;
+                    insert.FechaRespuesta = DateTime.Now;
+
                     IList<ParameterSQl> listaParametros = new List<ParameterSQl>
                 {
                     DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, "Bandera", DataRowVersion.Default, "INSERT-RESPUESTAS"),

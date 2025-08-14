@@ -16,5 +16,7 @@ namespace Funnel.Models.Dto
         public string? Respuesta { get; set; }
         public int? IdCategoria { get; set; }
         public int? IdBot { get; set; }
+        public DateTime? FechaPregunta { get; set; }
+        public DateTime? FechaRespuesta { get; set; }
     }
 }

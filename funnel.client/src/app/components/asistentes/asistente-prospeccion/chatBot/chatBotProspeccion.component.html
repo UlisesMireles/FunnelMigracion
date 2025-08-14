@@ -98,7 +98,7 @@
 
 <div class="chatbot-message-box" data-role="chatbot">
   <textarea #inputChat class="chatbot-input" [(ngModel)]="pregunta" placeholder="¿Cómo puedo ayudarte el día de hoy?" 
-    (keydown.enter)="consultaMensajeOpenIa($event, inputChat)" (input)="ajustarAlturaTextarea($event)"></textarea>  
+    (keydown.enter)="consultaMensajeOpenIa($event, inputChat)" (input)="ajustarAlturaTextarea($event)" [disabled]="encuestaActiva"></textarea>  
   <mat-icon matSuffix style="color:#256F45; cursor:pointer; margin-top:1px;" 
     (click)="resetConversation()" matTooltip="Eliminar historial">delete</mat-icon>
   <mat-icon matSuffix class="ms-2" (click)="!pregunta || isConsultandoOpenIa ? null : consultaMensajeOpenIa()"

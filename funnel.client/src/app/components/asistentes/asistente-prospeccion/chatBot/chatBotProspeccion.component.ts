@@ -513,10 +513,9 @@ private mostrarEncuesta() {
     mostrarBotonDataset: false,
     mostrarBotonCopiar: false
   });
-  this.encuestaService.getPreguntasEncuesta().subscribe({
+  this.encuestaService.getPreguntasEncuesta(this.asistenteSeleccionado.idBot).subscribe({
     next: (data: PreguntaEncuesta[]) => {
       const preguntasMap = new Map<number, PreguntaProcesada>();
-
       data.forEach((item: PreguntaEncuesta) => {
         const tipoRespuestaLimpio = item.tipoRespuesta.replace(/<[^>]+>/g, '').toLowerCase();
 

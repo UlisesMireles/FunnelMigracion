@@ -20,9 +20,9 @@ namespace Funnel.Logic
       
         }
 
-        public async Task<List<EncuestaDto>> ConsultarPreguntasEncuesta()
+        public async Task<List<EncuestaDto>> ConsultarPreguntasEncuesta(int idBot)
         {
-            return await _encuestaData.ConsultarPreguntasEncuesta();
+            return await _encuestaData.ConsultarPreguntasEncuesta(idBot);
         }
         public async Task<InsertaBitacoraPreguntasDto> InsertaPreguntaBitacoraPreguntas(InsertaBitacoraPreguntasDto insert)
         {

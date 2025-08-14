@@ -1,4 +1,4 @@
-USE [SFS-MASTER-QA]
+
 GO
 
 INSERT INTO [dbo].[RespuestasEncuesta]

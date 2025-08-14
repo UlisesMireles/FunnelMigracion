@@ -26,7 +26,8 @@
                   <div class="opcion-con-comentarios">
                     <button 
                       class="btn btn-outline-primary m-1"
-                      (click)="manejarRespuestaEncuesta(opcion, chat.preguntaEncuesta!.idPregunta)">
+                      (click)="manejarRespuestaEncuesta(opcion, chat.preguntaEncuesta!.idPregunta)"
+                      [disabled]="opcion.toLowerCase().includes('especificar en comentarios')">
                       {{ opcion }}
                     </button>
 
@@ -55,8 +56,9 @@
 
               <!-- ABIERTA -->
               <div *ngSwitchCase="'abierta'" class="opciones-encuesta">
+                <div *ngIf="!chat.respuestaEnviada">
                 <input type="text" 
-                      class="form-control mb-2" 
+                      class="form-control mb-2 input-abierta" 
                       placeholder="Escribe tu respuesta..."
                       [(ngModel)]="respuestaAbierta"
                       (keydown.enter)="manejarRespuestaEncuesta(respuestaAbierta, chat.preguntaEncuesta!.idPregunta)">
@@ -65,7 +67,7 @@
                   Enviar
                 </button>
               </div>
-            </div>
+            </div></div>
             </ng-container>
             <!-- Si NO es encuesta -->
             <ng-template #mensajeNormalCopiar>

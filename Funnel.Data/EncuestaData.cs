@@ -24,7 +24,6 @@ namespace Funnel.Data
             IList<ParameterSQl> list = new List<ParameterSQl>
             {
                 DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "SELECT-PREGUNTAS"),
-                DataBase.CreateParameterSql("@IdCategoria", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, 15),
                 DataBase.CreateParameterSql("@IdBot", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, 7)
             };
             using (IDataReader reader = await DataBase.GetReaderSql("F_EncuestaBot", CommandType.StoredProcedure, list, _connectionString))

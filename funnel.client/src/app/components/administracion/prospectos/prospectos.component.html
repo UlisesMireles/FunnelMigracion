@@ -153,13 +153,16 @@
                   <span *ngSwitchCase="'currency'">
                     {{ rowData[def.key] | currency:'$':'symbol':'1.2-2' }}
                   </span>
-                  
+
                   <span *ngSwitchCase="'number'">
                     {{ rowData[def.key] | number:'1.0-0' }}
                   </span>
                   
                   <span *ngSwitchCase="'date'">
                     {{ rowData[def.key] | date:'dd/MM/yyyy' }}
+                  </span>
+                  <span *ngSwitchCase="'decimal'">
+                    {{ rowData[def.key] | number:'1.0-0' }} %
                   </span>
                   
                   <span *ngSwitchDefault>{{ rowData[def.key] }}</span>

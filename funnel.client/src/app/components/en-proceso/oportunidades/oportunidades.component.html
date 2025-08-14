@@ -402,7 +402,8 @@
       <div class="modal-content-detalle">
 
         <div class="table-responsive" *ngIf="oportunidadesModalDetalle.length > 0">
-          <p-table #dtDetalle [value]="oportunidadesModalDetalle" [rows]="10" [paginator]="oportunidadesModalDetalle.length > 10"
+          <p-table #dtDetalle [value]="oportunidadesModalDetalle" styleClass="custom-table" 
+            [rows]="10" [paginator]="oportunidadesModalDetalle.length > 10"
             [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 20, 50]" [paginatorDropdownAppendTo]="'body'" 
             currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} oportunidades"
             [globalFilterFields]="['nombreOportunidad','nombre','monto','fechaRegistro']">
@@ -432,8 +433,13 @@
                     </ng-template>
                   </p-columnFilter>
                 </th>
-                 <th scope="col">
-                 
+                <th scope="col">
+                  <p-columnFilter field="inicialesEjecutivo" matchMode="contains" [showMenu]="false">
+                    <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                      <input type="text" pInputText [ngModel]="value" (ngModelChange)="filter($event)" 
+                             class="p-inputtext" style="width: 95%">
+                    </ng-template>
+                  </p-columnFilter>
                 </th>
                 <th scope="col">
                   <p-columnFilter field="fecha" matchMode="contains" [showMenu]="false">
@@ -443,7 +449,7 @@
                     </ng-template>
                   </p-columnFilter>
                 </th>
-               
+               <th scope="col"></th>
               </tr>
             </ng-template>
 

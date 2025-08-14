@@ -7,12 +7,10 @@
      <span class="spanNombre">{{ licencia }}</span>
     </div>
     <div class="col-7 menu-header-container">
-      <div>
+      <!-- <div>
         Sesión: {{ sessionCountdownMinutes }}:{{ sessionCountdownSeconds < 10 ? '0' + sessionCountdownSeconds : sessionCountdownSeconds }}
-      </div>
-      <div class="ms-2">
-        Inactividad: {{ sessionCountdownMinutesInactividad }}:{{ sessionCountdownSecondsInactividad < 10 ? '0' + sessionCountdownSecondsInactividad : sessionCountdownSecondsInactividad }}
-      </div>
+      </div> -->
+      
       <div class="agregar btn-agregar-custom ms-2" (click)="toggleOptions()" (mouseenter)="showSubmenu()" (mouseleave)="hideSubmenu()">
         <!-- <p-splitbutton label="Agregar" [model]="items" raised severity="secondary" #splitBtn /> -->
         <button class="btn-chat float-end cursor-pointer"  > 
@@ -55,6 +53,9 @@
           <i class="bi bi-person-circle large-icon" [title]="'Perfil'"></i>
           <span class="spanNombre">{{ nombreUsuario }}</span>
         </button>
+      </div>
+      <div class="ms-2">
+        {{ sessionCountdownMinutesInactividad }}:{{ sessionCountdownSecondsInactividad < 10 ? '0' + sessionCountdownSecondsInactividad : sessionCountdownSecondsInactividad }}
       </div>
       <div class="ms-2" style="justify-content: end;">
         <button class="menu-item-logout" (click)="logout()">

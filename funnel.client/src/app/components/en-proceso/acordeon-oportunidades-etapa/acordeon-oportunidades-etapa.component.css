@@ -506,6 +506,10 @@
     background: transparent;
     border-color: transparent;
     width: 15px !important;
+    height: 10px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   ::ng-deep .cancel-icon :hover {

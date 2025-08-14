@@ -23,7 +23,6 @@
     border-radius: 0 0 10px 10px;
     padding-bottom: 10px;
 }
-
 .app-chat-header-prospeccion {
     height: 10% !important;
     background-color: rgb(46, 71, 93);
@@ -65,9 +64,20 @@
 
 .app-chat-close-icon {
     cursor: pointer;
-    font-size: 20px !important;
-    margin-top: 1px;
+    font-size: 20px;
+    display: flex;               /* Para centrar el ícono */
+    align-items: center;         /* Centrado vertical */
+    justify-content: center;     /* Centrado horizontal */
+    height: 30px;                 /* Igual ancho y alto */
+    width: 30px;
+    border-radius: 50%;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
+
+.app-chat-close-icon:hover {
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
 
 .app-chat-reset-icon {
     cursor: pointer;

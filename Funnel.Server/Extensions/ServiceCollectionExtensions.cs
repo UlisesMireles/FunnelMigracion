@@ -40,6 +40,8 @@ namespace Funnel.Server.Extensions
             services.AddScoped<IAsistentesService, AsistentesService>();
             services.AddScoped<IEncuestaData, EncuestaData>();
             services.AddScoped<IEncuestaService, EncuestaService>();
+            services.AddScoped<IWebScrapingService, WebScrapingService>();
+            services.AddScoped<IWebScrapingData, WebScrapingData>();
 
             return services;
         }

@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Funnel.Server.PdfTools;
 using Microsoft.Extensions.FileProviders;
 using Funnel.Logic.Utils.Asistentes;
+using Funnel.Logic.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,21 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddSingleton<HttpClient>(provider =>
+{
+    var configuration = provider.GetRequiredService<IConfiguration>();
+    var scrapingServiceUrl = configuration["WebScrapingService:Url"] ?? "http://localhost:3000";
+    var client = new HttpClient
+    {
+        BaseAddress = new Uri(scrapingServiceUrl),
+        Timeout = TimeSpan.FromMinutes(2)
+    };
+    client.DefaultRequestHeaders.Add("User-Agent", "Funnel-WebScraping-Service/1.0");
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+    client.DefaultRequestHeaders.Add("Content-Type", "application/json");
+    return client;
+});
+
 builder.Services.AddMemoryCache();
 //Inyeccion de dependencias
 builder.Services.AddServices(); 
@@ -32,6 +48,7 @@ builder.Services.AddCors();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 
 var context = new CustomAssemblyLoadContext();
 context.LoadUnmanagedLibrary(Path.Combine(Directory.GetCurrentDirectory(), "PdfTools", "libwkhtmltox.dll"));

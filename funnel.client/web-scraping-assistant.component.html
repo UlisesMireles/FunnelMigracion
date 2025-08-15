@@ -1,0 +1,80 @@
+<div class="web-scraping-container">
+  <div class="search-section">
+    <h3>Búsqueda Web para Asistente</h3>
+    
+    <div class="search-input-group">
+      <input 
+        type="text" 
+        [(ngModel)]="searchQuery"
+        placeholder="Ingresa tu consulta de búsqueda..."
+        class="search-input"
+        (keyup.enter)="searchWeb()"
+      >
+      <button 
+        (click)="searchWeb()" 
+        [disabled]="isSearching"
+        class="search-button"
+      >
+        <span *ngIf="!isSearching">🔍 Buscar</span>
+        <span *ngIf="isSearching">⏳ Buscando...</span>
+      </button>
+    </div>
+
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+  </div>
+
+  <div *ngIf="searchResults.length > 0" class="results-section">
+    <div class="results-header">
+      <h4>Resultados encontrados ({{ searchResults.length }})</h4>
+      <div class="actions">
+        <button 
+          (click)="sendToAssistant()" 
+          [disabled]="selectedResults.length === 0"
+          class="send-button"
+        >
+          📤 Enviar al Asistente ({{ selectedResults.length }})
+        </button>
+        <button (click)="clearResults()" class="clear-button">
+          🗑️ Limpiar
+        </button>
+      </div>
+    </div>
+
+    <div class="results-grid">
+      <div 
+        *ngFor="let result of searchResults; let i = index" 
+        class="result-card"
+        [class.selected]="selectedResults.some(r => r.id === result.id)"
+        (click)="selectResult(result)"
+      >
+        <div class="result-header">
+          <h5>{{ result.title || 'Sin título' }}</h5>
+          <div class="result-meta">
+            <span class="relevance">Relevancia: {{ result.relevance || 'N/A' }}%</span>
+            <span class="url">{{ result.url }}</span>
+          </div>
+        </div>
+        
+        <div class="result-content">
+          <p>{{ result.content || result.snippet || 'Sin contenido disponible' }}</p>
+        </div>
+
+        <div class="result-actions">
+          <button 
+            class="select-button"
+            [class.selected]="selectedResults.some(r => r.id === result.id)"
+          >
+            {{ selectedResults.some(r => r.id === result.id) ? '✓ Seleccionado' : 'Seleccionar' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="searchResults.length === 0 && !isSearching" class="empty-state">
+    <div class="empty-icon">🌐</div>
+    <p>Realiza una búsqueda para encontrar información web que complemente las respuestas del asistente</p>
+  </div>
+</div> 

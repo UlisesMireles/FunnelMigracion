@@ -4,6 +4,7 @@ import { ConsultaAsistenteDto } from './../../../../interfaces/asistentes/consul
 import { ChatHistorial } from './../../../../interfaces/asistentes/chatHistorial';
 import { OpenIaService } from '../../../../services/asistentes/openIA.service';
 import { AsistenteService } from '../../../../services/asistentes/asistente.service';
+import { WebScrapingService, ScrapingResponse } from '../../../../services/web-scraping.service';
 import { environment } from '../../../../../environments/environment';
 import { LoginService } from '../../../../services/login.service';
 import { TopVeinteDataService } from '../../../../services/top-veinte-data.service';
@@ -66,9 +67,16 @@ export class ChatBotProspeccionComponent implements OnInit, AfterViewInit {
   @Output() cerrarChat = new EventEmitter<void>();
   preguntaActualIndex: number = 0;
   encuestaActiva: boolean = false;
+  
+  // Propiedades para web scraping
+  isSearchingWeb: boolean = false;
+  webSearchResults: any[] = [];
+  showWebSearchResults: boolean = false;
+  selectedWebResults: any[] = [];
   constructor(
     private OpenIaService: OpenIaService,
     private aService: AsistenteService,
+    private webScrapingService: WebScrapingService,
     private cdRef: ChangeDetectorRef, 
     private loginService: LoginService,
     private topVeinteDataService: TopVeinteDataService,
@@ -151,6 +159,18 @@ ngAfterViewInit(): void {
     
     return saludos.some(saludo => mensajeLimpio.includes(saludo));
   }
+
+  // Método para detectar si el usuario quiere buscar en la web
+  private necesitaBusquedaWeb(mensaje: string): boolean {
+    const palabrasClave = [
+      'busca', 'buscar', 'encuentra', 'encontrar', 'investiga', 'investigar',
+      'últimas noticias', 'noticias', 'tendencias', 'actualidad', 'información actual',
+      'qué hay de nuevo', 'novedades', 'datos recientes', 'estadísticas actuales'
+    ];
+    
+    const mensajeLimpio = mensaje.toLowerCase().trim();
+    return palabrasClave.some(palabra => mensajeLimpio.includes(palabra));
+  }
   
   private generarRespuestaSaludo(): string {
     return `¡Hola ${this.nombreUsuario()}! ¿En qué puedo ayudarte hoy?`;
@@ -185,7 +205,7 @@ ngAfterViewInit(): void {
   consultaMensajeOpenIa(event?: any, textarea?: HTMLTextAreaElement) {
     console.log('Evento de consulta recibido:', event);
     if (!this.isConsultandoOpenIa && this.pregunta.trim() !== "") {
-      const preguntaOriginal = this.pregunta;
+      let preguntaOriginal = this.pregunta;
       this.consultaAsistente.pregunta = this.pregunta;
       this.chatHistorial.push({ rol: "usuario", mensaje: this.pregunta});
 
@@ -207,6 +227,20 @@ ngAfterViewInit(): void {
         this.cdRef.detectChanges();
         this.scrollToBottom();
         this.saveState();
+        return;
+      }
+
+      // Verificar si necesita búsqueda web
+      if (this.necesitaBusquedaWeb(preguntaOriginal)) {
+        this.pregunta = "";
+        if (textarea) {
+          textarea.style.height = 'auto';
+        }
+        
+        this.chatHistorial.push({ rol: "cargando", mensaje: "🔍 Buscando información en la web..." });
+        this.scrollToBottom();
+        this.saveState();
+        this.buscarEnWeb(preguntaOriginal);
         return;
       }
       
@@ -277,6 +311,117 @@ private mostrarRespuestaOpenAI(data: ConsultaAsistenteDto) {
     });
     this.finalizarConsulta();
     console.error(err);
+  }
+
+  // Método para buscar en la web
+  private buscarEnWeb(query: string) {
+    this.isSearchingWeb = true;
+    this.webScrapingService.intelligentSearch(query, 5).subscribe({
+      next: (response: ScrapingResponse) => {
+        this.chatHistorial.pop(); // Remover mensaje de carga
+        
+        if (response.success && response.data.length > 0) {
+          this.webSearchResults = response.data;
+          this.showWebSearchResults = true;
+          
+          const mensajeResultados = `🔍 Encontré ${response.data.length} resultados relevantes en la web. ¿Te gustaría que analice alguno en particular o que envíe toda la información al asistente?`;
+          
+          // Concatenar el contenido de response.data
+          const resultado = response.data.map((item: any, index: number) => {
+            return `${index + 1}. **${item.title || 'Sin título'}**\n   ${item.snippet || item.content || 'Sin descripción'}\n   URL: ${item.url || 'Sin URL'}`;
+          }).join('\n\n');
+          this.consultaAsistente.pregunta = this.consultaAsistente.pregunta + ' | ' + resultado;
+          this.obtenRespuestaAsistentePorInput();
+        } else {
+          this.chatHistorial.push({ 
+            rol: "asistente", 
+            mensaje: "No encontré información relevante en la web para tu consulta. ¿Te gustaría que busque con otros términos o prefieres que responda con mi conocimiento actual?",
+            mostrarBotonDataset: false 
+          });
+        }
+        
+      },
+      error: (err: HttpErrorResponse) => {
+        this.chatHistorial.pop();
+        this.chatHistorial.push({ 
+          rol: "asistente", 
+          mensaje: "Lo siento, ocurrió un error al buscar en la web. ¿Te gustaría que responda con mi conocimiento actual?",
+          mostrarBotonDataset: false 
+        });
+        this.finalizarConsulta();
+        console.error('Error en búsqueda web:', err);
+      }
+    });
+  }
+
+  // Método para seleccionar resultados de búsqueda web
+  seleccionarResultadoWeb(resultado: any) {
+    const index = this.selectedWebResults.findIndex(r => r.url === resultado.url);
+    if (index > -1) {
+      this.selectedWebResults.splice(index, 1);
+    } else {
+      this.selectedWebResults.push(resultado);
+    }
+  }
+
+  // Método para enviar resultados seleccionados al asistente
+  enviarResultadosWebAlAsistente() {
+    if (this.selectedWebResults.length === 0) {
+      this.selectedWebResults = this.webSearchResults; // Enviar todos si no hay selección
+    }
+
+    const informacionWeb = this.selectedWebResults.map(resultado => 
+      `📄 ${resultado.title}\n🔗 ${resultado.url}\n📝 ${resultado.snippet}`
+    ).join('\n\n');
+
+    const consultaConWeb = {
+      ...this.consultaAsistente,
+      pregunta: `Consulta original: ${this.consultaAsistente.pregunta}\n\nInformación encontrada en la web:\n${informacionWeb}`
+    };
+
+    this.chatHistorial.push({ rol: "cargando", mensaje: "🤖 Procesando información con el asistente..." });
+    this.scrollToBottom();
+    this.saveState();
+
+    this.OpenIaService.asistenteProspeccion(consultaConWeb).subscribe({
+      next: (data: ConsultaAsistenteDto) => {
+        this.chatHistorial.pop();
+        this.chatHistorial.push({ 
+          rol: "asistente", 
+          mensaje: data.respuesta,
+          mostrarBotonDataset: false 
+        });
+        
+        this.showWebSearchResults = false;
+        this.webSearchResults = [];
+        this.selectedWebResults = [];
+        
+        this.finalizarConsulta();
+      },
+      error: (err: HttpErrorResponse) => {
+        this.chatHistorial.pop();
+        this.chatHistorial.push({ 
+          rol: "asistente", 
+          mensaje: "Lo siento, ocurrió un error al procesar la información con el asistente.",
+          mostrarBotonDataset: false 
+        });
+        this.finalizarConsulta();
+        console.error(err);
+      }
+    });
+  }
+
+  // Método para cancelar búsqueda web
+  cancelarBusquedaWeb() {
+    this.showWebSearchResults = false;
+    this.webSearchResults = [];
+    this.selectedWebResults = [];
+    this.chatHistorial.push({ 
+      rol: "asistente", 
+      mensaje: "Entendido. ¿En qué más puedo ayudarte?",
+      mostrarBotonDataset: false 
+    });
+    this.finalizarConsulta();
   }
      
 enviarDataset() {

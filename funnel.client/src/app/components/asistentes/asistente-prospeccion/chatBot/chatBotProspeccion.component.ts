@@ -50,8 +50,13 @@ export class ChatBotProspeccionComponent implements OnInit, AfterViewInit {
   };
 
   chatHistorial: ChatHistorial[] = [
-     { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨  Soy Bruno, tu asistente comercial para convertir contactos en oportunidades reales.  Estoy aquí para ayudarte a generar correos estratégicos, identificar oportunidades con IA, proponer soluciones por sector y ayudarte en ventas consultivas, todo desde un solo lugar." , mostrarBotonDataset: true, mostrarBotonCopiar: false},
-   ];
+  { 
+    rol: "asistente", 
+    mensaje: 'Hola ' + this.nombreUsuario() + '! ✨ <b >Soy Bruno</b>, tu asistente comercial para convertir contactos en oportunidades reales. Estoy aquí para ayudarte a generar correos estratégicos, identificar oportunidades con IA, proponer soluciones por sector y ayudarte en ventas consultivas, todo desde un solo lugar.',
+    mostrarBotonDataset: true, 
+    mostrarBotonCopiar: false
+  },
+];
   chatHistorialResp!: string;
   mostrarBotonDataset: boolean = false;
   topVeinteOriginal: ClientesTopVeinte[] = [];
@@ -158,7 +163,7 @@ ngAfterViewInit(): void {
 
    private restoreState(state: any) {
     this.chatHistorial = state.historial || [
-      { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨  Soy Bruno, tu asistente comercial para convertir contactos en oportunidades reales.  Estoy aquí para ayudarte a generar correos estratégicos, identificar oportunidades con IA, proponer soluciones por sector y ayudarte en ventas consultivas, todo desde un solo lugar." , mostrarBotonDataset: true, mostrarBotonCopiar: false }
+      { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨ <b >Soy Bruno</b>, tu asistente comercial para convertir contactos en oportunidades reales.  Estoy aquí para ayudarte a generar correos estratégicos, identificar oportunidades con IA, proponer soluciones por sector y ayudarte en ventas consultivas, todo desde un solo lugar." , mostrarBotonDataset: true, mostrarBotonCopiar: false }
     ];
     if(state.encuesta){
       this.preguntasProcesadas = state.encuesta.preguntasProcesadas || [];
@@ -593,15 +598,20 @@ manejarRespuestaEncuesta(respuesta: string, idPregunta: number) {
     console.error("Encuesta no activa o sin preguntas. No se procesará la respuesta.");
     return;
   }
+  
   const preguntaActual = this.preguntasProcesadas.find(p => p.idPregunta === idPregunta);
   if (!preguntaActual) {
     console.error("No se encontró la pregunta");
     return;
   }
-  if (!respuesta.trim()) {
-    return;
+  
+  if (respuesta.trim() !== "") {
+    this.chatHistorial.push({
+      rol: "usuario",
+      mensaje: respuesta
+    });
   }
-    
+
   const preguntaEnHistorial = this.chatHistorial.find(
   chat => chat.esEncuesta && chat.preguntaEncuesta?.idPregunta === idPregunta
   );
@@ -610,10 +620,10 @@ manejarRespuestaEncuesta(respuesta: string, idPregunta: number) {
     preguntaEnHistorial.respuestaEnviada = true;
   }
 
-  this.chatHistorial.push({
+  /*this.chatHistorial.push({
     rol: "usuario",
     mensaje: respuesta
-  });
+  });*/
   const indexPreguntaEnHistorial = this.chatHistorial.findIndex(
     chat => chat.esEncuesta && chat.preguntaEncuesta?.idPregunta === idPregunta
   );
@@ -660,7 +670,7 @@ private limpiarConversacion() {
   });
 
   this.chatHistorial = [
-    { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨  Soy Bruno, tu asistente comercial para convertir contactos en oportunidades reales.  Estoy aquí para ayudarte a generar correos estratégicos, identificar oportunidades con IA, proponer soluciones por sector y ayudarte en ventas consultivas, todo desde un solo lugar." , mostrarBotonDataset: true, mostrarBotonCopiar: false }
+    { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨ <b >Soy Bruno</b>, tu asistente comercial para convertir contactos en oportunidades reales.  Estoy aquí para ayudarte a generar correos estratégicos, identificar oportunidades con IA, proponer soluciones por sector y ayudarte en ventas consultivas, todo desde un solo lugar." , mostrarBotonDataset: true, mostrarBotonCopiar: false }
   ];
   sessionStorage.removeItem('chatBotProspeccionState');
   localStorage.removeItem('chatBotProspeccionState');

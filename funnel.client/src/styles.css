@@ -178,3 +178,8 @@
 .p-datatable-tbody > tr:hover{
   background-color: #f8fafc !important;
 }
+/*Texto msj inicial pc*/
+b, strong {
+    font-weight: bolder;
+    display: contents !important;
+}

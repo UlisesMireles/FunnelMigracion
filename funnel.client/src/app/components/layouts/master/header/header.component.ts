@@ -595,4 +595,9 @@ export class HeaderComponent implements OnInit {
 
   mostrarAsistenteProspeccion = false;
 
+  cerrarAsistenteProspeccion() {
+    this.mostrarAsistenteProspeccion = false;
+    this.cdr.detectChanges();
+  }
+
 }

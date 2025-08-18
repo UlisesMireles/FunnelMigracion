@@ -15,7 +15,9 @@ const corsOptions = {
     const allowedOrigins = [
       'https://localhost:3000',   // HTTPS local
       'https://localhost:49834',
-      // Agregar más orígenes según necesites
+      'https://sfs-funnel.com/funnel-qa',
+      'https://glupoint.com',
+      'https://gluall.com',
     ];
     
     // Permitir requests sin origin (como Postman, curl, etc.)

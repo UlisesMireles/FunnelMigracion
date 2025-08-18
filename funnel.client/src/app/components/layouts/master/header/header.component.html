@@ -30,7 +30,7 @@
                 </button>
       <ng-container *ngIf="mostrarAsistenteProspeccion">
       <div id="chat-container-prospeccion" class="chatbot-window-prospeccion" #chatContainerProspeccion (mousedown)="startDragProspeccion($event)">
-        <app-asistente-prospeccion></app-asistente-prospeccion>
+        <app-asistente-prospeccion (OncerrarChat)="cerrarAsistenteProspeccion()"></app-asistente-prospeccion>
       </div>
       </ng-container>
   

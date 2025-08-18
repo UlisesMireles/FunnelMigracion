@@ -49,6 +49,7 @@ export class ChatBotProspeccionComponent implements OnInit, AfterViewInit {
     esPreguntaFrecuente: false,
   };
 
+  
   chatHistorial: ChatHistorial[] = [];
 
   // Inicializar el historial de chat en ngOnInit
@@ -163,6 +164,7 @@ ngAfterViewInit(): void {
   private generarRespuestaSaludo(): string {
     return `¡Hola ${this.nombreUsuario()}! ¿En qué puedo ayudarte hoy?`;
   }
+
 
    private restoreState(state: any) { 
     const mensajeInicial = this.aService.getConfiguracionMensajeInicial(this.nombreUsuario());
@@ -599,15 +601,20 @@ manejarRespuestaEncuesta(respuesta: string, idPregunta: number) {
     console.error("Encuesta no activa o sin preguntas. No se procesará la respuesta.");
     return;
   }
+  
   const preguntaActual = this.preguntasProcesadas.find(p => p.idPregunta === idPregunta);
   if (!preguntaActual) {
     console.error("No se encontró la pregunta");
     return;
   }
-  if (!respuesta.trim()) {
-    return;
+  
+  if (respuesta.trim() !== "") {
+    this.chatHistorial.push({
+      rol: "usuario",
+      mensaje: respuesta
+    });
   }
-    
+
   const preguntaEnHistorial = this.chatHistorial.find(
   chat => chat.esEncuesta && chat.preguntaEncuesta?.idPregunta === idPregunta
   );
@@ -616,10 +623,10 @@ manejarRespuestaEncuesta(respuesta: string, idPregunta: number) {
     preguntaEnHistorial.respuestaEnviada = true;
   }
 
-  this.chatHistorial.push({
+  /*this.chatHistorial.push({
     rol: "usuario",
     mensaje: respuesta
-  });
+  });*/
   const indexPreguntaEnHistorial = this.chatHistorial.findIndex(
     chat => chat.esEncuesta && chat.preguntaEncuesta?.idPregunta === idPregunta
   );
@@ -664,6 +671,7 @@ private limpiarConversacion() {
       //this.cerrarChat.emit(); 
     }
   });
+
 
   const mensajeInicial = this.aService.getConfiguracionMensajeInicial(this.nombreUsuario());
   this.chatHistorial = [mensajeInicial];

@@ -49,9 +49,13 @@ export class ChatBotProspeccionComponent implements OnInit, AfterViewInit {
     esPreguntaFrecuente: false,
   };
 
-  chatHistorial: ChatHistorial[] = [
-     { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨  Soy Bruno, tu asistente comercial para convertir contactos en oportunidades reales.  Estoy aquí para ayudarte a generar correos estratégicos, identificar oportunidades con IA, proponer soluciones por sector y ayudarte en ventas consultivas, todo desde un solo lugar." , mostrarBotonDataset: true, mostrarBotonCopiar: false},
-   ];
+  chatHistorial: ChatHistorial[] = [];
+
+  // Inicializar el historial de chat en ngOnInit
+  private inicializarChatHistorial() {
+    const mensajeInicial = this.aService.getConfiguracionMensajeInicial(this.nombreUsuario());
+    this.chatHistorial = [mensajeInicial];
+  }
   chatHistorialResp!: string;
   mostrarBotonDataset: boolean = false;
   topVeinteOriginal: ClientesTopVeinte[] = [];
@@ -73,8 +77,8 @@ export class ChatBotProspeccionComponent implements OnInit, AfterViewInit {
     private loginService: LoginService,
     private topVeinteDataService: TopVeinteDataService,
     private encuestaService: EncuestaService,
-    private dialog: MatDialog, private viewContainerRef: ViewContainerRef
-    
+    private dialog: MatDialog, 
+    private viewContainerRef: ViewContainerRef
   ) { }
 
    ngOnInit() { 
@@ -83,6 +87,10 @@ export class ChatBotProspeccionComponent implements OnInit, AfterViewInit {
     this.consultaAsistente.puesto = this.loginService.obtenerDatosUsuarioLogueado().puesto;
     this.consultaAsistente.empresa = this.loginService.obtenerEmpresa();
     this.consultaAsistente.numeroTelefono = this.loginService.obtenerDatosUsuarioLogueado().numeroTelefono;
+    
+    // Inicializar el chat con mensaje de bienvenida desde el servicio
+    this.inicializarChatHistorial();
+    
     this.chatHistorialResp = JSON.stringify(this.chatHistorial);
     const savedState = sessionStorage.getItem('chatBotProspeccionState');
       if (savedState) {
@@ -156,10 +164,9 @@ ngAfterViewInit(): void {
     return `¡Hola ${this.nombreUsuario()}! ¿En qué puedo ayudarte hoy?`;
   }
 
-   private restoreState(state: any) {
-    this.chatHistorial = state.historial || [
-      { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨  Soy Bruno, tu asistente comercial para convertir contactos en oportunidades reales.  Estoy aquí para ayudarte a generar correos estratégicos, identificar oportunidades con IA, proponer soluciones por sector y ayudarte en ventas consultivas, todo desde un solo lugar." , mostrarBotonDataset: true, mostrarBotonCopiar: false }
-    ];
+   private restoreState(state: any) { 
+    const mensajeInicial = this.aService.getConfiguracionMensajeInicial(this.nombreUsuario());
+    this.chatHistorial = state.historial || [mensajeInicial];
     if(state.encuesta){
       this.preguntasProcesadas = state.encuesta.preguntasProcesadas || [];
       this.preguntaActualIndex = state.encuesta.preguntaActualIndex || 0;
@@ -509,7 +516,7 @@ private reemplazarVariablesEnRespuesta(respuesta: string): string {
 private mostrarEncuesta() {
   this.chatHistorial.push({
     rol: "asistente",
-    mensaje: "Queremos escucharte. Esta encuesta rápida nos ayudará a mejorar la experiencia con Bruno, tu asistente comercial inteligente de LeadEisei AI 1.0. Responder no te tomará más de 2 minutos. ¡Gracias por tu tiempo!",
+    mensaje: "Queremos escucharte. Esta encuesta rápida nos ayudará a mejorar la experiencia con <b>Bruno</b>, tu asistente comercial inteligente de LeadEisei AI 1.0. Responder no te tomará más de 2 minutos. ¡Gracias por tu tiempo!",
     mostrarBotonDataset: false,
     mostrarBotonCopiar: false
   });
@@ -659,9 +666,8 @@ private limpiarConversacion() {
     }
   });
 
-  this.chatHistorial = [
-    { rol: "asistente", mensaje: "Hola " + this.nombreUsuario() + "! ✨  Soy Bruno, tu asistente comercial para convertir contactos en oportunidades reales.  Estoy aquí para ayudarte a generar correos estratégicos, identificar oportunidades con IA, proponer soluciones por sector y ayudarte en ventas consultivas, todo desde un solo lugar." , mostrarBotonDataset: true, mostrarBotonCopiar: false }
-  ];
+  const mensajeInicial = this.aService.getConfiguracionMensajeInicial(this.nombreUsuario());
+  this.chatHistorial = [mensajeInicial];
   sessionStorage.removeItem('chatBotProspeccionState');
   localStorage.removeItem('chatBotProspeccionState');
   this.cdRef.detectChanges();

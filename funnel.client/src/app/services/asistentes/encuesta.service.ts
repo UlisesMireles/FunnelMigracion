@@ -10,8 +10,8 @@ export class EncuestaService {
     constructor(private http: HttpClient) { }
     baseUrl:string = environment.baseURL;
 
-    getPreguntasEncuesta(): Observable<any> {
-        return this.http.get(`${this.baseUrl}api/Encuesta/ConsultarPreguntasEncuesta`);
+    getPreguntasEncuesta(idBot: number): Observable<any> {
+        return this.http.get(`${this.baseUrl}api/Encuesta/ConsultarPreguntasEncuesta` + `?idBot=${idBot}`);
     }
     registrarRespuestaEncuesta(datos: any): Observable<any> {
     return this.http.post(`${this.baseUrl}api/Encuesta/InsertaPreguntaBitacoraPreguntas`, datos);

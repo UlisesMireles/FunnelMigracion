@@ -17,9 +17,9 @@ namespace Funnel.Server.Controllers
             _encuestaService = encuestaService;
         }
         [HttpGet("[action]/")]
-        public async Task<ActionResult<List<EncuestaDto>>> ConsultarPreguntasEncuesta()
+        public async Task<ActionResult<List<EncuestaDto>>> ConsultarPreguntasEncuesta(int idBot)
         {
-            var result = await _encuestaService.ConsultarPreguntasEncuesta();
+            var result = await _encuestaService.ConsultarPreguntasEncuesta(idBot);
             return Ok(result);
         }
         [HttpPost("[action]/")]

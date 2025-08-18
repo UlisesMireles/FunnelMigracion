@@ -18,13 +18,13 @@ namespace Funnel.Data
         {
             _connectionString = configuration.GetConnectionString("FunelDatabase");
         }
-        public async Task<List<EncuestaDto>> ConsultarPreguntasEncuesta()
+        public async Task<List<EncuestaDto>> ConsultarPreguntasEncuesta(int idBot)
         {
             List<EncuestaDto> result = new List<EncuestaDto>();
             IList<ParameterSQl> list = new List<ParameterSQl>
             {
                 DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "SELECT-PREGUNTAS"),
-                DataBase.CreateParameterSql("@IdBot", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, 7)
+                DataBase.CreateParameterSql("@IdBot", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, idBot)
             };
             using (IDataReader reader = await DataBase.GetReaderSql("F_EncuestaBot", CommandType.StoredProcedure, list, _connectionString))
             {

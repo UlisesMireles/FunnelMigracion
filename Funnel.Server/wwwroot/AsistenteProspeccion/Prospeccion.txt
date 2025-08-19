@@ -1,0 +1,303 @@
+##BENEFICIOS MEDIBLES##
+Este apartado permite que LeadsEisei AI enriquezca su biblioteca de beneficios medibles utilizando los sectores y actividades preponderantes de cada empresa prospecto. El sistema aprende con base en la retroalimentación del usuario y las interacciones exitosas.
+##Funcionamiento:
+1. Cuando el usuario proporcione el nombre de la empresa o sitio web, identifica:
+   - Sector económico principal.
+   - Actividad preponderante (extraída o inferida del sitio web o redes).
+ 2. Verifica si ya existe un beneficio asociado para ese caso:
+   - Si existe, lo adapta con base en los datos del prospecto.
+   - Si no existe, genera una nueva propuesta de beneficios medibles basada en casos afines, el análisis del sector y el tipo de actividad.
+3. Presenta al usuario de 2 a 3 beneficios claros, medibles y adaptados al proceso del prospecto. Cada beneficio debe cumplir con:
+   - Ser cuantificable o verificable (por ejemplo: reducción de costos, aumento en velocidad, mejora en toma de decisiones, conversión de leads, etc.).
+   - Estar alineado a la naturaleza del negocio prospecto.
+4. Después de generar los beneficios, pregunta:
+   “¿Estos beneficios fueron útiles y relevantes para este tipo de cliente?”
+   - Si el usuario responde sí o califica positivamente 👍:
+     - Almacena este beneficio como referencia futura para ese sector + actividad.
+   - Si el usuario responde no o califica negativamente 👎:
+     - Activa una nueva generación con otro enfoque (más directo, más técnico, más financiero, etc.).
+     - Almacena la versión corregida como entrenamiento preferente.
+5. El sistema irá ajustando y expandiendo su base de beneficios con base en los resultados, creando una base viva de entrenamiento comercial por industria.
+Parámetros que debes considerar para afinar los beneficios generados:
+- Giro del negocio
+- Público objetivo del cliente
+- Procesos clave que podrían automatizarse
+- Tipos de decisiones o tareas repetitivas
+- Ahorro de tiempo, dinero o esfuerzo humano
+Reafirma siempre:
+“Estos beneficios están diseñados para ayudarte a mostrar valor tangible desde el primer contacto con el cliente.”
+
+
+##OBJECIONES POR SECTOR##
+#Guía para entrenamiento comercial y simulación de objeciones que se pueden presentar según industria.
+#Acero
+Actividad Preponderante (ejemplo)
+Objeción frecuente: No estamos seguros de que la inversión en IA generativa tenga un retorno claro para nuestra operación.
+#Agricultura
+Actividad Preponderante (ejemplo)
+Objeción frecuente: No estamos seguros de que la inversión en IA generativa tenga un retorno claro para nuestra operación.
+#Agua y Gas
+Actividad Preponderante (ejemplo)
+Objeción frecuente: No estamos seguros de que la inversión en IA generativa tenga un retorno claro para nuestra operación.
+#Alimentos y Bebidas
+Actividad Preponderante (ejemplo)
+Objeción frecuente: No estamos seguros de que la inversión en IA generativa tenga un retorno claro para nuestra operación.
+#Automotriz
+Actividad Preponderante (ejemplo)
+Objeción frecuente: No estamos seguros de que la inversión en IA generativa tenga un retorno claro para nuestra operación.
+#Camara, Cluster o Asociación
+Actividad Preponderante (ejemplo)
+Objeción frecuente: No estamos seguros de que la inversión en IA generativa tenga un retorno claro para nuestra operación.
+#Comercio
+Actividad Preponderante (ejemplo)
+Objeción frecuente: No estamos seguros de que la inversión en IA generativa tenga un retorno claro para nuestra operación.
+#Comunicaciones
+Actividad Preponderante (ejemplo)
+Objeción frecuente: No estamos seguros de que la inversión en IA generativa tenga un retorno claro para nuestra operación.
+#Construcción
+Actividad Preponderante (ejemplo)
+Objeción frecuente: No estamos seguros de que la inversión en IA generativa tenga un retorno claro para nuestra operación.
+#Educación
+Actividad Preponderante (ejemplo)
+Objeción frecuente: No estamos seguros de que la inversión en IA generativa tenga un retorno claro para nuestra operación.
+#Energía
+Actividad Preponderante (ejemplo)
+Objeción frecuente: No estamos seguros de que la inversión en IA generativa tenga un retorno claro para nuestra operación.
+#Financiero
+Actividad Preponderante (ejemplo)
+Objeción frecuente: No estamos seguros de que la inversión en IA generativa tenga un retorno claro para nuestra operación.
+#Forestal
+Actividad Preponderante (ejemplo)
+Objeción frecuente: No estamos seguros de que la inversión en IA generativa tenga un retorno claro para nuestra operación.
+#Ganadería
+Actividad Preponderante (ejemplo)
+Objeción frecuente: No estamos seguros de que la inversión en IA generativa tenga un retorno claro para nuestra operación.
+#Gobierno
+Actividad Preponderante (ejemplo)
+Objeción frecuente: No estamos seguros de que la inversión en IA generativa tenga un retorno claro para nuestra operación.
+#Gobierno Extranjero
+Actividad Preponderante (ejemplo)
+Objeción frecuente: No estamos seguros de que la inversión en IA generativa tenga un retorno claro para nuestra operación.
+#Hotelería
+Actividad Preponderante (ejemplo)
+Objeción frecuente: No estamos seguros de que la inversión en IA generativa tenga un retorno claro para nuestra operación.
+#Industria Química
+Actividad Preponderante (ejemplo)
+Objeción frecuente: No estamos seguros de que la inversión en IA generativa tenga un retorno claro para nuestra operación.
+#Inmobiliario
+Actividad Preponderante (ejemplo)
+Objeción frecuente: No estamos seguros de que la inversión en IA generativa tenga un retorno claro para nuestra operación.
+#Logística
+Actividad Preponderante (ejemplo)
+Objeción frecuente: No estamos seguros de que la inversión en IA generativa tenga un retorno claro para nuestra operación.
+#Manufactura
+Actividad Preponderante (ejemplo)
+Objeción frecuente: No estamos seguros de que la inversión en IA generativa tenga un retorno claro para nuestra operación.
+#Minería
+Actividad Preponderante (ejemplo)
+Objeción frecuente: No estamos seguros de que la inversión en IA generativa tenga un retorno claro para nuestra operación.
+#Pesca y Caza
+Actividad Preponderante (ejemplo)
+Objeción frecuente: No estamos seguros de que la inversión en IA generativa tenga un retorno claro para nuestra operación.
+#Salud
+Actividad Preponderante (ejemplo)
+Objeción frecuente: No estamos seguros de que la inversión en IA generativa tenga un retorno claro para nuestra operación.
+#Servicios
+Actividad Preponderante (ejemplo)
+Objeción frecuente: No estamos seguros de que la inversión en IA generativa tenga un retorno claro para nuestra operación.
+#Tecnología
+Actividad Preponderante (ejemplo)
+Objeción frecuente: No estamos seguros de que la inversión en IA generativa tenga un retorno claro para nuestra operación.
+#Telefonía
+Actividad Preponderante (ejemplo)
+Objeción frecuente: No estamos seguros de que la inversión en IA generativa tenga un retorno claro para nuestra operación.
+#Turismo
+Actividad Preponderante (ejemplo)
+Objeción frecuente: No estamos seguros de que la inversión en IA generativa tenga un retorno claro para nuestra operación.
+
+##CASO HIPOTETICO POR SECTOR Y ACTIVIDAD PREPONDERANTE##
+#Acero
+Actividad Preponderante (ejemplo)
+Caso hipotético: Una empresa de este sector automatizó su atención al cliente con un asistente basado en IA generativa, reduciendo el tiempo de respuesta en un 40% y mejorando la satisfacción del cliente en un 25%.
+#Agricultura
+Actividad Preponderante (ejemplo)
+Caso hipotético: Una empresa de este sector automatizó su atención al cliente con un asistente basado en IA generativa, reduciendo el tiempo de respuesta en un 40% y mejorando la satisfacción del cliente en un 25%.
+#Agua y Gas
+Actividad Preponderante (ejemplo)
+Caso hipotético: Una empresa de este sector automatizó su atención al cliente con un asistente basado en IA generativa, reduciendo el tiempo de respuesta en un 40% y mejorando la satisfacción del cliente en un 25%.
+#Alimentos y Bebidas
+Actividad Preponderante (ejemplo)
+Caso hipotético: Una empresa de este sector automatizó su atención al cliente con un asistente basado en IA generativa, reduciendo el tiempo de respuesta en un 40% y mejorando la satisfacción del cliente en un 25%.
+#Automotriz
+Actividad Preponderante (ejemplo)
+Caso hipotético: Una empresa de este sector automatizó su atención al cliente con un asistente basado en IA generativa, reduciendo el tiempo de respuesta en un 40% y mejorando la satisfacción del cliente en un 25%.
+#Camara, Cluster o Asociación
+Actividad Preponderante (ejemplo)
+Caso hipotético: Una empresa de este sector automatizó su atención al cliente con un asistente basado en IA generativa, reduciendo el tiempo de respuesta en un 40% y mejorando la satisfacción del cliente en un 25%.
+#Comercio
+Actividad Preponderante (ejemplo)
+Caso hipotético: Una empresa de este sector automatizó su atención al cliente con un asistente basado en IA generativa, reduciendo el tiempo de respuesta en un 40% y mejorando la satisfacción del cliente en un 25%.
+#Comunicaciones
+Actividad Preponderante (ejemplo)
+Caso hipotético: Una empresa de este sector automatizó su atención al cliente con un asistente basado en IA generativa, reduciendo el tiempo de respuesta en un 40% y mejorando la satisfacción del cliente en un 25%.
+#Construcción
+Actividad Preponderante (ejemplo)
+Caso hipotético: Una empresa de este sector automatizó su atención al cliente con un asistente basado en IA generativa, reduciendo el tiempo de respuesta en un 40% y mejorando la satisfacción del cliente en un 25%.
+#Educación
+Actividad Preponderante (ejemplo)
+Caso hipotético: Una empresa de este sector automatizó su atención al cliente con un asistente basado en IA generativa, reduciendo el tiempo de respuesta en un 40% y mejorando la satisfacción del cliente en un 25%.
+#Energía
+Actividad Preponderante (ejemplo)
+Caso hipotético: Una empresa de este sector automatizó su atención al cliente con un asistente basado en IA generativa, reduciendo el tiempo de respuesta en un 40% y mejorando la satisfacción del cliente en un 25%.
+#Financiero
+Actividad Preponderante (ejemplo)
+Caso hipotético: Una empresa de este sector automatizó su atención al cliente con un asistente basado en IA generativa, reduciendo el tiempo de respuesta en un 40% y mejorando la satisfacción del cliente en un 25%.
+#Forestal
+Actividad Preponderante (ejemplo)
+Caso hipotético: Una empresa de este sector automatizó su atención al cliente con un asistente basado en IA generativa, reduciendo el tiempo de respuesta en un 40% y mejorando la satisfacción del cliente en un 25%.
+#Ganadería
+Actividad Preponderante (ejemplo)
+Caso hipotético: Una empresa de este sector automatizó su atención al cliente con un asistente basado en IA generativa, reduciendo el tiempo de respuesta en un 40% y mejorando la satisfacción del cliente en un 25%.
+#Gobierno
+Actividad Preponderante (ejemplo)
+Caso hipotético: Una empresa de este sector automatizó su atención al cliente con un asistente basado en IA generativa, reduciendo el tiempo de respuesta en un 40% y mejorando la satisfacción del cliente en un 25%.
+#Gobierno Extranjero
+Actividad Preponderante (ejemplo)
+Caso hipotético: Una empresa de este sector automatizó su atención al cliente con un asistente basado en IA generativa, reduciendo el tiempo de respuesta en un 40% y mejorando la satisfacción del cliente en un 25%.
+#Hotelería
+Actividad Preponderante (ejemplo)
+Caso hipotético: Una empresa de este sector automatizó su atención al cliente con un asistente basado en IA generativa, reduciendo el tiempo de respuesta en un 40% y mejorando la satisfacción del cliente en un 25%.
+#Industria Química
+Actividad Preponderante (ejemplo)
+Caso hipotético: Una empresa de este sector automatizó su atención al cliente con un asistente basado en IA generativa, reduciendo el tiempo de respuesta en un 40% y mejorando la satisfacción del cliente en un 25%.
+#Inmobiliario
+Actividad Preponderante (ejemplo)
+Caso hipotético: Una empresa de este sector automatizó su atención al cliente con un asistente basado en IA generativa, reduciendo el tiempo de respuesta en un 40% y mejorando la satisfacción del cliente en un 25%.
+#Logística
+Actividad Preponderante (ejemplo)
+Caso hipotético: Una empresa de este sector automatizó su atención al cliente con un asistente basado en IA generativa, reduciendo el tiempo de respuesta en un 40% y mejorando la satisfacción del cliente en un 25%.
+#Manufactura
+Actividad Preponderante (ejemplo)
+Caso hipotético: Una empresa de este sector automatizó su atención al cliente con un asistente basado en IA generativa, reduciendo el tiempo de respuesta en un 40% y mejorando la satisfacción del cliente en un 25%.
+#Minería
+Actividad Preponderante (ejemplo)
+Caso hipotético: Una empresa de este sector automatizó su atención al cliente con un asistente basado en IA generativa, reduciendo el tiempo de respuesta en un 40% y mejorando la satisfacción del cliente en un 25%.
+#Pesca y Caza
+Actividad Preponderante (ejemplo)
+Caso hipotético: Una empresa de este sector automatizó su atención al cliente con un asistente basado en IA generativa, reduciendo el tiempo de respuesta en un 40% y mejorando la satisfacción del cliente en un 25%.
+#Salud
+Actividad Preponderante (ejemplo)
+Caso hipotético: Una empresa de este sector automatizó su atención al cliente con un asistente basado en IA generativa, reduciendo el tiempo de respuesta en un 40% y mejorando la satisfacción del cliente en un 25%.
+#Servicios
+Actividad Preponderante (ejemplo)
+Caso hipotético: Una empresa de este sector automatizó su atención al cliente con un asistente basado en IA generativa, reduciendo el tiempo de respuesta en un 40% y mejorando la satisfacción del cliente en un 25%.
+#Tecnología
+Actividad Preponderante (ejemplo)
+Caso hipotético: Una empresa de este sector automatizó su atención al cliente con un asistente basado en IA generativa, reduciendo el tiempo de respuesta en un 40% y mejorando la satisfacción del cliente en un 25%.
+#Telefonía
+Actividad Preponderante (ejemplo)
+Caso hipotético: Una empresa de este sector automatizó su atención al cliente con un asistente basado en IA generativa, reduciendo el tiempo de respuesta en un 40% y mejorando la satisfacción del cliente en un 25%.
+#Turismo
+Actividad Preponderante (ejemplo)
+Caso hipotético: Una empresa de este sector automatizó su atención al cliente con un asistente basado en IA generativa, reduciendo el tiempo de respuesta en un 40% y mejorando la satisfacción del cliente en un 25%.
+
+
+##Plantilla de Guiones por Tipo de Mensaje en LinkedIn##
+Este documento forma parte del sistema LeadsEisei AI. Contiene ejemplos de guiones para distintos tipos de mensajes de LinkedIn y está diseñado para ser un agente de aprendizaje automático, es decir, que se actualice con base en los resultados obtenidos, la interacción con prospectos y la retroalimentación del equipo comercial.
+Guiones sugeridos
+#Mensaje de conexión
+Hola [Nombre], vi que estás liderando proyectos de innovación en [Empresa]. Desde Eisei Innovation ayudamos a empresas como la tuya a aplicar IA generativa para mejorar procesos críticos. Me encantaría conectar.
+#Mensaje post conexión
+¡Gracias por aceptar, [Nombre]! Si estás explorando IA generativa en procesos comerciales o analítica, tenemos soluciones implementadas en empresas similares. ¿Te gustaría que te comparta una propuesta breve por correo?
+#Mensaje de propuesta de valor
+Hola [Nombre], en Eisei Innovation estamos ayudando a empresas de [sector] a optimizar decisiones y aumentar eficiencia operativa con IA generativa. Te puedo mostrar cómo aplicarlo en tu equipo en menos de 15 minutos.
+#Mensaje de seguimiento
+Hola [Nombre], solo quería retomar el mensaje anterior. Entiendo que tienes una agenda ocupada, pero si aún estás interesado en explorar soluciones con IA generativa, estaré encantado de ayudarte.
+
+##Pain Points por Sector ##
+#Acero
+Actividad Preponderante (ejemplo)
+Pain Point: Falta de eficiencia operativa debido a procesos manuales o falta de automatización.
+#Agricultura
+Actividad Preponderante (ejemplo)
+Pain Point: Falta de eficiencia operativa debido a procesos manuales o falta de automatización.
+#Agua y Gas
+Actividad Preponderante (ejemplo)
+Pain Point: Falta de eficiencia operativa debido a procesos manuales o falta de automatización.
+#Alimentos y Bebidas
+Actividad Preponderante (ejemplo)
+Pain Point: Falta de eficiencia operativa debido a procesos manuales o falta de automatización.
+#Automotriz
+Actividad Preponderante (ejemplo)
+Pain Point: Falta de eficiencia operativa debido a procesos manuales o falta de automatización.
+#Camara, Cluster o Asociación
+Actividad Preponderante (ejemplo)
+Pain Point: Falta de eficiencia operativa debido a procesos manuales o falta de automatización.
+#Comercio
+Actividad Preponderante (ejemplo)
+Pain Point: Falta de eficiencia operativa debido a procesos manuales o falta de automatización.
+#Comunicaciones
+Actividad Preponderante (ejemplo)
+Pain Point: Falta de eficiencia operativa debido a procesos manuales o falta de automatización.
+#Construcción
+Actividad Preponderante (ejemplo)
+Pain Point: Falta de eficiencia operativa debido a procesos manuales o falta de automatización.
+#Educación
+Actividad Preponderante (ejemplo)
+Pain Point: Falta de eficiencia operativa debido a procesos manuales o falta de automatización.
+#Energía
+Actividad Preponderante (ejemplo)
+Pain Point: Falta de eficiencia operativa debido a procesos manuales o falta de automatización.
+#Financiero
+Actividad Preponderante (ejemplo)
+Pain Point: Falta de eficiencia operativa debido a procesos manuales o falta de automatización.
+#Forestal
+Actividad Preponderante (ejemplo)
+Pain Point: Falta de eficiencia operativa debido a procesos manuales o falta de automatización.
+#Ganadería
+Actividad Preponderante (ejemplo)
+Pain Point: Falta de eficiencia operativa debido a procesos manuales o falta de automatización.
+#Gobierno
+Actividad Preponderante (ejemplo)
+Pain Point: Falta de eficiencia operativa debido a procesos manuales o falta de automatización.
+#Gobierno Extranjero
+Actividad Preponderante (ejemplo)
+Pain Point: Falta de eficiencia operativa debido a procesos manuales o falta de automatización.
+#Hotelería
+Actividad Preponderante (ejemplo)
+Pain Point: Falta de eficiencia operativa debido a procesos manuales o falta de automatización.
+#Industria Química
+Actividad Preponderante (ejemplo)
+Pain Point: Falta de eficiencia operativa debido a procesos manuales o falta de automatización.
+#Inmobiliario
+Actividad Preponderante (ejemplo)
+Pain Point: Falta de eficiencia operativa debido a procesos manuales o falta de automatización.
+#Logística
+Actividad Preponderante (ejemplo)
+Pain Point: Falta de eficiencia operativa debido a procesos manuales o falta de automatización.
+#Manufactura
+Actividad Preponderante (ejemplo)
+Pain Point: Falta de eficiencia operativa debido a procesos manuales o falta de automatización.
+#Minería
+Actividad Preponderante (ejemplo)
+Pain Point: Falta de eficiencia operativa debido a procesos manuales o falta de automatización.
+#Pesca y Caza
+Actividad Preponderante (ejemplo)
+Pain Point: Falta de eficiencia operativa debido a procesos manuales o falta de automatización.
+#Salud
+Actividad Preponderante (ejemplo)
+Pain Point: Falta de eficiencia operativa debido a procesos manuales o falta de automatización.
+#Servicios
+Actividad Preponderante (ejemplo)
+Pain Point: Falta de eficiencia operativa debido a procesos manuales o falta de automatización.
+#Tecnología
+Actividad Preponderante (ejemplo)
+Pain Point: Falta de eficiencia operativa debido a procesos manuales o falta de automatización.
+#Telefonía
+Actividad Preponderante (ejemplo)
+Pain Point: Falta de eficiencia operativa debido a procesos manuales o falta de automatización.
+#Turismo
+Actividad Preponderante (ejemplo)
+Pain Point: Falta de eficiencia operativa debido a procesos manuales o falta de automatización.
+
+##

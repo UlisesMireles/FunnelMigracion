@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild, HostListener, ElementRef } from '@angular/core';
 import { LazyLoadEvent } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { MessageService } from 'primeng/api';
@@ -11,14 +11,17 @@ import { LoginService } from '../../../services/login.service';
 import { ColumnasDisponiblesComponent } from '../../utils/tablas/columnas-disponibles/columnas-disponibles.component';
 import { ConsultaAsistenteDto } from '../../../interfaces/asistentes/consultaAsistente';
 import { OpenIaService } from '../../../services/asistentes/openIA.service';
-
+import { Subscription } from 'rxjs';
+import { AsistenteService } from '../../../services/asistentes/asistente.service';
+import { TopVeinteDataService } from '../../../services/top-veinte-data.service';
+import { EnumLicencias } from '../../../enums/enumLicencias';
 @Component({
   selector: 'app-top-veinte',
   standalone: false,
   templateUrl: './top-veinte.component.html',
   styleUrl: './top-veinte.component.css'
 })
-export class TopVeinteComponent {
+export class TopVeinteComponent implements OnInit {
   @ViewChild('dt')
   dt!: Table;
 
@@ -44,6 +47,10 @@ export class TopVeinteComponent {
   years: string[] = [];
   selectedYear: string = 'Todos los Años';
   leyendo: boolean = false;
+  vocesDisponibles: SpeechSynthesisVoice[] = [];
+  vozSeleccionada: SpeechSynthesisVoice | null = null;
+
+
 
   EstatusDropdown = [
     { label: 'Todo', value: null },
@@ -70,14 +77,18 @@ export class TopVeinteComponent {
     { key: 'desEstatus', isCheck: true, valor: 'Estatus', groupHeader: '', isIgnore: false, tipoFormato: 'estatus' }
   ];
 
-
+  licenciaPlatino: boolean = false;
   columnsAMostrarResp = JSON.stringify(this.lsColumnasAMostrar);
   columnsTodasResp = JSON.stringify(this.lsTodasColumnas);
   disabledPdf: boolean = false;
 
-  constructor(private messageService: MessageService, private cdr: ChangeDetectorRef, private prospectoService: ProspectoService, private loginService: LoginService, public dialog: MatDialog, private openIaService: OpenIaService) { }
+  constructor(private messageService: MessageService, private cdr: ChangeDetectorRef, private prospectoService: ProspectoService, private loginService: LoginService, public dialog: MatDialog, private openIaService: OpenIaService,
+    public asistenteService: AsistenteService, private topVeinteDataService: TopVeinteDataService
+  ) { }
 
   ngOnInit(): void {
+    this.licenciaPlatino = localStorage.getItem('licencia')! === EnumLicencias.Platino;
+    this.cargarVozPreferida();
     this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);    
     this.getAniosOportunidades();
     document.documentElement.style.fontSize = 12 + 'px';
@@ -107,6 +118,20 @@ export class TopVeinteComponent {
     this.prospectoService.getTopVeinte(this.loginService.obtenerIdEmpresa(), anioSeleccionado).subscribe({
       next: (result: ClientesTopVeinte[]) => {
         this.TopVeinteOriginal = result;
+        const opDataSet = result.filter(ClientesTopVeinte => {
+          if (this.selectedYear === "Todos los Años") {
+            return ClientesTopVeinte.porcGanadas > 75;
+
+          }
+          else {
+            //Si es un año específico
+            return ClientesTopVeinte.porcGanadas > 75 &&
+                  ClientesTopVeinte.totalOportunidades >= 5 &&
+                  ClientesTopVeinte.ganadas >= 1;
+          }
+        });
+
+this.topVeinteDataService.updateTop20Data(opDataSet);
         this.selectedEstatus = 'Activo';
         this.cdr.detectChanges();
         this.loading = false;
@@ -124,14 +149,26 @@ export class TopVeinteComponent {
   }
 
   FiltrarPorEstatus() {
+  this.topveinte = this.selectedEstatus === null
+    ? [...this.TopVeinteOriginal]
+    : [...this.TopVeinteOriginal.filter((x) => x.desEstatus === this.selectedEstatus)];
 
-    this.topveinte = this.selectedEstatus === null
-      ? [...this.TopVeinteOriginal]
-      : [...this.TopVeinteOriginal.filter((x) => x.desEstatus === this.selectedEstatus)];
-    if (this.dt) {
-      this.dt.first = 0;
+  // Filtro de porcentaje + condiciones extra si no es "Todos los Años"
+  const opDataSet = this.topveinte.filter(item => {
+    if (this.selectedYear === "Todos los Años") {
+      return item.porcGanadas > 75;
+    } else {
+      return item.porcGanadas > 75 && item.totalOportunidades >= 5 && item.ganadas >= 1;
     }
+  });
+
+  this.topVeinteDataService.updateTop20Data(opDataSet);
+
+  if (this.dt) {
+    this.dt.first = 0;
   }
+}
+
 
   onYearChange() {
     this.getTopVeinte();
@@ -447,9 +484,14 @@ export class TopVeinteComponent {
 
       const utterance = new SpeechSynthesisUtterance(textoPlano);
       utterance.lang = 'es-MX';
-      utterance.rate = 1;
-      utterance.pitch = 1;
+      utterance.rate = 1.1;
+      utterance.pitch = 1.2;
       utterance.volume = 1;
+
+
+      if (this.vozSeleccionada) {
+        utterance.voice = this.vozSeleccionada;
+      }
 
       this.leyendo = true;
 
@@ -473,7 +515,28 @@ export class TopVeinteComponent {
       this.leyendo = false;
     }
   }
+  cargarVozPreferida(): void {
+    const cargarVoces = () => {
+      this.vocesDisponibles = window.speechSynthesis.getVoices();
 
+      if (this.vocesDisponibles.length === 0) {
+        setTimeout(cargarVoces, 100);
+        return;
+      }
 
+      const nombreGuardado = localStorage.getItem('vozPreferida');
+      this.vozSeleccionada = this.vocesDisponibles.find(v =>
+        v.name === (nombreGuardado || "Microsoft Dalia Online (Natural) - Spanish (Mexico)")
+      ) || null;
 
+      if (!nombreGuardado && this.vozSeleccionada) {
+        localStorage.setItem('vozPreferida', this.vozSeleccionada.name);
+      }
+    };
+    window.speechSynthesis.onvoiceschanged = cargarVoces;
+
+    cargarVoces();
+  }
+
+    
 }

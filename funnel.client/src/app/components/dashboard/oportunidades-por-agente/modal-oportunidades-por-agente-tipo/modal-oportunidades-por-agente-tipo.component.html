@@ -1,0 +1,101 @@
+<p-dialog 
+  appendTo="body"
+  [(visible)]="visible" 
+  [modal]="true" 
+  [closable]="true" 
+  [maximizable]="true"
+  [style]="{
+    width: maximized ? '100vw' : '80rem',
+    height: maximized ? '100vh' : 'auto'
+  }"
+  [ngClass]="{'maximized': maximized}"
+  (onHide)="close()"
+  (onShow)="onDialogShow()"
+  [baseZIndex]="1100"
+  [draggable]="true"
+  [resizable]="false"
+  [blockScroll]="true"
+  styleClass="custom-header-naranja">
+  
+  <ng-template pTemplate="header">
+    <div class="dialog-header-content">
+      <label class="margen titulo-dialogo">
+        Oportunidades por Agente - Tipo Oportunidad
+      </label>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="content">
+    <div class="contenedor-tabla-dialogo">
+      <p-table #dt [value]="oportunidades" [paginator]="oportunidades.length > 10" [rows]="10" [paginatorDropdownAppendTo]="'body'" 
+        [rowsPerPageOptions]="[10, 25, 50]" [totalRecords]="oportunidades.length"
+        styleClass="tabla-estilizada">
+        
+        <ng-template pTemplate="header" let-columns>
+          <tr class="custom-header">
+            <th *ngFor="let def of lsColumnasAMostrar" pSortableColumn="{{def.key}}" 
+              [ngClass]="{'sort-active': isSorted(def.key)}">
+              {{def.header}}
+              <p-sortIcon field="{{def.key}}"></p-sortIcon>
+            </th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-rowData>
+          <tr class="fila-datos">
+            <td *ngFor="let def of lsColumnasAMostrar">
+            <ng-container [ngSwitch]="def.format">
+            <span *ngSwitchCase="'text'">
+            <ng-container *ngIf="def.key === 'descripcion'; else otroTexto">
+                <a href="#" (click)="abrirModalDetalle(rowData.idTipoOporAgente); $event.preventDefault()">
+                {{ rowData[def.key] }}
+                </a>
+            </ng-container>
+            <ng-template #otroTexto>
+                {{ rowData[def.key] }}
+            </ng-template>
+            </span>
+            <span *ngSwitchCase="'currency'">{{ rowData[def.key] | totalCurrency:'currency':mostrarDecimales}}</span>
+            <span *ngSwitchCase="'percent'">{{ (rowData[def.key] / 100) | percent:'1.2-2' }}</span>
+            </ng-container>
+            </td>
+          </tr>
+        </ng-template>
+        
+        <ng-template pTemplate="footer" let-columns>
+          <tr class="custom-footer">
+            <td *ngFor="let def of lsColumnasAMostrar"
+              [ngClass]="{'total-registros-cell': def.key === 'descripcion'}">
+                <!-- MONTO -->
+                <ng-container *ngIf="def.key === 'monto'">
+                    <div style="text-align: left; font-weight: bold;">
+                    {{ calcularSumaMontos() | totalCurrency:'currency':mostrarDecimales}}
+                    </div>
+                </ng-container>
+
+                <!-- MONTO NORMALIZADO -->
+                <ng-container *ngIf="def.key === 'montoNormalizado'">
+                    <div style="text-align: left; font-weight: bold;">
+                    {{ calcularSumaMontosNormalizados() | currency:'currency':mostrarDecimales }}
+                    </div>
+                </ng-container>
+                <!-- TOTAL REGISTROS -->
+                <ng-container *ngIf="def.key === 'descripcion'">
+                    Total de Registros: {{ oportunidades.length }}
+                </ng-container>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </ng-template>
+</p-dialog>
+
+
+<app-modal-oportunidades-por-agente-detalle-tipo
+  [(visible)]="modalDetalleVisible"
+  [idAgente]="idAgente!"
+  [idTipoOporAgente]="idTipoOporAgenteSeleccionado!"
+  [nombreTipoOportunidad]="nombreTipoSeleccionado"
+  (closeModal)="cerrarModalDetalle()">
+</app-modal-oportunidades-por-agente-detalle-tipo>

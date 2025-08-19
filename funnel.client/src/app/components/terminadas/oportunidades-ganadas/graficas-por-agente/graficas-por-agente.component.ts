@@ -16,6 +16,7 @@ export class GraficasPorAgenteComponent {
 quadrants: { cards: any[] }[] = [];
   baseUrl: string = environment.baseURL;
   agentes: AgenteDto[] = [];
+  mostrarDecimales: boolean = false;
 
   get dropListIds() {
     return this.quadrants.map((_, index) => `cardList${index}`);
@@ -26,7 +27,7 @@ quadrants: { cards: any[] }[] = [];
   loading: boolean = true;
   agenteSeleccionadoId: number | null = null;
   private originalParentElements = new Map<string, { parent: HTMLElement, nextSibling: Node | null }>();
-  constructor( private readonly graficasService: GraficasService,private readonly sessionService: LoginService,     private readonly cdr: ChangeDetectorRef) {
+  constructor( private readonly graficasService: GraficasService,private readonly sessionService: LoginService,     private readonly cdr: ChangeDetectorRef, private loginService: LoginService) {
     this.quadrants = [
       { cards: [this.graficasService.createCardPorAnio(1, 'Consulta Agentes', 'tabla')] },
       { cards: [this.graficasService.createCardPorAnio(2, 'Grafica por Agente - Clientes (Seleccione un Agente)', 'grafica')] },
@@ -37,7 +38,9 @@ quadrants: { cards: any[] }[] = [];
 
   ngOnInit(): void {
     this.baseUrl = this.baseUrl + '/Fotografia/';
+    setTimeout(() => {this.mostrarDecimales = this.loginService.obtenerPermitirDecimales();
     this.obtenerAniosDisponibles();
+    }, 500);
     //this.consultarAgente();
   }
   obtenerAniosDisponibles(): void {
@@ -108,47 +111,54 @@ onAnioChange(): void {
   }
 
   consultarGraficaAgenteCliente(idAgente: number): void {
-    const idEstatusOportunidad = 2;
-    const anio = this.anioSeleccionado;
-    const request: RequestGraficasDto = {
-      bandera: 'SEL-AGENTE-CLIENTES',
-      idUsuario: idAgente,
-      idEstatusOportunidad,
-      anio
-    };
+  const idEstatusOportunidad = 2;
+  const anio = this.anioSeleccionado;
 
-    this.graficasService.obtenerGraficaAgentesPorAnioData(request).subscribe({
-      next: (response: GraficasDto[]) => {
-        const dataAGraficar = [this.graficasService.createBarHorizontalData(response)];
-        console.log('Data a graficar:', dataAGraficar);
-        console.log( this.quadrants[1].cards[0]);
-        const layOutGrafica = this.graficasService.createBarHorizontalLayout();
-        this.setGraficaData(1, 0, dataAGraficar, layOutGrafica);
-      },
-      error: (err: any) => console.error('Error al consultar la gráfica:', err)
-    });
-  }
+  const request: RequestGraficasDto = {
+    bandera: 'SEL-AGENTE-CLIENTES',
+    idUsuario: idAgente,
+    idEstatusOportunidad,
+    anio
+  };
+
+  this.graficasService.obtenerGraficaAgentesPorAnioData(request).subscribe({
+    next: (response: GraficasDto[]) => {
+      const dataAGraficar = [
+        this.graficasService.createBarHorizontalData(response, this.mostrarDecimales)
+      ];
+
+      const layOutGrafica = this.graficasService.createBarHorizontalLayout();
+      this.setGraficaData(1, 0, dataAGraficar, layOutGrafica);
+    },
+    error: (err: any) => console.error('Error al consultar la gráfica:', err)
+  });
+}
+
 
   consultarGraficaAgenteTipoOportunidad(idAgente: number): void {
-    const idEstatusOportunidad = 2;
-    const anio = this.anioSeleccionado;
-    const request: RequestGraficasDto = {
-      bandera: 'SEL-AGENTE-TIPO',
-      idEmpresa: this.sessionService.obtenerIdEmpresa(),
-      idUsuario: idAgente,
-      idEstatusOportunidad,
-      anio
-    };
+  const idEstatusOportunidad = 2;
+  const anio = this.anioSeleccionado;
 
-    this.graficasService.obtenerGraficaAgentesPorAnioData(request).subscribe({
-      next: (response: GraficasDto[]) => {
-        const dataAGraficar = [this.graficasService.createPieData(response)];
-        const layOutGrafica = this.graficasService.createPieLayout();
-        this.setGraficaData(2, 0, dataAGraficar, layOutGrafica);
-      },
-      error: (err: any) => console.error('Error al consultar la gráfica:', err)
-    });
-  }
+  const request: RequestGraficasDto = {
+    bandera: 'SEL-AGENTE-TIPO',
+    idEmpresa: this.sessionService.obtenerIdEmpresa(),
+    idUsuario: idAgente,
+    idEstatusOportunidad,
+    anio
+  };
+
+  this.graficasService.obtenerGraficaAgentesPorAnioData(request).subscribe({
+    next: (response: GraficasDto[]) => {
+      const dataAGraficar = [
+        this.graficasService.createPieData(response, this.mostrarDecimales)
+      ];
+
+      const layOutGrafica = this.graficasService.createPieLayout();
+      this.setGraficaData(2, 0, dataAGraficar, layOutGrafica);
+    },
+    error: (err: any) => console.error('Error al consultar la gráfica:', err)
+  });
+}
 
   drop(event: CdkDragDrop<any>) {
     if (event.previousContainer === event.container) {

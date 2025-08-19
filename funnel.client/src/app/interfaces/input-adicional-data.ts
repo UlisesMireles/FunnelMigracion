@@ -1,0 +1,15 @@
+export interface InpoutAdicionalData {
+    idInput: number,
+    nombre: string,
+    etiqueta: string,
+    requerido: boolean,
+    tipo: string,
+    tipoCampo: string,
+    rCatalogoInputId: number,
+    orden: number,
+    idInputData: number,
+    valor: string,
+    idReferencia: number,
+    tipoCatalogoInputId: number,
+    tipoCatalogoInput: string,
+}

@@ -19,7 +19,7 @@
           [tableStyle]="{'min-width': anchoTabla+ '%'}">
 
           <ng-template class="divAccionesTabla" #caption>
-            <div class="col-12" style="text-align: left; font-weight: bold; margin-top: 40px">
+            <div class="col-12" style="text-align: left; font-weight: bold; margin-top: 40px" (click)="onHeaderClick()">
               <h3>Administración de Prospectos</h3>
             </div>
             <div class="row">
@@ -153,13 +153,16 @@
                   <span *ngSwitchCase="'currency'">
                     {{ rowData[def.key] | currency:'$':'symbol':'1.2-2' }}
                   </span>
-                  
+
                   <span *ngSwitchCase="'number'">
                     {{ rowData[def.key] | number:'1.0-0' }}
                   </span>
                   
                   <span *ngSwitchCase="'date'">
                     {{ rowData[def.key] | date:'dd/MM/yyyy' }}
+                  </span>
+                  <span *ngSwitchCase="'decimal'">
+                    {{ rowData[def.key] | number:'1.0-0' }} %
                   </span>
                   
                   <span *ngSwitchDefault>{{ rowData[def.key] }}</span>
@@ -211,4 +214,5 @@
 <!-- <app-modal-prospectos [(visible)]="modalVisible" [title]="'Editar Datos de '" (closeModal)="onModalClose()"
   (result)="manejarResultado($event)" [insertar]="insertar" [prospectos]="prospectos" [prospecto]="prospectoSeleccionado">
 </app-modal-prospectos> -->
+
 

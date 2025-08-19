@@ -28,6 +28,11 @@ import { ModalOportunidadesPorSectorComponent } from './components/dashboard/opo
 import { ModalDetallesOportunidadesPorSectorComponent } from './components/dashboard/oportunidades-general/modal-detalles-oportunidades-por-sector/modal-detalles-oportunidades-por-sector.component';
 import { ModalDetallesOportunidadesPorTipoComponent } from './components/dashboard/oportunidades-general/modal-detalles-oportunidades-por-tipo/modal-detalles-oportunidades-por-tipo.component';
 import { ModalOportunidadesPorTipoComponent } from './components/dashboard/oportunidades-general/modal-oportunidades-por-tipo/modal-oportunidades-por-tipo.component';
+import { ModalOportunidadesPorAgenteClientesComponent } from './components/dashboard/oportunidades-por-agente/modal-oportunidades-por-agente-clientes/modal-oportunidades-por-agente-clientes.component';
+import { ModalOportunidadesPorAgenteTipoComponent } from './components/dashboard/oportunidades-por-agente/modal-oportunidades-por-agente-tipo/modal-oportunidades-por-agente-tipo.component';
+import { ModalOportunidadesPorAgenteDetalleTipoComponent } from './components/dashboard/oportunidades-por-agente/modal-oportunidades-por-agente-detalle-tipo/modal-oportunidades-por-agente-detalle-tipo.component';
+import { ModalOportunidadesPorAgenteSectorComponent } from './components/dashboard/oportunidades-por-agente/modal-oportunidades-por-agente-sector/modal-oportunidades-por-agente-sector.component';
+import { ModalOportunidadesPorAgenteDetalleSectorComponent } from './components/dashboard/oportunidades-por-agente/modal-oportunidades-por-agente-detalle-sector/modal-oportunidades-por-agente-detalle-sector.component';
 
 import { PermisosComponent } from './components/catalogos/permisos/permisos.component';
 import { AdministracionHerramientasComponent } from './components/herramientas/administracion-herramientas/administracion-herramientas.component';
@@ -39,6 +44,7 @@ import { AcordeonProspectosContactosComponent } from './components/administracio
 import { ServiciosEntregasComponent } from './components/catalogos/servicios-entregas/servicios-entregas.component';
 import { UsuariosPermisosComponent } from './components/catalogos/usuarios-permisos/usuarios-permisos.component';
 import { PanelesTerminadasComponent } from './components/terminadas/paneles-terminadas/paneles-terminadas.component';
+import { ModalCamposNuevosComponent } from './components/administracion/modal-campos-nuevos/modal-campos-nuevos.component';
 const routes: Routes = [
   { path: '', component: LoginComponent, title: 'Login' },
   { path: 'login', component: LoginComponent, title: 'Login' },
@@ -78,7 +84,11 @@ const routes: Routes = [
   { path: 'modal-detalles-oportunidades-por-sector', component: ModalDetallesOportunidadesPorSectorComponent, title: 'Detalles Oportunidades Por Sector', canActivate: [AuthGuard] },
   { path: 'modal-oportunidades-por-tipo', component: ModalOportunidadesPorTipoComponent, title: 'Oportunidades Por Tipo', canActivate: [AuthGuard] },
   { path: 'modal-detalles-oportunidades-por-tipo', component: ModalDetallesOportunidadesPorTipoComponent, title: 'Detalles Oportunidades Por Tipo', canActivate: [AuthGuard] },
-
+  { path: 'modal-oportunidades-por-agente-clientes', component: ModalOportunidadesPorAgenteClientesComponent, title: 'Oportunidades Por Agente Clientes', canActivate: [AuthGuard] }, 
+  { path: 'modal-oportunidades-por-agente-tipo', component: ModalOportunidadesPorAgenteTipoComponent, title: 'Oportunidades Por Agente Tipo', canActivate: [AuthGuard] },
+  { path: 'modal-oportunidades-por-agente-detalle-tipo', component: ModalOportunidadesPorAgenteDetalleTipoComponent, title: 'Oportunidades Por Agente Detalle Tipo', canActivate: [AuthGuard] },
+  { path: 'modal-oportunidades-por-agente-sector', component: ModalOportunidadesPorAgenteSectorComponent, title: 'Oportunidades Por Agente Sector', canActivate: [AuthGuard] },
+  { path: 'modal-oportunidades-por-agente-detalle-sector', component: ModalOportunidadesPorAgenteDetalleSectorComponent, title: 'Oportunidades Por Agente Detalle Sector', canActivate: [AuthGuard] },
   //{ path: 'permisos', component: PermisosComponent, title: 'Permisos', canActivate: [AuthGuard] },
   //{ path: 'top-veinte', component: AdminDashboardComponent, title: 'Top Veinte', canActivate: [AuthGuard] },
   { path: 'perfil', component: UsuarioPerfilComponent, title: 'Perfil', canActivate: [AuthGuard] },
@@ -86,6 +96,7 @@ const routes: Routes = [
   { path: 'herramientas', component: AdministracionHerramientasComponent, title: 'Herramientas', canActivate: [AuthGuard] },
  // { path: 'dashboard-general', component: AdminDashboardComponent, title: 'Dashboard General', canActivate: [AuthGuard]},
   { path: 'dashboard', component: AdminDashboardComponent, title: 'Dashboard General', canActivate: [AuthGuard]},
+  { path: 'modal-campos-adicionales', component: ModalCamposNuevosComponent, title: 'ModalCamposAdicionales', canActivate: [AuthGuard]},
 ];
 
 

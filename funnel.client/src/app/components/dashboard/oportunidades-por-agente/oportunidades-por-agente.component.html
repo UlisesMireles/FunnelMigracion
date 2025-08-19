@@ -51,8 +51,8 @@
                     <img [src]="baseUrl + rowData.archivoImagen" alt="Avatar" width="32" height="32" style="border-radius:50%;">
                   </td>
                   <td>{{ rowData.nombre }}</td>
-                  <td>{{ rowData.totalAgente | currency:'$':'symbol':'1.2-2' }}</td>
-                  <td>{{ rowData.montoNormalizado | currency:'$':'symbol':'1.2-2' }}</td>
+                  <td>{{ rowData.totalAgente | totalCurrency:'currency':mostrarDecimales }}</td>
+                  <td>{{ rowData.montoNormalizado | totalCurrency:'currency':mostrarDecimales }}</td>
                 </tr>
               </ng-template>
             </p-table>
@@ -66,8 +66,41 @@
                       [layout]="card.grafica.layout"
                       [config]="card.grafica.config">
           </plotly-plot>
+          <div *ngIf="card.tipo === 'grafica' && card.titulo === 'Grafica por Agente - Clientes' && !card.isMaximized" 
+              class="position-absolute bottom-10 start-0 p-2">
+            <a href="javascript:void(0)" (click)="openAgenteClienteModal()" class="text-primary">Ver detalles</a>       
+          </div>
+          <div *ngIf="card.tipo === 'grafica' && card.titulo === 'Grafica por Agente - Tipo Oportunidad' && !card.isMaximized" 
+              class="position-absolute bottom-10 start-0 p-2">
+          <a href="javascript:void(0)" (click)="openAgenteTipoModal()" class="text-primary">Ver detalles</a>       
+        </div>
+        <div *ngIf="card.tipo === 'grafica' && card.titulo === 'Grafica por Agente - Sector' && !card.isMaximized" 
+            class="position-absolute bottom-10 start-0 p-2">
+          <a href="javascript:void(0)" (click)="openAgenteSectorModal()" class="text-primary">Ver detalles</a>       
+        </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+
+<app-modal-oportunidades-por-agente-clientes
+  [(visible)]="modalAgenteClienteVisible"
+  [idAgente]="agenteSeleccionadoId"
+  (closeModal)="onModalAgenteClienteClose()">
+</app-modal-oportunidades-por-agente-clientes>
+
+<app-modal-oportunidades-por-agente-tipo
+  [visible]="modalAgenteTipoVisible"
+  (visibleChange)="modalAgenteTipoVisible = $event"
+  (closeModal)="onModalAgenteTipoClose()"
+  [idAgente]="agenteSeleccionadoId">
+</app-modal-oportunidades-por-agente-tipo>
+
+<app-modal-oportunidades-por-agente-sector
+  [visible]="modalAgenteSectorVisible"
+  (visibleChange)="modalAgenteSectorVisible = $event"
+  (closeModal)="onModalAgenteSectorClose()"
+  [idAgente]="agenteSeleccionadoId">
+</app-modal-oportunidades-por-agente-sector>

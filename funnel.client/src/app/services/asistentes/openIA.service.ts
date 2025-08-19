@@ -35,4 +35,24 @@ export class OpenIaService {
   AsistenteHistorico(data : ConsultaAsistenteDto): Observable<ConsultaAsistenteDto>{
     return this.http.post<ConsultaAsistenteDto>(this.baseUrl + 'api/AsistenteHistorico/OpenIA',data);
   }
+
+  asistenteProspeccion(data: ConsultaAsistenteDto): Observable<ConsultaAsistenteDto> {
+    return this.http.post<ConsultaAsistenteDto>(this.baseUrl + 'api/AsistenteProspeccion/OpenIA',data);
+  }
+  obtenerFaq(idBot: number) {
+    return this.http.get(this.baseUrl + 'api/AsistenteProspeccion/ObtenerFaq', { params: { idBot: idBot.toString() } });
+  }
+  limpiarCacheBot(userId: number, idBot: number): Observable<any> {
+    const formData = new FormData();
+    formData.append('userId', userId.toString());
+    formData.append('idBot', idBot.toString());
+    return this.http.post(this.baseUrl + 'api/AsistenteProspeccion/LimpiarCacheBot', formData);
+  }
+  
+  inicializarCacheIdsAsync(userId: number, idBot: number): Observable<any> {
+    const formData = new FormData();
+    formData.append('userId', userId.toString());
+    formData.append('idBot', idBot.toString());
+    return this.http.post(this.baseUrl + 'api/AsistenteProspeccion/InicializarCacheIdsAsync', formData);
+  }
 }

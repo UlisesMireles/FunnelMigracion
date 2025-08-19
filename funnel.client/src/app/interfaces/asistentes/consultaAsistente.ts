@@ -23,4 +23,9 @@ export interface ConsultaAsistente {
     idTipoUsuario: number;
     idEmpresa: number;
     esPreguntaFrecuente: boolean;
+    nombreUsuario?: string;
+    correo?: string;
+    puesto?: string;
+    numeroTelefono?: string;
+    empresa?: string;
   }

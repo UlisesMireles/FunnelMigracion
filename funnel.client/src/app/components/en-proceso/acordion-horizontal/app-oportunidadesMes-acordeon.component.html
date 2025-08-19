@@ -41,14 +41,14 @@
             <!-- Encabezado con título e ícono de edición -->
             <div class="card-header">
               <div class="fila-monto">
-                <label class="monto-normalizado">{{ tarjeta.montoNormalizado | currency:'MXN':'symbol':'1.0-0'
+                <label class="monto-normalizado">{{ tarjeta.montoNormalizado | totalCurrency:'currency':mostrarDecimales
                   }}</label>
               </div>
               <p-button type="button" icon="bi bi-file-earmark-text fs-3" text (click)="seguimiento(tarjeta)"
                 pTooltip="Seguimiento" tooltipPosition="top" styleClass="blue-icon">
               </p-button>
               <p-button type="button" icon="bi bi-folder2 fs-4" text (click)="documento(tarjeta)"
-                pTooltip="Documentos" tooltipPosition="top" styleClass="">
+                pTooltip="Documentos" tooltipPosition="top" [styleClass]="tarjeta.totalArchivos > 0 ? 'blue-icon-documentos': 'cancel-icon'" >
               </p-button>
               <p-button styleClass="coloreditar-icon ms-2" (click)="actualiza(tarjeta)" pTooltip="Editar registro"
                 tooltipPosition="top">
@@ -67,11 +67,11 @@
             </div>
             <div class="col-3 tarjeta-side">
               <img class="fotoTarjeta margin-auto" [src]="getImagen(tarjeta.imagen)" [title]="tarjeta.nombreEjecutivo" alt="foto" />
-              <p class="iniciales"
+              <!-- <p class="iniciales"
                 [ngStyle]="tarjeta.iniciales && tarjeta.iniciales.length === 5 ? {'margin-left': '-6px'} : {}" 
                 title="{{ tarjeta.nombreEjecutivo }}">
                 {{ tarjeta.iniciales }}
-              </p>
+              </p> -->
             </div>
           </div>
         </div>

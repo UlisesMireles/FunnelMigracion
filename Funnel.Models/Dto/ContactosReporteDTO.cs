@@ -9,6 +9,6 @@ namespace Funnel.Models.Dto
     public class ContactosReporteDTO
     {
         public List<ColumnasPaginacion> Columnas { get; set; }
-        public List<ContactoDto> Datos { get; set; }
+        public List<Dictionary<string, object?>> Datos { get; set; }
     }
 }

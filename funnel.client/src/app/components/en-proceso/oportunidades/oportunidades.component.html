@@ -3,69 +3,81 @@
     <div class="col-12" style="text-align: left; margin-top: 14px; margin-left: 10px; padding-left: 0">
       <h3>{{titulo}}</h3>
     </div>
-   
+
     <div class="col-12">
-       <!-- Pestañas  -->
-    <ul class="nav nav-tabs custom-tabs">
-      
-      <li class="nav-item tab-item">
-        <a class="nav-link active" data-bs-toggle="tab" href="#porEtapa" (click)="camTitulo(2)" pTooltip="Etapa" tooltipPosition="top">
-          <i class="bi bi-calendar-check color-tab-2"></i>  
-        </a>
-      </li>
-      <li class="nav-item tab-item">
-        <a class="nav-link" data-bs-toggle="tab" href="#porMes" (click)="camTitulo(1)" pTooltip="Candelarización" tooltipPosition="top">
-          <i class="bi bi-calendar color-tab-3"></i>
-        </a>
-      </li>
-      <li class="nav-item tab-item">
-        <a class="nav-link " data-bs-toggle="tab" href="#lista" (click)="camTitulo(0)" pTooltip="Lista" tooltipPosition="top" >
-          <i class="bi bi-list color-tab-1"></i>
-        </a>
-      </li>
-      <li class="nav-item tab-item">
-        <a class="nav-link" data-bs-toggle="tab" href="#estadisticas" (click)="camTitulo(3)" pTooltip="Estadisticas" tooltipPosition="top">
-          <i class="bi bi-bar-chart color-tab-4"></i>
-        </a>
-      </li>
-    </ul>
+      <!-- Pestañas  -->
+      <ul class="nav nav-tabs custom-tabs">
 
-    <div class="d-flex contenedor-etiquetas" *ngIf="titulo === 'Oportunidades Por Mes' || titulo === 'Oportunidades Por Etapa'">
-      <!-- Oportunidades en proceso -->
-      <div class="etiqueta bg-white shadow-md rounded-xl px-6 text-center etiqueta-default">
-        <p class="titulo mb-0 color-tab-1">En proceso</p>
-        <p class="cantidad mb-0 color-tab-1">{{totalOportunidades}}</p>
-      </div>
+        <li class="nav-item tab-item">
+          <a class="nav-link active" data-bs-toggle="tab" href="#porEtapa" (click)="camTitulo(2)" pTooltip="Etapa"
+            tooltipPosition="top">
+            <i class="bi bi-calendar-check color-tab-2"></i>
+          </a>
+        </li>
+        <li class="nav-item tab-item">
+          <a class="nav-link" data-bs-toggle="tab" href="#porMes" (click)="camTitulo(1)" pTooltip="Candelarización"
+            tooltipPosition="top">
+            <i class="bi bi-calendar color-tab-3"></i>
+          </a>
+        </li>
+        <li class="nav-item tab-item">
+          <a class="nav-link " data-bs-toggle="tab" href="#lista" (click)="camTitulo(0)" pTooltip="Lista"
+            tooltipPosition="top">
+            <i class="bi bi-list color-tab-1"></i>
+          </a>
+        </li>
+        <li class="nav-item tab-item">
+          <a class="nav-link" data-bs-toggle="tab" href="#estadisticas" (click)="camTitulo(3)" pTooltip="Estadisticas"
+            tooltipPosition="top">
+            <i class="bi bi-bar-chart color-tab-4"></i>
+          </a>
+        </li>
+      </ul>
 
-      <!-- Oportunidades abiertas en el mes -->
-      <div class="etiqueta bg-white shadow-md rounded-xl px-6 text-center etiqueta-default">
-        <p class="titulo mb-0 color-tab-5">Abiertas en el mes</p>
-        <p class="cantidad mb-0 color-tab-5">{{totalOportunidadesMes}}</p>
-      </div>
+      <div class="d-flex contenedor-etiquetas"
+        *ngIf="titulo === 'Oportunidades Por Mes' || titulo === 'Oportunidades Por Etapa'">
+        <!-- Oportunidades en proceso -->
+        <div class="etiqueta bg-white shadow-md rounded-xl px-6 text-center etiqueta-default" >
+          <p class="titulo mb-0 color-tab-1">En proceso</p>
+          <p class="cantidad mb-0 color-tab-1">{{totalOportunidades}}</p>
+        </div>
 
-      <!-- Prospectos nuevos en el mes -->
-      <div class="etiqueta bg-white shadow-md rounded-xl px-6 text-center etiqueta-default">
-        <p class="titulo mb-0 color-tab-3">Prospectos nuevos</p>
-        <p class="cantidad mb-0 color-tab-3">{{totalProspectosMes}}</p>
-      </div>
-
-      <!-- Prospectos nuevos en el mes -->
-      <div class="etiqueta bg-white shadow-md rounded-xl px-6 text-center etiqueta-ganadas">
-        <p class="titulo mb-0 color-tab-2">Ganadas en el mes</p>
-        <p class="cantidad mb-0 color-tab-2">{{totalGanadasMes}}</p>
-      </div>
+        <!-- Oportunidades abiertas en el mes -->
+        <div class="etiqueta bg-white shadow-md rounded-xl px-6 text-center etiqueta-default cursor-pointer"
+        (click)="abrirModalOportunidadesAbiertasMes()" (keyup.enter)="abrirModalOportunidadesAbiertasMes()" >
+          <p class="titulo mb-0 color-tab-5">Abiertas en el mes</p>
+          <p class="cantidad mb-0 color-tab-5">{{totalOportunidadesMes}}</p>
+        </div>
 
         <!-- Prospectos nuevos en el mes -->
-      <div class="etiqueta bg-white shadow-md rounded-xl px-6 text-center etiqueta-perdidas">
-        <p class="titulo mb-0 color-tab-4">Perdidas en el mes</p>
-        <p class="cantidad mb-0 color-tab-4">{{totalPerdidasMes}}</p>
-      </div>
-    </div>
-       <!-- Contenido de las pestañas -->
-       <div class="tab-content">
+        <div class="etiqueta bg-white shadow-md rounded-xl px-6 text-center etiqueta-default cursor-pointer"
+          (click)="abrirModalProspectosNuevosMes()" (keyup.enter)="abrirModalProspectosNuevosMes()" 
+           title="Click para ver detalles">
+          <p class="titulo mb-0 color-tab-3">Prospectos nuevos</p>
+          <p class="cantidad mb-0 color-tab-3">{{totalProspectosMes}}</p>
+        </div>
 
-         <!-- Oportunidades por Etapa -->
-       <div class="tab-pane fade active show" id="porEtapa">
+        <!-- Prospectos nuevos en el mes -->
+        <div class="etiqueta bg-white shadow-md rounded-xl px-6 text-center etiqueta-ganadas cursor-pointer"
+          (click)="abrirModalOportunidadesGanadasMes()" (keyup.enter)="abrirModalOportunidadesGanadasMes()" tabindex="0"
+          role="button" title="Click para ver detalles">
+          <p class="titulo mb-0 color-tab-2">Ganadas en el mes</p>
+          <p class="cantidad mb-0 color-tab-2">{{totalGanadasMes}}</p>
+        </div>
+
+        <!-- Prospectos nuevos en el mes -->
+        <div class="etiqueta bg-white shadow-md rounded-xl px-6 text-center etiqueta-perdidas cursor-pointer"
+          (click)="abrirModalOportunidadesPerdidasMes()" (keyup.enter)="abrirModalOportunidadesPerdidasMes()"
+          tabindex="0" role="button" title="Click para ver detalles">
+          <p class="titulo mb-0 color-tab-4">Perdidas en el mes</p>
+          <p class="cantidad mb-0 color-tab-4">{{totalPerdidasMes}}</p>
+        </div>
+      </div>
+      <!-- Contenido de las pestañas -->
+      <div class="tab-content">
+
+        <!-- Oportunidades por Etapa -->
+        <div class="tab-pane fade active show" id="porEtapa">
           <div class="row">
             <div class="col-12">
               <app-acordeon-oportunidades-etapa *ngIf="mostrarOportunidadesEtapa"></app-acordeon-oportunidades-etapa>
@@ -76,141 +88,142 @@
         <div class="tab-pane fade" id="porMes">
           <div class="row">
             <div class="col-12">
-               <app-oportunidadesMes-acordeon *ngIf="mostrarOportunidadesMes"></app-oportunidadesMes-acordeon>
+              <app-oportunidadesMes-acordeon *ngIf="mostrarOportunidadesMes"></app-oportunidadesMes-acordeon>
             </div>
           </div>
         </div>
- 
- 
+
+
         <!-- Pestaña 1 -->
         <div class="tab-pane fade" id="lista">
-         
-        <div class="row contenedorTabla" *ngIf="mostrarLista">
-           <div *ngIf="loading" class="spinner-container w-100 spinner-tabla ">
-            <div class="spinner-border" role="status">
-              <span class="visually-hidden">Cargando...</span>
-            </div>
-          </div>
-        <p-table *ngIf="!loading" #dt [value]="oportunidades" dataKey="id" [rows]="10"
-          [showCurrentPageReport]="false" [rowsPerPageOptions]="[10, 20, 50]" [paginator]="true" paginatorPosition="both"
-          [pageLinks]="1" 
-          currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros"
-          [columns]="lsColumnasAMostrar" 
-          [resizableColumns]="true" [reorderableColumns]="true"
-          [globalFilterFields]="['nombre','nombreSector','nombreOportunidad','abreviatura','stage','iniciales','nombreContacto','entrega','monto','probabilidadOriginal','probabilidad','montoNormalizado','fechaRegistro','diasFunnel','fechaEstimadaCierreOriginal','fechaModificacion']"
-          [tableStyle]="{'min-width': anchoTabla + '%'}">
-         
-          <ng-template class="divAccionesTabla" #caption>
-            <div class="col-12" style="text-align: left; font-weight: bold; margin-top: 44px">
-            </div>
-            <div class="row">
-              <div class="col inDivDatatableHeader" style="text-align:right; margin-right:5px">
-                <p-button label="" icon="bi bi-arrow-clockwise" (click)="clear(dt)" severity="secondary"
-                pTooltip="Refrescar" tooltipPosition="top" styleClass="custom-button refresh-button"
-                [ngStyle]="{'margin-right': '5px'}" />
-                <p-button [disabled]="disabledPdf" label="" icon="bi bi-filetype-pdf" severity="secondary" (click)="exportPdf(dt)"
-                pTooltip="Descargar PDF" tooltipPosition="top" styleClass="custom-button download-button"
-                [ngStyle]="{'margin-right': '5px'}"/>
-                <p-button label="" icon="bi bi-download" severity="secondary" (click)="exportExcel(dt)"  
-                pTooltip="Descargar Excel" tooltipPosition="top" styleClass="custom-button add-button"
-                [ngStyle]="{'margin-right': '5px'}"/>
-                <p-button label="" icon="bi-list" (click)="agregarColumna($event)" severity="secondary"  
-                pTooltip="Agregar columna" tooltipPosition="top" styleClass="custom-button column-button"
-                [ngStyle]="{'margin-right': '5px'}"/>
-                <p-button label="" icon="bi bi-plus" severity="secondary" (click)="inserta()"  
-                  pTooltip="Añadir nuevo" tooltipPosition="top" styleClass="custom-button add-button"
-                  [ngStyle]="{'margin-right': '5px'}"/>
+
+          <div class="row contenedorTabla" *ngIf="mostrarLista">
+            <div *ngIf="loading" class="spinner-container w-100 spinner-tabla ">
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden">Cargando...</span>
               </div>
             </div>
-          </ng-template>
-          <ng-template pTemplate="header" let-columns>
-            <tr class="custom-header" >
-                <th *ngFor="let def of lsColumnasAMostrar" pSortableColumn="{{def.key}}" pReorderableColumn [class.sort-active]="isSorted(def.key)"
-                [ngClass]="{
+            <p-table *ngIf="!loading" #dt [value]="oportunidades" dataKey="id" [rows]="10"
+              [showCurrentPageReport]="false" [rowsPerPageOptions]="[10, 20, 50]" [paginator]="true"
+              paginatorPosition="both" [pageLinks]="1"
+              currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros"
+              [columns]="lsColumnasAMostrar" [resizableColumns]="true" [reorderableColumns]="true"
+              [globalFilterFields]="['nombre','nombreSector','nombreOportunidad','abreviatura','stage','iniciales','nombreContacto','entrega','monto','probabilidadOriginal','probabilidad','montoNormalizado','fechaRegistro','diasFunnel','fechaEstimadaCierreOriginal','fechaModificacion']"
+              [tableStyle]="{'min-width': anchoTabla + '%'}">
+
+              <ng-template class="divAccionesTabla" #caption>
+                <div class="col-12" style="text-align: left; font-weight: bold; margin-top: 44px">
+                </div>
+                <div class="row">
+                  <div class="col inDivDatatableHeader" style="text-align:right; margin-right:5px">
+                    <p-button label="" icon="bi bi-arrow-clockwise" (click)="clear(dt)" severity="secondary"
+                      pTooltip="Refrescar" tooltipPosition="top" styleClass="custom-button refresh-button"
+                      [ngStyle]="{'margin-right': '5px'}" />
+                    <p-button [disabled]="disabledPdf" label="" icon="bi bi-filetype-pdf" severity="secondary"
+                      (click)="exportPdf(dt)" pTooltip="Descargar PDF" tooltipPosition="top"
+                      styleClass="custom-button download-button" [ngStyle]="{'margin-right': '5px'}" />
+                    <p-button label="" icon="bi bi-download" severity="secondary" (click)="exportExcel(dt)"
+                      pTooltip="Descargar Excel" tooltipPosition="top" styleClass="custom-button add-button"
+                      [ngStyle]="{'margin-right': '5px'}" />
+                    <p-button label="" icon="bi-list" (click)="agregarColumna($event)" severity="secondary"
+                      pTooltip="Agregar columna" tooltipPosition="top" styleClass="custom-button column-button"
+                      [ngStyle]="{'margin-right': '5px'}" />
+                    <p-button label="" icon="bi bi-plus" severity="secondary" (click)="inserta()"
+                      pTooltip="Añadir nuevo" tooltipPosition="top" styleClass="custom-button add-button"
+                      [ngStyle]="{'margin-right': '5px'}" />
+                  </div>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="header" let-columns>
+                <tr class="custom-header">
+                  <th *ngFor="let def of lsColumnasAMostrar" pSortableColumn="{{def.key}}" pReorderableColumn
+                    [class.sort-active]="isSorted(def.key)" [ngClass]="{
                     'columna-etapa': def.key === 'stage','columna-tipo': def.key === 'abreviatura','columna-sector': def.key === 'nombreSector'
-                }"(click)="def.key === 'fechaEstimadaCierreOriginal' ? onSortFechaCierre() : null">
-                   {{def.valor}}
-                  <p-sortIcon field="{{def.key}}"></p-sortIcon>
-                </th>
-                <th></th>
-            </tr>
-            <tr>
-                <th *ngFor="let def of lsColumnasAMostrar">
+                }" (click)="def.key === 'fechaEstimadaCierreOriginal' ? onSortFechaCierre() : null">
+                    {{def.valor}}
+                    <p-sortIcon field="{{def.key}}"></p-sortIcon>
+                  </th>
+                  <th></th>
+                </tr>
+                <tr>
+                  <th *ngFor="let def of lsColumnasAMostrar">
                     <ng-container *ngIf="def.groupColumn">
-                        <p-columnFilter field="{{def.key}}" matchMode="in" [showMenu]="false">
-                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                                <p-multiSelect [ngModel]="value"
-                                    [options]="obtenerArregloFiltros(oportunidades, def.key)" placeholder=""
-                                    (onChange)="filter($event.value)">
-                                    <ng-template let-option pTemplate="item">
-                                        <div class="p-multiselect-representative-option">
-                                            <span class="ml-1">{{option}}</span>
-                                        </div>
-                                    </ng-template>
-                                </p-multiSelect>
+                      <p-columnFilter field="{{def.key}}" matchMode="in" [showMenu]="false">
+                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                          <p-multiSelect [ngModel]="value" [options]="obtenerArregloFiltros(oportunidades, def.key)"
+                            placeholder="" (onChange)="filter($event.value)">
+                            <ng-template let-option pTemplate="item">
+                              <div class="p-multiselect-representative-option">
+                                <span class="ml-1">{{option}}</span>
+                              </div>
                             </ng-template>
-                        </p-columnFilter>
+                          </p-multiSelect>
+                        </ng-template>
+                      </p-columnFilter>
                     </ng-container>
                     <ng-container *ngIf="!def.groupColumn">
                       <div [ngSwitch]="def.tipoFormato">
-                          <div *ngSwitchCase="'text'">
-                              <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false">
-                                  <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                                      <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
-                                          (ngModelChange)="filter($event)" class="p-inputtext" placeholder=""  [ngStyle]="{'width': def.key === 'nombreSector' ? '130px !important' : ''}">
-                                  </ng-template>
-                              </p-columnFilter>
-                          </div>
-                          <div *ngSwitchCase="'textNFilter'">
-                            <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false">
-                                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                                    <!-- <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
-                                        (ngModelChange)="filter($event)" class="p-inputtext" placeholder=""> -->
-                                </ng-template>
-                            </p-columnFilter>
-                        </div>
-                          <div *ngSwitchCase="'currency'">
-                            <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false"[maxFractionDigits]="7">
-                              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                                  <input type="number" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
-                                      (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
-                              </ng-template>
-                            </p-columnFilter>
-                          </div>
-                          <div *ngSwitchCase="'date'">
-                            <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false">
-                                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                                    <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
-                                        (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
-                                </ng-template>
-                            </p-columnFilter>
-                        </div>
-                        <div *ngSwitchCase="'numberFilter'">
-                          <p-columnFilter type="numeric" field="{{def.key}}" [showButtons]="false" [maxFractionDigits]="7">
+                        <div *ngSwitchCase="'text'">
+                          <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false">
                             <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                                <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
-                                    (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
+                              <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
+                                (ngModelChange)="filter($event)" class="p-inputtext" placeholder=""
+                                [ngStyle]="{'width': def.key === 'nombreSector' ? '130px !important' : ''}">
                             </ng-template>
                           </p-columnFilter>
                         </div>
-                          <div *ngSwitchDefault>
-                              <p-columnFilter
-                                  *ngIf="def.tipoFormato !== 'text' && def.tipoFormato !== 'currency' && def.tipoFormato !== 'date'"
-                                  type="{{def.tipoFormato}}" field="{{def.key}}" [showButtons]="false" [showMenu]="false">
-                              </p-columnFilter>
-                          </div>
+                        <div *ngSwitchCase="'textNFilter'">
+                          <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false">
+                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                              <!-- <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
+                                        (ngModelChange)="filter($event)" class="p-inputtext" placeholder=""> -->
+                            </ng-template>
+                          </p-columnFilter>
+                        </div>
+                        <div *ngSwitchCase="'currency'">
+                          <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false"
+                            [maxFractionDigits]="7">
+                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                              <input type="number" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
+                                (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
+                            </ng-template>
+                          </p-columnFilter>
+                        </div>
+                        <div *ngSwitchCase="'date'">
+                          <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false">
+                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                              <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
+                                (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
+                            </ng-template>
+                          </p-columnFilter>
+                        </div>
+                        <div *ngSwitchCase="'numberFilter'">
+                          <p-columnFilter type="numeric" field="{{def.key}}" [showButtons]="false"
+                            [maxFractionDigits]="7">
+                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                              <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
+                                (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
+                            </ng-template>
+                          </p-columnFilter>
+                        </div>
+                        <div *ngSwitchDefault>
+                          <p-columnFilter
+                            *ngIf="def.tipoFormato !== 'text' && def.tipoFormato !== 'currency' && def.tipoFormato !== 'date'"
+                            type="{{def.tipoFormato}}" field="{{def.key}}" [showButtons]="false" [showMenu]="false">
+                          </p-columnFilter>
+                        </div>
                       </div>
-                  </ng-container>
-                </th>
-                <th></th>
-            </tr>
-          </ng-template>
- 
-          <ng-template pTemplate="body" let-rowData let-columns="columns">
-            <tr  [ngClass]="{'fila-activa': rowData.idOportunidad == oportunidadEdicion?.idOportunidad}">
-              <td *ngFor="let def of lsColumnasAMostrar"
-                [ngClass]="{'fixed-width-oportunidad': def.key === 'nombreOportunidad', 'columna-nombre-sector': def.key === 'nombreSector'}"
-                [ngStyle]="{
+                    </ng-container>
+                  </th>
+                  <th></th>
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr [ngClass]="{'fila-activa': rowData.idOportunidad == oportunidadEdicion?.idOportunidad}">
+                  <td *ngFor="let def of lsColumnasAMostrar"
+                    [ngClass]="{'fixed-width-oportunidad': def.key === 'nombreOportunidad', 'columna-nombre-sector': def.key === 'nombreSector'}"
+                    [ngStyle]="{
                   'text-align':
                     def.key === 'abreviatura' ? 'center' : 
                     def.key === 'entrega' ? 'center' : 
@@ -226,144 +239,255 @@
                     'min-width': def.key === 'stage' ? '70px': def.key == 'nombreSector' ? '100px' : '',
                     'max-width': def.key === 'stage' ? '70px': def.key == 'nombreSector' ? '50px' : ''
                 }">
-                <ng-container [ngSwitch]="def.tipoFormato">
-                  <span *ngSwitchCase="'text'">
-                    <span *ngIf="def.key === 'nombreContacto'" pTooltip="{{rowData[def.key]}}" tooltipPosition="top">
-                        {{ rowData[def.key]?.split(' ')[0] }}
-                    </span>
-                    <span *ngIf="def.key === 'iniciales'" pTooltip="{{rowData['nombreEjecutivo']}}" tooltipPosition="top">
-                        {{ rowData[def.key] }}
-                    </span>
-                    <span *ngIf="def.key === 'abreviatura'" pTooltip="{{rowData['descripcion']}}" tooltipPosition="top">
-                        {{ rowData[def.key] }}
-                    </span>
-                    <span *ngIf="def.key === 'entrega'" pTooltip="{{rowData['entregaDescripcion'] || rowData['entregaDescripcion']}}" tooltipPosition="top">
-                        {{ rowData[def.key] }}
-                    </span>
-                    <span *ngIf="def.key === 'nombreOportunidad'" pTooltip="{{rowData['nombreOportunidad']}}" tooltipPosition="top">
-                        {{ rowData[def.key] }}
-                    </span>
-                   <span *ngIf="def.key === 'nombreSector'"> 
-                    <button *ngIf="rowData[def.key] === 'Por Asignar'" (click)="abrirModalSector(rowData)"
-                      style="background-color: #f93e3e; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer;">
-                      {{ rowData[def.key] }}
-                    </button>
-                    <span *ngIf="rowData[def.key] !== 'Por Asignar'">
-                      {{ rowData[def.key] }}
-                    </span>
-                  </span>
-                    <span *ngIf="def.key !== 'nombreContacto' && def.key !== 'iniciales' && def.key !== 'abreviatura' && def.key !== 'entrega' && def.key !== 'nombreOportunidad' && def.key !== 'nombreSector'">
-                        {{ rowData[def.key] }}
-                    </span>
-                </span>
+                    <ng-container [ngSwitch]="def.tipoFormato">
+                      <span *ngSwitchCase="'text'">
+                        <span *ngIf="def.key === 'nombreContacto'" pTooltip="{{rowData[def.key]}}"
+                          tooltipPosition="top">
+                          {{ rowData[def.key]?.split(' ')[0] }}
+                        </span>
+                        <span *ngIf="def.key === 'iniciales'" pTooltip="{{rowData['nombreEjecutivo']}}"
+                          tooltipPosition="top">
+                          {{ rowData[def.key] }}
+                        </span>
+                        <span *ngIf="def.key === 'abreviatura'" pTooltip="{{rowData['descripcion']}}"
+                          tooltipPosition="top">
+                          {{ rowData[def.key] }}
+                        </span>
+                        <span *ngIf="def.key === 'entrega'"
+                          pTooltip="{{rowData['entregaDescripcion'] || rowData['entregaDescripcion']}}"
+                          tooltipPosition="top">
+                          {{ rowData[def.key] }}
+                        </span>
+                        <span *ngIf="def.key === 'nombreOportunidad'" pTooltip="{{rowData['nombreOportunidad']}}"
+                          tooltipPosition="top">
+                          {{ rowData[def.key] }}
+                        </span>
+                        <span *ngIf="def.key === 'nombreSector'">
+                          <button *ngIf="rowData[def.key] === 'Por Asignar'" (click)="abrirModalSector(rowData)"
+                            style="background-color: #f93e3e; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer;">
+                            {{ rowData[def.key] }}
+                          </button>
+                          <span *ngIf="rowData[def.key] !== 'Por Asignar'">
+                            {{ rowData[def.key] }}
+                          </span>
+                        </span>
+                        <span
+                          *ngIf="def.key !== 'nombreContacto' && def.key !== 'iniciales' && def.key !== 'abreviatura' && def.key !== 'entrega' && def.key !== 'nombreOportunidad' && def.key !== 'nombreSector'">
+                          {{ rowData[def.key] }}
+                        </span>
+                      </span>
 
-                <span *ngSwitchCase="'textNFilter'">
-                    <span *ngIf="def.key !== 'nombreContacto' && def.key !== 'iniciales' && def.key !== 'abreviatura' && def.key !== 'entrega' && def.key !== 'nombreOportunidad' && def.key !== 'nombreSector'">
-                        {{ rowData[def.key] }}
-                    </span>
-                </span>
-                 
-                  <span *ngSwitchCase="'currency'">
-                    {{ rowData[def.key] | currency:'$':'symbol':'1.0-0' }}
-                  </span>
-                 
-                  <span *ngSwitchCase="'number'">
-                    <span *ngIf="def.key === 'fechaModificacion'" [ngStyle]="{ 'color': getColorForDiasSinActividad(rowData[def.key]) }">
-                      {{ rowData[def.key] }}
-                    </span>
-                    <span *ngIf="def.key === 'stage'" pTooltip="{{getNombreEtapa(rowData[def.key])}}" tooltipPosition="top">
-                      {{ rowData[def.key] | number:'1.0-2' }}
-                    </span>
-                    <span *ngIf="def.key !== 'fechaModificacion' && def.key !== 'stage'">
-                      {{ rowData[def.key] | number:'1.0-2' }}
-                    </span>
-                  </span>
-                  <span *ngSwitchCase="'numberFilter'">
-                    <span *ngIf="def.key === 'stage'" pTooltip="{{getNombreEtapa(rowData[def.key])}}" tooltipPosition="top">
-                      {{ rowData[def.key] | number:'1.0-2' }}
-                    </span>
-                  </span>
-                 
-                  <span *ngSwitchCase="'date'" [ngStyle]="def.key === 'fechaEstimadaCierreOriginal' ? { 'color': getColorForFechaEstimadaCierre(rowData[def.key]) } : {}">
-                    {{ rowData[def.key] | date:'dd/MM/yyyy' }}
-                  </span>
-                </ng-container>
-              </td>
-              <td style="position: relative;">
-                <div style="position: relative; display: inline-block;">
-                  <p-button type="button" icon="bi bi-file-earmark-text fs-3" text (click)="seguimiento(rowData)"
-                  pTooltip="Seguimiento" tooltipPosition="top" styleClass="blue-icon" >
-                  </p-button>
-                  <span class="badge">{{ rowData.totalComentarios || 0 }}</span>
-                </div>
-                <div style="position: relative; display: inline-block; padding-left: 6px; padding-right: 6px;">
-                  <p-button type="button" icon="bi bi-folder2 fs-3" text (click)="documento(rowData)"
-                  pTooltip="Documentos" tooltipPosition="top" styleClass="black-icon">
-                  </p-button>
-                  <span class="badge">{{ rowData.totalArchivos || 0 }}</span>
-                </div>
-                <p-button styleClass="coloreditar-icon" (click)="actualiza(rowData)" pTooltip="Editar registro" tooltipPosition="top">
-                  <span class="custom-pencil">✏️</span> 
-                </p-button>
-              </td>
-            </tr>
-          </ng-template>
- 
-          <ng-template pTemplate="footer" let-columns #footer>
-            <tr class="custom-footer">
-              <td *ngFor="let def of lsColumnasAMostrar"
-                [ngClass]="{'total-registros-cell': def.key === 'nombre'}"
-                [ngStyle]="{
+                      <span *ngSwitchCase="'textNFilter'">
+                        <span
+                          *ngIf="def.key !== 'nombreContacto' && def.key !== 'iniciales' && def.key !== 'abreviatura' && def.key !== 'entrega' && def.key !== 'nombreOportunidad' && def.key !== 'nombreSector'">
+                          {{ rowData[def.key] }}
+                        </span>
+                      </span>
+
+                      <span *ngSwitchCase="'currency'">
+                        {{ rowData[def.key] | totalCurrency:'currency':mostrarDecimales }}
+                      </span>
+
+                      <span *ngSwitchCase="'number'">
+                        <span *ngIf="def.key === 'fechaModificacion'"
+                          [ngStyle]="{ 'color': getColorForDiasSinActividad(rowData[def.key]) }">
+                          {{ rowData[def.key] }}
+                        </span>
+                        <span *ngIf="def.key === 'stage'" pTooltip="{{getNombreEtapa(rowData[def.key])}}"
+                          tooltipPosition="top">
+                          {{ rowData[def.key] | number:'1.0-2' }}
+                        </span>
+                        <span *ngIf="def.key !== 'fechaModificacion' && def.key !== 'stage'">
+                          {{ rowData[def.key] | number:'1.0-2' }}
+                        </span>
+                      </span>
+                      <span *ngSwitchCase="'numberFilter'">
+                        <span *ngIf="def.key === 'stage'" pTooltip="{{getNombreEtapa(rowData[def.key])}}"
+                          tooltipPosition="top">
+                          {{ rowData[def.key] | number:'1.0-2' }}
+                        </span>
+                      </span>
+
+                      <span *ngSwitchCase="'date'"
+                        [ngStyle]="def.key === 'fechaEstimadaCierreOriginal' ? { 'color': getColorForFechaEstimadaCierre(rowData[def.key]) } : {}">
+                        {{ rowData[def.key] | date:'dd/MM/yyyy' }}
+                      </span>
+                    </ng-container>
+                  </td>
+                  <td style="position: relative;">
+                    <div style="position: relative; display: inline-block;">
+                      <p-button type="button" icon="bi bi-file-earmark-text fs-3" text (click)="seguimiento(rowData)"
+                        pTooltip="Seguimiento" tooltipPosition="top" styleClass="blue-icon">
+                      </p-button>
+                      <span class="badge">{{ rowData.totalComentarios || 0 }}</span>
+                    </div>
+                    <div style="position: relative; display: inline-block; padding-left: 6px; padding-right: 6px;">
+                      <p-button type="button" icon="bi bi-folder2 fs-3" text (click)="documento(rowData)"
+                        pTooltip="Documentos" tooltipPosition="top"
+                        [styleClass]="rowData.totalArchivos > 0 ? 'icon-documentos': 'black-icon'">
+                      </p-button>
+                      <span class="badge">{{ rowData.totalArchivos || 0 }}</span>
+                    </div>
+                    <p-button styleClass="coloreditar-icon" (click)="actualiza(rowData)" pTooltip="Editar registro"
+                      tooltipPosition="top">
+                      <span class="custom-pencil">✏️</span>
+                    </p-button>
+                  </td>
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="footer" let-columns #footer>
+                <tr class="custom-footer">
+                  <td *ngFor="let def of lsColumnasAMostrar" [ngClass]="{'total-registros-cell': def.key === 'nombre'}"
+                    [ngStyle]="{
                   'text-align':
                     def.tipoFormato === 'currency' ? 'right' :
                     (def.tipoFormato === 'number' || def.tipoFormato === 'date') ? 'center' : 'left'
                 }">
-              <ng-container *ngIf="def.key === 'nombre'">
-                Total de Registros: {{ getTotalCostPrimeNg(dt, def) }}
-              </ng-container>
-                <ng-container *ngIf="def.tipoFormato === 'currency'">
-                  {{ getTotalCostPrimeNg(dt, def) | currency:'$':'symbol':'1.0-0' }}
-                </ng-container>
-                <ng-container *ngIf="def.tipoFormato !== 'currency' && def.key !== 'nombre' && def.key !== 'idOportunidad'">
-                  {{ getTotalCostPrimeNg(dt, def) | number: '1.0-0' }}
-                </ng-container>
-              </td>
-              <td></td>
-            </tr>
-          </ng-template>
- 
+                    <ng-container *ngIf="def.key === 'nombre'">
+                      Total de Registros: {{ getTotalCostPrimeNg(dt, def) }}
+                    </ng-container>
+                    <ng-container *ngIf="def.tipoFormato === 'currency'">
+                      {{ getTotalCostPrimeNg(dt, def) | totalCurrency:'currency':mostrarDecimales }}
+                    </ng-container>
+                    <ng-container
+                      *ngIf="def.tipoFormato !== 'currency' && def.key !== 'nombre' && def.key !== 'idOportunidad'">
+                      {{ getTotalCostPrimeNg(dt, def) | totalCurrency:'numeric':mostrarDecimales }}
+                    </ng-container>
+                  </td>
+                  <td></td>
+                </tr>
+              </ng-template>
+
               <ng-template pTemplate="emptymessage">
                 <tr>
-                    <td colspan="5">No hay oportunidades disponibles </td>
+                  <td colspan="5">No hay oportunidades disponibles </td>
                 </tr>
               </ng-template>
             </p-table>
           </div>
         </div>
- 
-        
+
+
         <!--Estadísticas por Etapa -->
         <div class="tab-pane fade" id="estadisticas">
           <app-estadisticas-por-etapa *ngIf="mostrarEstadisticas"></app-estadisticas-por-etapa>
         </div>
       </div>
     </div>
- 
- 
-<p-toast position="center"></p-toast>
- 
-<!-- <app-modal-oportunidades [(visible)]="modalVisible" [title]="'Editar Datos de '" (closeModal)="onModalClose()"
+
+
+    <p-toast position="center"></p-toast>
+
+    <!-- <app-modal-oportunidades [(visible)]="modalVisible" [title]="'Editar Datos de '" (closeModal)="onModalClose()"
   (result)="manejarResultado($event)" [insertar]="insertar" [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">
 </app-modal-oportunidades> -->
- 
-<app-seguimiento-oportunidades [(visible)]="modalSeguimientoVisible" [title]="'Seguimiento de '" (closeModal)="onModalClose()"
-  (result)="manejarResultado($event)" [insertar]="insertar" [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">
-</app-seguimiento-oportunidades>
- 
-<app-documentos-oportunidades [(visible)]="modalDocumentosVisible" [title]="'Documentos de '" (closeModal)="onModalClose()"
-  (result)="manejarResultado($event)" [insertar]="insertar" [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">
-</app-documentos-oportunidades>
-  
+
+    <app-seguimiento-oportunidades [(visible)]="modalSeguimientoVisible" [title]="'Seguimiento de '"
+      (closeModal)="onModalClose()" (result)="manejarResultado($event)" [insertar]="insertar"
+      [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">
+    </app-seguimiento-oportunidades>
+
+    <app-documentos-oportunidades [(visible)]="modalDocumentosVisible" [title]="'Documentos de '"
+      (closeModal)="onModalClose()" (result)="manejarResultado($event)" [insertar]="insertar"
+      [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">
+    </app-documentos-oportunidades>
+
+    <!-- Modal detalle oportunidades -->
+    <p-dialog [(visible)]="modalDetalleOportunidadesVisible" [modal]="true" [closable]="true" [draggable]="true"
+      [resizable]="false" styleClass="custom-header-naranja"
+      [style]="{ width: maximized ? '90vw' : '70rem', height: maximized ? '90vh' :  '40rem'}"
+      [header]="tituloModalDetalle" (onHide)="cerrarModalDetalle()">
+
+      <div class="modal-content-detalle">
+
+        <div class="table-responsive" *ngIf="oportunidadesModalDetalle.length > 0">
+          <p-table #dtDetalle [value]="oportunidadesModalDetalle" styleClass="custom-table" 
+            [rows]="10" [paginator]="oportunidadesModalDetalle.length > 10"
+            [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 20, 50]" [paginatorDropdownAppendTo]="'body'" 
+            currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} oportunidades"
+            [globalFilterFields]="['nombreOportunidad','nombre','monto','fechaRegistro']">
+
+            <ng-template pTemplate="header">
+              <tr class="custom-header">
+                <th scope="col" class="text-start">Prospecto</th>
+                <th scope="col" class="text-start">Oportunidad</th>
+                <th scope="col" class="text-start">Ejecutivo</th>
+                <th scope="col" class="text-start">Fecha</th>
+                <th scope="col" class="text-start">Monto</th>
+              </tr>
+              <tr>
+                <th scope="col">
+                  <p-columnFilter field="prospecto" matchMode="contains" [showMenu]="false">
+                    <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                      <input type="text" pInputText [ngModel]="value" (ngModelChange)="filter($event)" 
+                             class="p-inputtext" style="width: 95%">
+                    </ng-template>
+                  </p-columnFilter>
+                </th>
+                <th scope="col">
+                  <p-columnFilter field="oportunidad" matchMode="contains" [showMenu]="false">
+                    <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                      <input type="text" pInputText [ngModel]="value" (ngModelChange)="filter($event)" 
+                             class="p-inputtext" style="width: 95%">
+                    </ng-template>
+                  </p-columnFilter>
+                </th>
+                <th scope="col">
+                  <p-columnFilter field="inicialesEjecutivo" matchMode="contains" [showMenu]="false">
+                    <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                      <input type="text" pInputText [ngModel]="value" (ngModelChange)="filter($event)" 
+                             class="p-inputtext" style="width: 95%">
+                    </ng-template>
+                  </p-columnFilter>
+                </th>
+                <th scope="col">
+                  <p-columnFilter field="fecha" matchMode="contains" [showMenu]="false">
+                    <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                      <input type="text" pInputText [ngModel]="value" (ngModelChange)="filter($event)" 
+                             class="p-inputtext" style="width: 95%">
+                    </ng-template>
+                  </p-columnFilter>
+                </th>
+               <th scope="col"></th>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-oportunidad>
+              <tr>
+                <td>{{ oportunidad.prospecto }}</td>
+                <td>{{ oportunidad.oportunidad }}</td>
+                <td>
+                  <span pTooltip="{{oportunidad.ejecutivo}}" tooltipPosition="top">
+                    {{ oportunidad.inicialesEjecutivo }}
+                  </span>
+                </td>
+                <td>{{ oportunidad.fecha | date:'dd/MM/yyyy' }}</td>
+                <td>${{ oportunidad.monto | totalCurrency:'numeric':mostrarDecimales}}</td>
+              </tr>
+            </ng-template>
+             <ng-template pTemplate="footer" let-columns #footer>
+                <tr class="custom-footer">
+                  <td><strong>Total de Registros: {{ dtDetalle.filteredValue ? dtDetalle.filteredValue.length : oportunidadesModalDetalle.length }}</strong></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td><strong>{{ getSumaMontos(dtDetalle.filteredValue || oportunidadesModalDetalle) | totalCurrency:'currency':mostrarDecimales }}</strong></td>
+                </tr>
+              </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="4" class="text-center">No hay oportunidades para mostrar.</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+
+        <div *ngIf="oportunidadesModalDetalle.length === 0" class="text-center text-muted">
+          <p>No hay oportunidades para mostrar.</p>
+        </div>
       </div>
-    </div>
-   
+    </p-dialog>
+
+  </div>
+</div>

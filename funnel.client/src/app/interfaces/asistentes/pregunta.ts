@@ -4,3 +4,19 @@ export interface Pregunta {
   respuesta: string,
   esPreguntaFrecuente: boolean
 }
+export interface Faq {
+  pregunta: string;
+  respuesta: string;
+  categoria: string;
+  idCategoria: number;
+}
+
+export interface Categoria {
+  nombre: string;
+  faqs: Faq[];
+}
+
+export interface PaginaFaqs {
+  categorias: Categoria[];
+  totalFaqs: number;
+}

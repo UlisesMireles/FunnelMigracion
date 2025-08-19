@@ -53,6 +53,8 @@ namespace Funnel.Data
                         usuario.Licencia = ComprobarNulos.CheckStringNull(reader["Licencia"]);
                         usuario.CantidadUsuarios = ComprobarNulos.CheckIntNull(reader["CantidadUsuarios"]);
                         usuario.CantidadOportunidades = ComprobarNulos.CheckIntNull(reader["CantidadOportunidades"]);
+                        usuario.Puesto = ComprobarNulos.CheckStringNull(reader["Puesto"]);
+                        usuario.Telefono = ComprobarNulos.CheckStringNull(reader["Telefono"]);
                     }
                 }
             }
@@ -452,5 +454,34 @@ namespace Funnel.Data
             return result;
         }
 
+        public async Task<UsuarioDto> ObtenerPermitirDecimales(int idEmpresa)
+        {
+            UsuarioDto usuario = new UsuarioDto();
+
+            try
+            {
+                IList<ParameterSQl> list = new List<ParameterSQl>
+        {
+            DataBase.CreateParameterSql("@IdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, idEmpresa)
+        };
+
+                using (IDataReader reader = await DataBase.GetReaderSql("F_PermitirDecimales", CommandType.StoredProcedure, list, _connectionString))
+                {
+                    if (reader.Read())
+                    {
+                        usuario.PermitirDecimales = ComprobarNulos.CheckBooleanNull(reader["permitirDecimales"]);
+                    }
+                }
+
+                usuario.Result = true;
+            }
+            catch (Exception ex)
+            {
+                usuario.Result = false;
+                usuario.ErrorMessage = $"Error al obtener PermitirDecimales: {ex.Message}";
+            }
+
+            return usuario;
+        }
     }
 }

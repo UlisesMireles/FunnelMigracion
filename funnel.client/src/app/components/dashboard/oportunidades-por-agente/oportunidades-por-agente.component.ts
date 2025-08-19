@@ -19,15 +19,17 @@ export class OportunidadesPorAgenteComponent {
   agenteSeleccionadoId: number | null = null;
   @ViewChildren('cardElement') cardElements!: QueryList<ElementRef>;
   originalParentElements = new Map<string, { parent: HTMLElement, nextSibling: Node | null }>();
-
-
+  modalAgenteClienteVisible: boolean = false;
+  modalAgenteTipoVisible = false;
+  modalAgenteSectorVisible: boolean = false;
+  mostrarDecimales: boolean = false;
 
   get dropListIds() {
     return this.quadrants.map((_, index) => `cardList${index}`);
   }
   infoCargada: boolean = false;
 
-  constructor( private readonly graficasService: GraficasService,private readonly sessionService: LoginService, private renderer: Renderer2, private el: ElementRef, private readonly cdr: ChangeDetectorRef,) {
+  constructor( private readonly graficasService: GraficasService,private readonly sessionService: LoginService, private renderer: Renderer2, private el: ElementRef, private readonly cdr: ChangeDetectorRef, private loginService: LoginService) {
     this.quadrants = [
       { cards: [this.graficasService.createCard(1, 'Consulta Agentes', 'tabla')] },
       { cards: [this.graficasService.createCard(2, 'Grafica por Agente - Clientes', 'grafica')] },
@@ -39,7 +41,9 @@ export class OportunidadesPorAgenteComponent {
 
   ngOnInit(): void {
     this.baseUrl = this.baseUrl + '/Fotografia/';
+    setTimeout(() => {this.mostrarDecimales = this.loginService.obtenerPermitirDecimales();
     this.consultarAgente();
+    }, 500);
   }
 
   private setGraficaData(quadrantIdx: number, cardIdx: number, data: any, layout: any) {
@@ -76,14 +80,14 @@ export class OportunidadesPorAgenteComponent {
   }
 
   consultarGraficaAgenteCliente(idAgente: number): void {
-    const request: RequestGraficasDto = {
-      bandera: 'SEL-AGENTE-CLIENTES',
-      idUsuario: idAgente
-    };
+    const request: RequestGraficasDto = { bandera: 'SEL-AGENTE-CLIENTES', idUsuario: idAgente };
 
     this.graficasService.obtenerGraficaAgentesData(request).subscribe({
       next: (response: GraficasDto[]) => {
-        const dataAGraficar = [this.graficasService.createBarHorizontalNormalizadoData(response), this.graficasService.createBarHorizontalData(response)];
+        const dataAGraficar = [
+          this.graficasService.createBarHorizontalNormalizadoData(response, this.mostrarDecimales),
+          this.graficasService.createBarHorizontalData(response, this.mostrarDecimales)
+        ];
         const layOutGrafica = this.graficasService.createBarHorizontalLayout();
         this.setGraficaData(1, 0, dataAGraficar, layOutGrafica);
       },
@@ -100,7 +104,7 @@ export class OportunidadesPorAgenteComponent {
 
     this.graficasService.obtenerGraficaAgentesData(request).subscribe({
       next: (response: GraficasDto[]) => {
-        const dataAGraficar = [this.graficasService.createPieData(response)];
+        const dataAGraficar = [this.graficasService.createPieData(response, this.mostrarDecimales)];
         const layOutGrafica = this.graficasService.createPieLayout();
         this.setGraficaData(2, 0, dataAGraficar, layOutGrafica);
       },
@@ -117,7 +121,7 @@ export class OportunidadesPorAgenteComponent {
 
     this.graficasService.obtenerGraficaAgentesData(request).subscribe({
       next: (response: GraficasDto[]) => {
-        const dataAGraficar = [this.graficasService.createBarData(response)];
+        const dataAGraficar = [this.graficasService.createBarData(response, this.mostrarDecimales)];
         const layOutGrafica = this.graficasService.createBarLayout();
         layOutGrafica.margin = { t: 20, r: 20, b: 120, l: 50 };
         this.setGraficaData(3, 0, dataAGraficar, layOutGrafica);
@@ -222,4 +226,35 @@ toggleMaximizar(i: number, j: number, event: MouseEvent): void {
     }
   }
 }
+
+openAgenteClienteModal() {
+  if (this.agenteSeleccionadoId) {
+    this.modalAgenteClienteVisible = true;
+  }
 }
+
+onModalAgenteClienteClose() {
+  this.modalAgenteClienteVisible = false;
+}
+
+openAgenteTipoModal() {
+  if (this.agenteSeleccionadoId) {
+    this.modalAgenteTipoVisible = true;
+  }
+}
+
+onModalAgenteTipoClose() {
+  this.modalAgenteTipoVisible = false;
+}
+
+openAgenteSectorModal() {
+  if (this.agenteSeleccionadoId) {
+    this.modalAgenteSectorVisible = true;
+  }
+}
+
+onModalAgenteSectorClose() {
+  this.modalAgenteSectorVisible = false;
+}
+}
+

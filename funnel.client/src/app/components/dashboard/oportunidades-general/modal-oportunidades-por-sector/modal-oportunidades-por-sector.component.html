@@ -27,7 +27,7 @@
 
   <ng-template pTemplate="content">
     <div class="contenedor-tabla-dialogo">
-      <p-table #dt [value]="sectores" [paginator]="true" [rows]="10" 
+      <p-table #dt [value]="sectores" [paginator]="sectores.length > 10" [rows]="10" [paginatorDropdownAppendTo]="'body'" 
   [rowsPerPageOptions]="[10, 25, 50]" [totalRecords]="sectores.length"
   styleClass="tabla-estilizada">
 
@@ -54,7 +54,9 @@
             </a>
             <span *ngIf="def.key !== 'nombreSector'">{{ rowData[def.key] }}</span>
           </span>
-          <span *ngSwitchCase="'currency'">{{ rowData[def.key] | currency:'MXN':'symbol':'1.2-2'}}</span>
+          <span *ngSwitchCase="'currency'">
+          {{ rowData[def.key] | totalCurrency:'currency':mostrarDecimales }}
+          </span>
           <span *ngSwitchCase="'percent'">{{ rowData[def.key] | percent:'1.2-2' }}</span>
         </ng-container>
       </td>
@@ -65,12 +67,12 @@
       <td *ngFor="let def of lsColumnasAMostrar"
       [ngClass]="{'total-registros-cell': def.key === 'nombreSector'}">
         <ng-container *ngIf="def.tipoFormato === 'currency'">
-          <div style="text-align: right; font-weight: bold;">
+          <div style="text-align: left; font-weight: bold;">
             <span *ngIf="def.key === 'montoNormalizado'">
-              {{ calcularSumaMontosNormalizados() | currency:'MXN':'symbol':'1.2-2' }}
+              {{ calcularSumaMontosNormalizados() | totalCurrency:'currency':mostrarDecimales}}
             </span>
             <span *ngIf="def.key === 'monto'">
-              {{ calcularSumaMontos() | currency:'MXN':'symbol':'1.2-2' }}
+              {{ calcularSumaMontos() | totalCurrency:'currency':mostrarDecimales }}
             </span>
           </div>
         </ng-container>

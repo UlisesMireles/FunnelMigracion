@@ -496,23 +496,80 @@ namespace Funnel.Data
         public async Task<EtiquetasOportunidadesDto> ConsultarEtiquetas(int IdEmpresa, int IdUsuario)
         {
             EtiquetasOportunidadesDto result = new EtiquetasOportunidadesDto();
+            List<EtiquetasOportunidadesDetalleDto> listProspectosNuevos = new List<EtiquetasOportunidadesDetalleDto>();
+            List<EtiquetasOportunidadesDetalleDto> listAbiertasMes = new List<EtiquetasOportunidadesDetalleDto>();
+            List<EtiquetasOportunidadesDetalleDto> listGanadasMes = new List<EtiquetasOportunidadesDetalleDto>();
+            List<EtiquetasOportunidadesDetalleDto> listPerdidasMes = new List<EtiquetasOportunidadesDetalleDto>();
             IList<ParameterSQl> list = new List<ParameterSQl>
             {
-                DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "ETIQUETAS_OPORTUNIDADES"),
+                DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "ETIQUETAS_DETALLE_OPORTUNIDAD"),
                 DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, IdEmpresa),
                 DataBase.CreateParameterSql("@pEstatus", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, IdUsuario)
             };
             using (IDataReader reader = await DataBase.GetReaderSql("F_Catalogos", CommandType.StoredProcedure, list, _connectionString))
             {
                 while (reader.Read())
+                {   
+                    var registro = new EtiquetasOportunidadesDetalleDto
+                    {
+                        Prospecto = ComprobarNulos.CheckStringNull(reader["Prospecto"]),
+                        Oportunidad = ComprobarNulos.CheckStringNull(reader["Oportunidad"]),
+                        Fecha = ComprobarNulos.CheckDateTimeNull(reader["Fecha"]),
+                        Monto = ComprobarNulos.CheckDecimalNull(reader["Monto"]),
+                        Ejecutivo = ComprobarNulos.CheckStringNull(reader["Ejecutivo"]),
+                        InicialesEjecutivo = ComprobarNulos.CheckStringNull(reader["InicialesEjecutivo"])
+                    };
+                    listProspectosNuevos.Add(registro);
+                }
+                reader.NextResult();
+                while (reader.Read())
                 {
-                    result.ProspectosNuevos = ComprobarNulos.CheckIntNull(reader["ProspectosNuevos"]);
-                    result.AbiertasMes = ComprobarNulos.CheckIntNull(reader["AbiertasMes"]);
-                    result.GanadasMes = ComprobarNulos.CheckIntNull(reader["GanadasMes"]);
-                    result.PerdidasMes = ComprobarNulos.CheckIntNull(reader["PerdidasMes"]);
+                    var registro = new EtiquetasOportunidadesDetalleDto
+                    {
+                        Prospecto = ComprobarNulos.CheckStringNull(reader["Prospecto"]),
+                        Oportunidad = ComprobarNulos.CheckStringNull(reader["Oportunidad"]),
+                        Fecha = ComprobarNulos.CheckDateTimeNull(reader["Fecha"]),
+                        Monto = ComprobarNulos.CheckDecimalNull(reader["Monto"]),
+                        Ejecutivo = ComprobarNulos.CheckStringNull(reader["Ejecutivo"]),
+                        InicialesEjecutivo = ComprobarNulos.CheckStringNull(reader["InicialesEjecutivo"])
+                    };
+                    listAbiertasMes.Add(registro);
+                }
+                reader.NextResult();
+                while (reader.Read())
+                {
+                    var registro = new EtiquetasOportunidadesDetalleDto
+                    {
+                        Prospecto = ComprobarNulos.CheckStringNull(reader["Prospecto"]),
+                        Oportunidad = ComprobarNulos.CheckStringNull(reader["Oportunidad"]),
+                        Fecha = ComprobarNulos.CheckDateTimeNull(reader["Fecha"]),
+                        Monto = ComprobarNulos.CheckDecimalNull(reader["Monto"]),
+                        Ejecutivo = ComprobarNulos.CheckStringNull(reader["Ejecutivo"]),
+                        InicialesEjecutivo = ComprobarNulos.CheckStringNull(reader["InicialesEjecutivo"])
+                    };
+                    listGanadasMes.Add(registro);
+                }
+                reader.NextResult();
+                while (reader.Read())
+                {
+                    var registro = new EtiquetasOportunidadesDetalleDto
+                    {
+                        Prospecto = ComprobarNulos.CheckStringNull(reader["Prospecto"]),
+                        Oportunidad = ComprobarNulos.CheckStringNull(reader["Oportunidad"]),
+                        Fecha = ComprobarNulos.CheckDateTimeNull(reader["Fecha"]),
+                        Monto = ComprobarNulos.CheckDecimalNull(reader["Monto"]),
+                        Ejecutivo = ComprobarNulos.CheckStringNull(reader["Ejecutivo"]),
+                        InicialesEjecutivo = ComprobarNulos.CheckStringNull(reader["InicialesEjecutivo"])
+                    };
+                    listPerdidasMes.Add(registro);
                 }
             }
+            result.ProspectosNuevos = listProspectosNuevos;
+            result.AbiertasMes = listAbiertasMes;
+            result.GanadasMes = listGanadasMes;
+            result.PerdidasMes = listPerdidasMes;
             return result;
         }
+
     }
 }

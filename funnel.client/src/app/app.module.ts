@@ -10,7 +10,6 @@ import { TabViewModule } from 'primeng/tabview';
 import { TooltipModule } from 'primeng/tooltip';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
 import { MatInputModule } from '@angular/material/input';
 import Aura from '@primeng/themes/aura';
 import { MessageService } from 'primeng/api';
@@ -39,7 +38,8 @@ import { CardModule } from 'primeng/card';
 import { FieldsetModule } from 'primeng/fieldset';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import {MatExpansionModule} from '@angular/material/expansion';
-
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
 
 //Login
 
@@ -146,6 +146,17 @@ import { ServiciosEntregasComponent } from './components/catalogos/servicios-ent
 import { UsuariosPermisosComponent } from './components/catalogos/usuarios-permisos/usuarios-permisos.component';
 import { GraficasClientesTop20Component } from './components/dashboard/top-veinte/graficas-clientes-top20/graficas-clientes-top20.component';
 import { PanelesTerminadasComponent } from './components/terminadas/paneles-terminadas/paneles-terminadas.component';
+import { ModalCamposNuevosComponent } from './components/administracion/modal-campos-nuevos/modal-campos-nuevos.component';
+import { ModalOportunidadesPorAgenteClientesComponent } from './components/dashboard/oportunidades-por-agente/modal-oportunidades-por-agente-clientes/modal-oportunidades-por-agente-clientes.component';
+import { ModalOportunidadesPorAgenteTipoComponent } from './components/dashboard/oportunidades-por-agente/modal-oportunidades-por-agente-tipo/modal-oportunidades-por-agente-tipo.component';
+import { ModalOportunidadesPorAgenteDetalleTipoComponent } from './components/dashboard/oportunidades-por-agente/modal-oportunidades-por-agente-detalle-tipo/modal-oportunidades-por-agente-detalle-tipo.component';
+import { ModalOportunidadesPorAgenteSectorComponent } from './components/dashboard/oportunidades-por-agente/modal-oportunidades-por-agente-sector/modal-oportunidades-por-agente-sector.component';
+import { ModalOportunidadesPorAgenteDetalleSectorComponent } from './components/dashboard/oportunidades-por-agente/modal-oportunidades-por-agente-detalle-sector/modal-oportunidades-por-agente-detalle-sector.component';
+import { AsistenteProspeccionComponent } from './components/asistentes/asistente-prospeccion/asistente-prospeccion.component';
+import { ChatBotProspeccionComponent } from './components/asistentes/asistente-prospeccion/chatBot/chatBotProspeccion.component';
+import { FaqFlotantesComponent } from './components/asistentes/asistente-prospeccion/faq-flotantes/faq-flotantes.component';
+import { EliminarConversacionComponent } from './components/asistentes/asistente-prospeccion/eliminar-conversacion/eliminar-conversacion.component';
+import { EvaluarBotComponent } from './components/asistentes/asistente-prospeccion/evaluar-bot/evaluar-bot.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -230,7 +241,18 @@ registerLocaleData(localeEs, 'es-MX');
     ServiciosEntregasComponent,
     UsuariosPermisosComponent,
     GraficasClientesTop20Component,
-    PanelesTerminadasComponent
+    PanelesTerminadasComponent,
+    ModalCamposNuevosComponent,
+    ModalOportunidadesPorAgenteClientesComponent,
+    ModalOportunidadesPorAgenteTipoComponent,
+    ModalOportunidadesPorAgenteDetalleTipoComponent,
+    ModalOportunidadesPorAgenteSectorComponent,
+    ModalOportunidadesPorAgenteDetalleSectorComponent,
+    AsistenteProspeccionComponent,
+    ChatBotProspeccionComponent,
+    FaqFlotantesComponent,
+    EliminarConversacionComponent,
+    EvaluarBotComponent
   ],
   imports: [
     BrowserModule,
@@ -280,7 +302,9 @@ registerLocaleData(localeEs, 'es-MX');
     CardModule,
     FieldsetModule,
     ToggleSwitchModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatDialogModule,
+    MatButtonModule
 ],
   providers: [
     { provide: LOCALE_ID, useValue: 'es-MX' },

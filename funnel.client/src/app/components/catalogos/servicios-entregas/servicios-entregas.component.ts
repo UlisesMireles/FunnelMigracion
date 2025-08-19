@@ -11,35 +11,50 @@ import { EnumMenus } from '../../../enums/enumMenus';
 export class ServiciosEntregasComponent {
   permisoServicios: boolean = false;
   permisoEntregas: boolean = false;
-  serviciosExpandido = true;
-  entregasExpandido = false;
   EnumPaginas = EnumPaginas;
+  seccionExpandida: 'servicios' | 'entregas'  = 'servicios';
   constructor(private readonly loginService:LoginService) { }
   ngOnInit() {
      this.consultarPermisosUsuario();
-     console.log('permisoServicios', this.permisoServicios);
-     console.log('permisoEntregas', this.permisoEntregas);
   }
-  toggleServicios() {
-    if (!this.permisoServicios) return;
-    if (this.serviciosExpandido) {
-      this.serviciosExpandido = false;
-      this.entregasExpandido = true;
-    } else {
-      this.serviciosExpandido = true;
-      this.entregasExpandido = false;
+  toggleSeccion(seccion: 'servicios' | 'entregas') {
+  const orden: ('servicios' | 'entregas')[] = [
+    'servicios',
+    'entregas'
+  ];
+
+  const permisos = {
+    servicios: this.permisoServicios,
+    entregas: this.permisoEntregas,
+  };
+
+  if (!permisos[seccion]) return;
+
+  // Si se hace clic en la sección ya abierta busca la siguiente
+  if (this.seccionExpandida === seccion) {
+    const index = orden.indexOf(seccion);
+
+    for (let i = index + 1; i < orden.length; i++) {
+      if (permisos[orden[i]]) {
+        this.seccionExpandida = orden[i];
+        return;
+      }
     }
-  }
-   toggleEntregas() {
-    if (!this.permisoEntregas) return;
-    if (this.entregasExpandido) {
-      this.entregasExpandido = false;
-      this.serviciosExpandido = true;
-    } else {
-      this.entregasExpandido = true;
-      this.serviciosExpandido = false;
+
+    // Si no hay ninguna después busca hacia arriba
+    for (let i = 0; i < index; i++) {
+      if (permisos[orden[i]]) {
+        this.seccionExpandida = orden[i];
+        return;
+      }
     }
+
+    this.seccionExpandida = seccion;
+
+  } else {
+    this.seccionExpandida = seccion;
   }
+}
   consultarPermisosUsuario() {
     const permisos = this.loginService.obtenerPermisosUsuario();
     if (permisos && permisos.length > 0) {
@@ -47,7 +62,9 @@ export class ServiciosEntregasComponent {
       if(permisoServicios){
         this.permisoEntregas = permisoServicios.subMenu.some((p:any) => p.pagina === EnumPaginas.ENTREGAS);
         this.permisoServicios = permisoServicios.subMenu.some((p:any) => p.pagina === EnumPaginas.SERVICIOS);
-        this.entregasExpandido = !this.permisoServicios;
+        if (!this.permisoServicios && !this.permisoEntregas) {
+          this.permisoServicios = true; 
+        }
       }
     }
   }

@@ -20,6 +20,7 @@ namespace Funnel.Data.Interfaces
             string Usuario, string Inicales, string CorreoElectronico, int IdTipoUsuario, int IdUsuario, int Estatus, string password, int idEmpresa);
         public Task<BaseOut> RegistrarIngresoUsuario(string Bandera, int IdUsuario, int IdEmpresa, string SesionId, string MotivoCierre);
         public Task<EmpresaDTO> ObtenerImagenEmpresa(int IdEmpresa);
+        public Task<UsuarioDto> ObtenerPermitirDecimales(int idEmpresa);
 
     }
 }

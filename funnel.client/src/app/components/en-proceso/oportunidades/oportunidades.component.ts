@@ -15,6 +15,8 @@ import { map } from 'rxjs/operators';
 import { Prospectos } from '../../../interfaces/prospecto';
 import { state } from '@angular/animations';
 import { CatalogoService } from '../../../services/catalogo.service';
+import { ConfiguracionTablaService } from '../../../services/configuracion-tabla.service';
+import { EnumTablas } from '../../../enums/enumTablas';
 
 @Component({
   selector: 'app-oportunidades',
@@ -29,6 +31,7 @@ export class OportunidadesComponent {
   disableOportunidades = true;
   isDescargando = false;
   anchoTabla = 100;//porciento
+  public mostrarDecimales: boolean = false;
 
   oportunidades: Oportunidad[] = [];
   oportunidadesOriginal: Oportunidad[] = [];
@@ -43,6 +46,11 @@ export class OportunidadesComponent {
   modalVisible: boolean = false;
   modalSeguimientoVisible: boolean = false;
   modalDocumentosVisible: boolean = false;
+  modalDetalleOportunidadesVisible: boolean = false;
+  
+  oportunidadesModalDetalle: Oportunidad[] = [];
+  tituloModalDetalle: string = '';
+  
   licencia: string = '';
   cantidadOportunidades: number = 0;
   private modalSubscription!: Subscription;
@@ -69,44 +77,48 @@ export class OportunidadesComponent {
   totalProspectosMes: number = 0;
   totalGanadasMes: number = 0;
   totalPerdidasMes: number = 0;
+  
+  // Listas de oportunidades para mostrar en modales
+  oportunidadesAbiertasMes: Oportunidad[] = [];
+  oportunidadesProspectosNuevos: Oportunidad[] = [];
+  oportunidadesGanadasMes: Oportunidad[] = [];
+  oportunidadesPerdidasMes: Oportunidad[] = [];
   fechaCierreSortOrder: number = 1;  
-  lsTodasColumnas: any[] = [
-    { key: 'idOportunidad', isCheck: false, valor: 'Id', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
-    { key: 'nombre', isCheck: true, valor: 'Prospecto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'text' },
-    { key: 'nombreSector', isCheck: true, valor: 'Sector', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'nombreOportunidad', isCheck: true, valor: 'Oportunidad', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    //{ key: 'abreviatura', isCheck: false, valor: 'Tipo', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'stage', isCheck: true, valor: 'Etapa', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'numberFilter' },
-    { key: 'iniciales', isCheck: true, valor: 'Ejecutivo', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'nombreContacto', isCheck: true, valor: 'Contacto', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'entrega', isCheck: false, valor: 'Entrega', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'monto', isCheck: true, valor: 'Monto', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
-    // { key: 'probabilidadOriginal', isCheck: false, valor: '% Original', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    // { key: 'probabilidad', isCheck: true, valor: '% Actual', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'text' },
-    { key: 'probabilidadOriginal', isCheck: false, valor: '% Orig', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'textNFilter' },
-    { key: 'probabilidad', isCheck: false, valor: '% Act', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'textNFilter' },
-    { key: 'montoNormalizado', isCheck: true, valor: 'Vta Esperada', isIgnore: false, isTotal: true, groupColumn: false, tipoFormato: 'currency' },
-    { key: 'fechaRegistro', isCheck: true, valor: 'Fecha Alta', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
-    { key: 'fechaEstimadaCierreOriginal', isCheck: true, valor: 'Cierre Est', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'date' },
-    { key: 'diasFunnel', isCheck: true, valor: 'D. Alta', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' },
-    { key: 'fechaModificacion', isCheck: true, valor: 'D. S/Act', isIgnore: false, isTotal: false, groupColumn: false, tipoFormato: 'number' }
-  ];
+  lsTodasColumnas: any[] = [];
 
-  columnsAMostrarResp: string = JSON.stringify(this.lsColumnasAMostrar);
-  columnsTodasResp: string = JSON.stringify(this.lsTodasColumnas);
+  maximized: boolean = false;
+  columnsAMostrarResp: string = '';
+  columnsTodasResp: string = '';
   disabledPdf: boolean = false;
 
   constructor(private oportunidadService: OportunidadesService, private messageService: MessageService, private cdr: ChangeDetectorRef,
     private readonly loginService: LoginService, public dialog: MatDialog, private modalOportunidadesService: ModalOportunidadesService,
-    private readonly catalogoService: CatalogoService) {
+    private readonly catalogoService: CatalogoService, private readonly configuracionColumnasService: ConfiguracionTablaService) {
     this.loading = true;
     this.catalogoService.cargarProspectos(this.loginService.obtenerIdEmpresa());
   }
 
   ngOnInit(): void {
+    setTimeout(() => {
+    this.mostrarDecimales = this.loginService.obtenerPermitirDecimales();
+    },500);
     this.licencia = localStorage.getItem('licencia')!;
     this.cantidadOportunidades = Number(localStorage.getItem('cantidadOportunidades'));
-    this.lsColumnasAMostrar = this.lsTodasColumnas.filter(col => col.isCheck);
+    this.configuracionColumnasService.obtenerColumnasAMostrar(EnumTablas.OportunidadesEnProceso).subscribe({
+      next: ({ todas, mostrar }) => {
+        this.lsTodasColumnas = todas;
+        this.lsColumnasAMostrar = mostrar;
+        this.columnsAMostrarResp = JSON.stringify(this.lsColumnasAMostrar);
+        this.columnsTodasResp = JSON.stringify(this.lsTodasColumnas);
+      },
+      error: (error: any) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error al cargar configuración de columnas',
+          detail: error.errorMessage,
+        });
+      }
+    });
     this.getOportunidades();
     this.llenarEtiquetas();
     document.documentElement.style.fontSize = 12 + 'px';
@@ -172,10 +184,17 @@ export class OportunidadesComponent {
     
     this.oportunidadService.consultarEtiquetasOportunidades(this.loginService.obtenerIdEmpresa(), this.loginService.obtenerIdUsuario()).subscribe({
       next: (result: any) => {
-        this.totalOportunidadesMes = result.abiertasMes;
-        this.totalProspectosMes = result.prospectosNuevos;
-        this.totalGanadasMes = result.ganadasMes;
-        this.totalPerdidasMes = result.perdidasMes;
+        // Ahora result contiene listas de oportunidades en lugar de números
+        this.oportunidadesAbiertasMes = result.abiertasMes || [];
+        this.oportunidadesProspectosNuevos = result.prospectosNuevos || [];
+        this.oportunidadesGanadasMes = result.ganadasMes || [];
+        this.oportunidadesPerdidasMes = result.perdidasMes || [];
+        
+        // Calcular totales usando .length
+        this.totalOportunidadesMes = this.oportunidadesAbiertasMes.length;
+        this.totalProspectosMes = this.oportunidadesProspectosNuevos.length;
+        this.totalGanadasMes = this.oportunidadesGanadasMes.length;
+        this.totalPerdidasMes = this.oportunidadesPerdidasMes.length;
       },
       error: (error:any) => {
         this.messageService.add({
@@ -279,12 +298,7 @@ export class OportunidadesComponent {
 
     dialogRef.afterClosed().subscribe(r => {
       if (r) {
-        this.lsColumnasAMostrar = JSON.parse(this.columnsAMostrarResp);
-        const selectedColumns = r.filter((f: any) => f.isCheck);
-
-        selectedColumns.forEach((element: any) => {
-          this.lsColumnasAMostrar.push(element)
-        });
+        this.lsColumnasAMostrar = r.filter((f: any) => f.isCheck);
         if (this.lsColumnasAMostrar.length > 5) {
           this.anchoTabla = 100
         }
@@ -534,16 +548,72 @@ export class OportunidadesComponent {
       });
   }
   onSortFechaCierre() {
-  if (this.dt.sortField === 'fechaEstimadaCierreOriginal') {
-    this.fechaCierreSortOrder = -this.fechaCierreSortOrder;
-  } else {
-    this.fechaCierreSortOrder = 1;
+    if (this.dt.sortField === 'fechaEstimadaCierreOriginal') {
+      this.fechaCierreSortOrder = -this.fechaCierreSortOrder;
+    } else {
+      this.fechaCierreSortOrder = 1;
+    }
+    
+    this.dt.sortOrder = this.fechaCierreSortOrder;
+    this.dt.sortField = 'fechaEstimadaCierreOriginal';
+    this.dt.sortSingle();
   }
-  
-  this.dt.sortOrder = this.fechaCierreSortOrder;
-  this.dt.sortField = 'fechaEstimadaCierreOriginal';
-  this.dt.sortSingle();
-}
+
+  // Métodos para abrir modales con detalles de oportunidades
+  abrirModalOportunidadesAbiertasMes() {
+    if (this.oportunidadesAbiertasMes.length === 0) {
+      return;
+    }
+    this.abrirModalDetalleOportunidades(this.oportunidadesAbiertasMes, 'Oportunidades Abiertas del Mes');
+  }
+
+  abrirModalProspectosNuevosMes() {
+    if (this.oportunidadesProspectosNuevos.length === 0) {
+      return;
+    }
+    this.abrirModalDetalleOportunidades(this.oportunidadesProspectosNuevos, 'Prospectos Nuevos del Mes');
+  }
+
+  abrirModalOportunidadesGanadasMes() {
+    if (this.oportunidadesGanadasMes.length === 0) {
+      return;
+    }
+    this.abrirModalDetalleOportunidades(this.oportunidadesGanadasMes, 'Oportunidades Ganadas del Mes');
+  }
+
+  abrirModalOportunidadesPerdidasMes() {
+    if (this.oportunidadesPerdidasMes.length === 0) {
+      return;
+    }
+    this.abrirModalDetalleOportunidades(this.oportunidadesPerdidasMes, 'Oportunidades Perdidas del Mes');
+  }
+
+  private abrirModalDetalleOportunidades(oportunidades: Oportunidad[], titulo: string) {
+    this.oportunidadesModalDetalle = oportunidades;
+    this.tituloModalDetalle = titulo;
+    this.modalDetalleOportunidadesVisible = true;
+  }
+
+  cerrarModalDetalle() {
+    this.modalDetalleOportunidadesVisible = false;
+    this.oportunidadesModalDetalle = [];
+    this.tituloModalDetalle = '';
+  }
+
+  getSumaMontos(oportunidades: Oportunidad[]): number {
+    return sumBy(oportunidades, 'monto');
+  }
+
+  filterMultipleFields(value: any, table: any) {
+    console.log(value.target.value);
+    if (!value.target.value) {
+      return;
+    }
+    
+    table.filterGlobal(value.target.value, 'contains');
+    // O usar un filtro más específico:
+    // table.filter(value, 'prospecto,ejecutivo', 'contains');
+  }
 }
 
 

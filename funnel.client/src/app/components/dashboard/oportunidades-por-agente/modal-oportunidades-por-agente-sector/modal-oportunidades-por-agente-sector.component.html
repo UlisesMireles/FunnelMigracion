@@ -1,0 +1,78 @@
+<p-dialog 
+  appendTo="body"
+  [(visible)]="visible" 
+  [modal]="true" 
+  [closable]="true" 
+  [maximizable]="true"
+  [style]="{
+    width: maximized ? '100vw' : '80rem',
+    height: maximized ? '100vh' : 'auto'
+  }"
+  [ngClass]="{'maximized': maximized}"
+  (onHide)="close()"
+  (onShow)="onDialogShow()"
+  [baseZIndex]="1100"
+  [draggable]="true"
+  [resizable]="false"
+  [blockScroll]="true"
+  styleClass="custom-header-naranja">
+
+  <ng-template pTemplate="header">
+    <div class="dialog-header-content">
+      <label class="margen titulo-dialogo">
+        Oportunidades por Agente - Sector
+      </label>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="content">
+    <div class="contenedor-tabla-dialogo">
+      <p-table #dt [value]="oportunidades" [paginator]="oportunidades.length > 10" [rows]="10" [paginatorDropdownAppendTo]="'body'" 
+        [rowsPerPageOptions]="[10, 25, 50]" [totalRecords]="oportunidades.length"
+        styleClass="tabla-estilizada">
+        
+        <ng-template pTemplate="header" let-columns>
+          <tr class="custom-header">
+            <th *ngFor="let def of lsColumnasAMostrar">
+              {{def.header}}
+            </th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-rowData>
+          <tr class="fila-datos">
+                <td>
+                <a href="javascript:void(0)"
+                    (click)="abrirModalDetalle(rowData.idSector); $event.preventDefault()">
+                    {{ rowData.descripcion }}
+                </a>
+                </td>
+            <td style="text-align: left;">{{ rowData.monto | totalCurrency:'currency':mostrarDecimales}}</td>
+            <td style="text-align: left;">{{ rowData.montoNormalizado | totalCurrency:'currency':mostrarDecimales}}</td>
+          </tr>
+        </ng-template>
+        
+        <ng-template pTemplate="footer" let-columns>
+          <tr class="custom-footer">
+            <td>Total de Registros: {{ oportunidades.length }}</td>
+            <td style="text-align: left; font-weight: bold;">
+              {{ calcularSumaMontos() | totalCurrency:'currency':mostrarDecimales}}
+            </td>
+            <td style="text-align: left; font-weight: bold;">
+              {{ calcularSumaMontosNormalizados() | totalCurrency:'currency':mostrarDecimales}}
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </ng-template>
+</p-dialog>
+
+<app-modal-oportunidades-por-agente-detalle-sector
+  [visible]="modalDetalleVisible"
+  (visibleChange)="modalDetalleVisible = $event"
+  (closeModal)="cerrarModalDetalle()"
+  [idAgente]="idAgente!"
+  [idSector]="idSectorSeleccionado!"
+  [nombreSector]="nombreSectorSeleccionado">
+</app-modal-oportunidades-por-agente-detalle-sector>

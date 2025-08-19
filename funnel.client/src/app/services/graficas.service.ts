@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { GraficasDto, RequestGraficasDto, AgenteDto, Sectores, SectoresDetalles, OportunidadesTipo, OportunidadesTipoDetalles } from '../interfaces/graficas';
+import { GraficasDto, RequestGraficasDto, AgenteDto, Sectores, SectoresDetalles, OportunidadesTipo, OportunidadesTipoDetalles, OportunidadAgenteCliente, TipoOportunidadAgente, DetalleTipoOportunidadAgente, TipoSectorAgente , DetalleSectorAgente} from '../interfaces/graficas';
 
 @Injectable({
   providedIn: 'root'
@@ -87,13 +87,35 @@ createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
 }
 
 
-  createPieData(items: GraficasDto[]) {
+createPieData(items: GraficasDto[], mostrarDecimales = false) {
+  const opcionesFormato = this.getOpcionesFormato(mostrarDecimales);
+
+  return {
+    type: 'pie',
+    values: items.map(item => item.valor),
+    labels: items.map(item => item.label ?? 'Sin etiqueta'),
+    text: items.map(item => item.valor.toLocaleString('es-MX', opcionesFormato)),
+    hovertemplate: '%{label}<br>(%{text})<extra></extra>',
+    textposition: "outside",
+    textinfo: "label+text",
+    automargin: true,
+    marker: {
+      color: items.map(item => item.coloreSerie ?? this.getRandomColor())
+    }
+  };
+}
+
+
+  createPieDataTop20(items: GraficasDto[], mostrarDecimales = false) {
+    const opcionesFormato = this.getOpcionesFormato(mostrarDecimales);
+    const valoresFormateados = items.map(item => item.valor.toLocaleString('es-MX', opcionesFormato));
+
     return {
       type: 'pie',
       values: items.map(item => item.valor),
       labels: items.map(item => item.label ?? 'Sin etiqueta'),
-      textposition: "outside",
-      textinfo: "label+percent",
+      text: valoresFormateados,
+      hovertemplate: '%{label}<br>(%{text})<extra></extra>',
       automargin: true,
       marker: {
         color: items.map(item => item.coloreSerie ?? this.getRandomColor())
@@ -101,24 +123,13 @@ createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
     };
   }
 
-  createPieDataTop20(items: GraficasDto[]) {
+  createPieMontoData(items: GraficasDto[], mostrarDecimales = false) {
+    const opcionesFormato = this.getOpcionesFormato(mostrarDecimales);
     return {
       type: 'pie',
       values: items.map(item => item.valor),
       labels: items.map(item => item.label ?? 'Sin etiqueta'),
-      hovertemplate: '%{label}<br>(%{value}%<extra></extra>)',
-      automargin: true,
-      marker: {
-        color: items.map(item => item.coloreSerie ?? this.getRandomColor())
-      }
-    };
-  }
-  createPieMontoData(items: GraficasDto[]) {
-    return {
-      type: 'pie',
-      values: items.map(item => item.valor),
-      labels: items.map(item => item.label ?? 'Sin etiqueta'),
-      text: items.map(item => item.valor.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })),
+      text: items.map(item => item.valor.toLocaleString('es-MX', opcionesFormato)),
       textposition: "outside",
       textinfo: "label+text",
       hovertemplate: '%{label}<br>(%{percent}<extra></extra>)',
@@ -129,6 +140,7 @@ createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
     };
   }
 
+
   createPieLayout(showlegend:boolean = false) {
     return {
       margin: { t: 0, b: 100, l: 0, r: 100 },
@@ -137,39 +149,46 @@ createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
       autosize: true
     };
   }
-  createBarData(items: GraficasDto[]) {
+  createBarData(items: GraficasDto[], mostrarDecimales: boolean = false) {
+    const opcionesFormato = this.getOpcionesFormato(mostrarDecimales);
+
     return {
       type: 'bar',
       y: items.map(item => item.valor),
       x: items.map(item => item.label ?? 'Sin etiqueta'),
-      text: items.map(item => item.valor.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })), 
+      text: items.map(item => item.valor.toLocaleString('es-MX', opcionesFormato)),
       name: 'Monto',
       marker: {
-        color: items.map(item => '#1F77B4')
+        color: items.map(() => '#1F77B4')
       }
     };
   }
-  createBarHorizontalData(items: GraficasDto[]) {
+
+
+  createBarHorizontalData(items: GraficasDto[], mostrarDecimales = false) {
+    const opcionesFormato = this.getOpcionesFormato(mostrarDecimales);
     return {
       type: 'bar',
       x: items.map(item => item.valor),
       y: items.map(item => item.label ?? 'Sin etiqueta'),
-      text: items.map(item => item.valor.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })),
+      text: items.map(item => item.valor.toLocaleString('es-MX', opcionesFormato)),
       hovertemplate: 'Monto: <b>%{text}</b><extra></extra>',
       orientation: 'h',
       name: 'Monto',
       marker: {
-        color: items.map(item => '#1F77B4')
+        color: items.map(() => '#1F77B4')
       }
     };
   }
-  createBarHorizontalNormalizadoData(items: GraficasDto[]) {
+
+  createBarHorizontalNormalizadoData(items: GraficasDto[], mostrarDecimales = false) {
+    const opcionesFormato = this.getOpcionesFormato(mostrarDecimales);
     return {
       type: 'bar',
       x: items.map(item => item.montoNormalizado),
       y: items.map(item => item.label ?? 'Sin etiqueta'),
       hovertemplate: 'Monto Normalizado: <b>%{text}</b><extra></extra>',
-      text: items.map(item => item.valor.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })),
+      text: items.map(item => item.valor.toLocaleString('es-MX', opcionesFormato)),
       name: 'Monto Normalizado',
       orientation: 'h',
       marker: {
@@ -177,6 +196,7 @@ createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
       }
     };
   }
+
   createBarVerticalData(items: GraficasDto[], color: string, name: string, hovertemplate: string, text: string[],customdata: string[] , valor2: boolean) {
     return {
       type: 'bar',
@@ -192,12 +212,13 @@ createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
       }
     };
   }
-  createFunnelData(items: GraficasDto[]) {
+  createFunnelData(items: GraficasDto[], mostrarDecimales = false) {
+    const opcionesFormato = this.getOpcionesFormato(mostrarDecimales);
     return {
       type: 'funnel',
       x: [100, 80, 60, 40, 20],
       hovertemplate: '<b>%{text}</b><extra></extra>',
-      text: items.map(item => '<b>' + item.label + '</b><br>' + item.valor.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })),
+      text: items.map(item => '<b>' + item.label + '</b><br>' + item.valor.toLocaleString('es-MX', opcionesFormato)),
       texttemplate: '%{text}',
       textfont: { family: "Old Standard TT", size: 13, color: "black" },
       marker: {
@@ -205,6 +226,7 @@ createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
       }
     };
   }
+
   createBarHorizontalLayout() {
     return {
       margin: { l: 130, r: 40, b: 100, t: 30 },
@@ -240,12 +262,13 @@ createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
     }
   }
 
-  createBarPorcentajeData(items: GraficasDto[]) {
+  createBarPorcentajeData(items: GraficasDto[], mostrarDecimales = false) {
+    const opcionesFormato = this.getOpcionesFormato(mostrarDecimales);
     return {
       type: 'bar',
       y: items.map(item => item.valor),
       x: items.map(item => item.label ?? 'Sin etiqueta'),
-      text: items.map(item => item.valor.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })), 
+      text: items.map(item => item.valor.toLocaleString('es-MX', opcionesFormato)), 
       textposition: 'auto', 
       hovertemplate: '<b>%{x}</b><br> (<b>%{customdata}</b><extra></extra>)', 
       customdata: items.map(item => `${item.porcentaje?.toFixed(2) ?? 0}%`), 
@@ -254,15 +277,18 @@ createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
       }
     };
   }
-  createBarNormalizadoData(items: GraficasDto[]) {
+
+  createBarNormalizadoData(items: GraficasDto[], mostrarDecimales = false) {
+    const opcionesFormato = this.getOpcionesFormato(mostrarDecimales);
     return {
       type: 'bar',
       yield: items.map(item => item.montoNormalizado),
       x: items.map(item => item.label ?? 'Sin etiqueta'),
-      text: items.map(item => item.valor.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })),
+      text: items.map(item => item.valor.toLocaleString('es-MX', opcionesFormato)),
       name: 'Monto Normalizado',
     }
   }
+
 
   obtenerOportunidadesPorSector(data: RequestGraficasDto): Observable<Sectores[]> {
     const requestData = {
@@ -293,5 +319,67 @@ createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
       data
     );
   }
-  
+
+  obtenerOportunidadesPorAgenteClientes(data: RequestGraficasDto): Observable<OportunidadAgenteCliente[]> {
+  const requestData = {
+    ...data,
+    bandera: 'SEL-OPORTUNIDADES-AGENTE'
+  };
+  return this.http.post<OportunidadAgenteCliente[]>(
+    `${this.baseUrl}api/Graficas/ObtenerOportunidadesPorAgenteClientes`, 
+    requestData
+  );
+}
+
+
+obtenerOportunidadesPorAgenteTipo(data: RequestGraficasDto): Observable<TipoOportunidadAgente[]> {
+  const requestData = {
+    ...data,
+    bandera: 'SEL-TIPO-OPOR-AGENTE'
+  };
+  return this.http.post<TipoOportunidadAgente[]>(
+    `${this.baseUrl}api/Graficas/ObtenerOportunidadesPorAgenteTipo`, 
+    requestData
+  );
+}
+
+obtenerDetalleOportunidadesTipoAgente(
+  idAgente: number, 
+  idTipoOporAgente: number, 
+  data: RequestGraficasDto
+): Observable<DetalleTipoOportunidadAgente[]> {
+  return this.http.post<DetalleTipoOportunidadAgente[]>(
+    `${this.baseUrl}api/Graficas/ObtenerDetalleOportunidadesTipoAgente/${idAgente}/${idTipoOporAgente}`,
+    data
+  );
+}
+
+obtenerOportunidadesPorSectorPorAgente(data: RequestGraficasDto): Observable<TipoSectorAgente[]> {
+  const requestData = {
+    ...data,
+    bandera: 'SEL-AGENTE-SECTOR-PERSONAL'  
+  };
+  return this.http.post<TipoSectorAgente[]>(
+    `${this.baseUrl}api/Graficas/ObtenerOportunidadesPorSectorPorAgente`,
+    requestData
+  );
+}
+
+obtenerDetalleOportunidadesSectorAgente(
+  idAgente: number,
+  idSector: number,
+  data: RequestGraficasDto
+): Observable<DetalleSectorAgente[]> {
+  return this.http.post<DetalleSectorAgente[]>(
+    `${this.baseUrl}api/Graficas/ObtenerDetallesPorSectorPorAgente/${idAgente}/${idSector}`,
+    data
+  );
+}
+
+getOpcionesFormato(mostrarDecimales: boolean): Intl.NumberFormatOptions {
+  return mostrarDecimales
+    ? { style: 'currency', currency: 'MXN', minimumFractionDigits: 2, maximumFractionDigits: 4 }
+    : { style: 'currency', currency: 'MXN', minimumFractionDigits: 0, maximumFractionDigits: 0 };
+}
+
 }

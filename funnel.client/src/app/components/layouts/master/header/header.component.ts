@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener, ChangeDetectorRef } from '@angular/core';
 import { environment } from '../../../../../environments/environment';
 import { AsistenteService } from '../../../../services/asistentes/asistente.service';
 import { ModalService } from '../../../../services/modal-perfil.service';
@@ -13,6 +13,10 @@ import { Contacto } from '../../../../interfaces/contactos';
 import { SplitButton } from 'primeng/splitbutton';
 import { LoginService } from '../../../../services/login.service';
 import { CatalogoService } from '../../../../services/catalogo.service';
+import { ContactosService } from '../../../../services/contactos.service';
+import { CamposAdicionales } from '../../../../interfaces/campos-adicionales';
+import { ModalCamposAdicionalesService } from '../../../../services/modalCamposAdicionales.service';
+import { EnumLicencias } from '../../../../enums/enumLicencias';
 @Component({
   selector: 'app-header',
   standalone: false,
@@ -55,14 +59,39 @@ export class HeaderComponent implements OnInit {
   items: MenuItem[];
   @ViewChild('splitBtn') splitButton!: SplitButton;
   esLogoDefault = false;
-  imagenEmpresaUrl: string | null = null; 
-  @ViewChild('chatContainer') chatContainer!: ElementRef;
-  
+  imagenEmpresaUrl: string | null = null;
+  @ViewChild('chatContainerOperacion') chatContainerOperacion!: ElementRef;
+  @ViewChild('chatContainerProspeccion') chatContainerProspeccion!: ElementRef;
+
+  //Modal Campos Adicionales
+  camposAdicionales: CamposAdicionales[] = [];
+  camposAdicionalesPorCatalogo: CamposAdicionales[] = [];
+  modalVisibleCamposAdicionales: boolean = false;
+  informacionReferenciaCatalgo: any = {};
+
   private isDragging = false;
   private offset = { x: 0, y: 0 };
+  sessionCountdownMinutes: number = 0;
+  sessionCountdownSeconds: number = 0;
+  private sessionCountdownInterval: any;
 
-  constructor(public asistenteService: AsistenteService, private modalService: ModalService, private router: Router, private readonly catalogoService: CatalogoService,
-    private messageService: MessageService, private modalOportunidadesService: ModalOportunidadesService, private readonly authService: LoginService) {
+
+  sessionCountdownMinutesInactividad: number = 0;
+  sessionCountdownSecondsInactividad: number = 0;
+  private sessionCountdownIntervalInactividad: any;
+  licenciaPlatino: boolean = false;
+
+  constructor(
+    public asistenteService: AsistenteService,
+    private modalService: ModalService,
+    private router: Router,
+    private readonly catalogoService: CatalogoService,
+    private messageService: MessageService,
+    private modalOportunidadesService: ModalOportunidadesService,
+    private readonly authService: LoginService,
+    private contactosService: ContactosService,
+    private modalCamposAdicionalesService: ModalCamposAdicionalesService,
+    private cdr: ChangeDetectorRef) {
     this.items = [
       {
         label: 'Oportunidades',
@@ -88,34 +117,63 @@ export class HeaderComponent implements OnInit {
     if (this.asistenteSubscription) {
       this.asistenteSubscription.unsubscribe();
     }
+    if (this.sessionCountdownInterval) {
+      clearInterval(this.sessionCountdownInterval);
+    }
   }
   toggleChat(): void {
     this.asistenteSubscription = this.asistenteService.asistenteObservable.subscribe(value => {
       this.asistenteObservableValue = value;
+      this.enableAsistenteOperacion = this.asistenteObservableValue === 1;
     });
-  
+
     this.asistenteService.asistenteSubject.next(this.asistenteObservableValue * (-1));
   }
-  
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent): void {
-    const targetElement = event.target as HTMLElement;
 
-    if (this.chatContainer && !this.chatContainer.nativeElement.contains(targetElement)) {
-      this.enableAsistenteOperacion = false;
-      this.asistenteService.asistenteSubject.next(-1);
-    }
+  @HostListener('document:click', ['$event'])
+  handleClickOutside(event: MouseEvent): void {
+  const targetElement = event.target as HTMLElement;
+
+  // Verificar si el clic fue en algún diálogo abierto
+  const isInsideDialog = targetElement.closest('.confirm-dialog') !== null;
+
+  const isToggleButtonOperacion = targetElement.closest('#chat-container-operacion'); 
+  const isToggleButtonProspeccion = targetElement.closest('#chat-container-prospeccion'); 
+
+  if (this.enableAsistenteOperacion && 
+      this.chatContainerOperacion && 
+      !this.chatContainerOperacion.nativeElement.contains(targetElement) &&
+      !isToggleButtonOperacion &&
+      !isInsideDialog) { 
+    this.enableAsistenteOperacion = false;
+    this.asistenteService.asistenteSubject.next(-1);
   }
+
+  if (this.mostrarAsistenteProspeccion && 
+      this.chatContainerProspeccion && 
+      !this.chatContainerProspeccion.nativeElement.contains(targetElement) &&
+      !isToggleButtonProspeccion &&
+      !isInsideDialog) { 
+    this.mostrarAsistenteProspeccion = false;
+    this.cdr.detectChanges();
+  }
+}
   toggleOptions(): void {
     this.optionsVisible = !this.optionsVisible;
   }
-  hideSubmenu(): void{
+  hideSubmenu(): void {
     this.optionsVisible = false;
   }
-  showSubmenu(): void{
+  showSubmenu(): void {
     this.optionsVisible = true;
   }
   ngOnInit(): void {
+    this.licenciaPlatino = localStorage.getItem('licencia')! === EnumLicencias.Platino;
+    console.log(localStorage.getItem('licencia')!);
+    this.startSessionCountdown();
+    this.authService.sessionReset$.subscribe(() => {
+      this.startSessionCountdown();
+    });
     this.asistenteService.asistenteSubject.next(-1);
     this.cargarImagenEmpresa();
     const perfil = {
@@ -154,7 +212,7 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-    cargarImagenEmpresa() {
+  cargarImagenEmpresa() {
     const idEmpresaStr = localStorage.getItem('idEmpresa');
     const idEmpresa = idEmpresaStr ? Number(idEmpresaStr) : null;
 
@@ -177,7 +235,7 @@ export class HeaderComponent implements OnInit {
 
 
   ngAfterViewInit() {
-    if(this.splitButton){
+    if (this.splitButton) {
       const mainButton = this.splitButton.containerViewChild?.nativeElement.querySelector('.p-button-secondary');
       if (mainButton) {
         mainButton.addEventListener('click', (event: MouseEvent) => {
@@ -309,12 +367,121 @@ export class HeaderComponent implements OnInit {
       });
     }
   }
-startDrag(event: MouseEvent): void {
+
+  manejarResultadoAbrirInputsAdicionales(resut: any) {
+    this.informacionReferenciaCatalgo = resut
+    this.getCamposAdicionales();
+
+  }
+
+  manejarResultadoCamposAdicionales(result: baseOut) {
+    if (result.result) {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'La operación se realizó con éxito.',
+        detail: result.errorMessage,
+      });
+      this.modalCamposAdicionalesService.closeModal();
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Se ha producido un error.',
+        detail: result.errorMessage,
+      });
+    }
+  }
+
+  onModalCloseCamposAdicionales() {
+    this.modalCamposAdicionalesService.closeModal();
+    //Se debe reabrir modal de contacto o prospecto independientemente si guardo datos o no
+    setTimeout(() => {
+      switch (this.informacionReferenciaCatalgo.tipoCatalogo.toLowerCase()) {
+        case "contactos":
+          this.modalOportunidadesService.openModalContacto(true, this.informacionReferenciaCatalgo.insertar, [], this.informacionReferenciaCatalgo.referencia);
+          break;
+        default:
+          this.modalOportunidadesService.openModalProspecto(true, this.informacionReferenciaCatalgo.insertar, [], this.informacionReferenciaCatalgo.referencia)
+          break;
+      }
+    }, 1000);
+  }
+
+  getCamposAdicionales() {
+
+    const idUsuario = this.authService.obtenerIdUsuario();
+    const idEmpresa = this.authService.obtenerIdEmpresa();
+
+    this.contactosService.getCamposAdicionales(idEmpresa, this.informacionReferenciaCatalgo.tipoCatalogo).subscribe({
+      next: (result: CamposAdicionales[]) => {
+
+        this.camposAdicionales = result.map(campos => ({
+          ...campos,
+          idInput: campos.idInput,
+          nombre: campos.nombre,
+          etiqueta: campos.etiqueta,
+          requerido: campos.requerido,
+          tipoCampo: campos.tipoCampo,
+          rCatalogoInputId: campos.rCatalogoInputId,
+          tipoCatalogoInput: campos.tipoCatalogoInput,
+          orden: campos.orden,
+          idEmpresa: idEmpresa,
+          idUsuario: idUsuario,
+          modificado: false
+        }));
+
+        this.consultarCamposAdicionalesPorCatalogo(idEmpresa, idUsuario);
+      },
+      error: (error) => {
+        console.error('Error:', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error al cargar informacion de campos adicionales'
+        });
+      }
+    });
+  }
+
+
+  consultarCamposAdicionalesPorCatalogo(idEmpresa: number, idUsuario: number) {
+
+    this.contactosService.getCamposAdicionalesPorCatalogo(idEmpresa, this.informacionReferenciaCatalgo.tipoCatalogo).subscribe({
+      next: (result: CamposAdicionales[]) => {
+
+        this.camposAdicionalesPorCatalogo = result.map(campos => ({
+          ...campos,
+          idInput: campos.idInput,
+          nombre: campos.nombre,
+          etiqueta: campos.etiqueta,
+          requerido: campos.requerido,
+          tipoCampo: campos.tipoCampo,
+          rCatalogoInputId: campos.rCatalogoInputId,
+          tipoCatalogoInput: campos.tipoCatalogoInput,
+          orden: campos.orden,
+          idEmpresa: idEmpresa,
+          idUsuario: idUsuario,
+          modificado: false
+        }));
+        this.modalCamposAdicionalesService.openModal(true, this.camposAdicionales, this.camposAdicionalesPorCatalogo, this.informacionReferenciaCatalgo.pantalla)
+      },
+      error: (error) => {
+        console.error('Error:', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error al cargar informacion de campos adicionales'
+        });
+      }
+    });
+  }
+
+
+  startDrag(event: MouseEvent): void {
     const target = event.target as HTMLElement;
     if (!target.closest('.app-chat-header')) {
-      return; 
+      return;
     }
-    const el = this.chatContainer.nativeElement as HTMLElement;
+    const el = this.chatContainerOperacion.nativeElement as HTMLElement;
     this.isDragging = true;
     this.offset = {
       x: event.clientX - el.getBoundingClientRect().left,
@@ -331,7 +498,7 @@ startDrag(event: MouseEvent): void {
     const x = event.clientX - this.offset.x;
     const y = event.clientY - this.offset.y;
 
-    const el = this.chatContainer.nativeElement as HTMLElement;
+    const el = this.chatContainerOperacion.nativeElement as HTMLElement;
     el.style.left = `${x}px`;
     el.style.top = `${y}px`;
     el.style.right = 'auto'; // anula el "right" para permitir mover
@@ -347,4 +514,90 @@ startDrag(event: MouseEvent): void {
     this.authService.logout('Sesión cerrada por el usuario');
     this.router.navigate(['/login']);
   }
+
+  startSessionCountdown() {
+    // sessionTimeout está en milisegundos
+    let remaining = this.authService['sessionTimeout'] / 1000; // en segundos
+    let remainingInactividad =  this.authService['sessionActivityTimeout'] / 1000;
+
+    if (this.sessionCountdownInterval) {
+      clearInterval(this.sessionCountdownInterval);
+    }
+
+    this.updateCountdownDisplay(remaining);
+
+    if (this.sessionCountdownIntervalInactividad) {
+      clearInterval(this.sessionCountdownIntervalInactividad);
+    }
+
+    this.updateCountdownDisplay(remainingInactividad);
+
+    this.sessionCountdownInterval = setInterval(() => {
+      remaining--;
+      this.updateCountdownDisplay(remaining);
+
+      if (remaining <= 0) {
+        clearInterval(this.sessionCountdownInterval);
+      }
+    }, 1000);
+
+    this.sessionCountdownIntervalInactividad = setInterval(() => {
+      remainingInactividad--;
+      this.updateCountdownDisplayInactividad(remainingInactividad);
+
+      if (remainingInactividad <= 0) {
+        clearInterval(this.sessionCountdownIntervalInactividad);
+      }
+    }, 1000);
+  }
+
+  updateCountdownDisplay(remainingSeconds: number) {
+    this.sessionCountdownMinutes = Math.floor(remainingSeconds / 60);
+    this.sessionCountdownSeconds = remainingSeconds % 60;
+  }
+  updateCountdownDisplayInactividad(remainingSeconds: number) {
+    this.sessionCountdownMinutesInactividad = Math.floor(remainingSeconds / 60);
+    this.sessionCountdownSecondsInactividad = remainingSeconds % 60;
+  }
+  startDragProspeccion(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.app-chat-header-prospeccion')) {
+      return;
+    }
+    const el = this.chatContainerProspeccion.nativeElement as HTMLElement;
+    this.isDragging = true;
+    this.offset = {
+      x: event.clientX - el.getBoundingClientRect().left,
+      y: event.clientY - el.getBoundingClientRect().top,
+    };
+
+    document.addEventListener('mousemove', this.onDragProspeccion);
+    document.addEventListener('mouseup', this.endDragProspeccion);
+  }
+
+  onDragProspeccion = (event: MouseEvent): void => {
+    if (!this.isDragging) return;
+
+    const x = event.clientX - this.offset.x;
+    const y = event.clientY - this.offset.y;
+
+    const el = this.chatContainerProspeccion.nativeElement as HTMLElement;
+    el.style.left = `${x}px`;
+    el.style.top = `${y}px`;
+    el.style.right = 'auto'; // anula el "right" para permitir mover
+  };
+
+  endDragProspeccion = (): void => {
+    this.isDragging = false;
+    document.removeEventListener('mousemove', this.onDragProspeccion);
+    document.removeEventListener('mouseup', this.endDragProspeccion);
+  };
+
+  mostrarAsistenteProspeccion = false;
+
+  cerrarAsistenteProspeccion() {
+    this.mostrarAsistenteProspeccion = false;
+    this.cdr.detectChanges();
+  }
+
 }

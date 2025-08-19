@@ -340,8 +340,8 @@ input[type="file"] {
   background-color: #fff8e6;
 }
 
-.p-button-success {
-  color: #28a745 !important;
+::ng-deep .p-button-error {
+  color: #f33113 !important;
 }
 .row.align-items-center {
   display: flex;

@@ -8,5 +8,7 @@ namespace Funnel.Data.Interfaces
         public Task<BaseOut> GuardarFileIdLeadEisei(int idBot, string fileId);
         public Task<InsertaBitacoraPreguntasDto> InsertaPreguntaBitacoraPreguntas(InsertaBitacoraPreguntasDto insert);
         public Task<List<PreguntasFrecuentesDto>> ObtenerPreguntasFrecuentesAsync(int idBot);
+
+        public Task<List<InstruccionesAdicionalesDto>> ObtenerInstruccionesAdicionalesPorIdBot(int idBot);
     }
 }

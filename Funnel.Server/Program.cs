@@ -1,10 +1,12 @@
 using DinkToPdf.Contracts;
 using DinkToPdf;
 using Funnel.Server.Extensions;
-using Microsoft.Extensions.Configuration;
 using Funnel.Server.PdfTools;
 using Microsoft.Extensions.FileProviders;
 using Funnel.Logic.Utils.Asistentes;
+using PuppeteerSharp;
+using PuppeteerSharp;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +28,9 @@ builder.Services.AddServices();
 
 // ...otros servicios
 builder.Services.AddScoped<AsistenteProspeccionInteligente>();
+
+// Descarga la versión recomendada de Chromium
+await new BrowserFetcher().DownloadAsync();
 
 
 builder.Services.AddCors();

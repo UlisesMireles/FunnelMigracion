@@ -114,13 +114,7 @@ namespace Funnel.Logic
                     consultaAsistente.Exitoso = true;
                     consultaAsistente.FechaRespuesta = DateTime.Now;
 
-                    // Obtener configuración y thread
-                    var configuracion = await _asistentesData.ObtenerConfiguracionPorIdBotAsync(consultaAsistente.IdBot);
-                    var threadId = await GetOrCreateThreadIdAsync(configuracion.Llave, consultaAsistente.IdUsuario, consultaAsistente.IdBot);
-
-                    // Agregar pregunta y respuesta
-                    await OpenAIUtils.AddMessageToThreadAsync(configuracion.Llave, threadId, consultaAsistente.Pregunta, "user");
-                    await OpenAIUtils.AddMessageToThreadAsync(configuracion.Llave, threadId, consultaAsistente.Respuesta, "assistant");
+                    await GuardarInteraccionEnThreadAsync(consultaAsistente.IdBot, consultaAsistente.IdUsuario, consultaAsistente.Pregunta, respuestaFrecuente.Respuesta);
                 }
                 else
                 {
@@ -144,6 +138,20 @@ namespace Funnel.Logic
 
             return consultaAsistente;
         }
+        public async Task GuardarInteraccionEnThreadAsync(int idBot, int idUsuario, string pregunta, string respuesta)
+        {
+            // Obtener configuración y thread
+            var configuracion = await _asistentesData.ObtenerConfiguracionPorIdBotAsync(idBot);
+            if (configuracion == null)
+                throw new Exception("No se encontró configuración para el asistente");
+
+            var threadId = await GetOrCreateThreadIdAsync(configuracion.Llave, idUsuario, idBot);
+
+            // Agregar pregunta y respuesta
+            await OpenAIUtils.AddMessageToThreadAsync(configuracion.Llave, threadId, pregunta, "user");
+            await OpenAIUtils.AddMessageToThreadAsync(configuracion.Llave, threadId, respuesta, "assistant");
+        }
+
         private async Task<PreguntasFrecuentesDto> VerificarPreguntaFrecuenteAsync(string pregunta, int idBot, int idUsuario)
         {
             List<PreguntasFrecuentesDto> preguntasFrecuentes = await _asistentesData.ObtenerPreguntasFrecuentesAsync(idBot);

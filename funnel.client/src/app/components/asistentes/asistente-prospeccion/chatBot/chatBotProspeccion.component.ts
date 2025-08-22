@@ -424,7 +424,25 @@ resetConversation() {
     }, 0);
   }
   copiarRespuesta(texto: string) {
-  const textoLimpio = texto.replace(/<[^>]*>/g, '');
+  let textoLimpio = texto.replace(/<[^>]*>/g, '').trim();
+
+  const indiceCorreo = textoLimpio.indexOf("Asunto:");
+
+  if (indiceCorreo !== -1) {
+    textoLimpio = textoLimpio.substring(indiceCorreo).trim();
+
+    const regexTelefono = /\d{7,}/g;
+    let match: RegExpExecArray | null;
+    let lastIndex = -1;
+
+    while ((match = regexTelefono.exec(textoLimpio)) !== null) {
+      lastIndex = match.index + match[0].length;
+    }
+
+    if (lastIndex !== -1) {
+      textoLimpio = textoLimpio.substring(0, lastIndex).trim();
+    }
+  }
 
   navigator.clipboard.writeText(textoLimpio).then(() => {
     this.mostrarMensajeCopiado = true;
@@ -446,6 +464,7 @@ resetConversation() {
     }, 1000);
   });
 }
+
 ajustarAlturaTextarea(event: any): void { 
   const textarea = event.target as HTMLTextAreaElement;
 

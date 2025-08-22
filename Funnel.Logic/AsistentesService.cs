@@ -19,13 +19,15 @@ namespace Funnel.Logic
     public class AsistentesService: IAsistentesService
     {
         private readonly IMemoryCache _cache;
-        private readonly IAsistentesData _asistentesData; 
+        private readonly IAsistentesData _asistentesData;
+        private readonly IWebScrapingService _webScrapingService;
         private readonly string _connectionString;
-        public AsistentesService(IConfiguration configuration, IMemoryCache cache, IAsistentesData asistentesData)
+        public AsistentesService(IConfiguration configuration, IMemoryCache cache, IAsistentesData asistentesData, IWebScrapingService webScrapingService)
         {
             _cache = cache;
             _asistentesData = asistentesData;
             _connectionString = configuration.GetConnectionString("FunelDatabase");
+            _webScrapingService = webScrapingService;
         }
         private string GetVectorStoreCacheKey(int idBot) => $"vectorStoreId_{idBot}";
         private string GetAssistantCacheKey(int userId, int idBot) => $"assistantId_{userId}_{idBot}";
@@ -109,6 +111,29 @@ namespace Funnel.Logic
             }
             try
             {
+                // 1. Verifica si requiere búsqueda web
+                if (RequiereBusquedaWeb(consultaAsistente.Pregunta) && consultaAsistente.Pregunta.Split(' ').Length >= 3)
+                {
+                    // Llama a tu servicio de scraping
+                    
+                    var searchRequest = new SearchAssistantRequest
+                    {
+                        Query = consultaAsistente.Pregunta,
+                        MaxResults = 5,
+                        IncludeImages = false
+                    };
+                    var resultados = await _webScrapingService.SearchForAssistantAsync(searchRequest, Guid.NewGuid().ToString());
+
+                    string dataConcat = string.Join("\n\n", resultados.Select(r => $"{r.Description}"));
+                    bool seEncontro = resultados.FirstOrDefault().Title != "";
+
+                    consultaAsistente.Respuesta = seEncontro ? "Esto es lo que encontré en la web <br><br>" + dataConcat : dataConcat;
+                    consultaAsistente.Exitoso = true;
+                    consultaAsistente.FechaRespuesta = DateTime.Now;
+                    if(consultaAsistente.Respuesta.Contains("Esto es lo que encontré en la web"))
+                        await GuardarInteraccionEnThreadAsync(consultaAsistente.IdBot, consultaAsistente.IdUsuario, consultaAsistente.Pregunta, consultaAsistente.Pregunta);
+                    return consultaAsistente;
+                }
                 var respuestaFrecuente = await VerificarPreguntaFrecuenteAsync(consultaAsistente.Pregunta, consultaAsistente.IdBot, consultaAsistente.IdUsuario);
 
                 if (respuestaFrecuente != null)
@@ -426,5 +451,30 @@ namespace Funnel.Logic
                 }
             }
         }
+        private bool RequiereBusquedaWeb(string pregunta)
+        {
+            var keywords = new[] {
+                "investigar", "investiga", "investigando", "investigación",
+                "localizar", "localiza", "localizando", "localizado",
+                "explorar", "explora", "explorando", "explorado",
+                "rastrear", "rastrea", "rastreando", "rastreado",
+                "obtener", "obtén", "obteniendo", "obtenido",
+                "informar", "infórmame", "informando", "informado",
+                "mostrar", "muestra", "mostrando", "mostrado",
+                "enseñar", "enseña", "enseñando", "enseñado",
+                "google", "googléalo", "googlea",
+                "wikipedia", "youtube", "redes sociales",
+                "en línea", "online", "resultados",
+                 "chécalo", "checar", "checa", "checando",
+                "googlear", "googlea", "googleando", "googleado",
+                "búscame", "búscalo", "búscanos",
+                "dame datos", "dame información",
+                "infórmame", "quiero saber", "necesito saber",
+                "puedes ver", "échale un ojo", "que aparece sobre", "que sabes sobre", "que sabes de", "noticias", "actualidad", "tendencias",
+            };
+            var preguntaLower = pregunta.ToLowerInvariant();
+            return keywords.Any(k => preguntaLower.Contains(k));
+        }
+
     }
 }

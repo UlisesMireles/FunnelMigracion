@@ -4,6 +4,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using PuppeteerSharp;
 using System.Collections.Concurrent;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Funnel.Logic
 {
@@ -189,6 +190,7 @@ namespace Funnel.Logic
                     Height = 1080
                 });
 
+                var scrapedData = new List<ScrapedData>();
                 // Configurar headers adicionales
                 await page.SetExtraHttpHeadersAsync(new Dictionary<string, string>
                 {
@@ -199,6 +201,7 @@ namespace Funnel.Logic
                     {"Upgrade-Insecure-Requests", "1"}
                 });
 
+                
                 // Interceptar requests para optimizar carga
                 await page.SetRequestInterceptionAsync(true);
                 page.Request += async (sender, e) =>
@@ -257,83 +260,132 @@ namespace Funnel.Logic
 
                 // Simular comportamiento humano
                 await page.EvaluateExpressionAsync("window.scrollTo(0, document.body.scrollHeight / 4)");
+
                 await RandomDelayAsync(500, 1500);
-
-                var scrapedData = new List<ScrapedData>();
-
-                if (request.Selectors?.Any() == true)
+                if (request.Url.Contains("google.com/search") && request.Selectors.Contains(".g .yuRUbf a"))
                 {
-                    // Scraping con selectores específicos
-                    foreach (var selector in request.Selectors)
+                    await page.WaitForSelectorAsync("div .rPeykc span", new WaitForSelectorOptions { Timeout = 15000 });
+                    var snippetElement = await page.QuerySelectorAsync("div .rPeykc span");
+                    var elements = await page.QuerySelectorAllAsync("div .rPeykc span");
+                    if (elements.Length == 0)
                     {
-                        try
+                        scrapedData.Add(new ScrapedData
                         {
-                            var elements = await page.QuerySelectorAllAsync(selector);
-                            foreach (var element in elements)
+                            Title = "",
+                            Content = "",
+                            Type = "snippet",
+                            Description = "No encotré información rápida sobre ese tema en la web. Si deseas puedes preguntarme sobre otro tema o puedo ayudarte con estrategias de prospección y generación de leads.",
+                            Selector = "div.rPeykc span",
+                            Url = request.Url
+                        });
+                        return scrapedData;
+                    }
+                    foreach (var element in elements)
+                    {
+                        var text = await element.EvaluateFunctionAsync<string>("el => el.textContent?.trim()");
+                        if (!string.IsNullOrWhiteSpace(text))
+                        {
+                            scrapedData.Add(new ScrapedData
                             {
-                                var text = await element.EvaluateFunctionAsync<string>("el => el.textContent?.trim()");
-                                if (!string.IsNullOrWhiteSpace(text))
-                                {
-                                    scrapedData.Add(new ScrapedData
-                                    {
-                                        Selector = selector,
-                                        Content = text,
-                                        Type = "text"
-                                    });
-                                }
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            _logger.LogWarning("[{RequestId}] Error con selector {Selector}: {Message}",
-                                requestId, selector, ex.Message);
+                                Title = "Respuesta destacada de Google",
+                                Selector = "",
+                                Description = text,
+                                Type = "text"
+                            });
                         }
                     }
-                }
-                else
-                {
-                    // Scraping general de la página
-                    var title = await page.GetTitleAsync();
-
-                    var description = await page.EvaluateFunctionAsync<string>(@"
-                        () => {
-                            const meta = document.querySelector('meta[name=""description""]');
-                            return meta ? meta.content : '';
-                        }
-                    ");
-
-                    var mainContent = await page.EvaluateFunctionAsync<string>(@"
-                        () => {
-                            const article = document.querySelector('article') || 
-                                          document.querySelector('main') || 
-                                          document.querySelector('.content') || 
-                                          document.body;
-                            return article.innerText?.trim() || '';
-                        }
-                    ");
-
-                    scrapedData.Add(new ScrapedData
-                    {
-                        Title = title,
-                        Description = description,
-                        Content = mainContent.Length > 2000 ? mainContent.Substring(0, 2000) : mainContent,
-                        Type = "general"
-                    });
+                   
+                    return scrapedData.Take(request.MaxResults).ToList();
                 }
 
-                // Filtrar por palabras clave
-                if (request.Keywords?.Any() == true)
-                {
-                    scrapedData = scrapedData.Where(item =>
-                    {
-                        var content = $"{item.Content} {item.Title}".ToLowerInvariant();
-                        return request.Keywords.Any(keyword =>
-                            content.Contains(keyword.ToLowerInvariant()));
-                    }).ToList();
-                }
+                //if (request.Selectors?.Any() == true)
+                //{
+                //    // Scraping con selectores específicos
+                //    foreach (var selector in request.Selectors)
+                //    {
+                //        try
+                //        {
+                //            var elements = await page.QuerySelectorAllAsync(selector);
+                //            foreach (var element in elements)
+                //            {
+                //                var text = await element.EvaluateFunctionAsync<string>("el => el.textContent?.trim()");
+                //                if (!string.IsNullOrWhiteSpace(text))
+                //                {
+                //                    scrapedData.Add(new ScrapedData
+                //                    {
+                //                        Selector = selector,
+                //                        Content = text,
+                //                        Type = "text"
+                //                    });
+                //                }
+                //            }
+                //        }
+                //        catch (Exception ex)
+                //        {
+                //            _logger.LogWarning("[{RequestId}] Error con selector {Selector}: {Message}",
+                //                requestId, selector, ex.Message);
+                //        }
+                //    }
+                //}
+                //else
+                //{
+                //    // Scraping general de la página
+                //    var title = await page.GetTitleAsync();
+
+                //    var description = await page.EvaluateFunctionAsync<string>(@"
+                //        () => {
+                //            const meta = document.querySelector('meta[name=""description""]');
+                //            return meta ? meta.content : '';
+                //        }
+                //    ");
+
+                //    var mainContent = await page.EvaluateFunctionAsync<string>(@"
+                //        () => {
+                //            const article = document.querySelector('article') || 
+                //                          document.querySelector('main') || 
+                //                          document.querySelector('.content') || 
+                //                          document.body;
+                //            return article.innerText?.trim() || '';
+                //        }
+                //    ");
+
+                //    scrapedData.Add(new ScrapedData
+                //    {
+                //        Title = title,
+                //        Description = description,
+                //        Content = mainContent.Length > 2000 ? mainContent.Substring(0, 2000) : mainContent,
+                //        Type = "general"
+                //    });
+                //}
+
+                //// Filtrar por palabras clave
+                //if (request.Keywords?.Any() == true)
+                //{
+                //    scrapedData = scrapedData.Where(item =>
+                //    {
+                //        var content = $"{item.Content} {item.Title}".ToLowerInvariant();
+                //        return request.Keywords.Any(keyword =>
+                //            content.Contains(keyword.ToLowerInvariant()));
+                //    }).ToList();
+                //}
 
                 // Limitar resultados
                 return scrapedData.Take(request.MaxResults).ToList();
+            }
+            catch (Exception ex)
+            {
+
+                var scrapedData = new List<ScrapedData>();
+                scrapedData.Add(new ScrapedData
+                {
+                    Title = "",
+                    Content = "",
+                    Type = "snippet",
+                    Description = "No encotré información rápida sobre ese tema en la web. Si deseas puedes preguntarme sobre otro tema o puedo ayudarte con estrategias de prospección y generación de leads.",
+                    Selector = "div.rPeykc span",
+                    Url = request.Url
+                });
+                return scrapedData;
             }
             finally
             {
@@ -356,19 +408,28 @@ namespace Funnel.Logic
             var scrapeRequest = new ScrapeRequest
             {
                 Url = searchUrl,
-                Selectors = new List<string> { "h3", ".g .yuRUbf a", ".g .VwiC3b" },
-                MaxResults = request.MaxResults,
-                Timeout = 30000
+                Selectors = new List<string> { ".g .yuRUbf a", ".g .VwiC3b" },
+                MaxResults = 2,
+                Timeout = 40000
             };
+            
 
             var scrapedData = await ScrapeAsync(scrapeRequest, requestId);
+            //var scrapeInfoRequest = new ScrapeRequest
+            //{
+            //    Url = scrapedData.Select(x => x.Url).First() ?? "",
+            //    Selectors = new List<string> { "h3", "p" },
+            //    MaxResults = request.MaxResults,
+            //    Timeout = 40000
+            //};
+            //var scrapedInfo = await ScrapeAsync(scrapeInfoRequest, requestId);
 
             return scrapedData.Select(data => new SearchResult
             {
                 Title = data.Title ?? data.Content.Substring(0, Math.Min(100, data.Content.Length)),
-                Description = data.Content,
-                Url = searchUrl,
-                Source = "Google Search"
+                Description = data.Description ?? "",
+                Url = data.Url ?? "",
+                Source = data.Selector ?? ""
             }).ToList();
         }
 

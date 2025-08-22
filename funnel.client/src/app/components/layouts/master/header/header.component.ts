@@ -685,7 +685,9 @@ startDrag(event: MouseEvent): void {
       });
       this.modalEtapasService.closeModal(result);
       localStorage.setItem('idProceso', result.id.toString());
+      setTimeout(() => {  
       window.location.reload();
+      }, 1500);
     } else {
       this.messageService.add({
         severity: 'error',

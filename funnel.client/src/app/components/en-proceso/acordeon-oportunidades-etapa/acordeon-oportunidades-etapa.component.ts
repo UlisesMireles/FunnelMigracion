@@ -73,7 +73,7 @@ export class AcordeonOportunidadesEtapaComponent {
 
     this.oportunidadService.getOportunidadesPorEtapa(idEmpresa, idUsuario).subscribe({
       next: (result: OportunidadesPorEtapa[]) => {
-
+       console.log('Oportunidades por etapa:', result); // Depuración: Verificar el resultado recibido
         this.etapas = result.map(etapa => ({
           ...etapa,
           expandido: etapa.tarjetas.length > 0, // Expandir todas las etapas por defecto

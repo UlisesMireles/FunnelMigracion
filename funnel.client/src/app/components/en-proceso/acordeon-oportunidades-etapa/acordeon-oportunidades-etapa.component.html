@@ -50,6 +50,13 @@
               <div class="fila-monto">
                 <label class="monto-normalizado">{{ tarjeta.monto | totalCurrency:'currency':mostrarDecimales }}</label>
               </div>
+              <p-button type="button" text 
+                pTooltip="Estancamiento" tooltipPosition="top" styleClass="blue-icon"
+                        *ngIf="(tarjeta?.scoreEstancamiento || 0) > 200">
+                <ng-template pTemplate="icon">
+                  <span class="fs-5">🚩</span>
+                </ng-template>
+              </p-button>
               <p-button type="button" icon="bi bi-file-earmark-text fs-3" text (click)="seguimiento(tarjeta)"
                 pTooltip="Seguimiento" tooltipPosition="top" styleClass="blue-icon">
               </p-button>

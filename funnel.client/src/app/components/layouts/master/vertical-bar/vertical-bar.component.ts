@@ -26,6 +26,7 @@ export class VerticalBarComponent {
   scrollInterval: any = null;
   ListaMenu: any[] = [];
   isClickInsideModal: boolean = false;
+  version: string = '';
 
   constructor(private router: Router,
     private messageService: MessageService,
@@ -35,6 +36,7 @@ export class VerticalBarComponent {
 
   ngOnInit(): void {
     this.consultarMenu();
+    this.obtenerVersion();
   }
 
   consultarMenu(): void {
@@ -166,4 +168,19 @@ export class VerticalBarComponent {
       this.scrollInterval = null;
     }
   }
+  obtenerVersion(): void {
+    this.loginService.obtenerVersion().subscribe({
+      next: (result: any) => {
+        this.version = result.errorMessage;
+      },
+      error: (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Se ha producido un error al consultar la versión.',
+          detail: error.errorMessage,
+        });
+      },
+    });
+  }
+
 }

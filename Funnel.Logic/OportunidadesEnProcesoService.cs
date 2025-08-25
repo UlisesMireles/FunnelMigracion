@@ -82,13 +82,15 @@ namespace Funnel.Logic
         {
             return await _oportunidadesData.GuardarOportunidad(request);
         }
+        public async Task <List<EstancamientoEstadisticaOportunidadDto>> ConsultarEstancamientoEstadisticaOportunidades()
+        { return await _oportunidadesData.ConsultarEstancamientoEstadisticaOportunidades(); 
+        }
         public async Task<List<OportunidadesTarjetasDto>> ConsultarOportunidadesPorMes(int IdUsuario, int IdEmpresa)
         {
             CultureInfo cultura = new CultureInfo("es-ES");
 
             List<OportunidadesTarjetasDto> lista = new List<OportunidadesTarjetasDto>();
             List<OportunidadesEnProcesoDto> oportunidades = await _oportunidadesData.ConsultarOportunidadesEnProceso(IdUsuario, IdEmpresa, 1);
-
             int[] meses = new int[5];
             int[] anio = new int[5];
             string[] NombresMeses = new string[5];
@@ -152,7 +154,7 @@ namespace Funnel.Logic
                         Nombre = y.Nombre ?? "Sin nombre",
                         TooltipStage = y.TooltipStage,
                         TotalArchivos = y.TotalArchivos
-
+                       
 
                     }).ToList()
                 });
@@ -167,6 +169,7 @@ namespace Funnel.Logic
             List<OportunidadesTarjetasDto> lista = new List<OportunidadesTarjetasDto>();
             List<ComboEtapasDto> etapas = await _oportunidadesData.ComboEtapas(IdEmpresa);
             List<OportunidadesEnProcesoDto> oportunidades = await _oportunidadesData.ConsultarOportunidadesEnProceso(IdUsuario, IdEmpresa, 1);
+            List<EstancamientoEstadisticaOportunidadDto> estancamientos = await _oportunidadesData.ConsultarEstancamientoEstadisticaOportunidades();
 
             foreach (var item in etapas)
             {
@@ -203,7 +206,8 @@ namespace Funnel.Logic
                         TotalComentarios = y.TotalComentarios,
                         TooltipStage = y.TooltipStage,
                         Stage = y.Stage,
-                        TotalArchivos = y.TotalArchivos
+                        TotalArchivos = y.TotalArchivos,
+                        ScoreEstancamiento = estancamientos.FirstOrDefault(e => e.IdOportunidad == y.IdOportunidad)?.ScoreEstancamiento
 
                     }).ToList()
                 });

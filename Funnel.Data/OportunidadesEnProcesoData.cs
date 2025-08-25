@@ -570,6 +570,42 @@ namespace Funnel.Data
             result.PerdidasMes = listPerdidasMes;
             return result;
         }
+        public async Task<List<EstancamientoEstadisticaOportunidadDto>> ConsultarEstancamientoEstadisticaOportunidades()
+        {
+            var result = new List<EstancamientoEstadisticaOportunidadDto>();
+            string query = "SELECT * FROM [dbo].[EstancamientoEstadisticaOportunidades]";
+
+            using (IDataReader reader = await DataBase.GetReaderSql(query, CommandType.Text, null, _connectionString))
+            {
+                while (reader.Read())
+                {
+                    var dto = new EstancamientoEstadisticaOportunidadDto
+                    {
+                        IdOportunidad = ComprobarNulos.CheckIntNull(reader["IdOportunidad"]),
+                        Oportunidad = ComprobarNulos.CheckStringNull(reader["Oportunidad"]),
+                        Etapa = ComprobarNulos.CheckStringNull(reader["Etapa"]),
+                        DiasFunnel = ComprobarNulos.CheckIntNull(reader["DiasFunnel"]),
+                        MediaDias = ComprobarNulos.CheckDecimalNull(reader["MediaDias"]),
+                        MediaDiasEtapa1 = ComprobarNulos.CheckDecimalNull(reader["MediaDiasEtapa1"]),
+                        DesvDias = ComprobarNulos.CheckDecimalNull(reader["DesvDias"]),
+                        DiasEtapa1 = ComprobarNulos.CheckIntNull(reader["DiasEtapa1"]),
+                        DiasEtapa2 = ComprobarNulos.CheckIntNull(reader["DiasEtapa2"]),
+                        DiasEtapa3 = ComprobarNulos.CheckIntNull(reader["DiasEtapa3"]),
+                        DiasEtapa4 = ComprobarNulos.CheckIntNull(reader["DiasEtapa4"]),
+                        DiasEtapa5 = ComprobarNulos.CheckIntNull(reader["DiasEtapa5"]),
+                        Riesgo = ComprobarNulos.CheckIntNull(reader["Riesgo"]),
+                        ZScoreFunnel = ComprobarNulos.CheckDecimalNull(reader["ZScoreFunnel"]),
+                        ZScoreFunnelEtapa1 = ComprobarNulos.CheckDecimalNull(reader["ZScoreFunnelEtapa1"]),
+                        InactividadNorm = ComprobarNulos.CheckDecimalNull(reader["InactividadNorm"]),
+                        CierreVencido = ComprobarNulos.CheckIntNull(reader["CierreVencido"]),
+                        ProbEstancada = ComprobarNulos.CheckIntNull(reader["ProbEstancada"]),
+                        ScoreEstancamiento = ComprobarNulos.CheckDecimalNull(reader["ScoreEstancamiento"])
+                    };
+                    result.Add(dto);
+                }
+            }
+            return result;
+        }
 
     }
 }

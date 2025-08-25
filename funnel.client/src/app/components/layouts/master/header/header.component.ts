@@ -293,18 +293,18 @@ handleClickOutside(event: MouseEvent): void {
     const idEmpresa = idEmpresaStr ? Number(idEmpresaStr) : null;
 
     if (idEmpresa === null || isNaN(idEmpresa)) {
-      this.imagenEmpresaUrl = `${this.baseUrl}/assets/img/logotipo-glupoint.png?t=${Date.now()}`;
+      this.imagenEmpresaUrl = `${this.baseUrl}/assets/img/gluall.png?t=${Date.now()}`;
       return;
     }
 
     this.authService.obtenerUrlImagenEmpresa(idEmpresa).subscribe({
       next: (urlImagen) => {
-        this.imagenEmpresaUrl = urlImagen?.trim() ? `${urlImagen}?t=${Date.now()}` : `${this.baseUrl}/assets/img/logotipo-glupoint.png?t=${Date.now()}`;
+        this.imagenEmpresaUrl = urlImagen?.trim() ? `${urlImagen}?t=${Date.now()}` : `${this.baseUrl}/assets/img/gluall.png?t=${Date.now()}`;
 
       },
       error: (err) => {
         console.error('Error al cargar imagen:', err);
-        this.imagenEmpresaUrl = this.baseUrl + '/assets/img/logotipo-glupoint.png';
+        this.imagenEmpresaUrl = this.baseUrl + '/assets/img/gluall.png';
       }
     });
   }

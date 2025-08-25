@@ -164,7 +164,7 @@ export class EtapasComponent {
     });
 
     this.etapas.push(nuevaEtapa);
-    this.validaGuardar = true;
+    this.validaGuardar = false;
     this.opcionPlantillas = true;
     this.habilitaPlantillas = false;
     // Actualizar connectedDropLists después de agregar

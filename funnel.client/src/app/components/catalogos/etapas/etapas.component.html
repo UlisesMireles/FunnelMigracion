@@ -10,7 +10,7 @@
         <div class="row col-12">
             <p style="text-align: left; color: red;" *ngIf="esNuevo"> Hola! Antes de comenzar...
 
-                Para poder registrar oportunidades, primero necesitas crear un proceso. Este proceso nos ayudará a
+                Para poder registrar oportunidades, primero necesitas seleccionar una plantilla estándar o crear tu propio proceso. Este proceso nos ayudará a
                 organizar y dar seguimiento adecuado a cada una de tus oportunidades.
                 Por favor, completa el siguiente formulario para crear tu primer proceso. Una vez creado, podrás
                 comenzar a registrar tus oportunidades sin problema. </p>
@@ -113,7 +113,7 @@
         </div>
         <div class="boton-agregar-contenedor">
             <button mat-button (click)="agregarEtapa()" class="boton-agregar estilosBotonesInhabilitador"
-                [disabled]="habilitaPlantillas">
+                [disabled]="habilitaPlantillas && !validaGuardar">
                 +
             </button>
             <span class="texto-agregar">Agregar etapa</span>

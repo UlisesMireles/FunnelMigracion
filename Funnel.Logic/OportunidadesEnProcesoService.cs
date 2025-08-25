@@ -91,6 +91,8 @@ namespace Funnel.Logic
 
             List<OportunidadesTarjetasDto> lista = new List<OportunidadesTarjetasDto>();
             List<OportunidadesEnProcesoDto> oportunidades = await _oportunidadesData.ConsultarOportunidadesEnProceso(IdUsuario, IdEmpresa, 1);
+            List<EstancamientoEstadisticaOportunidadDto> estancamientos = await _oportunidadesData.ConsultarEstancamientoEstadisticaOportunidades();
+
             int[] meses = new int[5];
             int[] anio = new int[5];
             string[] NombresMeses = new string[5];
@@ -153,8 +155,9 @@ namespace Funnel.Logic
                         Stage = y.Stage,
                         Nombre = y.Nombre ?? "Sin nombre",
                         TooltipStage = y.TooltipStage,
-                        TotalArchivos = y.TotalArchivos
-                       
+                        TotalArchivos = y.TotalArchivos,
+                        ScoreEstancamiento = estancamientos.FirstOrDefault(e => e.IdOportunidad == y.IdOportunidad)?.ScoreEstancamiento
+
 
                     }).ToList()
                 });

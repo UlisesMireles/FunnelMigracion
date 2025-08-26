@@ -98,7 +98,9 @@ export class ProspectosComponent {
     });
     const idUsuario = this.loginService.obtenerIdUsuario(); 
     const idEmpresa = this.loginService.obtenerIdEmpresa();
-    this.qrData = `${this.baseUrl}/registro-contactos/?idUsuario=${idUsuario}&idEmpresa=${idEmpresa}`;
+    const data = btoa(JSON.stringify({ idUsuario, idEmpresa }));
+    console.log(data);
+    this.qrData = `${this.baseUrl}/registro-contactos/?token=${data}`;
   }
 
   ngOnDestroy(): void {

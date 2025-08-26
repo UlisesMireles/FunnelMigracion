@@ -174,11 +174,6 @@
                             <div class="input-group btn-rg">
                               <button type="submit" class="btn btn-login btn-lg " style="font-family: Raleway; height: 30px; font-size: 12px; font-weight: 500; width: 75%; margin-left: 150px;" (click)="guardarInformacion($event)">Registrar</button>
                             </div>
-                            <qrcode
-                              [qrdata]="baseUrl+'/login'"
-                              [width]="100" [style]="{ marginTop: '20px'}"
-                              [errorCorrectionLevel]="'M'">
-                            </qrcode>
                           </form>
                         </div>
                       </div>

@@ -17,6 +17,8 @@ import { ConfiguracionTablaService } from '../../../services/configuracion-tabla
 import { CamposAdicionales } from '../../../interfaces/campos-adicionales';
 import { ModalCamposAdicionalesService } from '../../../services/modalCamposAdicionales.service';
 import { ContactosService } from '../../../services/contactos.service';
+import { environment } from '../../../../environments/environment';
+
 @Component({
   selector: 'app-prospectos',
   standalone: false,
@@ -41,6 +43,10 @@ export class ProspectosComponent {
   modalVisible: boolean = false;
   selectedEstatus: any = null;
   desdeSector = false;
+  baseUrl: string = environment.baseURLAssets;
+  qrData: string = '';
+
+
   @Output() headerClicked = new EventEmitter<void>();
   EstatusDropdown = [
     { label: 'Todo', value: null },
@@ -90,6 +96,9 @@ export class ProspectosComponent {
         this.getProspectos();
       }
     });
+    const idUsuario = this.loginService.obtenerIdUsuario(); 
+    const idEmpresa = this.loginService.obtenerIdEmpresa();
+    this.qrData = `${this.baseUrl}/registro-contactos/?idUsuario=${idUsuario}&idEmpresa=${idEmpresa}`;
   }
 
   ngOnDestroy(): void {

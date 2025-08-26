@@ -157,6 +157,7 @@ import { ChatBotProspeccionComponent } from './components/asistentes/asistente-p
 import { FaqFlotantesComponent } from './components/asistentes/asistente-prospeccion/faq-flotantes/faq-flotantes.component';
 import { EliminarConversacionComponent } from './components/asistentes/asistente-prospeccion/eliminar-conversacion/eliminar-conversacion.component';
 import { EvaluarBotComponent } from './components/asistentes/asistente-prospeccion/evaluar-bot/evaluar-bot.component';
+import { QRCodeComponent } from 'angularx-qrcode';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -304,7 +305,8 @@ registerLocaleData(localeEs, 'es-MX');
     ToggleSwitchModule,
     MatExpansionModule,
     MatDialogModule,
-    MatButtonModule
+    MatButtonModule,
+    QRCodeComponent
 ],
   providers: [
     { provide: LOCALE_ID, useValue: 'es-MX' },

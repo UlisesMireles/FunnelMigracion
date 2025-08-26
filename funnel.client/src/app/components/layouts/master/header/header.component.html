@@ -14,8 +14,8 @@
       <div class="agregar btn-agregar-custom ms-2" (click)="toggleOptions()" (mouseenter)="showSubmenu()" (mouseleave)="hideSubmenu()">
         <!-- <p-splitbutton label="Agregar" [model]="items" raised severity="secondary" #splitBtn /> -->
         <button class="btn-chat float-end cursor-pointer"  > 
-          <i class="bi bi-plus color-amarillo" style="margin-left: -6px;"></i> 
-          <span class="ia-button-text color-amarillo"> ALTA</span>
+          <i class="bi bi-plus" style="margin-left: -6px;"></i> 
+          <span class="ia-button-text"> ALTA</span>
         </button>
         <ul *ngIf="optionsVisible" class="options-container" (click)="showSubmenu()" (mouseleave)="hideSubmenu()">
           <li class="option-btn" (click)="agregarOportunidad()">Oportunidad</li>
@@ -23,10 +23,10 @@
           <li class="option-btn" (click)="agregarContacto()">Contacto</li>
         </ul> 
       </div>
-      <button class="btnAgregar"  *ngIf="licenciaPlatino" style="margin-left: 5px;"
+      <button class="btnAgregarIA" *ngIf="licenciaPlatino" style="margin-left: 5px;"
                   (click)="mostrarAsistenteProspeccion = true">
                   <i class="bi bi-stars"></i>
-                  <span class="ia-button-text"> PC </span>
+                  <span class="ia-button-text"> Bruno </span>
                 </button>
       <ng-container *ngIf="mostrarAsistenteProspeccion">
       <div id="chat-container-prospeccion" class="chatbot-window-prospeccion" #chatContainerProspeccion (mousedown)="startDragProspeccion($event)">
@@ -36,9 +36,9 @@
   
       <div class="chatbot ms-2" *ngIf="licenciaPlatino" >
         <!-- Botón de chat en el header-->
-        <button class="btnAgregar" (click)="toggleChat()">
+        <button class="btnAgregarIA" (click)="toggleChat()">
           <i class="bi bi-stars"></i> 
-          <span class="ia-button-text "> IA</span>
+          <span class="ia-button-text "> Analista</span>
         </button>
        <!-- Contenedor del chatbot -->
       <ng-container *ngIf="(asistenteService.asistenteObservable | async) === 1">

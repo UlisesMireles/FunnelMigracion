@@ -1,5 +1,5 @@
 .sidebar {
-  width: 58px;
+  width: 60px;
   /* height: 100vh; */
   height: 100vh;
   background-color:  #103D66;
@@ -30,7 +30,7 @@
 }
 
 .menu-item {
-  padding: 15px;
+  padding: 12px 17px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -39,7 +39,7 @@
 }
 
 .menu-item:hover {
-  background-color: rgba(16, 61, 102, 0.5);
+  background-color: rgb(81 112 140 / 50%) !important;
 }
 
 
@@ -60,7 +60,7 @@
   cursor: pointer;
   padding: 5px;       
   border-radius: 50%;
-  background-color: #103D66;
+  background-color: transparent;
   transition: background 0.3s ease;
   margin-left: 0;     
   display: flex;
@@ -87,7 +87,7 @@
 .submenu {
   position: fixed;
   left: 58px;
-  background-color: #103D66;
+  background-color: transparent;
   color: white;
   border-radius: 8px;
   padding: 10px 0;
@@ -130,7 +130,7 @@
 .sidebar,
 .submenu,
 .expand-button {
-  background-color: #103D66; /* Color unificado */
+  background: linear-gradient(to bottom, #103d66, #1a4e80, #2a6fa9, #3e90d1, #5ab1f2);
   color: white; /* Color de la letra */
 }
 
@@ -393,7 +393,7 @@
 /* Si estás usando una estructura diferenciada para el perfil */
 .menu-item:first-child {
   padding-top: 10px; /* Ajusta el padding según sea necesario */
-  background-color: #103d66; /* Color de fondo opcional */
+  background-color: transparent;
   border-radius: 5px; /* Borde redondeado */
 }
 
@@ -456,4 +456,7 @@
 
 .subMenuExpanded {
   left: 159px;
+}
+.separator-menu{
+  margin: 0 !important;
 }

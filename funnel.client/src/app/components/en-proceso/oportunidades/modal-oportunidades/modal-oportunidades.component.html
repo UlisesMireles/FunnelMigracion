@@ -277,10 +277,33 @@
         <div class="col-12 col-md-6">
           <div class="form-group mb-3" *ngIf="insertar; else estatusField">
             <label for="servicio" class="text-start w-100">Servicio:</label>
-            <p-dropdown class="form-control text-start" [options]="servicios" formControlName="idTipoProyecto"
-              optionLabel="descripcion" optionValue="idTipoProyecto" appendTo="body"
-              placeholder="Selecciona un servicio">
-            </p-dropdown>
+            <p-select [options]="tiposServiciosFiltrados" formControlName="idTipoProyecto" optionLabel="descripcion" [filter]="true"
+              filterBy="descripcion" [showClear]="true" placeholder="{{busquedaTipoServicio || 'Selecciona un servicio'}}"
+              class="w-full md:w-56" (onChange)="seleccionarTipoServicio($event.value)"
+              (onFilter)="filtrarTipoServicios($event)"
+              appendTo="body"
+              [ngStyle]="{ width: '-webkit-fill-available', height: '41px', 'text-align': 'left', 'padding-top': '4px', 'padding-left': '6px' }">
+              <ng-template #selectedItem let-selectedOption>
+                <div class="flex items-center gap-2">
+                  <i class="pi pi-user"></i>
+                  <div>{{ selectedOption?.descripcion || 'Seleccione un servicio' }}</div>
+                </div>
+              </ng-template>
+
+              <ng-template let-item #item>
+                <div class="flex items-center gap-2">
+                  <i class="pi pi-user"></i>
+                  <div>{{ item.descripcion }}</div>
+                </div>
+              </ng-template>
+
+              <ng-template #footer>
+                <div class="p-3 text-center">
+                  <button class="btnAgregarProspectoContacto" (click)="agregarTipoServicio()"
+                    size="small"> + Agregar Servicio</button>
+                </div>
+              </ng-template>
+            </p-select>
             <div
               *ngIf="oportunidadForm.get('idTipoProyecto')?.invalid && oportunidadForm.get('idTipoProyecto')?.touched"
               class="text-danger position-absolute">
@@ -292,10 +315,33 @@
         <ng-template #servicioField>
           <div class="form-group mb-3">
             <label for="servicio" class="text-start w-100">Servicio:</label>
-            <p-dropdown class="form-control text-start" [options]="servicios" formControlName="idTipoProyecto"
-              optionLabel="descripcion" optionValue="idTipoProyecto" appendTo="body"
-              placeholder="Selecciona un servicio">
-            </p-dropdown>
+            <p-select [options]="tiposServiciosFiltrados" formControlName="idTipoProyecto" optionLabel="descripcion" [filter]="true"
+              filterBy="descripcion" [showClear]="true" placeholder="{{busquedaTipoServicio || 'Selecciona un servicio'}}"
+              class="w-full md:w-56" (onChange)="seleccionarTipoServicio($event.value)"
+              (onFilter)="filtrarTipoServicios($event)"
+               appendTo="body"
+              [ngStyle]="{ width: '-webkit-fill-available', height: '41px', 'text-align': 'left', 'padding-top': '4px', 'padding-left': '6px' }">
+              <ng-template #selectedItem let-selectedOption>
+                <div class="flex items-center gap-2">
+                  <i class="pi pi-user"></i>
+                  <div>{{ selectedOption?.descripcion || 'Seleccione un servicio' }}</div>
+                </div>
+              </ng-template>
+
+              <ng-template let-item #item>
+                <div class="flex items-center gap-2">
+                  <i class="pi pi-user"></i>
+                  <div>{{ item.descripcion }}</div>
+                </div>
+              </ng-template>
+
+              <ng-template #footer>
+                <div class="p-3 text-center">
+                  <button class="btnAgregarProspectoContacto" (click)="agregarTipoServicio()"
+                    size="small"> + Agregar Servicio</button>
+                </div>
+              </ng-template>
+            </p-select>
             <div
               *ngIf="oportunidadForm.get('idTipoProyecto')?.invalid && oportunidadForm.get('idTipoProyecto')?.touched"
               class="text-danger position-absolute">
@@ -306,12 +352,35 @@
         </ng-template>
         <div class="col-12 col-md-6">
           <div class="form-group mb-3">
-            <label for="entregas" class="text-start w-100">Entrega:</label>
-            <p-dropdown [options]="entregas" formControlName="idTipoEntrega" optionLabel="descripcion"
-              optionValue="idTipoEntrega" placeholder="Selecciona un tipo de entrega" appendTo="body"
-              [autoZIndex]="true" [baseZIndex]="10000"
-              [style]="{'width': '100%','height': '42px','border': '1px solid #ced4da','border-radius': '4px','padding': '5px 10px', textAlign: 'left'}">
-            </p-dropdown>
+            <label for="entregas" class="text-start w-100">Tipo de Entrega:</label>
+            <p-select [options]="tiposEntregasFiltrados" formControlName="idTipoEntrega" optionLabel="descripcion" [filter]="true"
+              filterBy="descripcion" [showClear]="true" placeholder="{{busquedaTipoEntrega || 'Selecciona un tipo de entrega'}}"
+              class="w-full md:w-56" (onChange)="seleccionarTipoEntrega($event.value)"
+              (onFilter)="filtrarTipoEntregas($event)"
+               appendTo="body"
+              [ngStyle]="{ width: '-webkit-fill-available', height: '41px', 'text-align': 'left', 'padding-top': '4px', 'padding-left': '6px' }">
+              <ng-template #selectedItem let-selectedOption>
+                <div class="flex items-center gap-2">
+                  <i class="pi pi-user"></i>
+                  <div>{{ selectedOption?.descripcion || 'Seleccione un tipo de entrega' }}</div>
+                </div>
+              </ng-template>
+
+              <ng-template let-item #item>
+                <div class="flex items-center gap-2">
+                  <i class="pi pi-user"></i>
+                  <div>{{ item.descripcion }}</div>
+                </div>
+              </ng-template>
+
+              <ng-template #footer>
+                <div class="p-3 text-center">
+                  <button class="btnAgregarProspectoContacto" (click)="agregarTipoEntrega()"
+                    size="small"> + Agregar Tipo Entrega</button>
+                </div>
+              </ng-template>
+            </p-select>
+
             <div *ngIf="oportunidadForm.get('idTipoEntrega')?.invalid && oportunidadForm.get('idTipoEntrega')?.touched"
               class="text-danger position-absolute">
               <ng-container *ngIf="oportunidadForm.get('idTipoEntrega')?.errors?.['required']">Debe seleccionar una
@@ -358,3 +427,15 @@
 (closeModal)="onModalCloseProspectos()" (result)="manejarResultadoProspectos($event)" [insertarProspecto]="insertarProspecto" 
 [prospectos]="prospectos" [prospecto]="prospectosSeleccionado">
 </app-modal-prospectos>
+
+<app-modal-tipo-servicios [(visible)]="modalVisibleTiposServicios" [title]="'Editar datos de '" 
+  (closeModal)="onModalCloseTiposServicios()" (result)="manejarResultadoTiposServicios($event)" 
+  [insertar]="insertarTipoServicio" [tipoServicio]="tipoServicioSeleccionado" 
+  [tiposServicios]="servicios">
+</app-modal-tipo-servicios>
+
+<app-modal-tipos-entrega [(visible)]="modalVisibleTiposEntregas" [title]="'Editar datos de '" 
+  (closeModal)="onModalCloseTiposEntregas()" (result)="manejarResultadoTiposEntregas($event)" 
+  [insertar]="insertarTipoEntrega" [tipoEntrega]="tipoEntregaSeleccionado" 
+  [tiposEntrega]="entregas">
+</app-modal-tipos-entrega>

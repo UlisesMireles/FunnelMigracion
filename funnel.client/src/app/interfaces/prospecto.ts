@@ -51,8 +51,8 @@ export interface ProspectosCmb{
     idProspecto?: number,
     nombre:string,
     ubicacionFisica:string,
-    estatus:number, 
-    idSector: number,
+    estatus?: number, 
+    idSector?: number,
     idEmpresa?: number,
     usuarioCreador?: number
   }

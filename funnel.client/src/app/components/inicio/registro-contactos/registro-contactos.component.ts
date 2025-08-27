@@ -117,7 +117,7 @@ export class RegistroContactosComponent {
         ],
         correoElectronico: ['', [Validators.required, Validators.email]],
         idProspecto: [this.contacto?.idProspecto ?? null],
-        estatus: [true],
+        estatus: [1],
         idEmpresa: [idEmpresa],
         usuarioCreador: [this.loginService.obtenerIdUsuario()],
         bandera: ['INSERT']
@@ -135,7 +135,7 @@ export class RegistroContactosComponent {
         nombre: ['', [Validators.required, Validators.maxLength(50)]],
         ubicacionFisica: ['', [Validators.required, Validators.maxLength(50), Validators.pattern('^[a-zA-ZÀ-ÿ\\s]+$')]],
         idSector: [null],
-        estatus: [true],
+        estatus: [1],
         idEmpresa: [idEmpresa],
         bandera: ['INSERT'],
         usuarioCreador: [this.loginService.obtenerIdUsuario()]
@@ -154,49 +154,6 @@ export class RegistroContactosComponent {
     if (this.insertarContacto) {
       this.inicializarFormulario();
     }
-  }
-
-  guardarContacto() {
-    if (this.contactoForm.invalid) {
-      this.contactoForm.markAllAsTouched();
-      this.mostrarToastError();
-      return;
-    
-    }
-    this.contactoForm.controls['estatus'].setValue(this.contactoForm.value.estatus ? 1 : 0);
-    this.contactoForm.controls['idEmpresa'].setValue(this.loginService.obtenerIdEmpresa());
-    this.contactoForm.controls['bandera'].setValue(this.insertarContacto ? 'INSERT' : 'UPDATE');
-
-    this.informacionContactos = {
-      ...this.informacionContactos,
-      bandera: this.contactoForm.get('bandera')?.value,
-      idContactoProspecto: this.contactoForm.get('idContactoProspecto')?.value,
-      nombre: this.contactoForm.get('nombre')?.value,
-      telefono: this.contactoForm.get('telefono')?.value,
-      correoElectronico: this.contactoForm.get('correoElectronico')?.value,
-      idProspecto: this.contactoForm.get('idProspecto')?.value,
-      estatus: this.contactoForm.get('estatus')?.value,
-      idEmpresa: this.contactoForm.get('idEmpresa')?.value,
-      usuarioCreador: this.contactoForm.get('usuarioCreador')?.value
-    }
-
-    this.contactosService.postContacto(this.informacionContactos).subscribe({
-     next: (result: baseOut) => {
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Éxito',
-        detail: 'El contacto se ha guardado correctamente.'
-      });
-      this.result.emit(result);
-    },
-      error: (error: baseOut) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Se ha producido un error.',
-          detail: error.errorMessage,
-        });
-      },
-    });
   }
 
   cargarProspectos() {
@@ -236,17 +193,13 @@ export class RegistroContactosComponent {
       this.mostrarToastError();
       return;
     }
-
     const contactoData = this.contactoForm.value;
     const prospectoData = this.prospectoForm.value;
-    this.prospectoForm.controls['idEmpresa'].setValue(this.loginService.obtenerIdEmpresa());
-    this.prospectoForm.controls['bandera'].setValue('INSERT');
-
-    console.log('Datos del prospecto:', prospectoData);
-    console.log('Datos del contacto:', contactoData);
-    this.prospectoService.postInsertProspecto(prospectoData).subscribe({
+    this.prospectoService.insertProspecto(prospectoData).subscribe({
       next: (prospectoResult) => {
+        console.log('ID del prospecto guardado:', prospectoResult.id);
         contactoData.idProspecto = prospectoResult.id;
+        console.log('Datos del contacto actualizados:', contactoData);
         this.contactosService.postContacto(contactoData).subscribe({
           next: (contactoResult) => {
             this.messageService.add({severity:'success', summary:'Éxito', detail:'Se guardaron contacto y prospecto'});

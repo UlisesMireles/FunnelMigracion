@@ -19,7 +19,7 @@ export interface RequestPContacto {
     bandera: string;
     idContactoProspecto?: number;
     nombre: string;
-    apellidos: string;
+    apellidos?: string;
     telefono: string;
     correoElectronico: string;
     estatus: number;

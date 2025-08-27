@@ -37,6 +37,10 @@ export class ProspectoService {
     return this.http.post<baseOut>(this.baseUrl+'api/Prospectos/GuardarProspecto', data);
   }
 
+  insertProspecto(data: RequestProspecto): Observable <baseOut>{
+    return this.http.post<baseOut>(this.baseUrl+'api/Prospectos/GuardarProspecto', data);
+  }
+
   guardarInputsAdicionalesData(data: InpoutAdicionalData[]): Observable <baseOut>{
     return this.http.post<baseOut>(this.baseUrl+'api/InputsAdicionales/GuardarInputsAdicionalesData', data);
   }

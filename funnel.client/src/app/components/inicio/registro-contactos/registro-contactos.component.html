@@ -1,20 +1,19 @@
 <div class="navbar">
-      <nav class="text-center m-auto">
-        <img width="150" [src]="baseUrl + '/assets/img/logotipo-glupoint.png'" alt="logo SFS" class="m-auto">
-      </nav>
+  <nav class="text-center m-auto">
+    <img width="150" [src]="baseUrl + '/assets/img/logotipo-glupoint.png'" alt="logo SFS" class="m-auto">
+  </nav>
 </div>
 <p-dialog [(visible)]="visible" [modal]="true" styleClass="custom-header-naranja" [closable]="false"
   [style]="{ width: '35rem', height: 'autorem' }" (onHide)="close()" (onShow)="onDialogShow()" class="bodyDialog">
   <ng-template pTemplate="header">
     <label class="margen">
-      {{ insertarContacto ? 'Nuevo Contacto' : title + ' ' + contactoForm.get('nombre')?.value }}
+      {{ insertarContacto ? 'Nuevo Prospecto' : title + ' ' + contactoForm.get('nombre')?.value }}
     </label>
-
   </ng-template>
   <br>
   <ng-template pTemplate="content">
     <!-- Formulario Prospecto -->
-          <form [formGroup]="prospectoForm">
+    <form [formGroup]="prospectoForm">
       <!-- Nombre -->
       <div class="row">
         <div class="col-sm-4 lbl">
@@ -63,11 +62,12 @@
       </div>
      
     </form>
-<hr>
     <!-- Formulario Contacto -->
+     <div class="header-naranja">
+        Nuevo Contacto
+      </div>
     <form [formGroup]="contactoForm">
-
-      <div class="row inptSpace">
+      <div class="row inptSpace" style="margin-top: 20px;">
         <div class="col-sm-4 lbl">
           <label for="prospecto">Prospecto:</label>
         </div>
@@ -89,7 +89,7 @@
           <label for="nombre">Nombre: </label>
         </div>
         <div class="col-sm-8 inptSpace">
-          <input pInputText class="inptSize" formControlName="nombre" />
+          <input pInputText class="inptSize" style="width: 240px;" formControlName="nombre" />
           <span *ngIf="contactoForm.get('nombre')?.invalid && contactoForm.get('nombre')?.touched"
             class="text-danger"><br>
             <ng-container *ngIf="contactoForm.get('nombre')?.errors?.['required']">El nombre es
@@ -107,7 +107,7 @@
           <label for="telefono">Teléfono: </label>
         </div>
         <div class="col-sm-8 inptSpace">
-          <input pInputText class="inptSize" formControlName="telefono" />
+          <input pInputText class="inptSize" style="width: 240px;" formControlName="telefono" />
           <span *ngIf="contactoForm.get('telefono')?.invalid && contactoForm.get('telefono')?.touched"
             class="text-danger"><br>
             <ng-container *ngIf="contactoForm.get('telefono')?.errors?.['required']">El teléfono es obligatorio.
@@ -127,7 +127,7 @@
           <label for="correoElectronico">Correo Electrónico: </label>
         </div>
         <div class="col-sm-8 inptSpace">
-          <input pInputText class="inptSize" formControlName="correoElectronico" />
+          <input pInputText class="inptSize" style="width: 240px;" formControlName="correoElectronico" />
           <span *ngIf="contactoForm.get('correoElectronico')?.invalid && contactoForm.get('correoElectronico')?.touched"
             class="text-danger"><br>
             <ng-container *ngIf="contactoForm.get('correoElectronico')?.errors?.['required']">El correo electrónico es

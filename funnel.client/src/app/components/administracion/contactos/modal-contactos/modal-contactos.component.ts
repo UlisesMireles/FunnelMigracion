@@ -63,8 +63,8 @@ export class ModalContactosComponent {
 
 
   ngOnInit() {
-    this.inicializarFormulario();
     this.incializarFormularioAdicional();
+    this.inicializarFormulario();
   }
 
   // ngOnChanges(changes: SimpleChanges) {

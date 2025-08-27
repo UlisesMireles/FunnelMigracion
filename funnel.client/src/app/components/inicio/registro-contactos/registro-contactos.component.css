@@ -1,0 +1,37 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    background: linear-gradient(to right, #103d66, #1a4e80, #2a6fa9, #3e90d1, #5ab1f2);
+    border-bottom: 1px solid #eaeaea;
+}
+/* Estilos base */
+.navbar {
+  background: linear-gradient(to right, #103d66, #1a4e80, #2a6fa9, #3e90d1, #5ab1f2);
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 65px;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+  .navbar nav {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+  }
+
+  .navbar img {
+    max-width: 100%;
+    height: auto;
+    margin-right: 20px;
+    justify-content: center;
+    align-items: center;
+  }

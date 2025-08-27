@@ -21,6 +21,7 @@ export class AppComponent implements OnInit {
   dobleAutenticacion: boolean = false;
   politicaPrivacidad: boolean = false;
   terminosCondiciones: boolean = false;
+  registroContactos: boolean = false;
   showSessionWarning = false;
   countdownMinutes = 2;
   countdownSeconds = 0;
@@ -29,7 +30,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.router.events.subscribe(() => {
-      if (this.router.url === '/' || this.router.url === '/recuperar-contrasena' || this.router.url === '/login' || this.router.url === '/two-factor' || this.router.url === '/politica-privacidad' || this.router.url === '/terminos-condiciones') {
+      if (this.router.url === '/' || this.router.url === '/recuperar-contrasena' || this.router.url === '/login' || this.router.url === '/two-factor' || this.router.url === '/politica-privacidad' || this.router.url === '/terminos-condiciones' || this.router.url === '/registro-contactos') {
         this.login = true;
       }
       else {
@@ -38,6 +39,7 @@ export class AppComponent implements OnInit {
       this.dobleAutenticacion = this.router.url === '/two-factor';
       this.politicaPrivacidad = this.router.url === '/politica-privacidad';
       this.terminosCondiciones = this.router.url === '/terminos-condiciones';
+      this.registroContactos = this.router.url === '/registro-contactos';
 
     });
     this.loginService.sessionWarning$.subscribe(() => {

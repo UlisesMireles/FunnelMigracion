@@ -56,6 +56,10 @@ export class RegistroContactosComponent {
   @Output() closeModal: EventEmitter<void> = new EventEmitter();
   @Output() result: EventEmitter<baseOut> = new EventEmitter();
   baseUrl: string = environment.baseURLAssets;
+
+  prospectoNombreIngresado: boolean = false;
+  mostrarProspectoFijo: boolean = false;
+
   constructor(private route: ActivatedRoute,private contactosService: ContactosService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder, private cdr: ChangeDetectorRef, private prospectoService: ProspectoService,
      private router: Router
   ) {
@@ -217,5 +221,10 @@ export class RegistroContactosComponent {
       error: (err) => this.messageService.add({severity:'error', summary:'Error', detail:err.errorMessage})
     });
   }
-
+  onProspectoNombreBlur() {
+    const nombreProspecto = this.prospectoForm.get('nombre')?.value;
+    this.prospectoNombreIngresado = !!nombreProspecto && nombreProspecto.trim() !== '';
+    
+    this.cdr.detectChanges();
+  }
 }

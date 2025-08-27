@@ -11,6 +11,7 @@ import {FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RequestProspecto } from '../../../interfaces/prospecto';
 import { Prospectos } from '../../../interfaces/prospecto';
 import { ProspectoService } from '../../../services/prospecto.service';
+
 @Component({
   selector: 'app-registro-contactos',
   standalone: false,
@@ -60,7 +61,7 @@ export class RegistroContactosComponent {
   }
 
   ngOnInit(): void {
-     this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe(params => {
       const token = params['token'];
       if (token) {
         try {
@@ -75,7 +76,6 @@ export class RegistroContactosComponent {
       } else {
         console.log('Falta token');
       }
-      
     });
     this.inicializarFormularioProspectos();
     this.inicializarFormulario();
@@ -83,7 +83,7 @@ export class RegistroContactosComponent {
 
   inicializarFormulario() {
     let idEmpresa = this.loginService.obtenerIdEmpresa();
-    let valoresIniciales: Record<string, any>;
+    
     if (this.insertarContacto) {
       this.idReferencia = 0;
       this.informacionContactos = {
@@ -100,21 +100,20 @@ export class RegistroContactosComponent {
         idProspecto: this.contacto?.idProspecto ?? 0,
         idEmpresa: 0
       };
+      
       this.contactoForm = this.fb.group({
         idContactoProspecto: [0],
         nombre: [this.contacto?.nombre ?? '', [
           Validators.required,
           Validators.maxLength(50),
           Validators.pattern('^[a-zA-ZÀ-ÿ\\s]+$')
-        ]
-        ],
+        ]],
         telefono: ['', [
           Validators.required,
           Validators.minLength(8),
           Validators.maxLength(20),
           Validators.pattern('^[0-9+\\-\\s()]+$')
-        ]
-        ],
+        ]],
         correoElectronico: ['', [Validators.required, Validators.email]],
         idProspecto: [this.contacto?.idProspecto ?? null],
         estatus: [true],
@@ -140,6 +139,51 @@ export class RegistroContactosComponent {
         bandera: ['INSERT'],
         usuarioCreador: [this.loginService.obtenerIdUsuario()]
       });
+    } else {
+      this.idReferencia = this.contacto.idContactoProspecto;
+      this.informacionContactos = this.contacto;
+      
+      this.contactoForm = this.fb.group({
+        idContactoProspecto: [this.contacto?.idContactoProspecto],
+        nombre: [this.contacto?.nombreCompleto, [
+          Validators.required,
+          Validators.maxLength(50),
+          Validators.pattern('^[a-zA-ZÀ-ÿ\\s]+$')
+        ]],
+        telefono: [this.contacto?.telefono || '', [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.maxLength(20),
+          Validators.pattern('^[0-9+\\-\\s()]+$')
+        ]],
+        correoElectronico: [this.contacto?.correoElectronico || '', [Validators.required, Validators.email]],
+        idProspecto: [this.contacto?.idProspecto, Validators.required],
+        estatus: [this.contacto?.estatus === 1],
+        idEmpresa: [idEmpresa],
+        bandera: ['UPDATE'],
+        usuarioCreador: [this.loginService.obtenerIdUsuario()]
+      });
+    }
+    
+    this.validaGuadar = false;
+    this.cdr.detectChanges();
+  }
+
+  limpiarCampos() {
+    // Solo limpiamos los campos si estamos insertando un nuevo contacto
+    if (this.insertarContacto) {
+      this.contactoForm.reset({
+        idContactoProspecto: 0,
+        idProspecto: null,
+        estatus: true,
+        idEmpresa: this.loginService.obtenerIdEmpresa(),
+        usuarioCreador: this.loginService.obtenerIdUsuario(),
+        bandera: 'INSERT'
+      });
+      
+      // Marcamos el formulario como no tocado para limpiar los mensajes de error
+      this.contactoForm.markAsUntouched();
+      this.contactoForm.markAsPristine();
     }
   }
 
@@ -161,8 +205,8 @@ export class RegistroContactosComponent {
       this.contactoForm.markAllAsTouched();
       this.mostrarToastError();
       return;
-    
     }
+    
     this.contactoForm.controls['estatus'].setValue(this.contactoForm.value.estatus ? 1 : 0);
     this.contactoForm.controls['idEmpresa'].setValue(this.loginService.obtenerIdEmpresa());
     this.contactoForm.controls['bandera'].setValue(this.insertarContacto ? 'INSERT' : 'UPDATE');
@@ -181,14 +225,18 @@ export class RegistroContactosComponent {
     }
 
     this.contactosService.postContacto(this.informacionContactos).subscribe({
-     next: (result: baseOut) => {
-      this.messageService.add({
+      next: (result: baseOut) => {
+        this.messageService.add({
         severity: 'success',
         summary: 'Éxito',
-        detail: 'El contacto se ha guardado correctamente.'
+        detail: 'Contacto insertado correctamente.'
       });
-      this.result.emit(result);
-    },
+        if (this.insertarContacto) {
+          this.limpiarCampos();
+        }
+        
+        this.result.emit(result);
+      },
       error: (error: baseOut) => {
         this.messageService.add({
           severity: 'error',
@@ -216,7 +264,6 @@ export class RegistroContactosComponent {
     });
   }
 
-
   mostrarToastError() {
     this.messageService.add({
       severity: 'error',
@@ -224,6 +271,7 @@ export class RegistroContactosComponent {
       detail: 'Es necesario llenar los campos indicados.',
     });
   }
+
   esAdministrador(): boolean {
     const rolAdmin = 1;
     return this.loginService.obtenerRolUsuario() === rolAdmin;
@@ -261,3 +309,4 @@ export class RegistroContactosComponent {
   }
 
 }
+

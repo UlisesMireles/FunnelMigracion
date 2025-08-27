@@ -53,7 +53,7 @@ export class VerticalBarComponent {
         };
 
         const salir = {
-          nombre: 'SALIR',
+          nombre: 'Salir',
           ruta: '/login',
           icono: 'bi bi-box-arrow-right',
           colorIcono: '#ffffff',

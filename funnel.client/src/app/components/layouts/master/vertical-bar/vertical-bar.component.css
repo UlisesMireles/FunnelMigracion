@@ -30,12 +30,17 @@
 }
 
 .menu-item {
-  padding: 12px 17px;
+  padding: 12px;
   display: flex;
   align-items: center;
   gap: 10px;
   cursor: pointer;
   position: relative;
+  font-size: 14px;
+}
+
+.menu-item i{
+  padding-left: 5px;
 }
 
 .menu-item:hover {

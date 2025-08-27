@@ -11,6 +11,8 @@ import {FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RequestProspecto } from '../../../interfaces/prospecto';
 import { Prospectos } from '../../../interfaces/prospecto';
 import { ProspectoService } from '../../../services/prospecto.service';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-registro-contactos',
   standalone: false,
@@ -54,7 +56,9 @@ export class RegistroContactosComponent {
   @Output() closeModal: EventEmitter<void> = new EventEmitter();
   @Output() result: EventEmitter<baseOut> = new EventEmitter();
   baseUrl: string = environment.baseURLAssets;
-  constructor(private route: ActivatedRoute,private contactosService: ContactosService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder, private cdr: ChangeDetectorRef, private prospectoService: ProspectoService) {
+  constructor(private route: ActivatedRoute,private contactosService: ContactosService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder, private cdr: ChangeDetectorRef, private prospectoService: ProspectoService,
+     private router: Router
+  ) {
     this.contactoForm = this.fb.group({});
     this.prospectoForm = this.fb.group({});
   }
@@ -197,14 +201,15 @@ export class RegistroContactosComponent {
     const prospectoData = this.prospectoForm.value;
     this.prospectoService.insertProspecto(prospectoData).subscribe({
       next: (prospectoResult) => {
-        console.log('ID del prospecto guardado:', prospectoResult.id);
         contactoData.idProspecto = prospectoResult.id;
-        console.log('Datos del contacto actualizados:', contactoData);
         this.contactosService.postContacto(contactoData).subscribe({
           next: (contactoResult) => {
             this.messageService.add({severity:'success', summary:'Éxito', detail:'Se guardaron contacto y prospecto'});
             this.result.emit(contactoResult);
             this.close();
+            setTimeout(() => {
+              this.router.navigate(['/login']);
+            }, 2000);
           },
           error: (err) => this.messageService.add({severity:'error', summary:'Error', detail:err.errorMessage})
         });

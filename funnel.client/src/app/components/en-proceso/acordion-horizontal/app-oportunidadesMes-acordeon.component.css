@@ -520,7 +520,7 @@ body {
   }
   
   ::ng-deep .cancel-icon .p-button-icon {
-    color: #302f2f !important;
+    color: #ff3b3b !important;
     font-size: 1.5rem;
     background: transparent;
     border-color: transparent;

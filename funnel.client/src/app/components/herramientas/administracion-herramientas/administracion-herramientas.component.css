@@ -415,3 +415,7 @@
     white-space: normal !important;
     padding: 8px 5px !important;   /* Espacio interno */
   }
+
+.color-items{
+  color: #ffba00;
+}

@@ -14,6 +14,8 @@ import { ModalOportunidadesService } from '../../../../services/modalOportunidad
 import { Subscription } from 'rxjs';
 import { Contacto } from '../../../../interfaces/contactos';
 import { Prospectos } from '../../../../interfaces/prospecto';
+import { TipoServicio } from '../../../../interfaces/tipoServicio';
+import { TipoEntrega } from '../../../../interfaces/tipo-entrega';
 
 @Component({
   selector: 'app-modal-oportunidades',
@@ -36,6 +38,7 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
   @Input() insertar: boolean = false;
   @Input() insertarContacto: boolean = false;
   @Input() insertarProspecto: boolean = false;
+  
   request!: RequestOportunidad;
 
   oportunidadForm!: FormGroup;
@@ -77,6 +80,24 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
   contactoEnEditar: Partial<Contacto> = {};
   prospectoEnEditar: Partial<Prospectos> = {};
 
+  //Variables para Modal Tipos de Servicios y Combo de Tipos de Servicios
+  @Input() insertarTipoServicio: boolean = false;
+  tiposServiciosFiltrados: any[] = [];
+  busquedaTipoServicio: string = '';
+  tipoServicioSeleccionado!: TipoServicio;
+  tipoServiciosSeleccionado: boolean = false;
+  private modalTiposServiciosSubscription!: Subscription;
+  modalVisibleTiposServicios: boolean = false;
+
+  //Variables para Modal Tipos de Servicios y Combo de Tipos de Servicios
+  @Input() insertarTipoEntrega: boolean = false;
+  tiposEntregasFiltrados: any[] = [];
+  busquedaTipoEntrega: string = '';
+  tipoEntregaSeleccionado!: TipoEntrega;
+  tipoEntregasSeleccionado: boolean = false;
+  private modalTiposEntregasSubscription!: Subscription;
+  modalVisibleTiposEntregas: boolean = false;
+
   inicializarFormulario() {
     this.modalSubscription = this.modalOportunidadesService.modalState$.subscribe((state) => {
       this.visible = state.showModal;
@@ -84,6 +105,8 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
     });
     let valoresIniciales: Record<string, any>;
     this.prospectosFiltrados = this.prospectos;
+    this.tiposServiciosFiltrados = this.servicios;
+    this.tiposEntregasFiltrados = this.entregas;
     if (this.insertar) {
       this.informacionOportunidad = { probabilidad: '0', idEstatus: 1 };
       this.oportunidadForm = this.fb.group({
@@ -134,6 +157,19 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
         idEstatus: [this.oportunidad.idEstatusOportunidad]
       });
 
+      let tipoServicioNuevo = this.servicios.find(c => c.idTipoProyecto === this.oportunidad.idTipoProyecto);
+      if (tipoServicioNuevo) {
+        this.oportunidadForm.get('idTipoProyecto')?.setValue(tipoServicioNuevo);
+      } else if (this.servicios.length === 1) {
+        this.oportunidadForm.get('idTipoProyecto')?.setValue(this.servicios[0]);
+      }
+      let tipoEntregaNuevo = this.entregas.find(c => c.idTipoEntrega === this.oportunidad.idTipoEntrega);
+      if (tipoEntregaNuevo) {
+        this.oportunidadForm.get('idTipoEntrega')?.setValue(tipoEntregaNuevo);
+      } else if (this.entregas.length === 1) {
+        this.oportunidadForm.get('idTipoEntrega')?.setValue(this.entregas[0]);
+      }
+
       this.oportunidadForm.get('idContactoProspecto')?.enable();
       valoresIniciales = this.oportunidadForm.getRawValue();
 
@@ -173,6 +209,22 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
       this.insertarProspecto = state.insertarProspecto;
       this.prospectos = state.prospectos;
       this.prospectosSeleccionado = state.prospectoSeleccionado;
+    });
+
+    //Suscripcion a servicio de modal de tipos de servicios, recibe datos para el despliegue del modal
+    this.modalTiposServiciosSubscription = this.modalOportunidadesService.modalTiposServiciosOportunidadesState$.subscribe((state) => {
+      this.modalVisibleTiposServicios = state.showModal;
+      this.insertarTipoServicio = state.insertarTipoServicio;
+      this.servicios = state.tiposServicios;
+      this.tipoServicioSeleccionado = state.tipoServicioSeleccionado;
+    });
+
+    //Suscripcion a servicio de modal de tipos de entregas, recibe datos para el despliegue del modal
+    this.modalTiposEntregasSubscription = this.modalOportunidadesService.modalTiposEntregasOportunidadesState$.subscribe((state) => {
+      this.modalVisibleTiposEntregas = state.showModal;
+      this.insertarTipoEntrega = state.insertarTipoEntrega;
+      this.entregas = state.tiposEntregas;
+      this.tipoEntregaSeleccionado = state.tipoEntregaSeleccionado;
     });
   }
 
@@ -221,6 +273,32 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
     }
   }
 
+  filtrarTipoServicios(event: any) {
+    const valorBusqueda = event.filter.toLowerCase();
+    this.busquedaTipoServicio = valorBusqueda;
+    this.tipoServiciosSeleccionado = false;
+    if (valorBusqueda.length > 0) {
+      this.tiposServiciosFiltrados = this.servicios.filter(servicio =>
+        servicio.descripcion.toLowerCase().includes(valorBusqueda)
+      );
+    } else {
+      this.tiposServiciosFiltrados = this.servicios;
+    }
+  }
+
+  filtrarTipoEntregas(event: any) {
+    const valorBusqueda = event.filter.toLowerCase();
+    this.busquedaTipoEntrega = valorBusqueda;
+    this.tipoEntregasSeleccionado = false;
+    if (valorBusqueda.length > 0) {
+      this.tiposEntregasFiltrados = this.entregas.filter(entrega =>
+        entrega.descripcion.toLowerCase().includes(valorBusqueda)
+      );
+    } else {
+      this.tiposEntregasFiltrados = this.entregas;
+    }
+  }
+
   seleccionarProspecto(prospecto: any) {
     if (prospecto != null) {
       this.oportunidadForm.get('idProspecto')?.setValue(prospecto);
@@ -251,6 +329,36 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
     //this.onChangeProspecto(); 
   }
 
+  seleccionarTipoServicio(tipoServicio: any) {
+    if (tipoServicio != null) {
+      this.oportunidadForm.get('idTipoProyecto')?.setValue(tipoServicio);
+      this.busquedaTipoServicio = tipoServicio.descripcion;
+    }
+    else {
+      this.busquedaTipoServicio = "";
+    }
+
+    this.tiposServiciosFiltrados = this.servicios;
+    this.tipoServiciosSeleccionado = true;
+    this.cdr.detectChanges();
+    this.onChangeProspecto();
+  }
+
+  seleccionarTipoEntrega(tipoEntrega: any) {
+    if (tipoEntrega != null) {
+      this.oportunidadForm.get('idTipoEntrega')?.setValue(tipoEntrega);
+      this.busquedaTipoEntrega = tipoEntrega.descripcion;
+    }
+    else {
+      this.busquedaTipoEntrega = "";
+    }
+
+    this.tiposEntregasFiltrados = this.servicios;
+    this.tipoEntregasSeleccionado = true;
+    this.cdr.detectChanges();
+    this.onChangeProspecto();
+  }
+
   agregarProspecto() {
     this.prospectoAgregado = {
       bandera: '',
@@ -271,6 +379,34 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
       porcEfectividad: 0,
     };
     this.modalOportunidadesService.openModalProspectoOportunidades(true, true, [], this.prospectoAgregado)
+
+  }
+
+  agregarTipoServicio() {
+    this.tipoServicioSeleccionado = {
+      idTipoProyecto: 0, 
+      descripcion: this.busquedaTipoServicio, 
+      abreviatura: '', 
+      estatus: 0, 
+      desEstatus : '', 
+      fechaModificacion: '', 
+      idEmpresa: 0
+    };
+    this.modalOportunidadesService.openModalTipoServicioOportunidades(true, true, [], this.tipoServicioSeleccionado)
+
+  }
+
+  agregarTipoEntrega() {
+    this.tipoEntregaSeleccionado = {
+      idTipoEntrega: 0,
+      descripcion: this.busquedaTipoEntrega,
+      estatus: 0,
+      abreviatura: '',
+      idEmpresa: 0,
+      fechaModificacion: '',
+      desEstatus: '',
+    };
+    this.modalOportunidadesService.openModalTipoEntregasOportunidades(true, true, [], this.tipoEntregaSeleccionado)
 
   }
 
@@ -359,11 +495,11 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
     if (this.insertar) {
       // Servicio 
       if (this.servicios.length > 0) {
-        this.oportunidadForm.get('idTipoProyecto')?.setValue(this.servicios[0].idTipoProyecto);
+        this.oportunidadForm.get('idTipoProyecto')?.setValue(this.servicios[0]);
       }
       // Entrega 
       if (this.entregas.length > 0) {
-        this.oportunidadForm.get('idTipoEntrega')?.setValue(this.entregas[0].idTipoEntrega);
+        this.oportunidadForm.get('idTipoEntrega')?.setValue(this.entregas[0]);
       }
       // Etapa 
       if (this.etapas.length > 0) {
@@ -412,6 +548,8 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
     }
     let idContacto = this.oportunidadForm.get('idContactoProspecto')?.value.idContactoProspecto;
     let idProspecto = this.oportunidadForm.get('idProspecto')?.value.id;
+    let idTipoServicio = this.oportunidadForm.get('idTipoProyecto')?.value.idTipoProyecto;
+    let idTipoEntrega = this.oportunidadForm.get('idTipoEntrega')?.value.idTipoEntrega;
 
     this.informacionOportunidad = {
       ...this.informacionOportunidad,
@@ -422,8 +560,8 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
       idContactoProspecto: idContacto,
       idStage: this.oportunidadForm.get('idStage')?.value,
       idEmpresa: this.oportunidadForm.get('idEmpresa')?.value,
-      idTipoProyecto: this.oportunidadForm.get('idTipoProyecto')?.value,
-      idTipoEntrega: this.oportunidadForm.get('idTipoEntrega')?.value,
+      idTipoProyecto: idTipoServicio,
+      idTipoEntrega: idTipoEntrega,
       descripcion: this.oportunidadForm.get('descripcion')?.value,
       monto: this.oportunidadForm.get('monto')?.value,
       fechaEstimadaCierre: this.oportunidadForm.get('fechaEstimadaCierreOriginal')?.value || new Date(),
@@ -433,7 +571,7 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
     };
     this.informacionOportunidad.probabilidad = this.informacionOportunidad.probabilidad?.replace('%', '').trim();
     this.informacionOportunidad.idUsuario = this.loginService.obtenerIdUsuario();
-
+    
     this.oportunidadService.postOportunidad(this.informacionOportunidad).subscribe({
       next: (result: baseOut) => {
         this.result.emit(result);
@@ -547,6 +685,14 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
     this.modalOportunidadesService.closeModalProspectoOportunidades();
   }
 
+  onModalCloseTiposServicios() {
+    this.modalOportunidadesService.closeModalTipoServicioOportunidades();
+  }
+
+  onModalCloseTiposEntregas() {
+    this.modalOportunidadesService.closeModalTipoEntregasOportunidades();
+  }
+
   manejarResultadoContactos(result: baseOut) {
     if (result.result) {
       this.messageService.add({
@@ -627,6 +773,90 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
 
         this.cdr.detectChanges();
       }, 500);
+    }
+
+    else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Se ha producido un error.',
+        detail: result.errorMessage,
+      });
+    }
+  }
+
+  manejarResultadoTiposServicios(result: baseOut) {
+    if (result.result) {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'La operación se realizó con éxito.',
+        detail: result.errorMessage,
+      });
+      this.modalOportunidadesService.closeModalTipoServicioOportunidades(result);     
+
+      this.catalogoService.cargarServicios(this.loginService.obtenerIdEmpresa());
+
+      setTimeout(() => {
+        this.servicios = this.catalogoService.obtenerServicios();
+
+
+        const tipoServicioNuevo = this.servicios.find(c => c.idTipoProyecto === result.id);
+        if (tipoServicioNuevo) {
+          this.oportunidadForm.get('idTipoProyecto')?.setValue(tipoServicioNuevo);
+        } else if (this.servicios.length === 1) {
+          this.oportunidadForm.get('idTipoProyecto')?.setValue(this.servicios[0]);
+        }
+
+        this.busquedaTipoServicio = tipoServicioNuevo?.descripcion;
+        this.tiposServiciosFiltrados = this.servicios;
+        this.tipoServiciosSeleccionado = true
+        this.onChangeProspecto();
+
+        this.cdr.detectChanges();
+      }, 500);
+
+      
+    }
+
+    else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Se ha producido un error.',
+        detail: result.errorMessage,
+      });
+    }
+  }
+
+  manejarResultadoTiposEntregas(result: baseOut) {
+    if (result.result) {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'La operación se realizó con éxito.',
+        detail: result.errorMessage,
+      });
+      this.modalOportunidadesService.closeModalTipoEntregasOportunidades(result);     
+
+      this.catalogoService.cargarEntregas(this.loginService.obtenerIdEmpresa());
+
+      setTimeout(() => {
+        this.entregas = this.catalogoService.obtenerEntregas();
+
+
+        const tipoEntregaNuevo = this.entregas.find(c => c.idTipoEntrega === result.id);
+        if (tipoEntregaNuevo) {
+          this.oportunidadForm.get('idTipoEntrega')?.setValue(tipoEntregaNuevo);
+        } else if (this.entregas.length === 1) {
+          this.oportunidadForm.get('idTipoEntrega')?.setValue(this.entregas[0]);
+        }
+
+        this.busquedaTipoEntrega = tipoEntregaNuevo?.descripcion;
+        this.tiposEntregasFiltrados = this.entregas;
+        this.tipoEntregasSeleccionado = true
+        this.onChangeProspecto();
+
+        this.cdr.detectChanges();
+      }, 500);
+
+      
     }
 
     else {

@@ -133,9 +133,7 @@ export class RegistroContactosComponent {
         estatus: [1],
         idEmpresa: [this.idEmpresaQR],
         usuarioCreador: [this.idUsuarioQR],
-        bandera: ['INSERT'],
-        recaptcha: ['', Validators.required]
-      });
+        bandera: ['INSERT']      });
       this.validaGuadar = false;
       this.cdr.detectChanges();
 
@@ -152,9 +150,7 @@ export class RegistroContactosComponent {
         estatus: [1],
         idEmpresa: [this.idEmpresaQR],
         bandera: ['INSERT'],
-        usuarioCreador: [this.idUsuarioQR],
-        //recaptcha: ['', Validators.required]
-      });
+        usuarioCreador: [this.idUsuarioQR]      });
     }
   }
 

@@ -49,6 +49,7 @@
 
         </div>
       </div>
+
       <!--<div class="row">
         <div class="col-sm-4 lbl">
           <label for="sector">Sector: </label>
@@ -141,6 +142,22 @@
           <span style="padding-left: 6px !important;">Activo</span>
         </div>
       </div>
+
+<div class="row inptSpace" style="margin-top: 15px;">
+  <div class="col-sm-12">
+    <ngx-recaptcha2 #captchaElem [siteKey]="siteKey" (reset)="handleReset()"(expire)="handleExpire()"
+      (load)="handleLoad()" (success)="handleSuccess($event)" [useGlobalDomain]="false"
+      [ngClass]="{'is-invalid': captchaForm.get('recaptcha')?.invalid && captchaForm.get('recaptcha')?.touched}">
+    </ngx-recaptcha2>
+
+    <span *ngIf="captchaForm.get('recaptcha')?.invalid && captchaForm.get('recaptcha')?.touched" class="text-danger">
+      <ng-container *ngIf="captchaForm.get('recaptcha')?.errors?.['required']">
+        Verificación de captcha obligatoria.
+      </ng-container>
+    </span>
+  </div>
+</div>
+
     </form>
   </ng-template>
 

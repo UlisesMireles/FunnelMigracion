@@ -28,25 +28,29 @@ export class AppComponent implements OnInit {
   private countdownInterval: any;
   constructor(private http: HttpClient, private router: Router, private readonly loginService: LoginService) { }
 
-  ngOnInit() {
-    this.router.events.subscribe(() => {
-      if (this.router.url === '/' || this.router.url === '/recuperar-contrasena' || this.router.url === '/login' || this.router.url === '/two-factor' || this.router.url === '/politica-privacidad' || this.router.url === '/terminos-condiciones' || this.router.url === '/registro-contactos') {
-        this.login = true;
-      }
-      else {
-        this.login = false;
-      }
-      this.dobleAutenticacion = this.router.url === '/two-factor';
-      this.politicaPrivacidad = this.router.url === '/politica-privacidad';
-      this.terminosCondiciones = this.router.url === '/terminos-condiciones';
-      this.registroContactos = this.router.url === '/registro-contactos';
-
-    });
-    this.loginService.sessionWarning$.subscribe(() => {
-      this.showSessionWarning = true;
-      this.startCountdown();
-    });
-  }
+ngOnInit() {
+  this.router.events.subscribe(() => {
+    const baseUrl = this.router.url.split('?')[0];
+    
+    if (baseUrl === '/' || baseUrl === '/recuperar-contrasena' || baseUrl === '/login' ||   baseUrl === '/two-factor' || baseUrl === '/politica-privacidad' || 
+        baseUrl === '/terminos-condiciones' || baseUrl === '/registro-contactos') {
+      this.login = true;
+    }
+    else {
+      this.login = false;
+    }
+    
+    this.dobleAutenticacion = baseUrl === '/two-factor';
+    this.politicaPrivacidad = baseUrl === '/politica-privacidad';
+    this.terminosCondiciones = baseUrl === '/terminos-condiciones';
+    this.registroContactos = baseUrl === '/registro-contactos';
+  });
+  
+  this.loginService.sessionWarning$.subscribe(() => {
+    this.showSessionWarning = true;
+    this.startCountdown();
+  });
+}
   startCountdown() {
     this.countdownMinutes = 2;
     this.countdownSeconds = 0;

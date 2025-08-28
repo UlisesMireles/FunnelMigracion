@@ -59,12 +59,20 @@ export class RegistroContactosComponent {
 
   prospectoNombreIngresado: boolean = false;
   mostrarProspectoFijo: boolean = false;
+  idUsuarioQR: number = 0;
+  idEmpresaQR: number = 0;
+  siteKey: string = '6LdlBicqAAAAABMCqyAjZOTSKrbdshNyKxwRiGL9';
+  captchaForm: FormGroup;
 
   constructor(private route: ActivatedRoute,private contactosService: ContactosService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder, private cdr: ChangeDetectorRef, private prospectoService: ProspectoService,
      private router: Router
   ) {
     this.contactoForm = this.fb.group({});
     this.prospectoForm = this.fb.group({});
+    this.captchaForm = this.fb.group({
+    recaptcha: ['', Validators.required]
+});
+
   }
 
   ngOnInit(): void {
@@ -73,10 +81,9 @@ export class RegistroContactosComponent {
       if (token) {
         try {
           const decoded = JSON.parse(atob(token));
-          const idUsuario = decoded.idUsuario;
-          const idEmpresa = decoded.idEmpresa;
-          console.log('ID Usuario:', idUsuario);
-          console.log('ID Empresa:', idEmpresa);
+          this.idUsuarioQR = decoded.idUsuario;
+          this.idEmpresaQR = decoded.idEmpresa;
+
         } catch (e) {
           console.error('Token inválido');
         }
@@ -90,8 +97,6 @@ export class RegistroContactosComponent {
   }
 
   inicializarFormulario() {
-    let idEmpresa = this.loginService.obtenerIdEmpresa();
-    let valoresIniciales: Record<string, any>;
     if (this.insertarContacto) {
       this.idReferencia = 0;
       this.informacionContactos = {
@@ -126,17 +131,18 @@ export class RegistroContactosComponent {
         correoElectronico: ['', [Validators.required, Validators.email]],
         idProspecto: [this.contacto?.idProspecto ?? null],
         estatus: [1],
-        idEmpresa: [idEmpresa],
-        usuarioCreador: [this.loginService.obtenerIdUsuario()],
-        bandera: ['INSERT']
+        idEmpresa: [this.idEmpresaQR],
+        usuarioCreador: [this.idUsuarioQR],
+        bandera: ['INSERT'],
+        recaptcha: ['', Validators.required]
       });
       this.validaGuadar = false;
       this.cdr.detectChanges();
+
     }
   }
 
   inicializarFormularioProspectos() {
-    let idEmpresa = this.loginService.obtenerIdEmpresa();
     if (this.insertarContacto) { 
       this.prospectoForm = this.fb.group({
         idProspecto: [0],
@@ -144,9 +150,10 @@ export class RegistroContactosComponent {
         ubicacionFisica: ['', [Validators.required, Validators.maxLength(50), Validators.pattern('^[a-zA-ZÀ-ÿ\\s]+$')]],
         idSector: [null],
         estatus: [1],
-        idEmpresa: [idEmpresa],
+        idEmpresa: [this.idEmpresaQR],
         bandera: ['INSERT'],
-        usuarioCreador: [this.loginService.obtenerIdUsuario()]
+        usuarioCreador: [this.idUsuarioQR],
+        //recaptcha: ['', Validators.required]
       });
     }
   }
@@ -195,9 +202,10 @@ export class RegistroContactosComponent {
   }
 
   guardarAmbos() {
-    if (this.contactoForm.invalid || this.prospectoForm.invalid) {
+    if (this.contactoForm.invalid || this.prospectoForm.invalid || this.captchaForm.invalid) {
       this.contactoForm.markAllAsTouched();
       this.prospectoForm.markAllAsTouched();
+      this.captchaForm.markAllAsTouched();
       this.mostrarToastError();
       return;
     }
@@ -226,5 +234,20 @@ export class RegistroContactosComponent {
     this.prospectoNombreIngresado = !!nombreProspecto && nombreProspecto.trim() !== '';
     
     this.cdr.detectChanges();
+  }
+ handleReset() {
+    console.log('reCAPTCHA reset');
+  }
+
+  handleExpire() {
+    console.log('reCAPTCHA expired');
+  }
+
+  handleLoad() {
+    console.log('reCAPTCHA loaded');
+  }
+
+  handleSuccess(event: any) {
+    console.log('reCAPTCHA success:', event);
   }
 }

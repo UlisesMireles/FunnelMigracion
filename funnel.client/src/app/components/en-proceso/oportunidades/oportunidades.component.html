@@ -17,19 +17,19 @@
         <li class="nav-item tab-item">
           <a class="nav-link" data-bs-toggle="tab" href="#porMes" (click)="camTitulo(1)" pTooltip="Candelarización"
             tooltipPosition="top">
-            <i class="bi bi-calendar color-tab-3"></i>
+            <i class="bi bi-calendar color-tab-2"></i>
           </a>
         </li>
         <li class="nav-item tab-item">
           <a class="nav-link " data-bs-toggle="tab" href="#lista" (click)="camTitulo(0)" pTooltip="Lista"
             tooltipPosition="top">
-            <i class="bi bi-list color-tab-1"></i>
+            <i class="bi bi-list color-tab-2"></i>
           </a>
         </li>
         <li class="nav-item tab-item">
           <a class="nav-link" data-bs-toggle="tab" href="#estadisticas" (click)="camTitulo(3)" pTooltip="Estadisticas"
             tooltipPosition="top">
-            <i class="bi bi-bar-chart color-tab-4"></i>
+            <i class="bi bi-bar-chart color-tab-2"></i>
           </a>
         </li>
       </ul>
@@ -417,7 +417,7 @@
                 <th scope="col" class="text-start">Monto</th>
               </tr>
               <tr>
-                <th scope="col">
+                <th scope="col" style="width: 25%;">
                   <p-columnFilter field="prospecto" matchMode="contains" [showMenu]="false">
                     <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                       <input type="text" pInputText [ngModel]="value" (ngModelChange)="filter($event)" 
@@ -425,7 +425,7 @@
                     </ng-template>
                   </p-columnFilter>
                 </th>
-                <th scope="col">
+                <th scope="col" style="width: 40%;">
                   <p-columnFilter field="oportunidad" matchMode="contains" [showMenu]="false">
                     <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                       <input type="text" pInputText [ngModel]="value" (ngModelChange)="filter($event)" 
@@ -433,23 +433,23 @@
                     </ng-template>
                   </p-columnFilter>
                 </th>
-                <th scope="col">
+                <th scope="col" class="text-center" style="width: 10%;">
                   <p-columnFilter field="inicialesEjecutivo" matchMode="contains" [showMenu]="false">
                     <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                       <input type="text" pInputText [ngModel]="value" (ngModelChange)="filter($event)" 
-                             class="p-inputtext" style="width: 95%">
+                             class="p-inputtext" style="width: 80px">
                     </ng-template>
                   </p-columnFilter>
                 </th>
-                <th scope="col">
+                <th scope="col" class="text-center" style="width: 10%;">
                   <p-columnFilter field="fecha" matchMode="contains" [showMenu]="false">
                     <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                       <input type="text" pInputText [ngModel]="value" (ngModelChange)="filter($event)" 
-                             class="p-inputtext" style="width: 95%">
+                             class="p-inputtext" style="width: 80px">
                     </ng-template>
                   </p-columnFilter>
                 </th>
-               <th scope="col"></th>
+               <th scope="col" class="text-right" style="width: 15%;"></th>
               </tr>
             </ng-template>
 
@@ -457,13 +457,13 @@
               <tr>
                 <td>{{ oportunidad.prospecto }}</td>
                 <td>{{ oportunidad.oportunidad }}</td>
-                <td>
+                <td class="text-center">
                   <span pTooltip="{{oportunidad.ejecutivo}}" tooltipPosition="top">
                     {{ oportunidad.inicialesEjecutivo }}
                   </span>
                 </td>
-                <td>{{ oportunidad.fecha | date:'dd/MM/yyyy' }}</td>
-                <td>${{ oportunidad.monto | totalCurrency:'numeric':mostrarDecimales}}</td>
+                <td class="text-center">{{ oportunidad.fecha | date:'dd/MM/yyyy' }}</td>
+                <td class="text-end">${{ oportunidad.monto | totalCurrency:'numeric':mostrarDecimales}}</td>
               </tr>
             </ng-template>
              <ng-template pTemplate="footer" let-columns #footer>
@@ -472,7 +472,7 @@
                   <td></td>
                   <td></td>
                   <td></td>
-                  <td><strong>{{ getSumaMontos(dtDetalle.filteredValue || oportunidadesModalDetalle) | totalCurrency:'currency':mostrarDecimales }}</strong></td>
+                  <td class="text-end"><strong>{{ getSumaMontos(dtDetalle.filteredValue || oportunidadesModalDetalle) | totalCurrency:'currency':mostrarDecimales }}</strong></td>
                 </tr>
               </ng-template>
             <ng-template pTemplate="emptymessage">

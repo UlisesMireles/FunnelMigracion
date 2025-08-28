@@ -1,9 +1,9 @@
 export enum EnumMenus {
-    DASHBOARD = 'DASHBOARD',
-    EN_PROCESO = 'EN PROCESO',
-    TERMINADAS = 'TERMINADAS',
-    ADMINISTRACION  = 'ADMINISTRACIÓN',
-    USUARIOS = 'USUARIOS',
-    HERRAMIENTAS = 'HERRAMIENTAS',
-    CONFIGURACION = 'CONFIGURACIÓN',
+    DASHBOARD = 'Métricas',
+    EN_PROCESO = 'En Proceso',
+    TERMINADAS = 'Terminadas',
+    ADMINISTRACION  = 'Prospectos & Contactos',
+    USUARIOS = 'Usuarios',
+    HERRAMIENTAS = 'Herramientas',
+    CONFIGURACION = 'Configuración'
 }

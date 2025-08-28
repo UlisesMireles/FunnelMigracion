@@ -22,8 +22,7 @@ export class ModalUsuariosComponent {
 
   
   constructor(private UsuariosService: UsuariosService, private messageService: MessageService, private loginService: LoginService, 
-  private permisosService: PermisosService,private fb: FormBuilder, private readonly imagenService: ImagenActualizadaService, 
-  private cdr: ChangeDetectorRef) { }
+    private readonly permisosService: PermisosService, private fb: FormBuilder, private readonly imagenService: ImagenActualizadaService, private cdr: ChangeDetectorRef) { }
     @Input() usuario!: Usuarios;
     @Input() usuarios: Usuarios[] = [];
     @Input() title: string = 'Modal';
@@ -575,7 +574,6 @@ mostrarImagenDefault(event: Event) {
   this.showConfirmPassword = !this.showConfirmPassword;
 }  
 
-  
   permisos: Permiso[] = [];
   agrupadosPermisos: any[] = [];
   consultarPermisos() {

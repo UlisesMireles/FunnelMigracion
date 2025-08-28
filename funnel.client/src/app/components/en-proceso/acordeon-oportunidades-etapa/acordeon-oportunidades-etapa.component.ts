@@ -1,5 +1,5 @@
 import { transferArrayItem } from '@angular/cdk/drag-drop';
-import { ChangeDetectorRef, Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Output, ViewEncapsulation } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { Oportunidad, OportunidadesPorEtapa, Tarjeta, RequestActualizarEtapa } from '../../../interfaces/oportunidades';
 import { OportunidadesService } from '../../../services/oportunidades.service';
@@ -15,7 +15,8 @@ import { Subscription } from 'rxjs';
   selector: 'app-acordeon-oportunidades-etapa',
   standalone: false,
   templateUrl: './acordeon-oportunidades-etapa.component.html',
-  styleUrl: './acordeon-oportunidades-etapa.component.css'
+  styleUrl: './acordeon-oportunidades-etapa.component.css',
+  encapsulation: ViewEncapsulation.None
 })
 export class AcordeonOportunidadesEtapaComponent {
 
@@ -73,7 +74,6 @@ export class AcordeonOportunidadesEtapaComponent {
 
     this.oportunidadService.getOportunidadesPorEtapa(idEmpresa, idUsuario, idProceso).subscribe({
       next: (result: OportunidadesPorEtapa[]) => {
-
         this.etapas = result.map(etapa => ({
           ...etapa,
           expandido: etapa.tarjetas.length > 0, // Expandir todas las etapas por defecto

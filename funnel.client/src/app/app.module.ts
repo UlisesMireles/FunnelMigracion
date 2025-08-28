@@ -10,7 +10,6 @@ import { TabViewModule } from 'primeng/tabview';
 import { TooltipModule } from 'primeng/tooltip';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
 import { MatInputModule } from '@angular/material/input';
 import Aura from '@primeng/themes/aura';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -39,7 +38,8 @@ import { CardModule } from 'primeng/card';
 import { FieldsetModule } from 'primeng/fieldset';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import {MatExpansionModule} from '@angular/material/expansion';
-
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
 
 //Login
 
@@ -158,6 +158,8 @@ import { ProcesosComponent } from './components/catalogos/procesos/procesos.comp
 import { AsistenteProspeccionComponent } from './components/asistentes/asistente-prospeccion/asistente-prospeccion.component';
 import { ChatBotProspeccionComponent } from './components/asistentes/asistente-prospeccion/chatBot/chatBotProspeccion.component';
 import { FaqFlotantesComponent } from './components/asistentes/asistente-prospeccion/faq-flotantes/faq-flotantes.component';
+import { EliminarConversacionComponent } from './components/asistentes/asistente-prospeccion/eliminar-conversacion/eliminar-conversacion.component';
+import { EvaluarBotComponent } from './components/asistentes/asistente-prospeccion/evaluar-bot/evaluar-bot.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -253,7 +255,9 @@ registerLocaleData(localeEs, 'es-MX');
     AsistenteProspeccionComponent,
     ChatBotProspeccionComponent,
     ProcesosComponent,
-    FaqFlotantesComponent
+    FaqFlotantesComponent,
+    EliminarConversacionComponent,
+    EvaluarBotComponent
   ],
   imports: [
     BrowserModule,
@@ -304,7 +308,9 @@ registerLocaleData(localeEs, 'es-MX');
     FieldsetModule,
     ToggleSwitchModule,
     MatExpansionModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    MatDialogModule,
+    MatButtonModule
 ],
   providers: [
     { provide: LOCALE_ID, useValue: 'es-MX' },

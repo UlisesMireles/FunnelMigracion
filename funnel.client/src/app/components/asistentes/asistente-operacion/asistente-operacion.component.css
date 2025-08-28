@@ -67,8 +67,18 @@
 
 .app-chat-close-icon {
     cursor: pointer;
-    font-size: 20px !important;
-    margin-top: 1px;
+    font-size: 20px;
+    display: flex;               
+    align-items: center;         
+    justify-content: center;     
+    height: 30px;                
+    width: 30px;
+    border-radius: 50%;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.app-chat-close-icon:hover {
+    background-color: rgba(255, 255, 255, 0.8);
 }
 
 .app-chat-reset-icon {
@@ -76,7 +86,18 @@
     font-size: 20px !important;
     margin-top: 1px;
     margin-right: 10px;
+    display: flex;
+    align-items: center;  
+    justify-content: center;  
+    width: 32px;   
+    height: 32px;
+    border-radius: 50%;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
+.app-chat-reset-icon:hover {
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
 .bi-list::before {
     content: "\f479";
     color: #28a745;

@@ -155,6 +155,7 @@ export class UsuariosComponent {
       idEmpresa: 0,
       idTipoUsuario: 0,
       descripcion: '',
+      nombreCompleto: '',
       apellidoPaterno: '',
       apellidoMaterno: '',
       fechaRegistro: '',

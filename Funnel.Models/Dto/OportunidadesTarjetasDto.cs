@@ -53,5 +53,6 @@ namespace Funnel.Models.Dto
         public string? Stage { get; set; }
         public string? Nombre { get; set; }
         public string? TooltipStage { get; set; }
+        public decimal? ScoreEstancamiento { get; set; }
     }
 }

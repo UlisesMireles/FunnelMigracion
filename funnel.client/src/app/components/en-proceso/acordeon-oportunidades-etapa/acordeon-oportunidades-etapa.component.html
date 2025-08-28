@@ -50,6 +50,13 @@
               <div class="fila-monto">
                 <label class="monto-normalizado">{{ tarjeta.monto | totalCurrency:'currency':mostrarDecimales }}</label>
               </div>
+              <p-button type="button" text 
+                pTooltip="Estancamiento" tooltipPosition="top" styleClass="blue-icon"
+                        *ngIf="(tarjeta?.scoreEstancamiento || 0) > 95">
+                <ng-template pTemplate="icon">
+                  <span class="fs-5 estancamiento">🚩</span>
+                </ng-template>
+              </p-button>
               <p-button type="button" icon="bi bi-file-earmark-text fs-3" text (click)="seguimiento(tarjeta)"
                 pTooltip="Seguimiento" tooltipPosition="top" styleClass="blue-icon">
               </p-button>
@@ -57,7 +64,7 @@
                 pTooltip="Documentos" tooltipPosition="top" [styleClass]="tarjeta.totalArchivos > 0 ? 'blue-icon-documentos': 'cancel-icon'" 
                 (onKeyDown)="documento(tarjeta)">
               </p-button>
-              <p-button styleClass="coloreditar-icon ms-2" (click)="actualiza(tarjeta)" pTooltip="Editar registro"
+              <p-button styleClass="coloreditar-icon ms-2" (click)="actualiza(tarjeta)" pTooltip="Editar"
                 tooltipPosition="top">
                 <span class="custom-pencil">✏️</span>
               </p-button>

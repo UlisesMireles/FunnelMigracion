@@ -115,6 +115,7 @@ export interface Tarjeta {
   nombre?: string;
   tooltipStage?: string;
   totalArchivos: number;
+  scoreEstancamiento?: number;
 }
 
 export  interface OportunidadesPorMes {

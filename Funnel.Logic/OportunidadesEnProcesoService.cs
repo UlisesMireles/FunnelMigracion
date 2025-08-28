@@ -82,6 +82,12 @@ namespace Funnel.Logic
         {
             return await _oportunidadesData.GuardarOportunidad(request);
         }
+
+        public async Task<List<EstancamientoEstadisticaOportunidadDto>> ConsultarEstancamientoEstadisticaOportunidades()
+        {
+            return await _oportunidadesData.ConsultarEstancamientoEstadisticaOportunidades();
+        }
+
         public async Task<List<OportunidadesTarjetasDto>> ConsultarOportunidadesPorMes(int IdUsuario, int IdEmpresa, int IdProceso)
         {
             CultureInfo cultura = new CultureInfo("es-ES");
@@ -151,7 +157,8 @@ namespace Funnel.Logic
                         Stage = y.Stage,
                         Nombre = y.Nombre ?? "Sin nombre",
                         TooltipStage = y.TooltipStage,
-                        TotalArchivos = y.TotalArchivos
+                        TotalArchivos = y.TotalArchivos,
+                        ScoreEstancamiento = estancamientos.FirstOrDefault(e => e.IdOportunidad == y.IdOportunidad)?.ScoreEstancamiento
 
 
                     }).ToList()
@@ -206,7 +213,8 @@ namespace Funnel.Logic
                         TotalComentarios = y.TotalComentarios,
                         TooltipStage = y.TooltipStage,
                         Stage = y.Stage,
-                        TotalArchivos = y.TotalArchivos
+                        TotalArchivos = y.TotalArchivos,
+                        ScoreEstancamiento = estancamientos.FirstOrDefault(e => e.IdOportunidad == y.IdOportunidad)?.ScoreEstancamiento
 
                     }).ToList()
                 });

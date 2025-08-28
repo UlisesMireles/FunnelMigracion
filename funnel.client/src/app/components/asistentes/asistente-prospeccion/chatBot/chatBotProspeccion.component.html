@@ -13,17 +13,71 @@
         <ng-container *ngSwitchCase="'asistente'">
           <div class="vstack">
             <label class="labelAsistente ps-2">Prospector Comercial</label>
-           <div class="chat-bubble ai-bubble formatoMensajes vstackbot" [innerHTML]="chat.mensaje"></div>
-            <!-- <button *ngIf="chat.mostrarBotonDataset" class="btn btn-primary mt-2" (click)="enviarDataset()">
-              Enviar Dataset
-            </button> -->
-             <button *ngIf="chat.rol === 'asistente' && chat.mostrarBotonCopiar" class="btn btn-primary mt-2"
-              class="btn-copiar" (click)="copiarRespuesta(chat.mensaje)"
-              matTooltip="Copiar mensaje"> <mat-icon>content_copy</mat-icon>
-            </button>
-          </div>
-        </ng-container>
+            <!-- Si es encuesta -->
+            <ng-container *ngIf="chat.esEncuesta; else mensajeNormalCopiar">
+              <div class="chat-bubble ai-bubble formatoMensajes vstackbot">
+                <div class="pregunta-texto">{{ chat.mensaje }}</div>
+              </div>
+              <div class="opciones-encuesta-container" [ngSwitch]="chat.tipoEncuesta">
+    
+             <!-- MULTIPLE -->
+              <div *ngSwitchCase="'multiple'" class="opciones-encuesta">
+                <ng-container *ngFor="let opcion of chat.preguntaEncuesta?.respuestas">
+                  <div class="opcion-con-comentarios">
+                    <button 
+                      class="btn btn-outline-primary m-1"
+                      (click)="manejarRespuestaEncuesta(opcion, chat.preguntaEncuesta!.idPregunta)"
+                      [disabled]="opcion.toLowerCase().includes('especificar en comentarios')">
+                      {{ opcion }}
+                    </button>
 
+                <div *ngIf="opcion.toLowerCase().includes('especificar en comentarios')" class="mt-2 position-relative">
+                   <input type="text" class="form-control pr-5" placeholder="Escribe tu respuesta..."
+                    [(ngModel)]="respuestaComentarios"
+                    (keydown.enter)="manejarRespuestaEncuesta(respuestaComentarios, chat.preguntaEncuesta!.idPregunta)">
+                    <button class="btn btn-primary py-1 position-absolute"  style="left: 240px; top: 34%; transform: translateY(-50%);"
+                    (click)="manejarRespuestaEncuesta(respuestaComentarios, chat.preguntaEncuesta!.idPregunta)">
+                    Enviar
+                    </button>
+                  </div>
+                  </div>
+                </ng-container>
+              </div>
+
+              <!-- OPCIONES (escala 1 a 5) -->
+              <div *ngSwitchCase="'opciones'" class="opciones-encuesta-escala">
+                <button 
+                  *ngFor="let valor of [1,2,3,4,5]" 
+                  class="btn btn-outline-success m-1"
+                  (click)="manejarRespuestaEncuesta(valor.toString(), chat.preguntaEncuesta!.idPregunta)">
+                  {{ valor }}
+                </button>
+              </div>
+
+              <!-- ABIERTA -->
+              <div *ngSwitchCase="'abierta'" class="opciones-encuesta">
+                <div *ngIf="!chat.respuestaEnviada">
+                <input type="text" 
+                      class="form-control mb-2 input-abierta" 
+                      placeholder="Escribe tu respuesta..."
+                      [(ngModel)]="respuestaAbierta"
+                      (keydown.enter)="manejarRespuestaEncuesta(respuestaAbierta, chat.preguntaEncuesta!.idPregunta)">
+                <button class="btn btn-primary"
+                        (click)="manejarRespuestaEncuesta(respuestaAbierta, chat.preguntaEncuesta!.idPregunta)">
+                  Enviar
+                </button>
+              </div>
+            </div></div>
+            </ng-container>
+            <!-- Si NO es encuesta -->
+            <ng-template #mensajeNormalCopiar>
+              <div class="chat-bubble ai-bubble formatoMensajes vstackbot" [innerHTML]="chat.mensaje"></div>
+              <button *ngIf="chat.mostrarBotonCopiar !== false" class="btn-copiar" (click)="copiarRespuesta(chat.mensaje)" matTooltip="Copiar mensaje">
+                <mat-icon>content_copy</mat-icon>
+              </button>
+            </ng-template>
+            </div>
+        </ng-container>
         <ng-container *ngSwitchCase="'usuario'">
           <div class="vstack row-reverse">
             <div class="chat-bubble human-bubble formatoMensajes" [innerHTML]="chat.mensaje"></div>
@@ -33,7 +87,6 @@
     </div>
   </div>
 </div>
-
 <ng-template #cargando>
   <div class="chat-bubble ai-bubble">
     <div class="lds-ellipsis ">
@@ -47,7 +100,7 @@
 
 <div class="chatbot-message-box" data-role="chatbot">
   <textarea #inputChat class="chatbot-input" [(ngModel)]="pregunta" placeholder="¿Cómo puedo ayudarte el día de hoy?" 
-    (keydown.enter)="consultaMensajeOpenIa($event, inputChat)" (input)="ajustarAlturaTextarea($event)"></textarea>  
+    (keydown.enter)="consultaMensajeOpenIa($event, inputChat)" (input)="ajustarAlturaTextarea($event)" [disabled]="encuestaActiva"></textarea>  
   <mat-icon matSuffix style="color:#256F45; cursor:pointer; margin-top:1px;" 
     (click)="resetConversation()" matTooltip="Eliminar historial">delete</mat-icon>
   <mat-icon matSuffix class="ms-2" (click)="!pregunta || isConsultandoOpenIa ? null : consultaMensajeOpenIa()"

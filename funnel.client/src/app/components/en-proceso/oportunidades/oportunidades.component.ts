@@ -605,6 +605,17 @@ export class OportunidadesComponent {
   getSumaMontos(oportunidades: Oportunidad[]): number {
     return sumBy(oportunidades, 'monto');
   }
+
+  filterMultipleFields(value: any, table: any) {
+    console.log(value.target.value);
+    if (!value.target.value) {
+      return;
+    }
+    
+    table.filterGlobal(value.target.value, 'contains');
+    // O usar un filtro más específico:
+    // table.filter(value, 'prospecto,ejecutivo', 'contains');
+  }
 }
 
 

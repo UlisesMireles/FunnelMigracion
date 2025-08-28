@@ -28,6 +28,7 @@ export class VerticalBarComponent {
   isClickInsideModal: boolean = false;
   version: string = '';
 
+  EnumMenus = EnumMenus;
   constructor(private router: Router,
     private messageService: MessageService,
     private permisosService: PermisosService,
@@ -52,13 +53,20 @@ export class VerticalBarComponent {
         };
 
         const salir = {
-          nombre: 'SALIR',
+          nombre: 'Salir',
           ruta: '/login',
-          icono: 'bi-box-arrow-right',
+          icono: 'bi bi-box-arrow-right',
           colorIcono: '#ffffff',
           tooltip: 'Cerrar sesión',
           subMenu: []
         };
+        const linea = {
+          nombre: '<hr>',
+          ruta: '',
+          icono: '',
+          tooltip: '',
+          subMenu: []
+        }
 
         // Combinar: primero "Perfil", luego los permisos, luego "SALIR"
         this.ListaMenu = [perfil, ...result, salir];
@@ -73,7 +81,7 @@ export class VerticalBarComponent {
             : menu
         );
         this.ListaMenu = this.ListaMenu.map(menu =>
-          menu.nombre === EnumMenus.ADMINISTRACION
+          menu.nombre == EnumMenus.ADMINISTRACION
             ? { ...menu, ruta: "/prospectos-contactos", subMenu: [] }
             : menu
         );

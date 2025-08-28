@@ -327,3 +327,7 @@ th.sort-active p-sortIcon {
     padding-left: 50px;
     margin-bottom: 10px;
 }
+
+::ng-deep .mat-expansion-panel-header:hover{
+  background-color:#f8fafc !important;
+}

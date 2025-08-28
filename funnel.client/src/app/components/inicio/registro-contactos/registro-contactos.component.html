@@ -7,7 +7,7 @@
   [style]="{ width: '35rem', height: 'autorem' }" (onHide)="close()" (onShow)="onDialogShow()" class="bodyDialog">
   <ng-template pTemplate="header">
     <label class="margen">
-      {{ insertarContacto ? 'Nuevo Prospecto' : title + ' ' + contactoForm.get('nombre')?.value }}
+      {{ insertarContacto ? 'Nuevo Contacto' : title + ' ' + contactoForm.get('nombre')?.value }}
     </label>
   </ng-template>
   <br>
@@ -63,12 +63,12 @@
       </div>-->
      
     </form>
-    <!-- Formulario Contacto -->
+    <!-- Formulario Contacto
      <div class="header-naranja">
         Nuevo Contacto
-      </div>
+      </div> -->
     <form [formGroup]="contactoForm">
-      <div class="row inptSpace" style="margin-top: 20px;">
+      <div class="row inptSpace" >
         <div class="col-sm-4 lbl">
           <label for="prospecto">Prospecto:</label>
         </div>

@@ -83,7 +83,8 @@ namespace Funnel.Logic
             return await _oportunidadesData.GuardarOportunidad(request);
         }
         public async Task <List<EstancamientoEstadisticaOportunidadDto>> ConsultarEstancamientoEstadisticaOportunidades()
-        { return await _oportunidadesData.ConsultarEstancamientoEstadisticaOportunidades(); 
+        { 
+            return await _oportunidadesData.ConsultarEstancamientoEstadisticaOportunidades(); 
         }
         public async Task<List<OportunidadesTarjetasDto>> ConsultarOportunidadesPorMes(int IdUsuario, int IdEmpresa)
         {

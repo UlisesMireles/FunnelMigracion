@@ -175,7 +175,6 @@ export class UsuariosComponent {
 
   actualiza(licencia: Usuarios) {
     this.usuarioSeleccionado = licencia;
-    console.log(this.usuarioSeleccionado);
     this.insertar = false;
     this.modalVisible = true;
   }

@@ -12,6 +12,7 @@ export interface Usuarios {
     idEmpresa: number;
     idTipoUsuario: number;
     descripcion: string;
+    nombreCompleto?: string;
     apellidoPaterno: string;
     apellidoMaterno?: string;
     fechaRegistro: string;

@@ -153,6 +153,7 @@ export class UsuariosComponent {
       idEmpresa: 0,
       idTipoUsuario: 0,
       descripcion: '',
+      nombreCompleto: '',
       apellidoPaterno: '',
       apellidoMaterno: '',
       fechaRegistro: '',
@@ -174,6 +175,7 @@ export class UsuariosComponent {
 
   actualiza(licencia: Usuarios) {
     this.usuarioSeleccionado = licencia;
+    console.log(this.usuarioSeleccionado);
     this.insertar = false;
     this.modalVisible = true;
   }

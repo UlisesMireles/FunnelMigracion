@@ -11,6 +11,7 @@ namespace Funnel.Models.Dto
         public string? Password { get; set; }
         public string? TipoUsuario { get; set; }
         public string? Nombre { get; set; }
+        public string? NombreCompleto { get; set; }
         public string? Correo { get; set; }
         public string? Alias { get; set; }
         public int? IdEmpresa { get; set; }

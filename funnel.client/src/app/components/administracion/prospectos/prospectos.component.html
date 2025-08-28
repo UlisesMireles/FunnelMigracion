@@ -205,17 +205,15 @@
               </tr>
             </ng-template>
           </p-table>
+           <div class="qr-container" style="position: relative; bottom: 45px; left:520px;">
+            <qrcode [qrdata]="qrData" [width]="120" [errorCorrectionLevel]="'M'"></qrcode>
+           </div>
         </div>
         <p-toast position="center"></p-toast>
       </div>
     </div>
   </div>
-<qrcode
-  [qrdata]="qrData"
-  [width]="120"
-  [style]="{ marginTop: '20px'}"
-  [errorCorrectionLevel]="'M'">
-</qrcode>
+
 
 <!-- <app-modal-prospectos [(visible)]="modalVisible" [title]="'Editar Datos de '" (closeModal)="onModalClose()"
   (result)="manejarResultado($event)" [insertar]="insertar" [prospectos]="prospectos" [prospecto]="prospectoSeleccionado">

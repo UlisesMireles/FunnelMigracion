@@ -1,0 +1,169 @@
+<div class="navbar">
+  <nav class="text-center m-auto">
+    <img width="150" [src]="baseUrl + '/assets/img/logotipo-glupoint.png'" alt="logo SFS" class="m-auto">
+  </nav>
+</div>
+<p-dialog [(visible)]="visible" [modal]="true" styleClass="custom-header-naranja" [closable]="false"
+  [style]="{ width: '35rem', height: 'autorem' }" (onHide)="close()" (onShow)="onDialogShow()" class="bodyDialog">
+  <ng-template pTemplate="header">
+    <label class="margen">
+      {{ insertarContacto ? 'Nuevo Prospecto' : title + ' ' + contactoForm.get('nombre')?.value }}
+    </label>
+  </ng-template>
+  <br>
+  <ng-template pTemplate="content">
+    <!-- Formulario Prospecto -->
+    <form [formGroup]="prospectoForm">
+      <!-- Nombre -->
+      <div class="row">
+        <div class="col-sm-4 lbl">
+          <label for="nombre">Nombre: </label>
+        </div>
+        <div class="col-sm-8">
+          <input pInputText class="inptSize" formControlName="nombre"  (blur)="onProspectoNombreBlur()"/>
+          <span *ngIf="prospectoForm.get('nombre')?.invalid && prospectoForm.get('nombre')?.touched"
+            class="text-danger"><br>
+            <ng-container *ngIf="prospectoForm.get('nombre')?.errors?.['pattern']">El nombre es
+              obligatorio.</ng-container>
+            <ng-container *ngIf="prospectoForm.get('nombre')?.errors?.['maxLength']">El nombre no puede ser mayor a 50
+              caracteres.</ng-container>
+            <ng-container *ngIf="prospectoForm.get('nombre')?.errors?.['pattern']">El nombre solo puede contener letras
+              y espacios.</ng-container></span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-4 lbl">
+          <label for="ubicacionFisica">Ubicación Física: </label>
+        </div>
+        <div class="col-sm-8">
+          <input pInputText class="inptSize" formControlName="ubicacionFisica" />
+          <span *ngIf="prospectoForm.get('ubicacionFisica')?.invalid && prospectoForm.get('ubicacionFisica')?.touched"
+            class="text-danger"><br>
+            <ng-container *ngIf="prospectoForm.get('ubicacionFisica')?.errors?.['required']">La ubicación física es
+              obligatoria.</ng-container>
+            <ng-container *ngIf="prospectoForm.get('ubicacionFisica')?.errors?.['maxLength']">La ubicación física no
+              puede ser mayor a 50 caracteres.</ng-container>
+            <ng-container *ngIf="prospectoForm.get('ubicacionFisica')?.errors?.['pattern']">La ubicación física solo
+              puede contener letras y espacios.</ng-container></span>
+
+        </div>
+      </div>
+
+      <!--<div class="row">
+        <div class="col-sm-4 lbl">
+          <label for="sector">Sector: </label>
+        </div>
+        <div class="col-sm-8">
+          <p-dropdown class="inptSize1" formControlName="idSector" optionLabel="nombreSector"
+            optionValue="idSector" appendTo="body" placeholder="Seleccione un sector">
+          </p-dropdown>
+         
+        </div>
+      </div>-->
+     
+    </form>
+    <!-- Formulario Contacto -->
+     <div class="header-naranja">
+        Nuevo Contacto
+      </div>
+    <form [formGroup]="contactoForm">
+      <div class="row inptSpace" style="margin-top: 20px;">
+        <div class="col-sm-4 lbl">
+          <label for="prospecto">Prospecto:</label>
+        </div>
+        <div class="col-sm-8 inptSpace">
+        <input pInputText class="inptSize1" [value]="prospectoNombreIngresado ? prospectoForm.get('nombre')?.value : ''" 
+           disabled />
+        </div>
+      </div>
+      <!-- Nombre -->
+      <div class="row inptSpace">
+        <div class="col-sm-4 lbl">
+          <label for="nombre">Nombre: </label>
+        </div>
+        <div class="col-sm-8 inptSpace">
+          <input pInputText class="inptSize"  formControlName="nombre" />
+          <span *ngIf="contactoForm.get('nombre')?.invalid && contactoForm.get('nombre')?.touched"
+            class="text-danger"><br>
+            <ng-container *ngIf="contactoForm.get('nombre')?.errors?.['required']">El nombre es
+              obligatorio.</ng-container>
+            <ng-container *ngIf="contactoForm.get('nombre')?.errors?.['maxLength']">El nombre no puede ser mayor a 50
+              caracteres.</ng-container>
+            <ng-container *ngIf="contactoForm.get('nombre')?.errors?.['pattern']">El nombre solo puede contener letras y
+              espacios.</ng-container></span>
+
+        </div>
+      </div>
+
+      <div class="row inptSpace">
+        <div class="col-sm-4 lbl">
+          <label for="telefono">Teléfono: </label>
+        </div>
+        <div class="col-sm-8 inptSpace">
+          <input pInputText class="inptSize" formControlName="telefono" />
+          <span *ngIf="contactoForm.get('telefono')?.invalid && contactoForm.get('telefono')?.touched"
+            class="text-danger"><br>
+            <ng-container *ngIf="contactoForm.get('telefono')?.errors?.['required']">El teléfono es obligatorio.
+            </ng-container>
+            <ng-container *ngIf="contactoForm.get('telefono')?.errors?.['minlength']">El teléfono debe tener al menos 8
+              caracteres. </ng-container>
+            <ng-container *ngIf="contactoForm.get('telefono')?.errors?.['maxlength']">El teléfono no puede tener más de
+              15 caracteres. </ng-container>
+            <ng-container *ngIf="contactoForm.get('telefono')?.errors?.['pattern']">Formato de telefono incorrecto.
+            </ng-container>
+          </span>
+        </div>
+      </div>
+
+      <div class="row inptSpace">
+        <div class="col-sm-4 lbl">
+          <label for="correoElectronico">Correo Electrónico: </label>
+        </div>
+        <div class="col-sm-8 inptSpace">
+          <input pInputText class="inptSize"  formControlName="correoElectronico" />
+          <span *ngIf="contactoForm.get('correoElectronico')?.invalid && contactoForm.get('correoElectronico')?.touched"
+            class="text-danger"><br>
+            <ng-container *ngIf="contactoForm.get('correoElectronico')?.errors?.['required']">El correo electrónico es
+              obligatorio.</ng-container>
+            <ng-container *ngIf="contactoForm.get('correoElectronico')?.errors?.['email']">Ingrese un correo electrónico
+              válido.</ng-container>
+
+          </span>
+        </div>
+      </div>
+
+      <div class="row inptSpace" *ngIf="!insertarContacto">
+        <div class="col-sm-4 lbl">
+          <label for="estatus">Estatus: </label>
+        </div>
+        <div class="col-sm-8 inptSpaceEstatus">
+          <p-checkbox formControlName="estatus" [binary]="true"></p-checkbox>
+          <span style="padding-left: 6px !important;">Activo</span>
+        </div>
+      </div>
+
+<div class="row inptSpace" style="margin-top: 15px;">
+  <div class="col-sm-12">
+    <ngx-recaptcha2 #captchaElem [siteKey]="siteKey" (reset)="handleReset()"(expire)="handleExpire()"
+      (load)="handleLoad()" (success)="handleSuccess($event)" [useGlobalDomain]="false"
+      [ngClass]="{'is-invalid': captchaForm.get('recaptcha')?.invalid && captchaForm.get('recaptcha')?.touched}">
+    </ngx-recaptcha2>
+
+    <span *ngIf="captchaForm.get('recaptcha')?.invalid && captchaForm.get('recaptcha')?.touched" class="text-danger">
+      <ng-container *ngIf="captchaForm.get('recaptcha')?.errors?.['required']">
+        Verificación de captcha obligatoria.
+      </ng-container>
+    </span>
+  </div>
+</div>
+
+    </form>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button *ngIf="insertarContacto" pButton label="Agregar" (click)="guardarAmbos()" severity="secondary"></button>
+    <button pButton label="Cancelar" (click)="close()" severity="secondary"></button>
+  </ng-template>
+  <p-toast></p-toast>
+</p-dialog>

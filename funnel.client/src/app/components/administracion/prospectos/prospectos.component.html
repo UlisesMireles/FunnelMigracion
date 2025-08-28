@@ -1,215 +1,219 @@
-<div class="container-fluid">
-  <div class="row">
+  <div class="container-fluid">
+    <div class="row">
 
-    <div class="col-12">
-      <div class="row contenedorTabla">
-        <div *ngIf="loading" class="loading-message" style="padding-top: 50px;">
-          <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Cargando...</span>
+      <div class="col-12">
+        <div class="row contenedorTabla">
+          <div *ngIf="loading" class="loading-message" style="padding-top: 50px;">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p>Cargando...</p>
           </div>
-          <p>Cargando...</p>
-        </div>
-        <p-table *ngIf="!loading" #dt [value]="prospectos" dataKey="id" [rows]="10"
-          [showCurrentPageReport]="false" [rowsPerPageOptions]="[10, 20, 50]" [paginator]="true" paginatorPosition="both"
-          [pageLinks]="1" 
-          currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros"
-          [columns]="lsColumnasAMostrar"
-          [resizableColumns]="true" [reorderableColumns]="true"
-          [globalFilterFields]="['nombre',  'nombreSector','ubicacionFisica', 'totalOportunidades', 'proceso', 'ganadas', 'perdidas', 'canceladas', 'eliminadas', 'desEstatus']"
-          [tableStyle]="{'min-width': anchoTabla+ '%'}">
+          <p-table *ngIf="!loading" #dt [value]="prospectos" dataKey="id" [rows]="10"
+            [showCurrentPageReport]="false" [rowsPerPageOptions]="[10, 20, 50]" [paginator]="true" paginatorPosition="both"
+            [pageLinks]="1" 
+            currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Registros"
+            [columns]="lsColumnasAMostrar"
+            [resizableColumns]="true" [reorderableColumns]="true"
+            [globalFilterFields]="['nombre',  'nombreSector','ubicacionFisica', 'totalOportunidades', 'proceso', 'ganadas', 'perdidas', 'canceladas', 'eliminadas', 'desEstatus']"
+            [tableStyle]="{'min-width': anchoTabla+ '%'}">
 
-          <ng-template class="divAccionesTabla" #caption>
-            <div class="col-12" style="text-align: left; font-weight: bold; margin-top: 40px" (click)="onHeaderClick()">
-              <h3>Administración de Prospectos</h3>
-            </div>
-            <div class="row">
-              <div class="col inDivDatatableHeader" style="text-align:right; margin-right:5px">
-                <p-button label="" icon="bi bi-arrow-clockwise" (click)="clear(dt)" severity="secondary"
-                pTooltip="Refrescar" tooltipPosition="top" styleClass="custom-button refresh-button"
-                [ngStyle]="{'margin-right': '5px'}" />
-                <p-button [disabled]="disabledPdf" label="" icon="bi bi-filetype-pdf" severity="secondary" (click)="exportPdf(dt)" 
-                pTooltip="Descargar PDF" tooltipPosition="top" styleClass="custom-button download-button"
-                [ngStyle]="{'margin-right': '5px'}"/>
-                <p-button label="" icon="bi bi-download" severity="secondary" (click)="exportExcel(dt)"  
-                pTooltip="Descargar Excel" tooltipPosition="top" styleClass="custom-button add-button"
-                [ngStyle]="{'margin-right': '5px'}"/>
-                <p-button label="" icon="bi-list" (click)="agregarColumna($event)" severity="secondary"  
-                pTooltip="Agregar columna" tooltipPosition="top" styleClass="custom-button column-button"
-                [ngStyle]="{'margin-right': '5px'}"/>
-                <p-button label="" icon="bi bi-plus" severity="secondary" (click)="inserta()"  
-                  pTooltip="Añadir nuevo" tooltipPosition="top" styleClass="custom-button add-button"
-                  [ngStyle]="{'margin-right': '5px'}"/>
+            <ng-template class="divAccionesTabla" #caption>
+              <div class="col-12" style="text-align: left; font-weight: bold; margin-top: 40px" (click)="onHeaderClick()">
+                <h3>Administración de Prospectos</h3>
               </div>
-            </div>
-          </ng-template>
-          <ng-template pTemplate="header" let-columns>
-            <tr class="custom-header">
-                <th *ngFor="let def of lsColumnasAMostrar" 
-                  pSortableColumn="{{def.key}}" 
-                  pReorderableColumn 
-                  [class.sort-active]="isSorted(def.key)"
-                  [ngClass]="{
-                    'columna-nombre': def.key === 'nombre',
-                    'columna-sector': def.key === 'nombreSector',
-                    'columna-ubicacion': def.key === 'ubicacionFisica',
-                    'columna-default': def.key !== 'nombre' && def.key !== 'nombreSector' && def.key !== 'ubicacionFisica'
-                }">
-                    {{def.valor}}
-                  <p-sortIcon field="{{def.key}}"></p-sortIcon>
+              <div class="row">
+                <div class="col inDivDatatableHeader" style="text-align:right; margin-right:5px">
+                  <p-button label="" icon="bi bi-arrow-clockwise" (click)="clear(dt)" severity="secondary"
+                  pTooltip="Refrescar" tooltipPosition="top" styleClass="custom-button refresh-button"
+                  [ngStyle]="{'margin-right': '5px'}" />
+                  <p-button [disabled]="disabledPdf" label="" icon="bi bi-filetype-pdf" severity="secondary" (click)="exportPdf(dt)" 
+                  pTooltip="Descargar PDF" tooltipPosition="top" styleClass="custom-button download-button"
+                  [ngStyle]="{'margin-right': '5px'}"/>
+                  <p-button label="" icon="bi bi-download" severity="secondary" (click)="exportExcel(dt)"  
+                  pTooltip="Descargar Excel" tooltipPosition="top" styleClass="custom-button add-button"
+                  [ngStyle]="{'margin-right': '5px'}"/>
+                  <p-button label="" icon="bi-list" (click)="agregarColumna($event)" severity="secondary"  
+                  pTooltip="Agregar columna" tooltipPosition="top" styleClass="custom-button column-button"
+                  [ngStyle]="{'margin-right': '5px'}"/>
+                  <p-button label="" icon="bi bi-plus" severity="secondary" (click)="inserta()"  
+                    pTooltip="Añadir nuevo" tooltipPosition="top" styleClass="custom-button add-button"
+                    [ngStyle]="{'margin-right': '5px'}"/>
+                </div>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="header" let-columns>
+              <tr class="custom-header">
+                  <th *ngFor="let def of lsColumnasAMostrar" 
+                    pSortableColumn="{{def.key}}" 
+                    pReorderableColumn 
+                    [class.sort-active]="isSorted(def.key)"
+                    [ngClass]="{
+                      'columna-nombre': def.key === 'nombre',
+                      'columna-sector': def.key === 'nombreSector',
+                      'columna-ubicacion': def.key === 'ubicacionFisica',
+                      'columna-default': def.key !== 'nombre' && def.key !== 'nombreSector' && def.key !== 'ubicacionFisica'
+                  }">
+                      {{def.valor}}
+                    <p-sortIcon field="{{def.key}}"></p-sortIcon>
+                  </th>
+                  <th></th> 
+              </tr>
+              <tr>
+                <th *ngFor="let def of lsColumnasAMostrar" style="min-width: 30%;">
+                  <ng-container *ngIf="def.groupColumn">
+                    <p-columnFilter field="{{def.key}}" matchMode="in" [showMenu]="false">
+                      <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                        <p-multiSelect [ngModel]="value"
+                          [options]="obtenerArregloFiltros(prospectos, def.key)" placeholder=""
+                          (onChange)="filter($event.value)">
+                          <ng-template let-option pTemplate="item">
+                            <div class="p-multiselect-representative-option">
+                              <span class="ml-1">{{option}}</span>
+                            </div>
+                          </ng-template>
+                        </p-multiSelect>
+                      </ng-template>
+                    </p-columnFilter>
+                  </ng-container>
+                  <ng-container *ngIf="!def.groupColumn">
+                    <div [ngSwitch]="def.tipoFormato">
+                      <div *ngSwitchCase="'text'">
+                        <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false">
+                          <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                            <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
+                              (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
+                          </ng-template>
+                        </p-columnFilter>
+                      </div>
+                      <div *ngSwitchCase="'currency'">
+                        <p-columnFilter type="numeric" field="{{def.key}}" [showButtons]="false"
+                          [maxFractionDigits]="7"></p-columnFilter>
+                      </div>
+                      <div *ngSwitchCase="'estatus'">
+                        <p-columnFilter field="{{def.key}}" matchMode="equals" [showMenu]="false">
+                          <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                            <p-dropdown [options]="EstatusDropdown" [(ngModel)]="selectedEstatus" [appendTo]="'body'"
+                              (onChange)="FiltrarPorEstatus()" optionLabel="label" optionValue="value"
+                              [style]="{'width': '100%', 'text-align': 'center'}">
+                            </p-dropdown>
+                          </ng-template>
+                        </p-columnFilter>
+                      </div>
+                      <div *ngSwitchCase="'date'">
+                        <p-columnFilter type="{{def.tipoFormato}}" [field]="def.key" [showButtons]="false">
+                          <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                            <p-calendar #calendar [ngModel]="value" (onSelect)="filter(calendar.value)"
+                              [showButtonBar]="true"></p-calendar>
+                          </ng-template>
+                        </p-columnFilter>
+                      </div>
+                      <div *ngSwitchDefault>
+                        <p-columnFilter
+                          *ngIf="def.tipoFormato !== 'text' && def.tipoFormato !== 'currency' && def.tipoFormato !== 'date'"
+                          type="{{def.tipoFormato}}" field="{{def.key}}" [showButtons]="false" [showMenu]="false">
+                        </p-columnFilter>
+                      </div>
+                    </div>
+                  </ng-container>
                 </th>
-                <th></th> 
-            </tr>
-            <tr>
-              <th *ngFor="let def of lsColumnasAMostrar" style="min-width: 30%;">
-                <ng-container *ngIf="def.groupColumn">
-                  <p-columnFilter field="{{def.key}}" matchMode="in" [showMenu]="false">
-                    <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                      <p-multiSelect [ngModel]="value"
-                        [options]="obtenerArregloFiltros(prospectos, def.key)" placeholder=""
-                        (onChange)="filter($event.value)">
-                        <ng-template let-option pTemplate="item">
-                          <div class="p-multiselect-representative-option">
-                            <span class="ml-1">{{option}}</span>
-                          </div>
-                        </ng-template>
-                      </p-multiSelect>
-                    </ng-template>
-                  </p-columnFilter>
-                </ng-container>
-                <ng-container *ngIf="!def.groupColumn">
-                  <div [ngSwitch]="def.tipoFormato">
-                    <div *ngSwitchCase="'text'">
-                      <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false">
-                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                          <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
-                            (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
-                        </ng-template>
-                      </p-columnFilter>
-                    </div>
-                    <div *ngSwitchCase="'currency'">
-                      <p-columnFilter type="numeric" field="{{def.key}}" [showButtons]="false"
-                        [maxFractionDigits]="7"></p-columnFilter>
-                    </div>
-                    <div *ngSwitchCase="'estatus'">
-                      <p-columnFilter field="{{def.key}}" matchMode="equals" [showMenu]="false">
-                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                          <p-dropdown [options]="EstatusDropdown" [(ngModel)]="selectedEstatus" [appendTo]="'body'"
-                            (onChange)="FiltrarPorEstatus()" optionLabel="label" optionValue="value"
-                            [style]="{'width': '100%', 'text-align': 'center'}">
-                          </p-dropdown>
-                        </ng-template>
-                      </p-columnFilter>
-                    </div>
-                    <div *ngSwitchCase="'date'">
-                      <p-columnFilter type="{{def.tipoFormato}}" [field]="def.key" [showButtons]="false">
-                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                          <p-calendar #calendar [ngModel]="value" (onSelect)="filter(calendar.value)"
-                            [showButtonBar]="true"></p-calendar>
-                        </ng-template>
-                      </p-columnFilter>
-                    </div>
-                    <div *ngSwitchDefault>
-                      <p-columnFilter
-                        *ngIf="def.tipoFormato !== 'text' && def.tipoFormato !== 'currency' && def.tipoFormato !== 'date'"
-                        type="{{def.tipoFormato}}" field="{{def.key}}" [showButtons]="false" [showMenu]="false">
-                      </p-columnFilter>
-                    </div>
-                  </div>
-                </ng-container>
-              </th>
-              <th></th>
-            </tr>
-          </ng-template>
+                <th></th>
+              </tr>
+            </ng-template>
 
-          <ng-template pTemplate="body" let-rowData let-columns="columns">
-            <tr [ngClass]="{'fila-activa': rowData.idProspecto == prospectoEdicion?.idProspecto}">
-              <td *ngFor="let def of lsColumnasAMostrar" 
-                  [ngStyle]="{
-                    'text-align': 
-                      def.tipoFormato === 'currency' ? 'right' : 
-                      (def.tipoFormato === 'number' || def.tipoFormato === 'estatus' || def.key === 'porcEfectividad') ? 'center' : 'left',
-                      'font-weight': def.key === 'nombre' ? 'bold' : 'normal'
-                  }">
-                <ng-container [ngSwitch]="def.tipoFormato">
-                  <span *ngSwitchCase="'text'">
-                  <span *ngIf="def.key === 'nombreSector'"> 
-                  <button *ngIf="rowData[def.key] === 'Por Asignar'" (click)="abrirModalSector(rowData)"
-                    style="background-color: #f93e3e; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer;">
-                    {{ rowData[def.key] }}
-                  </button>
-                  <span *ngIf="rowData[def.key] !== 'Por Asignar'">
-                    {{ rowData[def.key] }}
-                  </span>
-                  </span>
-                  <span *ngIf="def.key !== 'nombreSector'">
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+              <tr [ngClass]="{'fila-activa': rowData.idProspecto == prospectoEdicion?.idProspecto}">
+                <td *ngFor="let def of lsColumnasAMostrar" 
+                    [ngStyle]="{
+                      'text-align': 
+                        def.tipoFormato === 'currency' ? 'right' : 
+                        (def.tipoFormato === 'number' || def.tipoFormato === 'estatus' || def.key === 'porcEfectividad') ? 'center' : 'left',
+                        'font-weight': def.key === 'nombre' ? 'bold' : 'normal'
+                    }">
+                  <ng-container [ngSwitch]="def.tipoFormato">
+                    <span *ngSwitchCase="'text'">
+                    <span *ngIf="def.key === 'nombreSector'"> 
+                    <button *ngIf="rowData[def.key] === 'Por Asignar'" (click)="abrirModalSector(rowData)"
+                      style="background-color: #f93e3e; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer;">
                       {{ rowData[def.key] }}
-                  </span>
-              </span>
-              <span *ngSwitchCase="'textNFilter'">
-                  <span *ngIf="def.key !== 'nombreSector'">
+                    </button>
+                    <span *ngIf="rowData[def.key] !== 'Por Asignar'">
                       {{ rowData[def.key] }}
-                  </span>
-              </span>         
-                  <span *ngSwitchCase="'currency'">
-                    {{ rowData[def.key] | currency:'$':'symbol':'1.2-2' }}
-                  </span>
+                    </span>
+                    </span>
+                    <span *ngIf="def.key !== 'nombreSector'">
+                        {{ rowData[def.key] }}
+                    </span>
+                </span>
+                <span *ngSwitchCase="'textNFilter'">
+                    <span *ngIf="def.key !== 'nombreSector'">
+                        {{ rowData[def.key] }}
+                    </span>
+                </span>         
+                    <span *ngSwitchCase="'currency'">
+                      {{ rowData[def.key] | currency:'$':'symbol':'1.2-2' }}
+                    </span>
 
-                  <span *ngSwitchCase="'number'">
-                    {{ rowData[def.key] | number:'1.0-0' }}
-                  </span>
-                  
-                  <span *ngSwitchCase="'date'">
-                    {{ rowData[def.key] | date:'dd/MM/yyyy' }}
-                  </span>
-                  <span *ngSwitchCase="'decimal'">
-                    {{ rowData[def.key] | number:'1.0-0' }} %
-                  </span>
-                  
-                  <span *ngSwitchDefault>{{ rowData[def.key] }}</span>
-                </ng-container>
-              </td>
-              <td [ngStyle]="{'width': '20px', 'text-align': 'center'}">
-                <p-button styleClass="coloreditar-icon" (click)="actualiza(rowData)" pTooltip="Editar registro" tooltipPosition="top">
-                  <span class="custom-pencil">✏️</span> 
-                </p-button>
-              </td>
-            </tr>
-          </ng-template>
+                    <span *ngSwitchCase="'number'">
+                      {{ rowData[def.key] | number:'1.0-0' }}
+                    </span>
+                    
+                    <span *ngSwitchCase="'date'">
+                      {{ rowData[def.key] | date:'dd/MM/yyyy' }}
+                    </span>
+                    <span *ngSwitchCase="'decimal'">
+                      {{ rowData[def.key] | number:'1.0-0' }} %
+                    </span>
+                    
+                    <span *ngSwitchDefault>{{ rowData[def.key] }}</span>
+                  </ng-container>
+                </td>
+                <td [ngStyle]="{'width': '20px', 'text-align': 'center'}">
+                  <p-button styleClass="coloreditar-icon" (click)="actualiza(rowData)" pTooltip="Editar registro" tooltipPosition="top">
+                    <span class="custom-pencil">✏️</span> 
+                  </p-button>
+                </td>
+              </tr>
+            </ng-template>
 
-          <ng-template pTemplate="footer" let-columns #footer>
-            <tr class="custom-footer">
-              <td *ngFor="let def of lsColumnasAMostrar" 
-                  [ngClass]="{'total-registros-cell': def.key === 'nombre'}"
-                  [ngStyle]="{
-                    'text-align': 
-                      def.tipoFormato === 'currency' ? 'right' : 
-                      (def.tipoFormato === 'number') ? 'center' : 'left',
-                      'width': def.key === 'nombre' || def.key === 'nombreSector'|| def.key === 'desEstatus' ? '80px' : 
-                      def.key === 'ubicacionFisica' ? '125px' : ''
+            <ng-template pTemplate="footer" let-columns #footer>
+              <tr class="custom-footer">
+                <td *ngFor="let def of lsColumnasAMostrar" 
+                    [ngClass]="{'total-registros-cell': def.key === 'nombre'}"
+                    [ngStyle]="{
+                      'text-align': 
+                        def.tipoFormato === 'currency' ? 'right' : 
+                        (def.tipoFormato === 'number') ? 'center' : 'left',
+                        'width': def.key === 'nombre' || def.key === 'nombreSector'|| def.key === 'desEstatus' ? '80px' : 
+                        def.key === 'ubicacionFisica' ? '125px' : ''
 
-                  }">
-                <ng-container *ngIf="def.key === 'nombre'">
-                  Total de Registros: {{ getTotalCostPrimeNg(dt, def) }}
-                </ng-container>
-                <ng-container *ngIf="def.tipoFormato === 'number' && def.key !== 'nombre'">
-                  {{ getTotalCostPrimeNg(dt, def) | number:'1.0-0' }}
-                </ng-container>
-              </td>
-              <td></td>
-            </tr>
-          </ng-template>
+                    }">
+                  <ng-container *ngIf="def.key === 'nombre'">
+                    Total de Registros: {{ getTotalCostPrimeNg(dt, def) }}
+                  </ng-container>
+                  <ng-container *ngIf="def.tipoFormato === 'number' && def.key !== 'nombre'">
+                    {{ getTotalCostPrimeNg(dt, def) | number:'1.0-0' }}
+                  </ng-container>
+                </td>
+                <td></td>
+              </tr>
+            </ng-template>
 
-          <ng-template pTemplate="emptymessage">
-            <tr>
-              <td colspan="5" class="text-center">No se encontraron registros</td>
-            </tr>
-          </ng-template>
-        </p-table>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="5" class="text-center">No se encontraron registros</td>
+              </tr>
+            </ng-template>
+          </p-table>
+           <div class="qr-container">
+            <qrcode [qrdata]="qrData" [width]="120" [errorCorrectionLevel]="'M'"></qrcode>
+           </div>
+        </div>
+        <p-toast position="center"></p-toast>
       </div>
-      <p-toast position="center"></p-toast>
     </div>
   </div>
-</div>
+
 
 <!-- <app-modal-prospectos [(visible)]="modalVisible" [title]="'Editar Datos de '" (closeModal)="onModalClose()"
   (result)="manejarResultado($event)" [insertar]="insertar" [prospectos]="prospectos" [prospecto]="prospectoSeleccionado">

@@ -49,6 +49,7 @@ import { PoliticaPrivacidadComponent } from './components/inicio/legal/politica-
 import { TerminosCondicionesComponent } from './components/inicio/legal/terminos-condiciones/terminos-condiciones.component';
 import { OlvidasteContrasenaComponent } from './components/inicio/olvidaste-contrasena/olvidaste-contrasena.component';
 import { CambiarContrasenaComponent } from './components/inicio/cambiar-contrasena/cambiar-contrasena.component';
+import { RegistroContactosComponent } from './components/inicio/registro-contactos/registro-contactos.component';
 
 // En Proceso
 import { OportunidadesComponent } from './components/en-proceso/oportunidades/oportunidades.component';
@@ -157,6 +158,7 @@ import { ChatBotProspeccionComponent } from './components/asistentes/asistente-p
 import { FaqFlotantesComponent } from './components/asistentes/asistente-prospeccion/faq-flotantes/faq-flotantes.component';
 import { EliminarConversacionComponent } from './components/asistentes/asistente-prospeccion/eliminar-conversacion/eliminar-conversacion.component';
 import { EvaluarBotComponent } from './components/asistentes/asistente-prospeccion/evaluar-bot/evaluar-bot.component';
+import { QRCodeComponent } from 'angularx-qrcode';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -252,7 +254,8 @@ registerLocaleData(localeEs, 'es-MX');
     ChatBotProspeccionComponent,
     FaqFlotantesComponent,
     EliminarConversacionComponent,
-    EvaluarBotComponent
+    EvaluarBotComponent,
+    RegistroContactosComponent,
   ],
   imports: [
     BrowserModule,
@@ -304,7 +307,8 @@ registerLocaleData(localeEs, 'es-MX');
     ToggleSwitchModule,
     MatExpansionModule,
     MatDialogModule,
-    MatButtonModule
+    MatButtonModule,
+    QRCodeComponent
 ],
   providers: [
     { provide: LOCALE_ID, useValue: 'es-MX' },

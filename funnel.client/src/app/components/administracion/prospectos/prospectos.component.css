@@ -331,3 +331,9 @@ th.sort-active p-sortIcon {
 .total-registros-cell {
   padding-left: 3px !important;  
 }
+.qr-container {
+  position: relative;
+  left: 640px;      
+  bottom: 40px;    
+  z-index: 1000;     
+}

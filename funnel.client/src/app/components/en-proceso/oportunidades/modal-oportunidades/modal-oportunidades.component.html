@@ -299,7 +299,7 @@
 
               <ng-template #footer>
                 <div class="p-3 text-center">
-                  <button class="btnAgregarProspectoContacto" (click)="agregarTipoServicio()"
+                  <button *ngIf="esAdministrador()" class="btnAgregarProspectoContacto" (click)="agregarTipoServicio()"
                     size="small"> + Agregar Servicio</button>
                 </div>
               </ng-template>
@@ -337,7 +337,7 @@
 
               <ng-template #footer>
                 <div class="p-3 text-center">
-                  <button class="btnAgregarProspectoContacto" (click)="agregarTipoServicio()"
+                  <button *ngIf="esAdministrador()" class="btnAgregarProspectoContacto" (click)="agregarTipoServicio()"
                     size="small"> + Agregar Servicio</button>
                 </div>
               </ng-template>
@@ -375,7 +375,7 @@
 
               <ng-template #footer>
                 <div class="p-3 text-center">
-                  <button class="btnAgregarProspectoContacto" (click)="agregarTipoEntrega()"
+                  <button *ngIf="esAdministrador()" class="btnAgregarProspectoContacto" (click)="agregarTipoEntrega()"
                     size="small"> + Agregar Tipo Entrega</button>
                 </div>
               </ng-template>

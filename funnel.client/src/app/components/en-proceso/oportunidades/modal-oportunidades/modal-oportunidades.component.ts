@@ -883,4 +883,9 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
     // Actualiza solo el input visualmente (esto no afecta el form control)
     input.value = valorFormateado;
   }
+
+  esAdministrador(): boolean {
+    const rolAdmin = 1;
+    return this.loginService.obtenerRolUsuario() === rolAdmin;
+  }
 }

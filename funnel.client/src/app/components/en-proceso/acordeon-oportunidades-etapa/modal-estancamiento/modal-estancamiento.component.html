@@ -14,7 +14,6 @@
         <table class="estancamiento-table">
           <thead>
             <tr>
-              <th>ID</th>
               <th>Oportunidad</th>
               <th>Etapa</th>
               <th>Días Funnel</th>
@@ -22,28 +21,25 @@
               <th>Score Estanc.</th>
               <th>Prob. Estancada</th>
               <th>Z-Score</th>
-              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let item of estancamientos" [class.high-risk]="item.riesgo >= 80">
-              <td>{{ item.idOportunidad }}</td>
               <td class="oportunidad-name">{{ item.oportunidad }}</td>
               <td>{{ item.etapa }}</td>
               <td>{{ item.diasFunnel }}</td>
               <td>
-                <span class="riesgo-badge" [ngClass]="getRiesgoClass(item.riesgo)">
+                <span class="riesgo-badge">
                   {{ item.riesgo }}%
                 </span>
               </td>
               <td>
-                <span class="score-badge" [ngClass]="getScoreClass(item.scoreEstancamiento)">
+                <span class="score-badge">
                   {{ item.scoreEstancamiento }}
                 </span>
               </td>
               <td>{{ item.probEstancada | number:'1.2-2' }}</td>
               <td>{{ item.zScoreFunnel | number:'1.2-2' }}</td>
-              <td></td>
             </tr>
           </tbody>
         </table>

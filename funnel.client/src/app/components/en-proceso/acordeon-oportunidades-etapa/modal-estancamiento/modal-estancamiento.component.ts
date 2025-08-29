@@ -38,18 +38,7 @@ export class ModalEstancamientoComponent implements OnInit {
       }
     });
   }
-
-  getRiesgoClass(riesgo: number): string {
-    if (riesgo >= 80) return 'riesgo-alto';
-    if (riesgo >= 50) return 'riesgo-medio';
-    return 'riesgo-bajo';
-  }
-
-  getScoreClass(score: number): string {
-    if (score >= 8) return 'score-alto';
-    if (score >= 5) return 'score-medio';
-    return 'score-bajo';
-  }
+  
     onDialogShow() {
     this.maximized = false;
     this.cdr.detectChanges();

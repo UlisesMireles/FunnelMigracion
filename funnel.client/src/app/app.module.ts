@@ -112,6 +112,8 @@ import { ChatBotAsistenteOperacionComponent } from './components/asistentes/asis
 import { AsistenteBienvenidaComponent } from './components/asistentes/asistente-bienvenida/asistente-bienvenida.component';
 import { ChatBotBienvenidaComponent } from './components/asistentes/asistente-bienvenida/chatBot/chatBotBienvenida.component';
 
+
+import { ModalEstancamientoComponent } from './components/en-proceso/acordeon-oportunidades-etapa/modal-estancamiento/modal-estancamiento.component';
 export function getBaseUrl() {
   return 'https://localhost:49834/'
 }
@@ -256,6 +258,8 @@ registerLocaleData(localeEs, 'es-MX');
     EliminarConversacionComponent,
     EvaluarBotComponent,
     RegistroContactosComponent,
+    ModalEstancamientoComponent
+
   ],
   imports: [
     BrowserModule,

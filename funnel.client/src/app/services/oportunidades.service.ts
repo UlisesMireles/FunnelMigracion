@@ -139,4 +139,7 @@ export class OportunidadesService {
       params: { idEmpresa: idEmpresa.toString(), idUsuario: idUsuario}
     });
   }
+  consultarEstancamiento(): Observable<any> {
+    return this.http.get(`${this.baseUrl}api/Oportunidades/ConsultarEstancamientoEstadisticaOportunidades`);
+  }
 }

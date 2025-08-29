@@ -46,7 +46,7 @@ import { UsuariosPermisosComponent } from './components/catalogos/usuarios-permi
 import { PanelesTerminadasComponent } from './components/terminadas/paneles-terminadas/paneles-terminadas.component';
 import { ModalCamposNuevosComponent } from './components/administracion/modal-campos-nuevos/modal-campos-nuevos.component';
 import { RegistroContactosComponent } from './components/inicio/registro-contactos/registro-contactos.component';
-
+import { ModalEstancamientoComponent } from './components/en-proceso/acordeon-oportunidades-etapa/modal-estancamiento/modal-estancamiento.component';
 const routes: Routes = [
   { path: '', component: LoginComponent, title: 'Login' },
   { path: 'login', component: LoginComponent, title: 'Login' },
@@ -99,6 +99,7 @@ const routes: Routes = [
  // { path: 'dashboard-general', component: AdminDashboardComponent, title: 'Dashboard General', canActivate: [AuthGuard]},
   { path: 'dashboard', component: AdminDashboardComponent, title: 'Dashboard General', canActivate: [AuthGuard]},
   { path: 'modal-campos-adicionales', component: ModalCamposNuevosComponent, title: 'ModalCamposAdicionales', canActivate: [AuthGuard]},
+  { path: 'modal-estancamiento', component: ModalEstancamientoComponent, title: 'Modal Estancamiento', canActivate: [AuthGuard]},
   { path: 'registro-contactos', component: RegistroContactosComponent, title: 'Registro Contactos' },
 ];
 

@@ -41,7 +41,10 @@ export class AcordeonOportunidadesEtapaComponent {
   modalDocumentosVisible: boolean = false;
   private modalSubscription!: Subscription;
   baseUrl: string = environment.baseURL;
-  // 
+  modalEstancamientoVisible: boolean = false;
+  estancamiento: boolean = false;
+
+  //
   constructor(
     private oportunidadService: OportunidadesService, private readonly loginService: LoginService, private messageService: MessageService, private cdr: ChangeDetectorRef,
     private modalOportunidadesService: ModalOportunidadesService
@@ -309,5 +312,10 @@ export class AcordeonOportunidadesEtapaComponent {
   private readonly cacheBuster = Date.now();
   getImagen(imagen: string) {
     return `${this.baseUrl}/Fotografia/${imagen}?t=${this.cacheBuster}`;
+  
   }
+ abrirModalEstancamiento() {
+  this.modalEstancamientoVisible = true;
+  this.estancamiento = true;
+}
 }

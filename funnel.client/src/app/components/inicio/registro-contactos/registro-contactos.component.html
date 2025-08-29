@@ -17,10 +17,10 @@
       <!-- Nombre -->
       <div class="row">
         <div class="col-sm-4 lbl">
-          <label for="nombre">Nombre: </label>
+          <label for="nombre">Nombre Prospecto: </label>
         </div>
         <div class="col-sm-8">
-          <input pInputText class="inptSize" formControlName="nombre"  (blur)="onProspectoNombreBlur()"/>
+          <input pInputText class="inptSize" formControlName="nombre"/>
           <span *ngIf="prospectoForm.get('nombre')?.invalid && prospectoForm.get('nombre')?.touched"
             class="text-danger"><br>
             <ng-container *ngIf="prospectoForm.get('nombre')?.errors?.['pattern']">El nombre es
@@ -68,19 +68,10 @@
         Nuevo Contacto
       </div> -->
     <form [formGroup]="contactoForm">
-      <div class="row inptSpace" >
-        <div class="col-sm-4 lbl">
-          <label for="prospecto">Prospecto:</label>
-        </div>
-        <div class="col-sm-8 inptSpace">
-        <input pInputText class="inptSize1" [value]="prospectoNombreIngresado ? prospectoForm.get('nombre')?.value : ''" 
-           disabled />
-        </div>
-      </div>
       <!-- Nombre -->
       <div class="row inptSpace">
         <div class="col-sm-4 lbl">
-          <label for="nombre">Nombre: </label>
+          <label for="nombre">Nombre Contacto: </label>
         </div>
         <div class="col-sm-8 inptSpace">
           <input pInputText class="inptSize"  formControlName="nombre" />

@@ -510,7 +510,13 @@
     border-color: transparent;
     width: 15px !important;
   }
-
+  ::ng-deep .seguimiento-warning .p-button-icon {
+    color: #ff3b3b !important;
+    font-size: 1.2rem !important;
+    background: transparent;
+    border-color: transparent;
+    width: 15px !important;
+  }
   ::ng-deep .blue-icon-documentos .p-button-icon {
     color: blue !important;
     font-size: 1.5rem;
@@ -536,6 +542,9 @@
   }
   
   ::ng-deep .blue-icon:hover {
+    background: transparent !important;
+  }
+  ::ng-deep .seguimiento-warning:hover {
     background: transparent !important;
   }
   ::ng-deep .blue-icon-documentos {
@@ -596,6 +605,7 @@
 }
 
 .todos-expandidos ::ng-deep .blue-icon .p-button-icon,
+.todos-expandidos ::ng-deep .seguimiento-warning .p-button-icon,
 .todos-expandidos ::ng-deep .custom-pencil {
   font-size: 1.2rem !important;
 }

@@ -90,7 +90,7 @@ export class OportunidadesComponent {
   columnsAMostrarResp: string = '';
   columnsTodasResp: string = '';
   disabledPdf: boolean = false;
-
+  tipoUsuario: number = 0;
   constructor(private oportunidadService: OportunidadesService, private messageService: MessageService, private cdr: ChangeDetectorRef,
     private readonly loginService: LoginService, public dialog: MatDialog, private modalOportunidadesService: ModalOportunidadesService,
     private readonly catalogoService: CatalogoService, private readonly configuracionColumnasService: ConfiguracionTablaService) {
@@ -99,6 +99,7 @@ export class OportunidadesComponent {
   }
 
   ngOnInit(): void {
+    this.tipoUsuario = this.loginService.obtenerRolUsuario();
     setTimeout(() => {
     this.mostrarDecimales = this.loginService.obtenerPermitirDecimales();
     },500);

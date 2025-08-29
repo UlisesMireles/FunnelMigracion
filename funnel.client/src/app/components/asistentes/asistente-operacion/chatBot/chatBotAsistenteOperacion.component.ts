@@ -365,6 +365,7 @@ ngOnInit() {
         this.cdRef.detectChanges();
         this.scrollToBottom();
         this.isConsultandoOpenIa = false;
+        this.saveState ();
       },
       error: (err: HttpErrorResponse) => {
         this.chatHistorial = this.chatHistorial.filter(m => m.rol !== "cargando");

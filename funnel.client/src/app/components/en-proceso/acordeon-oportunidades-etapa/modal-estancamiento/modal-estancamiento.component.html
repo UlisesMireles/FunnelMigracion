@@ -1,47 +1,39 @@
 <p-dialog appendTo="body" [(visible)]="visible" [modal]="true" styleClass="custom-header-naranja" [closable]="true"
-  [maximizable]="true" [style]="{
-    width: maximized ? '100vw' : '75rem', height: maximized ? '100vh' : '40rem'}" [ngClass]="{'maximized': maximized}"
-  (onHide)="close()" (onShow)="onDialogShow()" class="bodyDialog">
+  [maximizable]="true" [style]="{ width: maximized ? '80vw' : '55rem', height: maximized ? '100vh' : 'auto' }"
+  [ngClass]="{'maximized': maximized}" (onHide)="close()" (onShow)="onDialogShow()" class="bodyDialog">
 
   <ng-template pTemplate="header">
     <label class="margen">
-      {{ 'ANÁLISIS DE ESTANCAMIENTO ' }}
+      {{ 'ANÁLISIS DE ESTANCAMIENTO' }}
     </label>
   </ng-template>
 
-    <div *ngIf="!loading && !error && estancamientos.length > 0" class="table-container">
-      <div class="table-responsive">
-        <table class="estancamiento-table">
-          <thead>
-            <tr>
-              <th>Oportunidad</th>
-              <th>Etapa</th>
-              <th>Días Funnel</th>
-              <th>Riesgo</th>
-              <th>Score Estanc.</th>
-              <th>Prob. Estancada</th>
-              <th>Z-Score</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let item of estancamientos" [class.high-risk]="item.riesgo >= 80">
-              <td class="oportunidad-name">{{ item.oportunidad }}</td>
-              <td>{{ item.etapa }}</td>
-              <td>{{ item.diasFunnel }}</td>
-              <td>
-                <span class="riesgo-badge">
-                  {{ item.riesgo }}%
-                </span>
-              </td>
-              <td>
-                <span class="score-badge">
-                  {{ item.scoreEstancamiento }}
-                </span>
-              </td>
-              <td>{{ item.probEstancada | number:'1.2-2' }}</td>
-              <td>{{ item.zScoreFunnel | number:'1.2-2' }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+  <div *ngIf="loading" class="loading">
+    Cargando datos...
+  </div>
+
+  <div *ngIf="error" class="error">
+    {{ error }}
+  </div>
+
+<div *ngIf="!loading && !error && estancamientos.length > 0" class="estancamiento-list">
+  <div *ngFor="let item of estancamientos" class="estancamiento-card">
+    <h3>{{ item.oportunidad }}</h3>
+    <p><strong>Fase actual:</strong> {{ item.etapa }}</p>
+    <p><strong>Días sin actividad:</strong> {{ item.diasFunnel }} (cuánto tiempo ha pasado desde la última acción)</p>
+    <p><strong>Tiempo promedio de oportunidades similares:</strong> {{ item.mediaDias | number:'1.2-2' }} días</p>
+    <p><strong>Promedio de días en la primera fase:</strong> {{ item.mediaDiasEtapa1 | number:'1.2-2' }}</p>
+    <p><strong>Días en la primera fase:</strong> {{ item.diasEtapa1 }}</p>
+    <p><strong>Días en la segunda fase:</strong> {{ item.diasEtapa2 }}</p>
+    <p><strong>Días en la tercera fase:</strong> {{ item.diasEtapa3 }}</p>
+    <p><strong>Días en la cuarta fase:</strong> {{ item.diasEtapa4 }}</p>
+    <p><strong>Días en la quinta fase:</strong> {{ item.diasEtapa5 }}</p>
+    <p><strong>Variación de días:</strong> {{ item.desvDias | number:'1.2-2' }} (cuánto varían los tiempos respecto al promedio)</p>
+    <p><strong>Riesgo de retraso:</strong> {{ item.riesgo }}% (qué tan probable es que se quede sin avanzar)</p>
+    <p><strong>Comparación con otras oportunidades:</strong> {{ item.zScoreFunnel | number:'1.2-2' }} (si se está moviendo más rápido o más lento que otras oportunidades)</p>
+    <p><strong>Fecha límite pasada:</strong> {{ item.cierreVencido ? 'Sí' : 'No' }}</p>
+    <p><strong>Estado de estancamiento:</strong> {{ item.scoreEstancamiento }} (mayor número significa más riesgo de estancarse)</p>
+  </div>
+</div>
+
+</p-dialog>

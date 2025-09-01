@@ -43,6 +43,8 @@ export class AcordeonOportunidadesEtapaComponent {
   baseUrl: string = environment.baseURL;
   modalEstancamientoVisible: boolean = false;
   estancamiento: boolean = false;
+  idOportunidadSeleccionada: number = 0;
+
 
   //
   constructor(
@@ -314,8 +316,10 @@ export class AcordeonOportunidadesEtapaComponent {
     return `${this.baseUrl}/Fotografia/${imagen}?t=${this.cacheBuster}`;
   
   }
- abrirModalEstancamiento() {
-  this.modalEstancamientoVisible = true;
-  this.estancamiento = true;
-}
+  abrirModalEstancamiento(tarjeta: Tarjeta) {
+    this.modalEstancamientoVisible = true;
+    this.estancamiento = true;
+    this.idOportunidadSeleccionada = tarjeta.idOportunidad;
+     console.log('ID enviado al modal:', this.idOportunidadSeleccionada);
+  }
 }

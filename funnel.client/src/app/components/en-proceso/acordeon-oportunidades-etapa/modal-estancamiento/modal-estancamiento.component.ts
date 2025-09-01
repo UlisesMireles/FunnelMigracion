@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OportunidadesService } from '../../../../services/oportunidades.service';
 import { Estancamiento } from '../../../../interfaces/oportunidades';
@@ -8,26 +8,30 @@ import { Estancamiento } from '../../../../interfaces/oportunidades';
   templateUrl: './modal-estancamiento.component.html',
   styleUrls: ['./modal-estancamiento.component.css']
 })
-export class ModalEstancamientoComponent implements OnInit {
+export class ModalEstancamientoComponent{
   estancamientos: Estancamiento[] = [];
   loading: boolean = true;
   error: string = '';
   maximized: boolean = false;
   @Input() visible: boolean = false; 
+  @Input() idOportunidadSeleccionada: number = 0;
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() closeModal: EventEmitter<void> = new EventEmitter();
   constructor(private oportunidadesService: OportunidadesService, private cdr: ChangeDetectorRef) {}
 
-  ngOnInit(): void {
-    this.cargarEstancamientos();
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['visible'] && this.visible && this.idOportunidadSeleccionada > 0) {
+      this.cargarEstancamientos();
+    }
   }
 
   cargarEstancamientos(): void {
     this.loading = true;
     this.error = '';
-
-    this.oportunidadesService.consultarEstancamiento().subscribe({
+    console.log('Cargando estancamientos para la oportunidad ID:', this.idOportunidadSeleccionada);
+    this.oportunidadesService.consultarEstancamientoPorOportunidad(this.idOportunidadSeleccionada).subscribe({
       next: (data: Estancamiento[]) => {
+        console.log(data);
         this.estancamientos = data;
         this.loading = false;
       },
@@ -39,7 +43,7 @@ export class ModalEstancamientoComponent implements OnInit {
     });
   }
   
-    onDialogShow() {
+  onDialogShow() {
     this.maximized = false;
     this.cdr.detectChanges();
   }

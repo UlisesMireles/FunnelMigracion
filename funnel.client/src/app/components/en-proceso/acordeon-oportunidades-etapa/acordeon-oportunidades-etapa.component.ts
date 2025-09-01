@@ -320,6 +320,5 @@ export class AcordeonOportunidadesEtapaComponent {
     this.modalEstancamientoVisible = true;
     this.estancamiento = true;
     this.idOportunidadSeleccionada = tarjeta.idOportunidad;
-     console.log('ID enviado al modal:', this.idOportunidadSeleccionada);
   }
 }

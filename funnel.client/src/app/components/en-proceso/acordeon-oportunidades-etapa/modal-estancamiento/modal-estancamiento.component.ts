@@ -28,10 +28,8 @@ export class ModalEstancamientoComponent{
   cargarEstancamientos(): void {
     this.loading = true;
     this.error = '';
-    console.log('Cargando estancamientos para la oportunidad ID:', this.idOportunidadSeleccionada);
     this.oportunidadesService.consultarEstancamientoPorOportunidad(this.idOportunidadSeleccionada).subscribe({
       next: (data: Estancamiento[]) => {
-        console.log(data);
         this.estancamientos = data;
         this.loading = false;
       },

@@ -173,5 +173,11 @@ namespace Funnel.Server.Controllers
             var result = await _oportunidadesService.ConsultarEstancamientoEstadisticaOportunidades();
             return Ok(result);
         }
+        [HttpGet("[action]/")]
+        public async Task<ActionResult<List<EstancamientoEstadisticaOportunidadDto>>> ConsultarEstancamientoPorOportunidad(int idOportunidad)
+        {
+            var result = await _oportunidadesService.ConsultarEstancamientoPorOportunidad(idOportunidad);
+            return Ok(result);
+        }
     }
 }

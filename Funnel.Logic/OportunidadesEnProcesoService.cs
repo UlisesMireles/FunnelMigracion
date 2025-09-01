@@ -86,6 +86,10 @@ namespace Funnel.Logic
         { 
             return await _oportunidadesData.ConsultarEstancamientoEstadisticaOportunidades(); 
         }
+        public async Task<List<EstancamientoEstadisticaOportunidadDto>> ConsultarEstancamientoPorOportunidad(int IdOportunidad)
+        {
+            return await _oportunidadesData.ConsultarEstancamientoPorOportunidad(IdOportunidad);
+        }
         public async Task<List<OportunidadesTarjetasDto>> ConsultarOportunidadesPorMes(int IdUsuario, int IdEmpresa)
         {
             CultureInfo cultura = new CultureInfo("es-ES");

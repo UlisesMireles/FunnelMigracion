@@ -43,6 +43,11 @@ export class OortunidadesMesAcordeonComponent {
   @Output() result: EventEmitter<baseOut> = new EventEmitter();
 
   public mostrarDecimales: boolean = false;
+
+  modalEstancamientoVisible: boolean = false;
+  estancamiento: boolean = false;
+  idOportunidadSeleccionada: number = 0;
+
   // Inyección de servicios en el constructor
   constructor(
     private oportunidadService: OportunidadesService, private readonly loginService: LoginService, private messageService: MessageService, private cdr: ChangeDetectorRef,
@@ -344,5 +349,10 @@ export class OortunidadesMesAcordeonComponent {
   private readonly cacheBuster = Date.now(); 
   getImagen(imagen:string){
     return `${this.baseUrl}/Fotografia/${imagen}?t=${this.cacheBuster}`;
+  }
+   abrirModalEstancamiento(tarjeta: Tarjeta) {
+    this.modalEstancamientoVisible = true;
+    this.estancamiento = true;
+    this.idOportunidadSeleccionada = tarjeta.idOportunidad;
   }
 }

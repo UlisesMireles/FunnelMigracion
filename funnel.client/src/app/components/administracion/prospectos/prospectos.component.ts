@@ -43,7 +43,7 @@ export class ProspectosComponent {
   modalVisible: boolean = false;
   selectedEstatus: any = null;
   desdeSector = false;
-  baseUrl: string = environment.baseURLAssets;
+  baseUrl: string = environment.baseURL;
   qrData: string = '';
 
 

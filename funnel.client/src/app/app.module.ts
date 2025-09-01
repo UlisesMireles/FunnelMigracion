@@ -33,6 +33,7 @@ import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { CardModule } from 'primeng/card';
 import { FieldsetModule } from 'primeng/fieldset';
@@ -258,9 +259,8 @@ registerLocaleData(localeEs, 'es-MX');
     EliminarConversacionComponent,
     EvaluarBotComponent,
     RegistroContactosComponent,
-    ModalEstancamientoComponent
-
-  ],
+    ModalEstancamientoComponent,
+    TipoCurrencyPipe  ],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -289,9 +289,8 @@ registerLocaleData(localeEs, 'es-MX');
     PasswordModule,
     DialogModule,
     TooltipModule,
-    DatePipe,
-    CommonModule,
-    TipoCurrencyPipe,
+  CommonModule,
+  MatTooltipModule,
     CalendarModule,
     MatFormFieldModule,
     MatInputModule,

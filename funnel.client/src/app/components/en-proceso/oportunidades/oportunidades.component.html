@@ -26,7 +26,7 @@
             <i class="bi bi-list color-tab-2"></i>
           </a>
         </li>
-        <li class="nav-item tab-item">
+        <li class="nav-item tab-item" *ngIf="tipoUsuario === 1">
           <a class="nav-link" data-bs-toggle="tab" href="#estadisticas" (click)="camTitulo(3)" pTooltip="Estadisticas"
             tooltipPosition="top">
             <i class="bi bi-bar-chart color-tab-2"></i>

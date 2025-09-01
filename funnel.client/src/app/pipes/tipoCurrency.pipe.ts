@@ -2,7 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { DatePipe } from '@angular/common';
 
 @Pipe({
-    name: 'totalCurrency'
+    name: 'totalCurrency',
+    standalone: false
 })
 export class TipoCurrencyPipe implements PipeTransform {
 

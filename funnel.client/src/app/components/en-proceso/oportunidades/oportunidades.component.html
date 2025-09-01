@@ -189,14 +189,14 @@
                             </ng-template>
                           </p-columnFilter>
                         </div>
-                        <div *ngSwitchCase="'date'">
-                          <p-columnFilter field="{{def.key}}" matchMode="contains" [showMenu]="false">
-                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                              <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
-                                (ngModelChange)="filter($event)" class="p-inputtext" placeholder="">
-                            </ng-template>
-                          </p-columnFilter>
-                        </div>
+                       <div *ngSwitchCase="'date'">
+                        <p-columnFilter field="{{def.key}}" matchMode="dateContains" [showMenu]="false">
+                          <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                            <input type="text" pInputText [ngModel]="value" [ngStyle]="getColumnWidth(def.key)"
+                              (ngModelChange)="filter($event)" class="p-inputtext">
+                          </ng-template>
+                        </p-columnFilter>
+                      </div>
                         <div *ngSwitchCase="'numberFilter'">
                           <p-columnFilter type="numeric" field="{{def.key}}" [showButtons]="false"
                             [maxFractionDigits]="7">

@@ -46,7 +46,7 @@
               </div>
               <p-button type="button" text 
                 pTooltip="Estancamiento" tooltipPosition="top" styleClass="blue-icon"
-                        *ngIf="(tarjeta?.scoreEstancamiento || 0) > 95">
+                        *ngIf="(tarjeta?.scoreEstancamiento || 0) > 95" (click)="abrirModalEstancamiento(tarjeta)">
                 <ng-template pTemplate="icon">
                   <span class="fs-5 estancamiento">🚩</span>
                 </ng-template>
@@ -136,4 +136,5 @@
 <app-documentos-oportunidades [(visible)]="modalDocumentosVisible" [title]="'Documentos de '"
   (result)="manejarResultado($event)" [insertar]="insertar" [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">
 </app-documentos-oportunidades>
-  
+<app-modal-estancamiento [(visible)]="modalEstancamientoVisible" [idOportunidadSeleccionada]="idOportunidadSeleccionada">
+</app-modal-estancamiento>

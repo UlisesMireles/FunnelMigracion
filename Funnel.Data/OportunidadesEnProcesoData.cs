@@ -77,7 +77,7 @@ namespace Funnel.Data
                     var dto = new ComboEntregasDto();
                     dto.IdTipoEntrega = ComprobarNulos.CheckIntNull(reader["IdTipoEntrega"]);
                     dto.Descripcion = ComprobarNulos.CheckStringNull(reader["Descripcion"]);
-                   
+
                     result.Add(dto);
                 }
             }
@@ -377,14 +377,14 @@ namespace Funnel.Data
                         DataBase.CreateParameterSql("@pIdEstatusOportunidad", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdEstatusOportunidad),
                         DataBase.CreateParameterSql("@pIdUsuario", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdUsuario),
                     };
-                    storedProcedure = "spOportunidades_ActualizarEstatusOportunidad"; 
+                    storedProcedure = "spOportunidades_ActualizarEstatusOportunidad";
                 }
 
                 using (IDataReader reader = await DataBase.GetReaderSql(storedProcedure, CommandType.StoredProcedure, list, _connectionString))
                 {
                     while (reader.Read())
                     {
-                        
+
                     }
                 }
 
@@ -518,7 +518,7 @@ namespace Funnel.Data
             using (IDataReader reader = await DataBase.GetReaderSql("F_Catalogos", CommandType.StoredProcedure, list, _connectionString))
             {
                 while (reader.Read())
-                {   
+                {
                     var registro = new EtiquetasOportunidadesDetalleDto
                     {
                         Prospecto = ComprobarNulos.CheckStringNull(reader["Prospecto"]),
@@ -615,6 +615,52 @@ namespace Funnel.Data
             }
             return result;
         }
+        public async Task<List<EstancamientoEstadisticaOportunidadDto>> ConsultarEstancamientoPorOportunidad(int IdOportunidad)
+        {
+            var result = new List<EstancamientoEstadisticaOportunidadDto>();
+            string query = "SELECT * FROM [dbo].[EstancamientoEstadisticaOportunidades] WHERE IdOportunidad = @IdOportunidad";
 
+            var parametros = new List<ParameterSQl>
+            {
+                new ParameterSQl
+                {
+                    Name = "@IdOportunidad",
+                    DbType = SqlDbType.Int,
+                    Direction = ParameterDirection.Input,
+                    Value = IdOportunidad, SourceVersion = DataRowVersion.Current
+                }
+            };
+
+            using (IDataReader reader = await DataBase.GetReaderSql(query, CommandType.Text, parametros, _connectionString))
+            {
+                while (reader.Read())
+                {
+                    var dto = new EstancamientoEstadisticaOportunidadDto
+                    {
+                        IdOportunidad = ComprobarNulos.CheckIntNull(reader["IdOportunidad"]),
+                        Oportunidad = ComprobarNulos.CheckStringNull(reader["Oportunidad"]),
+                        Etapa = ComprobarNulos.CheckStringNull(reader["Etapa"]),
+                        DiasFunnel = ComprobarNulos.CheckIntNull(reader["DiasFunnel"]),
+                        MediaDias = ComprobarNulos.CheckDecimalNull(reader["MediaDias"]),
+                        MediaDiasEtapa1 = ComprobarNulos.CheckDecimalNull(reader["MediaDiasEtapa1"]),
+                        DesvDias = ComprobarNulos.CheckDecimalNull(reader["DesvDias"]),
+                        DiasEtapa1 = ComprobarNulos.CheckIntNull(reader["DiasEtapa1"]),
+                        DiasEtapa2 = ComprobarNulos.CheckIntNull(reader["DiasEtapa2"]),
+                        DiasEtapa3 = ComprobarNulos.CheckIntNull(reader["DiasEtapa3"]),
+                        DiasEtapa4 = ComprobarNulos.CheckIntNull(reader["DiasEtapa4"]),
+                        DiasEtapa5 = ComprobarNulos.CheckIntNull(reader["DiasEtapa5"]),
+                        Riesgo = ComprobarNulos.CheckIntNull(reader["Riesgo"]),
+                        ZScoreFunnel = ComprobarNulos.CheckDecimalNull(reader["ZScoreFunnel"]),
+                        ZScoreFunnelEtapa1 = ComprobarNulos.CheckDecimalNull(reader["ZScoreFunnelEtapa1"]),
+                        InactividadNorm = ComprobarNulos.CheckDecimalNull(reader["InactividadNorm"]),
+                        CierreVencido = ComprobarNulos.CheckIntNull(reader["CierreVencido"]),
+                        ProbEstancada = ComprobarNulos.CheckIntNull(reader["ProbEstancada"]),
+                        ScoreEstancamiento = ComprobarNulos.CheckDecimalNull(reader["ScoreEstancamiento"])
+                    };
+                    result.Add(dto);
+                }
+            }
+            return result;
+        }
     }
 }

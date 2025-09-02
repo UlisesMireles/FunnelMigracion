@@ -144,4 +144,13 @@ export class OportunidadesService {
     return this.http.post(`${this.baseUrl}api/Etapas/GuardarEtapas`, request);
   }
 
+  consultarEstancamiento(): Observable<any> {
+    return this.http.get(`${this.baseUrl}api/Oportunidades/ConsultarEstancamientoEstadisticaOportunidades`);
+  }
+
+  consultarEstancamientoPorOportunidad(idOportunidad: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}api/Oportunidades/ConsultarEstancamientoPorOportunidad`, {
+      params: { idOportunidad: idOportunidad.toString() }
+    });
+  }
 }

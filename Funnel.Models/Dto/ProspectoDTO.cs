@@ -30,6 +30,8 @@ namespace Funnel.Models.Dto
 
         public decimal PorcEfectividad { get; set; }
         public DateTime? UltimaFechaRegistro { get; set; }
+        public int? UsuarioCreador { get; set; }
         public Dictionary<string, string?> PropiedadesAdicionales { get; set; } = new();
+        
     }
 }

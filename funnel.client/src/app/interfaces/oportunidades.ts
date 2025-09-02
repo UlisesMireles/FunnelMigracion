@@ -163,3 +163,24 @@ export interface RequestActualizarEtapa {
   idUsuario: number;       
   idEmpresa: number;    
 }
+export interface Estancamiento {
+  idOportunidad: number;
+  oportunidad:string;
+  etapa:string;
+  diasFunnel:number;
+  mediaDias:number;
+  mediaDiasEtapa1:number;
+  desvDias:number;
+  diasEtapa1:number;
+  diasEtapa2:number;
+  diasEtapa3:number;
+  diasEtapa4:number;
+  diasEtapa5:number;
+  riesgo: number;
+  zScoreFunnel: number;
+  zScoreEtapa1: number;
+  inactividadNorm: number;
+  cierreVencido: number;
+  probEstancada: number;
+  scoreEstancamiento: number;
+}

@@ -165,8 +165,17 @@ export class EtapasComponent {
 
     this.etapas.push(nuevaEtapa);
     this.validaGuardar = false;
-    this.opcionPlantillas = true;
-    this.habilitaPlantillas = false;
+    if(this.insertEtapas) {
+      this.opcionPlantillas = false;
+      this.habilitaPlantillas = true;
+    }
+    else 
+    {
+      this.opcionPlantillas = true;
+      this.habilitaPlantillas = false;
+    }
+
+    this.habilitaPlantillas = true;
     // Actualizar connectedDropLists después de agregar
     this.actualizarConnectedDropLists();
   }
@@ -185,7 +194,7 @@ export class EtapasComponent {
     this.etapas = plantilla.etapas;
     this.idPlantilla = plantilla.idPlantilla;
     this.habilitaPlantillas = true;
-    this.validaGuardar = true;
+    this.validaGuardar = false;
     this.cantidadExpandidos = this.etapas.filter(etapa => etapa.expandido).length;
     this.cdr.detectChanges();
   }
@@ -565,6 +574,7 @@ export class EtapasComponent {
 
     etapa.editandoNombre = false;
     this.validaGuardar = true;
+    this.habilitaPlantillas = false;
   }
 
   eliminarEtapa(etapa: any): void {

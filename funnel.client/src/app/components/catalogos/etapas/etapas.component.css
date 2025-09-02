@@ -106,6 +106,16 @@ body {
   justify-content: space-between;
 }
 
+.etapa-item-NoEditable {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background: #f1f1f1;
+  border-radius: 5px;
+  cursor: context-menu;
+  justify-content: space-between;
+}
+
 .handle {
   margin-right: 10px;
   cursor: grab;
@@ -256,5 +266,9 @@ body {
 }
 
 .estilosBotonesInhabilitador:disabled { 
-    cursor: no-drop;
+    cursor: grab;
+}
+
+.mdc-button {
+  min-width: 0;
 }

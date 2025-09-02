@@ -57,8 +57,8 @@
         <h3 style="justify-self: left;">Etapas</h3>
         <div cdkDropList [cdkDropListData]="etapas" (cdkDropListDropped)="dropEtapa($event)" class="lista-etapas" 
         [cdkDropListDisabled]="habilitaPlantillas">
-            <div *ngFor="let etapa of etapasActivas; let i = index" cdkDrag class="col-12 etapa-item">
-                <div class="col-1">
+            <div *ngFor="let etapa of etapasActivas; let i = index" cdkDrag class="col-12" [ngClass]="{ 'etapa-item': idPlantilla <= 0, 'etapa-item-NoEditable': idPlantilla > 0 }">
+                <div class="col-1" *ngIf="idPlantilla <= 0" >
                     <span cdkDragHandle class="handle">⋮⋮⋮</span>
                 </div>
                 <div class="col-9" *ngIf="!etapa.editandoNombre" style="text-align: left;">
@@ -66,7 +66,7 @@
                     <span class="etapa-probabilidad">{{ etapa.probabilidad }}%</span>
 
                 </div>
-                <div class="col-2" *ngIf="!etapa.editandoNombre">
+                <div class="col-2" *ngIf="!etapa.editandoNombre && idPlantilla <= 0">
                     <button (click)="editarNombreEtapa(etapa)" class="boton-editar estilosBotonesInhabilitador"
                         [disabled]="habilitaPlantillas">✏️</button>
                     <button (click)="eliminarEtapa(etapa)" class="boton-eliminar estilosBotonesInhabilitador"

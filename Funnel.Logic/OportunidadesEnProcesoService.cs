@@ -94,6 +94,7 @@ namespace Funnel.Logic
 
             List<OportunidadesTarjetasDto> lista = new List<OportunidadesTarjetasDto>();
             List<OportunidadesEnProcesoDto> oportunidades = await _oportunidadesData.ConsultarOportunidadesEnProceso(IdUsuario, IdEmpresa, 1, IdProceso);
+            List<EstancamientoEstadisticaOportunidadDto> estancamientos = await _oportunidadesData.ConsultarEstancamientoEstadisticaOportunidades();
 
             int[] meses = new int[5];
             int[] anio = new int[5];
@@ -174,6 +175,7 @@ namespace Funnel.Logic
             List<OportunidadesTarjetasDto> lista = new List<OportunidadesTarjetasDto>();
             List<ComboEtapasDto> etapas = await _oportunidadesData.ComboEtapas(IdEmpresa, IdProceso);
             List<OportunidadesEnProcesoDto> oportunidades = await _oportunidadesData.ConsultarOportunidadesEnProceso(IdUsuario, IdEmpresa, 1, IdProceso);
+            List<EstancamientoEstadisticaOportunidadDto> estancamientos = await _oportunidadesData.ConsultarEstancamientoEstadisticaOportunidades();
 
             foreach (var item in etapas)
             {

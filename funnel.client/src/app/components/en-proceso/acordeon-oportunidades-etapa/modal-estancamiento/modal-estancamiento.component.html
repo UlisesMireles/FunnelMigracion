@@ -21,23 +21,15 @@
     <h3 class="mb-2">{{ item.oportunidad }}</h3>
     
     <p><strong>Fase actual:</strong> {{ item.etapa }} <small>(en qué etapa del proceso se encuentra la oportunidad)</small></p>
-    <p><strong>Días sin actividad:</strong> {{ item.diasFunnel }} <small>(cuánto tiempo ha pasado desde la última acción registrada)</small></p>
-    <!--<p><strong>Tiempo promedio de oportunidades similares:</strong> {{ item.mediaDias | number:'1.0-0' }} días <small>(cuánto tardan oportunidades similares en avanzar)</small></p>
+    <!--<p><strong>Días sin actividad:</strong> {{ item.diasFunnel }} <small>(cuánto tiempo ha pasado desde la última acción registrada)</small></p>
+    <p><strong>Tiempo promedio de oportunidades similares:</strong> {{ item.mediaDias | number:'1.0-0' }} días <small>(cuánto tardan oportunidades similares en avanzar)</small></p>
     <p><strong>Promedio de días en la primera fase:</strong> {{ item.mediaDiasEtapa1 | number:'1.2-2' }} días</p>-->
     
-    <div class="row">
-      <div class="col">
-        <p><strong>Días en la primera fase:</strong> {{ item.diasEtapa1 }}</p>
-        <p><strong>Días en la segunda fase:</strong> {{ item.diasEtapa2 }}</p>
-        <p><strong>Días en la tercera fase:</strong> {{ item.diasEtapa3 }}</p>
-      </div>
-      <div class="col">
-        <p><strong>Días en la cuarta fase:</strong> {{ item.diasEtapa4 }}</p>
-        <p><strong>Días en la quinta fase:</strong> {{ item.diasEtapa5 }}</p>
-        <p><strong>Variación de días:</strong> {{ item.desvDias | number:'1.2-2' }} <small>(desviación respecto al promedio de oportunidades similares)</small></p>
-      </div>
-    </div>
-
+    <p *ngIf="getDiasEtapaActual(item) !== null">
+      <strong>Días en etapa actual:</strong> {{ getDiasEtapaActual(item) }}
+    </p>
+    
+    <p><strong>Variación de días:</strong> {{ item.desvDias | number:'1.2-2' }} <small>(desviación respecto al promedio de oportunidades similares)</small></p>
     <p><strong>Riesgo de retraso:</strong> <!--{{ item.riesgo ? 'Alto' : 'Bajo' }} --><small> Presenta más de 15 días sin actividad</small></p>
     <p><strong>Comparación con otras oportunidades:</strong> {{ item.zScoreFunnel | number:'1.2-2' }} <small>(positivo = más rápido que otras oportunidades, negativo = más lento)</small></p>
     <p><strong>Inactividad normalizada:</strong> {{ item.inactividadNorm | number:'1.2-2' }}</p>

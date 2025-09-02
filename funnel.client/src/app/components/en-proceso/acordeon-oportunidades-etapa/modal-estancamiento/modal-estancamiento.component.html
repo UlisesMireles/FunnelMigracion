@@ -29,10 +29,10 @@
       <strong>Días en etapa actual:</strong> {{ getDiasEtapaActual(item) }}
     </p>
     
-    <p><strong>Variación de días:</strong> {{ item.desvDias | number:'1.2-2' }} <small>(desviación respecto al promedio de oportunidades similares)</small></p>
+    <!--<p><strong>Variación de días:</strong> {{ item.desvDias | number:'1.2-2' }} <small>(desviación respecto al promedio de oportunidades similares)</small></p>-->
     <p><strong>Riesgo de retraso:</strong> <!--{{ item.riesgo ? 'Alto' : 'Bajo' }} --><small> Presenta más de 15 días sin actividad</small></p>
-    <p><strong>Comparación con otras oportunidades:</strong> {{ item.zScoreFunnel | number:'1.2-2' }} <small>(positivo = más rápido que otras oportunidades, negativo = más lento)</small></p>
-    <p><strong>Inactividad normalizada:</strong> {{ item.inactividadNorm | number:'1.2-2' }}</p>
+    <!--<p><strong>Comparación con otras oportunidades:</strong> {{ item.zScoreFunnel | number:'1.2-2' }} <small>(positivo = más rápido que otras oportunidades, negativo = más lento)</small></p>-->
+    <!--<p><strong>Inactividad normalizada:</strong> {{ item.inactividadNorm | number:'1.2-2' }}</p>-->
     <p><strong>¿Cierre vencido?:</strong> {{ item.cierreVencido ? 'Sí' : 'No' }}</p>
     <p><strong>Score de estancamiento:</strong> {{ item.scoreEstancamiento | number:'1.2-2' }} <small>(mayor número indica mayor riesgo de estancamiento)</small></p>
   </div>

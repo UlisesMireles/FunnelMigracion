@@ -22,8 +22,8 @@
     
     <p><strong>Fase actual:</strong> {{ item.etapa }} <small>(en qué etapa del proceso se encuentra la oportunidad)</small></p>
     <p><strong>Días sin actividad:</strong> {{ item.diasFunnel }} <small>(cuánto tiempo ha pasado desde la última acción registrada)</small></p>
-    <p><strong>Tiempo promedio de oportunidades similares:</strong> {{ item.mediaDias | number:'1.0-0' }} días <small>(cuánto tardan oportunidades similares en avanzar)</small></p>
-    <p><strong>Promedio de días en la primera fase:</strong> {{ item.mediaDiasEtapa1 | number:'1.2-2' }} días</p>
+    <!--<p><strong>Tiempo promedio de oportunidades similares:</strong> {{ item.mediaDias | number:'1.0-0' }} días <small>(cuánto tardan oportunidades similares en avanzar)</small></p>
+    <p><strong>Promedio de días en la primera fase:</strong> {{ item.mediaDiasEtapa1 | number:'1.2-2' }} días</p>-->
     
     <div class="row">
       <div class="col">
@@ -38,7 +38,7 @@
       </div>
     </div>
 
-    <p><strong>Riesgo de retraso:</strong> {{ item.riesgo ? 'Alto' : 'Bajo' }} <small>(probabilidad de que la oportunidad se quede estancada)</small></p>
+    <p><strong>Riesgo de retraso:</strong> <!--{{ item.riesgo ? 'Alto' : 'Bajo' }} --><small> Presenta más de 15 días sin actividad</small></p>
     <p><strong>Comparación con otras oportunidades:</strong> {{ item.zScoreFunnel | number:'1.2-2' }} <small>(positivo = más rápido que otras oportunidades, negativo = más lento)</small></p>
     <p><strong>Inactividad normalizada:</strong> {{ item.inactividadNorm | number:'1.2-2' }}</p>
     <p><strong>¿Cierre vencido?:</strong> {{ item.cierreVencido ? 'Sí' : 'No' }}</p>

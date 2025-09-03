@@ -12,10 +12,26 @@
                 <div cdkDropList id="camposAdicionalesList" [cdkDropListData]="camposAdicionales"
                     [cdkDropListConnectedTo]="['camposNoUtilizadosList']" class="drop-list"
                     (cdkDropListDropped)="dropCampo($event)">
-                    <div *ngFor="let campo of camposAdicionales; trackBy: trackByCampo" cdkDrag [cdkDragData]="campo"
-                        class="campo-item">
-                        <span cdkDragHandle class="handle">⋮⋮⋮</span>
-                        {{ campo.etiqueta }}
+                   <div *ngFor="let campo of camposAdicionales; trackBy: trackByCampo" 
+                        cdkDrag [cdkDragData]="campo"
+                        class="campo-item flex justify-content-between align-items-center p-2">
+
+                        <div class="flex align-items-center">
+                            <span cdkDragHandle class="handle">⋮⋮⋮</span>
+                            <span class="ml-2">{{ campo.etiqueta }}</span>
+                        </div>
+
+                        <p-checkbox 
+                            [(ngModel)]="campo.requerido" 
+                            binary="true" 
+                            label="Requerido">
+                        </p-checkbox>
+                    </div>
+                    <div *ngIf="camposAdicionales && camposAdicionales.length > 0">
+                        <label>Marcar para definir los campos como obligatorios</label>
+                    </div>
+                    <div *ngIf="camposAdicionales.length === 0" class="p-3">
+                        Arrastrar aquí los campos que deseas agregar
                     </div>
                 </div>
             </div>

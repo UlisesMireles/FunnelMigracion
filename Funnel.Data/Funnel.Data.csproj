@@ -31,6 +31,7 @@
 		<Folder Include="Scripts\11-08-2025 Encuesta\" />
 		<Folder Include="Scripts\14-08-2025 incidenciasEncuesta\" />
 		<Folder Include="Scripts\26-08-2025 QRlibreria\" />
+		<Folder Include="Scripts\checkAdicionales 03-09-2025\" />
 		<Folder Include="Utils\" />
 	</ItemGroup>
 	

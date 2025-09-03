@@ -632,6 +632,7 @@ namespace Funnel.Data
                         Oportunidad = ComprobarNulos.CheckStringNull(reader["Oportunidad"]),
                         Etapa = ComprobarNulos.CheckStringNull(reader["Etapa"]),
                         DiasFunnel = ComprobarNulos.CheckIntNull(reader["DiasFunnel"]),
+                        DiasSinActividad = ComprobarNulos.CheckIntNull(reader["DiasSinActividad"]),
                         MediaDias = ComprobarNulos.CheckDecimalNull(reader["MediaDias"]),
                         MediaDiasEtapa1 = ComprobarNulos.CheckDecimalNull(reader["MediaDiasEtapa1"]),
                         DesvDias = ComprobarNulos.CheckDecimalNull(reader["DesvDias"]),

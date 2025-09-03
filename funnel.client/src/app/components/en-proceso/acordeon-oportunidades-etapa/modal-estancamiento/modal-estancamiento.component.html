@@ -21,8 +21,8 @@
     <h3 class="mb-2">{{ item.oportunidad }}</h3>
     
     <p><strong>Fase actual:</strong> {{ item.etapa }} <small>(en qué etapa del proceso se encuentra la oportunidad)</small></p>
-    <!--<p><strong>Días sin actividad:</strong> {{ item.diasFunnel }} <small>(cuánto tiempo ha pasado desde la última acción registrada)</small></p>
-    <p><strong>Tiempo promedio de oportunidades similares:</strong> {{ item.mediaDias | number:'1.0-0' }} días <small>(cuánto tardan oportunidades similares en avanzar)</small></p>
+    <p><strong>Días sin actividad:</strong> {{ item.diasSinActividad }} <small>(cuánto tiempo ha pasado desde la última acción registrada)</small></p>
+    <!--<p><strong>Tiempo promedio de oportunidades similares:</strong> {{ item.mediaDias | number:'1.0-0' }} días <small>(cuánto tardan oportunidades similares en avanzar)</small></p>
     <p><strong>Promedio de días en la primera fase:</strong> {{ item.mediaDiasEtapa1 | number:'1.2-2' }} días</p>-->
     
     <p *ngIf="getDiasEtapaActual(item) !== null">

@@ -12,6 +12,7 @@ namespace Funnel.Models.Dto
         public string Oportunidad { get; set; }
         public string Etapa { get; set; }
         public int DiasFunnel { get; set; }
+        public int DiasSinActividad { get; set; }
         public decimal MediaDias { get; set; }
         public decimal MediaDiasEtapa1 { get; set; }
         public decimal DesvDias { get; set; }

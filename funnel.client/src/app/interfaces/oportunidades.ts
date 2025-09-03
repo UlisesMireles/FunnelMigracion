@@ -155,6 +155,7 @@ export interface Estancamiento {
   oportunidad:string;
   etapa:string;
   diasFunnel:number;
+  diasSinActividad:number;
   mediaDias:number;
   mediaDiasEtapa1:number;
   desvDias:number;

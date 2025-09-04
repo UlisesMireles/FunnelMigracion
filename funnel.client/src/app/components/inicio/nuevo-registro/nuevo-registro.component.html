@@ -1,0 +1,121 @@
+<div class="navbar">
+  <nav class="text-center m-auto">
+    <img width="150" [src]="baseUrl + '/assets/img/logotipo-glupoint.png'" alt="logo SFS" class="m-auto">
+  </nav>
+</div>
+
+<div class="register-container">
+
+<!-- Paso 1 -->
+<div *ngIf="currentStep === 1" class="step1-box">
+  <h2>Crea tu cuenta</h2>
+  <p class="step">Información personal</p>
+<div class="progress-container">
+  <div class="progress-step" [class.active]="currentStep >= 1">1</div>
+  <div class="progress-line" [class.active]="currentStep >= 2"></div>
+  <div class="progress-step" [class.active]="currentStep >= 2">2</div>
+  <div class="progress-line" [class.active]="currentStep >= 3"></div>
+  <div class="progress-step" [class.active]="currentStep >= 3">3</div>
+  <div class="progress-line" [class.active]="currentStep >= 4"></div>
+  <div class="progress-step" [class.active]="currentStep >= 4">4</div>
+</div>
+  <form (ngSubmit)="goToStep(2)">
+    <input type="text" placeholder="Nombre completo" required />
+    <input type="email" placeholder="Correo electrónico" required />
+
+    <button class="next-step" type="submit">Siguiente paso</button>
+  </form>
+</div>
+<!-- Paso 2 -->
+<div *ngIf="currentStep === 2" class="step2-box">
+  <h2>Introduzca el código de verificación</h2>
+  <p class="step">
+    Hemos enviado un código de verificación a su dirección de correo electrónico.
+  </p>
+  <div class="progress-container">
+  <div class="progress-step" [class.active]="currentStep >= 1">1</div>
+  <div class="progress-line" [class.active]="currentStep >= 2"></div>
+  <div class="progress-step" [class.active]="currentStep >= 2">2</div>
+  <div class="progress-line" [class.active]="currentStep >= 3"></div>
+  <div class="progress-step" [class.active]="currentStep >= 3">3</div>
+  <div class="progress-line" [class.active]="currentStep >= 4"></div>
+  <div class="progress-step" [class.active]="currentStep >= 4">4</div>
+</div>
+
+  <div class="code-inputs">
+  <input maxlength="1" type="text" #c1 (input)="moveNext($event, c2)" />
+  <input maxlength="1" type="text" #c2 (input)="moveNext($event, c3)" />
+  <input maxlength="1" type="text" #c3 (input)="moveNext($event, c4)" />
+  <input maxlength="1" type="text" #c4 (input)="moveNext($event, c5)" />
+  <input maxlength="1" type="text" #c5 (input)="moveNext($event, c6)" />
+  <input maxlength="1" type="text" #c6 />
+</div>
+
+  <button class="next-step" (click)="goToStep(3)">Verificar</button>
+  <p class="resend">¿No has recibido el código? <a href="">Reenviar</a></p>
+</div>
+
+  <!-- Paso 3 -->
+  <div *ngIf="currentStep === 3" class="step3-box">
+    <h2>Crea tu cuenta</h2>
+    <p class="step">Define tus credenciales de acceso.</p>
+<div class="progress-container">
+  <div class="progress-step" [class.active]="currentStep >= 1">1</div>
+  <div class="progress-line" [class.active]="currentStep >= 2"></div>
+  <div class="progress-step" [class.active]="currentStep >= 2">2</div>
+  <div class="progress-line" [class.active]="currentStep >= 3"></div>
+  <div class="progress-step" [class.active]="currentStep >= 3">3</div>
+  <div class="progress-line" [class.active]="currentStep >= 4"></div>
+  <div class="progress-step" [class.active]="currentStep >= 4">4</div>
+</div>
+    <form (ngSubmit)="goToStep(4)">
+      <label class="lbl">Nombre de usuario</label>
+      <div class="input-box">
+        <i class="bi bi-person icono"></i>
+        <input type="text" placeholder="Tu nombre de usuario" required />
+      </div>
+
+      <label>Contraseña</label>
+      <div class="input-box">
+        <i class="bi bi-lock icono"></i>
+        <input type="password" placeholder="Tu contraseña" required />
+      </div>
+
+      <label>Confirmar contraseña</label>
+      <div class="input-box">
+        <i class="bi bi-shield-lock icono"></i>
+        <input type="password" placeholder="Repite tu contraseña" required />
+      </div>
+
+      <button class="next-step" type="submit">Continuar →</button>
+    </form>
+  </div>
+  <!-- Paso 4 -->
+  <div *ngIf="currentStep === 4" class="step4-box">
+    <h2>Información de la Empresa</h2>
+    <p class="step">Completa los datos para finalizar el registro.</p>
+<div class="progress-container">
+  <div class="progress-step" [class.active]="currentStep >= 1">1</div>
+  <div class="progress-line" [class.active]="currentStep >= 2"></div>
+  <div class="progress-step" [class.active]="currentStep >= 2">2</div>
+  <div class="progress-line" [class.active]="currentStep >= 3"></div>
+  <div class="progress-step" [class.active]="currentStep >= 3">3</div>
+  <div class="progress-line" [class.active]="currentStep >= 4"></div>
+  <div class="progress-step" [class.active]="currentStep >= 4">4</div>
+</div>
+    <form (ngSubmit)="finish()">
+      <label class="lbl">Nombre de la empresa</label>
+      <input type="text" placeholder="Ej: Corp S.A de C.V" required />
+
+      <label class="lbl">Dirección</label>
+      <input type="text" placeholder="Ej: Calle Falsa 123" required />
+
+      <label class="lbl">RFC</label>
+      <input type="text" placeholder="Ej: ABC123456789" required />
+
+      <label class="lbl">Sitio Web</label>
+      <input type="text" placeholder="Ej: https://corp.com" required />
+      <button class="next-step" type="submit">Finalizar Registro</button>
+    </form>
+  </div>
+</div>

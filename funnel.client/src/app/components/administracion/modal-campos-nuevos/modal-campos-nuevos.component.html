@@ -24,7 +24,7 @@
                         <p-checkbox 
                             [(ngModel)]="campo.requerido" 
                             binary="true" 
-                            label="Requerido">
+                            label="Requerido" (onChange)="validarCambios()">
                         </p-checkbox>
                     </div>
                     <div *ngIf="camposAdicionales && camposAdicionales.length > 0">

@@ -119,7 +119,7 @@ export class ModalCamposNuevosComponent {
           itemToMove.orden = 0;
           itemToMove.activo = false;
           itemToMove.tipoCatalogoInput = this.pantalla;
-          itemToMove.requerido = false;
+       //   itemToMove.requerido = false;
         }
         targetList.splice(event.currentIndex, 0, itemToMove);
       }
@@ -129,7 +129,7 @@ export class ModalCamposNuevosComponent {
       campo.activo = true;
       campo.orden = index + 1;
       campo.tipoCatalogoInput = this.pantalla;
-      campo.requerido = false;
+    //  campo.requerido = false;
     });
 
     this.cdr.detectChanges();

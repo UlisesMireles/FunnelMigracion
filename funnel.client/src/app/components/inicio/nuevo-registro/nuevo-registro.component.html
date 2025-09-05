@@ -26,7 +26,9 @@
     </div>
 
     <form [formGroup]="usuarioForm" (ngSubmit)="goToStep(2)">
-      <input type="text" formControlName="nombre" placeholder="Nombre completo" />
+      <input type="text" formControlName="nombre" placeholder="Nombre" />
+      <input type="text" formControlName="apellidoPaterno" placeholder="Apellido Paterno" />
+      <input type="text" formControlName="apellidoMaterno" placeholder="Apellido Materno" />
       <input type="email" formControlName="email" placeholder="Correo electrónico" />
 
       <button class="next-step" type="submit">

@@ -31,7 +31,6 @@
         <div *ngIf="usuarioForm.get('correo')?.touched && usuarioForm.get('correo')?.invalid" class="error">
           <small *ngIf="usuarioForm.get('correo')?.errors?.['email']">Formato de correo inválido.</small>
         </div>
-
       <button class="next-step" type="submit" [disabled]="usuarioForm.get('nombre')?.invalid || usuarioForm.get('correo')?.invalid" [ngStyle]="{ 'background-color': (usuarioForm.get('nombre')?.invalid || usuarioForm.get('correo')?.invalid) ? '#9ca3af' : '#2563eb' }">
         Siguiente paso
       </button>

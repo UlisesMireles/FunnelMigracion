@@ -31,7 +31,8 @@
         <div *ngIf="usuarioForm.get('correo')?.touched && usuarioForm.get('correo')?.invalid" class="error">
           <small *ngIf="usuarioForm.get('correo')?.errors?.['email']">Formato de correo inválido.</small>
         </div>
-      <button class="next-step" type="submit" [disabled]="usuarioForm.get('nombre')?.invalid || usuarioForm.get('correo')?.invalid" [ngStyle]="{ 'background-color': (usuarioForm.get('nombre')?.invalid || usuarioForm.get('correo')?.invalid) ? '#9ca3af' : '#2563eb' }">
+      <button class="next-step" type="submit" [disabled]="usuarioForm.get('nombre')?.invalid || usuarioForm.get('correo')?.invalid" [ngStyle]="{ 'background-color': (usuarioForm.get('nombre')?.invalid || usuarioForm.get('correo')?.invalid) ? '#9ca3af' : '#2563eb' }"
+        (click)="codigoValidadorCorreo(usuarioForm.get('correo')?.value)">
         Siguiente paso
       </button>
     </form>
@@ -56,17 +57,20 @@
     </div>
 
     <div class="code-inputs">
-      <input maxlength="1" type="text" #c1 (input)="moveNext($event, c2)" />
-      <input maxlength="1" type="text" #c2 (input)="moveNext($event, c3)" />
-      <input maxlength="1" type="text" #c3 (input)="moveNext($event, c4)" />
-      <input maxlength="1" type="text" #c4 (input)="moveNext($event, c5)" />
-      <input maxlength="1" type="text" #c5 (input)="moveNext($event, c6)" />
-      <input maxlength="1" type="text" #c6 />
+      <input maxlength="1" type="text" #c1 (input)="moveNext($event, c2); checkCodigoInputs(c1,c2,c3,c4,c5,c6)" />
+      <input maxlength="1" type="text" #c2 (input)="moveNext($event, c3); checkCodigoInputs(c1,c2,c3,c4,c5,c6)" />
+      <input maxlength="1" type="text" #c3 (input)="moveNext($event, c4); checkCodigoInputs(c1,c2,c3,c4,c5,c6)" />
+      <input maxlength="1" type="text" #c4 (input)="moveNext($event, c5); checkCodigoInputs(c1,c2,c3,c4,c5,c6)" />
+      <input maxlength="1" type="text" #c5 (input)="moveNext($event, c6); checkCodigoInputs(c1,c2,c3,c4,c5,c6)" />
+      <input maxlength="1" type="text" #c6 (input)="checkCodigoInputs(c1,c2,c3,c4,c5,c6)" />
     </div>
 
-    <button class="next-step" (click)="goToStep(3)">Verificar</button>
+    <button class="next-step" [disabled]="!codigoCompleto" (click)="verificarCodigoUsuario(c1.value + c2.value + c3.value + c4.value + c5.value + c6.value, [c1,c2,c3,c4,c5,c6])"
+      [ngStyle]="{ 'background-color': (!codigoCompleto) ? '#9ca3af' : '#2563eb' }">
+      Verificar
+    </button>
     <p class="resend">
-      ¿No has recibido el código? <a href="">Reenviar</a>
+      ¿No has recibido el código? <a href="" class="resend-link">Reenviar</a>
     </p>
   </div>
 
@@ -156,4 +160,5 @@
       </button>
     </form>
   </div>
+  <p-toast position="top-right"></p-toast>
 </div>

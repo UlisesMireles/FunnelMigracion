@@ -20,6 +20,10 @@ export class NuevoRegistroComponent implements OnInit {
 
   usuarioForm!: FormGroup;
   empresaForm!: FormGroup;
+
+  codigoTemporal: string | null = null; 
+  codigoExpiracion: Date | null = null;
+  codigoCompleto: boolean = false;
   
   constructor(private fb: FormBuilder, private UsuariosService: UsuariosService, private messageService: MessageService) {}
     @Input() usuario!: Usuarios;
@@ -236,5 +240,79 @@ export class NuevoRegistroComponent implements OnInit {
   
     return iniciales;
   }
+  codigoValidadorCorreo(correo: string): void {
+    this.UsuariosService.validacionCorreoRegistro(correo).subscribe({
+      next: (result: any) => {
+        if (result.errorMessage) {
+         
+          this.codigoTemporal = result.errorMessage; 
+          this.codigoExpiracion = new Date();
+          this.codigoExpiracion.setMinutes(this.codigoExpiracion.getMinutes() + 2);
 
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Código enviado',
+            detail: 'Revisa tu correo para obtener el código de verificación.',
+          });
+        } else {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error al enviar código',
+            detail: result.errorMessage || 'No se pudo enviar el código.',
+          });
+        }
+      },
+      error: (error) => {
+        console.error('Error al validar correo:', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Se ha producido un error.',
+          detail: 'Error desconocido al validar correo',
+        });
+      }
+    });
+  }
+   verificarCodigoUsuario(codigoIngresado: string, inputs?: HTMLInputElement[]): boolean {
+    if (!this.codigoTemporal || !this.codigoExpiracion) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Código no generado',
+        detail: 'Primero solicita el código de verificación.',
+      });
+      return false;
+    }
+
+    const ahora = new Date();
+    if (ahora > this.codigoExpiracion) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Código expirado',
+        detail: 'El código ha expirado. Solicita uno nuevo.',
+      });
+      this.codigoTemporal = null;
+      this.codigoExpiracion = null;
+      return false;
+    }
+
+    if (codigoIngresado === this.codigoTemporal) {
+      this.goToStep(3);
+      return true;
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Código incorrecto',
+        detail: 'El código ingresado no es válido.',
+      });
+
+    if (inputs) {
+      inputs.forEach(input => input.value = '');
+      inputs[0].focus(); 
+      this.codigoCompleto = false;
+    }
+      return false;
+    }
+  }
+  checkCodigoInputs(...inputs: HTMLInputElement[]) {
+    this.codigoCompleto = inputs.every(input => input.value.length === 1);
+  }
 }

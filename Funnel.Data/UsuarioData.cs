@@ -334,5 +334,31 @@ namespace Funnel.Data
             return result;
         }
 
+        public async Task<BaseOut> ValidacionCorreoRegitro(string correo)
+        {
+            BaseOut result = new BaseOut();
+            try
+            {
+                IList<ParameterSQl> list = new List<ParameterSQl>
+                { 
+                    DataBase.CreateParameterSql("@pCorreo", SqlDbType.VarChar, 300, ParameterDirection.Input, false, null, DataRowVersion.Default, correo ?? (object)DBNull.Value)
+                };
+                using (IDataReader reader = await DataBase.GetReaderSql("F_ValidacionCorreoRegistro", CommandType.StoredProcedure, list, _connectionString))
+                {
+                    while (reader.Read())
+                    {
+                        result.Result = reader["Result"] != DBNull.Value ? Convert.ToBoolean(reader["Result"]) : false;
+                        result.ErrorMessage = reader["CodigoTemporal"] != DBNull.Value ? reader["CodigoTemporal"].ToString() : null;
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Result = false;
+                result.ErrorMessage = "Error al validar el correo: " + ex.Message;
+            }
+            return result;
+        }
     }
 }

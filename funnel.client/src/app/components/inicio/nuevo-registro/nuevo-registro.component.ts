@@ -5,6 +5,7 @@ import { MessageService } from 'primeng/api';
 import { EmpresaService } from '../../../services/empresa.service';
 import { Empresa } from '../../../interfaces/empresa';
 import { UsuariosService } from '../../../services/usuarios.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -24,7 +25,9 @@ export class NuevoRegistroComponent implements OnInit {
   codigoExpiracion: Date | null = null;
   codigoCompleto: boolean = false;
   
-  constructor(private fb: FormBuilder, private empresaService: EmpresaService, private messageService: MessageService, private usuariosService: UsuariosService ) {}
+  constructor(private fb: FormBuilder, private empresaService: EmpresaService, private messageService: MessageService, private usuariosService: UsuariosService,
+    private router: Router
+   ) {}
    
   ngOnInit(): void {
     this.inicializarFormulario();
@@ -84,7 +87,9 @@ export class NuevoRegistroComponent implements OnInit {
 
   finish() {
     this.inicializarFormulario();
-    this.currentStep = 1; 
+    setTimeout(() => {
+              this.router.navigate(['/login']);
+            }, 2000);
   }
 
   registrarEmpresa(): void {
@@ -153,7 +158,7 @@ export class NuevoRegistroComponent implements OnInit {
       this.messageService.add({
         severity: 'success',
         summary: 'Registro exitoso',
-        detail: resp.message || 'Empresa y usuario administrador creados'
+        detail: resp.message || 'Registro completado exitosamente'
       });
       this.finish();
     },

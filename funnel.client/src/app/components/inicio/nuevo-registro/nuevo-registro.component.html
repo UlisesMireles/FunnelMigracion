@@ -27,9 +27,12 @@
 
     <form [formGroup]="usuarioForm" (ngSubmit)="goToStep(2)">
       <input type="text" formControlName="nombre" placeholder="Nombre completo" />
-      <input type="email" formControlName="email" placeholder="Correo electrónico" />
+      <input type="email" formControlName="correo" placeholder="Correo electrónico" />
+        <div *ngIf="usuarioForm.get('correo')?.touched && usuarioForm.get('correo')?.invalid" class="error">
+          <small *ngIf="usuarioForm.get('correo')?.errors?.['email']">Formato de correo inválido.</small>
+        </div>
 
-      <button class="next-step" type="submit">
+      <button class="next-step" type="submit" [disabled]="usuarioForm.get('nombre')?.invalid || usuarioForm.get('correo')?.invalid" [ngStyle]="{ 'background-color': (usuarioForm.get('nombre')?.invalid || usuarioForm.get('correo')?.invalid) ? '#9ca3af' : '#2563eb' }">
         Siguiente paso
       </button>
     </form>
@@ -84,25 +87,38 @@
     </div>
 
     <form [formGroup]="usuarioForm" (ngSubmit)="goToStep(4)">
-      <label class="lbl">Nombre de usuario</label>
+      <label class="lbl">Nombre de usuario*</label>
       <div class="input-box">
         <i class="bi bi-person icono"></i>
         <input type="text" formControlName="usuario" placeholder="Tu nombre de usuario" />
       </div>
 
-      <label>Contraseña</label>
+      <label>Teléfono</label>
+      <div class="input-box">
+        <i class="bi bi-telephone icono"></i>
+        <input type="text" formControlName="telefono" placeholder="Tu número de teléfono" />
+      </div>
+      
+      <label>Contraseña*</label>
       <div class="input-box">
         <i class="bi bi-lock icono"></i>
-        <input type="password" formControlName="contrasena" placeholder="Tu contraseña" />
+        <input type="password" formControlName="password" placeholder="Tu contraseña" />
+          <div *ngIf="usuarioForm.get('password')?.touched && usuarioForm.get('password')?.invalid" class="error">
+            <small *ngIf="usuarioForm.get('password')?.errors?.['required']">La contraseña es obligatoria.</small>
+            <small *ngIf="usuarioForm.get('password')?.errors?.['minlength']">Mínimo 6 caracteres.</small>
+          </div>
       </div>
 
-      <label>Confirmar contraseña</label>
+      <label>Confirmar contraseña*</label>
       <div class="input-box">
         <i class="bi bi-shield-lock icono"></i>
-        <input type="password" formControlName="confirmarContrasena" placeholder="Repite tu contraseña" />
+        <input type="password" formControlName="confirmPassword" placeholder="Repite tu contraseña" />
+          <div *ngIf="usuarioForm.errors?.['mismatch'] && usuarioForm.get('confirmPassword')?.touched" class="error">
+            <small>Las contraseñas no coinciden.</small>
+          </div>
       </div>
 
-      <button class="next-step" type="submit">
+      <button class="next-step" type="submit" [disabled]="usuarioForm.invalid" [ngStyle]="{ 'background-color': (usuarioForm.invalid) ? '#9ca3af' : '#2563eb' }">
         Continuar →
       </button>
     </form>

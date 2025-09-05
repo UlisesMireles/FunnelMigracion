@@ -4,6 +4,7 @@ import { environment } from '../../../../environments/environment';
 import { MessageService } from 'primeng/api';
 import { EmpresaService } from '../../../services/empresa.service';
 import { Empresa } from '../../../interfaces/empresa';
+import { UsuariosService } from '../../../services/usuarios.service';
 
 
 @Component({
@@ -23,7 +24,7 @@ export class NuevoRegistroComponent implements OnInit {
   codigoExpiracion: Date | null = null;
   codigoCompleto: boolean = false;
   
-  constructor(private fb: FormBuilder, private empresaService: EmpresaService, private messageService: MessageService) {}
+  constructor(private fb: FormBuilder, private empresaService: EmpresaService, private messageService: MessageService, private usuariosService: UsuariosService ) {}
    
   ngOnInit(): void {
     this.inicializarFormulario();
@@ -190,7 +191,7 @@ export class NuevoRegistroComponent implements OnInit {
     return iniciales;
   }
   codigoValidadorCorreo(correo: string): void {
-    this.UsuariosService.validacionCorreoRegistro(correo).subscribe({
+    this.usuariosService.validacionCorreoRegistro(correo).subscribe({
       next: (result: any) => {
         if (result.errorMessage) {
          

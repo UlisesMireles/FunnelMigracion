@@ -265,4 +265,14 @@ export class NuevoRegistroComponent implements OnInit {
   checkCodigoInputs(...inputs: HTMLInputElement[]) {
     this.codigoCompleto = inputs.every(input => input.value.length === 1);
   }
+  reenviarCodigo(inputs: HTMLInputElement[]) {
+    inputs.forEach(input => input.value = '');
+    inputs[0].focus();
+    this.codigoCompleto = false;
+
+    const correo = this.usuarioForm.get('correo')?.value;
+    if (correo) {
+      this.codigoValidadorCorreo(correo);
+    }
+  }
 }

@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class EmpresaServiceService {
+export class EmpresaService {
 
   baseUrl:string = environment.baseURL;
 

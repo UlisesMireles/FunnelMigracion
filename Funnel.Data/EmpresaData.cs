@@ -39,6 +39,8 @@ namespace Funnel.Data
                 DataBase.CreateParameterSql("@pActivo", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Activo),
                 DataBase.CreateParameterSql("@pPermitirDecimales", SqlDbType.Bit, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.PermitirDecimales),
                 DataBase.CreateParameterSql("@pPassword", SqlDbType.VarChar, 200, ParameterDirection.Input, false, null, DataRowVersion.Default, Encrypt.Encriptar(request.Password)),
+                DataBase.CreateParameterSql("@pDireccion", SqlDbType.VarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Direccion ?? (object)DBNull.Value),
+                DataBase.CreateParameterSql("@pTamano", SqlDbType.VarChar, 20, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Tamano ?? (object)DBNull.Value),
 
             };
 

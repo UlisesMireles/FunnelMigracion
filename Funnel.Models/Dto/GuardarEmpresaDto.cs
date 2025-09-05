@@ -27,5 +27,7 @@ namespace Funnel.Models.Dto
         public int? Estatus { get; set; }
         public bool PermitirDecimales { get; set; }
         public string Password { get; set; }
+        public string Direccion { get; set; }
+        public string Tamano  { get; set; }      
     }
 }

@@ -21,4 +21,6 @@ export interface Empresa {
   iniciales?: string;
   usuario?: string;
   password?: string;
+  direccion?: string;
+  tamano?: string;
 }

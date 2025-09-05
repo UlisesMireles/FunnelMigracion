@@ -43,7 +43,8 @@ export class NuevoRegistroComponent implements OnInit {
     },{ validator: this.passwordMatchValidator });
     this.empresaForm = this.fb.group({
       nombreEmpresa: ['', Validators.required],
-      //direccion: ['', Validators.required],
+      direccion: ['', Validators.required],
+      tamano:['', Validators.required],
       rfc: ['', Validators.required],
       sitioWeb: [''],
     });
@@ -125,7 +126,7 @@ export class NuevoRegistroComponent implements OnInit {
     idEmpresa: 0,
     nombreEmpresa: empresaData.nombreEmpresa,
     idAdministrador: 0,
-    alias: empresaData.nombreEmpresa.substring(0, 20),
+    alias: this.generarInicialesEmpresa(empresaData.nombreEmpresa),
     idLicencia: 0,
     rfc: empresaData.rfc,
     vInicio: new Date(),
@@ -140,7 +141,9 @@ export class NuevoRegistroComponent implements OnInit {
     urlSitio: empresaData.sitioWeb,
     activo:0,
     permitirDecimales: false,
-    password: usuarioData.confirmPassword
+    password: usuarioData.confirmPassword,
+    direccion: empresaData.direccion,
+    tamano: empresaData.tamano
   };
 
   console.log('Objeto Empresa para enviar:', nuevaEmpresa);
@@ -198,6 +201,7 @@ export class NuevoRegistroComponent implements OnInit {
           this.codigoTemporal = result.errorMessage; 
           this.codigoExpiracion = new Date();
           this.codigoExpiracion.setMinutes(this.codigoExpiracion.getMinutes() + 2);
+  
 
           this.messageService.add({
             severity: 'success',
@@ -265,4 +269,23 @@ export class NuevoRegistroComponent implements OnInit {
   checkCodigoInputs(...inputs: HTMLInputElement[]) {
     this.codigoCompleto = inputs.every(input => input.value.length === 1);
   }
+     
+  private generarInicialesEmpresa(nombreEmpresa: string): string {
+  if (!nombreEmpresa) return '';
+
+  const palabras = nombreEmpresa
+    .trim()
+    .split(/\s+/)
+    .filter(p => !['de', 'la', 'los', 'del', 'y'].includes(p.toLowerCase()));
+
+  const iniciales = palabras
+    .map(p => p[0].toUpperCase())
+    .join('')
+    .substring(0, 5);
+
+  const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  const randomChar = caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+
+  return `${iniciales}${randomChar}`;
+}
 }

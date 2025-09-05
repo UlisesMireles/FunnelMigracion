@@ -332,3 +332,18 @@ select:focus {
   border-color: #2684ff;
   box-shadow: 0 0 4px rgba(38, 132, 255, 0.4);
 }
+.resend-link {
+  color: #1173d4;
+  font-weight: bold;
+  text-decoration: none;
+  transition: color 0.3s, text-shadow 0.3s; 
+}
+
+.resend-link:hover {
+  text-decoration: underline;
+  cursor: pointer;
+  color: #0a4ca0; 
+  text-shadow: 0 0 5px rgba(17, 115, 212, 0.5);
+}
+
+

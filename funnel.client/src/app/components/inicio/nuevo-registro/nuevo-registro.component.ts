@@ -27,7 +27,10 @@ export class NuevoRegistroComponent implements OnInit {
   codigoCompleto: boolean = false;
 
   idRegistroTemporal: number | null = null;
-  
+  mostrarModalRFC: boolean = false;
+  rfcEmpresaExistente: string | null = null; 
+  rfcExistente: boolean = false; 
+  mostrarMensajeNuevaEmpresa: boolean = false;
   constructor(private fb: FormBuilder, private empresaService: EmpresaService, private messageService: MessageService, private usuariosService: UsuariosService,
     private router: Router
    ) {}
@@ -137,15 +140,6 @@ registrarEmpresa(): void {
   if (this.empresaForm.invalid || this.usuarioForm.invalid) {
     this.empresaForm.markAllAsTouched();
     this.usuarioForm.markAllAsTouched();
-    return;
-  }
-
-  if (this.empresaForm.get('rfc')?.hasError('rfcExistente')) {
-    this.messageService.add({
-      severity: 'warn',
-      summary: 'RFC duplicado',
-      detail: 'Ya existe una empresa registrada con este RFC'
-    });
     return;
   }
 
@@ -372,20 +366,26 @@ registrarEmpresa(): void {
       this.codigoValidadorCorreo(correo);
     }
   }
-  validarRfcExistente(control: any) {
+ validarRfcExistente(control: any) {
   return new Promise((resolve) => {
     const rfc = control.value?.trim();
     if (!rfc) {
-      resolve(null);
+     this.rfcExistente = false;
+     resolve(null);
       return;
+      
     }
 
     this.empresaService.getEmpresas().subscribe({
       next: (empresas) => {
         const existe = empresas.some(e => e.rfc!.toUpperCase() === rfc.toUpperCase());
         if (existe) {
+          this.rfcEmpresaExistente = rfc;
+          this.rfcExistente = true;
+          this.mostrarModalRFC = true; 
           resolve({ rfcExistente: true });
         } else {
+          this.rfcExistente = false;
           resolve(null);
         }
       },
@@ -395,5 +395,43 @@ registrarEmpresa(): void {
     });
   });
 }
+ onNoUnirse(): void {
+    this.mostrarModalRFC = false;
+    this.limpiarFormularioEmpresa();
+    this.rfcExistente = false;
+    this.mostrarMensajeNuevaEmpresa = true;
+    
+  setTimeout(() => {
+      this.mostrarMensajeNuevaEmpresa = false;
+    }, 5000);
+  }
+  
+  private limpiarFormularioEmpresa(): void {
+    this.empresaForm.reset({
+      nombreEmpresa: '',
+      direccion: '',
+      rfc: '',
+      sitioWeb: '',
+      tamano: ''
+    });
+    
+    Object.keys(this.empresaForm.controls).forEach(key => {
+      const control = this.empresaForm.get(key);
+      if (control) {
+        control.markAsUntouched();
+        control.markAsPristine();
+        control.setErrors(null);
+      }
+    });
+  }
+  unirse(): void {
+    //this.usuarioForm();
+    this.mostrarModalRFC = false;
+     this.messageService.add({
+      severity: 'success',
+      summary: 'Solicitud enviada',
+      detail: 'Tu solicitud para unirte a la empresa ha sido enviada.',
+    });
+  }
 
 }

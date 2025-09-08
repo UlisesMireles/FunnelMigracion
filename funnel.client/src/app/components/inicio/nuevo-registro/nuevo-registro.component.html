@@ -131,7 +131,10 @@
   <div *ngIf="currentStep === 4" class="step4-box">
     <h2>Información de la Empresa</h2>
     <p class="step">Completa los datos para finalizar el registro.</p>
-
+    <div *ngIf="mostrarMensajeNuevaEmpresa" class="info-message">
+    <i class="bi bi-info-circle"></i>
+    Por favor, ingrese entonces los datos de una nueva empresa.
+    </div>
     <div class="progress-container">
       <div class="progress-step" [class.active]="currentStep >= 1">1</div>
       <div class="progress-line" [class.active]="currentStep >= 2"></div>
@@ -152,9 +155,9 @@
       <label class="lbl">RFC</label>
       <input type="text" formControlName="rfc" placeholder="Ej: ABC123456789" />
 
-      <div *ngIf="empresaForm.get('rfc')?.hasError('rfcExistente') && empresaForm.get('rfc')?.touched" class="error">
+      <!--<div *ngIf="empresaForm.get('rfc')?.hasError('rfcExistente') && empresaForm.get('rfc')?.touched" class="error">
         Ya existe una empresa registrada con este RFC.
-      </div>
+      </div>-->
 
 
       <label class="lbl">Sitio Web</label>
@@ -167,10 +170,23 @@
           <option value="mediana">Mediana</option>
           <option value="grande">Grande</option>
         </select>
-      <button class="next-step" type="submit">
-        Finalizar Registro
-      </button>
+       <button class="next-step" type="submit" [disabled]="empresaForm.invalid || rfcExistente">
+      Finalizar Registro
+    </button>
     </form>
   </div>
+<div class="modal-overlay" *ngIf="mostrarModalRFC">
+  <div class="modal-box">
+    <h3>RFC ya registrado</h3>
+    <p>El RFC <strong>{{ rfcEmpresaExistente }}</strong> ya está asociado a una empresa.</p>
+    <p>¿Deseas solicitar unirte a esa empresa?</p>
+
+    <div class="modal-actions">
+      <button class="btn-yes" (click)="unirse()">Sí</button>
+      <button class="btn-no" (click)="onNoUnirse()">No</button>
+    </div>
+  </div>
+</div>
+
   <p-toast position="top-right"></p-toast>
 </div>

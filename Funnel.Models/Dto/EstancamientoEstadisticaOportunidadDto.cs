@@ -10,6 +10,7 @@ namespace Funnel.Models.Dto
     {
         public int IdOportunidad { get; set; }
         public string Oportunidad { get; set; }
+        public string Prospecto { get; set; }
         public string Etapa { get; set; }
         public int DiasFunnel { get; set; }
         public int DiasSinActividad { get; set; }

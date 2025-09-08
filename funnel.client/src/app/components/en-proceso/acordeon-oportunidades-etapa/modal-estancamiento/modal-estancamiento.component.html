@@ -16,26 +16,26 @@
     {{ error }}
   </div>
 
-<div *ngIf="!loading && !error && estancamientos.length > 0" class="estancamiento-list">
-  <div *ngFor="let item of estancamientos" class="estancamiento-card p-3 mb-3">
-    <h3 class="mb-2">{{ item.oportunidad }}</h3>
-    
-    <p><strong>Fase actual:</strong> {{ item.etapa }} <small>(en qué etapa del proceso se encuentra la oportunidad)</small></p>
-    <p><strong>Días sin actividad:</strong> {{ item.diasSinActividad }} <small>(cuánto tiempo ha pasado desde la última acción registrada)</small></p>
-    <!--<p><strong>Tiempo promedio de oportunidades similares:</strong> {{ item.mediaDias | number:'1.0-0' }} días <small>(cuánto tardan oportunidades similares en avanzar)</small></p>
-    <p><strong>Promedio de días en la primera fase:</strong> {{ item.mediaDiasEtapa1 | number:'1.2-2' }} días</p>-->
-    
-    <p *ngIf="getDiasEtapaActual(item) !== null">
-      <strong>Días en etapa actual:</strong> {{ getDiasEtapaActual(item) }}
-    </p>
-    
-    <!--<p><strong>Variación de días:</strong> {{ item.desvDias | number:'1.2-2' }} <small>(desviación respecto al promedio de oportunidades similares)</small></p>-->
-    <p><strong>Riesgo de retraso:</strong> <!--{{ item.riesgo ? 'Alto' : 'Bajo' }} --><small> Presenta más de 15 días sin actividad</small></p>
-    <!--<p><strong>Comparación con otras oportunidades:</strong> {{ item.zScoreFunnel | number:'1.2-2' }} <small>(positivo = más rápido que otras oportunidades, negativo = más lento)</small></p>-->
-    <!--<p><strong>Inactividad normalizada:</strong> {{ item.inactividadNorm | number:'1.2-2' }}</p>-->
-    <p><strong>¿Cierre vencido?:</strong> {{ item.cierreVencido ? 'Sí' : 'No' }}</p>
-    <p><strong>Score de estancamiento:</strong> {{ item.scoreEstancamiento | number:'1.2-2' }} <small>(mayor número indica mayor riesgo de estancamiento)</small></p>
+  <div *ngIf="!loading && !error && estancamientos.length > 0" class="estancamiento-list">
+    <div *ngFor="let item of estancamientos" class="estancamiento-card p-3 mb-3">
+      <h3 class="mb-2">{{ item.prospecto + ' - '  + item.oportunidad }}</h3>
+      
+      <p><strong>Fase actual:</strong> {{ item.etapa }} <small></small></p>
+      <p><strong>Días sin actividad:</strong> {{ item.diasSinActividad }} <small>  días desde la última acción registrada</small></p>
+      <!--<p><strong>Tiempo promedio de oportunidades similares:</strong> {{ item.mediaDias | number:'1.0-0' }} días <small>(cuánto tardan oportunidades similares en avanzar)</small></p>
+      <p><strong>Promedio de días en la primera fase:</strong> {{ item.mediaDiasEtapa1 | number:'1.2-2' }} días</p>-->
+      
+      <p *ngIf="getDiasEtapaActual(item) !== null">
+        <strong>Días en etapa actual:</strong> {{ getDiasEtapaActual(item) }}
+      </p>
+      
+      <!--<p><strong>Variación de días:</strong> {{ item.desvDias | number:'1.2-2' }} <small>(desviación respecto al promedio de oportunidades similares)</small></p>-->
+      <p *ngIf="item.riesgo == 1"><strong>Riesgo de retraso:</strong> <!--{{ item.riesgo ? 'Alto' : 'Bajo' }} --><small> Presenta más de 15 días sin actividad</small></p>
+      <!--<p><strong>Comparación con otras oportunidades:</strong> {{ item.zScoreFunnel | number:'1.2-2' }} <small>(positivo = más rápido que otras oportunidades, negativo = más lento)</small></p>-->
+      <!--<p><strong>Inactividad normalizada:</strong> {{ item.inactividadNorm | number:'1.2-2' }}</p>-->
+      <p *ngIf="item.cierreVencido"><strong>¿Cierre vencido?:</strong> {{ item.cierreVencido ? 'Sí' : 'No' }}</p>
+      <p><strong>Score de estancamiento:</strong> {{ item.scoreEstancamiento > 100 ? '100 %' : item.scoreEstancamiento.toString() + ' %' }} </p>
+    </div>
   </div>
-</div>
 
 </p-dialog>

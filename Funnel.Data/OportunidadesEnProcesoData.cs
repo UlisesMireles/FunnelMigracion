@@ -630,6 +630,7 @@ namespace Funnel.Data
                     {
                         IdOportunidad = ComprobarNulos.CheckIntNull(reader["IdOportunidad"]),
                         Oportunidad = ComprobarNulos.CheckStringNull(reader["Oportunidad"]),
+                        Prospecto = ComprobarNulos.CheckStringNull(reader["Prospecto"]),
                         Etapa = ComprobarNulos.CheckStringNull(reader["Etapa"]),
                         DiasFunnel = ComprobarNulos.CheckIntNull(reader["DiasFunnel"]),
                         DiasSinActividad = ComprobarNulos.CheckIntNull(reader["DiasSinActividad"]),

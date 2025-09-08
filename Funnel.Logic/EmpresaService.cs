@@ -30,5 +30,9 @@ namespace Funnel.Logic
         {
             return await _empresaData.GuardarRegistroTemporal(request);
         }
+        public async Task<List<GuardarEmpresaDto>> ConsultarEmpresas()
+        {
+            return await _empresaData.ConsultarEmpresas();
+        }
     }
 }

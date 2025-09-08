@@ -51,7 +51,11 @@ export class NuevoRegistroComponent implements OnInit {
       nombreEmpresa: ['', Validators.required],
       direccion: ['', Validators.required],
       tamano:['', Validators.required],
-      rfc: ['', Validators.required],
+      rfc: ['', {
+    validators: [Validators.required],
+    asyncValidators: [this.validarRfcExistente.bind(this)],
+    updateOn: 'blur' 
+    }],
       sitioWeb: [''],
     });
   }
@@ -129,10 +133,19 @@ export class NuevoRegistroComponent implements OnInit {
             }, 2000);
   }
 
-  registrarEmpresa(): void {
+registrarEmpresa(): void {
   if (this.empresaForm.invalid || this.usuarioForm.invalid) {
     this.empresaForm.markAllAsTouched();
     this.usuarioForm.markAllAsTouched();
+    return;
+  }
+
+  if (this.empresaForm.get('rfc')?.hasError('rfcExistente')) {
+    this.messageService.add({
+      severity: 'warn',
+      summary: 'RFC duplicado',
+      detail: 'Ya existe una empresa registrada con este RFC'
+    });
     return;
   }
 
@@ -359,4 +372,28 @@ export class NuevoRegistroComponent implements OnInit {
       this.codigoValidadorCorreo(correo);
     }
   }
+  validarRfcExistente(control: any) {
+  return new Promise((resolve) => {
+    const rfc = control.value?.trim();
+    if (!rfc) {
+      resolve(null);
+      return;
+    }
+
+    this.empresaService.getEmpresas().subscribe({
+      next: (empresas) => {
+        const existe = empresas.some(e => e.rfc!.toUpperCase() === rfc.toUpperCase());
+        if (existe) {
+          resolve({ rfcExistente: true });
+        } else {
+          resolve(null);
+        }
+      },
+      error: () => {
+        resolve(null); 
+      }
+    });
+  });
+}
+
 }

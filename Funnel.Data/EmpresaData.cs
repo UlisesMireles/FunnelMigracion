@@ -99,6 +99,8 @@ namespace Funnel.Data
                 result.Id = 0;
                 result.Result = false;
             }
+            return result;
+        }
 
         public async Task<List<GuardarEmpresaDto>> ConsultarEmpresas()
         {

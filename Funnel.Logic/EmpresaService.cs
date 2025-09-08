@@ -34,5 +34,10 @@ namespace Funnel.Logic
         {
             return await _empresaData.ConsultarEmpresas();
         }
+
+        public async Task<BaseOut> CorreoRegistrosAdministrador(int idEmpresa, int idUsuario)
+        {
+            return await _empresaData.CorreoRegistrosAdministrador(idEmpresa, idUsuario);
+        }
     }
 }

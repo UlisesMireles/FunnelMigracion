@@ -134,5 +134,32 @@ namespace Funnel.Data
             }
             return result;
         }
+
+        public async Task<BaseOut> CorreoRegistrosAdministrador(int idEmpresa, int idUsuario)
+        {
+            BaseOut result = new BaseOut();
+            IList<ParameterSQl> list = new List<ParameterSQl>
+            {
+                DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, idEmpresa),
+                DataBase.CreateParameterSql("@pIdUsuario", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, idUsuario),
+            };
+            try
+            {
+                using (IDataReader reader = await DataBase.GetReaderSql("F_EnvioCorreoRegistrosUsuarioAdministradores", CommandType.StoredProcedure, list, _connectionString))
+                {
+                    result.ErrorMessage = "Correo enviado correctamente.";
+                    result.Id = 1;
+                    result.Result = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                result.ErrorMessage = ex.Message;
+                result.Id = 0;
+                result.Result = false;
+
+            }
+            return result;
+        }
     }
 }

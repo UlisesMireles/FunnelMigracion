@@ -32,5 +32,11 @@ namespace Funnel.Server.Controllers
             var result = await _empresaService.ConsultarEmpresas();
             return Ok(result);
         }
+        [HttpGet("[action]/")]
+        public async Task<ActionResult> CorreoRegistrosAdministrador(int idEmpresa, int idUsuario)
+        {
+            var result = await _empresaService.CorreoRegistrosAdministrador(idEmpresa, idUsuario);
+            return Ok(result);
+        }
     }
 }

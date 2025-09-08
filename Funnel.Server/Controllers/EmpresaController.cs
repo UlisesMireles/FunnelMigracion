@@ -20,5 +20,11 @@ namespace Funnel.Server.Controllers
             var result = await _empresaService.GuardarEmpresa(request);
             return Ok(result);
         }
+        [HttpGet("[action]/")]
+        public async Task<ActionResult> ConsultarEmpresas()
+        {
+            var result = await _empresaService.ConsultarEmpresas();
+            return Ok(result);
+        }
     }
 }

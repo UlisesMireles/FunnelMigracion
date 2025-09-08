@@ -25,7 +25,7 @@
       <div class="progress-step" [class.active]="currentStep >= 4">4</div>
     </div>
 
-    <form [formGroup]="usuarioForm" (ngSubmit)="goToStep(2)">
+    <form [formGroup]="usuarioForm" (ngSubmit)="goToStep(3)">
       <input type="text" formControlName="nombre" placeholder="Nombre completo" />
       <input type="email" formControlName="correo" placeholder="Correo electrónico" />
         <div *ngIf="usuarioForm.get('correo')?.touched && usuarioForm.get('correo')?.invalid" class="error">
@@ -151,6 +151,11 @@
 
       <label class="lbl">RFC</label>
       <input type="text" formControlName="rfc" placeholder="Ej: ABC123456789" />
+
+      <div *ngIf="empresaForm.get('rfc')?.hasError('rfcExistente') && empresaForm.get('rfc')?.touched" class="error">
+        Ya existe una empresa registrada con este RFC.
+      </div>
+
 
       <label class="lbl">Sitio Web</label>
       <input type="text" formControlName="sitioWeb" placeholder="Ej: https://corp.com" />

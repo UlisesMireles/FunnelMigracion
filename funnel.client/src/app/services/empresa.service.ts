@@ -13,5 +13,8 @@ export class EmpresaService {
   constructor(private http: HttpClient) { }
   postEmpresa(request: Empresa): Observable<any> {
         return this.http.post(`${this.baseUrl}api/Empresa/GuardarEmpresa`, request);
-      }
+  }
+  getEmpresas(): Observable<Empresa[]> {
+    return this.http.get<Empresa[]>(`${this.baseUrl}api/Empresa/ConsultarEmpresas`);
+  }
 }

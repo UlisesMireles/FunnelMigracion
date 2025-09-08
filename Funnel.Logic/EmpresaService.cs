@@ -25,5 +25,9 @@ namespace Funnel.Logic
             BaseOut result = new BaseOut();
             return await _empresaData.GuardarEmpresa(request);
         }
+        public async Task<List<GuardarEmpresaDto>> ConsultarEmpresas()
+        {
+            return await _empresaData.ConsultarEmpresas();
+        }
     }
 }

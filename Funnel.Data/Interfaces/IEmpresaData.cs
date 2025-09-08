@@ -5,6 +5,7 @@ namespace Funnel.Data.Interfaces
     public interface IEmpresaData
     {
         public Task<BaseOut> GuardarEmpresa(GuardarEmpresaDto request);
+        public Task<List<GuardarEmpresaDto>> ConsultarEmpresas();
 
     }
 }

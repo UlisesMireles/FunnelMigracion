@@ -62,5 +62,37 @@ namespace Funnel.Data
 
             return result;
         }
+        public async Task<List<GuardarEmpresaDto>> ConsultarEmpresas()
+        {
+            List<GuardarEmpresaDto> result = new List<GuardarEmpresaDto>();
+            IList<ParameterSQl> list = new List<ParameterSQl>
+            {
+                DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, "SEL-EMPRESAS"),
+            };
+            using (IDataReader reader = await DataBase.GetReaderSql("F_Tenant", CommandType.StoredProcedure, list, _connectionString))
+            {
+                while (reader.Read())
+                {
+                    var dto = new GuardarEmpresaDto();
+                    dto.IdEmpresa = ComprobarNulos.CheckIntNull(reader["IdEmpresa"]);
+                    dto.NombreEmpresa = ComprobarNulos.CheckStringNull(reader["NombreEmpresa"]);
+                    dto.Alias = ComprobarNulos.CheckStringNull(reader["Alias"]);
+                    dto.Rfc = ComprobarNulos.CheckStringNull(reader["RFC"]);
+                    dto.VInicio = ComprobarNulos.CheckDateTimeNull(reader["VInicio"]);
+                    dto.VTerminacion = ComprobarNulos.CheckDateTimeNull(reader["VTerminacion"]);
+                    dto.IdLicencia = ComprobarNulos.CheckIntNull(reader["IdLicencia"]);
+                    dto.IdAdministrador = ComprobarNulos.CheckIntNull(reader["IdAdministrador"]);
+                    dto.Nombre = ComprobarNulos.CheckStringNull(reader["Nombre"]);
+                    dto.ApellidoPaterno = ComprobarNulos.CheckStringNull(reader["ApellidoPaterno"]);
+                    dto.ApellidoMaterno = ComprobarNulos.CheckStringNull(reader["ApellidoMaterno"]);
+                    dto.Activo = ComprobarNulos.CheckIntNull(reader["Activo"]);
+                    dto.UrlSitio = ComprobarNulos.CheckStringNull(reader["UrlSitio"]);
+                    dto.PermitirDecimales = ComprobarNulos.CheckBooleanNull(reader["PermitirDecimales"]);
+
+                    result.Add(dto);
+                }
+            }
+            return result;
+        }
     }
 }

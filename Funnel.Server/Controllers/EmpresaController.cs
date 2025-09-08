@@ -20,5 +20,11 @@ namespace Funnel.Server.Controllers
             var result = await _empresaService.GuardarEmpresa(request);
             return Ok(result);
         }
+        [HttpPost("[action]/")]
+        public async Task<ActionResult> GuardarRegistroTemporal(GuardarRegistroTemporalDto request)
+        {
+            var result = await _empresaService.GuardarRegistroTemporal(request);
+            return Ok(result);
+        }
     }
 }

@@ -62,5 +62,45 @@ namespace Funnel.Data
 
             return result;
         }
+
+        public async Task<BaseOut> GuardarRegistroTemporal(GuardarRegistroTemporalDto request)
+        {
+            BaseOut result = new BaseOut();
+
+            IList<ParameterSQl> list = new List<ParameterSQl>
+            {
+                DataBase.CreateParameterSql("@Bandera", SqlDbType.VarChar, 10, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Bandera),
+                DataBase.CreateParameterSql("@IdRegistro", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, request.IdRegistro ?? (object)DBNull.Value),
+                DataBase.CreateParameterSql("@Nombre", SqlDbType.VarChar, 100, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Nombre ?? (object)DBNull.Value),
+                DataBase.CreateParameterSql("@Correo", SqlDbType.VarChar, 200, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Correo ?? (object)DBNull.Value),
+                DataBase.CreateParameterSql("@Usuario", SqlDbType.VarChar, 20, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Usuario ?? (object)DBNull.Value),
+                DataBase.CreateParameterSql("@RFC", SqlDbType.VarChar, 20, ParameterDirection.Input, false, null, DataRowVersion.Default, request.RFC ?? (object)DBNull.Value),
+                DataBase.CreateParameterSql("@NombreEmpresa", SqlDbType.VarChar, 200, ParameterDirection.Input, false, null, DataRowVersion.Default, request.NombreEmpresa ?? (object)DBNull.Value),
+                DataBase.CreateParameterSql("@Direccion", SqlDbType.NVarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Direccion ?? (object)DBNull.Value),
+                DataBase.CreateParameterSql("@UrlSitio", SqlDbType.VarChar, 500, ParameterDirection.Input, false, null, DataRowVersion.Default, request.UrlSitio ?? (object)DBNull.Value),
+                DataBase.CreateParameterSql("@TamanoEmpresa", SqlDbType.VarChar, 20, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Tamano ?? (object)DBNull.Value),
+            };
+
+            try
+            {
+                using (IDataReader reader = await DataBase.GetReaderSql("sp_GestionNuevoRegistroTemporal", CommandType.StoredProcedure, list, _connectionString))
+                {
+                    if (reader.Read())
+                    {
+                        result.Id = Convert.ToInt32(reader[0]);
+                        result.Result = true;
+                        result.ErrorMessage = "Registro procesado correctamente.";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result.ErrorMessage = ex.Message;
+                result.Id = 0;
+                result.Result = false;
+            }
+
+            return result;
+        }
     }
 }

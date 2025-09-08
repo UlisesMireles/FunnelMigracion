@@ -10,5 +10,6 @@ namespace Funnel.Logic.Interfaces
     public interface IEmpresaService
     {
         public Task<BaseOut> GuardarEmpresa(GuardarEmpresaDto request);
+        public Task<BaseOut> GuardarRegistroTemporal(GuardarRegistroTemporalDto request);
     }
 }

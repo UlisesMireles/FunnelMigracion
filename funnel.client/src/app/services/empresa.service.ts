@@ -14,4 +14,8 @@ export class EmpresaService {
   postEmpresa(request: Empresa): Observable<any> {
         return this.http.post(`${this.baseUrl}api/Empresa/GuardarEmpresa`, request);
       }
+
+  guardarRegistroTemporal(request: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}api/Empresa/GuardarRegistroTemporal`, request);
+  }
 }

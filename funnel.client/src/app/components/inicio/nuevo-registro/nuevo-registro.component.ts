@@ -6,6 +6,7 @@ import { EmpresaService } from '../../../services/empresa.service';
 import { Empresa } from '../../../interfaces/empresa';
 import { UsuariosService } from '../../../services/usuarios.service';
 import { Router } from '@angular/router';
+import { tail } from 'lodash-es';
 
 
 @Component({
@@ -24,6 +25,8 @@ export class NuevoRegistroComponent implements OnInit {
   codigoTemporal: string | null = null; 
   codigoExpiracion: Date | null = null;
   codigoCompleto: boolean = false;
+
+  idRegistroTemporal: number | null = null;
   
   constructor(private fb: FormBuilder, private empresaService: EmpresaService, private messageService: MessageService, private usuariosService: UsuariosService,
     private router: Router
@@ -54,23 +57,57 @@ export class NuevoRegistroComponent implements OnInit {
   }
 
   goToStep(step: number) {
-    if (this.currentStep === 1 && this.usuarioForm.get('nombre')?.invalid || this.usuarioForm.get('correo')?.invalid) {
-      this.usuarioForm.markAllAsTouched();
+    if (this.currentStep === 1) {
+      if (this.usuarioForm.get('nombre')?.invalid || this.usuarioForm.get('correo')?.invalid) {
+        this.usuarioForm.markAllAsTouched();
+        return;
+      }
+
+      const datosPaso1 = {
+        bandera: "INSERTAR",
+        idRegistro: null,
+        nombre: this.usuarioForm.get('nombre')?.value,
+        correo: this.usuarioForm.get('correo')?.value
+      };
+
+      this.empresaService.guardarRegistroTemporal(datosPaso1).subscribe({
+        next: (resp) => {
+          this.idRegistroTemporal = resp.id;
+          this.currentStep = step;
+        },
+        error: (err) => {
+          console.error("Error en paso 1:", err);
+        }
+      });
+
       return;
     }
+  if (this.currentStep === 3)
+    {
+      if (this.currentStep === 3 && this.usuarioForm.invalid) {
+        this.usuarioForm.markAllAsTouched();
+        return;
+      }
 
-    if (this.currentStep === 3 && this.usuarioForm.invalid) {
-      this.usuarioForm.markAllAsTouched();
+      const datosPaso3 = {
+        bandera: "ACTUALIZAR",
+        idRegistro: this.idRegistroTemporal,
+        usuario: this.usuarioForm.get('usuario')?.value,
+    };
+      this.empresaService.guardarRegistroTemporal(datosPaso3).subscribe({
+        next: (resp) => {
+          console.log("Datos de usuario guardados temporalmente:", resp);
+          this.currentStep = step;
+        },
+        error: (err) => {
+          console.error("Error en paso 3:", err);
+        }
+      });
       return;
     }
-
-   /* if (this.currentStep === 4 && this.empresaForm.invalid) {
-      this.empresaForm.markAllAsTouched();
-      return;
-    }*/
-
     this.currentStep = step;
   }
+
   moveNext(event: Event, nextInput: HTMLInputElement) {
     const input = event.target as HTMLInputElement;
     if (input.value.length === 1) {
@@ -101,6 +138,24 @@ export class NuevoRegistroComponent implements OnInit {
 
   const empresaData = this.empresaForm.value;
   const usuarioData = this.usuarioForm.value;
+
+   const datosPaso4 = {
+    bandera: "ACTUALIZAR",
+    idRegistro: this.idRegistroTemporal,
+    nombreEmpresa: empresaData.nombreEmpresa,
+    direccion: empresaData.direccion,
+    rfc: empresaData.rfc,
+    urlSitio: empresaData.sitioWeb,
+    tamano: empresaData.tamano
+  };
+  this.empresaService.guardarRegistroTemporal(datosPaso4).subscribe({
+    next: (resp) => {
+      console.log("Datos de empresa guardados temporalmente:", resp);
+    },
+    error: (err) => {
+      console.error("Error al guardar datos de empresa temporalmente:", err);
+    }
+  });
 
   if (usuarioData.nombre) {
     const partes = usuarioData.nombre.trim().split(/\s+/);

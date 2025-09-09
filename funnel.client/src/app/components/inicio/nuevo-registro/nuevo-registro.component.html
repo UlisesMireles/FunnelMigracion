@@ -25,7 +25,7 @@
       <div class="progress-step" [class.active]="currentStep >= 4">4</div>
     </div>
 
-    <form [formGroup]="usuarioForm" (ngSubmit)="goToStep(3)">
+    <form [formGroup]="usuarioForm" (ngSubmit)="goToStep(4)">
       <input type="text" formControlName="nombre" placeholder="Nombre completo" />
       <input type="email" formControlName="correo" placeholder="Correo electrónico" />
         <div *ngIf="usuarioForm.get('correo')?.touched && usuarioForm.get('correo')?.invalid" class="error">
@@ -147,13 +147,13 @@
 
     <form [formGroup]="empresaForm" (ngSubmit)="registrarEmpresa()">
        <label class="lbl">RFC</label>
-       <input type="text" formControlName="rfc" placeholder="Ej: ABC123456789" />
+       <input type="text" formControlName="rfc" placeholder="Ej: ABC123456789"[ngClass]="{'bloqueado': rfcExistente}"/>
 
       <label class="lbl">Nombre de la empresa</label>
-      <input type="text" formControlName="nombreEmpresa" placeholder="Ej: Corp S.A de C.V" />
+      <input type="text" formControlName="nombreEmpresa" placeholder="Ej: Corp S.A de C.V" [ngClass]="{'bloqueado': rfcExistente}" />
 
       <label class="lbl">Dirección</label>
-      <input type="text" formControlName="direccion" placeholder="Ej: Calle Falsa 123" />
+      <input type="text" formControlName="direccion" placeholder="Ej: Calle Falsa 123" [ngClass]="{'bloqueado': rfcExistente}" />
 
       <!--<div *ngIf="empresaForm.get('rfc')?.hasError('rfcExistente') && empresaForm.get('rfc')?.touched" class="error">
         Ya existe una empresa registrada con este RFC.
@@ -161,10 +161,10 @@
 
 
       <label class="lbl">Sitio Web</label>
-      <input type="text" formControlName="sitioWeb" placeholder="Ej: https://corp.com" />
+      <input type="text" formControlName="sitioWeb" placeholder="Ej: https://corp.com" [ngClass]="{'bloqueado': rfcExistente}" />
 
        <label class="lbl">Tamaño de la empresa</label>
-        <select formControlName="tamano">
+        <select formControlName="tamano" [ngClass]="{'bloqueado': rfcExistente}">
           <option value="" disabled selected>Seleccione una opción</option>
           <option value="pequeña">Pequeña</option>
           <option value="mediana">Mediana</option>

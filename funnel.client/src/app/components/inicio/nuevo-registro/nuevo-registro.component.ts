@@ -444,49 +444,79 @@ validarRfcExistente(control: any) {
   }
   unirse() {
   const formValue = this.usuarioForm.value;
-  
-  if (formValue.nombre) {
-    const { nombre, apellidoPaterno, apellidoMaterno } = this.procesarNombreCompleto(formValue.nombre);
-    formValue.nombre = nombre;
-    formValue.apellidoPaterno = apellidoPaterno;
-    formValue.apellidoMaterno = apellidoMaterno;
-  }
 
-  formValue.iniciales = this.obtenerIniciales(
-    formValue.nombre,
-    formValue.apellidoPaterno,
-    formValue.apellidoMaterno
-  );
-  
-  const formData = new FormData();
-  Object.keys(formValue).forEach(key => {
-    formData.append(key, formValue[key]);
-  });
+  if (!this.idEmpresa) return; 
 
-  formData.append('estatus', '0');
-  formData.append('idTipoUsuario', '3');
-  formData.append('bandera', 'INSERT');
-  formData.append('idEmpresa', this.idEmpresa!.toString());
+  this.usuariosService.getUsuarios(this.idEmpresa).subscribe({
+    next: (usuarios: Usuarios[]) => {
+      const correoExistente = usuarios.some(
+        u => u.correo?.toLowerCase() === formValue.correo?.toLowerCase()
+      );
+      const usernameExistente = usuarios.some(
+        u => u.usuario?.toLowerCase() === formValue.usuario?.toLowerCase()
+      );
 
-  this.usuariosService.postGuardarUsuario(formData).subscribe({
-    next: (resp) => {
-       if (resp.id && this.idEmpresa) {
-        this.enviarCorreoAdmin(this.idEmpresa, resp.id);
-        console.log(this.idEmpresa, resp.id);
+      if (correoExistente || usernameExistente) {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Usuario existente',
+          detail: correoExistente
+            ? 'El correo ya está registrado en esta empresa.'
+            : 'El nombre de usuario ya está registrado en esta empresa.',
+        });
+        this.mostrarModalRFC = false;
+        return; 
       }
+
+      if (formValue.nombre) {
+        const { nombre, apellidoPaterno, apellidoMaterno } = this.procesarNombreCompleto(formValue.nombre);
+        formValue.nombre = nombre;
+        formValue.apellidoPaterno = apellidoPaterno;
+        formValue.apellidoMaterno = apellidoMaterno;
+      }
+
+      formValue.iniciales = this.obtenerIniciales(
+        formValue.nombre,
+        formValue.apellidoPaterno,
+        formValue.apellidoMaterno
+      );
+
+      const formData = new FormData();
+      Object.keys(formValue).forEach(key => {
+        formData.append(key, formValue[key]);
+      });
+
+      formData.append('estatus', '0');
+      formData.append('idTipoUsuario', '3');
+      formData.append('bandera', 'INSERT');
+      formData.append('idEmpresa', this.idEmpresa!.toString());
+
+      this.usuariosService.postGuardarUsuario(formData).subscribe({
+        next: (resp) => {
+          if (resp.id && this.idEmpresa) {
+            this.enviarCorreoAdmin(this.idEmpresa, resp.id);
+            console.log(this.idEmpresa, resp.id);
+          }
+        },
+        error: (err) => {
+          console.error('Error al guardar usuario', err);
+        }
+      });
+
+      this.mostrarModalRFC = false;
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Solicitud enviada',
+        detail: 'Tu solicitud para unirte a la empresa ha sido enviada.',
+      });
+      this.finish();
     },
     error: (err) => {
-      console.error('Error al guardar usuario', err);
+      console.error('Error al obtener usuarios de la empresa', err);
     }
   });
-  this.mostrarModalRFC = false;
- this.messageService.add({
-      severity: 'success',
-      summary: 'Solicitud enviada',
-      detail: 'Tu solicitud para unirte a la empresa ha sido enviada.',
-    });
-  this.finish();
 }
+
 enviarCorreoAdmin(idEmpresa: number, idUsuario: number) {
   this.empresaService.correoRegistrosAdministrador(idEmpresa, idUsuario).subscribe({
     next: (resp) => {

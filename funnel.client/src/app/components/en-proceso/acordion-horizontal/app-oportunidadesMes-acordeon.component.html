@@ -44,13 +44,20 @@
                 <label class="monto-normalizado">{{ tarjeta.montoNormalizado | totalCurrency:'currency':mostrarDecimales
                   }}</label>
               </div>
+              <p-button type="button" text 
+                pTooltip="Estancamiento" tooltipPosition="top" styleClass="blue-icon"
+                        *ngIf="(tarjeta?.scoreEstancamiento || 0) > 95" (click)="abrirModalEstancamiento(tarjeta)">
+                <ng-template pTemplate="icon">
+                  <span class="fs-6 estancamiento">🚩</span>
+                </ng-template>
+              </p-button>
               <p-button type="button" icon="bi bi-file-earmark-text fs-3" text (click)="seguimiento(tarjeta)"
-                pTooltip="Seguimiento" tooltipPosition="top" styleClass="blue-icon">
+                pTooltip="Seguimiento" tooltipPosition="top" [styleClass]="(tarjeta?.totalComentarios ?? 0) > 2 ? 'blue-icon': 'seguimiento-warning'" >
               </p-button>
               <p-button type="button" icon="bi bi-folder2 fs-4" text (click)="documento(tarjeta)"
-                pTooltip="Documentos" tooltipPosition="top" [styleClass]="tarjeta.totalArchivos > 0 ? 'blue-icon-documentos': 'cancel-icon'" >
+                pTooltip="Documentos" tooltipPosition="top" [styleClass]="(tarjeta?.totalArchivos ?? 0) > 0 ? 'blue-icon-documentos': 'cancel-icon'" >
               </p-button>
-              <p-button styleClass="coloreditar-icon ms-2" (click)="actualiza(tarjeta)" pTooltip="Editar registro"
+              <p-button styleClass="coloreditar-icon ms-2" (click)="actualiza(tarjeta)" pTooltip="Editar"
                 tooltipPosition="top">
                 <span class="custom-pencil">✏️</span>
               </p-button>
@@ -129,4 +136,5 @@
 <app-documentos-oportunidades [(visible)]="modalDocumentosVisible" [title]="'Documentos de '"
   (result)="manejarResultado($event)" [insertar]="insertar" [oportunidades]="oportunidades" [oportunidad]="oportunidadSeleccionada">
 </app-documentos-oportunidades>
-  
+<app-modal-estancamiento [(visible)]="modalEstancamientoVisible" [idOportunidadSeleccionada]="idOportunidadSeleccionada">
+</app-modal-estancamiento>

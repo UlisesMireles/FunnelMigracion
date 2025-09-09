@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { LoginService } from '../../../services/login.service';
 import { EnumPaginas } from '../../../enums/enumPaginas';
+import { EnumMenus } from '../../../enums/enumMenus';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -32,7 +33,7 @@ export class AdminDashboardComponent {
   consultarPermisosUsuario() {
     const permisos = this.loginService.obtenerPermisosUsuario();
     if (permisos && permisos.length > 0) {
-      const permisoDashboard = permisos.find(p => p.nombre === EnumPaginas.DASHBOARD);
+      const permisoDashboard = permisos.find(p => p.nombre === EnumMenus.DASHBOARD);
       if(permisoDashboard){
         this.permisoOportunidadesGeneral = permisoDashboard.subMenu.some((p:any) => p.pagina === EnumPaginas.OPORTUNIDADES_GENERAL);
         this.permisoOportunidadesPorAgente = permisoDashboard.subMenu.some((p:any) => p.pagina === EnumPaginas.OPORTUNIDADES_POR_AGENTE);

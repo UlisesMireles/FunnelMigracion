@@ -73,6 +73,9 @@ namespace Funnel.Logic
                     threadId = await OpenAIUtils.CreateThreadAsync(configuracion.Llave);
                     _cache.Set(threadCacheKey, threadId, TimeSpan.FromHours(2));
                 }
+
+                // Consultar instrucciones adicionales y agregarlas al hilo si existen
+                await AgregarInstruccionesAdicionalesAlHiloAsync(idBot, threadId, configuracion.Llave);
                 result.Result = true;
 
                 // Consultar instrucciones adicionales y agregarlas al hilo si existen

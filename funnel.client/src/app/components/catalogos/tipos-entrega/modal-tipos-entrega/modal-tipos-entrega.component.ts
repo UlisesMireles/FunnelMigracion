@@ -44,7 +44,7 @@ inicializarFormulario() {
   if(this.insertar){
   this.tipoEntregaForm = this.fb.group({
        idTipoEntrega: [0],
-      descripcion: ['', [Validators.required]],
+      descripcion: [this.tipoEntrega?.descripcion ?? "", [Validators.required]],
       abreviatura: ['', [Validators.required]],
       estatus: [true],
       idEmpresa: [this.loginService.obtenerIdEmpresa()],

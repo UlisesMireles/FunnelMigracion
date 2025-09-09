@@ -52,6 +52,7 @@ namespace Funnel.Data
             BaseOut result = new BaseOut();
             try
             {
+                int IdTipoProyecto = 0;
                 IList<ParameterSQl> list = new List<ParameterSQl>
         {
             DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Bandera ?? (object)DBNull.Value),
@@ -65,8 +66,9 @@ namespace Funnel.Data
 
                 using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoTiposOportunidades", CommandType.StoredProcedure, list, _connectionString))
                 {
-                    while (reader.Read()) {
-                        
+                    while (reader.Read())
+                    {
+                        IdTipoProyecto = ComprobarNulos.CheckIntNull(reader["IdTipoProyecto"]);
                     }
                 }
 
@@ -74,12 +76,12 @@ namespace Funnel.Data
                 {
                     case "INSERT":
                         result.ErrorMessage = "Servicio insertado correctamente.";
-                        result.Id = 1;
+                        result.Id = IdTipoProyecto;
                         result.Result = true;
                         break;
                     case "UPDATE":
                         result.ErrorMessage = "Servicio actualizado correctamente.";
-                        result.Id = 1;
+                        result.Id = IdTipoProyecto;
                         result.Result = true;
                         break;
                     default:

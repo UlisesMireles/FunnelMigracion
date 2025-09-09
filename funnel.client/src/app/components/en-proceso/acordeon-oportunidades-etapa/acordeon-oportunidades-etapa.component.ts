@@ -1,5 +1,5 @@
 import { transferArrayItem } from '@angular/cdk/drag-drop';
-import { ChangeDetectorRef, Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Output, ViewEncapsulation } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { Oportunidad, OportunidadesPorEtapa, Tarjeta, RequestActualizarEtapa } from '../../../interfaces/oportunidades';
 import { OportunidadesService } from '../../../services/oportunidades.service';
@@ -15,7 +15,8 @@ import { Subscription } from 'rxjs';
   selector: 'app-acordeon-oportunidades-etapa',
   standalone: false,
   templateUrl: './acordeon-oportunidades-etapa.component.html',
-  styleUrl: './acordeon-oportunidades-etapa.component.css'
+  styleUrl: './acordeon-oportunidades-etapa.component.css',
+  encapsulation: ViewEncapsulation.None
 })
 export class AcordeonOportunidadesEtapaComponent {
 
@@ -40,7 +41,12 @@ export class AcordeonOportunidadesEtapaComponent {
   modalDocumentosVisible: boolean = false;
   private modalSubscription!: Subscription;
   baseUrl: string = environment.baseURL;
-  // 
+  modalEstancamientoVisible: boolean = false;
+  estancamiento: boolean = false;
+  idOportunidadSeleccionada: number = 0;
+
+
+  //
   constructor(
     private oportunidadService: OportunidadesService, private readonly loginService: LoginService, private messageService: MessageService, private cdr: ChangeDetectorRef,
     private modalOportunidadesService: ModalOportunidadesService
@@ -73,7 +79,6 @@ export class AcordeonOportunidadesEtapaComponent {
 
     this.oportunidadService.getOportunidadesPorEtapa(idEmpresa, idUsuario).subscribe({
       next: (result: OportunidadesPorEtapa[]) => {
-
         this.etapas = result.map(etapa => ({
           ...etapa,
           expandido: etapa.tarjetas.length > 0, // Expandir todas las etapas por defecto
@@ -309,5 +314,11 @@ export class AcordeonOportunidadesEtapaComponent {
   private readonly cacheBuster = Date.now();
   getImagen(imagen: string) {
     return `${this.baseUrl}/Fotografia/${imagen}?t=${this.cacheBuster}`;
+  
+  }
+  abrirModalEstancamiento(tarjeta: Tarjeta) {
+    this.modalEstancamientoVisible = true;
+    this.estancamiento = true;
+    this.idOportunidadSeleccionada = tarjeta.idOportunidad;
   }
 }

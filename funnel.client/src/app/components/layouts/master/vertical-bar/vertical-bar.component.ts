@@ -26,7 +26,9 @@ export class VerticalBarComponent {
   scrollInterval: any = null;
   ListaMenu: any[] = [];
   isClickInsideModal: boolean = false;
+  version: string = '';
 
+  EnumMenus = EnumMenus;
   constructor(private router: Router,
     private messageService: MessageService,
     private permisosService: PermisosService,
@@ -35,6 +37,7 @@ export class VerticalBarComponent {
 
   ngOnInit(): void {
     this.consultarMenu();
+    this.obtenerVersion();
   }
 
   consultarMenu(): void {
@@ -50,13 +53,20 @@ export class VerticalBarComponent {
         };
 
         const salir = {
-          nombre: 'SALIR',
+          nombre: 'Salir',
           ruta: '/login',
-          icono: 'bi-box-arrow-right',
+          icono: 'bi bi-box-arrow-right',
           colorIcono: '#ffffff',
           tooltip: 'Cerrar sesión',
           subMenu: []
         };
+        const linea = {
+          nombre: '<hr>',
+          ruta: '',
+          icono: '',
+          tooltip: '',
+          subMenu: []
+        }
 
         // Combinar: primero "Perfil", luego los permisos, luego "SALIR"
         this.ListaMenu = [perfil, ...result, salir];
@@ -71,7 +81,7 @@ export class VerticalBarComponent {
             : menu
         );
         this.ListaMenu = this.ListaMenu.map(menu =>
-          menu.nombre === EnumMenus.ADMINISTRACION
+          menu.nombre == EnumMenus.ADMINISTRACION
             ? { ...menu, ruta: "/prospectos-contactos", subMenu: [] }
             : menu
         );
@@ -166,4 +176,19 @@ export class VerticalBarComponent {
       this.scrollInterval = null;
     }
   }
+  obtenerVersion(): void {
+    this.loginService.obtenerVersion().subscribe({
+      next: (result: any) => {
+        this.version = result.errorMessage;
+      },
+      error: (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Se ha producido un error al consultar la versión.',
+          detail: error.errorMessage,
+        });
+      },
+    });
+  }
+
 }

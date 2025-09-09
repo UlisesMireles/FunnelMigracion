@@ -9,6 +9,8 @@ import { RequestUsuario } from '../../../../interfaces/usuarios';
 import { ImagenActualizadaService } from '../../../../services/imagen-actualizada.service';
 import { environment } from '../../../../../environments/environment';
 import { Puestos } from '../../../../interfaces/usuarios';
+import { Permiso } from '../../../../interfaces/permisos';
+import { PermisosService } from '../../../../services/permisos.service';
 
 @Component({
   selector: 'app-modal-usuarios',
@@ -19,7 +21,8 @@ import { Puestos } from '../../../../interfaces/usuarios';
 export class ModalUsuariosComponent {
 
   
-  constructor(private UsuariosService: UsuariosService, private messageService: MessageService, private loginService: LoginService, private fb: FormBuilder, private readonly imagenService: ImagenActualizadaService, private cdr: ChangeDetectorRef) { }
+  constructor(private UsuariosService: UsuariosService, private messageService: MessageService, private loginService: LoginService, 
+    private readonly permisosService: PermisosService, private fb: FormBuilder, private readonly imagenService: ImagenActualizadaService, private cdr: ChangeDetectorRef) { }
     @Input() usuario!: Usuarios;
     @Input() usuarios: Usuarios[] = [];
     @Input() title: string = 'Modal';
@@ -238,6 +241,7 @@ export class ModalUsuariosComponent {
     this.UsuariosService.getTiposUsuarios(this.loginService.obtenerIdEmpresa()).subscribe({
       next: (result: any) => {
         this.tiposUsuario = result;
+        this.consultarPermisos();
       },
       error: (error) => {
         this.messageService.add({
@@ -569,4 +573,57 @@ mostrarImagenDefault(event: Event) {
   toggleConfirmPasswordVisibility() {
   this.showConfirmPassword = !this.showConfirmPassword;
 }  
+  permisos: Permiso[] = [];
+  agrupadosPermisos: any[] = [];
+  consultarPermisos() {
+    this.permisosService.getPermisos(this.loginService.obtenerIdEmpresa()).subscribe({
+      next: (result: Permiso[]) => {
+        this.permisos = result;
+        this.agrupadosPermisos = this.obtenerMenusAgrupados();
+        // Filtrar tipos de usuario que tienen al menos un permiso
+        this.tiposUsuario = this.tiposUsuario.filter(tipoUsuario => {
+          // Convertir el nombre del tipo de usuario a minúsculas para comparar
+          const tipoUsuarioKey = tipoUsuario.descripcion?.toLowerCase() || tipoUsuario.tipoUsuario?.toLowerCase();
+          
+          // Verificar si existe al menos un permiso para este tipo de usuario
+          return this.permisos.some(permiso => {
+            switch(tipoUsuarioKey) {
+              case 'administrador':
+                return permiso.administrador === true;
+              case 'gerente':
+                return permiso.gerente === true;
+              case 'agente':
+                return permiso.agente === true;
+              case 'invitado':
+                return permiso.invitado === true;
+              default:
+                return false;
+            }
+          });
+        });
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Se ha producido un error.',
+          detail: error.errorMessage,
+        });
+      },
+    });
+  }
+  obtenerMenusAgrupados() {
+    const agrupados: any = {};
+  
+    this.permisos.forEach((permiso) => {
+      const menuKey = permiso.menu ?? 'Sin menú';
+  
+      if (!agrupados[menuKey]) {
+        agrupados[menuKey] = { menu: menuKey, paginas: [], expanded: true };
+      }
+      agrupados[menuKey].paginas.push(permiso);
+    });
+  
+    return Object.values(agrupados);
+  }
 }

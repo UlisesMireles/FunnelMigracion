@@ -12,34 +12,38 @@
         <i [ngClass]="ListaMenu[0].icono" [title]="ListaMenu[0].tooltip" class="large-icon"></i>
         <span *ngIf="isExpanded">{{ ListaMenu[0].nombre }}</span>
       </li> -->
+      <div *ngFor="let item of ListaMenu.slice(1); let i = index">
+        <li class="menu-item" (mouseenter)="showSubmenu(i)" (mouseleave)="hideSubmenu()"
+          (click)="navigateTo(item.ruta)">
 
-      <li class="menu-item" *ngFor="let item of ListaMenu.slice(1); let i = index" (mouseenter)="showSubmenu(i)"
-        (mouseleave)="hideSubmenu()" (click)="navigateTo(item.ruta)">
-        <i [ngClass]="item.icono" [title]="item.tooltip"
-        [ngStyle]="{
+          <i *ngIf="item.svg" class="icon-svg" [innerHTML]="item.svg"></i>
+          <i *ngIf="!item.svg" [ngClass]="item.icono" [title]="item.tooltip" [ngStyle]="{
                     'font-size': item.nombre === 'SALIR' ? '22px' : '20px',
                     'color': item.colorIcono}"></i>
-        <span *ngIf="isExpanded">{{ item.nombre }}</span>
+          <span *ngIf="isExpanded">{{ item.nombre }}</span>
 
-        <!-- Solo mostrar submenú si existe y tiene elementos -->
-        <ul class="submenu visible" [ngStyle]="item.subMenu.length > 2 ? {'transform': 'translateY(40%)'}: {'transform': 'translateY(33%)'}" 
-          [ngClass]="isExpanded ? 'subMenuExpanded' : ''" *ngIf="item.subMenu && item.subMenu.length > 0 && hoveredMenu === i" >
-          <!-- Encabezado con el nombre del menú como título -->
-          <!-- <li class="submenu-header">{{ item.pagina }}</li> -->
+          <!-- Solo mostrar submenú si existe y tiene elementos -->
+          <ul class="submenu visible"
+            [ngStyle]="item.subMenu.length > 2 ? {'transform': 'translateY(40%)'}: {'transform': 'translateY(33%)'}"
+            [ngClass]="isExpanded ? 'subMenuExpanded' : ''"
+            *ngIf="item.subMenu && item.subMenu.length > 0 && hoveredMenu === i">
+            <!-- Encabezado con el nombre del menú como título -->
+            <!-- <li class="submenu-header">{{ item.pagina }}</li> -->
 
-          <li *ngFor="let subItem of item.subMenu" class="submenu-item" [routerLink]="subItem.ruta">
-            <a>{{ subItem.pagina }}</a>
+            <li *ngFor="let subItem of item.subMenu" class="submenu-item" [routerLink]="subItem.ruta">
+              <a>{{ subItem.pagina }}</a>
 
-            <!-- 🟠 Icono y tooltip si hasIcon es true -->
-            <span *ngIf="subItem.hasIcon" class="icono-naranja">
-              <i class="bi bi-arrow-up-circle-fill"></i>
-              <span class="tooltip">{{ subItem.tooltipMessage }}</span>
-            </span>
-          </li>
+              <!-- 🟠 Icono y tooltip si hasIcon es true -->
+              <span *ngIf="subItem.hasIcon" class="icono-naranja">
+                <i class="bi bi-arrow-up-circle-fill"></i>
+                <span class="tooltip">{{ subItem.tooltipMessage }}</span>
+              </span>
+            </li>
+          </ul>
+        </li>
+        <hr *ngIf="item.nombre === EnumMenus.TERMINADAS || item.nombre === EnumMenus.DASHBOARD || item.nombre === EnumMenus.CONFIGURACION" class="separator-menu">
 
-
-        </ul>
-      </li>
+      </div>
     </ul>
     <div class="expand-btn-container" (mouseenter)="showTooltip = true" (mouseleave)="showTooltip = false">
       <div class="expand-btn" (click)="toggleMenu()" (mouseenter)="showTooltip = true"
@@ -51,6 +55,9 @@
       <div class="tooltip-box" *ngIf="showTooltip">
         {{ isExpanded ? 'Contraer la navegación' : 'Ampliar la navegación' }}
       </div>
+    </div>
+    <div class="app-chat-version" style="text-align: center; padding: 10px; font-size: 10px; color: #fff;">
+      {{ version }}
     </div>
   </div>
 

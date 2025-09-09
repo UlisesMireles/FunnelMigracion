@@ -20,5 +20,8 @@ namespace Funnel.Data.Interfaces
         public Task<BaseOut> ActualizarFechaEstimada(OportunidadesEnProcesoDto request);
         public Task<BaseOut> ActualizarEtapa(OportunidadesEnProcesoDto request);
         public Task<EtiquetasOportunidadesDto> ConsultarEtiquetas(int IdEmpresa, int IdUsuario);
+        public Task <List<EstancamientoEstadisticaOportunidadDto>> ConsultarEstancamientoEstadisticaOportunidades();
+        public Task<List<EstancamientoEstadisticaOportunidadDto>> ConsultarEstancamientoPorOportunidad(int IdOportunidad);
+
     }
 }

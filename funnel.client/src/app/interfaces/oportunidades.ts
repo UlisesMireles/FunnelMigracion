@@ -114,6 +114,7 @@ export interface Tarjeta {
   nombre?: string;
   tooltipStage?: string;
   totalArchivos: number;
+  scoreEstancamiento?: number;
 }
 
 export  interface OportunidadesPorMes {
@@ -148,4 +149,27 @@ export interface RequestActualizarEtapa {
   idStage: number;         
   idUsuario: number;       
   idEmpresa: number;    
+}
+export interface Estancamiento {
+  idOportunidad: number;
+  oportunidad:string;
+  prospecto:string;
+  etapa:string;
+  diasFunnel:number;
+  diasSinActividad:number;
+  mediaDias:number;
+  mediaDiasEtapa1:number;
+  desvDias:number;
+  diasEtapa1:number;
+  diasEtapa2:number;
+  diasEtapa3:number;
+  diasEtapa4:number;
+  diasEtapa5:number;
+  riesgo: number;
+  zScoreFunnel: number;
+  zScoreEtapa1: number;
+  inactividadNorm: number;
+  cierreVencido: number;
+  probEstancada: number;
+  scoreEstancamiento: number;
 }

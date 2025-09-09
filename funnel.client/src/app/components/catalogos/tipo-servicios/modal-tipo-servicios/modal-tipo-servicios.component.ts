@@ -52,7 +52,7 @@ constructor(private TipoServicioService: TipoServicioService, private messageSer
 
       this.servicioForm = this.fb.group({
         idTipoProyecto: [0],
-        descripcion: ['', [Validators.required]],
+        descripcion: [this.tipoServicio?.descripcion ?? "", [Validators.required]],
         abreviatura: ['', [Validators.required]],
         estatus: [true],
         idEmpresa: [this.loginService.obtenerIdEmpresa()],
@@ -96,7 +96,7 @@ constructor(private TipoServicioService: TipoServicioService, private messageSer
       this.servicioForm.controls['idEmpresa'].setValue(this.loginService.obtenerIdEmpresa());
       this.servicioForm.controls['bandera'].setValue(this.insertar ? 'INSERT' : 'UPDATE');
      
-      console.log(this.servicioForm.value);
+      
      
       this.TipoServicioService.postGuardarServicio(this.servicioForm.value).subscribe({
         next: (result: baseOut) => {

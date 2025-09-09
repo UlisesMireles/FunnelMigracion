@@ -24,5 +24,9 @@ namespace Funnel.Logic.Interfaces
         public Task<byte[]> GenerarReporteOportunidades(OportunidadesReporteDto oportunidades, string RutaBase, string titulo, int IdEmpresa);
         public Task<BaseOut> ActualizarEtapa(OportunidadesEnProcesoDto request);
         public Task<EtiquetasOportunidadesDto> ConsultarEtiquetas(int IdEmpresa, int IdUsuario);
+        public Task<List<EstancamientoEstadisticaOportunidadDto>> ConsultarEstancamientoEstadisticaOportunidades();
+        public Task<List<EstancamientoEstadisticaOportunidadDto>> ConsultarEstancamientoPorOportunidad(int IdOportunidad);
+
+
     }
 }

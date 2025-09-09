@@ -476,3 +476,6 @@ select:focus {
   outline: none;
   z-index: 1; 
 }
+.step5-box form > div {
+  width: 100%;
+}

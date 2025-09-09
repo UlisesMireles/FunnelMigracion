@@ -178,11 +178,10 @@
   <!-- Paso 5: Corrección de duplicados -->
 <div *ngIf="currentStep === 5" class="step5-box">
   <h2>Corrige los datos duplicados</h2>
-  <p class="step">Algunos datos ya existen en la empresa. Por favor, corrige los campos marcados.</p>
+  <p class="step">Algunos datos ya existen en la empresa. Por favor, corrige los siguientes campos.</p>
 
   <form [formGroup]="usuarioForm" (ngSubmit)="unirse()">
      <div *ngIf="duplicadosCorreo">
-      <label class="lbl">Correo electrónico</label>
       <input type="email" formControlName="correo" placeholder="Correo electrónico" />
       <div *ngIf="usuarioForm.get('correo')?.errors?.['duplicado']" class="error">
         <small>Este correo ya está registrado en la empresa.</small>
@@ -190,14 +189,13 @@
     </div>
 
     <div *ngIf="duplicadosUsuario">
-      <label class="lbl">Nombre de usuario</label>
       <input type="text" formControlName="usuario" placeholder="Nombre de usuario" />
       <div *ngIf="usuarioForm.get('usuario')?.errors?.['duplicado']" class="error">
         <small>Este nombre de usuario ya está registrado en la empresa.</small>
       </div>
     </div>
 
-    <button class="next-step" type="submit"
+    <button class="next-step" type="submit" 
       [disabled]="(duplicadosCorreo && usuarioForm.get('correo')?.invalid) || (duplicadosUsuario && usuarioForm.get('usuario')?.invalid)">
       Corregir y Continuar
     </button>

@@ -34,6 +34,7 @@ export class NuevoRegistroComponent implements OnInit {
   idEmpresa: number | null = null;
   duplicadosCorreo: boolean = false;
   duplicadosUsuario: boolean = false;
+  desdeDuplicadoCorreo: boolean = false;
   constructor(private fb: FormBuilder, private empresaService: EmpresaService, private messageService: MessageService, private usuariosService: UsuariosService,
     private router: Router
    ) {}
@@ -338,8 +339,13 @@ if (usuarioData.nombre) {
       return false;
     }
 
-    if (codigoIngresado === this.codigoTemporal) {
-      this.goToStep(3);
+      if (codigoIngresado === this.codigoTemporal) {
+      if (this.desdeDuplicadoCorreo) {
+        this.guardarUsuario(this.usuarioForm.value);
+        this.desdeDuplicadoCorreo = false;
+      } else {
+        this.goToStep(3);
+      }
       return true;
     } else {
       this.messageService.add({
@@ -481,12 +487,10 @@ unirse() {
 
         if (this.duplicadosCorreo) {
           this.usuarioForm.get('correo')?.setErrors({ duplicado: true });
-          console.log (this.duplicadosCorreo);
           this.usuarioForm.get('correo')?.reset();
         }
         if (this.duplicadosUsuario) {
           this.usuarioForm.get('usuario')?.setErrors({ duplicado: true });
-          console.log (this.duplicadosUsuario);
           this.usuarioForm.get('usuario')?.reset();
         }
 
@@ -494,11 +498,18 @@ unirse() {
         return;
       }
 
-      this.guardarUsuario(formValue);
+      if (this.usuarioForm.get('correo')?.dirty) {
+        this.desdeDuplicadoCorreo = true;
+        this.codigoValidadorCorreo(this.usuarioForm.get('correo')?.value);
+        this.currentStep = 2; 
+      } else {
+        this.guardarUsuario(formValue);
+      }
     },
     error: (err) => console.error('Error al obtener usuarios de la empresa', err)
   });
 }
+
 private guardarUsuario(formValue: any) {
   if (formValue.nombre) {
     const { nombre, apellidoPaterno, apellidoMaterno } = this.procesarNombreCompleto(formValue.nombre);

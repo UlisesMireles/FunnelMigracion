@@ -32,12 +32,26 @@ export class NuevoRegistroComponent implements OnInit {
   rfcExistente: boolean = false; 
   mostrarMensajeNuevaEmpresa: boolean = false;
   idEmpresa: number | null = null;
+  duplicadosCorreo: boolean = false;
+  duplicadosUsuario: boolean = false;
   constructor(private fb: FormBuilder, private empresaService: EmpresaService, private messageService: MessageService, private usuariosService: UsuariosService,
     private router: Router
    ) {}
    
   ngOnInit(): void {
     this.inicializarFormulario();
+
+    this.usuarioForm.get('correo')?.valueChanges.subscribe((nuevoCorreo) => {
+    if (this.idRegistroTemporal && nuevoCorreo) {
+      this.actualizarRegistroTemporal({ correo: nuevoCorreo });
+    }
+  });
+
+  this.usuarioForm.get('usuario')?.valueChanges.subscribe((nuevoUsuario) => {
+    if (this.idRegistroTemporal && nuevoUsuario) {
+      this.actualizarRegistroTemporal({ usuario: nuevoUsuario });
+    }
+  });
   }
   inicializarFormulario() {
     this.usuarioForm = this.fb.group({
@@ -442,81 +456,95 @@ validarRfcExistente(control: any) {
       }
     });
   }
-  unirse() {
-  const formValue = this.usuarioForm.value;
 
+
+unirse() {
+  const formValue = this.usuarioForm.value;
   if (!this.idEmpresa) return; 
 
   this.usuariosService.getUsuarios(this.idEmpresa).subscribe({
     next: (usuarios: Usuarios[]) => {
-      const correoExistente = usuarios.some(
+      this.duplicadosCorreo = usuarios.some(
         u => u.correo?.toLowerCase() === formValue.correo?.toLowerCase()
       );
-      const usernameExistente = usuarios.some(
+      this.duplicadosUsuario = usuarios.some(
         u => u.usuario?.toLowerCase() === formValue.usuario?.toLowerCase()
       );
 
-      if (correoExistente || usernameExistente) {
+      if (this.duplicadosCorreo || this.duplicadosUsuario) {
+        this.currentStep = 5; 
         this.messageService.add({
-          severity: 'error',
-          summary: 'Usuario existente',
-          detail: correoExistente
-            ? 'El correo ya está registrado en esta empresa.'
-            : 'El nombre de usuario ya está registrado en esta empresa.',
+          severity: 'warn',
+          summary: 'Datos duplicados',
+          detail: 'Corrige los campos marcados antes de continuar.',
         });
-        this.mostrarModalRFC = false;
-        return; 
-      }
 
-      if (formValue.nombre) {
-        const { nombre, apellidoPaterno, apellidoMaterno } = this.procesarNombreCompleto(formValue.nombre);
-        formValue.nombre = nombre;
-        formValue.apellidoPaterno = apellidoPaterno;
-        formValue.apellidoMaterno = apellidoMaterno;
-      }
-
-      formValue.iniciales = this.obtenerIniciales(
-        formValue.nombre,
-        formValue.apellidoPaterno,
-        formValue.apellidoMaterno
-      );
-
-      const formData = new FormData();
-      Object.keys(formValue).forEach(key => {
-        formData.append(key, formValue[key]);
-      });
-
-      formData.append('estatus', '0');
-      formData.append('idTipoUsuario', '3');
-      formData.append('bandera', 'INSERT');
-      formData.append('idEmpresa', this.idEmpresa!.toString());
-
-      this.usuariosService.postGuardarUsuario(formData).subscribe({
-        next: (resp) => {
-          if (resp.id && this.idEmpresa) {
-            this.enviarCorreoAdmin(this.idEmpresa, resp.id);
-            console.log(this.idEmpresa, resp.id);
-          }
-        },
-        error: (err) => {
-          console.error('Error al guardar usuario', err);
+        if (this.duplicadosCorreo) {
+          this.usuarioForm.get('correo')?.setErrors({ duplicado: true });
+          console.log (this.duplicadosCorreo);
+          this.usuarioForm.get('correo')?.reset();
         }
-      });
+        if (this.duplicadosUsuario) {
+          this.usuarioForm.get('usuario')?.setErrors({ duplicado: true });
+          console.log (this.duplicadosUsuario);
+          this.usuarioForm.get('usuario')?.reset();
+        }
 
-      this.mostrarModalRFC = false;
+        this.mostrarModalRFC = false;
+        return;
+      }
+
+      this.guardarUsuario(formValue);
+    },
+    error: (err) => console.error('Error al obtener usuarios de la empresa', err)
+  });
+}
+private guardarUsuario(formValue: any) {
+  if (formValue.nombre) {
+    const { nombre, apellidoPaterno, apellidoMaterno } = this.procesarNombreCompleto(formValue.nombre);
+    formValue.nombre = nombre;
+    formValue.apellidoPaterno = apellidoPaterno;
+    formValue.apellidoMaterno = apellidoMaterno;
+  }
+
+  formValue.iniciales = this.obtenerIniciales(
+    formValue.nombre,
+    formValue.apellidoPaterno,
+    formValue.apellidoMaterno
+  );
+
+  const formData = new FormData();
+  Object.keys(formValue).forEach(key => formData.append(key, formValue[key]));
+
+  formData.append('estatus', '0');
+  formData.append('idTipoUsuario', '3');
+  formData.append('bandera', 'INSERT');
+  formData.append('idEmpresa', this.idEmpresa!.toString());
+
+  this.usuariosService.postGuardarUsuario(formData).subscribe({
+    next: (resp) => {
+      if (resp.id && this.idEmpresa) {
+        this.enviarCorreoAdmin(this.idEmpresa, resp.id);
+      }
       this.messageService.add({
         severity: 'success',
         summary: 'Solicitud enviada',
         detail: 'Tu solicitud para unirte a la empresa ha sido enviada.',
       });
-      this.finish();
+      this.finish(); 
     },
     error: (err) => {
-      console.error('Error al obtener usuarios de la empresa', err);
+      console.error('Error al guardar usuario', err);
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'No se pudo guardar el usuario. Intenta nuevamente.',
+      });
     }
   });
 }
 
+  
 enviarCorreoAdmin(idEmpresa: number, idUsuario: number) {
   this.empresaService.correoRegistrosAdministrador(idEmpresa, idUsuario).subscribe({
     next: (resp) => {
@@ -528,5 +556,22 @@ enviarCorreoAdmin(idEmpresa: number, idUsuario: number) {
   });
 
 }
+private actualizarRegistroTemporal(data: any) {
+  const datosActualizados = {
+    bandera: "ACTUALIZAR",
+    idRegistro: this.idRegistroTemporal,
+    ...data
+  };
+
+  this.empresaService.guardarRegistroTemporal(datosActualizados).subscribe({
+    next: (resp) => {
+      console.log("Registro temporal actualizado:", resp);
+    },
+    error: (err) => {
+      console.error("Error al actualizar registro temporal:", err);
+    }
+  });
+}
+
 
 }

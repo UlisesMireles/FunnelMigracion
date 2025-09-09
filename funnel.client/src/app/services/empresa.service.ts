@@ -21,4 +21,10 @@ export class EmpresaService {
   getEmpresas(): Observable<Empresa[]> {
     return this.http.get<Empresa[]>(`${this.baseUrl}api/Empresa/ConsultarEmpresas`);
   }
+  correoRegistrosAdministrador(idEmpresa: number, idUsuario: number): Observable<any> {
+  return this.http.get(`${this.baseUrl}api/Empresa/CorreoRegistrosAdministrador`, {
+    params: { idEmpresa: idEmpresa.toString(), idUsuario: idUsuario.toString() }
+  });
+}
+
 }

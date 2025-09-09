@@ -7,7 +7,7 @@ import { Empresa } from '../../../interfaces/empresa';
 import { UsuariosService } from '../../../services/usuarios.service';
 import { Router } from '@angular/router';
 import { tail } from 'lodash-es';
-
+import { Usuarios } from '../../../interfaces/usuarios';
 
 @Component({
   selector: 'app-nuevo-registro',
@@ -31,6 +31,7 @@ export class NuevoRegistroComponent implements OnInit {
   rfcEmpresaExistente: string | null = null; 
   rfcExistente: boolean = false; 
   mostrarMensajeNuevaEmpresa: boolean = false;
+  idEmpresa: number | null = null;
   constructor(private fb: FormBuilder, private empresaService: EmpresaService, private messageService: MessageService, private usuariosService: UsuariosService,
     private router: Router
    ) {}
@@ -47,8 +48,8 @@ export class NuevoRegistroComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', Validators.required],
       iniciales: [''], 
-      correo: ['', [Validators.required, Validators.email]],
-      bandera: ['INS-EMPRESA-GLU']
+      correo: ['', [Validators.required, Validators.email]]
+      
     },{ validator: this.passwordMatchValidator });
     this.empresaForm = this.fb.group({
       nombreEmpresa: ['', Validators.required],
@@ -60,6 +61,7 @@ export class NuevoRegistroComponent implements OnInit {
     updateOn: 'blur' 
     }],
       sitioWeb: [''],
+      bandera: ['INS-EMPRESA-GLU']
     });
   }
 
@@ -164,22 +166,11 @@ registrarEmpresa(): void {
     }
   });
 
-  if (usuarioData.nombre) {
-    const partes = usuarioData.nombre.trim().split(/\s+/);
-
-    if (partes.length >= 3) {
-      usuarioData.nombre = partes[0];
-      usuarioData.apellidoPaterno = partes[1];
-      usuarioData.apellidoMaterno = partes.slice(2).join(' ');
-    } else if (partes.length === 2) {
-      usuarioData.nombre = partes[0];
-      usuarioData.apellidoPaterno = partes[1];
-      usuarioData.apellidoMaterno = '';
-    } else if (partes.length === 1) {
-      usuarioData.nombre = partes[0];
-      usuarioData.apellidoPaterno = '';
-      usuarioData.apellidoMaterno = '';
-    }
+if (usuarioData.nombre) {
+    const { nombre, apellidoPaterno, apellidoMaterno } = this.procesarNombreCompleto(usuarioData.nombre);
+    usuarioData.nombre = nombre;
+    usuarioData.apellidoPaterno = apellidoPaterno;
+    usuarioData.apellidoMaterno = apellidoMaterno;
   }
 
   const iniciales = this.obtenerIniciales(
@@ -189,7 +180,7 @@ registrarEmpresa(): void {
   );
 
   const nuevaEmpresa: Empresa = {
-    bandera: usuarioData.bandera,
+    bandera: empresaData.bandera,
     idEmpresa: 0,
     nombreEmpresa: empresaData.nombreEmpresa,
     idAdministrador: 0,
@@ -245,6 +236,24 @@ registrarEmpresa(): void {
     return null;
   }
 
+  private procesarNombreCompleto(nombreCompleto: string) {
+  const partes = nombreCompleto.trim().split(/\s+/);
+  let nombre = '', apellidoPaterno = '', apellidoMaterno = '';
+  if (partes.length >= 3) {
+    nombre = partes[0];
+    apellidoPaterno = partes[1];
+    apellidoMaterno = partes.slice(2).join(' ');
+  } else if (partes.length === 2) {
+    nombre = partes[0];
+    apellidoPaterno = partes[1];
+    apellidoMaterno = '';
+  } else if (partes.length === 1) {
+    nombre = partes[0];
+    apellidoPaterno = '';
+    apellidoMaterno = '';
+  }
+  return { nombre, apellidoPaterno, apellidoMaterno };
+}
   private obtenerIniciales(nombre: string, apellidoPaterno: string, apellidoMaterno: string): string {
     let iniciales = '';
     const inicialAp1 = apellidoPaterno.substring(0, 1).toUpperCase();
@@ -366,35 +375,44 @@ registrarEmpresa(): void {
       this.codigoValidadorCorreo(correo);
     }
   }
- validarRfcExistente(control: any) {
+validarRfcExistente(control: any) {
   return new Promise((resolve) => {
     const rfc = control.value?.trim();
     if (!rfc) {
-     this.rfcExistente = false;
-     resolve(null);
+      this.rfcExistente = false;
+      this.idEmpresa = null; 
+      resolve(null);
       return;
-      
     }
 
     this.empresaService.getEmpresas().subscribe({
       next: (empresas) => {
-        const existe = empresas.some(e => e.rfc!.toUpperCase() === rfc.toUpperCase());
-        if (existe) {
+      
+        const empresaEncontrada = empresas.find(
+          e => e.rfc!.toUpperCase() === rfc.toUpperCase()
+        );
+
+        if (empresaEncontrada) {
           this.rfcEmpresaExistente = rfc;
           this.rfcExistente = true;
-          this.mostrarModalRFC = true; 
+          this.mostrarModalRFC = true;
+
+          this.idEmpresa = empresaEncontrada.idEmpresa;
           resolve({ rfcExistente: true });
         } else {
           this.rfcExistente = false;
+          this.idEmpresa = null;
           resolve(null);
         }
       },
       error: () => {
-        resolve(null); 
+        this.idEmpresa = null;
+        resolve(null);
       }
     });
   });
 }
+
  onNoUnirse(): void {
     this.mostrarModalRFC = false;
     this.limpiarFormularioEmpresa();
@@ -424,14 +442,61 @@ registrarEmpresa(): void {
       }
     });
   }
-  unirse(): void {
-    //this.usuarioForm();
-    this.mostrarModalRFC = false;
-     this.messageService.add({
+  unirse() {
+  const formValue = this.usuarioForm.value;
+  
+  if (formValue.nombre) {
+    const { nombre, apellidoPaterno, apellidoMaterno } = this.procesarNombreCompleto(formValue.nombre);
+    formValue.nombre = nombre;
+    formValue.apellidoPaterno = apellidoPaterno;
+    formValue.apellidoMaterno = apellidoMaterno;
+  }
+
+  formValue.iniciales = this.obtenerIniciales(
+    formValue.nombre,
+    formValue.apellidoPaterno,
+    formValue.apellidoMaterno
+  );
+  
+  const formData = new FormData();
+  Object.keys(formValue).forEach(key => {
+    formData.append(key, formValue[key]);
+  });
+
+  formData.append('estatus', '0');
+  formData.append('idTipoUsuario', '3');
+  formData.append('bandera', 'INSERT');
+  formData.append('idEmpresa', this.idEmpresa!.toString());
+
+  this.usuariosService.postGuardarUsuario(formData).subscribe({
+    next: (resp) => {
+       if (resp.id && this.idEmpresa) {
+        this.enviarCorreoAdmin(this.idEmpresa, resp.id);
+        console.log(this.idEmpresa, resp.id);
+      }
+    },
+    error: (err) => {
+      console.error('Error al guardar usuario', err);
+    }
+  });
+  this.mostrarModalRFC = false;
+ this.messageService.add({
       severity: 'success',
       summary: 'Solicitud enviada',
       detail: 'Tu solicitud para unirte a la empresa ha sido enviada.',
     });
-  }
+  this.finish();
+}
+enviarCorreoAdmin(idEmpresa: number, idUsuario: number) {
+  this.empresaService.correoRegistrosAdministrador(idEmpresa, idUsuario).subscribe({
+    next: (resp) => {
+      console.log('Correo enviado al admin:', resp);
+    },
+    error: (err) => {
+      console.error('Error al enviar correo al admin:', err);
+    }
+  });
+
+}
 
 }

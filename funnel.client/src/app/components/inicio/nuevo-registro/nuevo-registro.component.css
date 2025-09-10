@@ -308,32 +308,11 @@ body {
 .progress-line.active {
   background-color: #1173d4;
 }
-select {
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
-  color: #333;
-  background-color: #fff;
-
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-
-  background-image: url("data:image/svg+xml;charset=UTF-8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  background-size: 16px 16px;
+.drop{
+  min-width: 100%;
 }
 
-select:focus {
-  outline: none;
-  border-color: #2684ff;
-  box-shadow: 0 0 4px rgba(38, 132, 255, 0.4);
-}
+
 .resend-link {
   color: #1173d4;
   font-weight: bold;

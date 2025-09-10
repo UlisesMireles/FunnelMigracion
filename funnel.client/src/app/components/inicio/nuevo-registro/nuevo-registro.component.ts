@@ -58,6 +58,12 @@ export class NuevoRegistroComponent implements OnInit {
     }
   });
   }
+  tamanos = [
+  { label: 'Pequeña', value: 'pequeña' },
+  { label: 'Mediana', value: 'mediana' },
+  { label: 'Grande', value: 'grande' }
+];
+
   inicializarFormulario() {
     this.usuarioForm = this.fb.group({
       nombre: ['', [Validators.required]],
@@ -124,7 +130,7 @@ export class NuevoRegistroComponent implements OnInit {
     };
       this.empresaService.guardarRegistroTemporal(datosPaso3).subscribe({
         next: (resp) => {
-          console.log("Datos de usuario guardados temporalmente:", resp);
+          //console.log("Datos de usuario guardados temporalmente:", resp);
           this.currentStep = step;
         },
         error: (err) => {
@@ -178,7 +184,7 @@ registrarEmpresa(): void {
   };
   this.empresaService.guardarRegistroTemporal(datosPaso4).subscribe({
     next: (resp) => {
-      console.log("Datos de empresa guardados temporalmente:", resp);
+      //console.log("Datos de empresa guardados temporalmente:", resp);
     },
     error: (err) => {
       console.error("Error al guardar datos de empresa temporalmente:", err);
@@ -223,7 +229,7 @@ if (usuarioData.nombre) {
     tamano: empresaData.tamano
   };
 
-  console.log('Objeto Empresa para enviar:', nuevaEmpresa);
+  //('Objeto Empresa para enviar:', nuevaEmpresa);
 
   this.empresaService.postEmpresa(nuevaEmpresa).subscribe({
     next: (resp) => {
@@ -574,7 +580,7 @@ private guardarUsuario(formValue: any) {
 enviarCorreoAdmin(idEmpresa: number, idUsuario: number) {
   this.empresaService.correoRegistrosAdministrador(idEmpresa, idUsuario).subscribe({
     next: (resp) => {
-      console.log('Correo enviado al admin:', resp);
+      //('Correo enviado al admin:', resp);
     },
     error: (err) => {
       console.error('Error al enviar correo al admin:', err);
@@ -591,7 +597,7 @@ private actualizarRegistroTemporal(data: any) {
 
   this.empresaService.guardarRegistroTemporal(datosActualizados).subscribe({
     next: (resp) => {
-      console.log("Registro temporal actualizado:", resp);
+      //console.log("Registro temporal actualizado:", resp);
     },
     error: (err) => {
       console.error("Error al actualizar registro temporal:", err);

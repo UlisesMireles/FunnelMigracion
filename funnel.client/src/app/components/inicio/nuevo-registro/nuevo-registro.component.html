@@ -163,13 +163,11 @@
       <label class="lbl">Sitio Web</label>
       <input type="text" formControlName="sitioWeb" placeholder="Ej: https://corp.com" [ngClass]="{'bloqueado': rfcExistente}" />
 
-       <label class="lbl">Tamaño de la empresa</label>
-        <select formControlName="tamano" [ngClass]="{'bloqueado': rfcExistente}">
-          <option value="" disabled selected>Seleccione una opción</option>
-          <option value="pequeña">Pequeña</option>
-          <option value="mediana">Mediana</option>
-          <option value="grande">Grande</option>
-        </select>
+      <label class="lbl">Tamaño de la empresa</label>
+        <p-dropdown class="drop" [options]="tamanos" formControlName="tamano" [disabled]="rfcExistente" 
+            placeholder="Seleccione una opción">
+        </p-dropdown>
+
        <button class="next-step" type="submit" [disabled]="empresaForm.invalid || rfcExistente">
       Finalizar Registro
     </button>

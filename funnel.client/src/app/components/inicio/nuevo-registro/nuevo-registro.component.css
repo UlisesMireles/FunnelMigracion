@@ -456,14 +456,28 @@ select:focus {
   font-size: 14px;
 }
 
-.step5-box input:first-of-type {
-  border-radius: 8px 8px 0 0; 
-  border-bottom: none; 
+.contenedor {
+  display: inline-block;
+  width: 100%;
 }
 
-.step5-box input:last-of-type {
-  border-radius: 0 0 8px 8px; 
+.contenedor div {
+  width: 100%;
 }
+
+.unico input {
+  border-radius: 10px; 
+}
+
+.arriba input {
+  border-radius: 10px 10px 0 0; 
+  border-bottom: none;
+}
+
+.abajo input {
+  border-radius: 0 0 10px 10px; 
+}
+
 
 .step5-box form label {
   display: block;       

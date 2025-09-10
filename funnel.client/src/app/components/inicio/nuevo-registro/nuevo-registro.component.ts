@@ -35,6 +35,9 @@ export class NuevoRegistroComponent implements OnInit {
   duplicadosCorreo: boolean = false;
   duplicadosUsuario: boolean = false;
   desdeDuplicadoCorreo: boolean = false;
+  huboDuplicadoCorreo: boolean = false;
+  correccionRealizada: boolean = false;
+
   constructor(private fb: FormBuilder, private empresaService: EmpresaService, private messageService: MessageService, private usuariosService: UsuariosService,
     private router: Router
    ) {}
@@ -479,6 +482,7 @@ unirse() {
 
       if (this.duplicadosCorreo || this.duplicadosUsuario) {
         this.currentStep = 5; 
+        this.correccionRealizada = false;
         this.messageService.add({
           severity: 'warn',
           summary: 'Datos duplicados',
@@ -488,6 +492,7 @@ unirse() {
         if (this.duplicadosCorreo) {
           this.usuarioForm.get('correo')?.setErrors({ duplicado: true });
           this.usuarioForm.get('correo')?.reset();
+          this.huboDuplicadoCorreo = true;
         }
         if (this.duplicadosUsuario) {
           this.usuarioForm.get('usuario')?.setErrors({ duplicado: true });
@@ -498,13 +503,18 @@ unirse() {
         return;
       }
 
-      if (this.usuarioForm.get('correo')?.dirty) {
-        this.desdeDuplicadoCorreo = true;
-        this.codigoValidadorCorreo(this.usuarioForm.get('correo')?.value);
-        this.currentStep = 2; 
-      } else {
-        this.guardarUsuario(formValue);
-      }
+    if (this.huboDuplicadoCorreo) {
+    this.desdeDuplicadoCorreo = true;
+    this.codigoValidadorCorreo(this.usuarioForm.get('correo')?.value);
+    this.currentStep = 2;
+    this.huboDuplicadoCorreo = false; 
+    this.correccionRealizada = true;
+    } else {
+      this.guardarUsuario(formValue);
+      this.correccionRealizada = true;
+    }
+
+
     },
     error: (err) => console.error('Error al obtener usuarios de la empresa', err)
   });

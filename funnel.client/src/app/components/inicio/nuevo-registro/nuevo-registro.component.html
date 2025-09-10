@@ -25,7 +25,7 @@
       <div class="progress-step" [class.active]="currentStep >= 4">4</div>
     </div>
 
-    <form [formGroup]="usuarioForm" (ngSubmit)="goToStep(3)">
+    <form [formGroup]="usuarioForm" (ngSubmit)="goToStep(5)">
       <input type="text" formControlName="nombre" placeholder="Nombre completo" />
       <input type="email" formControlName="correo" placeholder="Correo electrónico" />
         <div *ngIf="usuarioForm.get('correo')?.touched && usuarioForm.get('correo')?.invalid" class="error">
@@ -176,30 +176,35 @@
     </form>
   </div>
   <!-- Paso 5: Corrección de duplicados -->
-<div *ngIf="currentStep === 5" class="step5-box">
+<div *ngIf="currentStep === 5 && !correccionRealizada" class="step5-box">
   <h2>Corrige los datos duplicados</h2>
   <p class="step">Algunos datos ya existen en la empresa. Por favor, corrige los siguientes campos.</p>
 
   <form [formGroup]="usuarioForm" (ngSubmit)="unirse()">
-     <div *ngIf="duplicadosCorreo">
-      <input type="email" formControlName="correo" placeholder="Correo electrónico" />
-      <div *ngIf="usuarioForm.get('correo')?.errors?.['duplicado']" class="error">
-        <small>Este correo ya está registrado en la empresa.</small>
-      </div>
+   <div class="contenedor">
+  <div *ngIf="duplicadosCorreo" 
+       [ngClass]="{'unico': duplicadosCorreo && !duplicadosUsuario, 'arriba': duplicadosCorreo && duplicadosUsuario}">
+    <input type="email" formControlName="correo" placeholder="Correo electrónico" />
+    <div *ngIf="usuarioForm.get('correo')?.errors?.['duplicado']" class="error">
+      <small>Este correo ya está registrado en la empresa.</small>
     </div>
-
-    <div *ngIf="duplicadosUsuario">
-      <input type="text" formControlName="usuario" placeholder="Nombre de usuario" />
-      <div *ngIf="usuarioForm.get('usuario')?.errors?.['duplicado']" class="error">
-        <small>Este nombre de usuario ya está registrado en la empresa.</small>
-      </div>
+  </div>
+  <div *ngIf="duplicadosUsuario" 
+       [ngClass]="{'unico': duplicadosUsuario && !duplicadosCorreo, 'abajo': duplicadosUsuario && duplicadosCorreo}">
+    <input type="text" formControlName="usuario" placeholder="Nombre de usuario" />
+    <div *ngIf="usuarioForm.get('usuario')?.errors?.['duplicado']" class="error">
+      <small>Este nombre de usuario ya está registrado en la empresa.</small>
     </div>
-
+  </div>
+</div>
     <button class="next-step" type="submit" 
       [disabled]="(duplicadosCorreo && usuarioForm.get('correo')?.invalid) || (duplicadosUsuario && usuarioForm.get('usuario')?.invalid)">
       Corregir y Continuar
     </button>
   </form>
+</div>
+<div *ngIf="currentStep === 5 && correccionRealizada" class="step5-box">
+  <h2>Datos corregidos</h2>
 </div>
 
 <div class="modal-overlay" *ngIf="mostrarModalRFC">

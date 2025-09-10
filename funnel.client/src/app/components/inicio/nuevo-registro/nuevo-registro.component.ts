@@ -29,6 +29,7 @@ export class NuevoRegistroComponent implements OnInit {
   idRegistroTemporal: number | null = null;
   mostrarModalRFC: boolean = false;
   rfcEmpresaExistente: string | null = null; 
+  nombreEmpresaExistente: string | null = null;
   rfcExistente: boolean = false; 
   mostrarMensajeNuevaEmpresa: boolean = false;
   idEmpresa: number | null = null;
@@ -404,6 +405,7 @@ validarRfcExistente(control: any) {
     if (!rfc) {
       this.rfcExistente = false;
       this.idEmpresa = null; 
+      this.nombreEmpresaExistente = null;
       resolve(null);
       return;
     }
@@ -417,6 +419,7 @@ validarRfcExistente(control: any) {
 
         if (empresaEncontrada) {
           this.rfcEmpresaExistente = rfc;
+          this.nombreEmpresaExistente = empresaEncontrada.nombreEmpresa ?? null;
           this.rfcExistente = true;
           this.mostrarModalRFC = true;
 
@@ -425,11 +428,13 @@ validarRfcExistente(control: any) {
         } else {
           this.rfcExistente = false;
           this.idEmpresa = null;
+          this.nombreEmpresaExistente = null;
           resolve(null);
         }
       },
       error: () => {
         this.idEmpresa = null;
+        this.nombreEmpresaExistente = null;
         resolve(null);
       }
     });

@@ -25,7 +25,7 @@
       <div class="progress-step" [class.active]="currentStep >= 4">4</div>
     </div>
 
-    <form [formGroup]="usuarioForm" (ngSubmit)="goToStep(5)">
+    <form [formGroup]="usuarioForm" (ngSubmit)="goToStep(2)">
       <input type="text" formControlName="nombre" placeholder="Nombre completo" />
       <input type="email" formControlName="correo" placeholder="Correo electrónico" />
         <div *ngIf="usuarioForm.get('correo')?.touched && usuarioForm.get('correo')?.invalid" class="error">
@@ -210,7 +210,13 @@
 <div class="modal-overlay" *ngIf="mostrarModalRFC">
   <div class="modal-box">
     <h3>RFC ya registrado</h3>
-    <p>El RFC <strong>{{ rfcEmpresaExistente }}</strong> ya está asociado a una empresa.</p>
+    <p>
+      El RFC <b>{{ rfcEmpresaExistente }}</b> ya está registrado para la empresa:
+    </p>
+    <p class="font-bold text-blue-600">
+      <b>{{ nombreEmpresaExistente }}</b>
+    </p>
+
     <p>¿Deseas solicitar unirte a esa empresa?</p>
 
     <div class="modal-actions">

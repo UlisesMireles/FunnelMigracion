@@ -153,6 +153,7 @@ export interface RequestActualizarEtapa {
 export interface Estancamiento {
   idOportunidad: number;
   oportunidad:string;
+  prospecto:string;
   etapa:string;
   diasFunnel:number;
   diasSinActividad:number;

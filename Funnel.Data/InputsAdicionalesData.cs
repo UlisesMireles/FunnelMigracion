@@ -129,13 +129,14 @@ namespace Funnel.Data
         public async Task<BaseOut> GuardarInputsAdicionales(List<InputAdicionalDTO> listaInputs, int IdEmpresa)
         {
             BaseOut result = new BaseOut();
-            DataTable dtPermisos = new DataTable("InputsCatalogo");
+            DataTable dtPermisos = new DataTable("InputsCatalogo_v2");
             var tipoCatalogo = listaInputs.First().TipoCatalogoInput;
 
             dtPermisos.Columns.Add(new DataColumn("RCatalogoInputId", typeof(int)));
             dtPermisos.Columns.Add(new DataColumn("InputId", typeof(int)));
             dtPermisos.Columns.Add(new DataColumn("Activo", typeof(bool)));
             dtPermisos.Columns.Add(new DataColumn("Orden", typeof(int)));
+            dtPermisos.Columns.Add(new DataColumn("Requerido", typeof(bool)));
 
             foreach (var item in listaInputs)
             {
@@ -144,6 +145,7 @@ namespace Funnel.Data
                 row["InputId"] = item.IdInput;
                 row["Activo"] = item.Activo;
                 row["Orden"] = item.Orden;
+                row["Requerido"] = item.Requerido;
                 dtPermisos.Rows.Add(row);
             }
 

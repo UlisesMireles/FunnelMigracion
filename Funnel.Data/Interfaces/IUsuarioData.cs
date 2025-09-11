@@ -22,5 +22,6 @@ namespace Funnel.Data.Interfaces
 
         Task<BaseOut> GuardarImagen(List<IFormFile> imagen, UsuarioDto request);
         Task<UsuarioDto> ObtenerInformacionUsuarioYLicencia(string Licencia);
+        Task<BaseOut> ValidacionCorreoRegitro(string correo);
     }
 }

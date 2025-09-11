@@ -165,6 +165,7 @@ import { FaqFlotantesComponent } from './components/asistentes/asistente-prospec
 import { EliminarConversacionComponent } from './components/asistentes/asistente-prospeccion/eliminar-conversacion/eliminar-conversacion.component';
 import { EvaluarBotComponent } from './components/asistentes/asistente-prospeccion/evaluar-bot/evaluar-bot.component';
 import { QRCodeComponent } from 'angularx-qrcode';
+import { NuevoRegistroComponent } from './components/inicio/nuevo-registro/nuevo-registro.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -265,7 +266,8 @@ registerLocaleData(localeEs, 'es-MX');
     EvaluarBotComponent,
     RegistroContactosComponent,
     ModalEstancamientoComponent,
-    TipoCurrencyPipe  ],
+    TipoCurrencyPipe,
+    NuevoRegistroComponent  ],
   imports: [
     BrowserModule,
     HttpClientModule,

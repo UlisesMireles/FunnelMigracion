@@ -74,7 +74,11 @@ namespace Funnel.Server.Controllers
             var pdf = await _usuariosService.GenerarReporteUsuarios(usuarios, Directory.GetCurrentDirectory(), "Reporte de Usuarios", IdEmpresa);
             return File(pdf, "application/pdf", "Usuarios.pdf");
         }
-
-
+        [HttpGet("[action]/")]
+        public async Task<ActionResult<BaseOut>> ValidacionCorreoRegitro(string correo)
+        {
+            var respuesta = await _usuariosService.ValidacionCorreoRegitro(correo);
+            return Ok(respuesta);
+        }
     }
 }

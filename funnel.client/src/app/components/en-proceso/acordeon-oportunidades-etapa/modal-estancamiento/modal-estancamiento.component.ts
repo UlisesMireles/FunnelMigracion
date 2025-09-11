@@ -50,5 +50,16 @@ export class ModalEstancamientoComponent{
     this.visibleChange.emit(this.visible);
     this.closeModal.emit();
   }
+  
+  getDiasEtapaActual(item: Estancamiento): number | null {
+    const etapaMatch = item.etapa.match(/^(\d+)-/);
+    if (!etapaMatch) return null;
+
+    const etapaNum = parseInt(etapaMatch[1], 10);
+
+    const diasEtapa = (item as any)[`diasEtapa${etapaNum}`];
+
+    return diasEtapa > 90 ? diasEtapa : null;
+  }
 }
 

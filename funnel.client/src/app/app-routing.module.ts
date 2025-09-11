@@ -49,6 +49,7 @@ import { ModalCamposNuevosComponent } from './components/administracion/modal-ca
 import { ProcesosComponent } from './components/catalogos/procesos/procesos.component';
 import { RegistroContactosComponent } from './components/inicio/registro-contactos/registro-contactos.component';
 import { ModalEstancamientoComponent } from './components/en-proceso/acordeon-oportunidades-etapa/modal-estancamiento/modal-estancamiento.component';
+import { NuevoRegistroComponent } from './components/inicio/nuevo-registro/nuevo-registro.component';
 const routes: Routes = [
   { path: '', component: LoginComponent, title: 'Login' },
   { path: 'login', component: LoginComponent, title: 'Login' },
@@ -105,6 +106,7 @@ const routes: Routes = [
   { path: 'procesos', component: ProcesosComponent, title: 'Catálogo de Procesos', canActivate: [AuthGuard] },
   { path: 'modal-estancamiento', component: ModalEstancamientoComponent, title: 'Modal Estancamiento', canActivate: [AuthGuard]},
   { path: 'registro-contactos', component: RegistroContactosComponent, title: 'Registro Contactos' },
+  {path:'nuevo-registro', component:NuevoRegistroComponent, title: 'Nuevo Registro'}
 ];
 
 

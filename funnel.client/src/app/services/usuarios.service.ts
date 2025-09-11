@@ -45,4 +45,10 @@ export class UsuariosService {
       { params: { idEmpresa: idEmpresa.toString() }, responseType: 'blob' });
   }
 
+  validacionCorreoRegistro(correo: string): Observable<baseOut> {
+    return this.http.get<baseOut>(`${this.baseUrl}api/Usuarios/ValidacionCorreoRegitro`, {
+      params: { correo: correo }
+    });
+  }
+
 }

@@ -22,5 +22,6 @@ namespace Funnel.Logic.Interfaces
         Task<bool> ValidarInicialesExistente(string iniciales, int idEmpresa);
         Task<BaseOut> GuardarImagen(List<IFormFile> imagen, UsuarioDto request);
         public Task<byte[]> GenerarReporteUsuarios(UsuariosReporteDTO usuarios, string RutaBase, string titulo, int IdEmpresa);
+        Task<BaseOut> ValidacionCorreoRegitro(string correo);
     }
 }

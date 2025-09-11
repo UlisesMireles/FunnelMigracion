@@ -1,0 +1,228 @@
+<div class="navbar">
+  <nav class="text-center m-auto">
+    <img
+      width="150"
+      [src]="baseUrl + '/assets/img/logotipo-glupoint.png'"
+      alt="logo SFS"
+      class="m-auto"
+    />
+  </nav>
+</div>
+
+<div class="register-container">
+  <!-- Paso 1 -->
+  <div *ngIf="currentStep === 1" class="step1-box">
+    <h2>Crea tu cuenta</h2>
+    <p class="step">Información personal</p>
+
+    <div class="progress-container">
+      <div class="progress-step" [class.active]="currentStep >= 1">1</div>
+      <div class="progress-line" [class.active]="currentStep >= 2"></div>
+      <div class="progress-step" [class.active]="currentStep >= 2">2</div>
+      <div class="progress-line" [class.active]="currentStep >= 3"></div>
+      <div class="progress-step" [class.active]="currentStep >= 3">3</div>
+      <div class="progress-line" [class.active]="currentStep >= 4"></div>
+      <div class="progress-step" [class.active]="currentStep >= 4">4</div>
+    </div>
+
+    <form [formGroup]="usuarioForm" (ngSubmit)="goToStep(2)">
+      <input type="text" formControlName="nombre" placeholder="Nombre completo" />
+      <input type="email" formControlName="correo" placeholder="Correo electrónico" />
+        <div *ngIf="usuarioForm.get('correo')?.touched && usuarioForm.get('correo')?.invalid" class="error">
+          <small *ngIf="usuarioForm.get('correo')?.errors?.['email']">Formato de correo inválido.</small>
+        </div>
+      <button class="next-step" type="submit" [disabled]="usuarioForm.get('nombre')?.invalid || usuarioForm.get('correo')?.invalid" [ngStyle]="{ 'background-color': (usuarioForm.get('nombre')?.invalid || usuarioForm.get('correo')?.invalid) ? '#9ca3af' : '#2563eb' }"
+        (click)="codigoValidadorCorreo(usuarioForm.get('correo')?.value)">
+        Siguiente paso
+      </button>
+    </form>
+  </div>
+
+  <!-- Paso 2 -->
+  <div *ngIf="currentStep === 2" class="step2-box">
+    <h2>Introduzca el código de verificación</h2>
+    <p class="step">
+      Hemos enviado un código de verificación a su dirección de correo
+      electrónico.
+    </p>
+
+    <div class="progress-container">
+      <div class="progress-step" [class.active]="currentStep >= 1">1</div>
+      <div class="progress-line" [class.active]="currentStep >= 2"></div>
+      <div class="progress-step" [class.active]="currentStep >= 2">2</div>
+      <div class="progress-line" [class.active]="currentStep >= 3"></div>
+      <div class="progress-step" [class.active]="currentStep >= 3">3</div>
+      <div class="progress-line" [class.active]="currentStep >= 4"></div>
+      <div class="progress-step" [class.active]="currentStep >= 4">4</div>
+    </div>
+
+    <div class="code-inputs">
+      <input maxlength="1" type="text" #c1 (input)="moveNext($event, c2); checkCodigoInputs(c1,c2,c3,c4,c5,c6)" />
+      <input maxlength="1" type="text" #c2 (input)="moveNext($event, c3); checkCodigoInputs(c1,c2,c3,c4,c5,c6)" />
+      <input maxlength="1" type="text" #c3 (input)="moveNext($event, c4); checkCodigoInputs(c1,c2,c3,c4,c5,c6)" />
+      <input maxlength="1" type="text" #c4 (input)="moveNext($event, c5); checkCodigoInputs(c1,c2,c3,c4,c5,c6)" />
+      <input maxlength="1" type="text" #c5 (input)="moveNext($event, c6); checkCodigoInputs(c1,c2,c3,c4,c5,c6)" />
+      <input maxlength="1" type="text" #c6 (input)="checkCodigoInputs(c1,c2,c3,c4,c5,c6)" />
+    </div>
+
+    <button class="next-step" [disabled]="!codigoCompleto" (click)="verificarCodigoUsuario(c1.value + c2.value + c3.value + c4.value + c5.value + c6.value, [c1,c2,c3,c4,c5,c6])"
+      [ngStyle]="{ 'background-color': (!codigoCompleto) ? '#9ca3af' : '#2563eb' }">
+      Verificar
+    </button>
+    <p class="resend">
+      ¿No has recibido el código? <a (click)="reenviarCodigo([c1,c2,c3,c4,c5,c6])" class="resend-link">Reenviar</a>
+    </p>
+  </div>
+
+  <!-- Paso 3 -->
+  <div *ngIf="currentStep === 3" class="step3-box">
+    <h2>Crea tu cuenta</h2>
+    <p class="step">Define tus credenciales de acceso.</p>
+
+    <div class="progress-container">
+      <div class="progress-step" [class.active]="currentStep >= 1">1</div>
+      <div class="progress-line" [class.active]="currentStep >= 2"></div>
+      <div class="progress-step" [class.active]="currentStep >= 2">2</div>
+      <div class="progress-line" [class.active]="currentStep >= 3"></div>
+      <div class="progress-step" [class.active]="currentStep >= 3">3</div>
+      <div class="progress-line" [class.active]="currentStep >= 4"></div>
+      <div class="progress-step" [class.active]="currentStep >= 4">4</div>
+    </div>
+
+    <form [formGroup]="usuarioForm" (ngSubmit)="goToStep(4)">
+      <label class="lbl">Nombre de usuario*</label>
+      <div class="input-box">
+        <i class="bi bi-person icono"></i>
+        <input type="text" formControlName="usuario" placeholder="Tu nombre de usuario" />
+      </div>
+
+      <!--<label>Teléfono</label>
+      <div class="input-box">
+        <i class="bi bi-telephone icono"></i>
+        <input type="text" formControlName="telefono" placeholder="Tu número de teléfono" />
+      </div>-->
+      
+      <label>Contraseña*</label>
+      <div class="input-box">
+        <i class="bi bi-lock icono"></i>
+        <input type="password" formControlName="password" placeholder="Tu contraseña" />
+          <div *ngIf="usuarioForm.get('password')?.touched && usuarioForm.get('password')?.invalid" class="error">
+            <small *ngIf="usuarioForm.get('password')?.errors?.['required']">La contraseña es obligatoria.</small>
+            <small *ngIf="usuarioForm.get('password')?.errors?.['minlength']">Mínimo 6 caracteres.</small>
+          </div>
+      </div>
+
+      <label>Confirmar contraseña*</label>
+      <div class="input-box">
+        <i class="bi bi-shield-lock icono"></i>
+        <input type="password" formControlName="confirmPassword" placeholder="Repite tu contraseña" />
+          <div *ngIf="usuarioForm.errors?.['mismatch'] && usuarioForm.get('confirmPassword')?.touched" class="error">
+            <small>Las contraseñas no coinciden.</small>
+          </div>
+      </div>
+
+      <button class="next-step" type="submit" [disabled]="usuarioForm.invalid" [ngStyle]="{ 'background-color': (usuarioForm.invalid) ? '#9ca3af' : '#2563eb' }">
+        Continuar →
+      </button>
+    </form>
+  </div>
+
+  <!-- Paso 4 -->
+  <div *ngIf="currentStep === 4" class="step4-box">
+    <h2>Información de la Empresa</h2>
+    <p class="step">Completa los datos para finalizar el registro.</p>
+    <div *ngIf="mostrarMensajeNuevaEmpresa" class="info-message">
+    <i class="bi bi-info-circle"></i>
+    Por favor, ingrese entonces los datos de una nueva empresa.
+    </div>
+    <div class="progress-container">
+      <div class="progress-step" [class.active]="currentStep >= 1">1</div>
+      <div class="progress-line" [class.active]="currentStep >= 2"></div>
+      <div class="progress-step" [class.active]="currentStep >= 2">2</div>
+      <div class="progress-line" [class.active]="currentStep >= 3"></div>
+      <div class="progress-step" [class.active]="currentStep >= 3">3</div>
+      <div class="progress-line" [class.active]="currentStep >= 4"></div>
+      <div class="progress-step" [class.active]="currentStep >= 4">4</div>
+    </div>
+
+    <form [formGroup]="empresaForm" (ngSubmit)="registrarEmpresa()">
+       <label class="lbl">RFC</label>
+       <input type="text" formControlName="rfc" placeholder="Ej: ABC123456789"[ngClass]="{'bloqueado': rfcExistente}"/>
+
+      <label class="lbl">Nombre de la empresa</label>
+      <input type="text" formControlName="nombreEmpresa" placeholder="Ej: Corp S.A de C.V" [ngClass]="{'bloqueado': rfcExistente}" />
+
+      <label class="lbl">Dirección</label>
+      <input type="text" formControlName="direccion" placeholder="Ej: Calle Falsa 123" [ngClass]="{'bloqueado': rfcExistente}" />
+
+      <!--<div *ngIf="empresaForm.get('rfc')?.hasError('rfcExistente') && empresaForm.get('rfc')?.touched" class="error">
+        Ya existe una empresa registrada con este RFC.
+      </div>-->
+
+
+      <label class="lbl">Sitio Web</label>
+      <input type="text" formControlName="sitioWeb" placeholder="Ej: https://corp.com" [ngClass]="{'bloqueado': rfcExistente}" />
+
+      <label class="lbl">Tamaño de la empresa</label>
+        <p-dropdown class="drop" [options]="tamanos" formControlName="tamano" [disabled]="rfcExistente" 
+            placeholder="Seleccione una opción">
+        </p-dropdown>
+
+       <button class="next-step" type="submit" [disabled]="empresaForm.invalid || rfcExistente">
+      Finalizar Registro
+    </button>
+    </form>
+  </div>
+  <!-- Paso 5: Corrección de duplicados -->
+<div *ngIf="currentStep === 5 && !correccionRealizada" class="step5-box">
+  <h2>Corrige los datos duplicados</h2>
+  <p class="step">Algunos datos ya existen en la empresa. Por favor, corrige los siguientes campos.</p>
+
+  <form [formGroup]="usuarioForm" (ngSubmit)="unirse()">
+   <div class="contenedor">
+  <div *ngIf="duplicadosCorreo" 
+       [ngClass]="{'unico': duplicadosCorreo && !duplicadosUsuario, 'arriba': duplicadosCorreo && duplicadosUsuario}">
+    <input type="email" formControlName="correo" placeholder="Correo electrónico" />
+    <div *ngIf="usuarioForm.get('correo')?.errors?.['duplicado']" class="error">
+      <small>Este correo ya está registrado en la empresa.</small>
+    </div>
+  </div>
+  <div *ngIf="duplicadosUsuario" 
+       [ngClass]="{'unico': duplicadosUsuario && !duplicadosCorreo, 'abajo': duplicadosUsuario && duplicadosCorreo}">
+    <input type="text" formControlName="usuario" placeholder="Nombre de usuario" />
+    <div *ngIf="usuarioForm.get('usuario')?.errors?.['duplicado']" class="error">
+      <small>Este nombre de usuario ya está registrado en la empresa.</small>
+    </div>
+  </div>
+</div>
+    <button class="next-step" type="submit" 
+      [disabled]="(duplicadosCorreo && usuarioForm.get('correo')?.invalid) || (duplicadosUsuario && usuarioForm.get('usuario')?.invalid)">
+      Corregir y Continuar
+    </button>
+  </form>
+</div>
+<div *ngIf="currentStep === 5 && correccionRealizada" class="step5-box">
+  <h2>Datos corregidos</h2>
+</div>
+
+<div class="modal-overlay" *ngIf="mostrarModalRFC">
+  <div class="modal-box">
+    <h3>RFC ya registrado</h3>
+    <p>
+      El RFC <b>{{ rfcEmpresaExistente }}</b> ya está registrado para la empresa:
+    </p>
+    <p class="font-bold text-blue-600">
+      <b>{{ nombreEmpresaExistente }}</b>
+    </p>
+
+    <p>¿Deseas solicitar unirte a esa empresa?</p>
+
+    <div class="modal-actions">
+      <button class="btn-yes" (click)="unirse()">Sí</button>
+      <button class="btn-no" (click)="onNoUnirse()">No</button>
+    </div>
+  </div>
+</div>
+
+  <p-toast position="top-right"></p-toast>
+</div>

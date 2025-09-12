@@ -98,6 +98,7 @@ export class HeaderComponent implements OnInit {
   licenciaPlatino: boolean = false;
   procesoSeleccionado: Procesos | null = null;
   etapasCombo: OportunidadesPorEtapa[] = [];
+  explicativoVisible: boolean = false;
 
   constructor(
     public asistenteService: AsistenteService,
@@ -251,6 +252,14 @@ export class HeaderComponent implements OnInit {
     });
 
     this.getComboEtapas();
+     
+    this.modalSubscription = this.modalOportunidadesService.modalState$.subscribe((state) => {
+    this.modalVisibleOportunidades = state.showModal;
+    this.insertar = state.insertar;
+    this.oportunidades = state.oportunidades;
+    this.oportunidadSeleccionada = state.oportunidadSeleccionada;
+    this.explicativoVisible = !this.oportunidades || this.oportunidades.length === 0;
+  });
   }
 
   getComboEtapas() {

@@ -59,8 +59,7 @@
           <li class="option-btn" (click)="agregarOportunidad()">Oportunidad</li>
           <li class="option-btn" (click)="agregarProspecto()">Prospecto</li>
           <li class="option-btn" (click)="agregarContacto()">Contacto</li>
-        </ul>
-      </div>
+        </ul></div>
       <button class="btnAgregarIA" *ngIf="licenciaPlatino" style="margin-left: 5px;"
         (click)="mostrarAsistenteProspeccion = true">
         <i class="bi bi-stars"></i>
@@ -141,3 +140,15 @@
 <app-etapas [(visible)]="modalVisibleEtapas" (closeModal)="onModalCloseEtapas()"
   (result)="manejarResultadoEtapas($event)">
 </app-etapas>
+<div *ngIf="explicativoVisible" class="modal-explicativo">
+        <div class="modal-content">
+      <div class="modal-header">
+      Comenzar con el Proceso Comercial
+      </div>
+          <div class="modal-body">
+            <p>Haz clic en "ALTA" para crear tu primera oportunidad, prospecto y contacto. ¡Es muy sencillo!</p>
+            <div class="modal-buttons"><button class="button">Continuar</button>
+            <button class="button">Cancelar</button></div>
+          </div>
+        </div>
+          </div>

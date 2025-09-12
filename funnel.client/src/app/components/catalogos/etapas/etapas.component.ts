@@ -81,7 +81,7 @@ ngOnInit() {
       this.visible = false; 
     } else {
       this.mostrarAdvertencia = false;
-      this.visible = state.showModal;
+      //this.visible = state.showModal;
     }
 
     this.insertEtapas = state.insertarEtapas;
@@ -119,7 +119,8 @@ continuarAdvertencia() {
 
 cerrarAdvertencia() {
   this.mostrarAdvertencia = false;
-  this.esNuevo = false;
+  //this.esNuevo = false;
+  this.visible = false;
 }
 
   consultaPlantillas() {

@@ -58,6 +58,7 @@ export class EtapasComponent {
   habilitaPlantillas: boolean = false;
   deshabilitarAccionesEtapas: boolean = false;
   esNuevo: boolean = false;
+  mostrarAdvertencia: boolean = false;
   constructor(
     private readonly loginService: LoginService,
     private readonly messageService: MessageService,
@@ -67,43 +68,60 @@ export class EtapasComponent {
     private procesosService: ProcesosService
   ) { }
 
-  ngOnInit() {
-    this.idUsuario = this.loginService.obtenerIdUsuario();
-    this.idEmpresa = this.loginService.obtenerIdEmpresa();
+ngOnInit() {
+  this.idUsuario = this.loginService.obtenerIdUsuario();
+  this.idEmpresa = this.loginService.obtenerIdEmpresa();
 
-    this.modalSubscription = this.modalEtapasService.modalState$.subscribe((state) => {
+  this.modalSubscription = this.modalEtapasService.modalState$.subscribe((state) => {
+    const idProceso = Number(localStorage.getItem('idProceso'));
+    this.esNuevo = idProceso <= 0;
+
+    if (this.esNuevo) {
+      this.mostrarAdvertencia = true;
+      this.visible = false; 
+    } else {
+      this.mostrarAdvertencia = false;
       this.visible = state.showModal;
-      this.insertEtapas = state.insertarEtapas;
-      this.etapasCombo = state.etapasCombo;
-      this.plantillas = state.plantillas;
-      if (this.plantillas.length == 0) {
-        this.consultaPlantillas();
+    }
+
+    this.insertEtapas = state.insertarEtapas;
+    this.etapasCombo = state.etapasCombo;
+    this.plantillas = state.plantillas;
+    if (this.plantillas.length == 0) {
+      this.consultaPlantillas();
+    }
+    this.opcionPlantillas = false;
+    this.habilitaPlantillas = false;
+    this.idPlantilla = -1;
+
+    if (this.insertEtapas) {
+      this.etapas = [];
+      this.nombreProceso = '';
+    }
+    if (state.showModal && !this.insertEtapas && !this.esNuevo) {
+      this.etapas = state.etapas;
+      this.opcionPlantillas = true;
+      this.nombreProceso = this.etapas[0]?.nombreProceso ?? '';
+      this.cantidadExpandidos = this.etapas.filter(etapa => etapa.expandido).length;
+      if (state.idPlantilla > 0) {
+        this.idPlantilla = state.idPlantilla;
+        this.habilitaPlantillas = true;
+        this.deshabilitarAccionesEtapas = true;
       }
-      this.opcionPlantillas = false;
-      this.habilitaPlantillas = false;
-      this.idPlantilla = -1; // Resetear la plantilla seleccionada
-      const idProceso = Number(localStorage.getItem('idProceso'));
-      if (idProceso <= 0) {
-        this.esNuevo = true;
-      }
-      if (this.insertEtapas) {
-        this.etapas = [];
-        this.nombreProceso = '';
-        //this.agregarEtapa();
-      }
-      if (state.showModal && !this.insertEtapas) {
-        this.etapas = state.etapas;
-        this.opcionPlantillas = true;
-        this.nombreProceso = this.etapas[0]?.nombreProceso ?? '';
-        this.cantidadExpandidos = this.etapas.filter(etapa => etapa.expandido).length;
-        if (state.idPlantilla > 0) {
-          this.idPlantilla = state.idPlantilla;
-          this.habilitaPlantillas = true;
-          this.deshabilitarAccionesEtapas = true;
-        }
-      }
-    });
-  }
+    }
+  });
+}
+
+continuarAdvertencia() {
+  this.mostrarAdvertencia = false;
+  this.visible = true;
+}
+
+cerrarAdvertencia() {
+  this.mostrarAdvertencia = false;
+  this.esNuevo = false;
+}
+
   consultaPlantillas() {
     this.procesosService.getPlantillasProcesos().subscribe({
       next: (result: PlantillasProcesos[]) => {
@@ -492,6 +510,8 @@ export class EtapasComponent {
     this.modalEtapasService.closeModal();
     this.visibleChange.emit(this.visible);
     this.closeModal.emit();
+    this.mostrarAdvertencia = false;
+    console.log('Modal', this.visible);
   }
 
   editarNombreEtapa(etapa: any) {

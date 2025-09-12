@@ -99,7 +99,10 @@ export class HeaderComponent implements OnInit {
   procesoSeleccionado: Procesos | null = null;
   etapasCombo: OportunidadesPorEtapa[] = [];
   explicativoVisible: boolean = false;
-
+  explicativoBrunoVisible: boolean = false;
+  explicativoAnaliticaVisible: boolean = false;
+  modalPosition = { top: '60px', left: '50%' };
+  @ViewChild('altaBtn', { static: false }) altaBtn!: ElementRef;
   constructor(
     public asistenteService: AsistenteService,
     private modalService: ModalService,
@@ -751,4 +754,20 @@ startDrag(event: MouseEvent): void {
     this.cdr.detectChanges();
   }
 
+continuarExplicativoSecuencia() {
+  if (this.explicativoVisible) {
+    this.explicativoVisible = false;
+    this.explicativoBrunoVisible = true;
+    return;
+  }
+  if (this.explicativoBrunoVisible) {
+    this.explicativoBrunoVisible = false;
+    this.explicativoAnaliticaVisible = true;
+    return;
+  }
+  if (this.explicativoAnaliticaVisible) {
+    this.explicativoAnaliticaVisible = false;
+    return;
+  }
+}
 }

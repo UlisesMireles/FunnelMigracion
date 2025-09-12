@@ -140,15 +140,38 @@
 <app-etapas [(visible)]="modalVisibleEtapas" (closeModal)="onModalCloseEtapas()"
   (result)="manejarResultadoEtapas($event)">
 </app-etapas>
-<div *ngIf="explicativoVisible" class="modal-explicativo">
-        <div class="modal-content">
-      <div class="modal-header">
-      Comenzar con el Proceso Comercial
-      </div>
-          <div class="modal-body">
-            <p>Haz clic en "ALTA" para crear tu primera oportunidad, prospecto y contacto. ¡Es muy sencillo!</p>
-            <div class="modal-buttons"><button class="button">Continuar</button>
-            <button class="button">Cancelar</button></div>
-          </div>
-        </div>
-          </div>
+<div *ngIf="explicativoVisible" class="modal-content">
+  <div class="modal-header">
+    Comenzar con el Proceso Comercial
+  </div>
+  <div class="modal-body">
+    <p>Haz clic en <b>"ALTA"</b> para crear tu primera oportunidad, prospecto y contacto. ¡Es muy sencillo!</p>
+    <div class="modal-buttons">
+      <button class="button" (click)="continuarExplicativoSecuencia()">Continuar</button>
+      <button class="button">Cancelar</button>
+    </div>
+  </div>
+</div>
+<div *ngIf="explicativoBrunoVisible" class="modal-content">
+  <div class="modal-header">
+    ¿Qué es el botón Bruno?
+  </div>
+  <div class="modal-body">
+    <p>El botón <b>"Bruno"</b> te permite acceder a nuestro asistente inteligente para ayudarte en la prospección comercial. Haz clic en el botón para comenzar a recibir sugerencias y asistencia personalizada.</p>
+    <div class="modal-buttons">
+      <button class="button" (click)="continuarExplicativoSecuencia()">Continuar</button>
+      <button class="button" (click)="explicativoBrunoVisible = false">Cerrar</button>
+    </div>
+  </div>
+</div>
+<div *ngIf="explicativoAnaliticaVisible" class="modal-content">
+  <div class="modal-header">
+    ¿Qué es el botón Analítica?
+  </div>
+  <div class="modal-body">
+    <p>El botón <b>"Analítica"</b> te permite acceder a reportes y métricas inteligentes sobre tu proceso comercial. Haz clic en el botón para visualizar información relevante y tomar mejores decisiones.</p>
+    <div class="modal-buttons">
+      <button class="button" (click)="explicativoAnaliticaVisible = false">Cerrar</button>
+    </div>
+  </div>
+</div>

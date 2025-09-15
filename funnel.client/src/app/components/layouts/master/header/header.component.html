@@ -175,4 +175,19 @@
       <button class="button" (click)="explicativoAnaliticaVisible = false">Cerrar</button>
     </div>
   </div>
+<div *ngIf="modalExplicativoProceso" class="modal-content" 
+     style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            z-index: 9999; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.3);">
+  <div class="modal-header">
+    Bienvenido a la administración de procesos
+  </div>
+  <div class="modal-body">
+    <p>Para comenzar, debes crear tu primer proceso comercial. Esto te permitirá registrar tu primera oportunidad, agregar un prospecto y crear tu primer contacto.</p>
+    <div class="modal-buttons">
+      <button class="button" (click)="continuarModalExplicativoProceso()">Continuar</button>
+      <button class="button" (click)="modalExplicativoProceso = false">Cerrar</button>
+    </div>
+  </div>
+</div>
+
 </div>

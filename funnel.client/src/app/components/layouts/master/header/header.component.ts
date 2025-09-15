@@ -22,6 +22,7 @@ import { Procesos } from '../../../../interfaces/procesos';
 import { ProcesosService } from '../../../../services/procesos.service';
 import { PlantillasProcesos } from '../../../../interfaces/plantillas-procesos';
 import { EnumLicencias } from '../../../../enums/enumLicencias';
+
 @Component({
   selector: 'app-header',
   standalone: false,
@@ -106,6 +107,9 @@ export class HeaderComponent implements OnInit {
   @ViewChild('btnAnalitica') btnAnalitica!: ElementRef;
 
   modalPosition = { top: 0, left: 0 };
+  // Modal explicativo para iniciar proceso
+  modalExplicativoProceso: boolean = true;
+
   constructor(
     public asistenteService: AsistenteService,
     private modalService: ModalService,
@@ -284,48 +288,53 @@ export class HeaderComponent implements OnInit {
     this.oportunidades = state.oportunidades;
     this.oportunidadSeleccionada = state.oportunidadSeleccionada;
    // this.explicativoVisible = !this.oportunidades || this.oportunidades.length === 0;
+
   });
   }
 
   getComboEtapas() {
-  
-      const idUsuario = this.authService.obtenerIdUsuario();
-      const idEmpresa = this.authService.obtenerIdEmpresa();
-  
-      this.procesosService.getComboEtapas(idEmpresa, idUsuario).subscribe({
-        next: (result: OportunidadesPorEtapa[]) => {
-  
-          this.etapasCombo = result.map(etapa => ({
-            ...etapa,
-            expandido: true, // Expandir todas las etapas por defecto
-            editandoNombre: false,
-            tarjetas: etapa.tarjetas || [],
-            orden: etapa.orden,
-            probabilidad: etapa.probabilidad,
-            idEmpresa: idUsuario,
-            idUsuario: idUsuario,
-            idStage: etapa.idStage
-          }));
+  const idUsuario = this.authService.obtenerIdUsuario();
+  const idEmpresa = this.authService.obtenerIdEmpresa();
+    console.log(this.modalExplicativoProceso);
+  this.procesosService.getComboEtapas(idEmpresa, idUsuario).subscribe({
+    next: (result: OportunidadesPorEtapa[]) => {
+      this.etapasCombo = result.map(etapa => ({
+        ...etapa,
+        expandido: true,
+        editandoNombre: false,
+        tarjetas: etapa.tarjetas || [],
+        orden: etapa.orden,
+        probabilidad: etapa.probabilidad,
+        idEmpresa: idUsuario,
+        idUsuario: idUsuario,
+        idStage: etapa.idStage
+      }));
 
-          const idProceso = Number(localStorage.getItem('idProceso'));
-          const usuario = idUsuario;
-          if (idProceso <= 0 && usuario > 0) {
-            this.modalEtapasService.openModal(true, true, this.etapas, this.etapasCombo, this.plantillas);
-          }
-          else {
-            this.modalEtapasService.closeModal();
-          }
-        },
-        error: (error) => {
-          console.error('Error:', error);
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Error al cargar oportunidades por etapa'
-          });
-        }
+      const idProceso = Number(localStorage.getItem('idProceso'));
+
+      if (idProceso <= 0 && idUsuario > 0) {
+        this.modalExplicativoProceso = true;
+      } else {
+        this.modalEtapasService.closeModal();
+        this.modalVisibleEtapas = false;
+      }
+    },
+    error: (error) => {
+      console.error('Error:', error);
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Error al cargar oportunidades por etapa'
       });
     }
+  });
+}
+
+continuarModalExplicativoProceso() {
+  this.modalExplicativoProceso = false; 
+  this.modalEtapasService.openModal(true, true, this.etapas, this.etapasCombo, this.plantillas);
+}
+
 
   cargarImagenEmpresa() {
     const idEmpresaStr = localStorage.getItem('idEmpresa');

@@ -9,7 +9,6 @@ import { Subscription } from 'rxjs';
 import { ProcesosService } from '../../../services/procesos.service';
 import { Procesos } from '../../../interfaces/procesos';
 import { PlantillasProcesos } from '../../../interfaces/plantillas-procesos';
-
 @Component({
   selector: 'app-etapas',
   standalone: false,
@@ -65,8 +64,7 @@ export class EtapasComponent {
     private readonly cdr: ChangeDetectorRef,
     private readonly modalEtapasService: ModalEtapasService,
     private readonly confirmationService: ConfirmationService,
-    private procesosService: ProcesosService
-  ) { }
+    private procesosService: ProcesosService  ) { }
 
 ngOnInit() {
   this.idUsuario = this.loginService.obtenerIdUsuario();

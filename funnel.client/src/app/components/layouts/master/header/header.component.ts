@@ -22,7 +22,6 @@ import { Procesos } from '../../../../interfaces/procesos';
 import { ProcesosService } from '../../../../services/procesos.service';
 import { PlantillasProcesos } from '../../../../interfaces/plantillas-procesos';
 import { EnumLicencias } from '../../../../enums/enumLicencias';
-
 @Component({
   selector: 'app-header',
   standalone: false,
@@ -101,8 +100,11 @@ export class HeaderComponent implements OnInit {
   explicativoVisible: boolean = false;
   explicativoBrunoVisible: boolean = false;
   explicativoAnaliticaVisible: boolean = false;
-  modalPosition = { top: '60px', left: '50%' };
-  @ViewChild('altaBtn', { static: false }) altaBtn!: ElementRef;
+  @ViewChild('btnAlta') btnAlta!: ElementRef;
+  @ViewChild('btnBruno') btnBruno!: ElementRef;
+  @ViewChild('btnAnalitica') btnAnalitica!: ElementRef;
+
+  modalPosition = { top: 0, left: 0 };
   constructor(
     public asistenteService: AsistenteService,
     private modalService: ModalService,
@@ -116,7 +118,7 @@ export class HeaderComponent implements OnInit {
     private oportunidadService: OportunidadesService,
     private modalEtapasService: ModalEtapasService,
     private procesosService: ProcesosService,
-    private cdr: ChangeDetectorRef) {
+    private cdr: ChangeDetectorRef, ) {
       
     this.items = [
       {
@@ -247,12 +249,21 @@ export class HeaderComponent implements OnInit {
       this.contactoSeleccionado = state.contactoSeleccionado;
     });
 
-    this.modalEtapasSubscription = this.modalEtapasService.modalState$.subscribe((state) => {
-      this.modalVisibleEtapas = state.showModal;
-      this.insertarEtapas = state.insertarEtapas;
-      this.etapas = state.etapas;
-      this.plantillas = state.plantillas;
+  this.modalSubscription = this.modalOportunidadesService.modalState$.subscribe((state) => {
+  this.modalVisibleOportunidades = state.showModal;
+  this.insertar = state.insertar;
+  this.oportunidades = state.oportunidades;
+  this.oportunidadSeleccionada = state.oportunidadSeleccionada;
+
+  this.explicativoVisible = !this.oportunidades || this.oportunidades.length === 0;
+
+  if (this.explicativoVisible) {
+    setTimeout(() => {
+      this.setModalPosition(this.btnAlta.nativeElement);
     });
+  }
+});
+
 
     this.getComboEtapas();
      
@@ -753,16 +764,25 @@ startDrag(event: MouseEvent): void {
     this.mostrarAsistenteProspeccion = false;
     this.cdr.detectChanges();
   }
+setModalPosition(button: HTMLElement) {
+  const rect = button.getBoundingClientRect();
+  this.modalPosition = {
+    top: rect.bottom + window.scrollY + 5, 
+    left: rect.left + window.scrollX -200
+  };
+}
 
 continuarExplicativoSecuencia() {
   if (this.explicativoVisible) {
     this.explicativoVisible = false;
     this.explicativoBrunoVisible = true;
+    this.setModalPosition(this.btnBruno.nativeElement);
     return;
   }
   if (this.explicativoBrunoVisible) {
     this.explicativoBrunoVisible = false;
     this.explicativoAnaliticaVisible = true;
+    this.setModalPosition(this.btnAnalitica.nativeElement);
     return;
   }
   if (this.explicativoAnaliticaVisible) {

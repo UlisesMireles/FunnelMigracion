@@ -51,7 +51,7 @@
       <div class="agregar btn-agregar-custom ms-2" (click)="toggleOptions()" (mouseenter)="showSubmenu()"
         (mouseleave)="hideSubmenu()">
         <!-- <p-splitbutton label="Agregar" [model]="items" raised severity="secondary" #splitBtn /> -->
-        <button class="btn-chat float-end cursor-pointer">
+        <button class="btn-chat float-end cursor-pointer" #btnAlta>
           <i class="bi bi-plus" style="margin-left: -6px;"></i>
           <span class="ia-button-text"> ALTA</span>
         </button>
@@ -60,7 +60,7 @@
           <li class="option-btn" (click)="agregarProspecto()">Prospecto</li>
           <li class="option-btn" (click)="agregarContacto()">Contacto</li>
         </ul></div>
-      <button class="btnAgregarIA" *ngIf="licenciaPlatino" style="margin-left: 5px;"
+      <button class="btnAgregarIA" *ngIf="licenciaPlatino" style="margin-left: 5px; "  #btnBruno
         (click)="mostrarAsistenteProspeccion = true">
         <i class="bi bi-stars"></i>
         <span class="ia-button-text"> Bruno </span>
@@ -74,7 +74,7 @@
 
       <div class="chatbot ms-2" *ngIf="licenciaPlatino">
         <!-- Botón de chat en el header-->
-        <button class="btnAgregarIA" (click)="toggleChat()">
+        <button class="btnAgregarIA" (click)="toggleChat()" #btnAnalitica>
           <i class="bi bi-stars"></i>
           <span class="ia-button-text "> Analítica</span>
         </button>
@@ -140,36 +140,37 @@
 <app-etapas [(visible)]="modalVisibleEtapas" (closeModal)="onModalCloseEtapas()"
   (result)="manejarResultadoEtapas($event)">
 </app-etapas>
-<div *ngIf="explicativoVisible" class="modal-content">
+
+<div *ngIf="explicativoVisible" class="modal-content"  [ngStyle]="{'top.px': modalPosition.top, 'left.px': modalPosition.left}">
   <div class="modal-header">
     Comenzar con el Proceso Comercial
   </div>
   <div class="modal-body">
-    <p>Haz clic en <b>"ALTA"</b> para crear tu primera oportunidad, prospecto y contacto. ¡Es muy sencillo!</p>
+    <p>Comienza haciendo clic en <b>"ALTA"</b>. Con esto podrás registrar tu primera oportunidad, agregar un prospecto y crear tu primer contacto. ¡Listo en segundos!</p>
     <div class="modal-buttons">
       <button class="button" (click)="continuarExplicativoSecuencia()">Continuar</button>
-      <button class="button">Cancelar</button>
+      <button class="button" (click)="explicativoVisible = false">Cerrar</button>
     </div>
   </div>
 </div>
-<div *ngIf="explicativoBrunoVisible" class="modal-content">
+<div *ngIf="explicativoBrunoVisible" class="modal-content"  [ngStyle]="{'top.px': modalPosition.top, 'left.px': modalPosition.left}">
   <div class="modal-header">
     ¿Qué es el botón Bruno?
   </div>
   <div class="modal-body">
-    <p>El botón <b>"Bruno"</b> te permite acceder a nuestro asistente inteligente para ayudarte en la prospección comercial. Haz clic en el botón para comenzar a recibir sugerencias y asistencia personalizada.</p>
+  <p>El botón <b>"Bruno"</b> te da acceso a nuestro asistente de inteligencia artificial. Te ayudará a buscar nuevos prospectos, asesorarte en tus acercamientos con ellos y recibir sugerencias personalizadas para mejorar tu prospección comercial. Haz clic para comenzar a aprovechar su asistencia.</p>
     <div class="modal-buttons">
       <button class="button" (click)="continuarExplicativoSecuencia()">Continuar</button>
       <button class="button" (click)="explicativoBrunoVisible = false">Cerrar</button>
     </div>
   </div>
 </div>
-<div *ngIf="explicativoAnaliticaVisible" class="modal-content">
+<div *ngIf="explicativoAnaliticaVisible" class="modal-content"  [ngStyle]="{'top.px': modalPosition.top, 'left.px': modalPosition.left}">
   <div class="modal-header">
     ¿Qué es el botón Analítica?
   </div>
   <div class="modal-body">
-    <p>El botón <b>"Analítica"</b> te permite acceder a reportes y métricas inteligentes sobre tu proceso comercial. Haz clic en el botón para visualizar información relevante y tomar mejores decisiones.</p>
+  <p>El botón <b>"Analítica"</b> te permite acceder a reportes y métricas inteligentes sobre tu proceso comercial. Podrás revisar oportunidades ganadas, perdidas y en curso, obtener información relevante y tomar decisiones más informadas. Haz clic para explorar tus datos.</p>
     <div class="modal-buttons">
       <button class="button" (click)="explicativoAnaliticaVisible = false">Cerrar</button>
     </div>

@@ -668,17 +668,15 @@
   left: 220px;
 }
 .modal-content {
-  position: fixed;
-  top: 50px;
-  left: 59%;
-  transform: translateX(-50%);
+  position: absolute; 
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-  width: 400px;
+  width: 300px;
   z-index: 2000;
   padding: 0;
 }
+
 .modal-header {
 background: linear-gradient(0deg, rgba(247, 106, 19, 1) 0%, rgba(200, 87, 24, 1) 35%, rgba(231, 91, 42, 1) 100%);
   color: white;

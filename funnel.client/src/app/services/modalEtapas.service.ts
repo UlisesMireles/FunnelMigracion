@@ -15,7 +15,7 @@ export class ModalEtapasService {
   private modalStateSubject = new BehaviorSubject<{
     showModal: boolean, insertarEtapas: boolean, etapas: OportunidadesPorEtapa[], etapasCombo: OportunidadesPorEtapa[], plantillas: PlantillasProcesos[], result: BaseOut, idPlantilla: number
   }>
-    ({ showModal: false, insertarEtapas: false, etapas: [], etapasCombo: [], plantillas: [], result: { errorMessage: '', result: false, id: -1 }, idPlantilla: -1 });
+    ({ showModal: false, insertarEtapas: false, etapas: [], etapasCombo: [], plantillas: [], result: { errorMessage: '', result: true, id: -1 }, idPlantilla: -1 });
 
   modalState$ = this.modalStateSubject.asObservable();
 

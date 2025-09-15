@@ -49,6 +49,7 @@ export class HeaderComponent implements OnInit {
   private modalEtapasSubscription!: Subscription;
 
   modalVisibleEtapas: boolean = false;
+  result: baseOut = { errorMessage: '', result: false, id: -1 };
 
   //Modal Oportunidades
   modalVisibleOportunidades: boolean = false;
@@ -148,6 +149,7 @@ export class HeaderComponent implements OnInit {
     if (this.sessionCountdownInterval) {
       clearInterval(this.sessionCountdownInterval);
     }
+    if (this.modalEtapasSubscription) this.modalEtapasSubscription.unsubscribe();
   }
   toggleChat(): void {
     this.asistenteSubscription = this.asistenteService.asistenteObservable.subscribe(value => {
@@ -255,13 +257,22 @@ export class HeaderComponent implements OnInit {
   this.oportunidades = state.oportunidades;
   this.oportunidadSeleccionada = state.oportunidadSeleccionada;
 
-  this.explicativoVisible = !this.oportunidades || this.oportunidades.length === 0;
+   this.modalEtapasSubscription = this.modalEtapasService.modalState$.subscribe((state) => {
+    this.modalVisibleEtapas = state.showModal;
+    this.result = state.result;
+
+    if (this.modalVisibleEtapas == false && this.result.result == false) {
+      this.iniciarExplicacionBotones();
+    }
+  });
+
+ /*this.explicativoVisible = !this.oportunidades || this.oportunidades.length === 0;
 
   if (this.explicativoVisible) {
     setTimeout(() => {
       this.setModalPosition(this.btnAlta.nativeElement);
     });
-  }
+  }*/
 });
 
 
@@ -272,7 +283,7 @@ export class HeaderComponent implements OnInit {
     this.insertar = state.insertar;
     this.oportunidades = state.oportunidades;
     this.oportunidadSeleccionada = state.oportunidadSeleccionada;
-    this.explicativoVisible = !this.oportunidades || this.oportunidades.length === 0;
+   // this.explicativoVisible = !this.oportunidades || this.oportunidades.length === 0;
   });
   }
 
@@ -790,4 +801,11 @@ continuarExplicativoSecuencia() {
     return;
   }
 }
+
+  iniciarExplicacionBotones() {
+    this.explicativoVisible = true;
+    setTimeout(() => {
+      this.setModalPosition(this.btnAlta.nativeElement);
+    });
+  }
 }

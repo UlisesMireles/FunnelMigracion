@@ -73,6 +73,7 @@ ngOnInit() {
   this.modalSubscription = this.modalEtapasService.modalState$.subscribe((state) => {
     const idProceso = Number(localStorage.getItem('idProceso'));
     this.esNuevo = idProceso <= 0;
+    console.log('Es nuevo:', this.esNuevo);
 
     if (this.esNuevo) {
       this.mostrarAdvertencia = true;
@@ -81,6 +82,7 @@ ngOnInit() {
       this.mostrarAdvertencia = false;
       //this.visible = state.showModal;
     }
+    console.log('Modal state:', state);
 
     this.insertEtapas = state.insertarEtapas;
     this.etapasCombo = state.etapasCombo;

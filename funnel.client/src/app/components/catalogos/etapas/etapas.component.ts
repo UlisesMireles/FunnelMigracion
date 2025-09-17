@@ -37,6 +37,8 @@ export class EtapasComponent {
   @Output() result: EventEmitter<baseOut> = new EventEmitter();
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() closeModal: EventEmitter<void> = new EventEmitter();
+  @Output() ordenEtapasCerrado: EventEmitter<boolean> = new EventEmitter<boolean>();
+
 
   private modalSubscription!: Subscription;
   idUsuario: number = 0;
@@ -209,6 +211,7 @@ ngOnInit() {
 
   toggleEditarOrdenEtapas() {
     this.guardarEtapas();
+    this.ordenEtapasCerrado.emit(true);
   }
 
   get etapasActivas() {

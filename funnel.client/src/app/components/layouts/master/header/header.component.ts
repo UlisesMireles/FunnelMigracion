@@ -108,7 +108,7 @@ export class HeaderComponent implements OnInit {
 
   modalPosition = { top: 0, left: 0 };
   // Modal explicativo para iniciar proceso
-  modalExplicativoProceso: boolean = true;
+  modalExplicativoProceso: boolean = false;
 
   constructor(
     public asistenteService: AsistenteService,
@@ -260,14 +260,19 @@ export class HeaderComponent implements OnInit {
   this.insertar = state.insertar;
   this.oportunidades = state.oportunidades;
   this.oportunidadSeleccionada = state.oportunidadSeleccionada;
-
    this.modalEtapasSubscription = this.modalEtapasService.modalState$.subscribe((state) => {
     this.modalVisibleEtapas = state.showModal;
     this.result = state.result;
 
-    if (this.modalVisibleEtapas == false && this.result.result == false) {
-      this.iniciarExplicacionBotones();
+    if (state.result.id == -1) {
+      this.modalExplicativoProceso = true;
     }
+    else {
+      this.modalExplicativoProceso = false;
+    }
+   /* if (this.modalVisibleEtapas == true && this.result.result == false) {
+      this.iniciarExplicacionBotones();
+    }*/
   });
 
  /*this.explicativoVisible = !this.oportunidades || this.oportunidades.length === 0;
@@ -331,8 +336,8 @@ export class HeaderComponent implements OnInit {
 }
 
 continuarModalExplicativoProceso() {
-  this.modalExplicativoProceso = false; 
   this.modalEtapasService.openModal(true, true, this.etapas, this.etapasCombo, this.plantillas);
+  this.modalExplicativoProceso = false;
 }
 
 

@@ -264,7 +264,7 @@ export class HeaderComponent implements OnInit {
     this.modalVisibleEtapas = state.showModal;
     this.result = state.result;
 
-    if (state.result.id == -1) {
+    if (state.result.id == -1 && state.result.result == true) {
       this.modalExplicativoProceso = true;
     }
     else {

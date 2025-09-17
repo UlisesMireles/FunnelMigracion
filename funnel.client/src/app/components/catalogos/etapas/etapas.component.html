@@ -1,21 +1,3 @@
-<!--<p-dialog [(visible)]="mostrarAdvertencia" [modal]="true" [closable]="false"styleClass="custom-header-naranja"
-[style]="{ width: '50rem', height: 'auto' }">
-    <ng-template pTemplate="header">
-        <h2>¡Antes de comenzar!</h2>
-    </ng-template>
-    <ng-template pTemplate="content">
-        <p style="text-align: left; color: black; margin-top: 40px;">
-            Para poder registrar oportunidades, primero necesitas seleccionar una plantilla estándar o crear tu propio proceso.
-            Este proceso nos ayudará a organizar y dar seguimiento adecuado a cada una de tus oportunidades.
-            Por favor, completa el siguiente formulario para crear tu primer proceso. Una vez creado, podrás comenzar a registrar tus oportunidades sin problema.
-        </p>
-    </ng-template>
-    <ng-template pTemplate="footer">
-        <button mat-button color="primary" class="btn-agregar-etapa" (click)="continuarAdvertencia()">Continuar</button>
-        <button mat-button class="btn-agregar-etapa" (click)="cerrarAdvertencia()">Cancelar</button>
-
-    </ng-template>
-</p-dialog>-->
 <p-dialog [(visible)]="visible" [modal]="true" styleClass="custom-header-naranja" [closable]="!esNuevo"
     [style]="{ width: '50rem', height: 'auto' }" (onHide)="cerrar()" (onShow)="onDialogShow()" class="bodyDialog">
     <ng-template pTemplate="header">

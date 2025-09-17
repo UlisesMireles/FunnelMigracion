@@ -59,7 +59,6 @@ export class EtapasComponent {
   habilitaPlantillas: boolean = false;
   deshabilitarAccionesEtapas: boolean = false;
   esNuevo: boolean = false;
-  mostrarAdvertencia: boolean = false;
   constructor(
     private readonly loginService: LoginService,
     private readonly messageService: MessageService,
@@ -493,8 +492,7 @@ ngOnInit() {
     this.modalEtapasService.closeModal();
     this.visibleChange.emit(this.visible);
     this.closeModal.emit();
-    this.mostrarAdvertencia = false;
-    console.log('Modal', this.visible);
+    
   }
 
   editarNombreEtapa(etapa: any) {

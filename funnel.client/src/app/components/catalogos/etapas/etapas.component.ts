@@ -193,7 +193,7 @@ ngOnInit() {
     this.etapas = plantilla.etapas;
     this.idPlantilla = plantilla.idPlantilla;
     this.habilitaPlantillas = true;
-    this.validaGuardar = false;
+    this.validaGuardar = true;
     this.cantidadExpandidos = this.etapas.filter(etapa => etapa.expandido).length;
     this.cdr.detectChanges();
   }

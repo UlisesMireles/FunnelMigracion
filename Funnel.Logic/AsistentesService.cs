@@ -229,9 +229,9 @@ namespace Funnel.Logic
                     TokensEntrada = tokensEntrada,
                     TokensSalida = tokensSalida,
                     IdUsuario = idUsuario,
-                    CostoPregunta = tokensEntrada * configuracion.CostoTokensEntrada,
-                    CostoRespuesta = tokensSalida * configuracion.CostoTokensSalida,
-                    CostoTotal = (tokensEntrada * configuracion.CostoTokensEntrada) + (tokensSalida * configuracion.CostoTokensSalida),
+                    CostoPregunta = tokensEntrada * (configuracion.CostoTokensEntrada / 1000),
+                    CostoRespuesta = tokensSalida * (configuracion.CostoTokensSalida / 1000),
+                    CostoTotal = (tokensEntrada * (configuracion.CostoTokensEntrada / 1000)) + (tokensSalida * (configuracion.CostoTokensSalida / 1000)),
                     Modelo = configuracion.Modelo
                 };
                 await _asistentesData.InsertaPreguntaBitacoraPreguntas(insertarBitacora);

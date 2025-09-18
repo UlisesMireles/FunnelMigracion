@@ -27,7 +27,7 @@
       <div class="progress-step" [class.active]="currentStep >= 4">4</div>
     </div>
 
-    <form [formGroup]="usuarioForm" (ngSubmit)="goToStep(4)">
+    <form [formGroup]="usuarioForm" (ngSubmit)="goToStep(2)">
       <input type="text" formControlName="nombre" placeholder="Nombre completo" />
       <input type="email" formControlName="correo" placeholder="Correo electrónico" />
         <div *ngIf="usuarioForm.get('correo')?.touched && usuarioForm.get('correo')?.invalid" class="error">
@@ -116,7 +116,7 @@
       <label>Contraseña*</label>
       <div class="input-box">
         <i class="bi bi-lock icono"></i>
-        <input type="password" formControlName="password" placeholder="Tu contraseña" />
+        <input type="password" formControlName="password" autocomplete="new-password" placeholder="Tu contraseña" />
           <div *ngIf="usuarioForm.get('password')?.touched && usuarioForm.get('password')?.invalid" class="error">
             <small *ngIf="usuarioForm.get('password')?.errors?.['required']">La contraseña es obligatoria.</small>
             <small *ngIf="usuarioForm.get('password')?.errors?.['minlength']">Mínimo 6 caracteres.</small>
@@ -126,7 +126,7 @@
       <label>Confirmar contraseña*</label>
       <div class="input-box">
         <i class="bi bi-shield-lock icono"></i>
-        <input type="password" formControlName="confirmPassword" placeholder="Repite tu contraseña" />
+        <input type="password" formControlName="confirmPassword" autocomplete="new-password" placeholder="Repite tu contraseña" />
           <div *ngIf="usuarioForm.errors?.['mismatch'] && usuarioForm.get('confirmPassword')?.touched" class="error">
             <small>Las contraseñas no coinciden.</small>
           </div>

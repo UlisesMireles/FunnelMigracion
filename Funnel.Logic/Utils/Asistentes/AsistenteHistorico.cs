@@ -57,9 +57,9 @@ namespace Funnel.Logic.Utils.Asistentes
                     TokensEntrada = consultaAsistente.TokensEntrada,
                     TokensSalida = consultaAsistente.TokensSalida,
                     IdUsuario = consultaAsistente.IdUsuario,
-                    CostoPregunta = consultaAsistente.TokensEntrada * configuracion.CostoTokensEntrada,
-                    CostoRespuesta = consultaAsistente.TokensSalida * configuracion.CostoTokensSalida,
-                    CostoTotal = (consultaAsistente.TokensEntrada * configuracion.CostoTokensEntrada) + (consultaAsistente.TokensSalida * configuracion.CostoTokensSalida),
+                    CostoPregunta = consultaAsistente.TokensEntrada * (configuracion.CostoTokensEntrada / 1000),
+                    CostoRespuesta = consultaAsistente.TokensSalida * (configuracion.CostoTokensSalida / 1000),
+                    CostoTotal = (consultaAsistente.TokensEntrada * (configuracion.CostoTokensEntrada / 1000)) + (consultaAsistente.TokensSalida * (configuracion.CostoTokensSalida / 1000)),
                     Modelo = configuracion.Modelo
                 };
                 await _asistentesData.InsertaPreguntaBitacoraPreguntas(insertarBitacora);

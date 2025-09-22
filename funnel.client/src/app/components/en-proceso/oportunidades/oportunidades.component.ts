@@ -17,6 +17,7 @@ import { state } from '@angular/animations';
 import { CatalogoService } from '../../../services/catalogo.service';
 import { ConfiguracionTablaService } from '../../../services/configuracion-tabla.service';
 import { EnumTablas } from '../../../enums/enumTablas';
+import { FilterService, FilterMatchMode } from 'primeng/api';
 
 @Component({
   selector: 'app-oportunidades',
@@ -93,7 +94,9 @@ export class OportunidadesComponent {
   tipoUsuario: number = 0;
   constructor(private oportunidadService: OportunidadesService, private messageService: MessageService, private cdr: ChangeDetectorRef,
     private readonly loginService: LoginService, public dialog: MatDialog, private modalOportunidadesService: ModalOportunidadesService,
-    private readonly catalogoService: CatalogoService, private readonly configuracionColumnasService: ConfiguracionTablaService) {
+    private readonly catalogoService: CatalogoService, private readonly configuracionColumnasService: ConfiguracionTablaService,
+    private filterService: FilterService
+  ) {
     this.loading = true;
     this.catalogoService.cargarProspectos(this.loginService.obtenerIdEmpresa());
   }
@@ -144,6 +147,27 @@ export class OportunidadesComponent {
         this.llenarEtiquetas();
       }
     });
+     this.filterService.register('dateContains', (value: any, filter: any): boolean => {
+      if (filter === undefined || filter === null || filter.trim() === '') {
+        return true;
+      }
+      
+      if (value === null || value === undefined) {
+        return false;
+      }
+      
+      // Convertir la fecha a string en formato dd/MM/yyyy
+      const dateValue = new Date(value);
+      const dateString = this.formatDate(dateValue);
+      
+      return dateString.includes(filter);
+    });
+  }
+  private formatDate(date: Date): string {
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
   }
 
   ngOnDestroy(): void {

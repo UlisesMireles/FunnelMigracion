@@ -113,6 +113,8 @@ import { ChatBotAsistenteOperacionComponent } from './components/asistentes/asis
 import { AsistenteBienvenidaComponent } from './components/asistentes/asistente-bienvenida/asistente-bienvenida.component';
 import { ChatBotBienvenidaComponent } from './components/asistentes/asistente-bienvenida/chatBot/chatBotBienvenida.component';
 
+
+import { ModalEstancamientoComponent } from './components/en-proceso/acordeon-oportunidades-etapa/modal-estancamiento/modal-estancamiento.component';
 export function getBaseUrl() {
   return 'https://localhost:49834/'
 }
@@ -160,6 +162,7 @@ import { FaqFlotantesComponent } from './components/asistentes/asistente-prospec
 import { EliminarConversacionComponent } from './components/asistentes/asistente-prospeccion/eliminar-conversacion/eliminar-conversacion.component';
 import { EvaluarBotComponent } from './components/asistentes/asistente-prospeccion/evaluar-bot/evaluar-bot.component';
 import { QRCodeComponent } from 'angularx-qrcode';
+import { NuevoRegistroComponent } from './components/inicio/nuevo-registro/nuevo-registro.component';
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -257,8 +260,9 @@ registerLocaleData(localeEs, 'es-MX');
     EliminarConversacionComponent,
     EvaluarBotComponent,
     RegistroContactosComponent,
+    ModalEstancamientoComponent,
     TipoCurrencyPipe,
-  ],
+    NuevoRegistroComponent  ],
   imports: [
     BrowserModule,
     HttpClientModule,

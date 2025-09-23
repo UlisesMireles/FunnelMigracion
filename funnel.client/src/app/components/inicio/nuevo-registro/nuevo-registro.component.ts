@@ -8,6 +8,8 @@ import { UsuariosService } from '../../../services/usuarios.service';
 import { Router } from '@angular/router';
 import { tail } from 'lodash-es';
 import { Usuarios } from '../../../interfaces/usuarios';
+import { HttpClient } from '@angular/common/http';
+
 
 @Component({
   selector: 'app-nuevo-registro',
@@ -40,7 +42,7 @@ export class NuevoRegistroComponent implements OnInit {
   correccionRealizada: boolean = false;
 
   constructor(private fb: FormBuilder, private empresaService: EmpresaService, private messageService: MessageService, private usuariosService: UsuariosService,
-    private router: Router
+    private router: Router, private http: HttpClient
    ) {}
    
   ngOnInit(): void {
@@ -89,19 +91,29 @@ export class NuevoRegistroComponent implements OnInit {
       bandera: ['INS-EMPRESA-GLU']
     });
   }
+  private obtenerIpPublica(): Promise<string> {
+  return this.http.get<{ip: string}>('https://api.ipify.org?format=json')
+    .toPromise()
+    
+    .then(resp => resp!.ip)
 
-  goToStep(step: number) {
+    .catch(() => 'IP_DESCONOCIDA'); 
+}
+
+  async goToStep(step: number) {
     if (this.currentStep === 1) {
       if (this.usuarioForm.get('nombre')?.invalid || this.usuarioForm.get('correo')?.invalid) {
         this.usuarioForm.markAllAsTouched();
         return;
       }
-
+       
+      const ip = await this.obtenerIpPublica();
       const datosPaso1 = {
         bandera: "INSERTAR",
         idRegistro: null,
         nombre: this.usuarioForm.get('nombre')?.value,
-        correo: this.usuarioForm.get('correo')?.value
+        correo: this.usuarioForm.get('correo')?.value,
+        ip: ip 
       };
 
       this.empresaService.guardarRegistroTemporal(datosPaso1).subscribe({

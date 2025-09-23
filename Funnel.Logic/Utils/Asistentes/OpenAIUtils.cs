@@ -251,13 +251,13 @@ namespace Funnel.Logic.Utils
             {
                 model = "gpt-5-mini",
                 conversation = conversationId,
-                input = new[] { new { role = "user", content = message } },
-                tools = new[] { new {
-                      type = "file_search",
-                      vector_store_ids = new[] { vectorStoreId },
-                      max_num_results = 20
-                    }
-                }
+                input = new[] { new { role = "user", content = message } }
+                //,tools = new[] { new {
+                //      type = "file_search",
+                //      vector_store_ids = new[] { vectorStoreId },
+                //      max_num_results = 20
+                //    }
+                //}
             };
 
             var jsonRequest = JsonSerializer.Serialize(body);
@@ -291,9 +291,9 @@ namespace Funnel.Logic.Utils
             // Extraer información de tokens si está disponible
             if (doc.RootElement.TryGetProperty("usage", out var usage))
             {
-                if (usage.TryGetProperty("prompt_tokens", out var promptTokens))
+                if (usage.TryGetProperty("input_tokens", out var promptTokens))
                     inputTokens = promptTokens.GetInt32();
-                if (usage.TryGetProperty("completion_tokens", out var completionTokens))
+                if (usage.TryGetProperty("output_tokens", out var completionTokens))
                     outputTokens = completionTokens.GetInt32();
                 if (usage.TryGetProperty("total_tokens", out var totalTokens))
                     tokensUsed = totalTokens.GetInt32();
@@ -336,6 +336,64 @@ namespace Funnel.Logic.Utils
             }
             
             return messages;
+        }
+        public static async Task<ConversationResponse> CallResponsesApiAsync(string apiKey, string model, string instructions, string userMessage)
+        {
+            var client = GetClient(apiKey);
+
+            var requestBody = new
+            {
+                model,
+                instructions,
+                input = new[] { new { role = "user", content = userMessage } },
+            };
+
+            var jsonRequest = JsonSerializer.Serialize(requestBody);
+            var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync("responses", content);
+            response.EnsureSuccessStatusCode();
+
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            using var doc = JsonDocument.Parse(jsonResponse);
+
+            var responseContent = "";
+            var tokensUsed = 0;
+            var inputTokens = 0;
+            var outputTokens = 0;
+            // Extraer el contenido del texto desde output[0].content[0].text
+            if (doc.RootElement.TryGetProperty("output", out var outputArray) && outputArray.GetArrayLength() > 1)
+            {
+                var firstOutput = outputArray[1];
+                if (firstOutput.TryGetProperty("content", out var contentArray) && contentArray.GetArrayLength() > 0)
+                {
+                    var firstContent = contentArray[0];
+                    if (firstContent.TryGetProperty("text", out var textElement))
+                    {
+                        responseContent = textElement.GetString() ?? "";
+                    }
+                }
+            }
+
+            // Extraer información de tokens si está disponible
+            if (doc.RootElement.TryGetProperty("usage", out var usage))
+            {
+                if (usage.TryGetProperty("input_tokens", out var promptTokens))
+                    inputTokens = promptTokens.GetInt32();
+                if (usage.TryGetProperty("output_tokens", out var completionTokens))
+                    outputTokens = completionTokens.GetInt32();
+                if (usage.TryGetProperty("total_tokens", out var totalTokens))
+                    tokensUsed = totalTokens.GetInt32();
+            }
+
+            return new ConversationResponse
+            {
+                Content = LimpiarRespuesta(responseContent),
+                InputTokens = inputTokens,
+                OutputTokens = outputTokens,
+                TotalTokens = tokensUsed,
+                ConversationId = ""
+            };
         }
     }
 }

@@ -389,7 +389,7 @@ namespace Funnel.Data
             return result;
         }
 
-        public async Task<BaseOut> RegistrarIngresoUsuario(string Bandera, int IdUsuario, int IdEmpresa, string SesionId, string MotivoCierre)
+        public async Task<BaseOut> RegistrarIngresoUsuario(string Bandera, int IdUsuario, int IdEmpresa, string SesionId, string MotivoCierre, string Ip)
         {
             BaseOut result = new BaseOut();
             try
@@ -401,6 +401,7 @@ namespace Funnel.Data
                     DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, IdEmpresa ),
                     DataBase.CreateParameterSql("@pSesionId", SqlDbType.VarChar, 500, ParameterDirection.Input, false,null, DataRowVersion.Default, SesionId ),
                     DataBase.CreateParameterSql("@pMotivoCierre", SqlDbType.VarChar, 1000, ParameterDirection.Input, false,null, DataRowVersion.Default, MotivoCierre ),
+                    DataBase.CreateParameterSql("@pIp", SqlDbType.VarChar, 30, ParameterDirection.Input, false,null, DataRowVersion.Default, Ip ),
                 };
 
                 // Ejecutar el SP sin leer datos

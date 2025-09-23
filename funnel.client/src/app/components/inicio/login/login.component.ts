@@ -12,6 +12,7 @@ import { ModalService } from '../../../services/modal-perfil.service';
 import { AsistenteService } from '../../../services/asistentes/asistente.service';
 import { Subscription } from 'rxjs';
 import { result } from 'lodash-es';
+import { HttpClient } from '@angular/common/http';
 
 
 @Component({
@@ -56,7 +57,7 @@ export class LoginComponent implements OnInit {
 
   @ViewChild('chatContainer') chatContainer!: ElementRef;
   constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private authService: LoginService, private sanitizer: DomSanitizer, private snackBar: MatSnackBar, private messageService: MessageService,
-              private modalService: ModalService, public asistenteService: AsistenteService, private cdr: ChangeDetectorRef
+              private modalService: ModalService, public asistenteService: AsistenteService, private cdr: ChangeDetectorRef, private http: HttpClient
   ) {}
 
   ngOnInit() {
@@ -135,8 +136,15 @@ export class LoginComponent implements OnInit {
 
     this.isResetModalOpen = false;
   }
+private obtenerIpPublica(): Promise<string> {
+  return this.http.get<{ip: string}>('https://api.ipify.org?format=json')
+    .toPromise()
+    
+    .then(resp => resp!.ip)
 
-  login() {
+    .catch(() => 'IP_DESCONOCIDA'); 
+}
+  async login() {
     localStorage.clear();
     sessionStorage.clear();
     if (this.loginForm.invalid) {
@@ -145,7 +153,9 @@ export class LoginComponent implements OnInit {
       return;
     }
     this.showErrors = false;
-    this.authService.login(this.loginForm.get('usuario')?.value, this.loginForm.get('password')?.value).subscribe({
+    
+    const ip = await this.obtenerIpPublica();
+    this.authService.login(this.loginForm.get('usuario')?.value, this.loginForm.get('password')?.value, ip).subscribe({
       next: (data: any) => {
         if (data.result && data.idUsuario > 0 && data.id == 0) {
           // if (environment.production) {

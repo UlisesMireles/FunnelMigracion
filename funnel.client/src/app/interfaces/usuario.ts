@@ -8,6 +8,7 @@ export interface Usuario extends BaseOut {
   idTipoUsuario: number;
   nombre: string;
   alias: string;
+  ip?: string;
 }
 
 export interface DobleAutenticacion {
@@ -22,4 +23,5 @@ export interface LoginUser {
   idUsuario: number;
   idRol: number;
   alias: string;
+  ip?: string;
 }

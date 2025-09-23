@@ -14,5 +14,6 @@ namespace Funnel.Models.Dto
         public string Usuario { get; set; }
         public DateTime FechaIngreso { get; set; }
         public string? Ip { get; set; }
+        public string? Ubicacion { get; set; }
     }
 }

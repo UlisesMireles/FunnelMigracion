@@ -171,12 +171,12 @@ namespace Funnel.Logic
         {
             return await _loginData.ReenviarCodigo(correo);
         }
-        public async Task<BaseOut> RegistrarIngresoUsuario(string Bandera, int IdUsuario, int IdEmpresa, string SesionId, string MotivoCierre, string Ip)
+        public async Task<BaseOut> RegistrarIngresoUsuario(string Bandera, int IdUsuario, int IdEmpresa, string SesionId, string MotivoCierre, string Ip, string Ubicacion)
         {
             await Task.Delay(1);
             string _SesionId = Bandera == "INSERT" ? Encrypt.Encriptar(string.Concat(IdUsuario.ToString(), '_', DateTime.Now.ToString())) : SesionId;
 
-            return await _loginData.RegistrarIngresoUsuario(Bandera, IdUsuario, IdEmpresa, _SesionId, MotivoCierre, Ip);
+            return await _loginData.RegistrarIngresoUsuario(Bandera, IdUsuario, IdEmpresa, _SesionId, MotivoCierre, Ip, Ubicacion);
         }
         public async Task<EmpresaDTO> ObtenerImagenEmpresa(int IdEmpresa)
         {

@@ -142,41 +142,89 @@ private obtenerIpPublica(): Promise<string> {
     
     .then(resp => resp!.ip)
 
-    .catch(() => 'IP_DESCONOCIDA'); 
+    .catch(() => 'Desconocida'); 
 }
-  async login() {
-    localStorage.clear();
-    sessionStorage.clear();
-    if (this.loginForm.invalid) {
-      this.showErrors = true;
-      this.errorMessage = "Por favor ingrese su usuario y contraseña"
-      return;
-    }
-    this.showErrors = false;
-    
+ async login() {
+  localStorage.clear();
+  sessionStorage.clear();
+
+  if (this.loginForm.invalid) {
+    this.showErrors = true;
+    this.errorMessage = "Por favor ingrese su usuario y contraseña";
+    return;
+  }
+
+  this.showErrors = false;
+
+  try {
     const ip = await this.obtenerIpPublica();
-    this.authService.login(this.loginForm.get('usuario')?.value, this.loginForm.get('password')?.value, ip).subscribe({
+
+    let ciudad = "Desconocida"; 
+    try {
+      const coords = await this.obtenerUbicacion();
+      ciudad = await this.obtenerCiudadBigDataCloud(coords.latitude, coords.longitude);
+    } catch (ubicacionError) {
+      console.warn("Usuario no permitió obtener ubicación o hubo un error:", ubicacionError);
+    }
+
+
+    this.authService.login(
+      this.loginForm.get('usuario')?.value,
+      this.loginForm.get('password')?.value,
+      ip,
+      ciudad
+    ).subscribe({
       next: (data: any) => {
         if (data.result && data.idUsuario > 0 && data.id == 0) {
-          // if (environment.production) {
-          //   this.closeLoginModal();
-          //   this.router.navigate(['/two-factor']);
-          // } else {
-            this.closeLoginModal();
-            this.modalService.closeModal(); 
-            this.router.navigate(['/oportunidades']);
-          // }
+          this.closeLoginModal();
+          this.modalService.closeModal(); 
+          this.router.navigate(['/oportunidades']);
         } else {
           this.showErrors = true;
-          this.errorMessage = data.errorMessage ? data.errorMessage : "Usuario y/o Contraseña no validos."
+          this.errorMessage = data.errorMessage ? data.errorMessage : "Usuario y/o Contraseña no válidos.";
         }
       },
-      error: (err: Error) => {
+      error: () => {
         this.showErrors = true;
-        this.errorMessage = "Ocurrio un error, intentalo más tarde."
+        this.errorMessage = "Ocurrió un error, inténtalo más tarde.";
       }
     });
+
+  } catch (error) {
+    console.error("No se pudo obtener IP pública o iniciar sesión", error);
+    this.showErrors = true;
+    this.errorMessage = "Ocurrió un error, inténtalo más tarde.";
   }
+}
+
+// coordenadas 
+private obtenerUbicacion(): Promise<GeolocationCoordinates> {
+  return new Promise((resolve, reject) => {
+    if (!navigator.geolocation) {
+      reject("Geolocalización no soportada");
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      position => resolve(position.coords),
+      err => reject(err),
+      { enableHighAccuracy: true }
+    );
+  });
+}
+
+// Consultar ubicación con las coordenadas
+private async obtenerCiudadBigDataCloud(lat: number, lon: number): Promise<string> {
+  const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=es`;
+  const response = await fetch(url);
+  const data = await response.json();
+
+  const localidad = data.locality || data.city || "";
+  const subdivision = data.principalSubdivision || "";
+  const pais = data.countryName || "";
+
+  return [localidad, subdivision, pais].filter(Boolean).join(", ") || "Desconocida";
+}
+
 
   resetPassword() {
     // Aquí puedes agregar la lógica para resetear la contraseña

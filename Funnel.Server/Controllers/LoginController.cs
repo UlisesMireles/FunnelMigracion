@@ -25,7 +25,7 @@ namespace Funnel.Server.Controllers
                 HttpContext.Session.SetString("User", usr.Usuario);
                 if (respuesta.Result == true && respuesta.IdEmpresa != null)
                 {
-                    var ingresoUsuario = await _loginService.RegistrarIngresoUsuario("INSERT", respuesta.IdUsuario, (int)respuesta.IdEmpresa, "", "", usr.Ip);
+                    var ingresoUsuario = await _loginService.RegistrarIngresoUsuario("INSERT", respuesta.IdUsuario, (int)respuesta.IdEmpresa, "", "", usr.Ip, usr.Ubicacion);
                     respuesta.SesionId = ingresoUsuario.ErrorMessage;
                 }
             }
@@ -45,7 +45,7 @@ namespace Funnel.Server.Controllers
             HttpContext.Session.Clear();
             if (!string.IsNullOrEmpty(data.SesionId))
             {
-                _loginService.RegistrarIngresoUsuario("UPDATE", data.IdUsuario, data.IdEmpresa ?? 0, data.SesionId, data.MotivoCerrarSesion ?? "", data.Ip);
+                _loginService.RegistrarIngresoUsuario("UPDATE", data.IdUsuario, data.IdEmpresa ?? 0, data.SesionId, data.MotivoCerrarSesion ?? "", data.Ip, data.Ubicacion);
             }  
             return Ok("Sesión cerrada.");
         }

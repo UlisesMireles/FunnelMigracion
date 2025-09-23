@@ -24,4 +24,5 @@ export interface LoginUser {
   idRol: number;
   alias: string;
   ip?: string;
+  ubicacion?: string;
 }

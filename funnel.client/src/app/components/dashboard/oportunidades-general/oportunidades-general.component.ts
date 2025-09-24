@@ -58,19 +58,20 @@ export class OportunidadesGeneralComponent {
      }, 500);
   }
 
-  private setGraficaData(quadrantIdx: number, cardIdx: number, data: any, layout: any) {
+  private setGraficaData(quadrantIdx: number, cardIdx: number, data: any, layout: any, sinDatos: boolean = false): void {
     this.quadrants[quadrantIdx].cards[cardIdx].grafica.data = data;
     this.quadrants[quadrantIdx].cards[cardIdx].grafica.layout = layout;
     this.quadrants[quadrantIdx].cards[cardIdx].infoCargada = true;
+    this.quadrants[quadrantIdx].cards[cardIdx].sinDatos = sinDatos;
   }
 
   consultarGraficaStage(): void {
   const idEmpresa = this.sessionService.obtenerIdEmpresa();
-  const mostrarDecimales = this.sessionService.obtenerPermitirDecimales();
-
+  const idProceso = Number(localStorage.getItem('idProceso'));
   const request: RequestGraficasDto = {
     bandera: 'SEL-OPORTUNIDAD-STAGE',
-    idEmpresa
+    idEmpresa,
+    idProceso
   };
 
   this.graficasService.obtenerGraficaData(request).subscribe({
@@ -78,8 +79,13 @@ export class OportunidadesGeneralComponent {
       const dataAGraficar = [
         this.graficasService.createFunnelData(response, this.mostrarDecimales)
       ];
-      const layOutGrafica = this.graficasService.createFunnelLayout();
-      this.setGraficaData(0, 0, dataAGraficar, layOutGrafica);
+      if(dataAGraficar[0].text.length > 0) {
+        const layOutGrafica = this.graficasService.createFunnelLayout();
+        this.setGraficaData(0, 0, dataAGraficar, layOutGrafica);
+      }
+      else{
+        this.setGraficaData(0, 0, [], {}, true);        
+      }
     },
     error: (err: any) => console.error('Error al consultar la gráfica:', err)
   });
@@ -87,11 +93,12 @@ export class OportunidadesGeneralComponent {
 
 consultarGraficaTipo(): void {
   const idEmpresa = this.sessionService.obtenerIdEmpresa();
-  const mostrarDecimales = this.sessionService.obtenerPermitirDecimales();
+  const idProceso = Number(localStorage.getItem('idProceso'));
 
   const request: RequestGraficasDto = {
     bandera: 'SEL-TIPO-SIN-MONTOS-CEROS',
-    idEmpresa
+    idEmpresa,
+    idProceso
   };
 
   this.graficasService.obtenerGraficaData(request).subscribe({
@@ -99,8 +106,13 @@ consultarGraficaTipo(): void {
       const dataAGraficar = [
         this.graficasService.createPieData(response, this.mostrarDecimales)
       ];
-      const layOutGrafica = this.graficasService.createPieLayout();
-      this.setGraficaData(2, 0, dataAGraficar, layOutGrafica);
+      if(dataAGraficar[0].text.length > 0) {
+       const layOutGrafica = this.graficasService.createPieLayout();
+       this.setGraficaData(2, 0, dataAGraficar, layOutGrafica);
+      }
+      else{
+        this.setGraficaData(2, 0, [], {}, true);
+      }
     },
     error: (err: any) => console.error('Error al consultar la gráfica:', err)
   });
@@ -108,11 +120,12 @@ consultarGraficaTipo(): void {
 
 consultarGraficaSector(): void {
   const idEmpresa = this.sessionService.obtenerIdEmpresa();
-  const mostrarDecimales = this.sessionService.obtenerPermitirDecimales();
+  const idProceso = Number(localStorage.getItem('idProceso'));
 
   const request: RequestGraficasDto = {
     bandera: 'SEL-AGENTE-SECTOR',
-    idEmpresa
+    idEmpresa,
+    idProceso
   };
 
   this.graficasService.obtenerGraficaAgentesData(request).subscribe({
@@ -121,8 +134,13 @@ consultarGraficaSector(): void {
       const dataAGraficar = [
         this.graficasService.createBarData(filtrados, this.mostrarDecimales)
       ];
-      const layOutGrafica = this.graficasService.createBarLayout();
-      this.setGraficaData(1, 0, dataAGraficar, layOutGrafica);
+      if(dataAGraficar[0].text.length > 0) {
+        const layOutGrafica = this.graficasService.createBarLayout();
+        this.setGraficaData(1, 0, dataAGraficar, layOutGrafica);
+      }
+      else{
+        this.setGraficaData(1, 0, [], {}, true);
+      }
     },
     error: (err: any) => console.error('Error al consultar la gráfica:', err)
   });

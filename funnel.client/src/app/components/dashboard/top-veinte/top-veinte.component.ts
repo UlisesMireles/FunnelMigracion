@@ -95,7 +95,8 @@ export class TopVeinteComponent implements OnInit {
   }
 
   getAniosOportunidades() {
-    this.prospectoService.getAniosOportunidades(this.loginService.obtenerIdEmpresa()).subscribe({
+    const idProceso = Number(localStorage.getItem('idProceso'));
+    this.prospectoService.getAniosOportunidades(this.loginService.obtenerIdEmpresa(), idProceso).subscribe({
       next: (result: any[]) => {
         this.years = result.map((item: any) => item.anio.toString());
         this.years.unshift("Todos los Años");

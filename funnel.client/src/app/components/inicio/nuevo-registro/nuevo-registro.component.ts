@@ -40,7 +40,7 @@ export class NuevoRegistroComponent implements OnInit {
   desdeDuplicadoCorreo: boolean = false;
   huboDuplicadoCorreo: boolean = false;
   correccionRealizada: boolean = false;
-
+  mostrarModalCancelar: boolean = false;
   constructor(private fb: FormBuilder, private empresaService: EmpresaService, private messageService: MessageService, private usuariosService: UsuariosService,
     private router: Router, private http: HttpClient
    ) {}
@@ -82,8 +82,7 @@ export class NuevoRegistroComponent implements OnInit {
       nombreEmpresa: ['', Validators.required],
       direccion: ['', Validators.required],
       tamano:['', Validators.required],
-      rfc: ['', {
-    validators: [Validators.required],
+      rfc: ['', {validators: [Validators.required,  Validators.pattern(/^[A-ZÑ&]{3}\d{6}[A-Z\d]{3}$/)],
     asyncValidators: [this.validarRfcExistente.bind(this)],
     updateOn: 'blur' 
     }],
@@ -617,5 +616,20 @@ private actualizarRegistroTemporal(data: any) {
   });
 }
 
-
+cancelarRegistro() {
+  if (this.currentStep === 4) {
+    this.mostrarModalCancelar = true;
+  } else {
+    this.router.navigate(['/login']); 
+  }
+  
 }
+
+cerrarModalCancelar() {
+  this.mostrarModalCancelar = false;
+}
+
+confirmarCancelacion() {
+  this.mostrarModalCancelar = false;
+  this.router.navigate(['/login']); 
+}}

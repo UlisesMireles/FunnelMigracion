@@ -10,6 +10,8 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { sumBy, map as mapping, omit, sortBy, groupBy, keys as getKeys } from 'lodash-es';
 import { EnumTablas } from '../../../enums/enumTablas';
 import { ConfiguracionTablaService } from '../../../services/configuracion-tabla.service';
+import { PermisosService } from '../../../services/permisos.service';
+import { Permiso } from '../../../interfaces/permisos';
 
 @Component({
   selector: 'app-usuarios',
@@ -50,7 +52,7 @@ export class UsuariosComponent {
   columnsTodasResp = JSON.stringify(this.lsTodasColumnas);
 
   constructor(private UsuariosService: UsuariosService, private messageService: MessageService, private cdr: ChangeDetectorRef,
-     private loginService: LoginService, public dialog: MatDialog, private readonly configuracionColumnasService: ConfiguracionTablaService) { }
+    private loginService: LoginService, public dialog: MatDialog, private readonly configuracionColumnasService: ConfiguracionTablaService) { }
 
   ngOnInit(): void {
     this.licencia = localStorage.getItem('licencia')!;

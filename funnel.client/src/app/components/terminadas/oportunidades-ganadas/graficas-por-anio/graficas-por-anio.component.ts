@@ -57,8 +57,9 @@ mostrarDecimales: boolean = false;
 obtenerAniosDisponibles(): void {
   const idEmpresa = this.sessionService.obtenerIdEmpresa();
   const idEstatusOportunidad = 2;
+  const idProceso = Number(localStorage.getItem('idProceso'));
 
-  this.graficasService.obtenerAnios(idEmpresa, idEstatusOportunidad).subscribe({
+  this.graficasService.obtenerAnios(idEmpresa, idEstatusOportunidad, idProceso).subscribe({
     next: (response: any[]) => {
       this.aniosDisponibles = response.map(item => {
         const anio = Number(item.anio);
@@ -88,10 +89,11 @@ obtenerAniosDisponibles(): void {
     this.consultarGraficaTipoProyecto();
     this.consultarGraficaVentasAnuales();
   }
-  private setGraficaData(quadrantIdx: number, cardIdx: number, data: any, layout: any) {
+  private setGraficaData(quadrantIdx: number, cardIdx: number, data: any, layout: any, sinDatos: boolean = false) {
     this.quadrants[quadrantIdx].cards[cardIdx].grafica.data = data;
     this.quadrants[quadrantIdx].cards[cardIdx].grafica.layout = layout;
     this.quadrants[quadrantIdx].cards[cardIdx].infoCargada = true;
+    this.quadrants[quadrantIdx].cards[cardIdx].sinDatos = sinDatos;
   }
 
   
@@ -100,13 +102,15 @@ obtenerAniosDisponibles(): void {
   const idUsuario = this.sessionService.obtenerIdUsuario();
   const idEstatusOportunidad = 2;
   const anio = this.anioSeleccionado;
+  const idProceso = Number(localStorage.getItem('idProceso'));
 
   const request: RequestGraficasDto = {
     bandera: 'SEL-CLIENTES-ANIO',
     idEmpresa,
     idUsuario,
     idEstatusOportunidad,
-    anio
+    anio,
+    idProceso
   };
 
   this.graficasService.obtenerGraficaGanadasData(request).subscribe({
@@ -115,8 +119,17 @@ obtenerAniosDisponibles(): void {
       const dataAGraficar = [
         this.graficasService.createBarPorcentajeData(filtrados, this.mostrarDecimales)
       ];
-      const layOutGrafica = this.graficasService.createBarLayout();
-      this.setGraficaData(0, 0, dataAGraficar, layOutGrafica);
+
+      if(dataAGraficar[0].text.length > 0) {
+        const layOutGrafica = this.graficasService.createFunnelLayout();
+        this.setGraficaData(0, 0, dataAGraficar, layOutGrafica);
+      }
+      else{
+        this.setGraficaData(0, 0, [], {}, true);        
+      }
+
+      // const layOutGrafica = this.graficasService.createBarLayout();
+      // this.setGraficaData(0, 0, dataAGraficar, layOutGrafica);
     },
     error: (err: any) => console.error('Error al consultar la gráfica:', err)
   });
@@ -127,13 +140,15 @@ obtenerAniosDisponibles(): void {
   const idUsuario = this.sessionService.obtenerIdUsuario();
   const idEstatusOportunidad = 2;
   const anio = this.anioSeleccionado;
+  const idProceso = Number(localStorage.getItem('idProceso'));
 
   const request: RequestGraficasDto = {
     bandera: 'SEL-TIPO-ANIO',
     idEmpresa,
     idUsuario,
     idEstatusOportunidad,
-    anio
+    anio,
+    idProceso
   };
 
   this.graficasService.obtenerGraficaGanadasData(request).subscribe({
@@ -141,8 +156,17 @@ obtenerAniosDisponibles(): void {
       const dataAGraficar = [
         this.graficasService.createPieMontoData(response, this.mostrarDecimales)
       ];
-      const layOutGrafica = this.graficasService.createPieLayout();
-      this.setGraficaData(1, 0, dataAGraficar, layOutGrafica);
+
+      if(dataAGraficar[0].text.length > 0) {
+        const layOutGrafica = this.graficasService.createFunnelLayout();
+        this.setGraficaData(1, 0, dataAGraficar, layOutGrafica);
+      }
+      else{
+        this.setGraficaData(1, 0, [], {}, true);        
+      }
+
+      // const layOutGrafica = this.graficasService.createPieLayout();
+      // this.setGraficaData(1, 0, dataAGraficar, layOutGrafica);
     },
     error: (err: any) => console.error('Error al consultar la gráfica proyecto:', err)
   });
@@ -151,11 +175,13 @@ obtenerAniosDisponibles(): void {
  consultarGraficaVentasAnuales(): void {
   const idEmpresa = this.sessionService.obtenerIdEmpresa();
   const idEstatusOportunidad = 2;
+  const idProceso = Number(localStorage.getItem('idProceso'));
 
   const request: RequestGraficasDto = {
     bandera: 'SEL-TOTALES-ANUALES',
     idEmpresa,
-    idEstatusOportunidad
+    idEstatusOportunidad,
+    idProceso
   };
 
   this.graficasService.obtenerGraficaGanadasData(request).subscribe({
@@ -165,8 +191,16 @@ obtenerAniosDisponibles(): void {
       barData.marker = { color: filtrados.map(() => '#1976d2') };
 
       const dataAGraficar = [barData];
-      const layOutGrafica = this.graficasService.createBarLayout();
-      this.setGraficaData(2, 0, dataAGraficar, layOutGrafica);
+      if(dataAGraficar[0].text.length > 0) {
+        const layOutGrafica = this.graficasService.createFunnelLayout();
+        this.setGraficaData(2, 0, dataAGraficar, layOutGrafica);
+      }
+      else{
+        this.setGraficaData(2, 0, [], {}, true);        
+      }
+
+      // const layOutGrafica = this.graficasService.createBarLayout();
+      // this.setGraficaData(2, 0, dataAGraficar, layOutGrafica);
     },
     error: (err: any) => console.error('Error al consultar la gráfica:', err)
   });

@@ -2,8 +2,10 @@
   <main>
     <div class="navbar">
       <nav class="text-center m-auto">
-        <img width="150" [src]="baseUrl + '/assets/img/logotipo-glupoint.png'" alt="logo SFS" class="m-auto">
-        <button *ngIf="showIniciarSesion" class="iniciarSesion float-end" (click)="openLoginModal()">Iniciar Sesión</button>
+        <img width="150" [src]="baseUrl + '/assets/img/gluall.png'" alt="logo SFS" class="m-auto">
+      <a  *ngIf="showIniciarSesion" [href]="baseUrl + '/nuevo-registro'"class="iniciarSesion me-2" style="text-decoration: none;">Registrarse gratis</a>
+      <button *ngIf="showIniciarSesion" class="iniciarSesion float-end" (click)="openLoginModal()">Iniciar Sesión</button>
+
       </nav>
     </div>
     <div class="container-fluid container-all imagenFondo" style="padding: 0px; overflow-x: hidden; height: 96vh;"  [style.background-image]="backgroundImg">
@@ -36,7 +38,7 @@
                 Impulsa tus ventas con un proceso sólido.
               </p>
             </div>
-            <div class="funnel-container">
+           <!--<div class="funnel-container">
               <div class="container logincard d-flex justify-content-center mt-4" style="width: 100%; max-height: 664px;">
                 <div class="row justify-content-center">
                   <div class="login-div">
@@ -152,7 +154,7 @@
                                   </ng-container>
                                 </span>
                               </div>
-                              <!-- <form [formGroup]="aFormGroup"> -->
+                              <form [formGroup]="aFormGroup"> 
                                 <ngx-recaptcha2 #captchaElem
                                                 [siteKey]="siteKey"
                                                 (reset)="handleReset()"
@@ -168,7 +170,7 @@
                                     Verificación de captcha obligatoria.
                                   </ng-container>
                                 </span>
-                              <!-- </form> -->
+                               </form>
                             </div>
                             <br />
                             <div class="input-group btn-rg">
@@ -181,7 +183,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div>-->
           </section>
         </div>
       </div>
@@ -227,7 +229,7 @@
                     <i class="bi" [class.bi-eye-slash]="!showPassword" [class.bi-eye]="showPassword"></i>
                   </span>
                 </div>
-                <div class="input-group btn-l">
+               <div class="input-group btn-l">
                   <button class="btn btn-login btn-lg btn-block form-control" (click)="login()">Iniciar Sesión</button>
                 </div>
                 <div class="text-center" *ngIf="errorMessage">

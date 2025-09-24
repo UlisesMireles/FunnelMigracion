@@ -46,8 +46,9 @@ quadrants: { cards: any[] }[] = [];
   obtenerAniosDisponibles(): void {
   const idEmpresa = this.sessionService.obtenerIdEmpresa();
   const idEstatusOportunidad = 2;
+  const idProceso = Number(localStorage.getItem('idProceso'));
 
-  this.graficasService.obtenerAnios(idEmpresa, idEstatusOportunidad).subscribe({
+  this.graficasService.obtenerAnios(idEmpresa, idEstatusOportunidad, idProceso).subscribe({
     next: (response: any[]) => {
       this.aniosDisponibles = response.map(item => {
       const anio = Number(item.anio);
@@ -74,10 +75,11 @@ onAnioChange(): void {
   consultarTodasGraficas(): void {
    this.consultarAgente();
   }
-  private setGraficaData(quadrantIdx: number, cardIdx: number, data: any, layout: any) {
+  private setGraficaData(quadrantIdx: number, cardIdx: number, data: any, layout: any, sinDatos: boolean = false) {
     this.quadrants[quadrantIdx].cards[cardIdx].grafica.data = data; 
     this.quadrants[quadrantIdx].cards[cardIdx].grafica.layout = layout;
     this.quadrants[quadrantIdx].cards[cardIdx].infoCargada = true;
+    this.quadrants[quadrantIdx].cards[cardIdx].sinDatos = sinDatos;
   }
   recargarGraficasPorAgente(idAgente: number) {
     this.consultarGraficaAgenteCliente(idAgente);
@@ -88,12 +90,15 @@ onAnioChange(): void {
     const idUsuario = this.sessionService.obtenerIdUsuario();
     const idEstatusOportunidad = 2;
     const anio = this.anioSeleccionado;
+    const idProceso = Number(localStorage.getItem('idProceso'));
+
     const request: RequestGraficasDto = {
       bandera: 'SEL-AGENTES',
       idEmpresa: idEmpresa,
       idUsuario,
       idEstatusOportunidad,
-      anio
+      anio,
+      idProceso
     };
     this.graficasService.obtenerAgentesPorAnioData(request).subscribe({
       next: (response: AgenteDto[]) => {
@@ -113,12 +118,14 @@ onAnioChange(): void {
   consultarGraficaAgenteCliente(idAgente: number): void {
   const idEstatusOportunidad = 2;
   const anio = this.anioSeleccionado;
+  const idProceso = Number(localStorage.getItem('idProceso'));
 
   const request: RequestGraficasDto = {
     bandera: 'SEL-AGENTE-CLIENTES',
     idUsuario: idAgente,
     idEstatusOportunidad,
-    anio
+    anio,
+    idProceso
   };
 
   this.graficasService.obtenerGraficaAgentesPorAnioData(request).subscribe({
@@ -127,8 +134,16 @@ onAnioChange(): void {
         this.graficasService.createBarHorizontalData(response, this.mostrarDecimales)
       ];
 
-      const layOutGrafica = this.graficasService.createBarHorizontalLayout();
-      this.setGraficaData(1, 0, dataAGraficar, layOutGrafica);
+      if(dataAGraficar[0].text.length > 0) {
+        const layOutGrafica = this.graficasService.createFunnelLayout();
+        this.setGraficaData(1, 0, dataAGraficar, layOutGrafica);
+      }
+      else{
+        this.setGraficaData(1, 0, [], {}, true);        
+      }
+
+      // const layOutGrafica = this.graficasService.createBarHorizontalLayout();
+      // this.setGraficaData(1, 0, dataAGraficar, layOutGrafica);
     },
     error: (err: any) => console.error('Error al consultar la gráfica:', err)
   });
@@ -138,13 +153,15 @@ onAnioChange(): void {
   consultarGraficaAgenteTipoOportunidad(idAgente: number): void {
   const idEstatusOportunidad = 2;
   const anio = this.anioSeleccionado;
+  const idProceso = Number(localStorage.getItem('idProceso'));
 
   const request: RequestGraficasDto = {
     bandera: 'SEL-AGENTE-TIPO',
     idEmpresa: this.sessionService.obtenerIdEmpresa(),
     idUsuario: idAgente,
     idEstatusOportunidad,
-    anio
+    anio,
+    idProceso
   };
 
   this.graficasService.obtenerGraficaAgentesPorAnioData(request).subscribe({
@@ -153,8 +170,15 @@ onAnioChange(): void {
         this.graficasService.createPieData(response, this.mostrarDecimales)
       ];
 
-      const layOutGrafica = this.graficasService.createPieLayout();
-      this.setGraficaData(2, 0, dataAGraficar, layOutGrafica);
+      if(dataAGraficar[0].text.length > 0) {
+        const layOutGrafica = this.graficasService.createFunnelLayout();
+        this.setGraficaData(2, 0, dataAGraficar, layOutGrafica);
+      }
+      else{
+        this.setGraficaData(2, 0, [], {}, true);        
+      }
+      // const layOutGrafica = this.graficasService.createPieLayout();
+      // this.setGraficaData(2, 0, dataAGraficar, layOutGrafica);
     },
     error: (err: any) => console.error('Error al consultar la gráfica:', err)
   });

@@ -40,12 +40,14 @@ namespace Funnel.Models.Dto
         public string? Licencia { get; set; }
         public int? CantidadUsuarios { get; set; }
         public int? CantidadOportunidades { get; set; }
+        public int? CantidadProcesosPermitidos { get; set; }
         public string? SesionId { get; set; }
         public string? MotivoCerrarSesion { get; set; }
         public bool? PermitirDecimales { get; set; }
         public string? Telefono { get; set; }   
         public int? IdPuesto { get; set; }
         public string? Puesto { get; set; }
+        public int? IdProceso { get; set; }
 
     }
 }

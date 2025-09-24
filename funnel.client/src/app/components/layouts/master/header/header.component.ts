@@ -4,7 +4,7 @@ import { AsistenteService } from '../../../../services/asistentes/asistente.serv
 import { ModalService } from '../../../../services/modal-perfil.service';
 import { Router } from '@angular/router';
 import { ModalOportunidadesService } from '../../../../services/modalOportunidades.service';
-import { Oportunidad } from '../../../../interfaces/oportunidades';
+import { Oportunidad, OportunidadesPorEtapa } from '../../../../interfaces/oportunidades';
 import { baseOut } from '../../../../interfaces/utils/utils/baseOut';
 import { Subscription } from 'rxjs';
 import { MenuItem, MessageService } from 'primeng/api';
@@ -13,10 +13,16 @@ import { Contacto } from '../../../../interfaces/contactos';
 import { SplitButton } from 'primeng/splitbutton';
 import { LoginService } from '../../../../services/login.service';
 import { CatalogoService } from '../../../../services/catalogo.service';
+import { ModalEtapasService } from '../../../../services/modalEtapas.service';
+import { OportunidadesService } from '../../../../services/oportunidades.service';
 import { ContactosService } from '../../../../services/contactos.service';
 import { CamposAdicionales } from '../../../../interfaces/campos-adicionales';
 import { ModalCamposAdicionalesService } from '../../../../services/modalCamposAdicionales.service';
+import { Procesos } from '../../../../interfaces/procesos';
+import { ProcesosService } from '../../../../services/procesos.service';
+import { PlantillasProcesos } from '../../../../interfaces/plantillas-procesos';
 import { EnumLicencias } from '../../../../enums/enumLicencias';
+
 @Component({
   selector: 'app-header',
   standalone: false,
@@ -31,14 +37,20 @@ export class HeaderComponent implements OnInit {
   nombreUsuario: string = '';
   licencia: string = '';
   optionsVisible: boolean = false;
+  optionsVisibleProcesos: boolean = false;
 
   insertar: boolean = false;
   insertarContacto: boolean = false;
   insertarProspecto: boolean = false;
+  insertarEtapas: boolean = false;
 
   private modalSubscription!: Subscription;
   private modalProspectosSubscription!: Subscription;
   private modalContactosSubscription!: Subscription;
+  private modalEtapasSubscription!: Subscription;
+
+  modalVisibleEtapas: boolean = false;
+  result: baseOut = { errorMessage: '', result: false, id: -1 };
 
   //Modal Oportunidades
   modalVisibleOportunidades: boolean = false;
@@ -79,7 +91,24 @@ export class HeaderComponent implements OnInit {
   sessionCountdownMinutesInactividad: number = 0;
   sessionCountdownSecondsInactividad: number = 0;
   private sessionCountdownIntervalInactividad: any;
+  etapas: OportunidadesPorEtapa[] = [];
+  procesos: Procesos[] = [];
+  plantillas: PlantillasProcesos[] = [];
+   @ViewChild('selectProcesos') selectProcesos: any;
+
   licenciaPlatino: boolean = false;
+  procesoSeleccionado: Procesos | null = null;
+  etapasCombo: OportunidadesPorEtapa[] = [];
+  explicativoVisible: boolean = false;
+  explicativoBrunoVisible: boolean = false;
+  explicativoAnaliticaVisible: boolean = false;
+  @ViewChild('btnAlta') btnAlta!: ElementRef;
+  @ViewChild('btnBruno') btnBruno!: ElementRef;
+  @ViewChild('btnAnalitica') btnAnalitica!: ElementRef;
+
+  modalPosition = { top: 0, left: 0 };
+  // Modal explicativo para iniciar proceso
+  modalExplicativoProceso: boolean = false;
 
   constructor(
     public asistenteService: AsistenteService,
@@ -91,7 +120,11 @@ export class HeaderComponent implements OnInit {
     private readonly authService: LoginService,
     private contactosService: ContactosService,
     private modalCamposAdicionalesService: ModalCamposAdicionalesService,
-    private cdr: ChangeDetectorRef) {
+    private oportunidadService: OportunidadesService,
+    private modalEtapasService: ModalEtapasService,
+    private procesosService: ProcesosService,
+    private cdr: ChangeDetectorRef, ) {
+      
     this.items = [
       {
         label: 'Oportunidades',
@@ -120,6 +153,7 @@ export class HeaderComponent implements OnInit {
     if (this.sessionCountdownInterval) {
       clearInterval(this.sessionCountdownInterval);
     }
+    if (this.modalEtapasSubscription) this.modalEtapasSubscription.unsubscribe();
   }
   toggleChat(): void {
     this.asistenteSubscription = this.asistenteService.asistenteObservable.subscribe(value => {
@@ -167,9 +201,18 @@ export class HeaderComponent implements OnInit {
   showSubmenu(): void {
     this.optionsVisible = true;
   }
+
+  toggleOptionsProcesos(): void {
+    this.optionsVisibleProcesos = !this.optionsVisibleProcesos;
+  }
+  hideSubmenuProcesos(): void {
+    this.optionsVisibleProcesos = false;
+  }
+  showSubmenuProcesos(): void {
+    this.optionsVisibleProcesos = true;
+  }
   ngOnInit(): void {
     this.licenciaPlatino = localStorage.getItem('licencia')! === EnumLicencias.Platino;
-    console.log(localStorage.getItem('licencia')!);
     this.startSessionCountdown();
     this.authService.sessionReset$.subscribe(() => {
       this.startSessionCountdown();
@@ -186,6 +229,7 @@ export class HeaderComponent implements OnInit {
 
     this.nombreUsuario = localStorage.getItem('username')!;
     this.licencia = localStorage.getItem('licencia')!;
+    this.getProcesos();
 
     //Suscripcion a servicio de modal de oportunidades, recibe datos para el despliegue del modal
     this.modalSubscription = this.modalOportunidadesService.modalState$.subscribe((state) => {
@@ -210,28 +254,145 @@ export class HeaderComponent implements OnInit {
       this.contactos = state.contactos;
       this.contactoSeleccionado = state.contactoSeleccionado;
     });
+
+  this.modalSubscription = this.modalOportunidadesService.modalState$.subscribe((state) => {
+  this.modalVisibleOportunidades = state.showModal;
+  this.insertar = state.insertar;
+  this.oportunidades = state.oportunidades;
+  this.oportunidadSeleccionada = state.oportunidadSeleccionada;
+   this.modalEtapasSubscription = this.modalEtapasService.modalState$.subscribe((state) => {
+    this.modalVisibleEtapas = state.showModal;
+    this.result = state.result;
+
+    if (state.result.id == -1 && state.result.result == true) {
+      this.modalExplicativoProceso = true;
+    }
+    else {
+      this.modalExplicativoProceso = false;
+    }
+   /* if (this.modalVisibleEtapas == true && this.result.result == false) {
+      this.iniciarExplicacionBotones();
+    }*/
+  });
+
+ /*this.explicativoVisible = !this.oportunidades || this.oportunidades.length === 0;
+
+  if (this.explicativoVisible) {
+    setTimeout(() => {
+      this.setModalPosition(this.btnAlta.nativeElement);
+    });
+  }*/
+});
+
+
+    this.getComboEtapas();
+     
+    this.modalSubscription = this.modalOportunidadesService.modalState$.subscribe((state) => {
+    this.modalVisibleOportunidades = state.showModal;
+    this.insertar = state.insertar;
+    this.oportunidades = state.oportunidades;
+    this.oportunidadSeleccionada = state.oportunidadSeleccionada;
+   // this.explicativoVisible = !this.oportunidades || this.oportunidades.length === 0;
+
+  });
   }
+
+  getComboEtapas() {
+  const idUsuario = this.authService.obtenerIdUsuario();
+  const idEmpresa = this.authService.obtenerIdEmpresa();
+    console.log(this.modalExplicativoProceso);
+  this.procesosService.getComboEtapas(idEmpresa, idUsuario).subscribe({
+    next: (result: OportunidadesPorEtapa[]) => {
+      this.etapasCombo = result.map(etapa => ({
+        ...etapa,
+        expandido: true,
+        editandoNombre: false,
+        tarjetas: etapa.tarjetas || [],
+        orden: etapa.orden,
+        probabilidad: etapa.probabilidad,
+        idEmpresa: idUsuario,
+        idUsuario: idUsuario,
+        idStage: etapa.idStage
+      }));
+
+      const idProceso = Number(localStorage.getItem('idProceso'));
+
+      if (idProceso <= 0 && idUsuario > 0) {
+        this.modalExplicativoProceso = true;
+      } else {
+        this.modalEtapasService.closeModal();
+        this.modalVisibleEtapas = false;
+      }
+    },
+    error: (error) => {
+      console.error('Error:', error);
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Error al cargar oportunidades por etapa'
+      });
+    }
+  });
+}
+
+continuarModalExplicativoProceso() {
+  this.modalEtapasService.openModal(true, true, this.etapas, this.etapasCombo, this.plantillas);
+  this.modalExplicativoProceso = false;
+}
+
 
   cargarImagenEmpresa() {
     const idEmpresaStr = localStorage.getItem('idEmpresa');
     const idEmpresa = idEmpresaStr ? Number(idEmpresaStr) : null;
 
     if (idEmpresa === null || isNaN(idEmpresa)) {
-      this.imagenEmpresaUrl = `${this.baseUrl}/assets/img/logotipo-glupoint.png?t=${Date.now()}`;
+      this.imagenEmpresaUrl = `${this.baseUrl}/assets/img/gluall.png?t=${Date.now()}`;
       return;
     }
 
     this.authService.obtenerUrlImagenEmpresa(idEmpresa).subscribe({
       next: (urlImagen) => {
-        this.imagenEmpresaUrl = urlImagen?.trim() ? `${urlImagen}?t=${Date.now()}` : `${this.baseUrl}/assets/img/logotipo-glupoint.png?t=${Date.now()}`;
+        this.imagenEmpresaUrl = urlImagen?.trim() ? `${urlImagen}?t=${Date.now()}` : `${this.baseUrl}/assets/img/gluall.png?t=${Date.now()}`;
 
       },
       error: (err) => {
         console.error('Error al cargar imagen:', err);
-        this.imagenEmpresaUrl = this.baseUrl + '/assets/img/logotipo-glupoint.png';
+        this.imagenEmpresaUrl = this.baseUrl + '/assets/img/gluall.png';
       }
     });
   }
+
+  getProcesos() {
+      this.procesosService.getProcesos(this.authService.obtenerIdEmpresa()).subscribe({
+        next: (result: Procesos[]) => {
+          this.procesos = result.filter(proceso => proceso.estatus == true);
+          const idProceso = Number(localStorage.getItem('idProceso'));
+          let procesoSeleccionado = this.procesos.find(proceso => proceso.idProceso == idProceso);
+          if (procesoSeleccionado) {
+          this.procesoSeleccionado = procesoSeleccionado;
+        }
+
+        if (!this.procesoSeleccionado && this.procesos.length > 0) {
+          this.procesoSeleccionado = this.procesos[0];
+        }
+
+          //localStorage.setItem('idProceso', this.procesos[0].idProceso.toString());
+        },
+        error: (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Se ha producido un error.',
+            detail: error.errorMessage,
+          });
+        },
+      });
+    }
+
+seleccionarProceso(proceso: Procesos) {
+  console.log('Proceso seleccionado:', proceso);
+  localStorage.setItem('idProceso', proceso.idProceso.toString());
+  window.location.reload();
+}
 
 
   ngAfterViewInit() {
@@ -308,6 +469,11 @@ export class HeaderComponent implements OnInit {
     this.modalOportunidadesService.closeModal();
   }
 
+  goToConfiguracionProcesos() {
+    this.router.navigate(['/procesos']);
+  }
+
+
   manejarResultadoOportunidades(result: baseOut) {
     if (result.result) {
       this.messageService.add({
@@ -351,6 +517,10 @@ export class HeaderComponent implements OnInit {
     this.modalOportunidadesService.closeModalContacto();
   }
 
+  onModalCloseEtapas() {
+    this.modalEtapasService.closeModal();
+  }
+
   manejarResultadoContactos(result: baseOut) {
     if (result.result) {
       this.messageService.add({
@@ -368,13 +538,13 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  manejarResultadoAbrirInputsAdicionales(resut: any) {
+manejarResultadoAbrirInputsAdicionales(resut: any) {
     this.informacionReferenciaCatalgo = resut
     this.getCamposAdicionales();
 
   }
 
-  manejarResultadoCamposAdicionales(result: baseOut) {
+manejarResultadoCamposAdicionales(result: baseOut) {
     if (result.result) {
       this.messageService.add({
         severity: 'success',
@@ -475,8 +645,7 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-
-  startDrag(event: MouseEvent): void {
+startDrag(event: MouseEvent): void {
     const target = event.target as HTMLElement;
     if (!target.closest('.app-chat-header')) {
       return;
@@ -559,6 +728,27 @@ export class HeaderComponent implements OnInit {
     this.sessionCountdownMinutesInactividad = Math.floor(remainingSeconds / 60);
     this.sessionCountdownSecondsInactividad = remainingSeconds % 60;
   }
+
+   manejarResultadoEtapas(result: baseOut) {
+    if (result.result) {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'La operación se realizó con éxito.',
+        detail: result.errorMessage,
+      });
+      this.modalEtapasService.closeModal(result);
+      localStorage.setItem('idProceso', result.id.toString());
+      setTimeout(() => {  
+      window.location.reload();
+      }, 1500);
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Se ha producido un error.',
+        detail: result.errorMessage,
+      });
+    }
+  }
   startDragProspeccion(event: MouseEvent): void {
     const target = event.target as HTMLElement;
     if (!target.closest('.app-chat-header-prospeccion')) {
@@ -599,5 +789,37 @@ export class HeaderComponent implements OnInit {
     this.mostrarAsistenteProspeccion = false;
     this.cdr.detectChanges();
   }
+setModalPosition(button: HTMLElement) {
+  const rect = button.getBoundingClientRect();
+  this.modalPosition = {
+    top: rect.bottom + window.scrollY + 5, 
+    left: rect.left + window.scrollX -200
+  };
+}
 
+continuarExplicativoSecuencia() {
+  if (this.explicativoVisible) {
+    this.explicativoVisible = false;
+    this.explicativoBrunoVisible = true;
+    this.setModalPosition(this.btnBruno.nativeElement);
+    return;
+  }
+  if (this.explicativoBrunoVisible) {
+    this.explicativoBrunoVisible = false;
+    this.explicativoAnaliticaVisible = true;
+    this.setModalPosition(this.btnAnalitica.nativeElement);
+    return;
+  }
+  if (this.explicativoAnaliticaVisible) {
+    this.explicativoAnaliticaVisible = false;
+    return;
+  }
+}
+
+  iniciarExplicacionBotones() {
+    this.explicativoVisible = true;
+    setTimeout(() => {
+      this.setModalPosition(this.btnAlta.nativeElement);
+    });
+  }
 }

@@ -151,7 +151,8 @@ export class SeguimientoOportunidadesComponent {
   }
 
   getHistorial(idOportunidad: number) {
-    this.oportunidadService.getHistorial(idOportunidad, this.loginService.obtenerIdEmpresa()).subscribe({
+    const idProceso = Number(localStorage.getItem('idProceso'));
+    this.oportunidadService.getHistorial(idOportunidad, this.loginService.obtenerIdEmpresa(), idProceso).subscribe({
       next: (result: Oportunidad[]) => {
         this.historialOportunidad = [...result];
         this.loading = false;
@@ -186,7 +187,8 @@ export class SeguimientoOportunidadesComponent {
   exportPdf(idOportunidad: number) {
     this.limpiarDictado();
     this.disabledPdf = true;
-    this.oportunidadService.descargarReporteSeguimientoOportunidades(idOportunidad, this.loginService.obtenerIdEmpresa(), this.loginService.obtenerEmpresa()).subscribe({
+    const idProceso = Number(localStorage.getItem('idProceso'));
+    this.oportunidadService.descargarReporteSeguimientoOportunidades(idOportunidad, this.loginService.obtenerIdEmpresa(), this.loginService.obtenerEmpresa(), idProceso).subscribe({
       next: (result: Blob) => {
         const url = window.URL.createObjectURL(result);
         const link = document.createElement('a');

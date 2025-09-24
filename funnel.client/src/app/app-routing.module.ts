@@ -44,7 +44,9 @@ import { AcordeonProspectosContactosComponent } from './components/administracio
 import { ServiciosEntregasComponent } from './components/catalogos/servicios-entregas/servicios-entregas.component';
 import { UsuariosPermisosComponent } from './components/catalogos/usuarios-permisos/usuarios-permisos.component';
 import { PanelesTerminadasComponent } from './components/terminadas/paneles-terminadas/paneles-terminadas.component';
+import { EtapasComponent } from './components/catalogos/etapas/etapas.component';
 import { ModalCamposNuevosComponent } from './components/administracion/modal-campos-nuevos/modal-campos-nuevos.component';
+import { ProcesosComponent } from './components/catalogos/procesos/procesos.component';
 import { RegistroContactosComponent } from './components/inicio/registro-contactos/registro-contactos.component';
 import { ModalEstancamientoComponent } from './components/en-proceso/acordeon-oportunidades-etapa/modal-estancamiento/modal-estancamiento.component';
 import { NuevoRegistroComponent } from './components/inicio/nuevo-registro/nuevo-registro.component';
@@ -99,7 +101,9 @@ const routes: Routes = [
   { path: 'herramientas', component: AdministracionHerramientasComponent, title: 'Herramientas', canActivate: [AuthGuard] },
  // { path: 'dashboard-general', component: AdminDashboardComponent, title: 'Dashboard General', canActivate: [AuthGuard]},
   { path: 'dashboard', component: AdminDashboardComponent, title: 'Dashboard General', canActivate: [AuthGuard]},
+  { path: 'configuracion-etapas', component: EtapasComponent, title: 'Configuración de Etapas' },
   { path: 'modal-campos-adicionales', component: ModalCamposNuevosComponent, title: 'ModalCamposAdicionales', canActivate: [AuthGuard]},
+  { path: 'procesos', component: ProcesosComponent, title: 'Catálogo de Procesos', canActivate: [AuthGuard] },
   { path: 'modal-estancamiento', component: ModalEstancamientoComponent, title: 'Modal Estancamiento', canActivate: [AuthGuard]},
   { path: 'registro-contactos', component: RegistroContactosComponent, title: 'Registro Contactos' },
   {path:'nuevo-registro', component:NuevoRegistroComponent, title: 'Nuevo Registro'}

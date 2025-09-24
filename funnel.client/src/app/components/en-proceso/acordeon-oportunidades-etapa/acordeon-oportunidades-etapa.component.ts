@@ -75,9 +75,9 @@ export class AcordeonOportunidadesEtapaComponent {
 
     const idUsuario = this.loginService.obtenerIdUsuario();
     const idEmpresa = this.loginService.obtenerIdEmpresa();
+    const idProceso = Number(localStorage.getItem('idProceso'));
 
-
-    this.oportunidadService.getOportunidadesPorEtapa(idEmpresa, idUsuario).subscribe({
+    this.oportunidadService.getOportunidadesPorEtapa(idEmpresa, idUsuario, idProceso).subscribe({
       next: (result: OportunidadesPorEtapa[]) => {
         this.etapas = result.map(etapa => ({
           ...etapa,

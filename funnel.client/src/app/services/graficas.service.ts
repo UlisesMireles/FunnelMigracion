@@ -22,11 +22,12 @@ export class GraficasService {
   obtenerAgentesData(data: RequestGraficasDto): Observable<AgenteDto[]> {
     return this.http.post<AgenteDto[]>(`${this.baseUrl}api/Graficas/ObtenerAgentes`, data);
   }
-  obtenerAnios(idEmpresa: number, idEstatusOportunidad: number): Observable<any> {
+  obtenerAnios(idEmpresa: number, idEstatusOportunidad: number, idProceso: number): Observable<any> {
     return this.http.get(`${this.baseUrl}api/Graficas/Anios`, {
       params: {
         IdEmpresa: idEmpresa.toString(),
-        IdEstatusOportunidad: idEstatusOportunidad.toString()
+        IdEstatusOportunidad: idEstatusOportunidad.toString(),
+        IdProceso: idProceso.toString()
       }
     });
   }
@@ -58,6 +59,7 @@ export class GraficasService {
     titulo,
     tipo,
     infoCargada: false,
+    sinDatos: false,
     maximizada: false, 
     grafica: {
       data: [],
@@ -75,6 +77,7 @@ createCardPorAnio(id: number, titulo: string, tipo: 'tabla' | 'grafica') {
     titulo,
     tipo,
     infoCargada: false,
+    sinDatos: false,
     grafica: {
       data: [],
       layout: {},
@@ -212,20 +215,24 @@ createPieData(items: GraficasDto[], mostrarDecimales = false) {
       }
     };
   }
-  createFunnelData(items: GraficasDto[], mostrarDecimales = false) {
-    const opcionesFormato = this.getOpcionesFormato(mostrarDecimales);
-    return {
-      type: 'funnel',
-      x: [100, 80, 60, 40, 20],
-      hovertemplate: '<b>%{text}</b><extra></extra>',
-      text: items.map(item => '<b>' + item.label + '</b><br>' + item.valor.toLocaleString('es-MX', opcionesFormato)),
-      texttemplate: '%{text}',
-      textfont: { family: "Old Standard TT", size: 13, color: "black" },
-      marker: {
-        color: items.map(item => item.coloreSerie ?? this.getRandomColor())
-      }
-    };
-  }
+ createFunnelData(items: GraficasDto[], mostrarDecimales = false) {
+  const opcionesFormato = this.getOpcionesFormato(mostrarDecimales);
+  
+  // Ordenar por porcentaje ascendente
+  const itemsOrdenados = items.sort((a, b) => (a.porcentaje ?? 0) - (b.porcentaje ?? 0));
+  
+  return {
+    type: 'funnel',
+    x: itemsOrdenados.map(item => 100 - (item.porcentaje ?? 0)),
+    hovertemplate: '<b>%{text}</b><extra></extra>',
+    text: itemsOrdenados.map(item => '<b>' + item.label + '</b><br>' + item.valor.toLocaleString('es-MX', opcionesFormato)),
+    texttemplate: '%{text}',
+    textfont: { family: "Old Standard TT", size: 13, color: "black" },
+    marker: {
+      color: itemsOrdenados.map(item => item.coloreSerie !== '' ? item.coloreSerie : this.getRandomColor())
+    }
+  };
+}
 
   createBarHorizontalLayout() {
     return {

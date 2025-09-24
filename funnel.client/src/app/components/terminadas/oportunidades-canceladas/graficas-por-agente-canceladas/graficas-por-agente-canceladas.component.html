@@ -27,7 +27,10 @@
                   </svg>
                 </button>
            </div>
-            <div *ngIf="card.tipo === 'tabla'" class="p-3 mb-3 overflow-auto" [class.maximized-content]="card.isMaximized">
+           <div *ngIf="card.sinDatos" class="no-data-message">
+            <p>No hay datos disponibles para esta gráfica.</p>
+          </div>
+            <div *ngIf="card.tipo === 'tabla' && !card.sinDatos" class="p-3 mb-3 overflow-auto" [class.maximized-content]="card.isMaximized">
                 <p-table [value]="agentes" styleClass="my-custom-table">
                     <ng-template pTemplate="header">
                         <tr>
@@ -48,7 +51,7 @@
                     </ng-template>
                 </p-table>
             </div>
-            <div *ngIf="card.tipo === 'grafica'" class="p-0" [style.height]="card.isMaximized ? 'calc(100vh - 100px)' : '330px'" style="max-height: 330px; z-index: 5000;">
+            <div *ngIf="card.tipo === 'grafica' && !card.sinDatos" class="p-0" [style.height]="card.isMaximized ? 'calc(100vh - 100px)' : '330px'" style="max-height: 330px; z-index: 5000;">
                 <plotly-plot *ngIf="card.infoCargada" [data]="card.grafica.data" [layout]="card.grafica.layout"
                     [config]="card.grafica.config"></plotly-plot>
             </div>

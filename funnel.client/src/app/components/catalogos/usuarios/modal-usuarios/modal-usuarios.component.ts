@@ -573,6 +573,7 @@ mostrarImagenDefault(event: Event) {
   toggleConfirmPasswordVisibility() {
   this.showConfirmPassword = !this.showConfirmPassword;
 }  
+
   permisos: Permiso[] = [];
   agrupadosPermisos: any[] = [];
   consultarPermisos() {

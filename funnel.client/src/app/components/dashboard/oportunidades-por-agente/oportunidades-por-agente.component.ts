@@ -23,7 +23,7 @@ export class OportunidadesPorAgenteComponent {
   modalAgenteTipoVisible = false;
   modalAgenteSectorVisible: boolean = false;
   mostrarDecimales: boolean = false;
-
+  idProceso: number = 0;
   get dropListIds() {
     return this.quadrants.map((_, index) => `cardList${index}`);
   }
@@ -46,10 +46,11 @@ export class OportunidadesPorAgenteComponent {
     }, 500);
   }
 
-  private setGraficaData(quadrantIdx: number, cardIdx: number, data: any, layout: any) {
+  private setGraficaData(quadrantIdx: number, cardIdx: number, data: any, layout: any, sinDatos: boolean = false) {
     this.quadrants[quadrantIdx].cards[cardIdx].grafica.data = data;
     this.quadrants[quadrantIdx].cards[cardIdx].grafica.layout = layout;
     this.quadrants[quadrantIdx].cards[cardIdx].infoCargada = true;
+    this.quadrants[quadrantIdx].cards[cardIdx].sinDatos = sinDatos;
   }
   recargarGraficasPorAgente(idAgente: number) {
     this.consultarGraficaAgenteCliente(idAgente);
@@ -58,9 +59,11 @@ export class OportunidadesPorAgenteComponent {
   }
   consultarAgente(): void {
     const idEmpresa = this.sessionService.obtenerIdEmpresa();
+    this.idProceso = Number(localStorage.getItem('idProceso') ?? 0);
     const request: RequestGraficasDto = {
       bandera: 'SEL-AGENTES',
-      idEmpresa: idEmpresa
+      idEmpresa: idEmpresa,
+      idProceso: this.idProceso ?? 0
     };
 
     this.graficasService.obtenerAgentesData(request).subscribe({
@@ -80,7 +83,8 @@ export class OportunidadesPorAgenteComponent {
   }
 
   consultarGraficaAgenteCliente(idAgente: number): void {
-    const request: RequestGraficasDto = { bandera: 'SEL-AGENTE-CLIENTES', idUsuario: idAgente };
+    const request: RequestGraficasDto = { bandera: 'SEL-AGENTE-CLIENTES', idUsuario: idAgente,
+      idProceso: this.idProceso ?? 0 };
 
     this.graficasService.obtenerGraficaAgentesData(request).subscribe({
       next: (response: GraficasDto[]) => {
@@ -88,8 +92,12 @@ export class OportunidadesPorAgenteComponent {
           this.graficasService.createBarHorizontalNormalizadoData(response, this.mostrarDecimales),
           this.graficasService.createBarHorizontalData(response, this.mostrarDecimales)
         ];
-        const layOutGrafica = this.graficasService.createBarHorizontalLayout();
-        this.setGraficaData(1, 0, dataAGraficar, layOutGrafica);
+        if(dataAGraficar[0].text.length > 0 || dataAGraficar[1].text.length > 0) {
+          const layOutGrafica = this.graficasService.createBarHorizontalLayout();
+          this.setGraficaData(1, 0, dataAGraficar, layOutGrafica);
+        }else{
+          this.setGraficaData(1, 0, [], {}, true);
+        }
       },
       error: (err: any) => console.error('Error al consultar la gráfica:', err)
     });
@@ -99,14 +107,19 @@ export class OportunidadesPorAgenteComponent {
     const request: RequestGraficasDto = {
       bandera: 'SEL-AGENTE-TIPO',
       idEmpresa: this.sessionService.obtenerIdEmpresa(),
-      idUsuario: idAgente
+      idUsuario: idAgente,
+      idProceso: this.idProceso ?? 0
     };
 
     this.graficasService.obtenerGraficaAgentesData(request).subscribe({
       next: (response: GraficasDto[]) => {
         const dataAGraficar = [this.graficasService.createPieData(response, this.mostrarDecimales)];
-        const layOutGrafica = this.graficasService.createPieLayout();
-        this.setGraficaData(2, 0, dataAGraficar, layOutGrafica);
+        if(dataAGraficar[0].text.length > 0) {
+          const layOutGrafica = this.graficasService.createPieLayout();
+          this.setGraficaData(2, 0, dataAGraficar, layOutGrafica);
+        } else {
+          this.setGraficaData(2, 0, [], {}, true);
+        }
       },
       error: (err: any) => console.error('Error al consultar la gráfica:', err)
     });
@@ -116,15 +129,20 @@ export class OportunidadesPorAgenteComponent {
     const request: RequestGraficasDto = {
       bandera: 'SEL-AGENTE-SECTOR-PERSONAL',
       idEmpresa: this.sessionService.obtenerIdEmpresa(),
-      idUsuario: idAgente
+      idUsuario: idAgente,
+      idProceso: this.idProceso ?? 0
     };
 
     this.graficasService.obtenerGraficaAgentesData(request).subscribe({
       next: (response: GraficasDto[]) => {
         const dataAGraficar = [this.graficasService.createBarData(response, this.mostrarDecimales)];
-        const layOutGrafica = this.graficasService.createBarLayout();
-        layOutGrafica.margin = { t: 20, r: 20, b: 120, l: 50 };
-        this.setGraficaData(3, 0, dataAGraficar, layOutGrafica);
+        if(dataAGraficar[0].text.length > 0) {
+          const layOutGrafica = this.graficasService.createBarLayout();
+          layOutGrafica.margin = { t: 20, r: 20, b: 120, l: 50 };
+          this.setGraficaData(3, 0, dataAGraficar, layOutGrafica);
+        } else {
+          this.setGraficaData(3, 0, [], {}, true);
+        }
       },
       error: (err: any) => console.error('Error al consultar la gráfica:', err)
     });

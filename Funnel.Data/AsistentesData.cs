@@ -68,7 +68,7 @@ namespace Funnel.Data
                         DataBase.CreateParameterSql("@pResult", SqlDbType.Binary, 1, ParameterDirection.Output, false, "Result", DataRowVersion.Default, insert.Result),
                         DataBase.CreateParameterSql("@pErrorMessage", SqlDbType.VarChar, -1, ParameterDirection.Output, false, "ErrorMessage", DataRowVersion.Default, insert.ErrorMessage),
                         DataBase.CreateParameterSql("@pIdBot", SqlDbType.Int, 10, ParameterDirection.Input, false, "IdBot", DataRowVersion.Default, insert.IdBot),
-                        DataBase.CreateParameterSql("@pPregunta", SqlDbType.VarChar, 255, ParameterDirection.Input, false, "Pregunta", DataRowVersion.Default, insert.Pregunta),
+                        DataBase.CreateParameterSql("@pPregunta", SqlDbType.VarChar, 1000, ParameterDirection.Input, false, "Pregunta", DataRowVersion.Default, insert.Pregunta),
                         DataBase.CreateParameterSql("@pFechaPregunta", SqlDbType.DateTime, 8, ParameterDirection.Input, false, "FechaPregunta", DataRowVersion.Default, insert.FechaPregunta),
                         DataBase.CreateParameterSql("@pRespuesta", SqlDbType.VarChar, -1, ParameterDirection.Input, false, "Respuesta", DataRowVersion.Default, insert.Respuesta),
                         DataBase.CreateParameterSql("@pFechaRespuesta", SqlDbType.DateTime, 8, ParameterDirection.Input, false, "FechaRespuesta", DataRowVersion.Default, insert.FechaRespuesta),
@@ -88,7 +88,6 @@ namespace Funnel.Data
                         {
                             insert.ErrorMessage = ComprobarNulos.CheckStringNull(reader["@pErrorMessage"]);
                             insert.Result = ComprobarNulos.CheckBooleanNull(reader["@pResult"]);
-
                         }
                     }
                 }

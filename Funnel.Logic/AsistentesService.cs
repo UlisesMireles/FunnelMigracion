@@ -40,17 +40,17 @@ namespace Funnel.Logic
                 if (configuracion == null)
                     throw new Exception("No se encontró configuración para el asistente ");
 
-                var vectorStoreCacheKey = GetVectorStoreCacheKey(idBot);
-                if (!(_cache.Get(vectorStoreCacheKey) is string vectorStoreId) || string.IsNullOrEmpty(vectorStoreId))
-                {
-                    vectorStoreId = await OpenAIUtils.CreateVectorStoreAsync(configuracion.Llave, configuracion.FileId);
-                    while (!await OpenAIUtils.IsVectorStoreReadyAsync(configuracion.Llave, vectorStoreId))
-                    {
-                        await Task.Delay(1000);
-                    }
-                    _cache.Set(vectorStoreCacheKey, vectorStoreId, TimeSpan.FromDays(7));
+                //var vectorStoreCacheKey = GetVectorStoreCacheKey(idBot);
+                //if (!(_cache.Get(vectorStoreCacheKey) is string vectorStoreId) || string.IsNullOrEmpty(vectorStoreId))
+                //{
+                //    vectorStoreId = await OpenAIUtils.CreateVectorStoreAsync(configuracion.Llave, configuracion.FileId);
+                //    while (!await OpenAIUtils.IsVectorStoreReadyAsync(configuracion.Llave, vectorStoreId))
+                //    {
+                //        await Task.Delay(1000);
+                //    }
+                //    _cache.Set(vectorStoreCacheKey, vectorStoreId, TimeSpan.FromDays(7));
                 
-                }
+                //}
                     
                 var conversationId = GetConversationCacheKey(userId, idBot);
 
@@ -371,6 +371,7 @@ namespace Funnel.Logic
                 RemoveAssistantCache(userId, idBot);
                 RemoveThreadCache(userId, idBot);
                 RemoveVectorStoreCache(idBot);
+                RemoveConversationCache(userId, idBot);
             });
         }
 
@@ -446,7 +447,7 @@ namespace Funnel.Logic
 
                 // 2. Enviar mensaje y obtener respuesta usando la nueva API
                 var conversationResponse = await OpenAIUtils.GetRespuestaConversacionAsync(
-                    configuracion.Llave ?? "",
+                    configuracion,
                     conversationId,
                     pregunta,
                     vectorStoreId

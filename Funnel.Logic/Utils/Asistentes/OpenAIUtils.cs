@@ -243,13 +243,13 @@ namespace Funnel.Logic.Utils
             }
         }
 
-        public static async Task<ConversationResponse> GetRespuestaConversacionAsync(string apiKey, string conversationId, string message, string vectorStoreId)
+        public static async Task<ConversationResponse> GetRespuestaConversacionAsync(ConfiguracionDto configuracion, string conversationId, string message, string vectorStoreId)
         {
-            var client = GetClient(apiKey);
+            var client = GetClient(configuracion.Llave);
 
             var body = new
             {
-                model = "gpt-5-mini",
+                model = configuracion.Modelo,
                 conversation = conversationId,
                 input = new[] { new { role = "user", content = message } }
                 //,tools = new[] { new {
@@ -271,6 +271,7 @@ namespace Funnel.Logic.Utils
 
             var responseContent = "";
             var tokensUsed = 0;
+            var cacheTokens = 0;
             var inputTokens = 0;
             var outputTokens = 0;
 
@@ -296,13 +297,18 @@ namespace Funnel.Logic.Utils
                 if (usage.TryGetProperty("output_tokens", out var completionTokens))
                     outputTokens = completionTokens.GetInt32();
                 if (usage.TryGetProperty("total_tokens", out var totalTokens))
-                    tokensUsed = totalTokens.GetInt32();
+                    tokensUsed = totalTokens.GetInt32(); 
+                if (usage.TryGetProperty("input_tokens_details", out var detailsTokens))
+                {
+                    if (detailsTokens.TryGetProperty("cached_tokens", out var cacehTokens))
+                        cacheTokens = cacehTokens.GetInt32();
+                }
             }
 
             return new ConversationResponse
             {
                 Content = LimpiarRespuesta(responseContent),
-                InputTokens = inputTokens,
+                InputTokens = inputTokens - cacheTokens,
                 OutputTokens = outputTokens,
                 TotalTokens = tokensUsed,
                 ConversationId = conversationId

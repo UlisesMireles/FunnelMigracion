@@ -394,11 +394,16 @@
   100% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
 }
 .vstackbot {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: fit-content;
-  max-width: 100%; 
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;    
+    width: fit-content;
+    max-width: 100%;
+}
+
+.chat-bubble.formatoMensajes {
+    padding: 10px 12px; 
+    overflow: hidden;
 }
 /*ENCUESTA*/
 .opciones-encuesta-container {

@@ -1,0 +1,2 @@
+ALTER TABLE NuevoRegistroTemporal 
+ADD Ip VARCHAR(30) NULL;

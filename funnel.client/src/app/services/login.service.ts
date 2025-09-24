@@ -44,8 +44,8 @@ export class LoginService {
       }
     }
   }
-  login(user: string, pass: string) {
-    const datos = { usuario: user, password: pass };
+  login(user: string, pass: string, ip: string, ubicacion: string) {
+    const datos = { usuario: user, password: pass, ip: ip, ubicacion: ubicacion };
     return this.http.post<any>(this.baseUrl + "api/Login/Autenticacion", datos)
       .pipe(map(usuario => {
         let user = usuario;

@@ -14,6 +14,7 @@ using Funnel.Data.Utils;
 using System.Data;
 using FuzzySharp;
 using Funnel.Data;
+using Funnel.Logic.Utils.Asistentes;
 namespace Funnel.Logic
 {
     public class AsistentesService: IAsistentesService
@@ -57,7 +58,7 @@ namespace Funnel.Logic
                 var cacheKey = GetConversationCacheKey(userId, idBot);
                 if (!(_cache.Get(cacheKey) is string threadId) || string.IsNullOrEmpty(threadId))
                 {
-                    threadId = await OpenAIUtils.CreateConversationAsync(configuracion.Llave, userId, configuracion.Prompt);
+                    threadId = await AssstantApiUtils.CreateConversationAsync(configuracion.Llave, userId, configuracion.Prompt);
                     _cache.Set(cacheKey, threadId, TimeSpan.FromHours(2));
                 }
 
@@ -111,8 +112,8 @@ namespace Funnel.Logic
                     var conversationId = await GetOrCreateConversationIdAsync(configuracion, consultaAsistente.IdUsuario, consultaAsistente.IdBot);
 
                     // Agregar pregunta y respuesta
-                    await OpenAIUtils.SendMessageToConversationAsync(configuracion.Llave, conversationId, consultaAsistente.Pregunta, "user");
-                    await OpenAIUtils.SendMessageToConversationAsync(configuracion.Llave, conversationId, consultaAsistente.Respuesta, "assistant");
+                    await AssstantApiUtils.SendMessageToConversationAsync(configuracion.Llave, conversationId, consultaAsistente.Pregunta, "user");
+                    await AssstantApiUtils.SendMessageToConversationAsync(configuracion.Llave, conversationId, consultaAsistente.Respuesta, "assistant");
                 }
                 else
                 {
@@ -403,7 +404,7 @@ namespace Funnel.Logic
                 return conversationId;
             }
 
-            var newConversationId = await OpenAIUtils.CreateConversationAsync(
+            var newConversationId = await AssstantApiUtils.CreateConversationAsync(
                 configuracion.Llave ?? "",
                 userId,
                 configuracion.Prompt ?? "Eres un asistente útil"
@@ -433,24 +434,24 @@ namespace Funnel.Logic
                 if (configuracion == null)
                     throw new InvalidOperationException("No se encontró configuración para el asistente con IdBot: " + idBot);
 
-                string vectorStoreId = await GetOrCreateVectorStoreIdAsync(configuracion.Llave, idBot, configuracion.FileId);
+                //string vectorStoreId = await GetOrCreateVectorStoreIdAsync(configuracion.Llave, idBot, configuracion.FileId);
 
-                if (string.IsNullOrEmpty(configuracion.FileId))
-                {
-                    string filePath = Directory.GetCurrentDirectory() + configuracion.RutaDocumento;
-                    configuracion.FileId = await OpenAIUtils.UploadFileToOpenAIAsync(configuracion.Llave ?? "", filePath);
-                    await _asistentesData.GuardarFileIdLeadEisei(idBot, configuracion.FileId);
-                }
+                //if (string.IsNullOrEmpty(configuracion.FileId))
+                //{
+                //    string filePath = Directory.GetCurrentDirectory() + configuracion.RutaDocumento;
+                //    configuracion.FileId = await OpenAIUtils.UploadFileToOpenAIAsync(configuracion.Llave ?? "", filePath);
+                //    await _asistentesData.GuardarFileIdLeadEisei(idBot, configuracion.FileId);
+                //}
 
                 // 1. Obtener o crear conversación usando la nueva API
                 var conversationId = await GetOrCreateConversationIdAsync(configuracion, idUsuario, idBot);
 
                 // 2. Enviar mensaje y obtener respuesta usando la nueva API
-                var conversationResponse = await OpenAIUtils.GetRespuestaConversacionAsync(
+                var conversationResponse = await AssstantApiUtils.GetRespuestaConversacionAsync(
                     configuracion,
                     conversationId,
                     pregunta,
-                    vectorStoreId
+                    ""
                 );
 
                 var insertarBitacora = new InsertaBitacoraPreguntasDto
@@ -502,7 +503,7 @@ namespace Funnel.Logic
                     return new List<ConversationMessage>();
 
                 var conversationId = await GetOrCreateConversationIdAsync(configuracion, userId, idBot);
-                return await OpenAIUtils.GetConversationHistoryAsync(configuracion.Llave ?? "", conversationId);
+                return await AssstantApiUtils.GetConversationHistoryAsync(configuracion.Llave ?? "", conversationId);
             }
             catch (Exception)
             {
@@ -516,7 +517,7 @@ namespace Funnel.Logic
             {
                 foreach (var instruccion in instruccionesAdicionales)
                 {
-                    await OpenAIUtils.SendMessageToConversationAsync(apiKey, threadId, instruccion.Instrucciones, "assistant");
+                    await AssstantApiUtils.SendMessageToConversationAsync(apiKey, threadId, instruccion.Instrucciones, "assistant");
                 }
             }
         }

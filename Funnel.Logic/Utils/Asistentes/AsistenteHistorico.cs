@@ -96,7 +96,7 @@ namespace Funnel.Logic.Utils.Asistentes
                 temperature = 1.0
             };
 
-            var chatRespuestaOpenIA = await OpenAIUtils.CallResponsesApiAsync(configuracion.Llave, configuracion.Modelo, configuracion.Prompt, pregunta);
+            var chatRespuestaOpenIA = await AssstantApiUtils.CallResponsesApiAsync(configuracion.Llave, configuracion.Modelo, configuracion.Prompt, pregunta);
             respuestaOpenIA.Respuesta = chatRespuestaOpenIA.Content;
             respuestaOpenIA.TokensEntrada = chatRespuestaOpenIA.InputTokens;
             respuestaOpenIA.TokensSalida = chatRespuestaOpenIA.OutputTokens;

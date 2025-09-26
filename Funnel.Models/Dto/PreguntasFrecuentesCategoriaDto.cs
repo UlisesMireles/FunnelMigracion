@@ -1,6 +1,7 @@
-﻿namespace Funnel.Models.Dto
+﻿using Funnel.Models.Base;
+namespace Funnel.Models.Dto
 {
-    public class PreguntasFrecuentesCategoriaDto
+    public class PreguntasFrecuentesCategoriaDto : BaseOut
     {
         public int Id { get; set; }
         public int IdBot { get; set; }

@@ -1,6 +1,7 @@
-﻿namespace Funnel.Models.Dto
+﻿using Funnel.Models.Base;
+namespace Funnel.Models.Dto
 {
-    public class ListaCategoriasDto 
+    public class ListaCategoriasDto : BaseOut
     {
         public List<CategoriasDto>? Categorias { get; set; }
     }

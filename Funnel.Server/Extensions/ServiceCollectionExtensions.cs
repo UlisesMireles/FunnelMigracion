@@ -42,6 +42,10 @@ namespace Funnel.Server.Extensions
             services.AddScoped<IEncuestaService, EncuestaService>();
             services.AddScoped<IEmpresaData, EmpresaData>();
             services.AddScoped<IEmpresaService, EmpresaService>();
+            services.AddScoped<ICategoriasRepository, CategoriasData>();
+            services.AddScoped<ICategoriasService, CategoriasService>();
+            services.AddScoped<IPreguntasFrecuentesRepository, PreguntasFrecuentesData>();
+            services.AddScoped<IPreguntasFrecuentesService, PreguntasFrecuentesService>();
 
             return services;
         }

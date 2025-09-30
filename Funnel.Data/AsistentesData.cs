@@ -147,5 +147,61 @@ namespace Funnel.Data
             }
             return result;
         }
-    }
+        public async Task<ListaAsistentes> Asistentes()
+        {
+            var dtoAsistentes = new List<AsistentesDto>();
+            var lista = new ListaAsistentes();
+            try
+            {
+                using (IDataReader reader = await DataBase.GetReader("F_Asistentes", CommandType.StoredProcedure, _connectionString))
+                {
+                    while (reader.Read())
+                    {
+                        var ren = new AsistentesDto();
+                        ren.IdBot = ComprobarNulos.CheckIntNull(reader["Idbot"]);
+                        ren.NombreAsistente = ComprobarNulos.CheckStringNull(reader["NombreAsistente"]);
+                        ren.Documento = ComprobarNulos.CheckBooleanNull(reader["Documento"]);
+                        ren.NombreDocumento = ComprobarNulos.CheckStringNull(reader["NombreDocumento"]);
+                        ren.FechaModificacion = ComprobarNulos.CheckDateTimeNull(reader["FechaModificacion"]);
+                        ren.NombreTablaAsistente = ComprobarNulos.CheckStringNull(reader["NombreTablaAsistente"]);
+                        ren.MensajePrincipalAsistente = ComprobarNulos.CheckStringNull(reader["MensajePrincipalAsistente"]);
+                        ren.UltimoNombreDocumento = ComprobarNulos.CheckStringNull(reader["UltimoNombreDocumento"]);
+                        ren.TamanoUltimoDocumento = ComprobarNulos.CheckDecimalNull(reader["TamanoUltimoDocumento"]);
+                        dtoAsistentes.Add(ren);
+                    }
+
+                    lista.Asistentes = dtoAsistentes;
+                    lista.Result = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                lista.Result = false;
+                lista.ErrorMessage = ex.Message;
+            }
+
+            return lista;
+        }
+        public async Task<VersionAsistentesDto> ObtenerVersionArquitectura()
+        {
+            var version = new VersionAsistentesDto();
+
+            try
+            {
+                using (IDataReader reader = await DataBase.GetReader("F_VersionesArquitecturaChatBots_ObtenerVersion", CommandType.StoredProcedure, _connectionString))
+                {
+                    if (reader.Read())
+                    {
+                        version.Version = ComprobarNulos.CheckStringNull(reader[0]);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al obtener la versión: {ex.Message}");
+            }
+            return version;
+        }
+
+}
 }

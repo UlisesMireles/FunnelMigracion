@@ -6,14 +6,23 @@ namespace Funnel.Logic.Utils.Asistentes
 {
     public class AssstantApiUtils
     {
-        public static async Task<string> CreateConversationAsync(string apiKey, int idUsuario, string prompt)
+        public static async Task<string> CreateConversationAsync(string apiKey, int idUsuario, int idBot, string prompt)
         {
             var client = OpenAIUtils.GetClient(apiKey);
+
+            string prefix = idBot switch
+            {
+                1 => "Bienvenida_",
+                7 => "Bruno_"
+            };
 
             var body = new
             {
                 items = new[] { new { role = "assistant", content = prompt } },
-                metadata = new { user_id = "Bruno_" + idUsuario.ToString() }
+                metadata = new
+                {
+                    user_id = prefix + idUsuario.ToString()
+                }
             };
 
             var jsonRequest = JsonSerializer.Serialize(body);
@@ -78,12 +87,13 @@ namespace Funnel.Logic.Utils.Asistentes
                 model = configuracion.Modelo,
                 conversation = conversationId,
                 input = new[] { new { role = "user", content = message } }
-                //,tools = new[] { new {
-                //      type = "file_search",
-                //      vector_store_ids = new[] { vectorStoreId },
-                //      max_num_results = 20
-                //    }
-                //}
+                ,
+                tools = new[] { new {
+                      type = "file_search",
+                      vector_store_ids = new[] { vectorStoreId },
+                      max_num_results = 20
+                    }
+                }
             };
 
             var jsonRequest = JsonSerializer.Serialize(body);
@@ -194,9 +204,9 @@ namespace Funnel.Logic.Utils.Asistentes
             var inputTokens = 0;
             var outputTokens = 0;
             // Extraer el contenido del texto desde output[0].content[0].text
-            if (doc.RootElement.TryGetProperty("output", out var outputArray) && outputArray.GetArrayLength() > 1)
+            if (doc.RootElement.TryGetProperty("output", out var outputArray) && outputArray.GetArrayLength() > 0)
             {
-                var firstOutput = outputArray[1];
+                var firstOutput = outputArray[0];
                 if (firstOutput.TryGetProperty("content", out var contentArray) && contentArray.GetArrayLength() > 0)
                 {
                     var firstContent = contentArray[0];

@@ -36,8 +36,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\" />
     <Folder Include="PlantillasReporteHtml\" />
+    <Folder Include="wwwroot\AsistenteBienvenida\" />
   </ItemGroup>
 
 </Project>

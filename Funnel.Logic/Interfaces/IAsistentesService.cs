@@ -16,5 +16,7 @@ namespace Funnel.Logic.Interfaces
         public Task<List<ConversationMessage>> ObtenerHistorialConversacion(int userId, int idBot);
         public void RemoveConversationCache(int userId, int idBot);
         public Task<ConsultaAsistente> AsistenteOperacionAsync(ConsultaAsistente consultaAsistente);
+        public Task<ListaAsistentes> Asistentes();
+        public Task<VersionAsistentesDto> ObtenerVersionArquitectura();
     }
 }

@@ -9,5 +9,7 @@ namespace Funnel.Data.Interfaces
         public Task<InsertaBitacoraPreguntasDto> InsertaPreguntaBitacoraPreguntas(InsertaBitacoraPreguntasDto insert);
         public Task<List<PreguntasFrecuentesDto>> ObtenerPreguntasFrecuentesAsync(int idBot);
         public Task<List<InstruccionesAdicionalesDto>> ObtenerInstruccionesAdicionalesPorIdBot(int idBot);
+        public Task<ListaAsistentes> Asistentes();
+        public Task<VersionAsistentesDto> ObtenerVersionArquitectura();
     }
 }

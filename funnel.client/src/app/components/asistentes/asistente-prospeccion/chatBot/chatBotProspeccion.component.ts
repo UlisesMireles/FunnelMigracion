@@ -537,7 +537,7 @@ private reemplazarVariablesEnRespuesta(respuesta: string): string {
 private mostrarEncuesta() {
   this.chatHistorial.push({
     rol: "asistente",
-    mensaje: "Queremos escucharte. Esta encuesta rápida nos ayudará a mejorar la experiencia con <b>Bruno</b>, tu asistente comercial inteligente de LeadEisei AI 1.0. Responder no te tomará más de 2 minutos. ¡Gracias por tu tiempo!",
+    mensaje: "<p>Queremos escucharte. Esta encuesta rápida nos ayudará a mejorar la experiencia con <strong>Bruno</strong>, tu asistente comercial inteligente de LeadEisei AI 1.0. Responder no te tomará más de 2 minutos. ¡Gracias por tu tiempo!</p>",
     mostrarBotonDataset: false,
     mostrarBotonCopiar: false
   });

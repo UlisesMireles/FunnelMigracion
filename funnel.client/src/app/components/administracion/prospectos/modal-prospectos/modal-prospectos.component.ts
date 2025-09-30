@@ -106,7 +106,7 @@ export class ModalProspectosComponent {
         eliminadas: 0,
         idEmpresa: 0,
         bandera: "",
-        porcEfectividad: 0
+        porcEfectividad: 0,
       };
 
       this.prospectoForm = this.fb.group({
@@ -126,7 +126,8 @@ export class ModalProspectosComponent {
         idSector: [null, Validators.required],
         estatus: [true],
         idEmpresa: [idEmpresa],
-        bandera: ['INSERT']
+        bandera: ['INSERT'],
+        usuarioCreador: [this.loginService.obtenerIdUsuario()]
       });
 
       valoresIniciales = this.prospectoForm.getRawValue();
@@ -232,7 +233,7 @@ export class ModalProspectosComponent {
     this.prospectoForm.controls['estatus'].setValue(this.prospectoForm.value.estatus ? 1 : 0);
     this.prospectoForm.controls['bandera'].setValue(this.prospectoForm.value.bandera);
     this.prospectoForm.controls['idEmpresa'].setValue(this.loginService.obtenerIdEmpresa());
-
+    this.prospectoForm.controls['usuarioCreador'].setValue(this.loginService.obtenerIdUsuario());
     this.informacionProspecto = {
       ...this.informacionProspecto,
       bandera: this.prospectoForm.get('bandera')?.value,
@@ -241,7 +242,8 @@ export class ModalProspectosComponent {
       ubicacionFisica: this.prospectoForm.get('ubicacionFisica')?.value,
       idSector: this.prospectoForm.get('idSector')?.value,
       estatus: this.prospectoForm.get('estatus')?.value,
-      idEmpresa: this.prospectoForm.get('idEmpresa')?.value
+      idEmpresa: this.prospectoForm.get('idEmpresa')?.value,
+      usuarioCreador: this.prospectoForm.get('usuarioCreador')?.value
     }
 
 

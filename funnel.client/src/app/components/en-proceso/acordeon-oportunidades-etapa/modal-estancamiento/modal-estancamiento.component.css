@@ -1,0 +1,46 @@
+.table-container {
+  overflow-x: auto;
+}
+
+.estancamiento-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  border: 1px solid #ddd; 
+}
+
+.estancamiento-table th,
+.estancamiento-table td {
+  padding: 0.6rem;
+  text-align: left;
+  color: #444;
+  border-bottom: 1px solid #eee;
+  border-right: 1px solid #ddd; 
+}
+
+.estancamiento-table th {
+  background: #fff;  
+  font-weight: 500;
+  color: #333;       
+  font: bold
+}
+
+
+.estancamiento-table th:last-child,
+.estancamiento-table td:last-child {
+  border-right: none; 
+}
+
+
+.estancamiento-table tr.high-risk {
+  background: #fff7f7;
+}
+
+
+
+.oportunidad-name {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

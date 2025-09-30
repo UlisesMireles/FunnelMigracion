@@ -71,6 +71,9 @@ namespace Funnel.Logic
                     threadId = await OpenAIUtils.CreateThreadAsync(configuracion.Llave);
                     _cache.Set(threadCacheKey, threadId, TimeSpan.FromHours(2));
                 }
+
+                // Consultar instrucciones adicionales y agregarlas al hilo si existen
+                await AgregarInstruccionesAdicionalesAlHiloAsync(idBot, threadId, configuracion.Llave);
                 result.Result = true;
             }
             catch (Exception ex)
@@ -226,9 +229,9 @@ namespace Funnel.Logic
                     TokensEntrada = tokensEntrada,
                     TokensSalida = tokensSalida,
                     IdUsuario = idUsuario,
-                    CostoPregunta = tokensEntrada * configuracion.CostoTokensEntrada,
-                    CostoRespuesta = tokensSalida * configuracion.CostoTokensSalida,
-                    CostoTotal = (tokensEntrada * configuracion.CostoTokensEntrada) + (tokensSalida * configuracion.CostoTokensSalida),
+                    CostoPregunta = tokensEntrada * (configuracion.CostoTokensEntrada / 1000),
+                    CostoRespuesta = tokensSalida * (configuracion.CostoTokensSalida / 1000),
+                    CostoTotal = (tokensEntrada * (configuracion.CostoTokensEntrada / 1000)) + (tokensSalida * (configuracion.CostoTokensSalida / 1000)),
                     Modelo = configuracion.Modelo
                 };
                 await _asistentesData.InsertaPreguntaBitacoraPreguntas(insertarBitacora);
@@ -332,6 +335,9 @@ namespace Funnel.Logic
             if (string.IsNullOrEmpty(newThreadId))
                 throw new InvalidOperationException("El ID del thread no puede ser nulo.");
 
+            // Consultar instrucciones adicionales y agregarlas al hilo si existen
+            await AgregarInstruccionesAdicionalesAlHiloAsync(idBot, newThreadId, apiKey);
+
             _cache.Set(cacheKey, newThreadId, TimeSpan.FromHours(2));
             return newThreadId;
         }
@@ -397,6 +403,17 @@ namespace Funnel.Logic
         public async Task<List<PreguntasFrecuentesDto>> ObtenerPreguntasFrecuentesAsync(int idBot)
         {
             return await _asistentesData.ObtenerPreguntasFrecuentesAsync(idBot);
+        }
+        public async Task AgregarInstruccionesAdicionalesAlHiloAsync(int idBot, string threadId, string apiKey)
+        {
+            var instruccionesAdicionales = await _asistentesData.ObtenerInstruccionesAdicionalesPorIdBot(idBot);
+            if (instruccionesAdicionales != null && instruccionesAdicionales.Any())
+            {
+                foreach (var instruccion in instruccionesAdicionales)
+                {
+                    await OpenAIUtils.AddMessageToThreadAsync(apiKey, threadId, instruccion.Instrucciones, "assistant");
+                }
+            }
         }
     }
 }

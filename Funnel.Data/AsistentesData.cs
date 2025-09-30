@@ -130,5 +130,23 @@ namespace Funnel.Data
 
             return result;
         }
+        public async Task<List<InstruccionesAdicionalesDto>> ObtenerInstruccionesAdicionalesPorIdBot(int idBot)
+        {
+            List<InstruccionesAdicionalesDto> result = new List<InstruccionesAdicionalesDto>();
+            IList<ParameterSQl> list = new List<ParameterSQl>
+             {
+                 DataBase.CreateParameterSql("@IdBot", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, idBot)
+             };
+            using (IDataReader reader = await DataBase.GetReaderSql("InstruccionesAdicionalesAsistentes_ConsultarPorIdBot", CommandType.StoredProcedure, list, _connectionString))
+            {
+                while (reader.Read())
+                {
+                    var dto = new InstruccionesAdicionalesDto();
+                    dto.Instrucciones = ComprobarNulos.CheckStringNull(reader["Instruccion"]);
+                    result.Add(dto);
+                }
+            }
+            return result;
+        }
     }
 }

@@ -439,7 +439,7 @@ th.sort-active p-sortIcon {
 .custom-tabs {
   border-bottom: 1px solid #dee2e6;
   position: absolute;
-  top: 38px; 
+  top: 25px;
   z-index: 2;
 }
 

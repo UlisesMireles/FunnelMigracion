@@ -76,7 +76,8 @@ export class ModalCamposNuevosComponent {
       if (state.showModal) {
         this.pantalla = state.pantalla;
         this.camposAdicionales = state.camposPorCatalogo;
-        this.camposAdicionalesOriginal = [...this.camposAdicionales];
+       this.camposAdicionalesOriginal = JSON.parse(JSON.stringify(this.camposAdicionales));
+
         this.camposNoUtilizados = state.campos.filter(campo => !this.camposAdicionales.find(adicional => adicional.idInput === campo.idInput))
         this.connectedDropLists = this.camposAdicionales.map((_, i) => `ListEtapa${i}`);
       }
@@ -119,6 +120,7 @@ export class ModalCamposNuevosComponent {
           itemToMove.orden = 0;
           itemToMove.activo = false;
           itemToMove.tipoCatalogoInput = this.pantalla;
+       //   itemToMove.requerido = false;
         }
         targetList.splice(event.currentIndex, 0, itemToMove);
       }
@@ -128,6 +130,7 @@ export class ModalCamposNuevosComponent {
       campo.activo = true;
       campo.orden = index + 1;
       campo.tipoCatalogoInput = this.pantalla;
+    //  campo.requerido = false;
     });
 
     this.cdr.detectChanges();
@@ -144,8 +147,8 @@ export class ModalCamposNuevosComponent {
       this.validaGuadar = false;
     else
       this.validaGuadar = true;
-    
   }
+
 
   compararValores(valoresIniciales: any[], valoresActuales: any[]) {
     let valoresInicialesJson = JSON.stringify(valoresIniciales);
@@ -161,10 +164,17 @@ export class ModalCamposNuevosComponent {
     else
       listaFinalCamposAdicionales = [...this.camposAdicionales];
 
+    listaFinalCamposAdicionales = listaFinalCamposAdicionales.map(campo => ({
+      ...campo,
+      requerido: campo.requerido ?? false
+    }));
+
     this.camposAdicionalesMetodosService.postCamposAdicionales(listaFinalCamposAdicionales,this.idEmpresa).subscribe({
       next: (result: baseOut) => {
         this.result.emit(result);
         //this.cerrar();
+        this.camposAdicionalesOriginal = JSON.parse(JSON.stringify(this.camposAdicionales));
+        this.validaGuadar = false;
       },
       error: (error) => {
         this.messageService.add({

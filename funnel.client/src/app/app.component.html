@@ -2,10 +2,12 @@
   <app-header *ngIf="!login"></app-header>
   <app-menu *ngIf="!login"></app-menu>
 
-  <app-login *ngIf="login && !dobleAutenticacion && !politicaPrivacidad && !terminosCondiciones "></app-login>
+  <app-login *ngIf="login && !dobleAutenticacion && !politicaPrivacidad && !terminosCondiciones && !registroContactos && !nuevoRegistro"></app-login>
   <app-doble-autenticacion *ngIf="dobleAutenticacion"></app-doble-autenticacion>
   <app-politica-privacidad *ngIf="politicaPrivacidad"></app-politica-privacidad>
   <app-terminos-condiciones *ngIf="terminosCondiciones"></app-terminos-condiciones>
+  <app-registro-contactos *ngIf="registroContactos"></app-registro-contactos>
+  <app-nuevo-registro *ngIf="nuevoRegistro"></app-nuevo-registro>
   <!--<div *ngIf="dobleAutenticacion" class="container-fluid">
     <router-outlet></router-outlet>
   </div>-->

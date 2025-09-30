@@ -21,7 +21,7 @@
         <mat-accordion>
             <mat-expansion-panel *ngFor="let usuario of ingresosUsuariosPorAnio" (opened)="panelOpenState.set(true)"
                 (closed)="panelOpenState.set(false)">
-                <mat-expansion-panel-header>
+                <mat-expansion-panel-header class="expansion-header">
                     <mat-panel-title>
                         <h5>{{usuario.usuario}}</h5>
                     </mat-panel-title>

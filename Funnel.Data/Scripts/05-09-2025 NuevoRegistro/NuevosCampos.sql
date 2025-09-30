@@ -1,0 +1,3 @@
+ALTER TABLE [Empresas]
+ADD Direccion NVARCHAR(50) NULL,
+    Tamano NVARCHAR(20) NULL;

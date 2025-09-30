@@ -157,5 +157,9 @@ namespace Funnel.Logic
             return pdfBytes;
         }
 
+        public async Task<BaseOut> ValidacionCorreoRegitro(string correo)
+        {
+            return await _usuarioData.ValidacionCorreoRegitro(correo);
+        }
     }
 }

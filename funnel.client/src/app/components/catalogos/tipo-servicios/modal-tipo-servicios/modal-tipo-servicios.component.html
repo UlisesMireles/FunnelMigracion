@@ -3,6 +3,7 @@
   [modal]="true"
   [closable]="true"
   [style]="{ width: '35rem', height: 'auto' }"
+  styleClass="custom-header-naranja"
   (onHide)="close()"
   (onShow)="onDialogShow()"
   class="bodyDialog"
@@ -12,8 +13,6 @@
     <label class="margen">
       {{ insertar ? 'Nuevo Servicio' : title + ' ' + servicioForm.get('descripcion')?.value }}
     </label>
-    
-    <label *ngIf="insertar" class="margen">Nuevo Servicio</label>
   </ng-template>
   <br>
 

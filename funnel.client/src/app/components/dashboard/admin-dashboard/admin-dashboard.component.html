@@ -24,14 +24,14 @@
                 </li>
                 <li class="nav-item" *ngIf="permisoClientesTop20">
                     <a class="nav-link" [class.active]="activeTab === 2" data-bs-toggle="tab" href="#ClientesTop20"
-                        (click)="cambioPestana(2)" pTooltip="Oportunidades por agente" tooltipPosition="top">
+                        (click)="cambioPestana(2)" pTooltip="Clientes Top 20" tooltipPosition="top">
                         <i class="bi bi-calendar-check"></i><span
                             class="title-tab">{{EnumPaginas.CLIENTES_TOP_20}}</span>
                     </a>
                 </li>
                 <li class="nav-item" *ngIf="permisoClientesTop20">
                     <a class="nav-link" [class.active]="activeTab === 3" data-bs-toggle="tab" href="#GraficasTop20"
-                        (click)="cambioPestana(3)" pTooltip="Oportunidades por agente" tooltipPosition="top">
+                        (click)="cambioPestana(3)" pTooltip="Gráficas Top 20" tooltipPosition="top">
                         <i class="bi bi-pie-chart"></i><span
                             class="title-tab">{{EnumPaginas.GRAFICAS_TOP_20}}</span>
                     </a>

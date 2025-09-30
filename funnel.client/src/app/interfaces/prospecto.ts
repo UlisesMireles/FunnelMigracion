@@ -15,6 +15,7 @@ export interface Prospectos {
     eliminadas: number;
     idEmpresa: number;
     porcEfectividad: number;
+    usuarioCreador?: number;
     [key: string]: any; // permite agregar más propiedades
 }
 
@@ -38,6 +39,7 @@ export interface ClientesTopVeinte {
   porcEliminadas: number;   
   idEmpresa?: number;  
   ultimaFechaRegistro?: Date;     
+  
 }
 export interface ProspectosCmb{
     idProspecto: number,
@@ -49,9 +51,9 @@ export interface ProspectosCmb{
     idProspecto?: number,
     nombre:string,
     ubicacionFisica:string,
-    estatus:number, 
-    idSector: number,
-   
-    idEmpresa?: number
+    estatus?: number, 
+    idSector?: number,
+    idEmpresa?: number,
+    usuarioCreador?: number
   }
   

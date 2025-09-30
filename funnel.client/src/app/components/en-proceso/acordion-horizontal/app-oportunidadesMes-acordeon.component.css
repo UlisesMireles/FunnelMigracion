@@ -52,23 +52,33 @@
     min-width: 215px;
   }
 
+    .item-acordeon-color-6-false {
+    background-color: #cbcbcb;
+    border: 2px solid #9d9d9d !important;
+  }
   .item-acordeon-color-5-false {
     background-color: #CAFFBF;
+    border: 2px solid #7bf1a8 !important;
   }
   .item-acordeon-color-4-false {
     background-color: #CAFFBF;
+    border: 2px solid #7bf1a8 !important;
   }
   .item-acordeon-color-3-false {
-    background-color: #FDFFB6;
+    background-color: #f4f5c9;
+    border: 2px solid #f4f965 !important;
   }
   .item-acordeon-color-2-false {
     background-color: #FFD6A5;
+    border: 2px solid #ffb86a !important;
   }
   .item-acordeon-color-1-false {
-    background-color: #BDB2FF;
+    background-color: #d4ccff;
+    border: 2px solid #917ff9 !important;
   }
   .item-acordeon-color-0-false{
-     background-color: #fdd2d2;
+    background-color: #fdd2d2;
+    border: 2px solid #ffa2a2 !important;
   }
   
   /* Encabezado del item (nombre del mes y botón) */
@@ -79,23 +89,33 @@
     padding: 10px;
     border-radius: 10px;
   }
+  .encabezado-6-true {
+    background-color: #cbcbcb;
+    border: 2px solid #9d9d9d !important;
+  }
   .encabezado-5-true {
-    background-color: #CAFFBF;
+    background-color: #dcfce7;
+    border: 2px solid #7bf1a8 !important;
   }
   .encabezado-4-true {
-    background-color: #CAFFBF;
+    background-color: #dcfce7;
+    border: 2px solid #7bf1a8 !important;
   }
   .encabezado-3-true {
-    background-color: #FDFFB6;
+    background-color: #f4f5c9;
+    border: 2px solid #f4f965 !important;
   }
   .encabezado-2-true {
-    background-color: #FFD6A5;
+    background-color: #ffedd4;
+    border: 2px solid #ffb86a !important;
   }
   .encabezado-1-true {
-    background-color: #BDB2FF;
+    background-color: #d4ccff;
+    border: 2px solid #917ff9 !important;
   }
   .encabezado-0-true {
-    background-color: #fdd2d2;
+    background-color: #ffe2e2;
+    border: 2px solid #ffa2a2 !important;
   }
 
 /* Botón de toggle para expandir/collapse */
@@ -481,9 +501,17 @@ body {
   font-size: 1.4rem !important;
 }
 .todos-expandidos ::ng-deep .blue-icon .p-button-icon,
+.todos-expandidos ::ng-deep .seguimiento-warning .p-button-icon,
 .todos-expandidos ::ng-deep .custom-pencil {
   font-size: 1.2rem !important;
 }
+::ng-deep .seguimiento-warning .p-button-icon {
+    color: #ff3b3b !important;
+    font-size: 1.2rem !important;
+    background: transparent;
+    border-color: transparent;
+    width: 15px !important;
+  }
 ::ng-deep .blue-icon .p-button-icon {
   color: blue !important;
   font-size: 1.2rem !important;
@@ -500,7 +528,7 @@ body {
   }
   
   ::ng-deep .cancel-icon .p-button-icon {
-    color: #302f2f !important;
+    color: #ff3b3b !important;
     font-size: 1.5rem;
     background: transparent;
     border-color: transparent;
@@ -590,4 +618,7 @@ body {
 }
 .contenido-modal{
   height: 200px !important;
+}
+.estancamiento {
+  padding-bottom: 2px !important;
 }

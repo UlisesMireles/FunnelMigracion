@@ -11,6 +11,7 @@ export interface Contacto {
     idProspecto: number;
     idEmpresa: number;
     bandera: string;
+    usuarioCreador?: number;
     [key: string]: any; // permite agregar más propiedades
 }
 
@@ -18,7 +19,7 @@ export interface RequestPContacto {
     bandera: string;
     idContactoProspecto?: number;
     nombre: string;
-    apellidos: string;
+    apellidos?: string;
     telefono: string;
     correoElectronico: string;
     estatus: number;

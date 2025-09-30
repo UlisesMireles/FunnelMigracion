@@ -63,8 +63,8 @@ export class ModalContactosComponent {
 
 
   ngOnInit() {
-    this.inicializarFormulario();
     this.incializarFormularioAdicional();
+    this.inicializarFormulario();
   }
 
   // ngOnChanges(changes: SimpleChanges) {
@@ -111,7 +111,7 @@ export class ModalContactosComponent {
         idProspecto: [this.contacto?.idProspecto ?? null, Validators.required],
         estatus: [true],
         idEmpresa: [idEmpresa],
-
+        usuarioCreador: [this.loginService.obtenerIdUsuario()],
         bandera: ['INSERT']
       });
 
@@ -145,7 +145,8 @@ export class ModalContactosComponent {
         idProspecto: [this.contacto?.idProspecto, Validators.required],
         estatus: [this.contacto?.estatus === 1],
         idEmpresa: [idEmpresa],
-        bandera: ['UPDATE']
+        bandera: ['UPDATE'],
+        usuarioCreador: [this.loginService.obtenerIdUsuario()]
       });
 
       valoresIniciales = this.contactoForm.getRawValue();
@@ -214,7 +215,8 @@ export class ModalContactosComponent {
       correoElectronico: this.contactoForm.get('correoElectronico')?.value,
       idProspecto: this.contactoForm.get('idProspecto')?.value,
       estatus: this.contactoForm.get('estatus')?.value,
-      idEmpresa: this.contactoForm.get('idEmpresa')?.value
+      idEmpresa: this.contactoForm.get('idEmpresa')?.value,
+      usuarioCreador: this.contactoForm.get('usuarioCreador')?.value
     }
 
     this.contactosService.postContacto(this.informacionContactos).subscribe({

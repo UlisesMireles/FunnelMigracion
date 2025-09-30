@@ -182,7 +182,8 @@ namespace Funnel.Data
                     DataBase.CreateParameterSql("@IdProspecto", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, request.IdProspecto ),
                     DataBase.CreateParameterSql("@Estatus", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, request.Estatus ),
                     DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, request.IdEmpresa ),
-                    DataBase.CreateParameterSql("@pIdSector", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, request.IdSector )
+                    DataBase.CreateParameterSql("@pIdSector", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, request.IdSector ),
+                    DataBase.CreateParameterSql("@pUsuarioCreador", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, request.UsuarioCreador )
                 };
 
                 // Ejecutar el SP sin leer datos

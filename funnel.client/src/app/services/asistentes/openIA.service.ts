@@ -55,4 +55,7 @@ export class OpenIaService {
     formData.append('idBot', idBot.toString());
     return this.http.post(this.baseUrl + 'api/AsistenteProspeccion/InicializarCacheIdsAsync', formData);
   }
+  asistenteOperaciones(data: ConsultaAsistenteDto): Observable<ConsultaAsistenteDto> {
+    return this.http.post<ConsultaAsistenteDto>(this.baseUrl + 'api/AsistenteOperacion/AsistenteOperacion',data);
+  }
 }

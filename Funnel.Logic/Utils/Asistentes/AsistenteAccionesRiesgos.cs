@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using static Funnel.Models.Dto.OpenAiConfiguracion;
 
@@ -14,6 +15,7 @@ namespace Funnel.Logic.Utils.Asistentes
     public class AsistenteAccionesRiesgos
     {
         private static readonly IConfiguration _configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+        private static string _threadId;
 
         public static async Task<ConsultaAsistente> AsistenteOpenAIAsync(ConsultaAsistente consultaAsistente, ConfiguracionDto config)
         {
@@ -73,7 +75,7 @@ namespace Funnel.Logic.Utils.Asistentes
 
                 //var modeloOpenAi = _lsModeloOpenAi.First(item => item.Nombre == modeloOpenAI);
                 var countTokensHumanQuery = TokenHelper.CountTokens(config.Modelo, dataHumanQuery);
-                RespuestaOpenIA respuestaOpenIA = new();
+                RespuestaOpenIA respuestaOpenIA;
                 if (countTokensHumanQuery < config.MaximoTokens)
                 {
                     respuestaOpenIA = await instanceService.BuildAnswer(consultaAsistente.Pregunta, dataHumanQuery, sqlQuery, false, config);
@@ -108,7 +110,7 @@ namespace Funnel.Logic.Utils.Asistentes
 
         private async Task<RespuestaOpenIA> HumanQueryToSql(List<ConsultaGeneralOportunidadesSchema> lsSchema, string human_query, string apiKey, string modeloOpenAI)
         {
-            RespuestaOpenIA respuestaOpenIA = new();
+            var respuestaOpenIA = new RespuestaOpenIA();
 
             var systemMessage = $@"
                 Given the following schema, write a SQL query that retrieves the requested information from the table ConsultaGeneralOportunidades only with select, strings in where use like, if a column use a function add an alias, boolean handle with 1 or 0, use top instead limit. 
@@ -126,32 +128,45 @@ namespace Funnel.Logic.Utils.Asistentes
                 </schema>
                 ";
 
-            // Define el mensaje inicial del usuario
-            var messages = new List<Message>
-                {
-                    new Message { role = "system", content = systemMessage },
-                    new Message { role = "user", content = human_query }
-
-                };
-
-            var requestBody = new ChatRequestBody
+            var body = new
             {
                 model = modeloOpenAI,
-                messages = messages,
-                temperature = 0.7
+                input = new[]
+                {
+                    new { role = "system", content = systemMessage },
+                    new { role = "user", content = human_query }
+                }
             };
 
-            var chatRespuestaOpenIA = await OpenIAFunciones.ChatCompletionAsync(apiKey, requestBody);
-            respuestaOpenIA.Respuesta = chatRespuestaOpenIA.choices[0].message.content.ToString();
-            respuestaOpenIA.Respuesta = respuestaOpenIA.Respuesta.Replace("```json", "").Replace("```", "").Trim();
-            respuestaOpenIA.TokensEntrada = chatRespuestaOpenIA.usage.prompt_tokens;
-            respuestaOpenIA.TokensSalida = chatRespuestaOpenIA.usage.total_tokens;
+            var client = OpenAIUtils.GetClient(apiKey);
+            var content = new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync("responses", content);
+            response.EnsureSuccessStatusCode();
+
+            var json = await response.Content.ReadAsStringAsync();
+            using var doc = JsonDocument.Parse(json);
+
+            var text = doc.RootElement
+                          .GetProperty("output")[0]
+                          .GetProperty("content")[0]
+                          .GetProperty("text")
+                          .GetString();
+
+            respuestaOpenIA.Respuesta = text.Replace("```json", "").Replace("```", "").Trim();
+
+            if (doc.RootElement.TryGetProperty("usage", out var usage))
+            {
+                respuestaOpenIA.TokensEntrada = usage.GetProperty("input_tokens").GetInt32();
+                respuestaOpenIA.TokensSalida = usage.GetProperty("output_tokens").GetInt32();
+            }
+
             return respuestaOpenIA;
         }
 
         private async Task<RespuestaOpenIA> BuildAnswer(string pregunta, string dataHumanQuery, string humanQuery, bool excedeLimite, ConfiguracionDto config)
         {
-            RespuestaOpenIA respuestaOpenIA = new();
+            var respuestaOpenIA = new RespuestaOpenIA();
 
             if (string.IsNullOrWhiteSpace(dataHumanQuery))
             {
@@ -195,23 +210,38 @@ namespace Funnel.Logic.Utils.Asistentes
             //    excede = "Tu pregunta excede el limite de datos, te mostraremos los ultimos 5 datos: \n ";
             //}
 
-            // Define el contexto de open ia
-            var messages = new List<Message>
-                {
-                    new Message { role = "system", content = systemMessage }
-                };
-
-            var requestBody = new ChatRequestBody
+            var body = new
             {
                 model = config.Modelo,
-                messages = messages,
-                temperature = 0.7
+                input = new[]
+                {
+                    new { role = "system", content = systemMessage }
+                }
             };
 
-            var chatRespuestaOpenIA = await OpenIAFunciones.ChatCompletionAsync(config.Llave, requestBody);
-            respuestaOpenIA.Respuesta = /*excede + */chatRespuestaOpenIA.choices[0].message.content.ToString();
-            respuestaOpenIA.TokensEntrada = chatRespuestaOpenIA.usage.prompt_tokens;
-            respuestaOpenIA.TokensSalida = chatRespuestaOpenIA.usage.total_tokens;
+            var client = OpenAIUtils.GetClient(config.Llave);
+            var content = new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync("responses", content);
+            response.EnsureSuccessStatusCode();
+
+            var json = await response.Content.ReadAsStringAsync();
+            using var doc = JsonDocument.Parse(json);
+
+            var text = doc.RootElement
+                          .GetProperty("output")[0]
+                          .GetProperty("content")[0]
+                          .GetProperty("text")
+                          .GetString();
+
+            respuestaOpenIA.Respuesta = text;
+
+            if (doc.RootElement.TryGetProperty("usage", out var usage))
+            {
+                respuestaOpenIA.TokensEntrada = usage.GetProperty("input_tokens").GetInt32();
+                respuestaOpenIA.TokensSalida = usage.GetProperty("output_tokens").GetInt32();
+            }
+
             return respuestaOpenIA;
         }
         public static async Task<GeneraConsultaDto> GeneraConsultaAdmin(GeneraConsultaDto dto, ConfiguracionDto config)

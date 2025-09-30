@@ -238,10 +238,12 @@ ngOnInit() {
       this.consultaAsistente.respuesta = preguntaFaq.respuesta;
       this.isConsultandoOpenIa = true;
       this.chatHistorial.push({ rol: "cargando", mensaje: "..." });
-      this.oaService.obtenOpenIaConsultaAsistente(this.consultaAsistente).subscribe({
+      this.oaService.asistenteOperaciones(this.consultaAsistente).subscribe({
         next: (data: ConsultaAsistenteDto) => {
+          console.log(data);
           if (data.exitoso) {
             this.chatHistorial.pop();
+            console.log(data.respuesta);
             this.chatHistorial.push({ rol: "asistente", mensaje: data.respuesta });
             preguntaFaq.yaSePregunto = true;
           }
@@ -314,7 +316,7 @@ ngOnInit() {
             this.consultaAsistente.respuesta = preguntaEncontrada.respuesta;
             this.isConsultandoOpenIa = true;
             this.chatHistorial.push({ rol: "cargando", mensaje: "..." });
-            this.oaService.obtenOpenIaConsultaAsistente(this.consultaAsistente).subscribe({
+            this.oaService.asistenteOperaciones(this.consultaAsistente).subscribe({
               next: (data: ConsultaAsistenteDto) => {
                 if (data.exitoso) {
                   this.chatHistorial.pop();
@@ -358,8 +360,9 @@ ngOnInit() {
 
   obtenRespuestaAsistentePorInput() {
     this.isConsultandoOpenIa = true;
-    this.oaService.obtenOpenIaConsultaAsistente(this.consultaAsistente).subscribe({
+    this.oaService.asistenteOperaciones(this.consultaAsistente).subscribe({
       next: (data: ConsultaAsistenteDto) => {
+        console.log(data);
         this.chatHistorial = this.chatHistorial.filter(m => m.rol !== "cargando");
         this.chatHistorial.push({ rol: "asistente", mensaje: data.respuesta });
         this.cdRef.detectChanges();

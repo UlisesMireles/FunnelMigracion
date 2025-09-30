@@ -521,5 +521,63 @@ namespace Funnel.Logic
                 }
             }
         }
+        /// asistente AsistenteAccionesRiesgos
+        public async Task<ConsultaAsistente> AsistenteOperacionAsync(ConsultaAsistente consultaAsistente)
+        {
+            if (string.IsNullOrWhiteSpace(consultaAsistente.Pregunta))
+            {
+                consultaAsistente.Respuesta = "Por favor proporciona una pregunta válida.";
+                return consultaAsistente;
+            }
+
+            try
+            {
+                DateTime fechaPregunta = DateTime.Now;
+                var configuracion = await _asistentesData.ObtenerConfiguracionPorIdBotAsync(consultaAsistente.IdBot);
+
+                if (configuracion == null)
+                {
+                    consultaAsistente.Respuesta = "No se encontró configuración para el asistente.";
+                    consultaAsistente.Exitoso = false;
+                    return consultaAsistente;
+                }
+
+                var respuesta = await AsistenteAccionesRiesgos.AsistenteOpenAIAsync(consultaAsistente, configuracion);
+
+                consultaAsistente.Respuesta = respuesta.Respuesta;
+                consultaAsistente.TokensEntrada = respuesta.TokensEntrada;
+                consultaAsistente.TokensSalida = respuesta.TokensSalida;
+                consultaAsistente.Exitoso = true;
+                consultaAsistente.FechaRespuesta = fechaPregunta;
+
+                var insertarBitacora = new InsertaBitacoraPreguntasDto
+                {
+                    IdBot = consultaAsistente.IdBot,
+                    Pregunta = consultaAsistente.Pregunta,
+                    FechaPregunta = fechaPregunta,
+                    Respuesta = consultaAsistente.Respuesta,
+                    FechaRespuesta = DateTime.Now,
+                    Respondio = true,
+                    TokensEntrada = consultaAsistente.TokensEntrada,
+                    TokensSalida = consultaAsistente.TokensSalida,
+                    IdUsuario = consultaAsistente.IdUsuario,
+                    CostoPregunta = consultaAsistente.TokensEntrada * (configuracion.CostoTokensEntrada / 1000),
+                    CostoRespuesta = consultaAsistente.TokensSalida * (configuracion.CostoTokensSalida / 1000),
+                    CostoTotal = (consultaAsistente.TokensEntrada * (configuracion.CostoTokensEntrada / 1000)) +
+                                 (consultaAsistente.TokensSalida * (configuracion.CostoTokensSalida / 1000)),
+                    Modelo = configuracion.Modelo
+                };
+                await _asistentesData.InsertaPreguntaBitacoraPreguntas(insertarBitacora);
+            }
+            catch (Exception ex)
+            {
+                consultaAsistente.Respuesta = "Ocurrió un error al procesar la pregunta: " + ex.Message;
+                consultaAsistente.Exitoso = false;
+                consultaAsistente.FechaRespuesta = DateTime.Now;
+            }
+
+            return consultaAsistente;
+        }
+
     }
 }

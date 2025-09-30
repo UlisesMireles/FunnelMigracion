@@ -13,7 +13,7 @@ namespace Funnel.Data.Utils
     public class BD
     {
         private static readonly IConfiguration _configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-        private static string? conexion = Convert.ToString(_configuration["ConnectionStrings:DefaultConnection"]);
+        private static string? conexion = Convert.ToString(_configuration["ConnectionStrings:FunelDatabase"]);
 
         public static async Task<string> GetJsonDataAsync(string query)
         {

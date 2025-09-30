@@ -78,7 +78,11 @@ namespace Funnel.Logic.Utils.Asistentes
             }
         }
 
-        public static async Task<ConversationResponse> GetRespuestaConversacionAsync(ConfiguracionDto configuracion, string conversationId, string message, string vectorStoreId)
+        public static async Task<ConversationResponse> GetRespuestaConversacionAsync(
+            ConfiguracionDto configuracion,
+            string conversationId,
+            string message,
+            string vectorStoreId)
         {
             var client = OpenAIUtils.GetClient(configuracion.Llave);
 
@@ -86,14 +90,14 @@ namespace Funnel.Logic.Utils.Asistentes
             {
                 model = configuracion.Modelo,
                 conversation = conversationId,
-                input = new[] { new { role = "user", content = message } }
-                ,
-                tools = new[] { new {
-                      type = "file_search",
-                      vector_store_ids = new[] { vectorStoreId },
-                      max_num_results = 20
-                    }
-                }
+                input = new[] { new { role = "user", content = message } },
+                tools = new[] {
+            new {
+                type = "file_search",
+                vector_store_ids = new[] { vectorStoreId },
+                max_num_results = 20
+            }
+        }
             };
 
             var jsonRequest = JsonSerializer.Serialize(body);
@@ -105,51 +109,58 @@ namespace Funnel.Logic.Utils.Asistentes
             var jsonResponse = await response.Content.ReadAsStringAsync();
             using var doc = JsonDocument.Parse(jsonResponse);
 
-            var responseContent = "";
-            var tokensUsed = 0;
-            var cacheTokens = 0;
-            var inputTokens = 0;
-            var outputTokens = 0;
+            string responseContent = "";
+            int inputTokens = 0, outputTokens = 0, totalTokens = 0;
 
-            // Extraer el contenido del texto desde output[0].content[0].text
-            if (doc.RootElement.TryGetProperty("output", out var outputArray) && outputArray.GetArrayLength() > 1)
+            if (doc.RootElement.TryGetProperty("output", out var outputArray) && outputArray.GetArrayLength() > 0)
             {
-                var firstOutput = outputArray[1];
-                if (firstOutput.TryGetProperty("content", out var contentArray) && contentArray.GetArrayLength() > 0)
+                foreach (var outputItem in outputArray.EnumerateArray())
                 {
-                    var firstContent = contentArray[0];
-                    if (firstContent.TryGetProperty("text", out var textElement))
+                    if (outputItem.TryGetProperty("content", out var contentArray) && contentArray.GetArrayLength() > 0)
                     {
-                        responseContent = textElement.GetString() ?? "";
+                        var firstContent = contentArray[0];
+                        if (firstContent.TryGetProperty("text", out var textElement))
+                        {
+                            responseContent = textElement.GetString() ?? "";
+                            if (!string.IsNullOrEmpty(responseContent))
+                                break;
+                        }
                     }
                 }
             }
 
-            // Extraer información de tokens si está disponible
             if (doc.RootElement.TryGetProperty("usage", out var usage))
             {
                 if (usage.TryGetProperty("input_tokens", out var promptTokens))
                     inputTokens = promptTokens.GetInt32();
                 if (usage.TryGetProperty("output_tokens", out var completionTokens))
                     outputTokens = completionTokens.GetInt32();
-                if (usage.TryGetProperty("total_tokens", out var totalTokens))
-                    tokensUsed = totalTokens.GetInt32();
-                if (usage.TryGetProperty("input_tokens_details", out var detailsTokens))
-                {
-                    if (detailsTokens.TryGetProperty("cached_tokens", out var cacehTokens))
-                        cacheTokens = cacehTokens.GetInt32();
-                }
+                if (usage.TryGetProperty("total_tokens", out var total))
+                    totalTokens = total.GetInt32();
+            }
+
+            //si el vector store no devolvió nada
+            if (string.IsNullOrWhiteSpace(responseContent))
+            {
+                var fallback = await CallResponsesApiAsync(
+                    configuracion.Llave,
+                    configuracion.Modelo,
+                    configuracion.Prompt ?? "Eres un asistente útil",
+                    message
+                );
+                return fallback;
             }
 
             return new ConversationResponse
             {
                 Content = OpenAIUtils.LimpiarRespuesta(responseContent),
-                InputTokens = inputTokens - cacheTokens,
+                InputTokens = inputTokens,
                 OutputTokens = outputTokens,
-                TotalTokens = tokensUsed,
+                TotalTokens = totalTokens,
                 ConversationId = conversationId
             };
         }
+
 
         public static async Task<List<ConversationMessage>> GetConversationHistoryAsync(string apiKey, string conversationId)
         {
@@ -204,9 +215,9 @@ namespace Funnel.Logic.Utils.Asistentes
             var inputTokens = 0;
             var outputTokens = 0;
             // Extraer el contenido del texto desde output[0].content[0].text
-            if (doc.RootElement.TryGetProperty("output", out var outputArray) && outputArray.GetArrayLength() > 0)
+            if (doc.RootElement.TryGetProperty("output", out var outputArray) && outputArray.GetArrayLength() > 1)
             {
-                var firstOutput = outputArray[0];
+                var firstOutput = outputArray[1];
                 if (firstOutput.TryGetProperty("content", out var contentArray) && contentArray.GetArrayLength() > 0)
                 {
                     var firstContent = contentArray[0];

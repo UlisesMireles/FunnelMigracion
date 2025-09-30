@@ -33,6 +33,7 @@
 		<Folder Include="Scripts\14-08-2025 incidenciasEncuesta\" />
 		<Folder Include="Scripts\26-08-2025 QRlibreria\" />
 		<Folder Include="Scripts\08-09-2025 NuevoRegistro\" />
+		<Folder Include="Scripts\30-09-2025 CambioAssistantsApiBots\" />
 	</ItemGroup>
 	
 </Project>

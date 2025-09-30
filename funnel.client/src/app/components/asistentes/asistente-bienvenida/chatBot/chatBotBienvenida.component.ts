@@ -258,6 +258,7 @@ export class ChatBotBienvenidaComponent implements OnInit {
     this.esperandoRespuestaFaq = true;
     this.scrollToBottom();
   }
+  
 
   resetConversation() {
     this.loadOpciones = false;
@@ -265,7 +266,18 @@ export class ChatBotBienvenidaComponent implements OnInit {
     this.chatHistorial = JSON.parse(this.chatHistorialResp);
     this.chatHistorial.push({ rol: "categorias", mensaje: "" });
     this.cdRef.detectChanges();
+    this.limpiarConversacion();
   }
+  private limpiarConversacion() {
+  this.oaService.limpiarCacheBot(0,1).subscribe({
+    next: (response) => {
+      console.log('Cache limpiado', response);
+    },
+    error: (error) => {
+      console.error('Error al limpiar cache', error);
+    }
+  });
+}
 
   mostrarTemas() {
     this.lsCategoriaPreguntas = JSON.parse(this.lsCategoriaPreguntasResp);

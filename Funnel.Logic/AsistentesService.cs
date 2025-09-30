@@ -466,16 +466,6 @@ namespace Funnel.Logic
                     pregunta,
                     vectorStoreId
                 );
-                if (string.IsNullOrWhiteSpace(conversationResponse.Content))
-                {
-                    conversationResponse = await AssstantApiUtils.CallResponsesApiAsync(
-                        configuracion.Llave,
-                        configuracion.Modelo,
-                        configuracion.Prompt,
-                        pregunta
-                    );
-                }
-
 
                 var insertarBitacora = new InsertaBitacoraPreguntasDto
                 {

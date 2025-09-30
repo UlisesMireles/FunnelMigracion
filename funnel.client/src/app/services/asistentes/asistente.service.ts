@@ -1,12 +1,15 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable, Subject } from "rxjs";
 import {Pregunta} from "../../interfaces/asistentes/pregunta";
+import { environment } from '../../../environments/environment';
+
 @Injectable({
     providedIn: 'root'
   })
   
 export class AsistenteService {
-  private baseUrlBotsFunnel = 'https://sfs-funnel.com/adminchats-qa';
+   baseUrl:string = environment.baseURL;
+  
 
   public asistenteSubject: BehaviorSubject<number> = new BehaviorSubject<number>(-1);
   public asistenteObservable: Observable<number>;
@@ -26,7 +29,7 @@ export class AsistenteService {
     this.preguntaSeleccionadaBienvenidaObservable = this.preguntaSeleccionadaBienvenidaSubject.asObservable();
   }
   getBaseUrl() {
-    return this.baseUrlBotsFunnel;
+    return this.baseUrl;
   }
 
   /**

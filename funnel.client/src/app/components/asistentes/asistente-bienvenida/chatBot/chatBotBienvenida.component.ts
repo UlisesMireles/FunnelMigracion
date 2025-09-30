@@ -183,7 +183,7 @@ export class ChatBotBienvenidaComponent implements OnInit {
 
   obtenRespuestaAsistentePorInput() {
     this.isConsultandoOpenIa = true;
-    this.oaService.obtenOpenIaConsultaAsistente(this.consultaAsistente).subscribe({
+    this.oaService.asistenteProspeccion(this.consultaAsistente).subscribe({
       next: (data: ConsultaAsistenteDto) => {
         this.chatHistorial.pop()
         this.chatHistorial.push(
@@ -206,7 +206,7 @@ export class ChatBotBienvenidaComponent implements OnInit {
 
   obtenRespuestaAsistentePorSeleccionPregunta() {
     this.isConsultandoOpenIa = true;
-    this.oaService.obtenOpenIaConsultaAsistente(this.consultaAsistente).subscribe({
+    this.oaService.asistenteProspeccion(this.consultaAsistente).subscribe({
       next: (data: ConsultaAsistenteDto) => {
         this.chatHistorial.pop()
         this.chatHistorial.push({ rol: "asistente", mensaje: data.respuesta }, { rol: "filtroFaq", mensaje: "" });

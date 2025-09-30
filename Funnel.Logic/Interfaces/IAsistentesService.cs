@@ -15,5 +15,7 @@ namespace Funnel.Logic.Interfaces
         public Task<RespuestaOpenIA> BuildAnswerConversacion(string pregunta, int idBot, int idUsuario);
         public Task<List<ConversationMessage>> ObtenerHistorialConversacion(int userId, int idBot);
         public void RemoveConversationCache(int userId, int idBot);
+        public Task<ListaAsistentes> Asistentes();
+        public Task<VersionAsistentesDto> ObtenerVersionArquitectura();
     }
 }

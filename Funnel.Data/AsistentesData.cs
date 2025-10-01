@@ -35,6 +35,7 @@ namespace Funnel.Data
                     dto.FileId = ComprobarNulos.CheckStringNull(reader["FileId"]);
                     dto.CostoTokensEntrada = (double)ComprobarNulos.CheckDecimalNull(reader["CostoTokensEntrada"]);
                     dto.CostoTokensSalida = (double)ComprobarNulos.CheckDecimalNull(reader["CostoTokensSalida"]);
+                    dto.MaximoTokens = ComprobarNulos.CheckIntNull(reader["MaximoTokens"]);
                     result.Add(dto);
                 }
             }

@@ -9,7 +9,6 @@ import { Observable } from 'rxjs';
 })
 export class OpenIaService {
   public urlBotsFunnel = environment.baseUrlBotsFunnel;
-  private urlPython = environment.baseUrlPython;
   baseUrl:string = environment.baseURL;
 
   constructor(private http: HttpClient) {
@@ -20,17 +19,6 @@ export class OpenIaService {
     return this.http.post<ConsultaAsistenteDto>(this.urlBotsFunnel + '/api/WebApiBotFunnel/OpenIA',data);
   }
 
-  getOpenIaConsultaAsistente(data : ConsultaAsistente): Observable<ConsultaAsistente>{
-    return this.http.post<ConsultaAsistente>(this.urlBotsFunnel + '/api/WebApiBotWP/OpenIAWP',data);
-  }
-
-  asistentePython(data : ConsultaAsistente): Observable<ConsultaAsistente>{
-    return this.http.post<ConsultaAsistente>(this.urlPython,data);
-  }
-
-  obtenerPreguntas() {
-    return this.http.get(this.urlBotsFunnel + '/api/WebApiBotWP/ObtenerPreguntasWP');
-  }
 
   AsistenteHistorico(data : ConsultaAsistenteDto): Observable<ConsultaAsistenteDto>{
     return this.http.post<ConsultaAsistenteDto>(this.baseUrl + 'api/AsistenteHistorico/OpenIA',data);
@@ -54,5 +42,8 @@ export class OpenIaService {
     formData.append('userId', userId.toString());
     formData.append('idBot', idBot.toString());
     return this.http.post(this.baseUrl + 'api/AsistenteProspeccion/InicializarCacheIdsAsync', formData);
+  }
+  asistenteOperaciones(data: ConsultaAsistenteDto): Observable<ConsultaAsistenteDto> {
+    return this.http.post<ConsultaAsistenteDto>(this.baseUrl + 'api/AsistenteOperacion/AsistenteOperacion',data);
   }
 }

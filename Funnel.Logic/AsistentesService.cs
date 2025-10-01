@@ -14,6 +14,7 @@ using Funnel.Data.Utils;
 using System.Data;
 using FuzzySharp;
 using Funnel.Data;
+using Funnel.Logic.Utils.Asistentes;
 namespace Funnel.Logic
 {
     public class AsistentesService: IAsistentesService
@@ -30,6 +31,7 @@ namespace Funnel.Logic
         private string GetVectorStoreCacheKey(int idBot) => $"vectorStoreId_{idBot}";
         private string GetAssistantCacheKey(int userId, int idBot) => $"assistantId_{userId}_{idBot}";
         private string GetThreadCacheKey(int userId, int idBot) => $"threadId_{userId}_{idBot}";
+        private string GetConversationCacheKey(int userId, int idBot) => $"conversationId_{userId}_{idBot}";
         public async Task<BaseOut> InicializarCacheIdsAsync(int userId, int idBot)
         {
             BaseOut result = new BaseOut();
@@ -39,37 +41,25 @@ namespace Funnel.Logic
                 if (configuracion == null)
                     throw new Exception("No se encontró configuración para el asistente ");
 
-                // 1. Vector Store
-                var vectorStoreCacheKey = GetVectorStoreCacheKey(idBot);
-                if (!(_cache.Get(vectorStoreCacheKey) is string vectorStoreId) || string.IsNullOrEmpty(vectorStoreId))
-                {
-                    vectorStoreId = await OpenAIUtils.CreateVectorStoreAsync(configuracion.Llave, configuracion.FileId);
-                    while (!await OpenAIUtils.IsVectorStoreReadyAsync(configuracion.Llave, vectorStoreId))
-                    {
-                        await Task.Delay(1000);
-                    }
-                    _cache.Set(vectorStoreCacheKey, vectorStoreId, TimeSpan.FromDays(7));
-                }
+                //var vectorStoreCacheKey = GetVectorStoreCacheKey(idBot);
+                //if (!(_cache.Get(vectorStoreCacheKey) is string vectorStoreId) || string.IsNullOrEmpty(vectorStoreId))
+                //{
+                //    vectorStoreId = await OpenAIUtils.CreateVectorStoreAsync(configuracion.Llave, configuracion.FileId);
+                //    while (!await OpenAIUtils.IsVectorStoreReadyAsync(configuracion.Llave, vectorStoreId))
+                //    {
+                //        await Task.Delay(1000);
+                //    }
+                //    _cache.Set(vectorStoreCacheKey, vectorStoreId, TimeSpan.FromDays(7));
+                
+                //}
+                    
+                var conversationId = GetConversationCacheKey(userId, idBot);
 
-                // 2. Assistant
-                var assistantCacheKey = GetAssistantCacheKey(userId, idBot);
-                if (!(_cache.Get(assistantCacheKey) is string assistantId) || string.IsNullOrEmpty(assistantId))
+                var cacheKey = GetConversationCacheKey(userId, idBot);
+                if (!(_cache.Get(cacheKey) is string threadId) || string.IsNullOrEmpty(threadId))
                 {
-                    assistantId = await OpenAIUtils.CreateAssistantWithVectorStoreAsync(
-                        configuracion.Llave,
-                        configuracion.Modelo,
-                        configuracion.Prompt,
-                        vectorStoreId
-                    );
-                    _cache.Set(assistantCacheKey, assistantId, TimeSpan.FromHours(2));
-                }
-
-                // 3. Thread
-                var threadCacheKey = GetThreadCacheKey(userId, idBot);
-                if (!(_cache.Get(threadCacheKey) is string threadId) || string.IsNullOrEmpty(threadId))
-                {
-                    threadId = await OpenAIUtils.CreateThreadAsync(configuracion.Llave);
-                    _cache.Set(threadCacheKey, threadId, TimeSpan.FromHours(2));
+                    threadId = await AssstantApiUtils.CreateConversationAsync(configuracion.Llave, userId, idBot, configuracion.Prompt);
+                    _cache.Set(cacheKey, threadId, TimeSpan.FromHours(2));
                 }
 
                 // Consultar instrucciones adicionales y agregarlas al hilo si existen
@@ -119,25 +109,38 @@ namespace Funnel.Logic
 
                     // Obtener configuración y thread
                     var configuracion = await _asistentesData.ObtenerConfiguracionPorIdBotAsync(consultaAsistente.IdBot);
-                    var threadId = await GetOrCreateThreadIdAsync(configuracion.Llave, consultaAsistente.IdUsuario, consultaAsistente.IdBot);
+                    var conversationId = await GetOrCreateConversationIdAsync(configuracion, consultaAsistente.IdUsuario, consultaAsistente.IdBot);
 
                     // Agregar pregunta y respuesta
-                    await OpenAIUtils.AddMessageToThreadAsync(configuracion.Llave, threadId, consultaAsistente.Pregunta, "user");
-                    await OpenAIUtils.AddMessageToThreadAsync(configuracion.Llave, threadId, consultaAsistente.Respuesta, "assistant");
+                    await AssstantApiUtils.SendMessageToConversationAsync(configuracion.Llave, conversationId, consultaAsistente.Pregunta, "user");
+                    await AssstantApiUtils.SendMessageToConversationAsync(configuracion.Llave, conversationId, consultaAsistente.Respuesta, "assistant");
                 }
                 else
                 {
+                    string preguntaConData;
+
+                    if (consultaAsistente.IdBot == 1)
                     {
-                        string preguntaConData = string.Concat(consultaAsistente.Pregunta, "(usuario:", consultaAsistente.NombreUsuario, ",correo:", consultaAsistente.Correo, ", puesto:", consultaAsistente.Puesto, ", empresa:", consultaAsistente.Empresa, ",telefono:", consultaAsistente.NumeroTelefono, ')');
-                        var respuestaOpenIA = await BuildAnswer(preguntaConData, consultaAsistente.IdBot, consultaAsistente.IdUsuario);
-                        consultaAsistente.Respuesta = respuestaOpenIA.Respuesta;
-                        consultaAsistente.TokensEntrada = respuestaOpenIA.TokensEntrada;
-                        consultaAsistente.TokensSalida = respuestaOpenIA.TokensSalida;
-                        consultaAsistente.Exitoso = true;
-                        consultaAsistente.FechaRespuesta = DateTime.Now;
+                        preguntaConData = consultaAsistente.Pregunta;
                     }
+                    else
+                    {
+                        preguntaConData = string.Concat(consultaAsistente.Pregunta,"(usuario:", consultaAsistente.NombreUsuario,",correo:", consultaAsistente.Correo,
+                            ",puesto:", consultaAsistente.Puesto,",empresa:", consultaAsistente.Empresa,",telefono:", consultaAsistente.NumeroTelefono, ')'
+                        );
+                    }
+
+                    var respuestaOpenIA = await BuildAnswerConversacion(preguntaConData,consultaAsistente.IdBot, consultaAsistente.IdUsuario
+                    );
+
+                    consultaAsistente.Respuesta = respuestaOpenIA.Respuesta ?? "";
+                    consultaAsistente.TokensEntrada = respuestaOpenIA.TokensEntrada;
+                    consultaAsistente.TokensSalida = respuestaOpenIA.TokensSalida;
+                    consultaAsistente.Exitoso = true;
+                    consultaAsistente.FechaRespuesta = DateTime.Now;
                 }
             }
+
             catch (Exception ex)
             {
                 consultaAsistente.Exitoso = false;
@@ -351,10 +354,10 @@ namespace Funnel.Logic
             }
 
             var newVectorStoreId = await OpenAIUtils.CreateVectorStoreAsync(apiKey, fileId);
-            //while (!await OpenAIUtils.IsVectorStoreReadyAsync(apiKey, newVectorStoreId))
-            //{
-            //    await Task.Delay(1000);
-            //}
+            while (!await OpenAIUtils.IsVectorStoreReadyAsync(apiKey, newVectorStoreId))
+            {
+                await Task.Delay(1000);
+            }
 
             if (string.IsNullOrEmpty(newVectorStoreId))
                 throw new InvalidOperationException("El ID del Vector Store no puede ser nulo.");
@@ -382,6 +385,7 @@ namespace Funnel.Logic
                 RemoveAssistantCache(userId, idBot);
                 RemoveThreadCache(userId, idBot);
                 RemoveVectorStoreCache(idBot);
+                RemoveConversationCache(userId, idBot);
             });
         }
 
@@ -404,6 +408,121 @@ namespace Funnel.Logic
         {
             return await _asistentesData.ObtenerPreguntasFrecuentesAsync(idBot);
         }
+
+        private async Task<string> GetOrCreateConversationIdAsync(ConfiguracionDto configuracion, int userId, int idBot)
+        {
+            var cacheKey = GetConversationCacheKey(userId, idBot);
+            if (_cache.Get(cacheKey) is string conversationId && !string.IsNullOrEmpty(conversationId))
+            {
+                return conversationId;
+            }
+
+            var newConversationId = await AssstantApiUtils.CreateConversationAsync(
+                configuracion.Llave ?? "",
+                userId,idBot,
+                configuracion.Prompt ?? "Eres un asistente útil"
+            );
+            if (string.IsNullOrEmpty(newConversationId))
+                throw new InvalidOperationException("El ID de la conversación no puede ser nulo.");
+
+            _cache.Set(cacheKey, newConversationId, TimeSpan.FromHours(2));
+            return newConversationId;
+        }
+
+        public void RemoveConversationCache(int userId, int idBot)
+        {
+            _cache.Remove(GetConversationCacheKey(userId, idBot));
+        }
+
+        /// <summary>
+        /// Método que usa la nueva API de conversaciones en lugar de threads/assistants
+        /// Cambia el método BuildAnswer para usar la nueva API
+        /// </summary>
+        public async Task<RespuestaOpenIA> BuildAnswerConversacion(string pregunta, int idBot, int idUsuario)
+        {
+            try
+            {
+                DateTime fechaPregunta = DateTime.Now;
+                var configuracion = await _asistentesData.ObtenerConfiguracionPorIdBotAsync(idBot);
+                if (configuracion == null)
+                    throw new InvalidOperationException("No se encontró configuración para el asistente con IdBot: " + idBot);
+
+                string vectorStoreId = await GetOrCreateVectorStoreIdAsync(configuracion.Llave, idBot, configuracion.FileId);
+
+                if (string.IsNullOrEmpty(configuracion.FileId))
+                {
+                    string filePath = Directory.GetCurrentDirectory() + configuracion.RutaDocumento;
+                    configuracion.FileId = await OpenAIUtils.UploadFileToOpenAIAsync(configuracion.Llave ?? "", filePath);
+                    await _asistentesData.GuardarFileIdLeadEisei(idBot, configuracion.FileId);
+                }
+
+                // 1. Obtener o crear conversación usando la nueva API
+                var conversationId = await GetOrCreateConversationIdAsync(configuracion, idUsuario, idBot);
+
+                // 2. Enviar mensaje y obtener respuesta usando la nueva API
+                var conversationResponse = await AssstantApiUtils.GetRespuestaConversacionAsync(
+                    configuracion,
+                    conversationId,
+                    pregunta,
+                    vectorStoreId
+                );
+
+                var insertarBitacora = new InsertaBitacoraPreguntasDto
+                {
+                    IdBot = idBot,
+                    Pregunta = pregunta,
+                    FechaPregunta = fechaPregunta,
+                    Respuesta = conversationResponse.Content,
+                    FechaRespuesta = DateTime.Now,
+                    Respondio = true,
+                    TokensEntrada = conversationResponse.InputTokens,
+                    TokensSalida = conversationResponse.OutputTokens,
+                    IdUsuario = idUsuario,
+                    CostoPregunta = conversationResponse.InputTokens * (configuracion.CostoTokensEntrada / 1000),
+                    CostoRespuesta = conversationResponse.OutputTokens * (configuracion.CostoTokensSalida /1000),
+                    CostoTotal = (conversationResponse.InputTokens * (configuracion.CostoTokensEntrada / 1000)) +
+                                (conversationResponse.OutputTokens * (configuracion.CostoTokensSalida / 1000)),
+                    Modelo = configuracion.Modelo
+                };
+                await _asistentesData.InsertaPreguntaBitacoraPreguntas(insertarBitacora);
+
+                return new RespuestaOpenIA
+                {
+                    Respuesta = conversationResponse.Content,
+                    TokensEntrada = conversationResponse.InputTokens,
+                    TokensSalida = conversationResponse.OutputTokens
+                };
+            }
+            catch (Exception ex)
+            {
+                return new RespuestaOpenIA
+                {
+                    Respuesta = ex.Message,
+                    TokensEntrada = 0,
+                    TokensSalida = 0
+                };
+            }
+        }
+
+        /// <summary>
+        /// Obtiene el historial de una conversación
+        /// </summary>
+        public async Task<List<ConversationMessage>> ObtenerHistorialConversacion(int userId, int idBot)
+        {
+            try
+            {
+                var configuracion = await _asistentesData.ObtenerConfiguracionPorIdBotAsync(idBot);
+                if (configuracion == null)
+                    return new List<ConversationMessage>();
+
+                var conversationId = await GetOrCreateConversationIdAsync(configuracion, userId, idBot);
+                return await AssstantApiUtils.GetConversationHistoryAsync(configuracion.Llave ?? "", conversationId);
+            }
+            catch (Exception)
+            {
+                return new List<ConversationMessage>();
+            }
+        }
         public async Task AgregarInstruccionesAdicionalesAlHiloAsync(int idBot, string threadId, string apiKey)
         {
             var instruccionesAdicionales = await _asistentesData.ObtenerInstruccionesAdicionalesPorIdBot(idBot);
@@ -411,9 +530,124 @@ namespace Funnel.Logic
             {
                 foreach (var instruccion in instruccionesAdicionales)
                 {
-                    await OpenAIUtils.AddMessageToThreadAsync(apiKey, threadId, instruccion.Instrucciones, "assistant");
+                    await AssstantApiUtils.SendMessageToConversationAsync(apiKey, threadId, instruccion.Instrucciones, "assistant");
                 }
             }
         }
-    }
+        /// asistente AsistenteAccionesRiesgos
+        public async Task<ConsultaAsistente> AsistenteOperacionAsync(ConsultaAsistente consultaAsistente)
+        {
+            if (string.IsNullOrWhiteSpace(consultaAsistente.Pregunta))
+            {
+                consultaAsistente.Respuesta = "Por favor proporciona una pregunta válida.";
+                return consultaAsistente;
+            }
+
+            try
+            {
+                DateTime fechaPregunta = DateTime.Now;
+                var configuracion = await _asistentesData.ObtenerConfiguracionPorIdBotAsync(consultaAsistente.IdBot);
+
+                if (configuracion == null)
+                {
+                    consultaAsistente.Respuesta = "No se encontró configuración para el asistente.";
+                    consultaAsistente.Exitoso = false;
+                    return consultaAsistente;
+                }
+
+                var respuesta = await AsistenteAccionesRiesgos.AsistenteOpenAIAsync(consultaAsistente, configuracion);
+
+                consultaAsistente.Respuesta = respuesta.Respuesta;
+                consultaAsistente.TokensEntrada = respuesta.TokensEntrada;
+                consultaAsistente.TokensSalida = respuesta.TokensSalida;
+                consultaAsistente.Exitoso = true;
+                consultaAsistente.FechaRespuesta = fechaPregunta;
+
+                var insertarBitacora = new InsertaBitacoraPreguntasDto
+                {
+                    IdBot = consultaAsistente.IdBot,
+                    Pregunta = consultaAsistente.Pregunta,
+                    FechaPregunta = fechaPregunta,
+                    Respuesta = consultaAsistente.Respuesta,
+                    FechaRespuesta = DateTime.Now,
+                    Respondio = true,
+                    TokensEntrada = consultaAsistente.TokensEntrada,
+                    TokensSalida = consultaAsistente.TokensSalida,
+                    IdUsuario = consultaAsistente.IdUsuario,
+                    CostoPregunta = consultaAsistente.TokensEntrada * (configuracion.CostoTokensEntrada / 1000),
+                    CostoRespuesta = consultaAsistente.TokensSalida * (configuracion.CostoTokensSalida / 1000),
+                    CostoTotal = (consultaAsistente.TokensEntrada * (configuracion.CostoTokensEntrada / 1000)) +
+                                 (consultaAsistente.TokensSalida * (configuracion.CostoTokensSalida / 1000)),
+                    Modelo = configuracion.Modelo
+                };
+                await _asistentesData.InsertaPreguntaBitacoraPreguntas(insertarBitacora);
+            }
+            catch (Exception ex)
+            {
+                consultaAsistente.Respuesta = "Ocurrió un error al procesar la pregunta: " + ex.Message;
+                consultaAsistente.Exitoso = false;
+                consultaAsistente.FechaRespuesta = DateTime.Now;
+            }
+
+            return consultaAsistente;
+        }
+        public async Task<ListaAsistentes> Asistentes()
+        {
+            var dtoAsistentes = new List<AsistentesDto>();
+            var lista = new ListaAsistentes();
+            try
+            {
+                using (IDataReader reader = await DataBase.GetReader("F_Asistentes", CommandType.StoredProcedure, _connectionString))
+                {
+                    while (reader.Read())
+                    {
+                        var ren = new AsistentesDto();
+                        ren.IdBot = ComprobarNulos.CheckIntNull(reader["Idbot"]);
+                        ren.NombreAsistente = ComprobarNulos.CheckStringNull(reader["NombreAsistente"]);
+                        ren.Documento = ComprobarNulos.CheckBooleanNull(reader["Documento"]);
+                        ren.NombreDocumento = ComprobarNulos.CheckStringNull(reader["NombreDocumento"]);
+                        ren.FechaModificacion = ComprobarNulos.CheckDateTimeNull(reader["FechaModificacion"]);
+                        ren.NombreTablaAsistente = ComprobarNulos.CheckStringNull(reader["NombreTablaAsistente"]);
+                        ren.MensajePrincipalAsistente = ComprobarNulos.CheckStringNull(reader["MensajePrincipalAsistente"]);
+                        ren.UltimoNombreDocumento = ComprobarNulos.CheckStringNull(reader["UltimoNombreDocumento"]);
+                        ren.TamanoUltimoDocumento = ComprobarNulos.CheckDecimalNull(reader["TamanoUltimoDocumento"]);
+                        dtoAsistentes.Add(ren);
+                    }
+
+                    lista.Asistentes = dtoAsistentes;
+                    lista.Result = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                lista.Result = false;
+                lista.ErrorMessage = ex.Message;
+            }
+
+            return lista;
+        }
+        public async Task<VersionAsistentesDto> ObtenerVersionArquitectura()
+        {
+            var version = new VersionAsistentesDto();
+
+            try
+            {
+                using (IDataReader reader = await DataBase.GetReader("F_VersionesArquitecturaChatBots_ObtenerVersion", CommandType.StoredProcedure, _connectionString))
+                {
+                    if (reader.Read())
+                    {
+                        version.Version = ComprobarNulos.CheckStringNull(reader[0]);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al obtener la versión: {ex.Message}");
+            }
+            return version;
+        }
+
+    
+
+}
 }

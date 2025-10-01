@@ -7,6 +7,9 @@ using Markdig;
 using System.Threading.Tasks;
 using static Funnel.Logic.AsistentesService;
 using Funnel.Models.Dto;
+using Microsoft.Identity.Client;
+using Funnel.Models.Base;
+using DinkToPdf.Contracts;
 
 namespace Funnel.Logic.Utils
 {
@@ -17,7 +20,7 @@ namespace Funnel.Logic.Utils
             var client = new HttpClient();
             client.BaseAddress = new Uri("https://api.openai.com/v1/");
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
-            client.DefaultRequestHeaders.Add("OpenAI-Beta", "assistants=v2");
+            //client.DefaultRequestHeaders.Add("OpenAI-Beta", "assistants=v2");
             return client;
         }
 

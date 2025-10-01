@@ -35,6 +35,7 @@ namespace Funnel.Data
                     dto.FileId = ComprobarNulos.CheckStringNull(reader["FileId"]);
                     dto.CostoTokensEntrada = (double)ComprobarNulos.CheckDecimalNull(reader["CostoTokensEntrada"]);
                     dto.CostoTokensSalida = (double)ComprobarNulos.CheckDecimalNull(reader["CostoTokensSalida"]);
+                    dto.MaximoTokens = ComprobarNulos.CheckIntNull(reader["MaximoTokens"]);
                     result.Add(dto);
                 }
             }
@@ -68,7 +69,7 @@ namespace Funnel.Data
                         DataBase.CreateParameterSql("@pResult", SqlDbType.Binary, 1, ParameterDirection.Output, false, "Result", DataRowVersion.Default, insert.Result),
                         DataBase.CreateParameterSql("@pErrorMessage", SqlDbType.VarChar, -1, ParameterDirection.Output, false, "ErrorMessage", DataRowVersion.Default, insert.ErrorMessage),
                         DataBase.CreateParameterSql("@pIdBot", SqlDbType.Int, 10, ParameterDirection.Input, false, "IdBot", DataRowVersion.Default, insert.IdBot),
-                        DataBase.CreateParameterSql("@pPregunta", SqlDbType.VarChar, 255, ParameterDirection.Input, false, "Pregunta", DataRowVersion.Default, insert.Pregunta),
+                        DataBase.CreateParameterSql("@pPregunta", SqlDbType.VarChar, 1000, ParameterDirection.Input, false, "Pregunta", DataRowVersion.Default, insert.Pregunta),
                         DataBase.CreateParameterSql("@pFechaPregunta", SqlDbType.DateTime, 8, ParameterDirection.Input, false, "FechaPregunta", DataRowVersion.Default, insert.FechaPregunta),
                         DataBase.CreateParameterSql("@pRespuesta", SqlDbType.VarChar, -1, ParameterDirection.Input, false, "Respuesta", DataRowVersion.Default, insert.Respuesta),
                         DataBase.CreateParameterSql("@pFechaRespuesta", SqlDbType.DateTime, 8, ParameterDirection.Input, false, "FechaRespuesta", DataRowVersion.Default, insert.FechaRespuesta),
@@ -88,7 +89,6 @@ namespace Funnel.Data
                         {
                             insert.ErrorMessage = ComprobarNulos.CheckStringNull(reader["@pErrorMessage"]);
                             insert.Result = ComprobarNulos.CheckBooleanNull(reader["@pResult"]);
-
                         }
                     }
                 }
@@ -148,5 +148,61 @@ namespace Funnel.Data
             }
             return result;
         }
-    }
+        public async Task<ListaAsistentes> Asistentes()
+        {
+            var dtoAsistentes = new List<AsistentesDto>();
+            var lista = new ListaAsistentes();
+            try
+            {
+                using (IDataReader reader = await DataBase.GetReader("F_Asistentes", CommandType.StoredProcedure, _connectionString))
+                {
+                    while (reader.Read())
+                    {
+                        var ren = new AsistentesDto();
+                        ren.IdBot = ComprobarNulos.CheckIntNull(reader["Idbot"]);
+                        ren.NombreAsistente = ComprobarNulos.CheckStringNull(reader["NombreAsistente"]);
+                        ren.Documento = ComprobarNulos.CheckBooleanNull(reader["Documento"]);
+                        ren.NombreDocumento = ComprobarNulos.CheckStringNull(reader["NombreDocumento"]);
+                        ren.FechaModificacion = ComprobarNulos.CheckDateTimeNull(reader["FechaModificacion"]);
+                        ren.NombreTablaAsistente = ComprobarNulos.CheckStringNull(reader["NombreTablaAsistente"]);
+                        ren.MensajePrincipalAsistente = ComprobarNulos.CheckStringNull(reader["MensajePrincipalAsistente"]);
+                        ren.UltimoNombreDocumento = ComprobarNulos.CheckStringNull(reader["UltimoNombreDocumento"]);
+                        ren.TamanoUltimoDocumento = ComprobarNulos.CheckDecimalNull(reader["TamanoUltimoDocumento"]);
+                        dtoAsistentes.Add(ren);
+                    }
+
+                    lista.Asistentes = dtoAsistentes;
+                    lista.Result = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                lista.Result = false;
+                lista.ErrorMessage = ex.Message;
+            }
+
+            return lista;
+        }
+        public async Task<VersionAsistentesDto> ObtenerVersionArquitectura()
+        {
+            var version = new VersionAsistentesDto();
+
+            try
+            {
+                using (IDataReader reader = await DataBase.GetReader("F_VersionesArquitecturaChatBots_ObtenerVersion", CommandType.StoredProcedure, _connectionString))
+                {
+                    if (reader.Read())
+                    {
+                        version.Version = ComprobarNulos.CheckStringNull(reader[0]);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al obtener la versión: {ex.Message}");
+            }
+            return version;
+        }
+
+}
 }

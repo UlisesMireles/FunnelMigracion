@@ -65,8 +65,18 @@ namespace Funnel.Server.Controllers
         [HttpGet("ObtenerFaq")]
         public async Task<ActionResult<List<PreguntasFrecuentesDto>>> ObtenerPreguntasFrecuentesAsync(int idBot)
         {
-            var result = await _asistentesService.ObtenerPreguntasFrecuentesAsync( idBot);
+            var result = await _asistentesService.ObtenerPreguntasFrecuentesAsync(idBot);
             return Ok(result);
+        }
+        [HttpGet("Asistentes")]
+        public async Task<ActionResult<ListaAsistentes>> Asistentes()
+            => Ok((await _asistentesService.Asistentes()));
+
+        [HttpGet("ObtenerVersionesAsistentes")]
+        public async Task<ActionResult<VersionAsistentesDto>> ObtenerVersionesAsistente()
+        {
+            var version = await _asistentesService.ObtenerVersionArquitectura();
+            return Ok(version);
         }
     }
 }

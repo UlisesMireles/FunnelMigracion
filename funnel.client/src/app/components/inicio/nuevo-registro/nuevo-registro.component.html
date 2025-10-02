@@ -100,7 +100,7 @@
       <div class="progress-step" [class.active]="currentStep >= 4">4</div>
     </div>
 
-    <form [formGroup]="usuarioForm" (ngSubmit)="goToStep(3)">
+    <form [formGroup]="usuarioForm" (ngSubmit)="goToStep(4)">
       <label class="lbl">Nombre de usuario*</label>
       <div class="input-box">
         <i class="bi bi-person icono"></i>
@@ -216,7 +216,7 @@
   </div>
   <div *ngIf="duplicadosUsuario" 
        [ngClass]="{'unico': duplicadosUsuario && !duplicadosCorreo, 'abajo': duplicadosUsuario && duplicadosCorreo}">
-    <input type="text" formControlName="usuario" placeholder="Nombre de usuario" />
+    <input type="text" formControlName="usuario" placeholder="Nombre de usuario"  />
     <div *ngIf="usuarioForm.get('usuario')?.errors?.['duplicado']" class="error">
       <small>Este nombre de usuario ya está registrado en la empresa.</small>
     </div>

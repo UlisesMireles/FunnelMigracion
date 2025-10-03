@@ -374,7 +374,7 @@ export class ModalContactosComponent {
       referencia: this.contacto
     }
     this.activarModalInputsAdicionales.emit(obj);
-    this.close();
+    //this.close();
 
   }
 

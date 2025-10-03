@@ -76,7 +76,7 @@ export class ModalProspectosComponent {
     this.modalOportunidadesService.modalProspectoState$.subscribe(state => {
       this.desdeSector = state.desdeSector;
     });
-    this.inicializarFormulario()
+    //this.inicializarFormulario()
     this.inicializarFormularioAdicional();
 
   }
@@ -191,6 +191,7 @@ export class ModalProspectosComponent {
   }
 
   onDialogShow() {
+    this.inicializarFormulario();
     this.cargarSectores();
   }
 
@@ -198,7 +199,7 @@ export class ModalProspectosComponent {
     this.prospectoService.getSectores(this.loginService.obtenerIdEmpresa()).subscribe({
       next: (result: any) => {
         this.sectores = result;
-        this.inicializarFormulario();
+        //this.inicializarFormulario();
         this.cdr.detectChanges();
       },
       error: (error) => {
@@ -380,7 +381,7 @@ export class ModalProspectosComponent {
       referencia: this.prospecto
     }
     this.activarModalInputsAdicionales.emit(obj);
-    this.close();
+    //this.close();
 
   }
 

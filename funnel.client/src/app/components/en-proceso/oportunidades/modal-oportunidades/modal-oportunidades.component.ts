@@ -787,88 +787,82 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
   }
 
   manejarResultadoTiposServicios(result: baseOut) {
-    if (result.result) {
-      this.messageService.add({
-        severity: 'success',
-        summary: 'La operación se realizó con éxito.',
-        detail: result.errorMessage,
-      });
-      this.modalOportunidadesService.closeModalTipoServicioOportunidades(result);     
+  if (result.result) {
+    const valoresActuales = this.oportunidadForm.getRawValue();
+    console.log(valoresActuales)
+    this.messageService.add({
+      severity: 'success',
+      summary: 'La operación se realizó con éxito.',
+      detail: result.errorMessage,
+    });
+    this.modalOportunidadesService.closeModalTipoServicioOportunidades(result);     
 
-      this.catalogoService.cargarServicios(this.loginService.obtenerIdEmpresa());
+    this.catalogoService.cargarServicios(this.loginService.obtenerIdEmpresa());
 
-      setTimeout(() => {
-        this.servicios = this.catalogoService.obtenerServicios();
+    setTimeout(() => {
+      this.servicios = this.catalogoService.obtenerServicios();
 
-
-        const tipoServicioNuevo = this.servicios.find(c => c.idTipoProyecto === result.id);
-        if (tipoServicioNuevo) {
-          this.oportunidadForm.get('idTipoProyecto')?.setValue(tipoServicioNuevo);
-        } else if (this.servicios.length === 1) {
-          this.oportunidadForm.get('idTipoProyecto')?.setValue(this.servicios[0]);
-        }
-
+      const tipoServicioNuevo = this.servicios.find(c => c.idTipoProyecto === result.id);
+      
+      this.oportunidadForm.patchValue(valoresActuales, { emitEvent: false });
+      console.log(valoresActuales)
+      if (tipoServicioNuevo) {
+        this.oportunidadForm.get('idTipoProyecto')?.setValue(tipoServicioNuevo, { emitEvent: false });
         this.busquedaTipoServicio = tipoServicioNuevo?.descripcion;
-        this.tiposServiciosFiltrados = this.servicios;
-        this.tipoServiciosSeleccionado = true
-        this.onChangeProspecto();
+      }
 
-        this.cdr.detectChanges();
-      }, 500);
-
-      
-    }
-
-    else {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Se ha producido un error.',
-        detail: result.errorMessage,
-      });
-    }
+      this.tiposServiciosFiltrados = this.servicios;
+      this.tipoServiciosSeleccionado = true;
+      this.validaGuadar = true;
+      this.cdr.detectChanges();
+    }, 500);
+  } else {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Se ha producido un error.',
+      detail: result.errorMessage,
+    });
   }
+}
 
-  manejarResultadoTiposEntregas(result: baseOut) {
-    if (result.result) {
-      this.messageService.add({
-        severity: 'success',
-        summary: 'La operación se realizó con éxito.',
-        detail: result.errorMessage,
-      });
-      this.modalOportunidadesService.closeModalTipoEntregasOportunidades(result);     
+ manejarResultadoTiposEntregas(result: baseOut) {
+  if (result.result) {
+    const valoresActuales = this.oportunidadForm.getRawValue();
+    
+    this.messageService.add({
+      severity: 'success',
+      summary: 'La operación se realizó con éxito.',
+      detail: result.errorMessage,
+    });
+    this.modalOportunidadesService.closeModalTipoEntregasOportunidades(result);     
 
-      this.catalogoService.cargarEntregas(this.loginService.obtenerIdEmpresa());
+    this.catalogoService.cargarEntregas(this.loginService.obtenerIdEmpresa());
 
-      setTimeout(() => {
-        this.entregas = this.catalogoService.obtenerEntregas();
+    setTimeout(() => {
+      this.entregas = this.catalogoService.obtenerEntregas();
 
-
-        const tipoEntregaNuevo = this.entregas.find(c => c.idTipoEntrega === result.id);
-        if (tipoEntregaNuevo) {
-          this.oportunidadForm.get('idTipoEntrega')?.setValue(tipoEntregaNuevo);
-        } else if (this.entregas.length === 1) {
-          this.oportunidadForm.get('idTipoEntrega')?.setValue(this.entregas[0]);
-        }
-
+      const tipoEntregaNuevo = this.entregas.find(c => c.idTipoEntrega === result.id);
+      
+      this.oportunidadForm.patchValue(valoresActuales, { emitEvent: false });
+      
+      if (tipoEntregaNuevo) {
+        this.oportunidadForm.get('idTipoEntrega')?.setValue(tipoEntregaNuevo, { emitEvent: false });
         this.busquedaTipoEntrega = tipoEntregaNuevo?.descripcion;
-        this.tiposEntregasFiltrados = this.entregas;
-        this.tipoEntregasSeleccionado = true
-        this.onChangeProspecto();
+      }
 
-        this.cdr.detectChanges();
-      }, 500);
-
-      
-    }
-
-    else {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Se ha producido un error.',
-        detail: result.errorMessage,
-      });
-    }
+      this.tiposEntregasFiltrados = this.entregas;
+      this.tipoEntregasSeleccionado = true;
+      this.validaGuadar = true;
+      this.cdr.detectChanges();
+    }, 500);
+  } else {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Se ha producido un error.',
+      detail: result.errorMessage,
+    });
   }
+}
 
 
   formatearMonto(event: any) {

@@ -85,7 +85,7 @@
                     Palabras: {{ wordCount }}
                   </small>
                   <div *ngIf="oportunidadForm.get('comentario')?.invalid && oportunidadForm.get('comentario')?.touched"
-                    class="text-danger mt-1">
+                    class="errores-comentario">
                     <small *ngIf="oportunidadForm.get('comentario')?.errors?.['required']">
                       El comentario es obligatorio.
                     </small>

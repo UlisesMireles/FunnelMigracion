@@ -69,7 +69,8 @@
                          accept=".doc, .docx, .pdf, .xls, .xlsx, .ppt, .pptx, .rar, .zip">
                   <button pButton label="Elegir archivos" 
                           class="p-button-secondary text-nowrap"
-                          (click)="fileInput.click()"></button>
+                          (click)="fileInput.click()"
+                           [disabled]="archivosDisponiblesParaSeleccionar === 0"></button>
                 </div>
               </div>
             </ng-container>
@@ -81,6 +82,9 @@
             <button pButton label="Salir" (click)="close()" severity="secondary"></button>
           </div>
         </div>
+        <small *ngIf="archivosDisponiblesParaSeleccionar > 0">
+          Te quedan {{ archivosDisponiblesParaSeleccionar }} archivo(s) disponibles.
+        </small>
       </div>
     </form>
     <div class="d-flex justify-content-between mt-1 " *ngIf="!isEnProceso && 

@@ -157,7 +157,8 @@ export class ModalProspectosComponent {
         idSector: [this.prospecto?.idSector, Validators.required],
         estatus: [this.prospecto?.estatus === 1 ? true : false],
         idEmpresa: [idEmpresa],
-        bandera: ['UPDATE']
+        bandera: ['UPDATE'],
+        usuarioCreador: [this.loginService.obtenerIdUsuario()]
       });
 
       valoresIniciales = this.prospectoForm.getRawValue();

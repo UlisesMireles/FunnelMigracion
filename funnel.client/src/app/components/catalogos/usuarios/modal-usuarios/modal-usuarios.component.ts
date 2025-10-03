@@ -98,7 +98,7 @@ export class ModalUsuariosComponent {
           ]
         ],
         password: [passwordGenerada, [
-          Validators.minLength(8),
+          Validators.minLength(5),
           Validators.maxLength(50),
           Validators.pattern('^[a-zA-Z0-9_.-]+$')
         ]],

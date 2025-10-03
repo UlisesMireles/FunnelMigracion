@@ -176,18 +176,31 @@
     </div>
   </div>
 </div>
-
-<div *ngIf="modalExplicativoProceso" class="modal-content" 
-     style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            z-index: 9999; background: white; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.2);" class="modal-header">
-  <div class="modal-body">
-     Bienvenido a la administración de procesos
-    <p> Para poder registrar oportunidades, primero necesitas seleccionar una plantilla estándar o crear tu propio proceso.
-        Este proceso nos ayudará a organizar y dar seguimiento adecuado a cada una de tus oportunidades.
-        Por favor, completa el siguiente formulario para crear tu primer proceso. Una vez creado, podrás comenzar a registrar tus oportunidades sin problema.
-    <div class="modal-buttons">
-      <button class="button" (click)="continuarModalExplicativoProceso()">Continuar</button>
-      <button class="button" (click)="modalExplicativoProceso = false">Cerrar</button>
-    </div>
+<p-dialog 
+  header="Administración de procesos" 
+  [(visible)]="modalExplicativoProceso" 
+  [modal]="true" 
+  [closable]="false" 
+  [dismissableMask]="true" 
+  [style]="{width: '40vw'}"
+>
+  <ng-template pTemplate="content">
+  <div style="text-align: justify;">
+    <p>
+      Bienvenido a la administración de procesos
+    </p>
+    <p>
+      Para poder registrar oportunidades, primero necesitas seleccionar una plantilla estándar o crear tu propio proceso.
+      Este proceso nos ayudará a organizar y dar seguimiento adecuado a cada una de tus oportunidades.
+      Por favor, completa el siguiente formulario para crear tu primer proceso. Una vez creado, podrás comenzar a registrar tus oportunidades sin problema.
+    </p>
   </div>
-</div>
+</ng-template>
+
+
+  <ng-template pTemplate="footer">
+    <button pButton label="Continuar" class="p-button-secondary" style="  box-shadow: none !important;
+    outline: none !important;" (click)="continuarModalExplicativoProceso()"></button>
+    <button pButton label="Cerrar" class="p-button-secondary" (click)="modalExplicativoProceso = false"></button>
+  </ng-template>
+</p-dialog>

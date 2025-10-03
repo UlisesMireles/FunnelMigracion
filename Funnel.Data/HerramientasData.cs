@@ -29,6 +29,10 @@ namespace Funnel.Data
                     DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "SELECT" ),
                     DataBase.CreateParameterSql("@pIdUsuario", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, IdUsuario ),
                     DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, IdEmpresa ),
+                    DataBase.CreateParameterSql("@pSesionId", SqlDbType.VarChar, 500, ParameterDirection.Input, false,null, DataRowVersion.Default, "" ),
+                    DataBase.CreateParameterSql("@pMotivoCierre", SqlDbType.VarChar, 1000, ParameterDirection.Input, false,null, DataRowVersion.Default, "" ),
+                    DataBase.CreateParameterSql("@pIp", SqlDbType.VarChar, 30, ParameterDirection.Input, false,null, DataRowVersion.Default, "" ),
+                    DataBase.CreateParameterSql("@pUbicacion", SqlDbType.VarChar, 200, ParameterDirection.Input, false,null, DataRowVersion.Default, "" )
                 };
             using (IDataReader reader = await DataBase.GetReaderSql("F_IngresosFunnel", CommandType.StoredProcedure, list, _connectionString))
             {

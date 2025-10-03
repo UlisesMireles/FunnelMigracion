@@ -157,7 +157,7 @@ export class AcordeonOportunidadesEtapaComponent {
     const request: RequestActualizarEtapa = {
       bandera: "UPD-STAGE",
       idOportunidad: this.idOportunidadTarjeta,
-      idStage: this.tarjetaMovida.etapaDestino.anio,
+      idStage: this.tarjetaMovida.etapaDestino.idStage,
       idUsuario: this.loginService.obtenerIdUsuario(),
       idEmpresa: this.loginService.obtenerIdEmpresa()
     };

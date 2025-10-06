@@ -16,6 +16,9 @@ import { Contacto } from '../../../../interfaces/contactos';
 import { Prospectos } from '../../../../interfaces/prospecto';
 import { TipoServicio } from '../../../../interfaces/tipoServicio';
 import { TipoEntrega } from '../../../../interfaces/tipo-entrega';
+import { ContactosService } from '../../../../services/contactos.service';
+import { CamposAdicionales } from '../../../../interfaces/campos-adicionales';
+import { ModalCamposAdicionalesService } from '../../../../services/modalCamposAdicionales.service';
 
 @Component({
   selector: 'app-modal-oportunidades',
@@ -27,7 +30,9 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
   private catalogosSubscription!: Subscription;
 
   constructor(private readonly catalogoService: CatalogoService, private oportunidadService: OportunidadesService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder, private cdr: ChangeDetectorRef,
-    private modalOportunidadesService: ModalOportunidadesService
+    private modalOportunidadesService: ModalOportunidadesService,
+    private contactosService: ContactosService,
+    private modalCamposAdicionalesService: ModalCamposAdicionalesService
   ) {
 
   }
@@ -97,6 +102,12 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
   tipoEntregasSeleccionado: boolean = false;
   private modalTiposEntregasSubscription!: Subscription;
   modalVisibleTiposEntregas: boolean = false;
+
+   //Modal Campos Adicionales
+  camposAdicionales: CamposAdicionales[] = [];
+  camposAdicionalesPorCatalogo: CamposAdicionales[] = [];
+  modalVisibleCamposAdicionales: boolean = false;
+  informacionReferenciaCatalgo: any = {};
 
   inicializarFormulario() {
     this.modalSubscription = this.modalOportunidadesService.modalState$.subscribe((state) => {
@@ -226,8 +237,101 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
       this.entregas = state.tiposEntregas;
       this.tipoEntregaSeleccionado = state.tipoEntregaSeleccionado;
     });
+
+    
   }
 
+manejarResultadoAbrirInputsAdicionales(resut: any) {
+    this.informacionReferenciaCatalgo = resut
+    this.getCamposAdicionales();
+
+  }
+
+
+  onModalCloseCamposAdicionales() {
+    this.modalCamposAdicionalesService.closeModal();
+    setTimeout(() => {
+      switch (this.informacionReferenciaCatalgo?.tipoCatalogo?.toLowerCase()) {
+        case 'contactos':
+          this.modalOportunidadesService.openModalContactoOportunidades(true, this.informacionReferenciaCatalgo.insertar, [], this.informacionReferenciaCatalgo.referencia);
+          break;
+        default:
+          this.modalOportunidadesService.openModalProspectoOportunidades(true, this.informacionReferenciaCatalgo.insertar, [], this.informacionReferenciaCatalgo.referencia);
+          break;
+      }
+    }, 500);
+  }
+
+  getCamposAdicionales() {
+    const idUsuario = this.loginService.obtenerIdUsuario();
+    const idEmpresa = this.loginService.obtenerIdEmpresa();
+
+    this.contactosService.getCamposAdicionales(idEmpresa, this.informacionReferenciaCatalgo.tipoCatalogo).subscribe({
+      next: (result: CamposAdicionales[]) => {
+        this.camposAdicionales = result.map(campos => ({
+          ...campos,
+          idInput: campos.idInput,
+          nombre: campos.nombre,
+          etiqueta: campos.etiqueta,
+          requerido: campos.requerido,
+          tipoCampo: campos.tipoCampo,
+          rCatalogoInputId: campos.rCatalogoInputId,
+          tipoCatalogoInput: campos.tipoCatalogoInput,
+          orden: campos.orden,
+          idEmpresa: idEmpresa,
+          idUsuario: idUsuario,
+          modificado: false
+        }));
+
+        this.consultarCamposAdicionalesPorCatalogo(idEmpresa, idUsuario);
+      },
+      error: (error) => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar informacion de campos adicionales' });
+      }
+    });
+  }
+
+  consultarCamposAdicionalesPorCatalogo(idEmpresa: number, idUsuario: number) {
+    this.contactosService.getCamposAdicionalesPorCatalogo(idEmpresa, this.informacionReferenciaCatalgo.tipoCatalogo).subscribe({
+      next: (result: CamposAdicionales[]) => {
+        this.camposAdicionalesPorCatalogo = result.map(campos => ({
+          ...campos,
+          idInput: campos.idInput,
+          nombre: campos.nombre,
+          etiqueta: campos.etiqueta,
+          requerido: campos.requerido,
+          tipoCampo: campos.tipoCampo,
+          rCatalogoInputId: campos.rCatalogoInputId,
+          tipoCatalogoInput: campos.tipoCatalogoInput,
+          orden: campos.orden,
+          idEmpresa: idEmpresa,
+          idUsuario: idUsuario,
+          modificado: false
+        }));
+
+        this.modalCamposAdicionalesService.openModal(true, this.camposAdicionales, this.camposAdicionalesPorCatalogo, this.informacionReferenciaCatalgo.pantalla);
+      },
+      error: (error) => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar informacion de campos adicionales' });
+      }
+    });
+  }
+manejarResultadoCamposAdicionales(result: baseOut) {
+    if (result.result) {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'La operación se realizó con éxito.',
+        detail: result.errorMessage,
+      });
+      this.modalCamposAdicionalesService.closeModal();
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Se ha producido un error.',
+        detail: result.errorMessage,
+      });
+    }
+  }
   validarCambios(valoresIniciales: any, cambios: any) {
     const valoresActuales = cambios;
 

@@ -420,12 +420,14 @@
 <!-- Modal de contactos -->
 <app-modal-contactos [(visible)]="modalVisibleContactos" [title]="'Editar Datos de '"
   (closeModal)="onModalCloseContactos()" (result)="manejarResultadoContactos($event)" [insertarContacto]="insertarContacto"
-  [contactos]="contactos" [contacto]="contactoSeleccionado" [lecturaProspecto]="true">
+  [contactos]="contactos" [contacto]="contactoSeleccionado" [lecturaProspecto]="true"
+  (activarModalInputsAdicionales)="manejarResultadoAbrirInputsAdicionales($event)">
 </app-modal-contactos>
 
 <app-modal-prospectos [(visible)]="modalVisibleProspectos" [title]="'Editar Datos de '" 
 (closeModal)="onModalCloseProspectos()" (result)="manejarResultadoProspectos($event)" [insertarProspecto]="insertarProspecto" 
-[prospectos]="prospectos" [prospecto]="prospectosSeleccionado">
+[prospectos]="prospectos" [prospecto]="prospectosSeleccionado"
+(activarModalInputsAdicionales)="manejarResultadoAbrirInputsAdicionales($event)">
 </app-modal-prospectos>
 
 <app-modal-tipo-servicios [(visible)]="modalVisibleTiposServicios" [title]="'Editar datos de '" 
@@ -439,3 +441,7 @@
   [insertar]="insertarTipoEntrega" [tipoEntrega]="tipoEntregaSeleccionado" 
   [tiposEntrega]="entregas">
 </app-modal-tipos-entrega>
+
+<!--app-modal-campos-nuevos [(visible)]="modalVisibleCamposAdicionales" (closeModal)="onModalCloseCamposAdicionales()"
+  (result)="manejarResultadoCamposAdicionales($event)">
+</app-modal-campos-nuevos>-->

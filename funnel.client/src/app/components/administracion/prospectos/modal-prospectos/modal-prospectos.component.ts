@@ -382,7 +382,7 @@ export class ModalProspectosComponent {
       referencia: this.prospecto
     }
     this.activarModalInputsAdicionales.emit(obj);
-    //this.close();
+    this.close();
 
   }
 

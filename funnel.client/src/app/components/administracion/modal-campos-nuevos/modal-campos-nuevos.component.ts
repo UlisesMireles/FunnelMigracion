@@ -20,7 +20,7 @@ export class ModalCamposNuevosComponent {
   @Input() pantalla: string = '';
 
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() closeModal: EventEmitter<void> = new EventEmitter();
+  @Output() closeModal: EventEmitter<string> = new EventEmitter();
   @Output() result: EventEmitter<baseOut> = new EventEmitter();
 
   private modalSubscription!: Subscription;
@@ -172,6 +172,7 @@ export class ModalCamposNuevosComponent {
     this.camposAdicionalesMetodosService.postCamposAdicionales(listaFinalCamposAdicionales,this.idEmpresa).subscribe({
       next: (result: baseOut) => {
         this.result.emit(result);
+        this.closeModal.emit(this.pantalla);
         //this.cerrar();
         this.camposAdicionalesOriginal = JSON.parse(JSON.stringify(this.camposAdicionales));
         this.validaGuadar = false;

@@ -133,7 +133,7 @@
 </app-modal-contactos>
 
 <!-- Modal de campos adicionales  -->
-<app-modal-campos-nuevos [(visible)]="modalVisibleCamposAdicionales" (closeModal)="onModalCloseCamposAdicionales()"
+<app-modal-campos-nuevos [(visible)]="modalVisibleCamposAdicionales" (closeModal)="onModalCloseCamposAdicionales($event)"
   (result)="manejarResultadoCamposAdicionales($event)">
 </app-modal-campos-nuevos>
 

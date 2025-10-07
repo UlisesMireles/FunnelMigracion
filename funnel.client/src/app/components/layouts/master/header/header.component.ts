@@ -561,9 +561,16 @@ manejarResultadoCamposAdicionales(result: baseOut) {
     }
   }
 
-  onModalCloseCamposAdicionales() {
+  onModalCloseCamposAdicionales(tipoCatalogo: string) {
     this.modalCamposAdicionalesService.closeModal();
     //Se debe reabrir modal de contacto o prospecto independientemente si guardo datos o no
+    if(!this.informacionReferenciaCatalgo.tipoCatalogo){
+      this.informacionReferenciaCatalgo = {
+        insertar: true,
+        referencia: {},
+        tipoCatalogo: tipoCatalogo
+      }
+    }
     setTimeout(() => {
       switch (this.informacionReferenciaCatalgo.tipoCatalogo.toLowerCase()) {
         case "contactos":

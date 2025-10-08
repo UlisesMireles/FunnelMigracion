@@ -27,7 +27,7 @@
       <div class="progress-step" [class.active]="currentStep >= 4">4</div>
     </div>
 
-    <form [formGroup]="usuarioForm" (ngSubmit)="goToStep(3)">
+    <form [formGroup]="usuarioForm" (ngSubmit)="goToStep(2)">
       <input type="text" formControlName="nombre" placeholder="Nombre completo" />
       <input type="email" formControlName="correo" placeholder="Correo electrónico" />
         <div *ngIf="usuarioForm.get('correo')?.touched && usuarioForm.get('correo')?.invalid" class="error">

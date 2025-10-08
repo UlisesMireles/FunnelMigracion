@@ -27,19 +27,19 @@
       <div class="progress-step" [class.active]="currentStep >= 4">4</div>
     </div>
 
-    <form [formGroup]="usuarioForm" (ngSubmit)="goToStep(2)">
+    <form [formGroup]="usuarioForm" (ngSubmit)="goToStep(3)">
       <input type="text" formControlName="nombre" placeholder="Nombre completo" />
       <input type="email" formControlName="correo" placeholder="Correo electrónico" />
         <div *ngIf="usuarioForm.get('correo')?.touched && usuarioForm.get('correo')?.invalid" class="error">
           <small *ngIf="usuarioForm.get('correo')?.errors?.['email']">Formato de correo inválido.</small>
         </div>
       <div class="actions">
-      <button class="next-step" type="submit" [disabled]="usuarioForm.get('nombre')?.invalid || usuarioForm.get('correo')?.invalid" [ngStyle]="{ 'background-color': (usuarioForm.get('nombre')?.invalid || usuarioForm.get('correo')?.invalid) ? '#9ca3af' : '#2563eb' }"
-        (click)="codigoValidadorCorreo(usuarioForm.get('correo')?.value)">
-        Siguiente paso
-      </button>
       <button class="cancelar" type="button" (click)="cancelarRegistro()">
         Cancelar
+      </button>
+     <button class="next-step" type="submit" [disabled]="usuarioForm.get('nombre')?.invalid || usuarioForm.get('correo')?.invalid" [ngStyle]="{ 'background-color': (usuarioForm.get('nombre')?.invalid || usuarioForm.get('correo')?.invalid) ? '#9ca3af' : '#2563eb' }"
+        (click)="codigoValidadorCorreo(usuarioForm.get('correo')?.value)">
+        Siguiente paso
       </button>
     </div>
     </form>
@@ -72,13 +72,13 @@
       <input maxlength="1" type="text" #c6 (input)="checkCodigoInputs(c1,c2,c3,c4,c5,c6)" />
     </div>
     <div class="actions">
+     <button class="cancelar" type="button" (click)="cancelarRegistro()">
+        Cancelar
+      </button>
     <button class="next-step" [disabled]="!codigoCompleto" (click)="verificarCodigoUsuario(c1.value + c2.value + c3.value + c4.value + c5.value + c6.value, [c1,c2,c3,c4,c5,c6])"
       [ngStyle]="{ 'background-color': (!codigoCompleto) ? '#9ca3af' : '#2563eb' }">
       Verificar
     </button>
-     <button class="cancelar" type="button" (click)="cancelarRegistro()">
-        Cancelar
-      </button>
     </div>
     <p class="resend">
       ¿No has recibido el código? <a (click)="reenviarCodigo([c1,c2,c3,c4,c5,c6])" class="resend-link">Reenviar</a>
@@ -132,11 +132,11 @@
           </div>
       </div>
       <div class="actions">
-      <button class="next-step" type="submit" [disabled]="usuarioForm.invalid" [ngStyle]="{ 'background-color': (usuarioForm.invalid) ? '#9ca3af' : '#2563eb' }">
-        Continuar →
-      </button>
        <button class="cancelar" type="button" (click)="cancelarRegistro()">
         Cancelar
+      </button>
+        <button class="next-step" type="submit" [disabled]="usuarioForm.invalid" [ngStyle]="{ 'background-color': (usuarioForm.invalid) ? '#9ca3af' : '#2563eb' }">
+        Continuar →
       </button>
     </div>
     </form>
@@ -191,12 +191,12 @@
             placeholder="Seleccione una opción">
         </p-dropdown>
       <div class="actions">
-       <button class="next-step" type="submit" [disabled]="empresaForm.invalid || rfcExistente">
-      Finalizar Registro
-    </button>
      <button class="cancelar" type="button" (click)="cancelarRegistro()">
         Cancelar
       </button>
+       <button class="next-step" type="submit" [disabled]="empresaForm.invalid || rfcExistente">
+      Finalizar Registro
+    </button>
     </div>
     </form>
   </div>

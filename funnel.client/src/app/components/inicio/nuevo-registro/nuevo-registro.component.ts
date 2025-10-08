@@ -61,9 +61,11 @@ export class NuevoRegistroComponent implements OnInit {
   });
   }
   tamanos = [
-  { label: 'Pequeña', value: 'pequeña' },
-  { label: 'Mediana', value: 'mediana' },
-  { label: 'Grande', value: 'grande' }
+  { label: '1-10', value: '1-10' },
+  { label: '11-50', value: '11-50' },
+  { label: '51-100', value: '51-100' },
+  { label: '101-500', value: '101-500' },
+  { label: '500+', value: '500+' }
 ];
 
   inicializarFormulario() {
@@ -82,7 +84,7 @@ export class NuevoRegistroComponent implements OnInit {
       nombreEmpresa: ['', Validators.required],
       direccion: ['', Validators.required],
       tamano:['', Validators.required],
-      rfc: ['', {validators: [Validators.required,  Validators.pattern(/^[A-ZÑ&]{3}\d{6}[A-Z\d]{3}$/)],
+      rfc: ['', {validators: [Validators.required,  Validators.pattern(/^[A-ZÑ&]{3,4}\d{6}[A-Z\d]{3}$/)],
     asyncValidators: [this.validarRfcExistente.bind(this)],
     updateOn: 'blur' 
     }],

@@ -543,51 +543,43 @@ unirse() {
 }
 
 private guardarUsuario(formValue: any) {
-  if (formValue.nombre) {
-    const { nombre, apellidoPaterno, apellidoMaterno } = this.procesarNombreCompleto(formValue.nombre);
-    formValue.nombre = nombre;
-    formValue.apellidoPaterno = apellidoPaterno;
-    formValue.apellidoMaterno = apellidoMaterno;
-  }
+  const datosGuardarTemporal = {
+    bandera: "ACTUALIZAR",
+    idRegistro: this.idRegistroTemporal,
+    nombre: formValue.nombre,
+    correo: formValue.correo,
+    usuario: formValue.usuario,
+    idEmpresa: this.idEmpresa
+  };
 
-  formValue.iniciales = this.obtenerIniciales(
-    formValue.nombre,
-    formValue.apellidoPaterno,
-    formValue.apellidoMaterno
-  );
-
-  const formData = new FormData();
-  Object.keys(formValue).forEach(key => formData.append(key, formValue[key]));
-
-  formData.append('estatus', '0');
-  formData.append('idTipoUsuario', '3');
-  formData.append('bandera', 'INSERT');
-  formData.append('idEmpresa', this.idEmpresa!.toString());
-
-  this.usuariosService.postGuardarUsuario(formData).subscribe({
+  this.empresaService.guardarRegistroTemporal(datosGuardarTemporal).subscribe({
     next: (resp) => {
-      if (resp.id && this.idEmpresa) {
-        this.enviarCorreoAdmin(this.idEmpresa, resp.id);
+      const idRegistroFinal = resp.id || this.idRegistroTemporal;
+
+      if (idRegistroFinal && this.idEmpresa) {
+        this.enviarCorreoAdmin(this.idEmpresa, idRegistroFinal);
       }
+      this.mostrarModalRFC = false;
+
       this.messageService.add({
         severity: 'success',
         summary: 'Solicitud enviada',
-        detail: 'Tu solicitud para unirte a la empresa ha sido enviada.',
+        detail: 'Tu solicitud para unirte a la empresa ha sido enviada correctamente. Por favor comunicarte con tu administrador para que te de acceso.',
       });
-      this.finish(); 
+
+      this.finish();
     },
     error: (err) => {
-      console.error('Error al guardar usuario', err);
+      console.error('Error al guardar registro temporal final:', err);
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
-        detail: 'No se pudo guardar el usuario. Intenta nuevamente.',
+        detail: 'No se pudo guardar el registro temporal. Intenta nuevamente.',
       });
     }
   });
 }
 
-  
 enviarCorreoAdmin(idEmpresa: number, idUsuario: number) {
   this.empresaService.correoRegistrosAdministrador(idEmpresa, idUsuario).subscribe({
     next: (resp) => {

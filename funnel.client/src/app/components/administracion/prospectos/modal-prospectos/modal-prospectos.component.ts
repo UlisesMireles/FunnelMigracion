@@ -76,7 +76,7 @@ export class ModalProspectosComponent {
     this.modalOportunidadesService.modalProspectoState$.subscribe(state => {
       this.desdeSector = state.desdeSector;
     });
-    //this.inicializarFormulario()
+    this.inicializarFormulario()
     this.inicializarFormularioAdicional();
 
   }

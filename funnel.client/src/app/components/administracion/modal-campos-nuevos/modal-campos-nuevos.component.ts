@@ -18,9 +18,11 @@ export class ModalCamposNuevosComponent {
 
   @Input() visible: boolean = false;
   @Input() pantalla: string = '';
+  @Input() valorSeleccionado: any = null;
 
   @Output() visibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() closeModal: EventEmitter<string> = new EventEmitter();
+  //@Output() closeModal: EventEmitter<string> = new EventEmitter();
+  @Output() closeModal: EventEmitter<{ pantalla: string; valorSeleccionado: any; }> = new EventEmitter<{ pantalla: string; valorSeleccionado: any; }>();
   @Output() result: EventEmitter<baseOut> = new EventEmitter();
 
   private modalSubscription!: Subscription;
@@ -64,7 +66,9 @@ export class ModalCamposNuevosComponent {
     this.visible = false;
     this.camposAdicionalesService.closeModal();
     this.visibleChange.emit(this.visible);
-    this.closeModal.emit();
+    let camposRespuesta = { pantalla: this.pantalla, valorSeleccionado: this.valorSeleccionado}
+    //this.closeModal.emit(this.pantalla);
+    this.closeModal.emit(camposRespuesta);
   }
 
   ngOnInit() {
@@ -75,6 +79,7 @@ export class ModalCamposNuevosComponent {
       this.visible = state.showModal;
       if (state.showModal) {
         this.pantalla = state.pantalla;
+        this.valorSeleccionado = state.valorSeleccionado;
         this.camposAdicionales = state.camposPorCatalogo;
        this.camposAdicionalesOriginal = JSON.parse(JSON.stringify(this.camposAdicionales));
 
@@ -172,7 +177,8 @@ export class ModalCamposNuevosComponent {
     this.camposAdicionalesMetodosService.postCamposAdicionales(listaFinalCamposAdicionales,this.idEmpresa).subscribe({
       next: (result: baseOut) => {
         this.result.emit(result);
-        this.closeModal.emit(this.pantalla);
+        let camposRespuesta = { pantalla: this.pantalla, valorSeleccionado: this.valorSeleccionado }
+        this.closeModal.emit(camposRespuesta);
         //this.cerrar();
         this.camposAdicionalesOriginal = JSON.parse(JSON.stringify(this.camposAdicionales));
         this.validaGuadar = false;

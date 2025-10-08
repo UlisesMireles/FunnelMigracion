@@ -119,10 +119,16 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
     this.tiposServiciosFiltrados = this.servicios;
     this.tiposEntregasFiltrados = this.entregas;
     if (this.insertar) {
+      let prospecto: any;
+      if(this.oportunidad.idProspecto)
+      {
+        prospecto = this.prospectos.find(c => c.id === this.oportunidad.idProspecto);
+      }
+      
       this.informacionOportunidad = { probabilidad: '0', idEstatus: 1 };
       this.oportunidadForm = this.fb.group({
         idOportunidad: [0],
-        idProspecto: [null, Validators.required],
+        idProspecto: [prospecto ?? null, Validators.required],
         descripcion: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
         monto: [0, [Validators.required, Validators.min(1)]],
         idTipoProyecto: ['', Validators.required],
@@ -211,7 +217,10 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
     this.modalContactosSubscription = this.modalOportunidadesService.modalContactoOportunidadesState$.subscribe((state) => {
       this.modalVisibleContactos = state.showModal;
       this.insertarContacto = state.insertarContacto;
-      this.contactos = state.contactos;
+      if(state.contactos.length > 0)
+      {
+        this.contactos = state.contactos;
+      }
       this.contactoSeleccionado = state.contactoSeleccionado;
     });
 
@@ -249,6 +258,7 @@ manejarResultadoAbrirInputsAdicionales(resut: any) {
 
 
   onModalCloseCamposAdicionales() {
+    let prospectoSeleccionado = this.oportunidadForm.get('idProspecto')?.value;
     this.modalCamposAdicionalesService.closeModal();
     setTimeout(() => {
       switch (this.informacionReferenciaCatalgo?.tipoCatalogo?.toLowerCase()) {
@@ -292,6 +302,7 @@ manejarResultadoAbrirInputsAdicionales(resut: any) {
   }
 
   consultarCamposAdicionalesPorCatalogo(idEmpresa: number, idUsuario: number) {
+    const prospecto = this.oportunidadForm.get('idProspecto')?.value;
     this.contactosService.getCamposAdicionalesPorCatalogo(idEmpresa, this.informacionReferenciaCatalgo.tipoCatalogo).subscribe({
       next: (result: CamposAdicionales[]) => {
         this.camposAdicionalesPorCatalogo = result.map(campos => ({
@@ -309,7 +320,7 @@ manejarResultadoAbrirInputsAdicionales(resut: any) {
           modificado: false
         }));
 
-        this.modalCamposAdicionalesService.openModal(true, this.camposAdicionales, this.camposAdicionalesPorCatalogo, this.informacionReferenciaCatalgo.pantalla);
+        this.modalCamposAdicionalesService.openModal(true, this.camposAdicionales, this.camposAdicionalesPorCatalogo, this.informacionReferenciaCatalgo.pantalla, prospecto);
       },
       error: (error) => {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar informacion de campos adicionales' });
@@ -518,6 +529,7 @@ manejarResultadoCamposAdicionales(result: baseOut) {
     const prospecto = this.oportunidadForm.get('idProspecto')?.value;
     if (prospecto) {
       if (prospecto.id > 0) {
+        this.busquedaContacto = '';
         this.contactos = this.catalogoService.obtenerContactos(prospecto.id);
         this.oportunidadForm.get('idContactoProspecto')?.enable();
         const prospectoSeleccionado = this.prospectos.find(p => p.id === prospecto.id);
@@ -527,10 +539,17 @@ manejarResultadoCamposAdicionales(result: baseOut) {
         // Contacto por defecto si solo hay uno
         if (this.contactos.length === 1) {
           this.oportunidadForm.get('idContactoProspecto')?.setValue(this.contactos[0]);
+          this.busquedaContacto = this.contactos[0].nombreCompleto;
         }
-        if (this.contactos.length == 0) {
+        else if (this.contactos.length == 0) {
           this.banderaContacto = true;
           this.registraContacto = false;
+          this.busquedaContacto = null;
+          this.oportunidadForm.get('idContactoProspecto')?.setValue(null);
+        }
+        else {
+          this.oportunidadForm.get('idContactoProspecto')?.setValue(null);
+          this.busquedaContacto = null;
         }
       }
     }

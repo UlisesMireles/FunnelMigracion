@@ -59,7 +59,7 @@ export class HeaderComponent implements OnInit {
 
   //Modal Prospectos
   modalVisibleProspectos: boolean = false;
-  prospectos: Prospectos[] = [];
+  prospectos: any[] = [];
   prospectoSeleccionado!: Prospectos;
 
   //Modal Contactos
@@ -504,13 +504,29 @@ seleccionarProceso(proceso: Procesos) {
         detail: result.errorMessage,
       });
       this.modalOportunidadesService.closeModalProspecto(result);
+      if(this.modalVisibleOportunidades)
+      {
+        this.modalOportunidadesService.closeModal();
+
+        this.catalogoService.cargarProspectos(this.authService.obtenerIdEmpresa());
+      setTimeout(() => {
+        this.prospectos = this.catalogoService.obtenerProspectos();
+
+        const prospectoNuevo = this.prospectos.find(c => c.id === result.id);
+        if (prospectoNuevo) {
+          this.modalOportunidadesService.openModal(true, true, [], { idProspecto: prospectoNuevo.id });
+        } 
+
+        this.cdr.detectChanges();
+      }, 500);
+      }
     } else {
       this.messageService.add({
         severity: 'error',
         summary: 'Se ha producido un error.',
         detail: result.errorMessage,
       });
-    }
+     }
   }
 
   onModalCloseContactos() {
@@ -561,7 +577,9 @@ manejarResultadoCamposAdicionales(result: baseOut) {
     }
   }
 
-  onModalCloseCamposAdicionales(tipoCatalogo: string) {
+  onModalCloseCamposAdicionales(datosCierre: any) {
+    let tipoCatalogo = datosCierre?.pantalla;
+    let datosSeleccionados = datosCierre?.valorSeleccionado;
     this.modalCamposAdicionalesService.closeModal();
     //Se debe reabrir modal de contacto o prospecto independientemente si guardo datos o no
     if(!this.informacionReferenciaCatalgo.tipoCatalogo){
@@ -572,14 +590,35 @@ manejarResultadoCamposAdicionales(result: baseOut) {
       }
     }
     setTimeout(() => {
-      switch (this.informacionReferenciaCatalgo.tipoCatalogo.toLowerCase()) {
-        case "contactos":
-          this.modalOportunidadesService.openModalContacto(true, this.informacionReferenciaCatalgo.insertar, [], this.informacionReferenciaCatalgo.referencia);
-          break;
-        default:
-          this.modalOportunidadesService.openModalProspecto(true, this.informacionReferenciaCatalgo.insertar, [], this.informacionReferenciaCatalgo.referencia)
-          break;
+      if(this.informacionReferenciaCatalgo.tipoCatalogo) {
+        let tipoCat = this.informacionReferenciaCatalgo.tipoCatalogo.toLowerCase();
+        if(tipoCat) {
+          switch (tipoCat) {
+              case "contactos":
+                this.contactoSeleccionado = {
+                  idContactoProspecto: 0,
+                  nombre: '',
+                  apellidos: '',
+                  telefono: '',
+                  correoElectronico: '',
+                  prospecto: datosSeleccionados.nombre || '',
+                  idEmpresa: 0,
+                  idProspecto: datosSeleccionados.id || 0,
+                  estatus: 0,
+                  desEstatus: '',
+                  nombreCompleto: '',
+                  bandera: ''
+                };
+                this.modalOportunidadesService.openModalContacto(true, this.informacionReferenciaCatalgo.insertar, [], this.contactoSeleccionado);
+                break;
+              default:
+                this.modalOportunidadesService.openModalProspecto(true, this.informacionReferenciaCatalgo.insertar, [], this.informacionReferenciaCatalgo.referencia)
+                break;
+            }
+        }
       }
+      
+      this.informacionReferenciaCatalgo = {};
     }, 1000);
   }
 
@@ -639,7 +678,7 @@ manejarResultadoCamposAdicionales(result: baseOut) {
           idUsuario: idUsuario,
           modificado: false
         }));
-        this.modalCamposAdicionalesService.openModal(true, this.camposAdicionales, this.camposAdicionalesPorCatalogo, this.informacionReferenciaCatalgo.pantalla)
+        this.modalCamposAdicionalesService.openModal(true, this.camposAdicionales, this.camposAdicionalesPorCatalogo, this.informacionReferenciaCatalgo.pantalla, null)
       },
       error: (error) => {
         console.error('Error:', error);

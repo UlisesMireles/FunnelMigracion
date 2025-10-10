@@ -13,6 +13,8 @@ namespace Funnel.Models.Dto
         public int Total { get; set; }
         public List<int> Anios { get; set; }
         public List<IngresosUsuariosPorMes> Data { get; set; }
+        public List<string> Ips { get; set; }
+        public List<string> Ubicaciones { get; set; }
     }
 
     public class IngresosUsuariosPorMes

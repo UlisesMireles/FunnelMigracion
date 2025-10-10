@@ -31,8 +31,8 @@ namespace Funnel.Data
                     DataBase.CreateParameterSql("@pIdEmpresa", SqlDbType.Int, 0, ParameterDirection.Input, false,null, DataRowVersion.Default, IdEmpresa ),
                     DataBase.CreateParameterSql("@pSesionId", SqlDbType.VarChar, 500, ParameterDirection.Input, false,null, DataRowVersion.Default, "" ),
                     DataBase.CreateParameterSql("@pMotivoCierre", SqlDbType.VarChar, 1000, ParameterDirection.Input, false,null, DataRowVersion.Default, "" ),
-                    DataBase.CreateParameterSql("@pIp", SqlDbType.VarChar, 30, ParameterDirection.Input, false,null, DataRowVersion.Default, "" ),
-                    DataBase.CreateParameterSql("@pUbicacion", SqlDbType.VarChar, 200, ParameterDirection.Input, false,null, DataRowVersion.Default, "" )
+                    //DataBase.CreateParameterSql("@pIp", SqlDbType.VarChar, 30, ParameterDirection.Input, false,null, DataRowVersion.Default, "" ),
+                    //DataBase.CreateParameterSql("@pUbicacion", SqlDbType.VarChar, 200, ParameterDirection.Input, false,null, DataRowVersion.Default, "" )
                 };
             using (IDataReader reader = await DataBase.GetReaderSql("F_IngresosFunnel", CommandType.StoredProcedure, list, _connectionString))
             {
@@ -42,7 +42,8 @@ namespace Funnel.Data
                     dto.IdUsuario = ComprobarNulos.CheckIntNull(reader["IdUsuario"]);
                     dto.Usuario = ComprobarNulos.CheckStringNull(reader["Usuario"]);
                     dto.FechaIngreso = ComprobarNulos.CheckDateTimeNull(reader["FechaIngreso"]);
-
+                    dto.Ip = ComprobarNulos.CheckStringNull(reader["Ip"]);
+                    dto.Ubicacion = ComprobarNulos.CheckStringNull(reader["Ubicacion"]);
                     result.Add(dto);
                 }
             }

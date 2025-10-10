@@ -101,6 +101,9 @@ export class ReporteIngresosUsuariosComponent {
           v.anios.forEach(a => {
             let filtro = v.data.filter((x) => x.anio === a);
             if (filtro.length != 0) {
+              let ipsTexto = v.ips.length ? v.ips.join(", ") : "Sin IP registrada";
+              let ubicacionesTexto = v.ubicaciones.length ? v.ubicaciones.join(", ") : "Sin Ubicación registrada";
+
               this.arrayGraficar.push({
                 idUsuario: v.idUsuario,
                 anio: a,
@@ -111,18 +114,22 @@ export class ReporteIngresosUsuariosComponent {
                   width: filtro.map(i => 0.2),
                   type: 'bar',
                   textfont: { family: "Old Standard TT", size: 13, color: "black" },
-
+                  hovertemplate: 
+                  `<b>Total Accesos:</b> %{y}<br>` +
+                  `<b>IP:</b><br>${ipsTexto}<br>` +
+                  `<b>Ubicación:</b><br>${ubicacionesTexto}<extra></extra>`
                 }],
                 layOutGrafica: {
                   title: {
-                    text: `Reporte de Ingresos del año ${a}`
+                    text: `Reporte de Ingresos del año ${a}`,
+                    font: { size: 14 }
                   },
-                  margin: { l: 50, r: 50, b: 130, t: 120 },
+                  margin: { l: 50, r: 50, b: 130, t: 140 },
                   height: 400,
-
                 },
                 config: { displaylogo: false, responsive: true, locale: 'es-ES', scrollZoom: true, displayModeBar: true }
               });
+
             }
           })
         })

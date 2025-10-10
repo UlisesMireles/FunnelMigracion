@@ -30,6 +30,8 @@ export class ReporteIngresosUsuariosComponent {
   ingresosUsuariosPorAnio: IngresosUsuarios[] = [];
   ingresosUsuariosSeleccionado!: IngresosUsuarios;
   arrayGraficar: any[] = [];
+  arrayGraficarIps: any[] = [];
+  arrayGraficarUbicaciones: any[] = [];
 
   anchoTabla = 100;//porciento
 
@@ -111,22 +113,57 @@ export class ReporteIngresosUsuariosComponent {
                   width: filtro.map(i => 0.2),
                   type: 'bar',
                   textfont: { family: "Old Standard TT", size: 13, color: "black" },
-
                 }],
                 layOutGrafica: {
                   title: {
-                    text: `Reporte de Ingresos del año ${a}`
+                    text: `Reporte de Ingresos del año ${a}`,
+                    font: { size: 14 }
                   },
-                  margin: { l: 50, r: 50, b: 130, t: 120 },
+                  margin: { l: 50, r: 50, b: 130, t: 140 },
                   height: 400,
-
                 },
                 config: { displaylogo: false, responsive: true, locale: 'es-ES', scrollZoom: true, displayModeBar: true }
               });
+
             }
           })
         })
 
+        this.arrayGraficarIps = [];
+        result.forEach(user => {
+          if (user.ips.length > 0 && user.ubicaciones.length > 0) {
+            
+            const accesosPorIp = user.ips.map(ip => 
+              user.data.reduce((sum, mes) => {
+                return sum + (mes['accesosPorIp']?.[ip] || 0);
+              }, 0)
+            );
+
+            this.arrayGraficarIps.push({
+              idUsuario: user.idUsuario,
+              usuario: user.usuario,
+              dataAGraficar: [{
+                x: user.ips,
+                y: accesosPorIp,
+                type: 'bar',
+                text: [],
+                hovertemplate: user.ips.map((ip, index) =>
+                  `<b>Ubicación:</b> ${user.ubicaciones[index] || 'Sin ubicación'}<br>` +
+                  `<b>Accesos:</b> %{y}<extra></extra>`),
+                hoverinfo: 'text'
+              }],
+              layOutGrafica: {
+                title: {
+                  text: `IPs y Ubicaciones`,
+                  font: { size: 14 }
+                },
+                margin: { l: 50, r: 50, b: 150, t: 120 }, 
+                height: 400
+              },
+              config: { displaylogo: false, responsive: true, locale: 'es-ES', scrollZoom: true, displayModeBar: true }
+            });
+          }
+        });
 
         this.loading = false;
 

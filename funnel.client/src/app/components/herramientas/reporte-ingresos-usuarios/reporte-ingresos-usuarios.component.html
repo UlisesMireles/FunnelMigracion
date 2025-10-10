@@ -30,12 +30,27 @@
                     </mat-panel-description>
                 </mat-expansion-panel-header>
                 <!-- <div class="p-0" style="height:330px;max-height: 330px; z-index: 5000;"> -->
-                <ng-template *ngIf="getData(usuario)" matExpansionPanelContent>
-                    <!-- <div *ngIf="getData(usuario)">
-                            <p>grafica {{usuario.usuario}}</p>
-                        </div> -->
-                    <plotly-plot [data]="getData(usuario)" [layout]="getLayout(usuario)"
-                        [config]="getConfig(usuario)"></plotly-plot>
+               <ng-template *ngIf="getData(usuario)" matExpansionPanelContent>
+                <div class="dashboard-container">
+                    <div class="grafica-principal">
+                    <plotly-plot 
+                        [data]="getData(usuario)" 
+                        [layout]="getLayout(usuario)"
+                        [config]="getConfig(usuario)">
+                    </plotly-plot>
+                    </div>
+
+                    <div class="grafica-ips">
+                    <div *ngFor="let g of arrayGraficarIps" >
+                        <plotly-plot 
+                        *ngIf="g.idUsuario === usuario.idUsuario"
+                        [data]="g.dataAGraficar" 
+                        [layout]="g.layOutGrafica" 
+                        [config]="g.config">
+                        </plotly-plot>
+                    </div>
+                    </div>
+                </div>
                 </ng-template>
                 <!-- </div> -->
             </mat-expansion-panel>

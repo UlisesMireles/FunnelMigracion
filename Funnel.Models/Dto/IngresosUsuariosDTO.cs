@@ -13,6 +13,8 @@ namespace Funnel.Models.Dto
         public int Total { get; set; }
         public List<int> Anios { get; set; }
         public List<IngresosUsuariosPorMes> Data { get; set; }
+        public List<string> Ips { get; set; }
+        public List<string> Ubicaciones { get; set; }
     }
 
     public class IngresosUsuariosPorMes
@@ -22,5 +24,7 @@ namespace Funnel.Models.Dto
         public int Mes { get; set; }
         public string MesTexto { get; set; }
         public int TotalAccesos { get; set; }
+
+        public Dictionary<string, int> AccesosPorIp { get; set; } = new Dictionary<string, int>();
     }
 }

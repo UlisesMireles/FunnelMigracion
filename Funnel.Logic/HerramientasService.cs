@@ -28,7 +28,7 @@ namespace Funnel.Logic
             _herramientasData = herramientasData;
             _converter = converter;
             _loginService = loginService;
-        }        
+        }
 
         public async Task<List<IngresosUsuariosDTO>> ConsultarIngresos(int IdUsuario, int IdEmpresa)
         {
@@ -41,18 +41,52 @@ namespace Funnel.Logic
                     IdUsuario = i.Key,
                     Usuario = i.First().Usuario,
                     Total = i.Count(),
-                    Anios = ingresos.GroupBy(v=> v.FechaIngreso.Year).Select(v=> v.Key).ToList(),
-                    Data = ingresos.Where(v => v.IdUsuario == i.Key)
-                            .GroupBy(i => new { i.Usuario, Anio = i.FechaIngreso.Year, Mes = i.FechaIngreso.Month })
-                            .Select(g => new IngresosUsuariosPorMes
-                            {
-                                Usuario = g.Key.Usuario,
-                                Anio = g.Key.Anio,
-                                Mes = g.Key.Mes,
-                                MesTexto = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(g.Key.Mes).ToUpper(),
-                                TotalAccesos = g.Count()
-                            }).OrderByDescending(x => x.Anio).ThenBy(x => x.Mes).ThenBy(x => x.Usuario).ToList()
-                }).OrderBy(i => i.Usuario).ToList();
+                    Anios = ingresos
+                        .Where(v => v.IdUsuario == i.Key)
+                        .GroupBy(v => v.FechaIngreso.Year)
+                        .Select(v => v.Key)
+                        .ToList(),
+
+                    Ips = ingresos
+                        .Where(v => v.IdUsuario == i.Key)
+                        .Select(v => v.Ip)
+                        .Where(ip => !string.IsNullOrEmpty(ip))
+                        .Distinct()
+                        .ToList(),
+
+                    Ubicaciones = ingresos
+                        .Where(v => v.IdUsuario == i.Key)
+                        .Select(v => v.Ubicacion)
+                        .Where(u => !string.IsNullOrEmpty(u))
+                        .Distinct()
+                        .ToList(),
+
+                    Data = ingresos
+                        .Where(v => v.IdUsuario == i.Key)
+                        .GroupBy(i => new { i.Usuario, Anio = i.FechaIngreso.Year, Mes = i.FechaIngreso.Month })
+                        .Select(g => new IngresosUsuariosPorMes
+                        {
+                            Usuario = g.Key.Usuario,
+                            Anio = g.Key.Anio,
+                            Mes = g.Key.Mes,
+                            MesTexto = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(g.Key.Mes).ToUpper(),
+                            TotalAccesos = g.Count(),
+                            AccesosPorIp = g
+                            .GroupBy(x => x.Ip)
+                            .Where(x => !string.IsNullOrEmpty(x.Key))
+                            .ToDictionary(
+                                x => x.Key,
+                                x => x.Count()
+                            )
+                        })
+                        .OrderByDescending(x => x.Anio)
+                        .ThenBy(x => x.Mes)
+                        .ThenBy(x => x.Usuario)
+                        .ToList()
+                                })
+
+                .OrderBy(i => i.Usuario)
+                .ToList();
 
             return ingresosMensuales;
         }

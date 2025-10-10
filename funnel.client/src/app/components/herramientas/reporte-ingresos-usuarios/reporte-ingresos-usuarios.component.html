@@ -36,6 +36,14 @@
                         </div> -->
                     <plotly-plot [data]="getData(usuario)" [layout]="getLayout(usuario)"
                         [config]="getConfig(usuario)"></plotly-plot>
+                    <div *ngFor="let g of arrayGraficarIps">
+                    <plotly-plot 
+                        *ngIf="g.idUsuario === usuario.idUsuario"
+                        [data]="g.dataAGraficar" 
+                        [layout]="g.layOutGrafica" 
+                        [config]="g.config">
+                    </plotly-plot>
+                    </div>
                 </ng-template>
                 <!-- </div> -->
             </mat-expansion-panel>

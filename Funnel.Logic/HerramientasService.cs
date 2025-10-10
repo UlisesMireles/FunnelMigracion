@@ -61,7 +61,7 @@ namespace Funnel.Logic
                         .Distinct()
                         .ToList(),
 
-                                    Data = ingresos
+                    Data = ingresos
                         .Where(v => v.IdUsuario == i.Key)
                         .GroupBy(i => new { i.Usuario, Anio = i.FechaIngreso.Year, Mes = i.FechaIngreso.Month })
                         .Select(g => new IngresosUsuariosPorMes
@@ -70,7 +70,14 @@ namespace Funnel.Logic
                             Anio = g.Key.Anio,
                             Mes = g.Key.Mes,
                             MesTexto = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(g.Key.Mes).ToUpper(),
-                            TotalAccesos = g.Count()
+                            TotalAccesos = g.Count(),
+                            AccesosPorIp = g
+                            .GroupBy(x => x.Ip)
+                            .Where(x => !string.IsNullOrEmpty(x.Key))
+                            .ToDictionary(
+                                x => x.Key,
+                                x => x.Count()
+                            )
                         })
                         .OrderByDescending(x => x.Anio)
                         .ThenBy(x => x.Mes)

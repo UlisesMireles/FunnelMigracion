@@ -24,5 +24,7 @@ namespace Funnel.Models.Dto
         public int Mes { get; set; }
         public string MesTexto { get; set; }
         public int TotalAccesos { get; set; }
+
+        public Dictionary<string, int> AccesosPorIp { get; set; } = new Dictionary<string, int>();
     }
 }

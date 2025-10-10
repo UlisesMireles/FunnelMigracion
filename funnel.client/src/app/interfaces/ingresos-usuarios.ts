@@ -15,5 +15,6 @@ export interface IngresosUsuariosPorMes {
     mes: number;
     mesTexto: string;
     totalAccesos: number;
+    accesosPorIp?: { [ip: string]: number };
 }
 

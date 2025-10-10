@@ -160,7 +160,7 @@ export class ReporteIngresosUsuariosComponent {
                 margin: { l: 50, r: 50, b: 150, t: 120 }, 
                 height: 400
               },
-              config: { displaylogo: false, responsive: true }
+              config: { displaylogo: false, responsive: true, locale: 'es-ES', scrollZoom: true, displayModeBar: true }
             });
           }
         });

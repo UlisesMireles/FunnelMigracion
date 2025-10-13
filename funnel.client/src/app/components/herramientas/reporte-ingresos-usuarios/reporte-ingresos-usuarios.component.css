@@ -350,5 +350,11 @@ th.sort-active p-sortIcon {
   gap: 20px;
   max-height: 800px;
   overflow-y: auto; 
+  margin-top: -30px;
 }
-
+.titulo-grafica {
+  font-weight: lighter;
+  font-size: 13px;
+  font-family: "Open Sans", verdana, arial, sans-serif;
+  margin-top: 60px;
+}

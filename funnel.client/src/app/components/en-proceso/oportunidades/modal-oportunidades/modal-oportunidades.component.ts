@@ -353,7 +353,7 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
       this.busquedaTipoEntrega = "";
     }
 
-    this.tiposEntregasFiltrados = this.servicios;
+    this.tiposEntregasFiltrados = this.entregas;
     this.tipoEntregasSeleccionado = true;
     this.cdr.detectChanges();
     this.onChangeProspecto();

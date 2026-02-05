@@ -16,6 +16,9 @@ import { Contacto } from '../../../../interfaces/contactos';
 import { Prospectos } from '../../../../interfaces/prospecto';
 import { TipoServicio } from '../../../../interfaces/tipoServicio';
 import { TipoEntrega } from '../../../../interfaces/tipo-entrega';
+import { ContactosService } from '../../../../services/contactos.service';
+import { CamposAdicionales } from '../../../../interfaces/campos-adicionales';
+import { ModalCamposAdicionalesService } from '../../../../services/modalCamposAdicionales.service';
 
 @Component({
   selector: 'app-modal-oportunidades',
@@ -27,7 +30,9 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
   private catalogosSubscription!: Subscription;
 
   constructor(private readonly catalogoService: CatalogoService, private oportunidadService: OportunidadesService, private messageService: MessageService, private readonly loginService: LoginService, private fb: FormBuilder, private cdr: ChangeDetectorRef,
-    private modalOportunidadesService: ModalOportunidadesService
+    private modalOportunidadesService: ModalOportunidadesService,
+    private contactosService: ContactosService,
+    private modalCamposAdicionalesService: ModalCamposAdicionalesService
   ) {
 
   }
@@ -98,6 +103,12 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
   private modalTiposEntregasSubscription!: Subscription;
   modalVisibleTiposEntregas: boolean = false;
 
+   //Modal Campos Adicionales
+  camposAdicionales: CamposAdicionales[] = [];
+  camposAdicionalesPorCatalogo: CamposAdicionales[] = [];
+  modalVisibleCamposAdicionales: boolean = false;
+  informacionReferenciaCatalgo: any = {};
+
   inicializarFormulario() {
     this.modalSubscription = this.modalOportunidadesService.modalState$.subscribe((state) => {
       this.visible = state.showModal;
@@ -108,10 +119,16 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
     this.tiposServiciosFiltrados = this.servicios;
     this.tiposEntregasFiltrados = this.entregas;
     if (this.insertar) {
+      let prospecto: any;
+      if(this.oportunidad.idProspecto)
+      {
+        prospecto = this.prospectos.find(c => c.id === this.oportunidad.idProspecto);
+      }
+      
       this.informacionOportunidad = { probabilidad: '0', idEstatus: 1 };
       this.oportunidadForm = this.fb.group({
         idOportunidad: [0],
-        idProspecto: [null, Validators.required],
+        idProspecto: [prospecto ?? null, Validators.required],
         descripcion: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
         monto: [0, [Validators.required, Validators.min(1)]],
         idTipoProyecto: ['', Validators.required],
@@ -200,7 +217,10 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
     this.modalContactosSubscription = this.modalOportunidadesService.modalContactoOportunidadesState$.subscribe((state) => {
       this.modalVisibleContactos = state.showModal;
       this.insertarContacto = state.insertarContacto;
-      this.contactos = state.contactos;
+      if(state.contactos.length > 0)
+      {
+        this.contactos = state.contactos;
+      }
       this.contactoSeleccionado = state.contactoSeleccionado;
     });
 
@@ -226,8 +246,103 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
       this.entregas = state.tiposEntregas;
       this.tipoEntregaSeleccionado = state.tipoEntregaSeleccionado;
     });
+
+    
   }
 
+manejarResultadoAbrirInputsAdicionales(resut: any) {
+    this.informacionReferenciaCatalgo = resut
+    this.getCamposAdicionales();
+
+  }
+
+
+  onModalCloseCamposAdicionales() {
+    let prospectoSeleccionado = this.oportunidadForm.get('idProspecto')?.value;
+    this.modalCamposAdicionalesService.closeModal();
+    setTimeout(() => {
+      switch (this.informacionReferenciaCatalgo?.tipoCatalogo?.toLowerCase()) {
+        case 'contactos':
+          this.modalOportunidadesService.openModalContactoOportunidades(true, this.informacionReferenciaCatalgo.insertar, [], this.informacionReferenciaCatalgo.referencia);
+          break;
+        default:
+          this.modalOportunidadesService.openModalProspectoOportunidades(true, this.informacionReferenciaCatalgo.insertar, [], this.informacionReferenciaCatalgo.referencia);
+          break;
+      }
+    }, 500);
+  }
+
+  getCamposAdicionales() {
+    const idUsuario = this.loginService.obtenerIdUsuario();
+    const idEmpresa = this.loginService.obtenerIdEmpresa();
+
+    this.contactosService.getCamposAdicionales(idEmpresa, this.informacionReferenciaCatalgo.tipoCatalogo).subscribe({
+      next: (result: CamposAdicionales[]) => {
+        this.camposAdicionales = result.map(campos => ({
+          ...campos,
+          idInput: campos.idInput,
+          nombre: campos.nombre,
+          etiqueta: campos.etiqueta,
+          requerido: campos.requerido,
+          tipoCampo: campos.tipoCampo,
+          rCatalogoInputId: campos.rCatalogoInputId,
+          tipoCatalogoInput: campos.tipoCatalogoInput,
+          orden: campos.orden,
+          idEmpresa: idEmpresa,
+          idUsuario: idUsuario,
+          modificado: false
+        }));
+
+        this.consultarCamposAdicionalesPorCatalogo(idEmpresa, idUsuario);
+      },
+      error: (error) => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar informacion de campos adicionales' });
+      }
+    });
+  }
+
+  consultarCamposAdicionalesPorCatalogo(idEmpresa: number, idUsuario: number) {
+    const prospecto = this.oportunidadForm.get('idProspecto')?.value;
+    this.contactosService.getCamposAdicionalesPorCatalogo(idEmpresa, this.informacionReferenciaCatalgo.tipoCatalogo).subscribe({
+      next: (result: CamposAdicionales[]) => {
+        this.camposAdicionalesPorCatalogo = result.map(campos => ({
+          ...campos,
+          idInput: campos.idInput,
+          nombre: campos.nombre,
+          etiqueta: campos.etiqueta,
+          requerido: campos.requerido,
+          tipoCampo: campos.tipoCampo,
+          rCatalogoInputId: campos.rCatalogoInputId,
+          tipoCatalogoInput: campos.tipoCatalogoInput,
+          orden: campos.orden,
+          idEmpresa: idEmpresa,
+          idUsuario: idUsuario,
+          modificado: false
+        }));
+
+        this.modalCamposAdicionalesService.openModal(true, this.camposAdicionales, this.camposAdicionalesPorCatalogo, this.informacionReferenciaCatalgo.pantalla, prospecto);
+      },
+      error: (error) => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar informacion de campos adicionales' });
+      }
+    });
+  }
+manejarResultadoCamposAdicionales(result: baseOut) {
+    if (result.result) {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'La operación se realizó con éxito.',
+        detail: result.errorMessage,
+      });
+      this.modalCamposAdicionalesService.closeModal();
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Se ha producido un error.',
+        detail: result.errorMessage,
+      });
+    }
+  }
   validarCambios(valoresIniciales: any, cambios: any) {
     const valoresActuales = cambios;
 
@@ -414,6 +529,7 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
     const prospecto = this.oportunidadForm.get('idProspecto')?.value;
     if (prospecto) {
       if (prospecto.id > 0) {
+        this.busquedaContacto = '';
         this.contactos = this.catalogoService.obtenerContactos(prospecto.id);
         this.oportunidadForm.get('idContactoProspecto')?.enable();
         const prospectoSeleccionado = this.prospectos.find(p => p.id === prospecto.id);
@@ -423,10 +539,17 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
         // Contacto por defecto si solo hay uno
         if (this.contactos.length === 1) {
           this.oportunidadForm.get('idContactoProspecto')?.setValue(this.contactos[0]);
+          this.busquedaContacto = this.contactos[0].nombreCompleto;
         }
-        if (this.contactos.length == 0) {
+        else if (this.contactos.length == 0) {
           this.banderaContacto = true;
           this.registraContacto = false;
+          this.busquedaContacto = null;
+          this.oportunidadForm.get('idContactoProspecto')?.setValue(null);
+        }
+        else {
+          this.oportunidadForm.get('idContactoProspecto')?.setValue(null);
+          this.busquedaContacto = null;
         }
       }
     }
@@ -451,10 +574,11 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
   }
 
   onDialogShow() {
+    const idProceso = Number(localStorage.getItem('idProceso'));
     this.catalogoService.cargarProspectos(this.loginService.obtenerIdEmpresa());
     this.catalogoService.cargarContactos(this.loginService.obtenerIdEmpresa());
     this.catalogoService.cargarServicios(this.loginService.obtenerIdEmpresa());
-    this.catalogoService.cargarEtapas(this.loginService.obtenerIdEmpresa());
+    this.catalogoService.cargarEtapas(this.loginService.obtenerIdEmpresa(), idProceso);
     this.catalogoService.cargarEjecutivos(this.loginService.obtenerIdEmpresa());
     this.catalogoService.cargarEntregas(this.loginService.obtenerIdEmpresa());
 
@@ -567,7 +691,8 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
       fechaEstimadaCierre: this.oportunidadForm.get('fechaEstimadaCierreOriginal')?.value || new Date(),
       comentario: this.oportunidadForm.get('comentario')?.value,
       idProspecto: idProspecto,
-      probabilidad: this.oportunidadForm.get('probabilidad')?.value
+      probabilidad: this.oportunidadForm.get('probabilidad')?.value,
+      idProceso: Number(localStorage.getItem('idProceso'))
     };
     this.informacionOportunidad.probabilidad = this.informacionOportunidad.probabilidad?.replace('%', '').trim();
     this.informacionOportunidad.idUsuario = this.loginService.obtenerIdUsuario();
@@ -785,88 +910,82 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
   }
 
   manejarResultadoTiposServicios(result: baseOut) {
-    if (result.result) {
-      this.messageService.add({
-        severity: 'success',
-        summary: 'La operación se realizó con éxito.',
-        detail: result.errorMessage,
-      });
-      this.modalOportunidadesService.closeModalTipoServicioOportunidades(result);     
+  if (result.result) {
+    const valoresActuales = this.oportunidadForm.getRawValue();
+    console.log(valoresActuales)
+    this.messageService.add({
+      severity: 'success',
+      summary: 'La operación se realizó con éxito.',
+      detail: result.errorMessage,
+    });
+    this.modalOportunidadesService.closeModalTipoServicioOportunidades(result);     
 
-      this.catalogoService.cargarServicios(this.loginService.obtenerIdEmpresa());
+    this.catalogoService.cargarServicios(this.loginService.obtenerIdEmpresa());
 
-      setTimeout(() => {
-        this.servicios = this.catalogoService.obtenerServicios();
+    setTimeout(() => {
+      this.servicios = this.catalogoService.obtenerServicios();
 
-
-        const tipoServicioNuevo = this.servicios.find(c => c.idTipoProyecto === result.id);
-        if (tipoServicioNuevo) {
-          this.oportunidadForm.get('idTipoProyecto')?.setValue(tipoServicioNuevo);
-        } else if (this.servicios.length === 1) {
-          this.oportunidadForm.get('idTipoProyecto')?.setValue(this.servicios[0]);
-        }
-
+      const tipoServicioNuevo = this.servicios.find(c => c.idTipoProyecto === result.id);
+      
+      this.oportunidadForm.patchValue(valoresActuales, { emitEvent: false });
+      console.log(valoresActuales)
+      if (tipoServicioNuevo) {
+        this.oportunidadForm.get('idTipoProyecto')?.setValue(tipoServicioNuevo, { emitEvent: false });
         this.busquedaTipoServicio = tipoServicioNuevo?.descripcion;
-        this.tiposServiciosFiltrados = this.servicios;
-        this.tipoServiciosSeleccionado = true
-        this.onChangeProspecto();
+      }
 
-        this.cdr.detectChanges();
-      }, 500);
-
-      
-    }
-
-    else {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Se ha producido un error.',
-        detail: result.errorMessage,
-      });
-    }
+      this.tiposServiciosFiltrados = this.servicios;
+      this.tipoServiciosSeleccionado = true;
+      this.validaGuadar = true;
+      this.cdr.detectChanges();
+    }, 500);
+  } else {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Se ha producido un error.',
+      detail: result.errorMessage,
+    });
   }
+}
 
-  manejarResultadoTiposEntregas(result: baseOut) {
-    if (result.result) {
-      this.messageService.add({
-        severity: 'success',
-        summary: 'La operación se realizó con éxito.',
-        detail: result.errorMessage,
-      });
-      this.modalOportunidadesService.closeModalTipoEntregasOportunidades(result);     
+ manejarResultadoTiposEntregas(result: baseOut) {
+  if (result.result) {
+    const valoresActuales = this.oportunidadForm.getRawValue();
+    
+    this.messageService.add({
+      severity: 'success',
+      summary: 'La operación se realizó con éxito.',
+      detail: result.errorMessage,
+    });
+    this.modalOportunidadesService.closeModalTipoEntregasOportunidades(result);     
 
-      this.catalogoService.cargarEntregas(this.loginService.obtenerIdEmpresa());
+    this.catalogoService.cargarEntregas(this.loginService.obtenerIdEmpresa());
 
-      setTimeout(() => {
-        this.entregas = this.catalogoService.obtenerEntregas();
+    setTimeout(() => {
+      this.entregas = this.catalogoService.obtenerEntregas();
 
-
-        const tipoEntregaNuevo = this.entregas.find(c => c.idTipoEntrega === result.id);
-        if (tipoEntregaNuevo) {
-          this.oportunidadForm.get('idTipoEntrega')?.setValue(tipoEntregaNuevo);
-        } else if (this.entregas.length === 1) {
-          this.oportunidadForm.get('idTipoEntrega')?.setValue(this.entregas[0]);
-        }
-
+      const tipoEntregaNuevo = this.entregas.find(c => c.idTipoEntrega === result.id);
+      
+      this.oportunidadForm.patchValue(valoresActuales, { emitEvent: false });
+      
+      if (tipoEntregaNuevo) {
+        this.oportunidadForm.get('idTipoEntrega')?.setValue(tipoEntregaNuevo, { emitEvent: false });
         this.busquedaTipoEntrega = tipoEntregaNuevo?.descripcion;
-        this.tiposEntregasFiltrados = this.entregas;
-        this.tipoEntregasSeleccionado = true
-        this.onChangeProspecto();
+      }
 
-        this.cdr.detectChanges();
-      }, 500);
-
-      
-    }
-
-    else {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Se ha producido un error.',
-        detail: result.errorMessage,
-      });
-    }
+      this.tiposEntregasFiltrados = this.entregas;
+      this.tipoEntregasSeleccionado = true;
+      this.validaGuadar = true;
+      this.cdr.detectChanges();
+    }, 500);
+  } else {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Se ha producido un error.',
+      detail: result.errorMessage,
+    });
   }
+}
 
 
   formatearMonto(event: any) {

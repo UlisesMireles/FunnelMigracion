@@ -51,6 +51,7 @@ export interface Oportunidad {
     primerNombreContacto?: string;
     nombreContactoCompleto?: string;
     bandera?: string;
+    idProceso?: number;
 }
 
 export interface RequestOportunidad {
@@ -135,12 +136,24 @@ export interface RequestActualizarFechaEstimadaCierre {
 }
 
 export  interface OportunidadesPorEtapa {
-  idStage: number; 
+  idStage?: number; 
   nombre: string;
-  expandido: boolean;
-  mes?: number;
-  anio: number;
+  expandido?: boolean;
+  mes: number;
+  anio?: number;
   tarjetas: Tarjeta[];
+  editandoNombre?: boolean;
+  probabilidad?: string;
+  orden?: string;
+  eliminado?: boolean;
+  agregado?: boolean;
+  editado?: boolean;
+  idUsuario?: number;
+  idEmpresa?: number;
+  nombreProceso?: string;
+  etapaSeleccionada?: OportunidadesPorEtapa | null | undefined;
+  textoBusqueda?: string;
+  idProceso?: number;
 }
 
 export interface RequestActualizarEtapa {

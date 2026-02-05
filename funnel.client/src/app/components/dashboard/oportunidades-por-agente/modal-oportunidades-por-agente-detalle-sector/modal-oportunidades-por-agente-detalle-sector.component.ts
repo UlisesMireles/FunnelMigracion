@@ -40,9 +40,11 @@ export class ModalOportunidadesPorAgenteDetalleSectorComponent {
   }
 
   cargarDetalles() {
+    const idProceso = Number(localStorage.getItem('idProceso'));
     const requestData: RequestGraficasDto = {
       idEmpresa: this.loginService.obtenerIdEmpresa(),
-      idUsuario: this.loginService.obtenerIdUsuario()
+      idUsuario: this.loginService.obtenerIdUsuario(),
+      idProceso: idProceso
     };
 
     this.graficasService.obtenerDetalleOportunidadesSectorAgente(this.idAgente, this.idSector, requestData)

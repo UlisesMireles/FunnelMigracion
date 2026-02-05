@@ -4,6 +4,9 @@ export interface IngresosUsuarios {
     anios: number[];
     total: number
     data: IngresosUsuariosPorMes[]
+    ip: string[];
+    ips: string[];
+    ubicaciones: string[];
 }
 
 export interface IngresosUsuariosPorMes {
@@ -12,5 +15,6 @@ export interface IngresosUsuariosPorMes {
     mes: number;
     mesTexto: string;
     totalAccesos: number;
+    accesosPorIp?: { [ip: string]: number };
 }
 

@@ -44,8 +44,8 @@ export class LoginService {
       }
     }
   }
-  login(user: string, pass: string) {
-    const datos = { usuario: user, password: pass };
+  login(user: string, pass: string, ip: string, ubicacion: string) {
+    const datos = { usuario: user, password: pass, ip: ip, ubicacion: ubicacion };
     return this.http.post<any>(this.baseUrl + "api/Login/Autenticacion", datos)
       .pipe(map(usuario => {
         let user = usuario;
@@ -66,6 +66,7 @@ export class LoginService {
           localStorage.setItem('licencia', user.licencia);
           localStorage.setItem('cantidadUsuarios', user.cantidadUsuarios);
           localStorage.setItem('cantidadOportunidades', user.cantidadOportunidades);
+          localStorage.setItem('idProceso', user.idProceso.toString());
           this.currentUserSubject.next(user);
           sessionStorage.setItem('sesion', window.btoa(JSON.stringify(user)));
           sessionStorage.setItem('Usuario', user.nombre);
@@ -112,7 +113,6 @@ export class LoginService {
     if(this.warningTime){
       clearTimeout(this.warningTime);
     }
-    console.log('Warning time: '+ this.warningTime);
     this.warningTime = setTimeout(() => {
       this.sessionWarning$.next();
       console.log('Session warning triggered desde login: '+ this.sessionActivityTimeout);
@@ -208,7 +208,6 @@ export class LoginService {
 
   obtenerPermitirDecimales(): boolean {
     const valor = sessionStorage.getItem('permitirDecimales');
-    console.log('Permitir decimales desde sessionStorage:', valor);
     return valor === 'true';
   }
 

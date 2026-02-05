@@ -334,30 +334,66 @@ export class DocumentosOportunidadesComponent {
         }
       });
     }
-    onFileChange(event: any) {
-      const input = event.target as HTMLInputElement;
-      if (input.files && input.files.length > 0) {
-        // Convertir FileList a array y agregar a la lista existente
-        const newFiles = Array.from(input.files) as File[];
-        if (newFiles.length > this.maxArchivos) {
-          this.messageService.add({
-            severity: 'warn',
-            summary:'Límite de archivos',
-            detail: `Solo puedes subir ${this.archivosDisponibles} archivo(s) más.`
-          });
-          return;
-        }
-        this.archivosSeleccionados = [...this.archivosSeleccionados, ...newFiles];
-        
-        // Limpiar el input file después de seleccionar
-        input.value = '';
-        
-        // Actualizar el valor del formulario
-        this.oportunidadForm.get('nombreArchivo')?.setValue(
-          this.archivosSeleccionados.map(f => f.name).join(', ')
-        );
-      }
+  get archivosDisponiblesParaSeleccionar(): number {
+    const yaSubidos = this.oportunidad?.totalArchivos || 0;
+    const seleccionados = this.archivosSeleccionados.length;
+    return Math.max(0, this.maxArchivos - yaSubidos - seleccionados);
+  }
+
+  onFileChange(event: any) {
+    const input = event.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0) return;
+
+    const newFiles = Array.from(input.files) as File[];
+
+    const yaSubidos = this.oportunidad?.totalArchivos || 0;
+    const seleccionados = this.archivosSeleccionados.length;
+    const availableSlots = this.maxArchivos - yaSubidos - seleccionados;
+
+    if (availableSlots <= 0) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Límite de archivos',
+        detail: `No puedes añadir más archivos. El límite total es de ${this.maxArchivos}.`
+      });
+      input.value = '';
+      return;
     }
+
+    const uniqueNewFiles = newFiles.filter(f => 
+      !this.archivosSeleccionados.some(s => s.name === f.name && s.size === f.size)
+    );
+
+    if (uniqueNewFiles.length === 0) {
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Archivos duplicados',
+        detail: 'Los archivos seleccionados ya están en la lista.'
+      });
+      input.value = '';
+      return;
+    }
+
+    if (uniqueNewFiles.length > availableSlots) {
+      this.archivosSeleccionados = [
+        ...this.archivosSeleccionados,
+        ...uniqueNewFiles.slice(0, availableSlots)
+      ];
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Límite parcial',
+        detail: `Solo se agregaron ${availableSlots} archivo(s).`
+      });
+    } else {
+      this.archivosSeleccionados = [...this.archivosSeleccionados, ...uniqueNewFiles];
+    }
+
+    this.oportunidadForm.get('nombreArchivo')?.setValue(
+      this.archivosSeleccionados.map(f => f.name).join(', ')
+    );
+    input.value = '';
+  }
+
 
           recuperarArchivo(item: Archivos) {
             this.loading = true;

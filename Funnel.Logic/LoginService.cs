@@ -12,16 +12,26 @@ namespace Funnel.Logic
     public class LoginService : ILoginService
     {
         private readonly ILoginData _loginData;
+        private readonly IProcesosData _procesosData;
+
         private readonly Correo _correo = new Correo();
-        public LoginService(ILoginData loginData)
+        public LoginService(ILoginData loginData, IProcesosData ProcesosData)
         {
             _loginData = loginData;
+            _procesosData = ProcesosData;
         }
         public async Task<UsuarioDto> Autenticar(string user, string contrasena)
         {
             if (!string.IsNullOrEmpty(contrasena))
                 contrasena = Encrypt.Encriptar(contrasena);
             var respuesta = await _loginData.Autenticar(user, contrasena);
+            int empresa = respuesta.IdEmpresa ?? 0;
+            var procesos = await _procesosData.ConsultarProcesos(empresa);
+            if (procesos.Count > 0)
+                respuesta.IdProceso = procesos[0].IdProceso;
+            else
+                respuesta.IdProceso = 0;
+
             return respuesta;
         }
         public async Task<DobleAutenticacionDto> VerificarCodigoDobleAutenticacion(CodigoDosPasosDto usuario)
@@ -171,12 +181,12 @@ namespace Funnel.Logic
         {
             return await _loginData.ReenviarCodigo(correo);
         }
-        public async Task<BaseOut> RegistrarIngresoUsuario(string Bandera, int IdUsuario, int IdEmpresa, string SesionId, string MotivoCierre)
+        public async Task<BaseOut> RegistrarIngresoUsuario(string Bandera, int IdUsuario, int IdEmpresa, string SesionId, string MotivoCierre, string Ip, string Ubicacion)
         {
             await Task.Delay(1);
             string _SesionId = Bandera == "INSERT" ? Encrypt.Encriptar(string.Concat(IdUsuario.ToString(), '_', DateTime.Now.ToString())) : SesionId;
 
-            return await _loginData.RegistrarIngresoUsuario(Bandera, IdUsuario, IdEmpresa, _SesionId, MotivoCierre);
+            return await _loginData.RegistrarIngresoUsuario(Bandera, IdUsuario, IdEmpresa, _SesionId, MotivoCierre, Ip, Ubicacion);
         }
         public async Task<EmpresaDTO> ObtenerImagenEmpresa(int IdEmpresa)
         {

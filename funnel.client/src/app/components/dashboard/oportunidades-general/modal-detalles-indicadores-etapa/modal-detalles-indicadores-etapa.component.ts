@@ -44,10 +44,12 @@ export class ModalDetallesIndicadoresEtapaComponent {
 
 cargarOportunidades() {
   this.loading = true;
+  const idProceso = Number(localStorage.getItem('idProceso'));
   this.oportunidadesService.getOportunidades(
     this.loginService.obtenerIdEmpresa(),
     this.loginService.obtenerIdUsuario(),
-    1 
+    1,
+    idProceso 
   ).subscribe({
     next: (data) => {
       this.oportunidades = data.sort((a: Oportunidad, b: Oportunidad) => {

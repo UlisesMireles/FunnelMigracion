@@ -1,0 +1,274 @@
+/* Estilos para el preview del drag and drop */
+.cdk-drag-preview {
+    box-sizing: border-box;
+    /* Incluye padding y borde en el tamaño total */
+    border-radius: 4px;
+    /* Esquinas redondeadas con 4px */
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+        0 8px 10px 1px rgba(0, 0, 0, 0.14),
+        0 3px 14px 2px rgba(0, 0, 0, 0.12);
+    /* Sombra para el preview */
+}
+
+/* Estilos para el placeholder durante el drag */
+.cdk-drag-placeholder {
+    opacity: 0;
+    /* Hace el placeholder invisible */
+}
+
+/* Transición para el drag animado */
+.cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+    /* Transición suave para la animación del drag */
+}
+
+/* Estilos para el botón primario */
+.btn-primary {
+    color: #fff !important;
+    /* Texto blanco, forzado con !important */
+    background-color: #007bff !important;
+    /* Fondo azul, forzado */
+    border-color: #007bff !important;
+    /* Borde azul, forzado */
+}
+
+/* Estilos para el botón secundario */
+.btn-secondary {
+    background-color: lightgray !important;
+    /* Fondo gris claro */
+    border-color: lightgray !important;
+    /* Borde gris claro */
+}
+
+/* Fuente global para el body */
+body {
+    font-family: "Segoe UI", Arial, Sans-Serif;
+    /* Fuente preferida: Segoe UI, con Arial y Sans-Serif como fallback */
+}
+
+/* Espaciado superior para la fila de la tarjeta */
+.tarjeta-row {
+    padding-top: 10px;
+}
+
+.btn-agregar-etapa {
+    background-color: #d3d3d3;
+    color: #333;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    width: auto;
+}
+
+.btn-agregar-etapa:hover {
+    background-color: #a9a9a9; 
+    transform: scale(1.05);
+}
+
+.btn-agregar-etapa:active {
+    background-color: #808080;
+}
+
+.btn-agregar-etapa:disabled {
+    background-color: #b8b8b84a;
+}
+
+.btn-agregar-etapa:disabled:hover {
+    background-color: #b8b8b84a;
+    transform: none;
+    cursor: no-drop;
+}
+
+.diseñoBotonesTarjetasEtapas {
+    background: none;
+    border: none;
+    width: auto;
+}
+
+.lista-etapas {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.etapa-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background: #f1f1f1;
+  border-radius: 5px;
+  cursor: grab;
+  justify-content: space-between;
+}
+
+.etapa-item-NoEditable {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background: #f1f1f1;
+  border-radius: 5px;
+  cursor: context-menu;
+  justify-content: space-between;
+}
+
+.handle {
+  margin-right: 10px;
+  cursor: grab;
+  font-size: 18px;
+  user-select: none;
+}
+
+.etapa-nombre {
+  flex: 1;
+}
+
+.etapa-probabilidad {
+  margin-left: 10px;
+  color: gray;
+}
+
+.formulario-edicion {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.boton-editar, .boton-eliminar, .boton-guardar, .boton-cancelar {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.boton-agregar-contenedor {
+  display: flex;
+  align-items: center;
+  margin-right: 10px; 
+  padding-top: 10px;
+}
+
+.boton-agregar {
+  width: 30px; 
+  height: 30px;
+  border-radius: 50%; 
+  background-color: #ff5722;
+  color: white;  
+  font-size: 24px;  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  padding-bottom: 6px;
+}
+
+.boton-agregar:hover {
+  background-color: #e64a19;  
+}
+
+.texto-agregar {
+  margin-left: 10px;  
+  font-size: 16px;
+  color: #333; 
+  font-weight: bold;
+}
+
+.p-button-secondary {
+  background-color: #838383 !important; 
+  color: white;
+}
+
+#btnAgregarProspectoContacto {
+    display: inline-flex;
+    cursor: pointer;
+    user-select: none;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    color: black;
+    background: #ecfdf5;
+    border: 1px solid #ecfdf5;
+    padding-block: var(--p-button-padding-y);
+    padding-inline: var(--p-button-padding-x);
+    font-size: 1rem;
+    font-family: inherit;
+    font-feature-settings: inherit;
+    transition: background var(--p-button-transition-duration), color var(--p-button-transition-duration), border-color var(--p-button-transition-duration), outline-color var(--p-button-transition-duration), box-shadow var(--p-button-transition-duration);
+    border-radius: var(--p-button-border-radius);
+    outline-color: transparent;
+    gap: var(--p-button-gap);
+    font-size: var(--p-button-sm-font-size);
+    padding-block: var(--p-button-sm-padding-y);
+    padding-inline: var(--p-button-sm-padding-x);
+}
+
+#btnAgregarProspectoContacto:not(:disabled):hover {
+    background: #d4f7e7;
+    border: 1px solid #d4f7e7;
+    color: black;
+}
+
+
+.btnAgregarProspectoContacto {
+    display: inline-flex;
+    cursor: pointer;
+    user-select: none;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    color: black;
+    background: #ecfdf5;
+    border: 1px solid #ecfdf5;
+    padding-block: var(--p-button-padding-y);
+    padding-inline: var(--p-button-padding-x);
+    font-size: 1rem;
+    font-family: inherit;
+    font-feature-settings: inherit;
+    transition: background var(--p-button-transition-duration), color var(--p-button-transition-duration), border-color var(--p-button-transition-duration), outline-color var(--p-button-transition-duration), box-shadow var(--p-button-transition-duration);
+    border-radius: var(--p-button-border-radius);
+    outline-color: transparent;
+    gap: var(--p-button-gap);
+    font-size: var(--p-button-sm-font-size);
+    padding-block: var(--p-button-sm-padding-y);
+    padding-inline: var(--p-button-sm-padding-x);
+    margin-left: 4px;
+}
+
+.btnAgregarProspectoContacto:not(:disabled):hover {
+    background: #d4f7e7;
+    border: 1px solid #d4f7e7;
+    color: black;
+}
+
+::ng-deep .p-select-list-container {
+   max-height: 108px !important;
+}
+
+.btnAgregarProspectoContacto:disabled {
+    background: #f8f8f8;
+    border: 1px solid #e8efeb;
+    color: black;
+    cursor: no-drop;
+}
+
+.estilosBotonesInhabilitador:disabled { 
+    cursor: grab;
+}
+
+.mdc-button {
+  min-width: 0;
+}

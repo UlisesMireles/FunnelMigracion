@@ -511,3 +511,14 @@
 .oportunidad {
   color: #555;
 }
+.errores-comentario {
+  display: block;
+  margin-top: 0.3rem;
+  margin-bottom: 0.5rem; 
+  color: #dc3545;
+}
+
+.errores-comentario small {
+  display: block;
+  font-size: 0.8rem;
+}

@@ -10,23 +10,23 @@ export class ModalCamposAdicionalesService {
 
   // Observable para Campos Adicionales
   private modalStateSubject = new BehaviorSubject<{
-    showModal: boolean, campos: CamposAdicionales[],camposPorCatalogo: CamposAdicionales[], pantalla: string, result: BaseOut
+    showModal: boolean, campos: CamposAdicionales[],camposPorCatalogo: CamposAdicionales[], pantalla: string, valorSeleccionado: any, result: BaseOut
   }>
-    ({ showModal: false, campos: [], camposPorCatalogo: [], pantalla: '', result: { errorMessage: '', result: false, id: -1 } });
+    ({ showModal: false, campos: [], camposPorCatalogo: [], pantalla: '', valorSeleccionado: null, result: { errorMessage: '', result: false, id: -1 } });
 
   modalState$ = this.modalStateSubject.asObservable();
 
   constructor() { }
 
   // Método para abrir la modal
-  openModal(showModal: boolean, campos: CamposAdicionales[], camposPorCatalogo: CamposAdicionales[], pantalla: string, result: BaseOut = { errorMessage: '', result: false, id: -1 }) {
-    this.modalStateSubject.next({ showModal: showModal, campos: campos, camposPorCatalogo: camposPorCatalogo, pantalla: pantalla, result: result });
+  openModal(showModal: boolean, campos: CamposAdicionales[], camposPorCatalogo: CamposAdicionales[], pantalla: string, valorSeleccionado: any, result: BaseOut = { errorMessage: '', result: false, id: -1 }) {
+    this.modalStateSubject.next({ showModal: showModal, campos: campos, camposPorCatalogo: camposPorCatalogo, pantalla: pantalla, valorSeleccionado: valorSeleccionado, result: result });
     return this.modalStateSubject.asObservable();
   }
 
   // Método para cerrar la modal
   closeModal(result: BaseOut = { errorMessage: '', result: false, id: -1 }) {
-    this.modalStateSubject.next({ showModal: false, campos: [], camposPorCatalogo: [], pantalla: '', result: result });
+    this.modalStateSubject.next({ showModal: false, campos: [], camposPorCatalogo: [], pantalla: '', valorSeleccionado: null, result: result });
   }
 
 }

@@ -1,8 +1,8 @@
-﻿
+﻿using Funnel.Models.Base;
 
 namespace Funnel.Models.Dto
 {
-    public class PreguntasFrecuentesDto
+    public class PreguntasFrecuentesDto : BaseOut
     {
         public int Id { get; set; }
         public int IdBot { get; set; }

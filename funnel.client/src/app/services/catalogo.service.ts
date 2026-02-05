@@ -23,9 +23,10 @@ export class CatalogoService {
   constructor(private http: HttpClient) { }
 
   cargarCatalogos(idEmpresa:number) {
+    const idProceso = Number(localStorage.getItem('idProceso'));
     this.cargarProspectos(idEmpresa);
     this.cargarServicios(idEmpresa);
-    this.cargarEtapas(idEmpresa);
+    this.cargarEtapas(idEmpresa, idProceso);
     this.cargarEjecutivos(idEmpresa);
     this.cargarContactos(idEmpresa);
     this.cargarEntregas(idEmpresa);
@@ -61,9 +62,9 @@ export class CatalogoService {
     });
   }
 
-  cargarEtapas(idEmpresa:number) {
+  cargarEtapas(idEmpresa:number, idProceso:number) {
     this.http.get(`${this.baseUrl}api/Oportunidades/ComboEtapas`, {
-        params: { idEmpresa: idEmpresa.toString() }
+        params: { idEmpresa: idEmpresa.toString(), idProceso: idProceso.toString() }
       }).subscribe({
       next: (result) => {
         sessionStorage.setItem('CatalogoEtapas', window.btoa(JSON.stringify(result)))

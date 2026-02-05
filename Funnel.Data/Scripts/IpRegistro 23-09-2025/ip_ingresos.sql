@@ -1,0 +1,2 @@
+ALTER TABLE IngresosFunnel
+ADD Ip VARCHAR(30) NULL;

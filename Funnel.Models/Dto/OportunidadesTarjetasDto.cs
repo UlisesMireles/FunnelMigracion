@@ -9,11 +9,20 @@ namespace Funnel.Models.Dto
     public class OportunidadesTarjetasDto
     {
         public string Nombre { get; set; } = string.Empty;
-        public int Mes { get; set; }
+        public int? Mes { get; set; }
         public int? Anio { get; set; }
-        public List<TarjetasDto> Tarjetas { get; set; }
-
+        public List<TarjetasDto>? Tarjetas { get; set; }
+        public int? IdStage { get; set; }
+        public bool? Eliminado { get; set; }
+        public bool? Agregado { get; set; }
+        public bool? Editado { get; set; }
+        public int? IdUsuario { get; set; }
+        public int? IdEmpresa { get; set; }
+        public string? Orden { get; set; }
+        public string? Probabilidad { get; set; }
+        public int RIdProcesoEtapa { get; set; }
     }
+
     public class TarjetasDto
     {
         public int? IdOportunidad { get; set; }

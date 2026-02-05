@@ -19,5 +19,6 @@ namespace Funnel.Models.Dto
         public string? Direccion { get; set; }
         public string? UrlSitio { get; set; }
         public string? Tamano { get; set; }
+        public string? Ip { get; set; }
     }
 }

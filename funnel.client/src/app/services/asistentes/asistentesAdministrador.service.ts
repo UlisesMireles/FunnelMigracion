@@ -8,19 +8,17 @@ import { ListaAsistentes } from '../../interfaces/asistentes/asistente';
     providedIn: 'root'
 })
 export class AsistentesAdministradorService {
-    private urlBotsFunnel = environment.baseUrlBotsFunnel;
+     baseUrl:string = environment.baseURL;
+     
+
 
     constructor(private http: HttpClient) { }
 
-    obtenerAsistentesConDocumento(): Observable<ListaAsistentes> {
-        return this.http.get<ListaAsistentes>(this.urlBotsFunnel + '/api/Asistentes/AsistentesConDocumento');
-    }
-
     obtenerAsistentes(): Observable<ListaAsistentes>{
-        return this.http.get<ListaAsistentes>(this.urlBotsFunnel + '/api/Asistentes/Asistentes');
+        return this.http.get<ListaAsistentes>(this.baseUrl + 'api/AsistenteProspeccion/Asistentes');
     }
 
     obtenerVersionAsistentes(): Observable<{ version: string }> {
-        return this.http.get<{ version: string }>(this.urlBotsFunnel + '/api/WebApiBotFunnel/ObtenerVersionesAsistentes');
+        return this.http.get<{ version: string }>(this.baseUrl + 'api/AsistenteProspeccion/ObtenerVersionesAsistentes');
     }
 }

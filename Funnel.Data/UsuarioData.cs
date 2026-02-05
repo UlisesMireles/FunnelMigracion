@@ -333,6 +333,37 @@ namespace Funnel.Data
 
             return result;
         }
+        public async Task<UsuarioDto> ObtenerInformacionUsuarioYLicencia(string Licencia)
+        {
+            UsuarioDto result = new UsuarioDto();
+            IList<ParameterSQl> list = new List<ParameterSQl>
+            {
+                DataBase.CreateParameterSql("@pBandera", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, "SEL-LICENCIA_PORNOMBRE"),
+                DataBase.CreateParameterSql("@pLicencia", SqlDbType.VarChar, 50, ParameterDirection.Input, false,null, DataRowVersion.Default, Licencia ),
+            };
+            try
+            {
+                using (IDataReader reader = await DataBase.GetReaderSql("F_CatalogoLicencias", CommandType.StoredProcedure, list, _connectionString))
+                {
+                    while (reader.Read())
+                    {
+                        result.Id = ComprobarNulos.CheckIntNull(reader["IdLicencia"]);
+                        result.Licencia = ComprobarNulos.CheckStringNull(reader["Licencia"]);
+                        result.CantidadProcesosPermitidos = ComprobarNulos.CheckIntNull(reader["CantidadProcesosPermitidos"]);
+                        result.CantidadOportunidades = ComprobarNulos.CheckIntNull(reader["CantidadOportunidades"]);
+                        result.CantidadUsuarios = ComprobarNulos.CheckIntNull(reader["CantidadOportunidades"]);
+                        result.Result = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result.ErrorMessage = "Error al consultar información por licencia: " + ex.Message;
+                result.Result = false;
+            }
+
+            return result;
+        }
 
         public async Task<BaseOut> ValidacionCorreoRegitro(string correo)
         {
@@ -340,7 +371,7 @@ namespace Funnel.Data
             try
             {
                 IList<ParameterSQl> list = new List<ParameterSQl>
-                { 
+                {
                     DataBase.CreateParameterSql("@pCorreo", SqlDbType.VarChar, 300, ParameterDirection.Input, false, null, DataRowVersion.Default, correo ?? (object)DBNull.Value)
                 };
                 using (IDataReader reader = await DataBase.GetReaderSql("F_ValidacionCorreoRegistro", CommandType.StoredProcedure, list, _connectionString))

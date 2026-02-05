@@ -16,9 +16,9 @@ namespace Funnel.Server.Controllers
             _oportunidadesService = oportunidadesService;
         }
         [HttpGet("[action]/")]
-        public async Task<ActionResult<List<OportunidadesEnProcesoDto>>> ConsultarOportunidadesEnProceso(int IdUsuario, int IdEmpresa, int IdEstatus)
+        public async Task<ActionResult<List<OportunidadesEnProcesoDto>>> ConsultarOportunidadesEnProceso(int IdUsuario, int IdEmpresa, int IdEstatus, int IdProceso)
         {
-            var result = await _oportunidadesService.ConsultarOportunidadesEnProceso(IdUsuario, IdEmpresa, IdEstatus);
+            var result = await _oportunidadesService.ConsultarOportunidadesEnProceso(IdUsuario, IdEmpresa, IdEstatus, IdProceso);
             return Ok(result);
         }
         [HttpPost("[action]/")]
@@ -40,9 +40,9 @@ namespace Funnel.Server.Controllers
             return Ok(result);
         }
         [HttpGet("[action]/")]
-        public async Task<ActionResult> ComboEtapas(int idEmpresa)
+        public async Task<ActionResult> ComboEtapas(int idEmpresa, int IdProceso)
         {
-            var result = await _oportunidadesService.ComboEtapas(idEmpresa);
+            var result = await _oportunidadesService.ComboEtapas(idEmpresa, IdProceso);
             return Ok(result);
         }
         [HttpGet("[action]/")]
@@ -70,9 +70,9 @@ namespace Funnel.Server.Controllers
             return Ok(result);
         }
         [HttpGet("[action]/")]
-        public async Task<ActionResult> ConsultarHistoricoOportunidades(int idEmpresa, int idOportunidad)
+        public async Task<ActionResult> ConsultarHistoricoOportunidades(int idEmpresa, int idOportunidad, int IdProceso)
         {
-            var result = await _oportunidadesService.ConsultarHistoricoOportunidades(idEmpresa, idOportunidad);
+            var result = await _oportunidadesService.ConsultarHistoricoOportunidades(idEmpresa, idOportunidad, IdProceso);
             return Ok(result);
         }
         [HttpPost("[action]/")]
@@ -82,15 +82,15 @@ namespace Funnel.Server.Controllers
             return Ok(result);
         }
         [HttpGet("[action]/")]
-        public async Task<ActionResult> ConsultarOportunidadesPorMes(int IdUsuario, int idEmpresa )
+        public async Task<ActionResult> ConsultarOportunidadesPorMes(int IdUsuario, int idEmpresa, int IdProceso)
         {
-            var result = await _oportunidadesService.ConsultarOportunidadesPorMes(IdUsuario, idEmpresa);
+            var result = await _oportunidadesService.ConsultarOportunidadesPorMes(IdUsuario, idEmpresa, IdProceso);
             return Ok(result);
         }
         [HttpGet("[action]/")]
-        public async Task<ActionResult> ConsultarOportunidadesPorEtapa(int IdUsuario, int idEmpresa )
+        public async Task<ActionResult> ConsultarOportunidadesPorEtapa(int IdUsuario, int idEmpresa, int IdProceso)
         {
-            var result = await _oportunidadesService.ConsultarOportunidadesPorEtapa(IdUsuario, idEmpresa);
+            var result = await _oportunidadesService.ConsultarOportunidadesPorEtapa(IdUsuario, idEmpresa, IdProceso);
             return Ok(result);
         }
         [HttpPost("[action]/")]
@@ -106,9 +106,9 @@ namespace Funnel.Server.Controllers
             return Ok(result);
         }
         [HttpGet("[action]/")]
-        public async Task<ActionResult> DescargarReporteSeguimientoOportunidades(int idEmpresa, int idOportunidad)
+        public async Task<ActionResult> DescargarReporteSeguimientoOportunidades(int idEmpresa, int idOportunidad, int IdProceso)
         {
-            var pdf = await _oportunidadesService.GenerarReporteSeguimientoOportunidades(idEmpresa, idOportunidad, Directory.GetCurrentDirectory());
+            var pdf = await _oportunidadesService.GenerarReporteSeguimientoOportunidades(idEmpresa, idOportunidad, Directory.GetCurrentDirectory(),IdProceso);
             return File(pdf, "application/pdf", "SeguimientoOportunidades.pdf");
         }
 
@@ -162,9 +162,9 @@ namespace Funnel.Server.Controllers
             return File(pdf, "application/pdf", "OportunidadesEliminadas.pdf");
         }
         [HttpGet("[action]/")]
-        public async Task<ActionResult<EtiquetasOportunidadesDto>> ConsultarEtiquetasOportunidades(int idEmpresa, int IdUsuario)
+        public async Task<ActionResult<EtiquetasOportunidadesDto>> ConsultarEtiquetasOportunidades(int idEmpresa, int IdUsuario, int IdProceso)
         {
-            var result = await _oportunidadesService.ConsultarEtiquetas(idEmpresa, IdUsuario);
+            var result = await _oportunidadesService.ConsultarEtiquetas(idEmpresa, IdUsuario, IdProceso);
             return Ok(result);
         }
         [HttpGet("[action]/")]

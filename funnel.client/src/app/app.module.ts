@@ -12,7 +12,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MatInputModule } from '@angular/material/input';
 import Aura from '@primeng/themes/aura';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -150,12 +150,15 @@ import { ServiciosEntregasComponent } from './components/catalogos/servicios-ent
 import { UsuariosPermisosComponent } from './components/catalogos/usuarios-permisos/usuarios-permisos.component';
 import { GraficasClientesTop20Component } from './components/dashboard/top-veinte/graficas-clientes-top20/graficas-clientes-top20.component';
 import { PanelesTerminadasComponent } from './components/terminadas/paneles-terminadas/paneles-terminadas.component';
+import { EtapasComponent } from './components/catalogos/etapas/etapas.component';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ModalCamposNuevosComponent } from './components/administracion/modal-campos-nuevos/modal-campos-nuevos.component';
 import { ModalOportunidadesPorAgenteClientesComponent } from './components/dashboard/oportunidades-por-agente/modal-oportunidades-por-agente-clientes/modal-oportunidades-por-agente-clientes.component';
 import { ModalOportunidadesPorAgenteTipoComponent } from './components/dashboard/oportunidades-por-agente/modal-oportunidades-por-agente-tipo/modal-oportunidades-por-agente-tipo.component';
 import { ModalOportunidadesPorAgenteDetalleTipoComponent } from './components/dashboard/oportunidades-por-agente/modal-oportunidades-por-agente-detalle-tipo/modal-oportunidades-por-agente-detalle-tipo.component';
 import { ModalOportunidadesPorAgenteSectorComponent } from './components/dashboard/oportunidades-por-agente/modal-oportunidades-por-agente-sector/modal-oportunidades-por-agente-sector.component';
 import { ModalOportunidadesPorAgenteDetalleSectorComponent } from './components/dashboard/oportunidades-por-agente/modal-oportunidades-por-agente-detalle-sector/modal-oportunidades-por-agente-detalle-sector.component';
+import { ProcesosComponent } from './components/catalogos/procesos/procesos.component';
 import { AsistenteProspeccionComponent } from './components/asistentes/asistente-prospeccion/asistente-prospeccion.component';
 import { ChatBotProspeccionComponent } from './components/asistentes/asistente-prospeccion/chatBot/chatBotProspeccion.component';
 import { FaqFlotantesComponent } from './components/asistentes/asistente-prospeccion/faq-flotantes/faq-flotantes.component';
@@ -248,6 +251,7 @@ registerLocaleData(localeEs, 'es-MX');
     UsuariosPermisosComponent,
     GraficasClientesTop20Component,
     PanelesTerminadasComponent,
+    EtapasComponent,
     ModalCamposNuevosComponent,
     ModalOportunidadesPorAgenteClientesComponent,
     ModalOportunidadesPorAgenteTipoComponent,
@@ -256,6 +260,7 @@ registerLocaleData(localeEs, 'es-MX');
     ModalOportunidadesPorAgenteDetalleSectorComponent,
     AsistenteProspeccionComponent,
     ChatBotProspeccionComponent,
+    ProcesosComponent,
     FaqFlotantesComponent,
     EliminarConversacionComponent,
     EvaluarBotComponent,
@@ -311,12 +316,14 @@ registerLocaleData(localeEs, 'es-MX');
     FieldsetModule,
     ToggleSwitchModule,
     MatExpansionModule,
+    ConfirmDialogModule,
     MatDialogModule,
     MatButtonModule,
     QRCodeComponent
 ],
   providers: [
     { provide: LOCALE_ID, useValue: 'es-MX' },
+    ConfirmationService,
     {
       provide: APP_INITIALIZER,
       useFactory: configurationProviderFactory,

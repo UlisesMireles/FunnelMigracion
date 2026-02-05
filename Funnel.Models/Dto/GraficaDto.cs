@@ -20,6 +20,7 @@ namespace Funnel.Models.Dto
     public class RequestGrafica
     {
         public int IdEmpresa { get; set; }
+        public int IdProceso { get; set; }
         public string? Bandera { get; set; }
         public int? IdUsuario { get; set; }
         public int? IdEstatusOportunidad { get; set; }

@@ -78,26 +78,9 @@ namespace Funnel.Logic.Utils.Asistentes
         {
             RespuestaOpenIA respuestaOpenIA = new();
 
-            List<ConfiguracionDto> result = new List<ConfiguracionDto>();
-            IList<ParameterSQl> list = new List<ParameterSQl>
-            {
-             
-                DataBase.CreateParameterSql("@IdBot", SqlDbType.Int, 0, ParameterDirection.Input, false, null, DataRowVersion.Default, idBot)
-            };
-            using (IDataReader reader = await DataBase.GetReaderSql("F_ConfiguracionAsistentesPorIdBot", CommandType.StoredProcedure, list, _connectionString))
-            {
-                while (reader.Read())
-                {
-                    var dto = new ConfiguracionDto();
-                    dto.Modelo = ComprobarNulos.CheckStringNull(reader["Modelo"]);
-                    dto.Llave = ComprobarNulos.CheckStringNull(reader["Llave"]);
-                    dto.Prompt = ComprobarNulos.CheckStringNull(reader["Prompt"]);
-                    result.Add(dto);
-                }
-            }
-            var configuracion = result.FirstOrDefault();
+            var configuracion = await _asistentesData.ObtenerConfiguracionPorIdBotAsync(idBot);
             if (configuracion == null)
-                throw new Exception("No se encontró configuración para el asistente con IdBot: " + idBot);
+                throw new InvalidOperationException("No se encontró configuración para el asistente con IdBot: " + idBot);
 
             var systemMessage = string.Format(configuracion.Prompt, pregunta);
 
@@ -113,11 +96,10 @@ namespace Funnel.Logic.Utils.Asistentes
                 temperature = 1.0
             };
 
-            var chatRespuestaOpenIA = await OpenIAFunciones.ChatCompletionAsync(configuracion.Llave, requestBody);
-            respuestaOpenIA.Respuesta = chatRespuestaOpenIA.choices[0].message.content.Trim();
-            respuestaOpenIA.TokensEntrada = chatRespuestaOpenIA.usage.prompt_tokens;
-            respuestaOpenIA.TokensSalida = chatRespuestaOpenIA.usage.total_tokens;
-
+            var chatRespuestaOpenIA = await AssstantApiUtils.CallResponsesApiAsync(configuracion.Llave, configuracion.Modelo, configuracion.Prompt, pregunta);
+            respuestaOpenIA.Respuesta = chatRespuestaOpenIA.Content;
+            respuestaOpenIA.TokensEntrada = chatRespuestaOpenIA.InputTokens;
+            respuestaOpenIA.TokensSalida = chatRespuestaOpenIA.OutputTokens;
             return respuestaOpenIA;
         }
     }

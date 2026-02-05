@@ -1,0 +1,153 @@
+
+# Informacion EISEI
+Contexto: Esta sección proporciona información general sobre EISEI, incluyendo su rol, la manera en que optimiza negocios y los sectores en los que trabaja. Estas respuestas ayudan a los usuarios a comprender el enfoque y experiencia de la empresa.
+
+## que/quien es eisei: EISEI es un aliado digital que ha trabajado desde 1996 con soluciones de software, staffing y consultoría.
+como optimiza eisei los negocios de sus clientes: Optimizamos los negocios mediante soluciones tecnológicas que mejoran los procesos y apoyan la transformación digital. Nos integramos en cada proyecto para asegurar resultados exitosos.
+en que sectores trabaja eisei: Trabajamos en sectores como el financiero, comercial, entretenimiento y construcción.
+## donde son/están las oficinas de eisei: Las oficinas centrales están en el edificio del Monterrey IT Cluster (MITC) en el Parque de Innovación Industrial Tecnológico (PIIT) en Apodaca Nuevo León, México.
+
+# Glosario
+Contexto: En esta sección hay preguntas generales sobre inteligencia artificial e indicadores de calidad.
+
+## que es inteligencia artificial: es la capacidad de las máquinas para realizar tareas que requieren inteligencia humana, como el aprendizaje, la resolución de problemas y la toma de decisiones, mediante algoritmos y modelos avanzados.
+que es un chatbot: es un programa diseñado para simular conversaciones con usuarios, generalmente a través de mensajes de texto, para responder pregunta.
+que es un KPI:Un KPI (Key Performance Indicator) es un indicador clave de desempeño, usado para medir el éxito en áreas específicas del negocio.
+## que es el PNL: La PNL es la tecnología fundamental detrás de los chatbots de IA, que les otorga la capacidad de captar el lenguaje humano, descifrar sus sutilezas y ofrecer respuestas adecuadas.
+
+# Chatbot manejo
+Contexto: En esta sección encuentras funcionalidades de como funciona este chatbot.
+
+## como regreso al menu de preguntas/opciones de este chatbot/bot: Revisa en la parte del "Header". En la parte derecha aparecen tres pequeñas reyas horizontales. Peciona y tendrás los temas de este Chatbot.
+como puedo borrar mi sesion: En la parte inferior ha tres puntos seguidos. Presiona y encontrarás un icono donde puedes eliminar los datos de tus sesión.
+que significan los numeros en el header: Los numeros en el header indican el versionamiento del chat. Identificamos siempre la versión para que el cliente tenga la mayor calidad del sistema posible.
+
+# Glupoint General
+Contexto: En esta sección, se abordan preguntas generales sobre el Glupoint, incluyendo sus beneficios, proceso de venta, actualizaciones y personalización. Está diseñada para ofrecer una visión amplia de lo que el sistema Glupoint puede ofrecer.
+
+## como ayuda el Glupoint en el proceso de venta / como me ayuda el Glupoint: El Glupoint te ayuda organizando tus oportunidades con un proceso claro y definido.
+el Glupoint tiene actualizaciones: Sí, Glupoint recibe actualizaciones automáticas periódicas para mejorar su rendimiento y añadir nuevas funciones sin interrumpir tu trabajo.
+como debo iniciar en Glupoint: Siempre debes iniciar en el botón de INICIAR SESION. Si es la primera vez, te recomendamos primero revisar lo relativo al menú de administracion y catálogos.
+## que sucede si no uso todas mis oportunidades activas en Glupoint: No pasa nada. Las oportunidades no usadas permanecen en tu cuenta, no se pierden.
+puedo personalizar Glupoint segun las necesidades de mi empresa: Sí, Glupoint es altamente personalizable en cuanto a tablas de información y reportes, para que puedas exportar solo los datos que necesites.
+Como puedo personalizar el Glupoint: Las tablas de información de las oportunidades tiene forma de realizar reportes según te convenga. Registrate y lo vas a comprobar.
+##Glupoint se integra con otros sistemas: No, Actualmente el Glupoint es un sistema independiente.
+que preguntas puedo preguntarte / que preguntas puedo hacer / que puedo preguntarte: Solo te puedo dar la información relativa a este Sistema Glupoint.
+donde son/están las oficinas del Glupoint: Las oficinas centrales son las mismas de Grupo Empresaria Eisei localizadas en el edificio del Monterrey IT Cluster en el Parque de Innovación Industrial Tecnológico (PIIT) en Apodaca Nuevo León, México.
+## de quien es el Glupoint / a quien pertenece el Glupoint: El Glupoint es desarrrollado por Grupo Empresarial Eisei, quien es el propietario del mismo.
+
+# Glupoint registro
+Contexto: Esta sección cubre temas relacionados con el registro en el sistema Glupoint, tales como los requisitos, el tiempo de aprobación y las condiciones necesarias, como contar con una URL. Es útil para quienes desean iniciar con el sistema.
+
+## que necesito para registrarme en el Glupoint / como me registro: Para registrarte, solo swbes llenar los campos requeridos en el cuestionario de REGISTRO en la página de inicio. Receuerda que tiene que pasar por una autorización previa. Así pues, Llénalo y ¡listo!
+cuanto tiempo tarda la aprobacion de mi registro en Glupoint / cuanto tarda la aprobacion de mi cuenta: Normalmente, el proceso de aprobación puede tardar entre 24 y 48 horas. Te notificaremos por correo cuando tu cuenta esté lista.
+que es/significa url del sitio / que es la url que debo poner: URL (Uniform Resource Locator) es la dirección que se utiliza para acceder a recursos específicos en la web, como páginas, imágenes, videos o archivos. Es la dirección que ingresas en el navegador para visitar un sitio web.
+## que pasa si no tengo URL / puedo registrarme sin tener una URL o sitio propio: Si no tienes una URL, no podrás utilizar el servicio de Glupoint ya que es necesario tener una dirección web para poder identificarte. Te recomendamos obtener una URL antes de llenar tu registro.
+quien aprueba la/mi solicitud: Las solicitudes pasan por una verificación de autenticidad de identidad personal y de empresa en proceso automatizado. Posteriormente el departamento administrativo indica si procede o no. Usted será notificado via su correo electrónico.
+quien avisa sobre mi solicitud: ¡Ah muy bien! Máximo en 48 horas, Soporte Técnico enviará un correo electrónico al respecto. 
+
+# Glupoint funcionalidades
+Contexto: Aquí se describe en detalle las funcionalidades que ofrece el Glupoint, incluyendo su menú principal, el proceso de ventas y la diferencia entre clientes y prospectos. Las preguntas están orientadas a entender cómo se utiliza el sistema y sus beneficios específicos.
+
+## que funciones/funcionalidades tiene el Glupoint: ¡Buena pregunta! El Glupoint tiene un menú que integra un Dashboard, Oportunidades en proceso, Oportunidades Terminadas Ganadas, Perdidas, Canceladas y Eliminadas. Además maneja clientes o prospectos y contactos y muchas mas funcionalidades. 
+que tiene el dashboard / que es  / que el dashboard: ¡Ah! El menú Dashboard te informará con graficas lo referente a las oportunidades en proceso, oportunidades que maneja cada agente tuyo y el "Top 20" que es la calificación otorgada a los clientes.
+que/cuantas etapas tiene el Glupoint / que metodologia sigue/utiliza el Glupoint: El proceso o etapas que maneja el Glupoint son 1.-Calificación de prospectos, 2.-Investigación de necesidades, 3.-Elaboración de propuestas, 4.-Presentación de propuestas y 5.-Negociación.
+## cual es el proceso del Glupoint: El Glupoint sigue las siguientes etapas, Calificación de prospectos, Investigación de necesidades, Elaboración de propuestas, Presentación de propuestas y Negociación.
+son iguales los clientes y los prospectos: No, el Glupoint maneja de manera diferente a los clientes y a los prospectos. Los prospectos pasan por las etapas del Glupoint para convertirse en clientes, mientras que los clientes ya han completado el proceso y se encuentran en una etapa de seguimiento y mantenimiento.
+el Glupoint tiene kpi´s: No los maneja como tal pero tiene un Dashboard que te mostrará gráficas con información relevante y estadistica sobre tus oportunidades y el desempeño de tus agentes.
+## el Glupoint maneja/tiene indicadores de desempeño: Si, El Glupoint te dá información sobre las oportunidades ganadas por los agentes así como en que sectores ha colocado tu servicio o producto.
+que ventajas tiene el Glupoint: El Glupoint te ayudará a Organizar tus Oportunidades, Actualizaciones Automáticas y Periódicas, Personalización de reportes, entre otras ventajas mas.
+el Glupoint tiene registro/seguimiento de conversaciones: ¡Buena pregunta! El Glupoint tiene dentro de su funcionalidad registrar las notas que el agente o gerente hace respecto a una oportunidad.
+## Puedo guardar/archivar documentos en el Glupoint: ¡Bien! El Glupoint te dá la capcidad de guardar cinco archivos como máximo por cada oportunidad registrada.
+en el Glupoint se puede exportar informacion / puedo exportar datos: Si, en algunas vistas se puede exportar datos de tablas en Excel y en algunas graficas puedes exportar en PDF. 
+tienes/conoces tecnicas de negociacion: Para una negociación efectiva debes tener en cuenta toda la información que tengas sobre la oportunidad, tu conocimiento del contacto y aplicar técnicas de convencimiento para cerrar exitosamente la oportunidad.
+## cuantos contactos/prospectos puedo registrar: Dentro de tu espacio de trabajo puedes registrar un número muy grande de prospectos y en cada prospecto puedes relacionar los contactos que quieras.
+cuales son las fases que maneja el Glupoint: Las fases o etapas que maneja el Glupoint son 1.-Calificación de prospectos, 2.-Investigación de necesidades, 3.-Elaboración de propuestas, 4.-Presentación de propuestas y 5.-Negociación.
+que es/contiene/muestra el top 20 / Explicame mas acerca/del top 20:¡Bien!El Top 20 va integrando en una tabla las oportunidades que te ha generado un cliente y las que han sido exitosas o ganadas de tal manera que podrás ver quien te ha dado más negocio.  
+
+#Glupoint Usuarios
+Contexto: Esta sección abarca todo lo relacionado con los usuarios del Glupoint, como el número de usuarios permitidos según cada licencia y la distinción entre usuarios activos e inactivos. Ayuda a los clientes a comprender las limitaciones y configuraciones de usuarios en el sistema.
+
+## cuantos usuarios permite cada licencia del Glupoint: La licencia Free admite hasta 10 usuarios, la Premium 20 usuarios, y la Platino hasta 50 usuarios activos.
+que son usuarios activos: Los usuarios activos son aquellos que participan activamente en el sistema, operandolo y haciendo uso de él. 
+que es un usuario activo / que son los usuarios inactivos: Los usuarios inactivos son aquellos que ya no actúan en los procesos de tu sistema.
+## que tipos de usuarios maneja/tiene el Glupoint: El funel tiene usuarios administradores, Gerentes, Agentes e Invitados y cada uno tiene sus autorizaciones.
+que autorizaciones tiene un gerente / que hace un gerente: El Gerente administra agentes y puede tener usuarios invitados.
+que autorizaciones tiene un agente / que hace un agente: El agente se encarga de capturar y dar seguimiento a sus oportunidades en proceso.
+## que autorizaciones tiene un administrador / que hace un administrador: Resuelve problemas técnicos de todos los usuarios del Glupoint.
+que autorizaciones tiene un invitado / que hace un invitado: El invitado solo puede visualizar información relevante sin tener acceso a ingresar o modificar información.
+
+#Glupoint Oportunidades
+Contexto: En esta sección, se tratan preguntas sobre la gestión de oportunidades dentro del Glupoint, como el número de oportunidades que permite cada licencia y cómo se clasifican las oportunidades en el sistema. Es útil para quienes desean manejar eficientemente sus clientes y prospectos.
+
+## cuantas opotunidades permite cada licencia del Glupoint: La licencia Free admite hasta 50 oportunidades activas, la Premium 100 oportunidades activas y la Platino hasta 200 oportunidades activas.
+el sistema guarda oportunidades cerradas/ganadas/perdidas/canceladas/eliminadas: Si el Glupoint guarda oportunidades que se han cerrado ganadas, perdidas, canceladas y las que por alguna razón has eliminado.
+que informacion manejan las oportunidades: ¡Uf! Vas a tener mucha información de cada cliente o prospecto tuyo. Nombre de la compañía, sector, oportunidades en las que has y estas trabajando. En fin, mucha mas información que te ayudará a conocer mejor a tus clientes.
+## como maneja las oportunidades el Glupoint: El Glupoint maneja listados de oportunidades, tarjetas de oportunidades por meses y tarjetas de oportunidades por proceso. Así tendrás un panorama completo de tus oportunidades. ¡Registrate!
+que son las oportunidades en proceso: Las oportunidades en proceso son aquellas que se encuentran en una etapa activa de seguimiento y trabajo por parte del equipo de ventas. Estas oportunidades pueden estar en diferentes fases del proceso de venta, como por ejemplo, en entrega de cotización o negociación.
+como se clasifican las oportunidades: El Glupoint tiene oportunidades en proceso, oportunidades cerradas ganadas, perdidas, canceladas y eliminadas.
+
+#Glupoint Precio
+Contexto: Esta sección se enfoca en la información sobre los precios de las licencias del Glupoint y los planes de pago. Facilita a los usuarios elegir el plan adecuado según sus necesidades y presupuesto.
+
+## cuanto cuestan las licencias de paga / cuanto cuesta una licencia: La Premium es de $20 dolares al mes y la Platino de $50 dolares al mes, pero puedes optar por una licencia "free" para que inicies y veas las ventajas del sistema.
+consultas de precio de pagos anuales: Por favor manda un correo a soporte@sfs-funnel.com para que te den los descuentos de los planes anuales.
+cuanto cuesta el Glupoint: El costo del Glupoint depende de la licencia que elijas. Hay licencia Gratuita llamada "Free", Licencia de paga Premium y Licencia de paga Platinum.
+
+#Glupoint Pagos
+Contexto: Aquí se abordan los métodos de pago y las opciones de suscripción, así como las políticas relacionadas con los pagos atrasados. Es útil para los usuarios que desean comprender cómo y cuándo realizar los pagos.
+
+## cuales son los planes de pago: Puedes tener un plan mensual o un plan anual, en el plan anual podrás tener un ahorro en tu suscripción ¡Aprovechalo!
+que pasa con mi información si se me pasa el dia de pago / que pasa si no pago: No te p reocupes. No pasa nada si no pagas, simplemente tu cuenta se mantendrá inactiva hasta que realices el pago correspondiente. Una vez que se realice el pago, podrás seguir utilizando el servicio sin interrupciones.
+como realizo mis pagos: Los pagos deben ser a traves de pago bancario a la cuenta del Glupoint o puede ser directamente es sus oficinas. Solicita la información al correo soporte@sfs-Glupoint.com
+
+# Glupoint Licencias
+Contexto: Esta sección ofrece detalles sobre los tipos de licencias disponibles para el Glupoint, sus diferencias y cómo elegir la adecuada. Además, cubre información sobre cómo obtener o renovar una licencia, especialmente útil para quienes desean probar o mejorar sus planes.
+
+## como puedo tener un usuario: Si eres de primer ingreso, solicitalo registrandote en la página de início.
+puedo probar Glupoint antes de comprar una licencia: ¡Sí! el Glupoint te ofrece una licencia Free que te permite probar sus funciones básicas antes de decidir si necesitas una licencia de paga.
+cuales son los tipos de licencias en Glupoint / que licencias tienen / tipos y costos de licencias / que niveles tienes de licencias / cuales son las licencias: El Glupoint te ofrece tres licencias. Una Free gratuita, otra Premium de $20 dolares al mes y la Platino de $50 dolares al mes.
+## cuales son las diferencias entre las licencias de Glupoint / cual es la diferencia entre licencias: La cantidad de usuarios que puedes tener activos y las oportunidades activas permitidas según el tipo de licencia que contrataste.
+que pasa si necesito mas usuarios: ¡Bien! Si necesitas más usuarios, puedes solicitar a soporte@sfs-Glupoint.com cambiar a una licencia superior.
+como se que licencia de Glupoint es adecuada para mi: Te recomiendo que primero pruebes la licencia Free que puede ser una buena opción para familiarizarte con el Glupoint.
+## como se renueva una licencia del Glupoint: El sistema te avisará cuando vaya a expirar. Entonces debes solicitar a soporte@sfs-Glupoint.com tu renovacion.
+cuales son las licencias de paga / tienes licencias de paga: Las licencias de paga son dos. Premium que incluye 20 usuarios y 100 oportunidades activas y la Platino qque incluye 50 usuarios y 200 oportunidades activas.
+cuantos usuarios y oportunidades tiene cada licencia / cuantos usuarios y oportunidades son por licencia: La licencia Free permite hasta 10 usuarios y 100 oportunidades. La licencia Free permite 10 usuarios y 50 oportunidades, La licencia Premium permite hasta 20 usuarios y 100 oportunidades. La licencia Platino permite hasta 50 usuarios y 200 oportunidades. 
+## hay licencias ilimitadas: No pero creemos que la Platino cumple con un requerimiento amplio o puedes mandar un mail a soporte@sfs.Glupoint.com para preguntar.
+que incluye una licencia free: La licencia Free del Glupoint permite hasta 10 usuarios activos y 50 oportunidades en proceso.
+tienen licencias gratuitas: Sí, ofrecemos una licencia gratuita, llamada licencia Free, que te permite probar las funciones básicas de nuestro Glupoint.
+## como puedo hacer un upgrade de mi licencia: El Upgrade puedes solicitarlo a Soporte. Ellos te indicarán el proceso de pago y ¡Adelante!
+el Glupoint tiene licencias basica/golden: No. las unicas licencia que actualmente manejamos son Free, Platinum y Premium.
+cuales son las licencias/que licencias tiene el Glupoint: El Glupoint te ofrece tres licencias. Una Free gratuita, otra Premium de $20 dolares al mes y la Platino de $50 dolares al mes.
+
+# Glupoint Seguridad
+Contexto: En esta sección, se cubren las medidas de seguridad del Glupoint para proteger los datos personales de los usuarios, incluyendo políticas de protección y cifrado. Es importante para quienes buscan garantías de seguridad en el uso del sistema.
+
+## como protegen mis datos personales en Glupoint: Utilizamos medidas de seguridad avanzadas, como cifrado de datos y sistemas de protección contra acceso no autorizado, para garantizar la seguridad de tu información.
+el Glupoint maneja seguridad de doble paso: No, actualmente lo estamos implementando como opción personal de cada usuario.
+otras empresas pueden ver mis prospectos/contactos: ¡NO!, tus prospectos y contactos están solo en tu espacio de trabajo. Protejemos la información de tus oportunidades, prospectos y contactos.
+
+# Glupoint Politicas
+Contexto: Esta sección incluye preguntas sobre las políticas de privacidad y los términos de uso de Glupoint. Proporciona detalles sobre la recopilación y uso de datos, así como los derechos de autor y los cambios en los términos. Es útil para usuarios interesados en conocer las políticas de protección y uso del servicio.
+
+## que incluye la politica de privacidad de Glupoint: Nuestra política de privacidad protege tu información personal y asegura que tus datos no sean compartidos con terceros sin tu consentimiento. 
+donde localizo la politica de privacidad: Puedes leerla completa en nuestro sitio web.
+que informacion recopila Glupoint: Solo recopilamos la información personal que tu nos diste en el registro del servicio. podemos obtener tu dirección IP, con fines de seguridad, mejorar la experiencia de usuario y optimizar el servicio.
+## como protege el Glupoint los derechos de autor: Todo el contenido del Glupoint, incluidos textos, gráficos y software, está protegido por derechos de autor y no puede ser utilizado sin nuestro consentimiento.
+cuales son los terminos y condiciones de uso del sitio / terminos y condiciones: Los términos y condiciones de uso del sitio los puedes encontrar en la pagina de inicio mediante una liga.
+pueden modificarse los terminos del sitio: Sí, los términos pueden ser modificados por la empresa en cualquier momento. Te recomendamos revisarlos periódicamente para estar al tanto de cualquier cambio.
+
+# Glupoint Soporte
+Contexto: Aquí se responde a las preguntas relacionadas con el soporte técnico del Glupoint, incluyendo las formas de contacto, horarios de atención y el tiempo de respuesta. Es relevante para los usuarios que requieren asistencia o tienen dudas sobre el servicio de soporte.
+
+## como contacto al soporte tecnico de Glupoint: Puedes contactar a nuestro equipo de soporte a través del correo soporte@sfs-Glupoint.com . ¡Estamos aquí para ayudarte!.
+Glupoint ofrece soporte tecnico en todos los planes / dan soporte tecnico / que soporte tecnico tienen: Sí, ofrecemos soporte técnico a traves de correo electrónico para todos los planes, aunque los usuarios de licencias Premium y Platino tienen acceso a un soporte más completo. ¡Contrata un mejor plan!
+quien esta a cargo del Glupoint: Nuestro equipo de soporte técnico está a cargo de brindar asistencia a todos los usuarios de Glupoint. Puedes contactarlos a través del correo soporte@sfs-Glupoint.com para resolver cualquier duda o problema que puedas tener. ¡Estamos aquí para ayudarte en todo momento!
+## no puedo accesar con mi cuenta: Si tienes problemas para acceder a tu cuenta, te recomendamos intentar restablecer tu contraseña o contactar a nuestro equipo de soporte a través de soporte@sfs-Glupoint.com para obtener ayuda adicional.
+que horarios tiene soporte tecnico / en que horario atienden:Nuestro equipo de soporte técnico está disponible de lunes a viernes de 9:00 a.m. a 6:00 p.m. (hora central México).
+## hay servicio de soporte tecnico los fines de semana: Si, nuestros técnicos reciben solicitudes por correo electrónico 24/7.
+cuales son los horarios de atencion del soporte tecnico: Nuestro equipo de soporte técnico está disponible de lunes a viernes de 9:00 a.m. a 6:00 p.m. (hora central México).
+el soporte tecnico de Glupoint incluye atencion telefonica: No, solo contamos con asistencia por correo electrónico. envía tu pregunta a soporte@sfs-Glupoint.com.
+## el soporte tecnico tiene un tiempo de respuesta estimado / cuanto tarda el soporte tecnico: Nuestro tiempo de respuesta estimado es de 24 horas para los usuarios de la licencia Free, y para los usuarios de las licencias Premium y Platino el tiempo promedio es de 1 a 4 horas en horario laboral.
+hay algun costo adicional para acceder a soporte tecnico especializado / cuesta el soporte tecnico: El soporte técnico está incluido en todos los planes. Nuestro deseo es tener la mejor atencion y que nuestros clientes estén satisfechos.
+hay soporte tecnico por/en la noche: A cualquier hora puedes enviar un correo a soporte@sfs-Glupoint y te contestaran tan pronto puedan.

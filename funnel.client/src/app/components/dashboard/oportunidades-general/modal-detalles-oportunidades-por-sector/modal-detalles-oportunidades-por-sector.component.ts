@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
-import { SectoresDetalles, RequestGraficasDto , Sectores} from '../../../../interfaces/graficas';
+import { SectoresDetalles, RequestGraficasDto, Sectores } from '../../../../interfaces/graficas';
 import { GraficasService } from '../../../../services/graficas.service';
 import { LoginService } from '../../../../services/login.service';
 
@@ -24,7 +24,7 @@ export class ModalDetallesOportunidadesPorSectorComponent {
     private graficasService: GraficasService,
     private loginService: LoginService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.mostrarDecimales = this.loginService.obtenerPermitirDecimales();
@@ -34,14 +34,16 @@ export class ModalDetallesOportunidadesPorSectorComponent {
   }
 
   onDialogShow() {
-  this.cargarNombreSector(); 
-  this.cargarDetalles();  
+    this.cargarNombreSector();
+    this.cargarDetalles();
   }
 
-    cargarDetalles() {
+  cargarDetalles() {
+    const idProceso = Number(localStorage.getItem('idProceso'));
     const requestData: RequestGraficasDto = {
       idEmpresa: this.loginService.obtenerIdEmpresa(),
-      idUsuario: this.loginService.obtenerIdUsuario()
+      idUsuario: this.loginService.obtenerIdUsuario(),
+      idProceso: idProceso
     };
 
     this.graficasService.obtenerDetalleOportunidadesSector(this.idSector, requestData)
@@ -63,7 +65,7 @@ export class ModalDetallesOportunidadesPorSectorComponent {
   parsearFecha(fechaString: any): string {
     try {
       if (!fechaString) return '';
-      
+
       if (fechaString instanceof Date && !isNaN(fechaString.getTime())) {
         return fechaString.toISOString();
       }
@@ -87,7 +89,7 @@ export class ModalDetallesOportunidadesPorSectorComponent {
           }
         }
       }
-      
+
       console.warn('Formato de fecha no reconocido:', fechaString);
       return '';
     } catch (error) {
@@ -97,7 +99,7 @@ export class ModalDetallesOportunidadesPorSectorComponent {
   }
 
   close() {
-    this.oportunidades = []; 
+    this.oportunidades = [];
     this.nombreSector = '';
     this.visible = false;
     this.visibleChange.emit(this.visible);
@@ -122,25 +124,25 @@ export class ModalDetallesOportunidadesPorSectorComponent {
   }
 
   // En tu componente
-cargarNombreSector() {
-  const requestData: RequestGraficasDto = {
-    idEmpresa: this.loginService.obtenerIdEmpresa(),
-    idUsuario: this.loginService.obtenerIdUsuario()
-  };
+  cargarNombreSector() {
+    const requestData: RequestGraficasDto = {
+      idEmpresa: this.loginService.obtenerIdEmpresa(),
+      idUsuario: this.loginService.obtenerIdUsuario()
+    };
 
-  this.graficasService.obtenerOportunidadesPorSector(requestData)
-    .subscribe({
-      next: (sectores: Sectores[]) => {
-        const sectorEncontrado = sectores.find(s => s.idSector === this.idSector);
-        if (sectorEncontrado) {
-          this.nombreSector = sectorEncontrado.nombreSector;
-          this.cdr.detectChanges();
+    this.graficasService.obtenerOportunidadesPorSector(requestData)
+      .subscribe({
+        next: (sectores: Sectores[]) => {
+          const sectorEncontrado = sectores.find(s => s.idSector === this.idSector);
+          if (sectorEncontrado) {
+            this.nombreSector = sectorEncontrado.nombreSector;
+            this.cdr.detectChanges();
+          }
+        },
+        error: (error) => {
+          console.error('Error al obtener nombre del sector:', error);
         }
-      },
-      error: (error) => {
-        console.error('Error al obtener nombre del sector:', error);
-      }
-    });
-}
+      });
+  }
 
 }

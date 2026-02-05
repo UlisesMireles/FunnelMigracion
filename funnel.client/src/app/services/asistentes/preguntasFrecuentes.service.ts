@@ -10,10 +10,12 @@ import { PreguntasFrecuentesClassDto } from '../../app/clases/PreguntasFrecuente
 })
 export class PreguntasFrecuentesService {
   private urlBotsFunnel = environment.baseUrlBotsFunnel;
+  baseUrl:string = environment.baseURL;
+
   constructor(private http: HttpClient) { }
 
   obtenPreguntasFrecuentes(): Observable<ListaPreguntasFrecuentesDto> {
-    return this.http.get<ListaPreguntasFrecuentesDto>(this.urlBotsFunnel + '/api/PreguntasFrecuentes/PreguntasFrecuentes').pipe(map((obj: any) => {
+    return this.http.get<ListaPreguntasFrecuentesDto>(this.baseUrl + 'api/PreguntasFrecuentes/PreguntasFrecuentes').pipe(map((obj: any) => {
       obj.preguntasFrecuentes.forEach((pf: any) => {
         pf.yaSePregunto = false
       });
@@ -23,7 +25,7 @@ export class PreguntasFrecuentesService {
 
 
   obtenPreguntasFrecuentesPorId(id: number): Observable<PreguntasFrecuentesClassDto> {
-    return this.http.get<PreguntasFrecuentesClassDto>(this.urlBotsFunnel + '/api/PreguntasFrecuentes/PreguntasFrecuentesPorId/' + id);
+    return this.http.get<PreguntasFrecuentesClassDto>(this.baseUrl + 'api/PreguntasFrecuentes/PreguntasFrecuentesPorId/' + id);
   }
 
   insertaPreguntaFrecuente(inserta: InsertaPreguntaFrecuenteDto): Observable<InsertaPreguntaFrecuenteDto> {
@@ -43,6 +45,6 @@ export class PreguntasFrecuentesService {
   }
 
   obtenListaPreguntasFrecuentesCategoria(): Observable<ListaPreguntasFrecuentesCategoriaDto>{
-    return this.http.get<ListaPreguntasFrecuentesCategoriaDto>(this.urlBotsFunnel + '/api/PreguntasFrecuentes/ListaPreguntasFrecuentesCategoria');
+    return this.http.get<ListaPreguntasFrecuentesCategoriaDto>(this.baseUrl + 'api/PreguntasFrecuentes/ListaPreguntasFrecuentesCategoria');
   }
 }

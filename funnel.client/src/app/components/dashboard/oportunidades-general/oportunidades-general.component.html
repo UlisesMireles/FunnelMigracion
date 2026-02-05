@@ -18,7 +18,10 @@
       
       <div class="card-content" [ngClass]="{'maximized-content': card.maximizada}">
         <div class="plot-wrapper" *ngIf="card.infoCargada">
-          <plotly-plot [data]="card.grafica.data"
+          <div *ngIf="card.sinDatos" class="no-data-message">
+            <p>No hay datos disponibles para esta gráfica.</p>
+          </div>
+          <plotly-plot *ngIf="!card.sinDatos" [data]="card.grafica.data"
                       [layout]="card.grafica.layout"
                       [config]="card.grafica.config">
           </plotly-plot>

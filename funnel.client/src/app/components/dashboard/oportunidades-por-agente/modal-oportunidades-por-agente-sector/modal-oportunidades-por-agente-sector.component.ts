@@ -46,11 +46,13 @@ export class ModalOportunidadesPorAgenteSectorComponent {
 
   cargarOportunidades() {
     if (!this.idAgente) return;
+    const idProceso = Number(localStorage.getItem('idProceso'));
 
     const requestData: RequestGraficasDto = {
       idEmpresa: this.loginService.obtenerIdEmpresa(),
       idUsuario: this.idAgente,
-      bandera: 'SEL-AGENTE-SECTOR'  
+      bandera: 'SEL-AGENTE-SECTOR',
+      idProceso: idProceso
     };
 
     this.loading = true;

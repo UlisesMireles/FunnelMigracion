@@ -11,11 +11,12 @@ export interface GraficasDto {
     porcentaje?: number;
 }
 export interface RequestGraficasDto {
-    bandera?: string;
-    idUsuario?: number;
-    idEmpresa?: number;
-    idEstatusOportunidad?: number;
-    anio?: number;
+  bandera?: string;
+  idUsuario?: number;
+  idEmpresa?: number;
+  idEstatusOportunidad?: number;
+  anio?: number;
+  idProceso?: number;
 }
 export interface AgenteDto {
     idAgente: number;

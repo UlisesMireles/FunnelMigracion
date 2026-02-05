@@ -157,7 +157,8 @@ export class ModalProspectosComponent {
         idSector: [this.prospecto?.idSector, Validators.required],
         estatus: [this.prospecto?.estatus === 1 ? true : false],
         idEmpresa: [idEmpresa],
-        bandera: ['UPDATE']
+        bandera: ['UPDATE'],
+        usuarioCreador: [this.loginService.obtenerIdUsuario()]
       });
 
       valoresIniciales = this.prospectoForm.getRawValue();
@@ -191,6 +192,7 @@ export class ModalProspectosComponent {
   }
 
   onDialogShow() {
+    this.inicializarFormulario();
     this.cargarSectores();
   }
 
@@ -198,7 +200,7 @@ export class ModalProspectosComponent {
     this.prospectoService.getSectores(this.loginService.obtenerIdEmpresa()).subscribe({
       next: (result: any) => {
         this.sectores = result;
-        this.inicializarFormulario();
+        //this.inicializarFormulario();
         this.cdr.detectChanges();
       },
       error: (error) => {

@@ -14,7 +14,6 @@ export class TopVeinteDataService {
 
   // Método para actualizar los datos
   updateTop20Data(data: ClientesTopVeinte[]) {
-     console.log('Datos recibidos en updateTop20Data:', data);
     this.top20Data.next(data);
   }
 }

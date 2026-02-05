@@ -33,9 +33,9 @@ namespace Funnel.Server.Controllers
             return Ok(result);
         }
         [HttpGet("[action]/")]
-        public async Task<ActionResult<List<AniosDto>>> Anios(int IdEmpresa, int IdEstatusOportunidad)
+        public async Task<ActionResult<List<AniosDto>>> Anios(int IdEmpresa, int IdEstatusOportunidad, int IdProceso)
         {
-            var respuesta = await _graficasService.Anios(IdEmpresa, IdEstatusOportunidad);
+            var respuesta = await _graficasService.Anios(IdEmpresa, IdEstatusOportunidad, IdProceso);
             return Ok(respuesta);
         }
         [HttpPost("[action]/")]

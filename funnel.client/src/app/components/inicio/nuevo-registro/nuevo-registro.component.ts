@@ -8,6 +8,8 @@ import { UsuariosService } from '../../../services/usuarios.service';
 import { Router } from '@angular/router';
 import { tail } from 'lodash-es';
 import { Usuarios } from '../../../interfaces/usuarios';
+import { HttpClient } from '@angular/common/http';
+
 
 @Component({
   selector: 'app-nuevo-registro',
@@ -38,9 +40,9 @@ export class NuevoRegistroComponent implements OnInit {
   desdeDuplicadoCorreo: boolean = false;
   huboDuplicadoCorreo: boolean = false;
   correccionRealizada: boolean = false;
-
+  mostrarModalCancelar: boolean = false;
   constructor(private fb: FormBuilder, private empresaService: EmpresaService, private messageService: MessageService, private usuariosService: UsuariosService,
-    private router: Router
+    private router: Router, private http: HttpClient
    ) {}
    
   ngOnInit(): void {
@@ -59,9 +61,11 @@ export class NuevoRegistroComponent implements OnInit {
   });
   }
   tamanos = [
-  { label: 'Pequeña', value: 'pequeña' },
-  { label: 'Mediana', value: 'mediana' },
-  { label: 'Grande', value: 'grande' }
+  { label: '1-10', value: '1-10' },
+  { label: '11-50', value: '11-50' },
+  { label: '51-100', value: '51-100' },
+  { label: '101-500', value: '101-500' },
+  { label: '500+', value: '500+' }
 ];
 
   inicializarFormulario() {
@@ -80,8 +84,7 @@ export class NuevoRegistroComponent implements OnInit {
       nombreEmpresa: ['', Validators.required],
       direccion: ['', Validators.required],
       tamano:['', Validators.required],
-      rfc: ['', {
-    validators: [Validators.required],
+      rfc: ['', {validators: [Validators.required,  Validators.pattern(/^[A-ZÑ&]{3,4}\d{6}[A-Z\d]{3}$/)],
     asyncValidators: [this.validarRfcExistente.bind(this)],
     updateOn: 'blur' 
     }],
@@ -89,19 +92,29 @@ export class NuevoRegistroComponent implements OnInit {
       bandera: ['INS-EMPRESA-GLU']
     });
   }
+  private obtenerIpPublica(): Promise<string> {
+  return this.http.get<{ip: string}>('https://api.ipify.org?format=json')
+    .toPromise()
+    
+    .then(resp => resp!.ip)
 
-  goToStep(step: number) {
+    .catch(() => 'IP_DESCONOCIDA'); 
+}
+
+  async goToStep(step: number) {
     if (this.currentStep === 1) {
       if (this.usuarioForm.get('nombre')?.invalid || this.usuarioForm.get('correo')?.invalid) {
         this.usuarioForm.markAllAsTouched();
         return;
       }
-
+       
+      const ip = await this.obtenerIpPublica();
       const datosPaso1 = {
         bandera: "INSERTAR",
         idRegistro: null,
         nombre: this.usuarioForm.get('nombre')?.value,
-        correo: this.usuarioForm.get('correo')?.value
+        correo: this.usuarioForm.get('correo')?.value,
+        ip: ip 
       };
 
       this.empresaService.guardarRegistroTemporal(datosPaso1).subscribe({
@@ -532,51 +545,43 @@ unirse() {
 }
 
 private guardarUsuario(formValue: any) {
-  if (formValue.nombre) {
-    const { nombre, apellidoPaterno, apellidoMaterno } = this.procesarNombreCompleto(formValue.nombre);
-    formValue.nombre = nombre;
-    formValue.apellidoPaterno = apellidoPaterno;
-    formValue.apellidoMaterno = apellidoMaterno;
-  }
+  const datosGuardarTemporal = {
+    bandera: "ACTUALIZAR",
+    idRegistro: this.idRegistroTemporal,
+    nombre: formValue.nombre,
+    correo: formValue.correo,
+    usuario: formValue.usuario,
+    idEmpresa: this.idEmpresa
+  };
 
-  formValue.iniciales = this.obtenerIniciales(
-    formValue.nombre,
-    formValue.apellidoPaterno,
-    formValue.apellidoMaterno
-  );
-
-  const formData = new FormData();
-  Object.keys(formValue).forEach(key => formData.append(key, formValue[key]));
-
-  formData.append('estatus', '0');
-  formData.append('idTipoUsuario', '3');
-  formData.append('bandera', 'INSERT');
-  formData.append('idEmpresa', this.idEmpresa!.toString());
-
-  this.usuariosService.postGuardarUsuario(formData).subscribe({
+  this.empresaService.guardarRegistroTemporal(datosGuardarTemporal).subscribe({
     next: (resp) => {
-      if (resp.id && this.idEmpresa) {
-        this.enviarCorreoAdmin(this.idEmpresa, resp.id);
+      const idRegistroFinal = resp.id || this.idRegistroTemporal;
+
+      if (idRegistroFinal && this.idEmpresa) {
+        this.enviarCorreoAdmin(this.idEmpresa, idRegistroFinal);
       }
+      this.mostrarModalRFC = false;
+
       this.messageService.add({
         severity: 'success',
         summary: 'Solicitud enviada',
-        detail: 'Tu solicitud para unirte a la empresa ha sido enviada.',
+        detail: 'Tu solicitud para unirte a la empresa ha sido enviada correctamente. Por favor comunicarte con tu administrador para que te de acceso.',
       });
-      this.finish(); 
+
+      this.finish();
     },
     error: (err) => {
-      console.error('Error al guardar usuario', err);
+      console.error('Error al guardar registro temporal final:', err);
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
-        detail: 'No se pudo guardar el usuario. Intenta nuevamente.',
+        detail: 'No se pudo guardar el registro temporal. Intenta nuevamente.',
       });
     }
   });
 }
 
-  
 enviarCorreoAdmin(idEmpresa: number, idUsuario: number) {
   this.empresaService.correoRegistrosAdministrador(idEmpresa, idUsuario).subscribe({
     next: (resp) => {
@@ -605,5 +610,20 @@ private actualizarRegistroTemporal(data: any) {
   });
 }
 
-
+cancelarRegistro() {
+  if (this.currentStep === 4) {
+    this.mostrarModalCancelar = true;
+  } else {
+    this.router.navigate(['/login']); 
+  }
+  
 }
+
+cerrarModalCancelar() {
+  this.mostrarModalCancelar = false;
+}
+
+confirmarCancelacion() {
+  this.mostrarModalCancelar = false;
+  this.router.navigate(['/login']); 
+}}

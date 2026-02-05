@@ -79,6 +79,7 @@ namespace Funnel.Data
                 DataBase.CreateParameterSql("@Direccion", SqlDbType.NVarChar, 50, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Direccion ?? (object)DBNull.Value),
                 DataBase.CreateParameterSql("@UrlSitio", SqlDbType.VarChar, 500, ParameterDirection.Input, false, null, DataRowVersion.Default, request.UrlSitio ?? (object)DBNull.Value),
                 DataBase.CreateParameterSql("@TamanoEmpresa", SqlDbType.VarChar, 20, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Tamano ?? (object)DBNull.Value),
+                DataBase.CreateParameterSql("@Ip", SqlDbType.VarChar, 30, ParameterDirection.Input, false, null, DataRowVersion.Default, request.Ip ?? (object)DBNull.Value),
             };
 
             try

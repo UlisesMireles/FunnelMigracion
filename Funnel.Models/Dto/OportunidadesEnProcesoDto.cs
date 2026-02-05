@@ -59,5 +59,6 @@
         public string? Foto { get; set; }
         public string? UbicacionFisica { get; set; }
         public int? Estatus { get; set; }
+        public int? IdProceso { get; set; }
     }
 }

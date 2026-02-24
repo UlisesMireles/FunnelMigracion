@@ -532,6 +532,7 @@ manejarResultadoCamposAdicionales(result: baseOut) {
         this.busquedaContacto = '';
         this.contactos = this.catalogoService.obtenerContactos(prospecto.id);
         this.oportunidadForm.get('idContactoProspecto')?.enable();
+        var idContactoSeleccionado = this.oportunidadForm.get('idContactoProspecto')?.value;
         const prospectoSeleccionado = this.prospectos.find(p => p.id === prospecto.id);
         if (prospectoSeleccionado) {
           this.busquedaProspecto = prospectoSeleccionado.nombre;
@@ -547,7 +548,7 @@ manejarResultadoCamposAdicionales(result: baseOut) {
           this.busquedaContacto = null;
           this.oportunidadForm.get('idContactoProspecto')?.setValue(null);
         }
-        else {
+        else if (!idContactoSeleccionado) {
           this.oportunidadForm.get('idContactoProspecto')?.setValue(null);
           this.busquedaContacto = null;
         }

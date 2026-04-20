@@ -290,12 +290,13 @@ namespace Funnel.Data.Utils
                     command.CommandText = sql;
                     command.CommandTimeout = commandTimeout;
                     CreateParameters(command, parameters);
-                    connection.Open();
+                    await connection.OpenAsync();
 
-                    if (Transaction.Current == null)
-                        reader = await command.ExecuteReaderAsync(CommandBehavior.CloseConnection);
-                    else
-                        reader = await command.ExecuteReaderAsync(CommandBehavior.Default);
+                    //if (Transaction.Current == null)
+                    //    reader = await command.ExecuteReaderAsync(CommandBehavior.CloseConnection);
+                    //else
+                    //    reader = await command.ExecuteReaderAsync(CommandBehavior.Default);
+                    reader = await command.ExecuteReaderAsync(CommandBehavior.CloseConnection);
                 }
             }
             catch (Exception ex)
@@ -304,6 +305,7 @@ namespace Funnel.Data.Utils
 
                 //arrojar mensaje y ademas el detalle de la excepcion
                 Console.WriteLine(ex.Message);
+                throw;
             }
             return reader;
         }
@@ -344,19 +346,24 @@ namespace Funnel.Data.Utils
                     command.CommandTimeout = commandTimeout;
 
                     CreateParametersSql(command, parameters);
-                    connection.Open();
+                    await connection.OpenAsync();
 
 
-                    if (Transaction.Current == null)
-                        reader = await command.ExecuteReaderAsync(CommandBehavior.CloseConnection);
-                    else
-                        reader = await command.ExecuteReaderAsync(CommandBehavior.Default);
+                    //if (Transaction.Current == null)
+                    //    reader = await command.ExecuteReaderAsync(CommandBehavior.CloseConnection);
+                    //else
+                    //    reader = await command.ExecuteReaderAsync(CommandBehavior.Default);
+
+                    reader = await command.ExecuteReaderAsync(CommandBehavior.CloseConnection);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 if (connection != null)
                     connection.Close();
+
+                //arrojar mensaje y ademas el detalle de la excepcion
+                Console.WriteLine(ex.Message);
                 throw;
             }
             return reader;

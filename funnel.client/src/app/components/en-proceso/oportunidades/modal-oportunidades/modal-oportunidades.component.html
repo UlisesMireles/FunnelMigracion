@@ -410,9 +410,9 @@
   </ng-template>
   <ng-template pTemplate="footer">
     <button *ngIf="!insertar" pButton label="Actualizar" (click)="guardarOportunidad()" severity="secondary"
-      [disabled]="!validaGuadar"></button>
+      [disabled]="!validaGuadar || guardandoOportunidad"></button>
     <button *ngIf="insertar" pButton label="Agregar" (click)="guardarOportunidad()" severity="secondary"
-      [disabled]="!validaGuadar"></button>
+      [disabled]="!validaGuadar || guardandoOportunidad"></button>
     <button pButton label="Cancelar" (click)="close()" severity="secondary"></button>
   </ng-template>
 </p-dialog>

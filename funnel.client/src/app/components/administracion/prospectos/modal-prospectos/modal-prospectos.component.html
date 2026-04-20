@@ -98,9 +98,9 @@
   <ng-template pTemplate="footer">
     <button *ngIf="esAdministrador()" pButton label="Adicionales" (click)="abrirModalInputsAdicionales()" severity="secondary"></button>
     <button *ngIf="!insertarProspecto" pButton label="Actualizar" (click)="guardarProspecto()" severity="secondary"
-      [disabled]="!validaGuadar && !validaGuadarAdicionales"></button>
+      [disabled]="guardandoProspecto || (!validaGuadar && !validaGuadarAdicionales)"></button>
     <button *ngIf="insertarProspecto" pButton label="Agregar" (click)="guardarProspecto()" severity="secondary"
-      [disabled]="!validaGuadar && !validaGuadarAdicionales"></button>
+      [disabled]="guardandoProspecto || (!validaGuadar && !validaGuadarAdicionales)"></button>
     <button pButton label="Cancelar" (click)="close()" severity="secondary"></button>
   </ng-template>
 </p-dialog>

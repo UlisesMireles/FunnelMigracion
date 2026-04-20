@@ -11,7 +11,7 @@ import { LoginService } from '../../../../services/login.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CatalogoService } from '../../../../services/catalogo.service';
 import { ModalOportunidadesService } from '../../../../services/modalOportunidades.service';
-import { Subscription } from 'rxjs';
+import { finalize, Subscription } from 'rxjs';
 import { Contacto } from '../../../../interfaces/contactos';
 import { Prospectos } from '../../../../interfaces/prospecto';
 import { TipoServicio } from '../../../../interfaces/tipoServicio';
@@ -108,6 +108,8 @@ export class ModalOportunidadesComponent implements OnInit, OnDestroy {
   camposAdicionalesPorCatalogo: CamposAdicionales[] = [];
   modalVisibleCamposAdicionales: boolean = false;
   informacionReferenciaCatalgo: any = {};
+
+  guardandoOportunidad: boolean = false;
 
   inicializarFormulario() {
     this.modalSubscription = this.modalOportunidadesService.modalState$.subscribe((state) => {
@@ -696,8 +698,15 @@ manejarResultadoCamposAdicionales(result: baseOut) {
     };
     this.informacionOportunidad.probabilidad = this.informacionOportunidad.probabilidad?.replace('%', '').trim();
     this.informacionOportunidad.idUsuario = this.loginService.obtenerIdUsuario();
+
+    this.guardandoOportunidad = true;
     
-    this.oportunidadService.postOportunidad(this.informacionOportunidad).subscribe({
+    this.oportunidadService.postOportunidad(this.informacionOportunidad)
+      .pipe(
+        finalize(() => {
+          this.guardandoOportunidad = false;
+        })
+      ).subscribe({
       next: (result: baseOut) => {
         this.result.emit(result);
         this.close();

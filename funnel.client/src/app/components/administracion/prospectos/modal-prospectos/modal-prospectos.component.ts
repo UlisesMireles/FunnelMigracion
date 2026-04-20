@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { RequestProspecto } from '../../../../interfaces/prospecto';
 import { BaseOut } from '../../../../interfaces/utils/baseOut';
@@ -9,6 +9,7 @@ import { LoginService } from '../../../../services/login.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalOportunidadesService } from '../../../../services/modalOportunidades.service';
 import { Subscription } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { InpoutAdicionalData } from '../../../../interfaces/input-adicional-data';
 
 @Component({
@@ -46,6 +47,7 @@ export class ModalProspectosComponent {
   @Output() activarModalInputsAdicionales: EventEmitter<any> = new EventEmitter();
 
   validaGuadar: boolean = false;
+  guardandoProspecto: boolean = false;
   informacionProspecto: Prospectos = {
     idProspecto: 0,
     nombre: "",
@@ -249,7 +251,14 @@ export class ModalProspectosComponent {
     }
 
 
-    this.prospectoService.postInsertProspecto(this.informacionProspecto).subscribe({
+    this.guardandoProspecto = true;
+    
+    this.prospectoService.postInsertProspecto(this.informacionProspecto)
+      .pipe(
+        finalize(() => {
+          this.guardandoProspecto = false;
+        })
+      ).subscribe({
       next: (result: baseOut) => {
         if (this.inputInfoAdicionales.length > 0) {
           this.guardarInformacionAdicional(result)
@@ -391,3 +400,5 @@ export class ModalProspectosComponent {
     return this.loginService.obtenerRolUsuario() === rolAdmin;
   }
 }
+
+

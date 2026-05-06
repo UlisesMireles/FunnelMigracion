@@ -37,7 +37,8 @@
       <div class="d-flex contenedor-etiquetas"
         *ngIf="titulo === 'Oportunidades Por Mes' || titulo === 'Oportunidades Por Etapa'">
         <!-- Oportunidades en proceso -->
-        <div class="etiqueta bg-white shadow-md rounded-xl px-6 text-center etiqueta-default" >
+        <div class="etiqueta bg-white shadow-md rounded-xl px-6 text-center etiqueta-default cursor-pointer" 
+        (click)="abrirModalOportunidadesEnProceso()" (keyup.enter)="abrirModalOportunidadesEnProceso()">
           <p class="titulo mb-0 color-tab-1">En proceso</p>
           <p class="cantidad mb-0 color-tab-1">{{totalOportunidades}}</p>
         </div>

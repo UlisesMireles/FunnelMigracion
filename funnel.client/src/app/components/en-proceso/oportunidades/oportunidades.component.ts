@@ -86,16 +86,18 @@ export class OportunidadesComponent {
   oportunidadesPerdidasMes: Oportunidad[] = [];
   fechaCierreSortOrder: number = 1;  
   lsTodasColumnas: any[] = [];
+  oportunidadesEnProceso: Oportunidad[] = [];
 
   maximized: boolean = false;
   columnsAMostrarResp: string = '';
   columnsTodasResp: string = '';
   disabledPdf: boolean = false;
   tipoUsuario: number = 0;
+
   constructor(private oportunidadService: OportunidadesService, private messageService: MessageService, private cdr: ChangeDetectorRef,
     private readonly loginService: LoginService, public dialog: MatDialog, private modalOportunidadesService: ModalOportunidadesService,
     private readonly catalogoService: CatalogoService, private readonly configuracionColumnasService: ConfiguracionTablaService,
-    private filterService: FilterService
+    private filterService: FilterService 
   ) {
     this.loading = true;
     this.catalogoService.cargarProspectos(this.loginService.obtenerIdEmpresa());
@@ -614,6 +616,26 @@ export class OportunidadesComponent {
     }
     this.abrirModalDetalleOportunidades(this.oportunidadesPerdidasMes, 'Oportunidades Perdidas del Mes');
   }
+
+  abrirModalOportunidadesEnProceso() {
+    if (this.oportunidades.length === 0) {
+      return;
+    }
+    this.oportunidadesEnProceso = this.adaptToTable(this.oportunidades);
+    this.abrirModalDetalleOportunidades(this.oportunidadesEnProceso, 'Oportunidades en Proceso');
+  }  
+
+  // Método para adaptar las oportunidades al formato de tabla del modal Detalle Oportunidades
+  private adaptToTable(data: Oportunidad[]): any[] {
+  return data.map(item => ({
+            prospecto: item.nombre,
+            oportunidad: item.nombreOportunidad,
+            ejecutivo: item.nombreEjecutivo,
+            inicialesEjecutivo: item.iniciales,
+            fecha: item.fechaRegistro ? item.fechaRegistro : '',
+            monto: item.monto
+  }));
+}
 
   private abrirModalDetalleOportunidades(oportunidades: Oportunidad[], titulo: string) {
     this.oportunidadesModalDetalle = oportunidades;
